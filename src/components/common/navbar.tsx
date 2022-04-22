@@ -37,7 +37,7 @@ const Navbar = () => {
       </BrightOutlinedButton>
       <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
       {modalIsActive ? (
-        <Modal title="hello title">
+        <Modal title="connect bright id">
           <BrightConnectionModal />
         </Modal>
       ) : (
