@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React from 'react';
 import styled from 'styled-components/'
 import { DV } from 'components/basic/designVariables'
 import { PrimaryOutlinedButton, PrimaryButton } from 'components/basic/button';

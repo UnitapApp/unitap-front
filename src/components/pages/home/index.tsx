@@ -1,6 +1,20 @@
 import { Button } from 'components/basic/button';
 import ChainList from './chainlist'
 import React, { useState, FC } from 'react';
+import { DV } from 'components/basic/designVariables'
+import styled from 'styled-components/'
+import Navbar from 'components/common/navbar';
+import Header from './header';
+
+
+
+const NavWrapper = styled.div`
+    position: absolute;
+    width: 100%;
+`
+const ChainListWrapper = styled.div`
+    padding: ${DV.sizes.baseRadius * 2}px ${DV.sizes.baseRadius * 4}px;
+`
 
 const Home: FC = ({ children }) => {
     const [chainList, setChainList] = useState([
@@ -12,7 +26,10 @@ const Home: FC = ({ children }) => {
     return ( 
     <>
         <div >
-            <ChainList  data={chainList} />
+            <NavWrapper><Navbar/></NavWrapper>
+            <Header/>
+            <ChainListWrapper><ChainList  data={chainList} />
+            </ChainListWrapper>
             
         </div>
 

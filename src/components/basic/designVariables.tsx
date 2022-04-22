@@ -8,6 +8,7 @@ interface designVariable {
     colors: {
         primary: string,
         secondary: string,
+        bright: string,
         black: string,
         black1: string,
     }
@@ -22,6 +23,7 @@ export const DV: designVariable = {
     colors: {
         primary: '#59D1F8',
         secondary: '#D683DC',
+        bright: '#FB8A61',
         black: '#18181F',
         black1: '#1E1E29',
     }

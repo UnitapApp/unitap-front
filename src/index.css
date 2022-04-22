@@ -6,6 +6,7 @@ body {
   font-family: JETBRAINS MONO;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #1E1E29;
 }
 
 *:not(i) {
