@@ -8,9 +8,38 @@ import { PrimaryOutlinedButton, PrimaryButton } from 'components/basic/button';
 // ###### Local Styled Components 
 
 const ChainCard = styled.div`
+    position: relative;
     display: flex;
-    border-radius: ${DV.sizes.baseRadius * 1.5};
-    background-color: ${DV.colors.black1};
+    justify-content: space-between;
+    align-item: center;
+    border: 2px solid ${DV.colors.black};
+    border-radius: ${DV.sizes.baseRadius * 1.5}px;
+    background-color: #1E1E29;
+    margin-bottom: ${DV.sizes.baseMargin * 2}px;
+    padding: ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 6}px;
+
+    img {
+        width: 30px;
+        position: absolute;
+        padding: 38px ${DV.sizes.baseMargin * 1.5}px;
+        display: flex;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        background-color: ${DV.colors.black};
+    }
+    p {
+        color: white;
+        &:first-child { margin-right: ${DV.sizes.baseMargin * 8}px }
+    }
+`
+const ChainName = styled.p`
+    margin-left: ${DV.sizes.baseMargin * 6}px
+`
+
+const Action = styled.div`
+    display: flex;
+    align-items: center
 `
 
 // ###### Local Interfaces
@@ -29,14 +58,14 @@ const ChainList = (data: any) => {
         { data.data.map((x: chainObj) => {
             return (
                 <ChainCard key={x.chain_id}>
-                    <img src="" alt="" />
-                    <p>Polygon Mainnet</p>
-                    <p><span>Chain ID</span> 13</p>
-                    <p><span>Currency</span> MATIC</p>
-                    <div>
-                        <PrimaryButton>Claim 0.003 MATIC</PrimaryButton>
+                    <img src={x.icon} alt="" />
+                    <ChainName>{x.name}</ChainName>
+                    <p><span>Chain ID</span> {x.chain_id}</p>
+                    <p><span>Currency</span> {x.symbol}</p>
+                    <Action>
+                        <PrimaryButton mr={2}>Claim 0.003 MATIC</PrimaryButton>
                         <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
-                    </div>
+                    </Action>
                 </ChainCard>
             )
         }) }

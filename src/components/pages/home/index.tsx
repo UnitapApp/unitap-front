@@ -13,7 +13,7 @@ const NavWrapper = styled.div`
     width: 100%;
 `
 const ChainListWrapper = styled.div`
-    padding: ${DV.sizes.baseRadius * 2}px ${DV.sizes.baseRadius * 4}px;
+    padding: ${DV.sizes.baseRadius * 8}px ${DV.sizes.baseRadius * 4}px;
 `
 
 const Home: FC = ({ children }) => {
