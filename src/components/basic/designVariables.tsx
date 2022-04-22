@@ -5,7 +5,10 @@ interface designVariable {
         baseMargin: number,
         baseRadius: number,
     },
-    colors: object
+    colors: {
+        primary: string,
+        black1: string,
+    }
 }
 
 export const DV: designVariable = {
@@ -15,7 +18,8 @@ export const DV: designVariable = {
         baseRadius: 8,
     },
     colors: {
-        primary: '#59D1F8'
+        primary: '#59D1F8',
+        black1: '#1E1E29',
     }
 }
 

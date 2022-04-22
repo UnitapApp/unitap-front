@@ -13,7 +13,7 @@ const Home: FC = ({ children }) => {
     <>
         <div >
             <ChainList  data={chainList} />
-            <Button style={{ marginTop: '20px', padding: '1rem 1rem 0 1rem' }}>connect </Button>
+            
         </div>
 
     </> 
