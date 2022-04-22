@@ -1,17 +1,19 @@
 import React, { useState, FC } from 'react';
 import styled from 'styled-components/'
 import { DV } from 'components/basic/designVariables'
-import { Button } from 'components/basic/button';
+import { PrimaryOutlinedButton, PrimaryButton } from 'components/basic/button';
 
-// interface Prop {
-//     data: object
-// }
+
+
+// ###### Local Styled Components 
 
 const ChainCard = styled.div`
-    border-radius: ${DV.sizes.baseRadius * 1.5}
-    background-color: ${DV.colors.black1}
+    display: flex;
+    border-radius: ${DV.sizes.baseRadius * 1.5};
+    background-color: ${DV.colors.black1};
 `
 
+// ###### Local Interfaces
 interface chainObj {
     icon: string;
     name: string;
@@ -31,9 +33,10 @@ const ChainList = (data: any) => {
                     <p>Polygon Mainnet</p>
                     <p><span>Chain ID</span> 13</p>
                     <p><span>Currency</span> MATIC</p>
-                    <Button>Claim 0.003 MATIC</Button>
-                    <Button>Add to MetaMask</Button>
-                    
+                    <div>
+                        <PrimaryButton>Claim 0.003 MATIC</PrimaryButton>
+                        <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
+                    </div>
                 </ChainCard>
             )
         }) }

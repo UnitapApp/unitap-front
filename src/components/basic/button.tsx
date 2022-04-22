@@ -3,9 +3,27 @@ import styled from 'styled-components/'
 import { DV } from './designVariables'
 
 
-export const Button = styled.button`
-    border-radius: ${DV.sizes.baseRadius}px;
-    background-color: #ccc;
+interface props {
+    width?: string;
+    height?: string;
+  }
+
+export const Button = styled.button<props>`
+    border-radius: ${DV.sizes.baseRadius * 1.5}px;
     border: none;
-    padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 2}px
+    font-weight: bold;
+    width: ${props => props.width || 'auto'};
+    padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px
+`
+
+export const PrimaryButton = styled(Button)`
+    background-color: ${DV.colors.primary};
+    color: ${DV.colors.black};
+    
+`
+
+export const PrimaryOutlinedButton = styled(Button)`
+    border: 1px solid ${DV.colors.primary};
+    color: white;
+    background-color: ${DV.colors.black};
 `
