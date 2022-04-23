@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, PrimaryButton, Text } from 'components/basic/button';
+import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/button';
 
 // ###### Local Styled Components
 
@@ -59,15 +59,14 @@ const ChainList = (data: any) => {
             <img src={x.icon} alt="" />
             <ChainName>{x.name}</ChainName>
             <p>
-                <Text color="primary">sddasdasdsad</Text>
               <span>Chain ID</span> {x.chain_id}
             </p>
             <p>
               <span>Currency</span> {x.symbol}
             </p>
             <Action>
-              <PrimaryButton mr={2}>Claim 0.003 MATIC</PrimaryButton>
-              <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
+              <PrimaryOutlinedButton mr={2}>Claim 0.003 MATIC</PrimaryOutlinedButton>
+              <SecondaryButton>Add to MetaMask</SecondaryButton>
             </Action>
           </ChainCard>
         );
