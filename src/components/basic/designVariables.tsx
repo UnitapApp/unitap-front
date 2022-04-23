@@ -11,6 +11,7 @@ interface designVariable {
         bright: string,
         black: string,
         black1: string,
+        transparent_black: string,
     }
 }
 
@@ -26,6 +27,7 @@ export const DV: designVariable = {
         bright: '#FB8A61',
         black: '#18181F',
         black1: '#1E1E29',
+        transparent_black: '#11111c99',
     }
 }
 

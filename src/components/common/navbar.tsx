@@ -4,6 +4,7 @@ import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/button';
 import Modal from 'components/basic/Modal/modal';
 import BrightConnectionModal from 'components/common/brightConnectionModal';
+import { Spaceman } from 'constants/spaceman';
 
 // ###### Local Styled Components
 
@@ -24,6 +25,10 @@ const Navbar = () => {
     setModalIsActive(true);
   };
 
+  const closeBrightConnectionModal = () => {
+    setModalIsActive(false);
+  }
+
   return (
     <Nav>
       <img src="logo.png" alt="" />
@@ -36,13 +41,15 @@ const Navbar = () => {
         Connected to BrightID
       </BrightOutlinedButton>
       <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
-      {modalIsActive ? (
-        <Modal title="connect bright id">
-          <BrightConnectionModal />
-        </Modal>
-      ) : (
-        <></>
-      )}
+
+      <Modal
+        spaceman={Spaceman.BOTTOM_BIG}
+        title="connect bright id"
+        isOpen={modalIsActive}
+        closeModalHandler={closeBrightConnectionModal}
+      >
+        <BrightConnectionModal />
+      </Modal>
     </Nav>
   );
 };
