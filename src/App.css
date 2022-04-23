@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+textarea:focus, input:focus{
+  outline: none;
+}
+
+input, textarea {
+  border: 0
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
