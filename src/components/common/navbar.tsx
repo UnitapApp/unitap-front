@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/button';
+import { LightOutlinedButton, BrightOutlinedButton } from 'components/basic/button';
 import Modal from 'components/basic/Modal/modal';
 import BrightConnectionModal from 'components/common/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
@@ -40,7 +40,7 @@ const Navbar = () => {
       >
         Connected to BrightID
       </BrightOutlinedButton>
-      <PrimaryOutlinedButton>Add to MetaMask</PrimaryOutlinedButton>
+      <LightOutlinedButton>Add to MetaMask</LightOutlinedButton>
 
       <Modal
         spaceman={Spaceman.BOTTOM_BIG}

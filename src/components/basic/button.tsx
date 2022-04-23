@@ -24,11 +24,24 @@ export const Text = styled.p<props>`
 
 export const Button = styled.button<props>`
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
+  position: relative;
   border: none;
   font-weight: bold;
   margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `${DV.sizes.baseMargin}px`)};
   width: ${(props) => props.width || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
+  &:hover {
+    cursor: pointer;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: ${DV.sizes.baseRadius * 1.5}px;
+      background-color: rgba(255,255,255,0.05);
+      
+
+    }
+  }
 `;
 
 export const PrimaryButton = styled(Button)`
@@ -55,7 +68,17 @@ export const PrimaryOutlinedButton = styled(Button)`
   }
 `;
 
-export const SecondaryButton = styled(Button)``;
+export const LightOutlinedButton = styled(Button)`
+  background: ${DV.bgGradient.dark};
+  color: white;
+  border: 1px solid white;
+`;
+
+export const SecondaryButton = styled(Button)`
+  background-color: ${DV.colors.dark};
+  color: ${DV.colors.secondary};
+  border: 2px solid ${DV.colors.dark1};
+`;
 
 export const BrightOutlinedButton = styled(Button)`
   border: 1px solid ${DV.colors.bright};
