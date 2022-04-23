@@ -39,7 +39,7 @@ const Navbar = () => {
       <LightOutlinedButton>Add to MetaMask</LightOutlinedButton>
 
       <Modal
-        spaceman={Spaceman.BOTTOM_BIG}
+        spaceman={Spaceman.WITH_PHONE}
         title="connect bright id"
         isOpen={isModalActive}
         closeModalHandler={() => {

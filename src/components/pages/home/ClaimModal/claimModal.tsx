@@ -1,26 +1,21 @@
 import * as React from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import {
-  BrightConnectionModalWrapper,
-  CopyLink,
-} from 'components/pages/home/BrightConnectionModal/brightConnectionModal.style';
+import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/ClaimModal/claimModal.style';
+import Icon from 'components/basic/Icon/Icon';
+import { PrimaryButton } from 'components/basic/button';
 
 const ClaimModal = () => {
   return (
-    <BrightConnectionModalWrapper>
-      <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
+    <ClaimModalWrapper>
       <Text fontSize="14" className="scan-qr-text">
-        Scan QR Code
+        claim 0.003 MATIC
       </Text>
-      <img className="qr-code" src={process.env.PUBLIC_URL + '/assets/images/qr-code.png'} alt="" />
-      <Text fontSize="14" className="or-text">
-        or
-      </Text>
-      <CopyLink>
-        <img src={process.env.PUBLIC_URL + '/assets/images/copy-link.png'} alt="" />
-        <Text color='green'>Copy Link</Text>
-      </CopyLink>
-    </BrightConnectionModalWrapper>
+      <Icon iconSrc={process.env.PUBLIC_URL + '/assets/images/matic-icon.png'} width="42%" height='auto' />
+      <WalletAddress fontSize="12">
+        Wallet Address
+      </WalletAddress>
+      <PrimaryButton width="100%"> Claim </PrimaryButton>
+    </ClaimModalWrapper>
   );
 };
 

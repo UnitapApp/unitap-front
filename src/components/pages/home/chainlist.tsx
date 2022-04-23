@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/button';
+import ClaimModal from './ClaimModal/claimModal';
+import Modal from 'components/basic/Modal/modal';
+import { Spaceman } from 'constants/spaceman';
 
 // ###### Local Styled Components
 
@@ -51,24 +54,48 @@ interface chainObj {
 }
 
 const ChainList = (data: any) => {
+  const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
+  const changeModalActive = (state: boolean) => {
+    setIsModalActive(state);
+  };
+
   return (
     <div>
       {data.data.map((x: chainObj) => {
         return (
-          <ChainCard key={x.chain_id}>
-            <img src={x.icon} alt="" />
-            <ChainName>{x.name}</ChainName>
-            <p>
-              <span>Chain ID</span> {x.chain_id}
-            </p>
-            <p>
-              <span>Currency</span> {x.symbol}
-            </p>
-            <Action>
-              <PrimaryOutlinedButton mr={2}>Claim 0.003 MATIC</PrimaryOutlinedButton>
-              <SecondaryButton>Add to MetaMask</SecondaryButton>
-            </Action>
-          </ChainCard>
+          <>
+            <ChainCard key={x.chain_id}>
+              <img src={x.icon} alt="" />
+              <ChainName>{x.name}</ChainName>
+              <p>
+                <span>Chain ID</span> {x.chain_id}
+              </p>
+              <p>
+                <span>Currency</span> {x.symbol}
+              </p>
+              <Action>
+                <PrimaryOutlinedButton
+                  mr={2}
+                  onClick={() => {
+                    changeModalActive(true);
+                  }}
+                >
+                  Claim 0.003 MATIC
+                </PrimaryOutlinedButton>
+                <SecondaryButton>Add to MetaMask</SecondaryButton>
+              </Action>
+            </ChainCard>
+            <Modal
+              spaceman={Spaceman.BOTTOM_BIG}
+              title="claim gas fee"
+              isOpen={isModalActive}
+              closeModalHandler={() => {
+                changeModalActive(false);
+              }}
+            >
+              <ClaimModal />
+            </Modal>
+          </>
         );
       })}
     </div>
