@@ -18,7 +18,7 @@ const BrightConnectionModal = () => {
       </Text>
       <CopyLink>
         <img src={process.env.PUBLIC_URL + '/assets/images/copy-link.png'} alt="" />
-        <Text>Copy Link</Text>
+        <Text color='green'>Copy Link</Text>
       </CopyLink>
     </BrightConnectionModalWrapper>
   );
