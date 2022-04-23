@@ -18,18 +18,14 @@ export const ModalWrapper = styled.div`
 `;
 
 export const ModalChildrenWrapper = styled.div`
-  width: 37%;
-  min-height: 3rem;
+  width: 40%;
 
   margin: ${DV.sizes.baseMargin * 2}px auto;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
-`;
+  z-index: 10;
+  `;
 
 export const ModalContent = styled.div`
   background-color: ${DV.colors.black1};
@@ -37,9 +33,9 @@ export const ModalContent = styled.div`
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 5}px;
-  min-height: 50vh;
   overflow: hidden;
-
+  z-index: -2;
+  
   .close {
     position: absolute;
     right: 0;
@@ -49,12 +45,13 @@ export const ModalContent = styled.div`
     float: right;
     font-size: 28px;
     font-weight: bold;
-
+    z-index: 10;
+    
     &:hover {
       cursor: pointer;
     }
   }
-
+  
   .modal-title {
     color: white;
     margin: 0;
@@ -73,6 +70,7 @@ export const ModalContent = styled.div`
     -o-background-size: cover;
     -moz-background-size: cover;
     -webkit-background-size: cover;
+    z-index: -1;
   }
 
   .spaceman-one {

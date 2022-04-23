@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ModalWrapper, ModalContent, ModalChildrenWrapper } from 'components/basic/Modal/modal.style';
+import { Text } from 'components/basic/Text/text.style';
 import { Spaceman } from 'constants/spaceman';
 
 type props = {
@@ -15,7 +16,7 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler }: props) 
     {isOpen ? (
       <ModalWrapper>
         <ModalContent>
-          <p className="modal-title"> {title} </p>
+          <Text className="modal-title"> {title} </Text>
           <span onClick={closeModalHandler} className="close">
             &times;
           </span>

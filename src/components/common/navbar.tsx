@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/button';
 import Modal from 'components/basic/Modal/modal';
-import BrightConnectionModal from 'components/common/brightConnectionModal';
+import BrightConnectionModal from 'components/common/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
 
 // ###### Local Styled Components
@@ -13,7 +13,7 @@ const Nav = styled.div`
   border-radius: ${DV.sizes.baseRadius * 1.5};
   background-color: rgba(21, 21, 27, 0.7);
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
-  img {
+  &>img {
     width: 200px;
     margin-right: auto;
   }
