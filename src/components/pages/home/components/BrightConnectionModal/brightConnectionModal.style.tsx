@@ -25,6 +25,11 @@ export const CopyLink = styled.div`
   display: flex;
   color: ${DV.colors.green};
 
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
   & > img {
     height: 1.5rem;
     width: auto;
