@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModalWrapper, ModalContent, ModalChildrenWrapper } from 'components/basic/Modal/modal.style';
+import { ModalWrapper, ModalContent, ModalChildrenWrapper } from 'components/common/Modal/modal.style';
 import { Text } from 'components/basic/Text/text.style';
 import { Spaceman } from 'constants/spaceman';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/';
-import { DV } from './designVariables';
+import { DV } from '../designVariables';
 
 interface props {
   width?: string;

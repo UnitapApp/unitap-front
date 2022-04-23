@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/'
 import { DV } from 'components/basic/designVariables'
-import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/button';
+import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/Button/button';
 
 
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/ClaimModal/claimModal.style';
+import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { PrimaryButton } from 'components/basic/button';
+import { PrimaryButton } from 'components/basic/Button/button';
 
 const ClaimModal = () => {
   return (

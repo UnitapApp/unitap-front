@@ -3,7 +3,7 @@ import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
   CopyLink,
-} from 'components/pages/home/BrightConnectionModal/brightConnectionModal.style';
+} from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 
 const BrightConnectionModal = () => {
   return (

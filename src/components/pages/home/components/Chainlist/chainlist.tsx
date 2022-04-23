@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { GreenOutlinedButton, PrimaryOutlinedButton, SecondaryButton } from 'components/basic/button';
-import ClaimModal from './ClaimModal/claimModal';
-import Modal from 'components/basic/Modal/modal';
+import { GreenOutlinedButton, PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
+import ClaimModal from '../ClaimModal/claimModal';
+import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 
 // ###### Local Styled Components

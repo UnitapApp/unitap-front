@@ -1,8 +1,8 @@
 import React, { useState, FC } from 'react';
 
-import { Button } from 'components/basic/button';
-import ChainList from './chainlist';
-import Navbar from 'components/common/navbar';
+import { Button } from 'components/basic/Button/button';
+import ChainList from './components/Chainlist/chainlist';
+import Navbar from 'components/common/Navbar/navbar';
 
 import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components/';
