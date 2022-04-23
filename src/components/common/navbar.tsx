@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/button';
 import Modal from 'components/basic/Modal/modal';
-import BrightConnectionModal from 'components/common/BrightConnectionModal/brightConnectionModal';
+import BrightConnectionModal from 'components/pages/home/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
 
 // ###### Local Styled Components

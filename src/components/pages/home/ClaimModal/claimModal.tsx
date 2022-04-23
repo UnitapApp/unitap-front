@@ -3,9 +3,9 @@ import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
   CopyLink,
-} from 'components/common/BrightConnectionModal/brightConnectionModal.style';
+} from 'components/pages/home/BrightConnectionModal/brightConnectionModal.style';
 
-const BrightConnectionModal = () => {
+const ClaimModal = () => {
   return (
     <BrightConnectionModalWrapper>
       <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
@@ -24,4 +24,4 @@ const BrightConnectionModal = () => {
   );
 };
 
-export default BrightConnectionModal;
+export default ClaimModal;
