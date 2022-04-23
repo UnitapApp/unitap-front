@@ -13,21 +13,17 @@ const Nav = styled.div`
   border-radius: ${DV.sizes.baseRadius * 1.5};
   background-color: rgba(21, 21, 27, 0.7);
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
-  &>img {
+  & > img {
     width: 200px;
     margin-right: auto;
   }
 `;
 
 const Navbar = () => {
-  const [modalIsActive, setModalIsActive] = React.useState<boolean>(false);
-  const showBrightConnectionModal = () => {
-    setModalIsActive(true);
+  const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
+  const changeModalActive = (state: boolean) => {
+    setIsModalActive(state);
   };
-
-  const closeBrightConnectionModal = () => {
-    setModalIsActive(false);
-  }
 
   return (
     <Nav>
@@ -35,7 +31,7 @@ const Navbar = () => {
       <BrightOutlinedButton
         mr={2}
         onClick={() => {
-          showBrightConnectionModal();
+          changeModalActive(true);
         }}
       >
         Connected to BrightID
@@ -45,8 +41,10 @@ const Navbar = () => {
       <Modal
         spaceman={Spaceman.BOTTOM_BIG}
         title="connect bright id"
-        isOpen={modalIsActive}
-        closeModalHandler={closeBrightConnectionModal}
+        isOpen={isModalActive}
+        closeModalHandler={() => {
+          changeModalActive(false);
+        }}
       >
         <BrightConnectionModal />
       </Modal>
