@@ -80,6 +80,13 @@ export const SecondaryButton = styled(Button)`
   border: 2px solid ${DV.colors.dark1};
 `;
 
+
+export const GreenOutlinedButton = styled(Button)`
+  background: ${DV.colors.dark};
+  color: ${DV.colors.green};
+  border: 1px solid ${DV.colors.green};
+`;
+
 export const BrightOutlinedButton = styled(Button)`
   border: 1px solid ${DV.colors.bright};
   color: ${DV.colors.bright};

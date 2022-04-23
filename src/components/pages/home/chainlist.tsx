@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/button';
+import { GreenOutlinedButton, PrimaryOutlinedButton, SecondaryButton } from 'components/basic/button';
 
 // ###### Local Styled Components
 
@@ -21,9 +21,10 @@ const ChainCard = styled.div`
     position: absolute;
     padding: 38px ${DV.sizes.baseMargin * 1.5}px;
     display: flex;
-    left: 0;
+    border-radius: ${DV.sizes.baseRadius * 1.5}px 0 0 ${DV.sizes.baseRadius * 1.5}px;
+    left: -1px;
     bottom: 0;
-    top: 0;
+    top: 1-px;
     background-color: ${DV.colors.black};
   }
   p {
@@ -65,6 +66,8 @@ const ChainList = (data: any) => {
               <span>Currency</span> {x.symbol}
             </p>
             <Action>
+                {/* this commented button is for when we have already claimed the token [logic connection needed] */}
+              {/* <GreenOutlinedButton mr={2}>Already claimed</GreenOutlinedButton> */}
               <PrimaryOutlinedButton mr={2}>Claim 0.003 MATIC</PrimaryOutlinedButton>
               <SecondaryButton>Add to MetaMask</SecondaryButton>
             </Action>
