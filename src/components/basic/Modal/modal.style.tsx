@@ -87,4 +87,11 @@ export const ModalContent = styled.div`
     top: 7rem;
     width: 7rem;
   }
+  
+  .spaceman-three {
+    position: absolute;
+    right: -5rem;
+    top: 2rem;
+    width: 23rem;
+  }
 `;

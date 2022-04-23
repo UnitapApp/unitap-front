@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
+import {Text} from 'components/basic/Text/text.style';
 
-export const BrightConnectionModalWrapper = styled.div`
+export const ClaimModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -10,24 +11,8 @@ export const BrightConnectionModalWrapper = styled.div`
   justify-content: center;
 
   padding: ${DV.sizes.basePadding * 2}px;
-
-  & > img {
-    width: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  & .qr-code {
-    width: 70%;
-  }
 `;
 
-export const CopyLink = styled.div`
-  display: flex;
-  color: ${DV.colors.green};
-
-  & > img {
-    height: 1.5rem;
-    width: auto;
-    margin: 0 0.5rem 0 0;
-  }
+export const WalletAddress = styled(Text)`
+  align-self: flex-start;
 `;
