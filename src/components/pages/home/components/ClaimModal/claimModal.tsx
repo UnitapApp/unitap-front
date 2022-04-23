@@ -3,6 +3,7 @@ import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
+import { Input } from 'components/basic/Input/input';
 
 const ClaimModal = () => {
   return (
@@ -14,6 +15,7 @@ const ClaimModal = () => {
       <WalletAddress fontSize="12">
         Wallet Address
       </WalletAddress>
+      <Input width="100%" placeholder='0x23.....456'></Input>
       <PrimaryButton width="100%"> Claim </PrimaryButton>
     </ClaimModalWrapper>
   );

@@ -6,7 +6,7 @@ import Navbar from 'components/common/Navbar/navbar';
 
 import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components/';
-import Header from './components/header';
+import Header from 'components/pages/home/components/Header/header';
 
 const NavWrapper = styled.div`
   position: absolute;

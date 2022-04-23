@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/';
-import { DV } from '../../designVariables';
+import { DV } from '../designVariables';
 
 interface props {
   width?: string;
@@ -15,6 +15,7 @@ export const Input = styled.input<props>`
   position: relative;
   z-index: 2;
   box-sizing: border-box;
+  margin-bottom: 1rem;
   &::before {
     content: '';
     display: block;

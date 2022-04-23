@@ -27,7 +27,7 @@ export const Button = styled.button<props>`
   position: relative;
   border: none;
   font-weight: bold;
-  margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `${DV.sizes.baseMargin}px`)};
+  margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
   width: ${(props) => props.width || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
   &:hover {
