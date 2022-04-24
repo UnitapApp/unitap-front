@@ -6,6 +6,20 @@ import ClaimModal from '../ClaimModal/claimModal';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 
+
+import { useEffect, useState  } from 'react';
+import { hooks, metaMask } from '../../../../../connectors/metaMask';
+
+import type { Web3ReactHooks } from '@web3-react/core'
+import type { MetaMask } from '@web3-react/metamask'
+import { Network } from '@web3-react/network'
+import { WalletConnect } from '@web3-react/walletconnect'
+
+
+import { CHAINS, getAddChainParameters,URLS } from 'chains';
+const { useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+
+
 // ###### Local Styled Components
 
 const ChainCard = styled.div`
@@ -60,19 +74,43 @@ const ChainList = (data: any) => {
     setIsModalActive(state);
   };
 
+  const chainId = useChainId();
+  const accounts = useAccounts();
+  const error = useError();
+  const isActivating = useIsActivating();
+
+  const isActive = useIsActive();
+
+  const provider = useProvider();
+  const ENSNames = useENSNames(provider);
+
+  // attempt to connect eagerly on mount
+  useEffect(() => {
+    void metaMask.connectEagerly()
+  }, [])
+  
+  const connector: MetaMask | WalletConnect | Network = metaMask; 
+
+  const isNetwork = connector instanceof Network;
+  const displayDefault = !isNetwork;
+  const chainIds = (isNetwork ? Object.keys(URLS) : Object.keys(CHAINS)).map((chainId) => Number(chainId))
+
+  const [desiredChainId, setDesiredChainId] = useState<number>(isNetwork ? 1 : -1)
+
+
   return (
     <div>
-      {data.data.map((x: chainObj) => {
+      {chainIds.map((chainId) => {
         return (
           <>
-            <ChainCard key={x.chain_id}>
-              <img src={x.icon} alt="" />
-              <ChainName>{x.name}</ChainName>
+            <ChainCard key={chainId}>
+              <img src={data.data[0].icon} alt="" />
+              <ChainName>{CHAINS[chainId]?.name }</ChainName>
               <p>
-                <span>Chain ID</span> {x.chain_id}
+                <span>Chain ID</span> {chainId}
               </p>
               <p>
-                <span>Currency</span> {x.symbol}
+                <span>Currency</span> {data.data[0].symbol}
               </p>
               <Action>
                 <PrimaryOutlinedButton
@@ -83,7 +121,18 @@ const ChainList = (data: any) => {
                 >
                   Claim 0.003 MATIC
                 </PrimaryOutlinedButton>
-                <SecondaryButton>Add to MetaMask</SecondaryButton>
+                <SecondaryButton
+                onClick={
+                  isActivating
+                    ? undefined
+                    : () =>
+                      // connector instanceof WalletConnect || connector instanceof Network
+                      //   ? connector.activate(desiredChainId === -1 ? undefined : desiredChainId)
+                      //   : 
+                        connector.activate(desiredChainId === -1 ? undefined : getAddChainParameters(desiredChainId))
+                }
+                disabled={isActivating}
+                >Add to MetaMask</SecondaryButton>
               </Action>
             </ChainCard>
             <Modal
