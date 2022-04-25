@@ -1,7 +1,6 @@
-import * as React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import {Text} from 'components/basic/Text/text.style';
+import { Text } from 'components/basic/Text/text.style';
 
 export const ClaimModalWrapper = styled.div`
   display: flex;

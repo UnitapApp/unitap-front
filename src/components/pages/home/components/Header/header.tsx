@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, PrimaryButton, BrightOutlinedButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';
 
 // ###### Local Styled Components
@@ -12,6 +11,7 @@ const HeaderComp = styled.div`
   height: 300px;
   justify-content: center;
   align-items: center;
+
   p {
     position: relative;
     top: 24px;

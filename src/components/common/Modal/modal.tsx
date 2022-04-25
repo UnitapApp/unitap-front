@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModalWrapper, ModalContent, ModalChildrenWrapper } from 'components/common/Modal/modal.style';
+import { ModalChildrenWrapper, ModalContent, ModalWrapper } from 'components/common/Modal/modal.style';
 import { Text } from 'components/basic/Text/text.style';
 import { Spaceman } from 'constants/spaceman';
 
@@ -22,7 +22,7 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler }: props) 
           </span>
           <ModalChildrenWrapper>{children}</ModalChildrenWrapper>
           <div className="bottom-background"></div>
-          {spaceman == Spaceman.WITH_PHONE ? (
+          {spaceman === Spaceman.WITH_PHONE ? (
             <img className="spaceman-three" src={process.env.PUBLIC_URL + '/assets/images/spaceman3.png'} alt="" />
           ) : (
             <img className="spaceman-one" src={process.env.PUBLIC_URL + '/assets/images/spaceman1.png'} alt="" />

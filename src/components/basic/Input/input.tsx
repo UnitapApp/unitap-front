@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styled from 'styled-components/';
 import { DV } from '../designVariables';
 
@@ -16,6 +15,7 @@ export const Input = styled.input<props>`
   z-index: 2;
   box-sizing: border-box;
   margin-bottom: 1rem;
+
   &::before {
     content: '';
     display: block;

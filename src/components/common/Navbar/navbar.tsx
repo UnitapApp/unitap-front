@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
-import { injected } from '../../../connectors';
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
+import { UserProfileContext } from '../../../hooks/useUserProfile';
+import { BrightIdVerificationStatus } from '../../../types';
 
 // ###### Local Styled Components
 
@@ -22,40 +22,31 @@ const Nav = styled.div`
   }
 `;
 
-const Navbar = () => {
+const Navbar = ({ handleConnect, walletConnected }: { handleConnect: any; walletConnected: boolean }) => {
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
-  const { active, activate, chainId } = useActiveWeb3React();
-
-  async function connect() {
-    try {
-      await activate(injected);
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
-
-  useEffect(() => {
-    connect();
-  }, []);
-
+  const userProfile = useContext(UserProfileContext);
   return (
     <Nav>
       <img src="logo.png" alt="" />
-      <BrightOutlinedButton
-        mr={2}
-        onClick={() => {
-          changeModalActive(true);
-        }}
-      >
-        Connected to BrightID
-      </BrightOutlinedButton>
-      {active ? (
+      {userProfile && (
+        <BrightOutlinedButton
+          mr={2}
+          onClick={() => {
+            changeModalActive(true);
+          }}
+        >
+          {userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+            ? 'BrightID Connected'
+            : 'Connect BrightID'}
+        </BrightOutlinedButton>
+      )}
+      {walletConnected ? (
         <LightOutlinedButton>Wallet Connected</LightOutlinedButton>
       ) : (
-        <LightOutlinedButton onClick={connect}>Connect Wallet</LightOutlinedButton>
+        <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
       )}
 
       <Modal

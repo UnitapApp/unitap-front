@@ -12,3 +12,16 @@ export type Chain = {
   unclaimed: number;
   decimals: number;
 };
+
+export enum BrightIdVerificationStatus {
+  PENDING = '0',
+  VERIFIED = '1',
+}
+
+export type UserProfile = {
+  pk: number;
+  contextId: string;
+  address: string;
+  verificationUrl: string;
+  verificationStatus: BrightIdVerificationStatus;
+};

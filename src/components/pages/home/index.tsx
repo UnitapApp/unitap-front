@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 
@@ -7,6 +7,9 @@ import styled from 'styled-components/';
 import Header from 'components/pages/home/components/Header/header';
 import { Chain } from '../../../types';
 import { getChainList } from '../../../api';
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
+import { injected } from '../../../connectors';
+import { UserProfileProvider } from '../../../hooks/useUserProfile';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -17,6 +20,20 @@ const ChainListWrapper = styled.div`
 `;
 
 const Home: FC = ({ children }) => {
+  const { active, activate, account } = useActiveWeb3React();
+
+  const connect = useCallback(async () => {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }, [activate]);
+
+  useEffect(() => {
+    connect();
+  }, [connect]);
+
   const [chainList, setChainList] = useState<Chain[]>([]);
   useEffect(() => {
     let mounted = true;
@@ -33,17 +50,15 @@ const Home: FC = ({ children }) => {
     };
   }, []);
   return (
-    <>
-      <div>
-        <NavWrapper>
-          <Navbar />
-        </NavWrapper>
-        <Header />
-        <ChainListWrapper>
-          <ChainList data={chainList} />
-        </ChainListWrapper>
-      </div>
-    </>
+    <UserProfileProvider address={account}>
+      <NavWrapper>
+        <Navbar handleConnect={connect} walletConnected={active} />
+      </NavWrapper>
+      <Header />
+      <ChainListWrapper>
+        <ChainList data={chainList} />
+      </ChainListWrapper>
+    </UserProfileProvider>
   );
 };
 

@@ -52,21 +52,13 @@ const Action = styled.div`
   align-items: center;
 `;
 
-// ###### Local Interfaces
-interface chainObj {
-  icon: string;
-  name: string;
-  chain_id: number;
-  symbol: string;
-}
-
 const ChainList = ({ data }: { data: Chain[] }) => {
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
 
-  const { chainId, library, active } = useActiveWeb3React();
+  const { library, active } = useActiveWeb3React();
 
   const formatBalance = useCallback((amount: number) => {
     const fw = ethers.utils.formatEther(amount);
@@ -79,7 +71,7 @@ const ChainList = ({ data }: { data: Chain[] }) => {
       if (!active) return;
       await switchToNetwork({ provider: library.provider, chain });
     },
-    [active, chainId, library],
+    [active, library],
   );
 
   return (

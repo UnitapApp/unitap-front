@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 
@@ -26,7 +25,7 @@ export const ModalChildrenWrapper = styled.div`
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
-  `;
+`;
 
 export const ModalContent = styled.div`
   background-color: ${DV.colors.black1};
@@ -36,7 +35,7 @@ export const ModalContent = styled.div`
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 5}px;
   overflow: hidden;
   z-index: -2;
-  
+
   .close {
     position: absolute;
     right: 0;
@@ -47,12 +46,12 @@ export const ModalContent = styled.div`
     font-size: 28px;
     font-weight: bold;
     z-index: 10;
-    
+
     &:hover {
       cursor: pointer;
     }
   }
-  
+
   .modal-title {
     color: white;
     margin: 0;
@@ -87,7 +86,7 @@ export const ModalContent = styled.div`
     top: 7rem;
     width: 7rem;
   }
-  
+
   .spaceman-three {
     position: absolute;
     right: -5rem;

@@ -1,6 +1,4 @@
-import * as React from 'react';
 import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
 
 type props = {
   width: string;
@@ -10,6 +8,7 @@ type props = {
 export const IconWrapper = styled.div<props>`
   display: flex;
   justify-content: center;
+
   & > img {
     width: ${(props) => props.width};
     height: ${(props) => props.height || props.width};
