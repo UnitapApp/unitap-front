@@ -7,6 +7,8 @@ import BrightConnectionModal from 'components/pages/home/components/BrightConnec
 import { Spaceman } from 'constants/spaceman';
 import { UserProfileContext } from '../../../hooks/useUserProfile';
 import { BrightIdVerificationStatus } from '../../../types';
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
+import { formatAddress } from '../../../utils';
 
 // ###### Local Styled Components
 
@@ -22,11 +24,13 @@ const Nav = styled.div`
   }
 `;
 
-const Navbar = ({ handleConnect, walletConnected }: { handleConnect: any; walletConnected: boolean }) => {
+const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
+  const { active, account } = useActiveWeb3React();
+
   const userProfile = useContext(UserProfileContext);
   return (
     <Nav>
@@ -35,7 +39,9 @@ const Navbar = ({ handleConnect, walletConnected }: { handleConnect: any; wallet
         <BrightOutlinedButton
           mr={2}
           onClick={() => {
-            changeModalActive(true);
+            if (userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+              changeModalActive(true);
+            }
           }}
         >
           {userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
@@ -43,8 +49,8 @@ const Navbar = ({ handleConnect, walletConnected }: { handleConnect: any; wallet
             : 'Connect BrightID'}
         </BrightOutlinedButton>
       )}
-      {walletConnected ? (
-        <LightOutlinedButton>Wallet Connected</LightOutlinedButton>
+      {active ? (
+        <LightOutlinedButton>{formatAddress(account)}</LightOutlinedButton>
       ) : (
         <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
       )}

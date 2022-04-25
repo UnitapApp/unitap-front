@@ -1,14 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
-import ClaimModal from '../ClaimModal/claimModal';
-import Modal from 'components/common/Modal/modal';
-import { Spaceman } from 'constants/spaceman';
 import { Chain } from '../../../../../types';
 import { ethers } from 'ethers';
 import { switchToNetwork } from '../../../../../utils/switchToNetwork';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
+import Modal from '../../../../common/Modal/modal';
+import { Spaceman } from '../../../../../constants/spaceman';
+import ClaimModal from '../ClaimModal/claimModal';
+import { getChainList } from '../../../../../api';
+import { UserProfileContext } from '../../../../../hooks/useUserProfile';
 
 // ###### Local Styled Components
 
@@ -52,11 +54,26 @@ const Action = styled.div`
   align-items: center;
 `;
 
-const ChainList = ({ data }: { data: Chain[] }) => {
-  const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
-  const changeModalActive = (state: boolean) => {
-    setIsModalActive(state);
-  };
+const ChainList = () => {
+  const userProfile = useContext(UserProfileContext);
+
+  const [chainList, setChainList] = useState<Chain[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    const fun = async () => {
+      const newChainList = await getChainList(userProfile?.address);
+      if (mounted) {
+        setChainList(newChainList);
+      }
+    };
+
+    fun();
+    return () => {
+      mounted = false;
+    };
+  }, [userProfile]);
+
+  const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
 
   const { library, active } = useActiveWeb3React();
 
@@ -75,47 +92,51 @@ const ChainList = ({ data }: { data: Chain[] }) => {
   );
 
   return (
-    <div>
-      {data.map((chain) => {
-        return (
-          <div key={chain.chainId}>
-            <ChainCard>
-              <img src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022" alt="" />
-              <ChainName>{chain.chainName}</ChainName>
-              <p>
-                <span>Chain ID</span> {chain.chainId}
-              </p>
-              <p>
-                <span>Currency</span> {chain.symbol}
-              </p>
-              <Action>
-                <PrimaryOutlinedButton
-                  mr={2}
-                  onClick={() => {
-                    changeModalActive(true);
-                  }}
-                >
-                  Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-                </PrimaryOutlinedButton>
-                <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
-                  Add to MetaMask
-                </SecondaryButton>
-              </Action>
-            </ChainCard>
-            <Modal
-              spaceman={Spaceman.BOTTOM_BIG}
-              title="claim gas fee"
-              isOpen={isModalActive}
-              closeModalHandler={() => {
-                changeModalActive(false);
-              }}
-            >
-              <ClaimModal />
-            </Modal>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <div>
+        {chainList.map((chain) => {
+          return (
+            <div key={chain.chainId}>
+              <ChainCard>
+                <img src={chain.logoUrl} alt="" />
+                <ChainName>{chain.chainName}</ChainName>
+                <p>
+                  <span>Chain ID</span> {chain.chainId}
+                </p>
+                <p>
+                  <span>Currency</span> {chain.symbol}
+                </p>
+                <Action>
+                  <PrimaryOutlinedButton
+                    disabled={!active}
+                    mr={2}
+                    onClick={() => {
+                      setActiveChain(chain);
+                    }}
+                  >
+                    Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+                  </PrimaryOutlinedButton>
+                  <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
+                    Add to MetaMask
+                  </SecondaryButton>
+                </Action>
+              </ChainCard>
+            </div>
+          );
+        })}
+      </div>
+
+      <Modal
+        spaceman={Spaceman.BOTTOM_BIG}
+        title="claim gas fee"
+        isOpen={!!activeChain}
+        closeModalHandler={() => {
+          setActiveChain(null);
+        }}
+      >
+        {activeChain && <ClaimModal chain={activeChain} />}
+      </Modal>
+    </>
   );
 };
 

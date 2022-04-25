@@ -8,8 +8,8 @@ export type Chain = {
   explorerUrl: string;
   rpcUrl: string;
   maxClaimAmount: number;
-  claimed: number;
-  unclaimed: number;
+  claimed: string | number;
+  unclaimed: string | number;
   decimals: number;
 };
 
