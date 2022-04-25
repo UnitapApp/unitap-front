@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';
-import { Chain } from '../../../../../types';
+import { BrightIdVerificationStatus, Chain } from '../../../../../types';
 import { ethers } from 'ethers';
 import { formatAddress } from '../../../../../utils';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import { claimMax } from '../../../../../api';
+import { UserProfileContext } from '../../../../../hooks/useUserProfile';
 
 const ClaimModal = ({ chain }: { chain: Chain }) => {
   const formatBalance = useCallback((amount: number) => {
@@ -17,7 +18,12 @@ const ClaimModal = ({ chain }: { chain: Chain }) => {
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
   const { active, account } = useActiveWeb3React();
+  const userProfile = useContext(UserProfileContext);
   const claim = useCallback(async () => {
+    if (userProfile!.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
+      alert('First connect your BrightID');
+      return;
+    }
     try {
       await claimMax(account!, chain.pk);
       alert('Claimed successfully!');
