@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Web3Provider } from '@ethersproject/providers';
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
+import { NetworkContextName } from './constants/misc';
 
-import Provider from 'components/pages/home/components/provider/Provider';
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 function getLibrary(provider: any) {
   return new Web3Provider(provider);
@@ -13,8 +15,11 @@ function getLibrary(provider: any) {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider />
-    <App />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ProviderNetwork getLibrary={getLibrary}>
+        <App />
+      </Web3ProviderNetwork>
+    </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

@@ -1,0 +1,14 @@
+export type Chain = {
+  pk: number;
+  chainName: string;
+  nativeCurrencyName: string;
+  symbol: string;
+  chainId: string;
+  logoUrl: string;
+  explorerUrl: string;
+  rpcUrl: string;
+  maxClaimAmount: number;
+  claimed: number;
+  unclaimed: number;
+  decimals: number;
+};

@@ -1,24 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { GreenOutlinedButton, PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
+import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
 import ClaimModal from '../ClaimModal/claimModal';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
-
-
-import { useEffect, useState  } from 'react';
-import { hooks, metaMask } from '../../../../../connectors/metaMask';
-
-import type { Web3ReactHooks } from '@web3-react/core'
-import type { MetaMask } from '@web3-react/metamask'
-import { Network } from '@web3-react/network'
-import { WalletConnect } from '@web3-react/walletconnect'
-
-
-import { CHAINS, getAddChainParameters,URLS } from 'chains';
-const { useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
-
+import { Chain } from '../../../../../types';
+import { ethers } from 'ethers';
+import { switchToNetwork } from '../../../../../utils/switchToNetwork';
+import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 
 // ###### Local Styled Components
 
@@ -41,11 +31,13 @@ const ChainCard = styled.div`
     border-radius: ${DV.sizes.baseRadius * 1.5}px 0 0 ${DV.sizes.baseRadius * 1.5}px;
     left: -1px;
     bottom: 0;
-    top: 1-px;
+    top: 1 -px;
     background-color: ${DV.colors.black};
   }
+
   p {
     color: white;
+
     &:first-child {
       margin-right: ${DV.sizes.baseMargin * 8}px;
     }
@@ -68,49 +60,41 @@ interface chainObj {
   symbol: string;
 }
 
-const ChainList = (data: any) => {
+const ChainList = ({ data }: { data: Chain[] }) => {
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
 
-  const chainId = useChainId();
-  const accounts = useAccounts();
-  const error = useError();
-  const isActivating = useIsActivating();
+  const { chainId, library, active } = useActiveWeb3React();
 
-  const isActive = useIsActive();
+  const formatBalance = useCallback((amount: number) => {
+    const fw = ethers.utils.formatEther(amount);
+    return Number(fw) < 0.000001 ? '< 0.000001' : fw;
+  }, []);
 
-  const provider = useProvider();
-  const ENSNames = useENSNames(provider);
-
-  // attempt to connect eagerly on mount
-  useEffect(() => {
-    void metaMask.connectEagerly()
-  }, [])
-  
-  const connector: MetaMask | WalletConnect | Network = metaMask; 
-
-  const isNetwork = connector instanceof Network;
-  const displayDefault = !isNetwork;
-  const chainIds = (isNetwork ? Object.keys(URLS) : Object.keys(CHAINS)).map((chainId) => Number(chainId))
-
-  const [desiredChainId, setDesiredChainId] = useState<number>(isNetwork ? 1 : -1)
-
+  const changeNetwork = useCallback(
+    async (chain: Chain) => {
+      if (!library?.provider) return;
+      if (!active) return;
+      await switchToNetwork({ provider: library.provider, chain });
+    },
+    [active, chainId, library],
+  );
 
   return (
     <div>
-      {chainIds.map((chainId) => {
+      {data.map((chain) => {
         return (
-          <>
-            <ChainCard key={chainId}>
-              <img src={data.data[0].icon} alt="" />
-              <ChainName>{CHAINS[chainId]?.name }</ChainName>
+          <div key={chain.chainId}>
+            <ChainCard>
+              <img src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022" alt="" />
+              <ChainName>{chain.chainName}</ChainName>
               <p>
-                <span>Chain ID</span> {chainId}
+                <span>Chain ID</span> {chain.chainId}
               </p>
               <p>
-                <span>Currency</span> {data.data[0].symbol}
+                <span>Currency</span> {chain.symbol}
               </p>
               <Action>
                 <PrimaryOutlinedButton
@@ -119,20 +103,11 @@ const ChainList = (data: any) => {
                     changeModalActive(true);
                   }}
                 >
-                  Claim 0.003 MATIC
+                  Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
                 </PrimaryOutlinedButton>
-                <SecondaryButton
-                onClick={
-                  isActivating
-                    ? undefined
-                    : () =>
-                      // connector instanceof WalletConnect || connector instanceof Network
-                      //   ? connector.activate(desiredChainId === -1 ? undefined : desiredChainId)
-                      //   : 
-                        connector.activate(desiredChainId === -1 ? undefined : getAddChainParameters(desiredChainId))
-                }
-                disabled={isActivating}
-                >Add to MetaMask</SecondaryButton>
+                <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
+                  Add to MetaMask
+                </SecondaryButton>
               </Action>
             </ChainCard>
             <Modal
@@ -145,7 +120,7 @@ const ChainList = (data: any) => {
             >
               <ClaimModal />
             </Modal>
-          </>
+          </div>
         );
       })}
     </div>

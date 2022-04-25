@@ -1,12 +1,12 @@
-import React, { useState, FC } from 'react';
-
-import { Button } from 'components/basic/Button/button';
+import React, { FC, useEffect, useState } from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 
 import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components/';
 import Header from 'components/pages/home/components/Header/header';
+import { Chain } from '../../../types';
+import { getChainList } from '../../../api';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -17,27 +17,21 @@ const ChainListWrapper = styled.div`
 `;
 
 const Home: FC = ({ children }) => {
-  const [chainList, setChainList] = useState([
-    {
-      icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
-      name: 'Polygon Mainnet',
-      chain_id: 137,
-      symbol: 'MATIC',
-    },
-    {
-      icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
-      name: 'Polygon Mainnet',
-      chain_id: 1,
-      symbol: 'MATIC',
-    },
-    {
-      icon: 'https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022',
-      name: 'Polygon Mainnet',
-      chain_id: 7,
-      symbol: 'MATIC',
-    },
-  ]);
-  console.log(chainList);
+  const [chainList, setChainList] = useState<Chain[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    const fun = async () => {
+      const newChainList = await getChainList();
+      if (mounted) {
+        setChainList(newChainList);
+      }
+    };
+
+    fun();
+    return () => {
+      mounted = false;
+    };
+  }, []);
   return (
     <>
       <div>

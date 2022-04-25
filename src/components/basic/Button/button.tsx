@@ -7,6 +7,7 @@ interface props {
   height?: string;
   mr?: number;
   color?: string;
+  disabled?: boolean;
 }
 
 // export const Xp = styled.p`
@@ -30,16 +31,16 @@ export const Button = styled.button<props>`
   margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
   width: ${(props) => props.width || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
+
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
       border-radius: ${DV.sizes.baseRadius * 1.5}px;
-      background-color: rgba(255,255,255,0.05);
-      
-
+      background-color: ${(props) => !props.disabled && 'rgba(255,255,255,0.05)'};
     }
   }
 `;
@@ -56,6 +57,7 @@ export const PrimaryOutlinedButton = styled(Button)`
   position: relative;
   z-index: 2;
   box-sizing: border-box;
+
   &::before {
     content: '';
     display: block;
@@ -79,7 +81,6 @@ export const SecondaryButton = styled(Button)`
   color: ${DV.colors.secondary};
   border: 2px solid ${DV.colors.dark1};
 `;
-
 
 export const GreenOutlinedButton = styled(Button)`
   background: ${DV.colors.dark};

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { LightOutlinedButton, BrightOutlinedButton } from 'components/basic/Button/button';
+import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
+import { injected } from '../../../connectors';
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
 
 // ###### Local Styled Components
 
@@ -13,6 +15,7 @@ const Nav = styled.div`
   border-radius: ${DV.sizes.baseRadius * 1.5};
   background-color: rgba(21, 21, 27, 0.7);
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
+
   & > img {
     width: 200px;
     margin-right: auto;
@@ -24,6 +27,19 @@ const Navbar = () => {
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
+  const { active, activate, chainId } = useActiveWeb3React();
+
+  async function connect() {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
+  useEffect(() => {
+    connect();
+  }, []);
 
   return (
     <Nav>
@@ -36,7 +52,11 @@ const Navbar = () => {
       >
         Connected to BrightID
       </BrightOutlinedButton>
-      <LightOutlinedButton>Add to MetaMask</LightOutlinedButton>
+      {active ? (
+        <LightOutlinedButton>Wallet Connected</LightOutlinedButton>
+      ) : (
+        <LightOutlinedButton onClick={connect}>Connect Wallet</LightOutlinedButton>
+      )}
 
       <Modal
         spaceman={Spaceman.WITH_PHONE}

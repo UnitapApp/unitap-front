@@ -4,6 +4,8 @@
 export enum SupportedChainId {
   MAINNET = 1,
   RINKEBY = 4,
+  IDCHAIN = 74,
+  GNOSIS = 100,
 }
 
 export const CHAIN_IDS_TO_NAMES = {
