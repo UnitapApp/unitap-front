@@ -47,11 +47,15 @@ const ChainCard = styled.div`
 `;
 const ChainName = styled.p`
   margin-left: ${DV.sizes.baseMargin * 6}px;
+  width: 300px;
 `;
 
 const Action = styled.div`
   display: flex;
   align-items: center;
+`;
+export const ClaimButton = styled(PrimaryOutlinedButton)`
+  width: 220px;
 `;
 
 const ChainList = () => {
@@ -107,7 +111,7 @@ const ChainList = () => {
                   <span>Currency</span> {chain.symbol}
                 </p>
                 <Action>
-                  <PrimaryOutlinedButton
+                  <ClaimButton
                     disabled={!active}
                     mr={2}
                     onClick={() => {
@@ -115,7 +119,7 @@ const ChainList = () => {
                     }}
                   >
                     Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-                  </PrimaryOutlinedButton>
+                  </ClaimButton>
                   <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
                     Add to MetaMask
                   </SecondaryButton>
