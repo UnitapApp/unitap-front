@@ -2,10 +2,15 @@ import { TEST_ADDRESS_NEVER_USE, TEST_ADDRESS_NEVER_USE_SHORTENED } from '../sup
 import { chainList, chainListAuthenticatedClaimedFirst } from '../utils/data';
 
 describe('Landing Page', () => {
-  const setupGetChainListServer = () => {
+  const setupGetChainListServerNotAuthenticated = () => {
     cy.route({
       method: 'GET',
-      url: '/api/v1/chain/list/',
+      url: `/api/v1/chain/list/`,
+      response: chainList,
+    });
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
       response: chainList,
     });
   };
@@ -26,9 +31,10 @@ describe('Landing Page', () => {
 
   it('loads chain list', () => {
     cy.server();
-    setupGetChainListServer();
+    setupGetChainListServerNotAuthenticated();
     cy.visit('/');
     cy.get(`[data-cy=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
+    cy.get(`[data-cy=chain-claim-${chainList[1].pk}]`).contains('Claim ');
   });
 
   it('loads chain list authenticated', () => {
