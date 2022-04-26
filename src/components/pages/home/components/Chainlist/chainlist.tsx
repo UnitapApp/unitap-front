@@ -58,6 +58,9 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
   width: 220px;
 `;
 
+const ChainListWrapper = styled.div`
+  padding: ${DV.sizes.baseRadius * 8}px ${DV.sizes.baseRadius * 4}px;
+`;
 const ChainList = () => {
   const userProfile = useContext(UserProfileContext);
 
@@ -96,14 +99,14 @@ const ChainList = () => {
   );
 
   return (
-    <>
+    <ChainListWrapper>
       <div>
         {chainList.map((chain) => {
           return (
             <div key={chain.chainId}>
               <ChainCard>
                 <img src={chain.logoUrl} alt="" />
-                <ChainName>{chain.chainName}</ChainName>
+                <ChainName data-cy={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                 <p>
                   <span>Chain ID</span> {chain.chainId}
                 </p>
@@ -112,13 +115,16 @@ const ChainList = () => {
                 </p>
                 <Action>
                   <ClaimButton
+                    data-cy={`chain-claim-${chain.pk}`}
                     disabled={!active}
                     mr={2}
                     onClick={() => {
                       setActiveChain(chain);
                     }}
                   >
-                    Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+                    {chain.unclaimed === 0
+                      ? 'Claimed!'
+                      : `Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                   </ClaimButton>
                   <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
                     Add to MetaMask
@@ -140,7 +146,7 @@ const ChainList = () => {
       >
         {activeChain && <ClaimModal chain={activeChain} />}
       </Modal>
-    </>
+    </ChainListWrapper>
   );
 };
 

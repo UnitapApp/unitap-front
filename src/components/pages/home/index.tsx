@@ -1,8 +1,6 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
-
-import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components/';
 import Header from 'components/pages/home/components/Header/header';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
@@ -13,11 +11,8 @@ const NavWrapper = styled.div`
   position: absolute;
   width: 100%;
 `;
-const ChainListWrapper = styled.div`
-  padding: ${DV.sizes.baseRadius * 8}px ${DV.sizes.baseRadius * 4}px;
-`;
 
-const Home: FC = ({ children }) => {
+const Home: FC = () => {
   const { activate, account } = useActiveWeb3React();
 
   const connect = useCallback(async () => {
@@ -38,9 +33,7 @@ const Home: FC = ({ children }) => {
         <Navbar handleConnect={connect} />
       </NavWrapper>
       <Header />
-      <ChainListWrapper>
-        <ChainList />
-      </ChainListWrapper>
+      <ChainList />
     </UserProfileProvider>
   );
 };

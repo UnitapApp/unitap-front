@@ -50,9 +50,11 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
         </BrightOutlinedButton>
       )}
       {active ? (
-        <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
+        <LightOutlinedButton data-cy="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
       ) : (
-        <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
+        <LightOutlinedButton data-cy="wallet-connect" onClick={handleConnect}>
+          Connect Wallet
+        </LightOutlinedButton>
       )}
 
       <Modal
