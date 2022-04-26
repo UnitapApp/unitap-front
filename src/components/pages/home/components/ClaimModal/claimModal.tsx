@@ -7,7 +7,7 @@ import { PrimaryButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';
 import { BrightIdVerificationStatus, Chain } from '../../../../../types';
 import { ethers } from 'ethers';
-import { formatAddress } from '../../../../../utils';
+import { shortenAddress } from '../../../../../utils';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import { claimMax } from '../../../../../api';
 import { UserProfileContext } from '../../../../../hooks/useUserProfile';
@@ -40,7 +40,7 @@ const ClaimModal = ({ chain }: { chain: Chain }) => {
       </Text>
       <Icon iconSrc={chain.logoUrl} width="42%" height="auto" />
       <WalletAddress fontSize="12">Wallet Address</WalletAddress>
-      <Input disabled width="100%" value={active ? formatAddress(account) : ''}></Input>
+      <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input>
       <PrimaryButton onClick={claim} width="100%">
         {' '}
         Claim{' '}

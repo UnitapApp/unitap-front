@@ -8,7 +8,7 @@ import { Spaceman } from 'constants/spaceman';
 import { UserProfileContext } from '../../../hooks/useUserProfile';
 import { BrightIdVerificationStatus } from '../../../types';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
-import { formatAddress } from '../../../utils';
+import { shortenAddress } from '../../../utils';
 
 // ###### Local Styled Components
 
@@ -50,7 +50,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
         </BrightOutlinedButton>
       )}
       {active ? (
-        <LightOutlinedButton>{formatAddress(account)}</LightOutlinedButton>
+        <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
       ) : (
         <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
       )}

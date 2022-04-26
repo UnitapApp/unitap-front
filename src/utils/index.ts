@@ -31,6 +31,9 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
   return new Contract(address, ABI, getProviderOrSigner(library, account) as any);
 }
 
-export function formatAddress(address: string | null | undefined) {
-  return address ? address.substring(0, 4) + '...' + address.substring(address.length - 4) : '';
+export function shortenAddress(address: string | null | undefined) {
+  if (!address) return '';
+  const addressStart = address.substring(0, 6);
+  const addressEnd = address.substring(address.length - 4);
+  return `${addressStart}...${addressEnd}`;
 }
