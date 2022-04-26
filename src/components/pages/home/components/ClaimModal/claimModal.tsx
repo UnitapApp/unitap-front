@@ -31,7 +31,7 @@ const ClaimModal = ({ chain }: { chain: Chain }) => {
       alert('Error while claiming');
       console.log(ex);
     }
-  }, [account, chain]);
+  }, [account, chain.pk, userProfile]);
 
   return (
     <ClaimModalWrapper>
