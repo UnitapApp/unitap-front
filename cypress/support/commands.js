@@ -18,7 +18,7 @@ export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address;
 
 export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(TEST_ADDRESS_NEVER_USE);
 
-class CustomizedBridge extends Eip1193Bridge {
+export class CustomizedBridge extends Eip1193Bridge {
   chainId = 4;
 
   async sendAsync(...args) {
@@ -26,7 +26,7 @@ class CustomizedBridge extends Eip1193Bridge {
     return this.send(...args);
   }
 
-  async send(...args) {
+  getSendArgs(args) {
     console.debug('send called', ...args);
     const isCallbackForm = typeof args[0] === 'object' && typeof args[1] === 'function';
     let callback;
@@ -40,6 +40,16 @@ class CustomizedBridge extends Eip1193Bridge {
       method = args[0];
       params = args[1];
     }
+    return {
+      isCallbackForm,
+      callback,
+      method,
+      params,
+    };
+  }
+
+  async send(...args) {
+    const { isCallbackForm, callback, method, params } = this.getSendArgs(args);
     if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
       if (isCallbackForm) {
         callback({ result: [TEST_ADDRESS_NEVER_USE] });
@@ -72,17 +82,54 @@ class CustomizedBridge extends Eip1193Bridge {
   }
 }
 
-// sets up the injected provider to be a mock ethereum provider with the given mnemonic/index
-// eslint-disable-next-line no-undef
-Cypress.Commands.overwrite('visit', (original, url, options) => {
-  return original(url.startsWith('/') && url.length > 2 && !url.startsWith('/#') ? `/#${url}` : url, {
-    ...options,
-    onBeforeLoad(win) {
-      options && options.onBeforeLoad && options.onBeforeLoad(win);
-      win.localStorage.clear();
-      const provider = new JsonRpcProvider('https://rinkeby.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4);
-      const signer = new Wallet(TEST_PRIVATE_KEY, provider);
-      win.ethereum = new CustomizedBridge(signer, provider);
-    },
-  });
-});
+export class SwitchChainBridge extends CustomizedBridge {
+  switchEthereumChainSpy(chainId) {}
+
+  async send(...args) {
+    const { isCallbackForm, callback, method, params } = this.getSendArgs(args);
+    if (method === 'wallet_switchEthereumChain') {
+      this.switchEthereumChainSpy(params[0].chainId);
+      if (isCallbackForm) {
+        callback(null, { result: null });
+      } else {
+        return null;
+      }
+    }
+    return super.send(...args);
+  }
+}
+
+export class SwitchToUnrecognizedChainBridge extends CustomizedBridge {
+  switchEthereumChainSpy(chainId) {}
+
+  addEthereumChainSpy(chainId) {}
+
+  async send(...args) {
+    const { isCallbackForm, callback, method, params } = this.getSendArgs(args);
+    if (method === 'wallet_switchEthereumChain') {
+      this.switchEthereumChainSpy(params[0].chainId);
+      const chainId = params[0].chainId;
+      const error = {
+        code: 4902, // To-be-standardized "unrecognized chain ID" error
+        message: `Unrecognized chain ID "${chainId}". Try adding the chain using wallet_addEthereumChain first.`,
+      };
+      if (isCallbackForm) {
+        callback(error, null);
+      } else {
+        throw error;
+      }
+    }
+    if (method === 'wallet_addEthereumChain') {
+      this.addEthereumChainSpy(params[0].chainId);
+      if (isCallbackForm) {
+        callback(null, { result: null });
+      } else {
+        return null;
+      }
+    }
+    return super.send(...args);
+  }
+}
+
+export const provider = new JsonRpcProvider('https://rinkeby.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4);
+export const signer = new Wallet(TEST_PRIVATE_KEY, provider);

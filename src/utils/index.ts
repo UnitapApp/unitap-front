@@ -2,6 +2,9 @@ import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { getAddress } from '@ethersproject/address';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Chain } from '../types';
+import { hexStripZeros } from '@ethersproject/bytes';
+import { BigNumber } from '@ethersproject/bignumber';
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -36,4 +39,20 @@ export function shortenAddress(address: string | null | undefined) {
   const addressStart = address.substring(0, 6);
   const addressEnd = address.substring(address.length - 4);
   return `${addressStart}...${addressEnd}`;
+}
+
+export function formatChainId(chainId: string) {
+  return hexStripZeros(BigNumber.from(chainId).toHexString());
+}
+
+export function convertChainObjectToMetaMaskParams(chain: Chain) {
+  return [
+    {
+      chainId: formatChainId(chain.chainId),
+      chainName: chain.chainName,
+      rpcUrls: [chain.rpcUrl],
+      nativeCurrency: { name: chain.nativeCurrencyName, decimals: chain.decimals, symbol: chain.symbol },
+      blockExplorerUrls: [chain.explorerUrl],
+    },
+  ];
 }

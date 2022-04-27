@@ -10,8 +10,6 @@ export default function useActiveWeb3React() {
     process.env.REACT_APP_IS_WIDGET ? undefined : NetworkContextName,
   );
 
-  console.log('interfaceContext');
-  console.log(interfaceContext);
   if (interfaceContext.active) {
     return interfaceContext;
   }

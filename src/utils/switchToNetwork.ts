@@ -1,7 +1,6 @@
-import { BigNumber } from '@ethersproject/bignumber';
-import { hexStripZeros } from '@ethersproject/bytes';
 import { ExternalProvider } from '@ethersproject/providers';
 import { Chain } from '../types';
+import { convertChainObjectToMetaMaskParams, formatChainId } from './index';
 
 interface SwitchNetworkArguments {
   provider: ExternalProvider;
@@ -14,7 +13,7 @@ export async function switchToNetwork({ provider, chain }: SwitchNetworkArgument
   if (!provider.request) {
     return;
   }
-  const formattedChainId = hexStripZeros(BigNumber.from(chain.chainId).toHexString());
+  const formattedChainId = formatChainId(chain.chainId);
   try {
     await provider.request({
       method: 'wallet_switchEthereumChain',
@@ -26,15 +25,7 @@ export async function switchToNetwork({ provider, chain }: SwitchNetworkArgument
     if (error.code === 4902) {
       await provider.request({
         method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: formattedChainId,
-            chainName: chain.chainName,
-            rpcUrls: [chain.rpcUrl],
-            nativeCurrency: { name: chain.nativeCurrencyName, decimals: chain.decimals, symbol: chain.symbol },
-            blockExplorerUrls: [chain.explorerUrl],
-          },
-        ],
+        params: convertChainObjectToMetaMaskParams(chain),
       });
       // metamask (only known implementer) automatically switches after a network is added
       // the second call is done here because that behavior is not a part of the spec and cannot be relied upon in the future
