@@ -44,4 +44,12 @@ describe('Landing Page', () => {
     cy.get(`[data-cy=chain-claim-${chainList[0].pk}]`).contains('Claimed');
     cy.get(`[data-cy=chain-claim-${chainList[1].pk}]`).contains('Claim ');
   });
+
+  it('adds network', () => {
+    cy.server();
+    setupGetChainListAuthenticatedServer();
+    cy.visit('/');
+    cy.get(`[data-cy=chain-switch-${chainList[0].pk}]`).click();
+    cy.get('[data-cy=wallet-chain-id]').contains(`Chain Id: ${chainList[0].chainId}`);
+  });
 });

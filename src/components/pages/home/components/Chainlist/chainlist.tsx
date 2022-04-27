@@ -126,7 +126,11 @@ const ChainList = () => {
                       ? 'Claimed!'
                       : `Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                   </ClaimButton>
-                  <SecondaryButton onClick={() => changeNetwork(chain)} disabled={!active}>
+                  <SecondaryButton
+                    data-cy={`chain-switch-${chain.pk}`}
+                    onClick={() => changeNetwork(chain)}
+                    disabled={!active}
+                  >
                     Add to MetaMask
                   </SecondaryButton>
                 </Action>

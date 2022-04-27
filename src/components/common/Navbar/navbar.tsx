@@ -29,12 +29,17 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
-  const { active, account } = useActiveWeb3React();
+  const { active, account, chainId } = useActiveWeb3React();
 
   const userProfile = useContext(UserProfileContext);
   return (
     <Nav>
       <img src="logo.png" alt="" />
+      {process.env.NODE_ENV !== 'production' && (
+        <span data-cy="wallet-chain-id" style={{ color: 'white', marginRight: '10px' }}>
+          (Test Data) Chain Id: {chainId}{' '}
+        </span>
+      )}
       {userProfile && (
         <BrightOutlinedButton
           mr={2}
