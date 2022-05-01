@@ -124,3 +124,10 @@ export class SwitchToUnrecognizedChainBridge extends CustomizedBridge {
 
 export const provider = new JsonRpcProvider('https://rinkeby.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4);
 export const signer = new Wallet(TEST_PRIVATE_KEY, provider);
+
+Cypress.Commands.add('shouldBeCalled', (alias, timesCalled) => {
+  expect(
+    cy.state('requests').filter((call) => call.alias === alias),
+    `${alias} should have been called ${timesCalled} times`,
+  ).to.have.length(timesCalled);
+});

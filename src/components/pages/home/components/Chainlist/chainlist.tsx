@@ -150,7 +150,14 @@ const ChainList = () => {
           setActiveChain(null);
         }}
       >
-        {activeChain && <ClaimModal chain={activeChain} />}
+        {activeChain && (
+          <ClaimModal
+            chain={activeChain}
+            closeModalHandler={() => {
+              setActiveChain(null);
+            }}
+          />
+        )}
       </Modal>
     </ChainListWrapper>
   );
