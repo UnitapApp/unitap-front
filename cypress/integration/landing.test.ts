@@ -47,16 +47,16 @@ describe('Landing Page', () => {
   it('is connected', () => {
     setupEthBridge();
     cy.visit('/');
-    cy.get('[data-cy=wallet-connect]').click();
-    cy.get('[data-cy=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
+    cy.get('[data-testid=wallet-connect]').click();
+    cy.get('[data-testid=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
   });
 
   it('loads chain list', () => {
     cy.server();
     setupGetChainListServerNotAuthenticated();
     cy.visit('/');
-    cy.get(`[data-cy=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
-    cy.get(`[data-cy=chain-claim-${chainList[1].pk}]`).contains('Claim ');
+    cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
+    cy.get(`[data-testid=chain-claim-${chainList[1].pk}]`).contains('Claim ');
   });
 
   it('loads chain list authenticated', () => {
@@ -64,8 +64,8 @@ describe('Landing Page', () => {
     cy.server();
     setupGetChainListAuthenticatedServer();
     cy.visit('/');
-    cy.get(`[data-cy=chain-claim-${chainList[0].pk}]`).contains('Claimed');
-    cy.get(`[data-cy=chain-claim-${chainList[1].pk}]`).contains('Claim ');
+    cy.get(`[data-testid=chain-claim-${chainList[0].pk}]`).contains('Claimed');
+    cy.get(`[data-testid=chain-claim-${chainList[1].pk}]`).contains('Claim ');
   });
 
   it('switches to network', () => {
@@ -80,7 +80,7 @@ describe('Landing Page', () => {
     cy.server();
     setupGetChainListAuthenticatedServer();
     cy.visit('/');
-    cy.get(`[data-cy=chain-switch-${chainList[0].pk}]`).click();
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
 
     cy.window().then((win) => {
@@ -103,7 +103,7 @@ describe('Landing Page', () => {
     cy.server();
     setupGetChainListAuthenticatedServer();
     cy.visit('/');
-    cy.get(`[data-cy=chain-switch-${chainList[0].pk}]`).click();
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
 
     cy.window().then((win) => {

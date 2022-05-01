@@ -106,7 +106,7 @@ const ChainList = () => {
             <div key={chain.chainId}>
               <ChainCard>
                 <img src={chain.logoUrl} alt="" />
-                <ChainName data-cy={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
+                <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                 <p>
                   <span>Chain ID</span> {chain.chainId}
                 </p>
@@ -115,7 +115,7 @@ const ChainList = () => {
                 </p>
                 <Action>
                   <ClaimButton
-                    data-cy={`chain-claim-${chain.pk}`}
+                    data-testid={`chain-claim-${chain.pk}`}
                     disabled={!active}
                     mr={2}
                     onClick={() => {
@@ -127,7 +127,7 @@ const ChainList = () => {
                       : `Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                   </ClaimButton>
                   <SecondaryButton
-                    data-cy={`chain-switch-${chain.pk}`}
+                    data-testid={`chain-switch-${chain.pk}`}
                     onClick={() => changeNetwork(chain)}
                     disabled={!active}
                   >

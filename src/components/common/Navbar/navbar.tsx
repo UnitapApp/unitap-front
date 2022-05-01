@@ -50,9 +50,9 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
         </BrightOutlinedButton>
       )}
       {active ? (
-        <LightOutlinedButton data-cy="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
+        <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
       ) : (
-        <LightOutlinedButton data-cy="wallet-connect" onClick={handleConnect}>
+        <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
           Connect Wallet
         </LightOutlinedButton>
       )}
