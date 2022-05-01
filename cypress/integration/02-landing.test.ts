@@ -4,22 +4,23 @@ import {
   chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
+  userProfileVerified,
 } from '../utils/data';
 
 describe('Landing Page', () => {
-  const setupServerAndBlockRealApi = () => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: `/api/*`,
-      response: {},
-    });
-  };
-
   beforeEach(() => {
-    setupServerAndBlockRealApi();
+    setupEthBridge();
+    cy.server({ force404: true });
+    setupGetUserProfileVerified();
   });
 
+  const setupGetUserProfileVerified = () => {
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
+      response: userProfileVerified,
+    });
+  };
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
       // @ts-ignore
@@ -61,7 +62,6 @@ describe('Landing Page', () => {
   };
 
   it('creates user if not exists', () => {
-    setupEthBridge();
     setupGetChainListServerNotAuthenticated();
 
     setupGetUserProfileNotExists();
@@ -84,7 +84,6 @@ describe('Landing Page', () => {
   });
 
   it('loads chain list authenticated', () => {
-    setupEthBridge();
     setupGetChainListAuthenticated();
     cy.visit('/');
     cy.get(`[data-testid=chain-show-claim-${chainList[0].pk}]`).contains('Claimed');

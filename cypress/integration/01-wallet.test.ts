@@ -10,21 +10,15 @@ import {
   chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
   TEST_ADDRESS_NEVER_USE_SHORTENED,
+  userProfileVerified,
 } from '../utils/data';
 import { formatChainId } from '../../src/utils';
 
 describe('Wallet', () => {
-  const setupServerAndBlockRealApi = () => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: `/api/*`,
-      response: {},
-    });
-  };
-
   beforeEach(() => {
-    setupServerAndBlockRealApi();
+    cy.server({ force404: true });
+    setupGetChainListAuthenticated();
+    setupGetUserProfileVerified();
   });
   // @ts-ignore
   const setupEthBridge = () => {
@@ -34,6 +28,13 @@ describe('Wallet', () => {
     });
   };
 
+  const setupGetUserProfileVerified = () => {
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
+      response: userProfileVerified,
+    });
+  };
   const setupGetChainListServerGeneral = () => {
     cy.route({
       method: 'GET',
