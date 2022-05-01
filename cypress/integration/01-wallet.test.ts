@@ -4,13 +4,28 @@ import {
   signer,
   SwitchChainBridge,
   SwitchToUnrecognizedChainBridge,
+} from '../support/commands';
+import {
+  chainList,
+  chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
   TEST_ADDRESS_NEVER_USE_SHORTENED,
-} from '../support/commands';
-import { chainList, chainListAuthenticatedClaimedFirst } from '../utils/data';
+} from '../utils/data';
 import { formatChainId } from '../../src/utils';
 
-describe('Landing Page', () => {
+describe('Wallet', () => {
+  const setupServerAndBlockRealApi = () => {
+    cy.server();
+    cy.route({
+      method: 'GET',
+      url: `/api/*`,
+      response: {},
+    });
+  };
+
+  beforeEach(() => {
+    setupServerAndBlockRealApi();
+  });
   // @ts-ignore
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
@@ -35,7 +50,7 @@ describe('Landing Page', () => {
     });
   };
 
-  const setupGetChainListAuthenticatedServer = () => {
+  const setupGetChainListAuthenticated = () => {
     setupGetChainListServerGeneral();
     cy.route({
       method: 'GET',
@@ -44,28 +59,12 @@ describe('Landing Page', () => {
     });
   };
 
-  it('is connected', () => {
+  it('wallet is connected', () => {
     setupEthBridge();
+    setupGetChainListServerNotAuthenticated();
     cy.visit('/');
     cy.get('[data-testid=wallet-connect]').click();
     cy.get('[data-testid=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
-  });
-
-  it('loads chain list', () => {
-    cy.server();
-    setupGetChainListServerNotAuthenticated();
-    cy.visit('/');
-    cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
-    cy.get(`[data-testid=chain-claim-${chainList[1].pk}]`).contains('Claim ');
-  });
-
-  it('loads chain list authenticated', () => {
-    setupEthBridge();
-    cy.server();
-    setupGetChainListAuthenticatedServer();
-    cy.visit('/');
-    cy.get(`[data-testid=chain-claim-${chainList[0].pk}]`).contains('Claimed');
-    cy.get(`[data-testid=chain-claim-${chainList[1].pk}]`).contains('Claim ');
   });
 
   it('switches to network', () => {
@@ -77,8 +76,7 @@ describe('Landing Page', () => {
       cy.spy(win.ethereum, 'switchEthereumChainSpy');
     });
 
-    cy.server();
-    setupGetChainListAuthenticatedServer();
+    setupGetChainListAuthenticated();
     cy.visit('/');
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
@@ -100,8 +98,7 @@ describe('Landing Page', () => {
       cy.spy(win.ethereum, 'addEthereumChainSpy');
     });
 
-    cy.server();
-    setupGetChainListAuthenticatedServer();
+    setupGetChainListAuthenticated();
     cy.visit('/');
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);

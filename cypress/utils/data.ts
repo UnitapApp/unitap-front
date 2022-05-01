@@ -1,4 +1,16 @@
-import { Chain } from '../../src/types';
+import { BrightIdVerificationStatus, Chain } from '../../src/types';
+
+import { shortenAddress } from '../../src/utils';
+import { Wallet } from '@ethersproject/wallet';
+
+// todo: figure out how env vars actually work in CI
+// const TEST_PRIVATE_KEY = Cypress.env('INTEGRATION_TEST_PRIVATE_KEY')
+export const TEST_PRIVATE_KEY = '0xe580410d7c37d26c6ad1a837bbae46bc27f9066a466fb3a66e770523b4666d19';
+
+// address of the above key
+export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address;
+
+export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(TEST_ADDRESS_NEVER_USE);
 
 export const chainList: Chain[] = [
   {
@@ -92,3 +104,15 @@ export const chainListAuthenticatedClaimedFirst = [
     unclaimed: 1000,
   },
 ];
+export const userProfileNotVerified = {
+  address: TEST_ADDRESS_NEVER_USE,
+  contextId: '76aeeab2-cd50-410e-acb7-5dfb452d961b',
+  pk: 11,
+  verificationStatus: BrightIdVerificationStatus.PENDING,
+  verificationUrl: 'https://app.brightid.org/link-verification/GasFaucet/76aeeab2-cd50-410e-acb7-5dfb452d961b',
+};
+
+export const userProfileVerified = {
+  ...userProfileNotVerified,
+  verificationStatus: BrightIdVerificationStatus.VERIFIED,
+};

@@ -115,11 +115,13 @@ const ChainList = () => {
                 </p>
                 <Action>
                   <ClaimButton
-                    data-testid={`chain-claim-${chain.pk}`}
+                    data-testid={`chain-show-claim-${chain.pk}`}
                     disabled={!active}
                     mr={2}
                     onClick={() => {
-                      setActiveChain(chain);
+                      if (chain.unclaimed !== 0) {
+                        setActiveChain(chain);
+                      }
                     }}
                   >
                     {chain.unclaimed === 0

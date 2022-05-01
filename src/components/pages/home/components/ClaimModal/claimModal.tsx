@@ -34,14 +34,14 @@ const ClaimModal = ({ chain }: { chain: Chain }) => {
   }, [account, chain.pk, userProfile]);
 
   return (
-    <ClaimModalWrapper>
+    <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
       <Text fontSize="14" className="scan-qr-text">
         Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
       </Text>
       <Icon iconSrc={chain.logoUrl} width="42%" height="auto" />
       <WalletAddress fontSize="12">Wallet Address</WalletAddress>
       <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input>
-      <PrimaryButton onClick={claim} width="100%">
+      <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
         {' '}
         Claim{' '}
       </PrimaryButton>
