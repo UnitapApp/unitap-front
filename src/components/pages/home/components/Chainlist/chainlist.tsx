@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
@@ -9,8 +9,8 @@ import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import Modal from '../../../../common/Modal/modal';
 import { Spaceman } from '../../../../../constants/spaceman';
 import ClaimModal from '../ClaimModal/claimModal';
-import { getChainList } from '../../../../../api';
 import { UserProfileContext } from '../../../../../hooks/useUserProfile';
+import { ChainListContext } from '../../../../../hooks/useChainList';
 
 // ###### Local Styled Components
 
@@ -63,22 +63,7 @@ const ChainListWrapper = styled.div`
 `;
 const ChainList = () => {
   const userProfile = useContext(UserProfileContext);
-
-  const [chainList, setChainList] = useState<Chain[]>([]);
-  useEffect(() => {
-    let mounted = true;
-    const fun = async () => {
-      const newChainList = await getChainList(userProfile?.address);
-      if (mounted) {
-        setChainList(newChainList);
-      }
-    };
-
-    fun();
-    return () => {
-      mounted = false;
-    };
-  }, [userProfile]);
+  const { chainList } = useContext(ChainListContext);
 
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
 

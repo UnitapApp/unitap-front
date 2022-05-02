@@ -11,6 +11,7 @@ import { shortenAddress } from '../../../../../utils';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import { claimMax } from '../../../../../api';
 import { UserProfileContext } from '../../../../../hooks/useUserProfile';
+import { ChainListContext } from '../../../../../hooks/useChainList';
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
   const formatBalance = useCallback((amount: number) => {
@@ -19,6 +20,8 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   }, []);
   const { active, account } = useActiveWeb3React();
   const userProfile = useContext(UserProfileContext);
+  const { updateChainList } = useContext(ChainListContext);
+
   const brightIdVerified = useMemo(
     () => userProfile!.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
@@ -40,6 +43,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     setLoading(true);
     try {
       await claimMax(account!, chain.pk);
+      if (updateChainList) updateChainList();
       alert('Claimed successfully!');
       closeModalHandler();
     } catch (ex) {
@@ -50,7 +54,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setLoading(false);
       }
     }
-  }, [account, brightIdVerified, chain.pk, closeModalHandler]);
+  }, [account, brightIdVerified, chain.pk, closeModalHandler, updateChainList]);
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>

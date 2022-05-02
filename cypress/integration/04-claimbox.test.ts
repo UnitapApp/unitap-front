@@ -121,13 +121,15 @@ describe('Claim', () => {
 
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('not.exist');
+
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+
+    setupGetChainListAuthenticatedClaimed();
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('exist');
     cy.wait('@claimMax');
-    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
 
-    setupGetChainListAuthenticatedClaimed();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claimed');
   });
 });

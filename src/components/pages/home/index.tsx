@@ -6,6 +6,7 @@ import Header from 'components/pages/home/components/Header/header';
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
 import { injected } from '../../../connectors';
 import { UserProfileProvider } from '../../../hooks/useUserProfile';
+import { ChainListProvider } from '../../../hooks/useChainList';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -28,11 +29,13 @@ const Home: FC = () => {
 
   return (
     <UserProfileProvider address={account}>
-      <NavWrapper>
-        <Navbar handleConnect={connect} />
-      </NavWrapper>
-      <Header />
-      <ChainList />
+      <ChainListProvider address={account}>
+        <NavWrapper>
+          <Navbar handleConnect={connect} />
+        </NavWrapper>
+        <Header />
+        <ChainList />
+      </ChainListProvider>
     </UserProfileProvider>
   );
 };
