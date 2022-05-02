@@ -43,37 +43,6 @@ export const chainList: Chain[] = [
   },
 ];
 
-export const chainListAuthenticatedNotClaimed = [
-  {
-    pk: 1,
-    chainName: 'Gnosis Chain (formerly xDai)',
-    chainId: '100',
-    nativeCurrencyName: 'xDai',
-    symbol: 'xDAI',
-    decimals: 18,
-    explorerUrl: 'https://blockscout.com/xdai/mainnet',
-    rpcUrl: 'https://rpc.gnosischain.com',
-    logoUrl: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75',
-    maxClaimAmount: 1000000000000,
-    claimed: 0,
-    unclaimed: 1000000000000,
-  },
-  {
-    pk: 2,
-    chainName: 'IDChain Mainnet',
-    chainId: '74',
-    nativeCurrencyName: 'Eidi',
-    symbol: 'EIDI',
-    decimals: 18,
-    explorerUrl: 'https://explorer.idchain.one/',
-    rpcUrl: 'https://idchain.one/rpc/',
-    logoUrl: 'https://explorer.idchain.one/images/idchain-plain.svg',
-    maxClaimAmount: 1000,
-    claimed: 0,
-    unclaimed: 1000,
-  },
-];
-
 export const chainListAuthenticatedClaimedFirst = [
   {
     pk: 1,
@@ -104,6 +73,38 @@ export const chainListAuthenticatedClaimedFirst = [
     unclaimed: 1000,
   },
 ];
+
+export const chainListAuthenticatedClaimed = [
+  {
+    pk: 1,
+    chainName: 'Gnosis Chain (formerly xDai)',
+    chainId: '100',
+    nativeCurrencyName: 'xDai',
+    symbol: 'xDAI',
+    decimals: 18,
+    explorerUrl: 'https://blockscout.com/xdai/mainnet',
+    rpcUrl: 'https://rpc.gnosischain.com',
+    logoUrl: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75',
+    maxClaimAmount: 1000000000000,
+    claimed: 1000000000000,
+    unclaimed: 0,
+  },
+  {
+    pk: 2,
+    chainName: 'IDChain Mainnet',
+    chainId: '74',
+    nativeCurrencyName: 'Eidi',
+    symbol: 'EIDI',
+    decimals: 18,
+    explorerUrl: 'https://explorer.idchain.one/',
+    rpcUrl: 'https://idchain.one/rpc/',
+    logoUrl: 'https://explorer.idchain.one/images/idchain-plain.svg',
+    maxClaimAmount: 1000,
+    claimed: 1000,
+    unclaimed: 0,
+  },
+];
+
 export const userProfileNotVerified = {
   address: TEST_ADDRESS_NEVER_USE,
   contextId: '76aeeab2-cd50-410e-acb7-5dfb452d961b',

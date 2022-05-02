@@ -1,6 +1,7 @@
 import { CustomizedBridge, provider, signer } from '../support/commands';
 import {
   chainList,
+  chainListAuthenticatedClaimed,
   chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
@@ -45,6 +46,15 @@ describe('Claim', () => {
       method: 'GET',
       url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
       response: chainListAuthenticatedClaimedFirst,
+    });
+  };
+
+  const setupGetChainListAuthenticatedClaimed = () => {
+    setupGetChainListServerGeneral();
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      response: chainListAuthenticatedClaimed,
     });
   };
 
@@ -116,5 +126,8 @@ describe('Claim', () => {
     cy.get(`[data-testid=loading`).should('exist');
     cy.wait('@claimMax');
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
+
+    setupGetChainListAuthenticatedClaimed();
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claimed');
   });
 });
