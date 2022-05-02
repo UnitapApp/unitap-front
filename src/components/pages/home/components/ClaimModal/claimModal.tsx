@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
@@ -23,10 +23,21 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     () => userProfile!.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
   );
+  const [loading, setLoading] = useState(false);
+
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true; // Will set it to true on mount ...
+    return () => {
+      mounted.current = false;
+    }; // ... and to false on unmount
+  }, []);
   const claim = useCallback(async () => {
     if (!brightIdVerified) {
       return;
     }
+    setLoading(true);
     try {
       await claimMax(account!, chain.pk);
       alert('Claimed successfully!');
@@ -34,12 +45,16 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     } catch (ex) {
       alert('Error while claiming');
       console.log(ex);
+    } finally {
+      if (mounted.current) {
+        setLoading(false);
+      }
     }
   }, [account, brightIdVerified, chain.pk, closeModalHandler]);
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
-      <Text data-testid={`loading`}>Loading...</Text>
+      {loading && <Text data-testid={`loading`}>Loading...</Text>}
       <Text fontSize="14" className="scan-qr-text">
         Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
       </Text>

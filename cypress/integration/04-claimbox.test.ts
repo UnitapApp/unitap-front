@@ -60,7 +60,7 @@ describe('Claim', () => {
       method: 'POST',
       url: `/api/v1/chain/${chainList[1].pk}/claim-max/${TEST_ADDRESS_NEVER_USE}`,
       response: {},
-      delay: 2000,
+      delay: 500,
     }).as('claimMax');
   };
 
