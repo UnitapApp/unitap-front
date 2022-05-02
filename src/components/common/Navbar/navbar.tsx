@@ -37,6 +37,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
       <img src="logo.png" alt="" />
       {userProfile && (
         <BrightOutlinedButton
+          data-testid="brightid-show-modal"
           mr={2}
           onClick={() => {
             if (userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {

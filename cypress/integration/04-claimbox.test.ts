@@ -101,7 +101,7 @@ describe('Claim', () => {
     cy.wait(1000);
 
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
-    cy.get(`[data-testid=loading`).should('not.exist');
+    // cy.get(`[data-testid=loading`).should('not.exist');
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('exist');

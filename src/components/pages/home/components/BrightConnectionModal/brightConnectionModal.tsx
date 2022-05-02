@@ -15,16 +15,16 @@ const BrightConnectionModal = () => {
     alert('Copied');
   };
   return (
-    <BrightConnectionModalWrapper>
+    <BrightConnectionModalWrapper data-testid="brightid-modal">
       <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
       <Text fontSize="14" className="scan-qr-text">
         Scan QR Code
       </Text>
-      <img className="qr-code" src={process.env.PUBLIC_URL + '/assets/images/qr-code.png'} alt="" />
+      <img data-testid="brightid-qr" className="qr-code" src={process.env.PUBLIC_URL + '/assets/images/qr-code.png'} />
       <Text fontSize="14" className="or-text">
         or
       </Text>
-      <CopyLink onClick={copyVerificationUrl}>
+      <CopyLink onClick={copyVerificationUrl} data-testid="brightid-copy-link">
         <img src={process.env.PUBLIC_URL + '/assets/images/copy-link.png'} alt="" />
         <Text color="green">Copy Link</Text>
       </CopyLink>

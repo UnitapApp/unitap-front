@@ -34,4 +34,6 @@ export const CopyLink = styled.div`
     width: auto;
     margin: 0 0.5rem 0 0;
   }
+
+  z-index: 10;
 `;
