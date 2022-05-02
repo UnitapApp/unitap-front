@@ -80,6 +80,8 @@ describe('BrightID', () => {
 
   it('shows linking qr and url when not verified', () => {
     openBrightIdModal();
-    cy.get(`[data-testid=brightid-qr]`);
+    const qrText = userProfileVerified.verificationUrl;
+    // @ts-ignore
+    cy.get(`[data-testid=brightid-qr]`).readQRCode().should('have.property', 'text', qrText);
   });
 });

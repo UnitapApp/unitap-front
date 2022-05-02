@@ -20,7 +20,11 @@ const BrightConnectionModal = () => {
       <Text fontSize="14" className="scan-qr-text">
         Scan QR Code
       </Text>
-      <img data-testid="brightid-qr" className="qr-code" src={process.env.PUBLIC_URL + '/assets/images/qr-code.png'} />
+      <img
+        data-testid="brightid-qr"
+        className="qr-code"
+        src="https://upload.wikimedia.org/wikipedia/commons/4/41/QR_Code_Example.svg"
+      />
       <Text fontSize="14" className="or-text">
         or
       </Text>

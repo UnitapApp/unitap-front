@@ -8,6 +8,9 @@ import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { TEST_ADDRESS_NEVER_USE, TEST_PRIVATE_KEY } from '../utils/data';
 import { Wallet } from '@ethersproject/wallet';
+import { BrowserMultiFormatReader } from '@zxing/browser';
+
+const reader = new BrowserMultiFormatReader();
 
 export class CustomizedBridge extends Eip1193Bridge {
   chainId = 4;
@@ -144,4 +147,15 @@ Cypress.on('window:before:load', (win) => {
 
   win.navigator.clipboard.__proto__.writeText = (text) => (copyText = text);
   win.navigator.clipboard.__proto__.readText = () => copyText;
+});
+
+// https://medium.com/cypress-io-thailand/qr-code-barcode-testing-with-cypress-d738f496068b
+Cypress.Commands.add('readQRCode', { prevSubject: true }, (subject) => {
+  const img = subject[0];
+  const image = new Image();
+  image.width = img.width;
+  image.height = img.height;
+  image.src = img.src;
+  image.crossOrigin = 'Anonymous';
+  return reader.decodeFromImageElement(image);
 });
