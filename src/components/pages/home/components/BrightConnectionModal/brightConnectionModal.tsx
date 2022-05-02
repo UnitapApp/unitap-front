@@ -24,6 +24,7 @@ const BrightConnectionModal = () => {
         data-testid="brightid-qr"
         className="qr-code"
         src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationUrl}`}
+        alt="qr-code"
       />
       <Text fontSize="14" className="or-text">
         or

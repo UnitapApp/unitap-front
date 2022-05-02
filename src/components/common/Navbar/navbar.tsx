@@ -29,7 +29,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
-  const { active, account, chainId } = useActiveWeb3React();
+  const { active, account } = useActiveWeb3React();
 
   const userProfile = useContext(UserProfileContext);
   return (
