@@ -17,6 +17,7 @@ export const BrightConnectionModalWrapper = styled.div`
 
   & .qr-code {
     width: 70%;
+    z-index: 10;
   }
 `;
 

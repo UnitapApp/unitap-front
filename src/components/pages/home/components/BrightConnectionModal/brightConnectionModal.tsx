@@ -23,7 +23,7 @@ const BrightConnectionModal = () => {
       <img
         data-testid="brightid-qr"
         className="qr-code"
-        src="https://upload.wikimedia.org/wikipedia/commons/4/41/QR_Code_Example.svg"
+        src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationUrl}`}
       />
       <Text fontSize="14" className="or-text">
         or
