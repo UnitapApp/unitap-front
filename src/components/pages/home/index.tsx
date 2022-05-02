@@ -14,7 +14,6 @@ const NavWrapper = styled.div`
 
 const Home: FC = () => {
   const { activate, account } = useActiveWeb3React();
-
   const connect = useCallback(async () => {
     try {
       await activate(injected);
