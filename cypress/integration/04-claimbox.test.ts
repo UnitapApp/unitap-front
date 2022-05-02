@@ -126,8 +126,11 @@ describe('Claim', () => {
 
     setupGetChainListAuthenticatedClaimed();
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('exist');
-    cy.wait('@claimMax');
+    // @ts-ignore
+    cy.shouldBeCalled('claimMax', 1);
 
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claimed');

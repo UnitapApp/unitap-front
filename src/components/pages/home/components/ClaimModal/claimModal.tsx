@@ -37,7 +37,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     }; // ... and to false on unmount
   }, []);
   const claim = useCallback(async () => {
-    if (!brightIdVerified) {
+    if (!brightIdVerified || loading) {
       return;
     }
     setLoading(true);
@@ -54,7 +54,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setLoading(false);
       }
     }
-  }, [account, brightIdVerified, chain.pk, closeModalHandler, updateChainList]);
+  }, [account, brightIdVerified, chain.pk, closeModalHandler, loading, updateChainList]);
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
