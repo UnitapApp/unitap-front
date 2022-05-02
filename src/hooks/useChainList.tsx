@@ -10,13 +10,6 @@ export const ChainListContext = createContext<{
 export function ChainListProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
   const mounted = useRef(false);
 
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-
   const [chainList, setChainList] = useState<Chain[]>([]);
   const updateChainList = useCallback(async () => {
     const newChainList = await getChainList(address);
@@ -26,10 +19,10 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
   }, [address, mounted]);
 
   useEffect(() => {
-    let mounted = true;
+    mounted.current = true;
     updateChainList();
     return () => {
-      mounted = false;
+      mounted.current = false;
     };
   }, [address, updateChainList]);
 

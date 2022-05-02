@@ -9,7 +9,6 @@ import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import Modal from '../../../../common/Modal/modal';
 import { Spaceman } from '../../../../../constants/spaceman';
 import ClaimModal from '../ClaimModal/claimModal';
-import { UserProfileContext } from '../../../../../hooks/useUserProfile';
 import { ChainListContext } from '../../../../../hooks/useChainList';
 
 // ###### Local Styled Components
@@ -62,7 +61,6 @@ const ChainListWrapper = styled.div`
   padding: ${DV.sizes.baseRadius * 8}px ${DV.sizes.baseRadius * 4}px;
 `;
 const ChainList = () => {
-  const userProfile = useContext(UserProfileContext);
   const { chainList } = useContext(ChainListContext);
 
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
