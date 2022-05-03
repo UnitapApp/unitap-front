@@ -5,9 +5,9 @@ import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/componen
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';
-import { BrightIdVerificationStatus, Chain } from '../../../../../types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt } from '../../../../../types';
 import { ethers } from 'ethers';
-import { shortenAddress } from '../../../../../utils';
+import { getTxUrl, shortenAddress } from '../../../../../utils';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import { claimMax } from '../../../../../api';
 import { UserProfileContext } from '../../../../../hooks/useUserProfile';
@@ -27,7 +27,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     [userProfile],
   );
   const [loading, setLoading] = useState(false);
-
+  const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -42,10 +42,13 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     }
     setLoading(true);
     try {
-      await claimMax(account!, chain.pk);
-      if (updateChainList) updateChainList();
+      const claimReceipt = await claimMax(account!, chain.pk);
+      if (updateChainList) {
+        setClaimReceipt(claimReceipt);
+        updateChainList();
+      }
       alert('Claimed successfully!');
-      closeModalHandler();
+      // closeModalHandler();
     } catch (ex) {
       alert('Error while claiming');
       console.log(ex);
@@ -54,20 +57,41 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setLoading(false);
       }
     }
-  }, [account, brightIdVerified, chain.pk, closeModalHandler, loading, updateChainList]);
+  }, [account, brightIdVerified, chain.pk, loading, updateChainList]);
+
+  function getClaimReceipt() {
+    return (
+      <>
+        <Text fontSize="14" className="scan-qr-text">
+          Claimed {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+        </Text>
+        <a data-testid="claim-receipt" href={getTxUrl(chain, claimReceipt!)} target="_blank" rel="noreferrer">
+          View on Explorer
+        </a>
+      </>
+    );
+  }
+
+  function getClaimBody() {
+    return (
+      <>
+        <Text fontSize="14" className="scan-qr-text">
+          Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+        </Text>
+        <Icon iconSrc={chain.logoUrl} width="42%" height="auto" />
+        <WalletAddress fontSize="12">Wallet Address</WalletAddress>
+        <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input>
+        <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
+          {brightIdVerified ? 'Claim' : 'BrightID not connected'}
+        </PrimaryButton>
+      </>
+    );
+  }
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
-      <Text fontSize="14" className="scan-qr-text">
-        Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-      </Text>
-      <Icon iconSrc={chain.logoUrl} width="42%" height="auto" />
-      <WalletAddress fontSize="12">Wallet Address</WalletAddress>
-      <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input>
-      <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
-        {brightIdVerified ? 'Claim' : 'BrightID not connected'}
-      </PrimaryButton>
+      {claimReceipt ? getClaimReceipt() : getClaimBody()}
     </ClaimModalWrapper>
   );
 };

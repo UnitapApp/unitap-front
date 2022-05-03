@@ -1,4 +1,4 @@
-import { Chain, UserProfile } from '../types';
+import { Chain, ClaimReceipt, UserProfile } from '../types';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -23,6 +23,6 @@ export async function createUserProfile(address: string) {
 
 export async function claimMax(address: string, chainPk: number) {
   const url = `/api/v1/chain/${chainPk}/claim-max/${address}`;
-  const response = await axiosInstance.post<void>(url, {});
+  const response = await axiosInstance.post<ClaimReceipt>(url, {});
   return response.data;
 }

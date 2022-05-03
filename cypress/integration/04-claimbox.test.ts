@@ -3,10 +3,12 @@ import {
   chainList,
   chainListAuthenticatedClaimed,
   chainListAuthenticatedClaimedFirst,
+  claimMaxResponse,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
   userProfileVerified,
 } from '../utils/data';
+import { getTxUrl } from '../../src/utils';
 
 describe('Claim', () => {
   beforeEach(() => {
@@ -78,7 +80,7 @@ describe('Claim', () => {
     cy.route({
       method: 'POST',
       url: `/api/v1/chain/${chainList[1].pk}/claim-max/${TEST_ADDRESS_NEVER_USE}`,
-      response: {},
+      response: claimMaxResponse,
       delay: 500,
     }).as('claimMax');
   };
@@ -132,7 +134,7 @@ describe('Claim', () => {
     // @ts-ignore
     cy.shouldBeCalled('claimMax', 1);
 
-    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
+    cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claimed');
   });
 });

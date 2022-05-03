@@ -1,5 +1,7 @@
+export type PK = number;
+
 export type Chain = {
-  pk: number;
+  pk: PK;
   chainName: string;
   nativeCurrencyName: string;
   symbol: string;
@@ -19,9 +21,17 @@ export enum BrightIdVerificationStatus {
 }
 
 export type UserProfile = {
-  pk: number;
+  pk: PK;
   contextId: string;
   address: string;
   verificationUrl: string;
   verificationStatus: BrightIdVerificationStatus;
+};
+
+export type ClaimReceipt = {
+  pk: PK;
+  txHash: string;
+  chain: PK;
+  datetime: string;
+  amount: number;
 };

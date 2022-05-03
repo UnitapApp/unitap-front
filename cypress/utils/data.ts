@@ -1,4 +1,4 @@
-import { BrightIdVerificationStatus, Chain } from '../../src/types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt } from '../../src/types';
 
 import { shortenAddress } from '../../src/utils';
 import { Wallet } from '@ethersproject/wallet';
@@ -116,4 +116,12 @@ export const userProfileNotVerified = {
 export const userProfileVerified = {
   ...userProfileNotVerified,
   verificationStatus: BrightIdVerificationStatus.VERIFIED,
+};
+
+export const claimMaxResponse: ClaimReceipt = {
+  pk: 8,
+  txHash: '0x26c59bf189bc48e8e9d1b0cf190187546bf3f311123d0a61e601eda30edadaab',
+  chain: 1,
+  datetime: '2022-04-23T16:17:23.615399Z',
+  amount: 1000000000000,
 };
