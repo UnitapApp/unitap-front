@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { getAddress } from '@ethersproject/address';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import { Chain, ClaimReceipt } from '../types';
+import { Chain, ClaimReceipt, UserProfile } from '../types';
 import { hexStripZeros } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -59,4 +59,8 @@ export function convertChainObjectToMetaMaskParams(chain: Chain) {
 
 export function getTxUrl(chain: Chain, claimReceipt: ClaimReceipt) {
   return `${chain.explorerUrl}tx/${claimReceipt.txHash}`;
+}
+
+export function getVerificationQr(userProfile: UserProfile) {
+  return userProfile.verificationUrl.replace('https://app.brightid.org/', 'brightid://');
 }

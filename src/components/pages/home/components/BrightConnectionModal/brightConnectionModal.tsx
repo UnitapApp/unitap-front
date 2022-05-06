@@ -6,10 +6,12 @@ import {
   CopyLink,
 } from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from '../../../../../hooks/useUserProfile';
+import { getVerificationQr } from '../../../../../utils';
 
 const BrightConnectionModal = () => {
   const userProfile = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
+  const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const copyVerificationUrl = () => {
     navigator.clipboard.writeText(verificationUrl);
     alert('Copied');
@@ -23,7 +25,7 @@ const BrightConnectionModal = () => {
       <img
         data-testid="brightid-qr"
         className="qr-code"
-        src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationUrl}`}
+        src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationQr}`}
         alt="qr-code"
       />
       <Text fontSize="14" className="or-text">
