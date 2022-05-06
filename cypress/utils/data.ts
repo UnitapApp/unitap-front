@@ -110,7 +110,7 @@ export const userProfileNotVerified = {
   contextId: '76aeeab2-cd50-410e-acb7-5dfb452d961b',
   pk: 11,
   verificationStatus: BrightIdVerificationStatus.PENDING,
-  verificationUrl: 'https://app.brightid.org/link-verification/GasFaucet/76aeeab2-cd50-410e-acb7-5dfb452d961b',
+  verificationUrl: 'https://app.brightid.org/link-verification/GasFaucet/948347ac-d66e-410a-b389-a3d797633a23',
 };
 
 export const userProfileVerified = {

@@ -6,6 +6,7 @@ import {
   userProfileNotVerified,
   userProfileVerified,
 } from '../utils/data';
+import { getVerificationQr } from '../../src/utils';
 
 describe('BrightID', () => {
   beforeEach(() => {
@@ -89,7 +90,7 @@ describe('BrightID', () => {
 
   it('shows linking qr and url when not verified', () => {
     openBrightIdModal();
-    const qrText = userProfileVerified.verificationUrl;
+    const qrText = getVerificationQr(userProfileVerified);
     // @ts-ignore
     cy.get(`[data-testid=brightid-qr]`).readQRCode().should('have.property', 'text', qrText);
   });
