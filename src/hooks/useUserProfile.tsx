@@ -2,10 +2,16 @@ import React, { createContext, PropsWithChildren, useEffect, useState } from 're
 import { createUserProfile, getUserProfile } from '../api';
 import { UserProfile } from '../types';
 
-export const UserProfileContext = createContext<UserProfile | null>(null);
+export const UserProfileContext = createContext<{
+  userProfile: UserProfile | null;
+  setNewUserProfile: ((newUserProfile : UserProfile)=> void) | null;
+}>({userProfile:null,setNewUserProfile:null});
 
 export function UserProfileProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const setNewUserProfile = (newUserProfile: UserProfile)=> {
+    setUserProfile((userProfile) => newUserProfile);
+  };
   useEffect(() => {
     let mounted = true;
     const fun = async () => {
@@ -27,5 +33,5 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
     };
   }, [address]);
 
-  return <UserProfileContext.Provider value={userProfile}>{children} </UserProfileContext.Provider>;
+  return <UserProfileContext.Provider value={{userProfile, setNewUserProfile}}>{children} </UserProfileContext.Provider>;
 }

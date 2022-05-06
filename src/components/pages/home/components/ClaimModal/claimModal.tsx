@@ -19,7 +19,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
   const { active, account } = useActiveWeb3React();
-  const userProfile = useContext(UserProfileContext);
+  const { userProfile } = useContext(UserProfileContext);
   const { updateChainList } = useContext(ChainListContext);
 
   const brightIdVerified = useMemo(

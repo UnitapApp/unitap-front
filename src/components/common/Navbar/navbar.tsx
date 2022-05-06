@@ -31,7 +31,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   };
   const { active, account } = useActiveWeb3React();
 
-  const userProfile = useContext(UserProfileContext);
+  const {userProfile} = useContext(UserProfileContext);
   return (
     <Nav>
       <img src="logo.png" alt="" />
