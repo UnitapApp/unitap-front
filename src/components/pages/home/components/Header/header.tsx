@@ -17,6 +17,7 @@ const HeaderComp = styled.div`
 
   p {
     position: relative;
+    text-align: center;
     top: 24px;
     font-weight: bold;
     font-size: 24px;
