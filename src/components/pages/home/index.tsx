@@ -11,6 +11,7 @@ import { ChainListProvider } from '../../../hooks/useChainList';
 const NavWrapper = styled.div`
   position: absolute;
   width: 100%;
+  z-index: 2;
 `;
 
 const Home: FC = () => {
