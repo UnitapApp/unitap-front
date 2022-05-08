@@ -38,7 +38,11 @@ const ChainCard = styled.div`
 
   p {
     color: white;
-
+    span {
+      color: ${DV.colors.gray};
+      padding-right: ${DV.sizes.baseMargin * 1.5}px;
+      font-size: 14px;
+    }
     &:first-child {
       margin-right: ${DV.sizes.baseMargin * 8}px;
     }

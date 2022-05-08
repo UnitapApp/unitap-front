@@ -12,7 +12,6 @@ export const Input = styled.input<props>`
   background: ${DV.colors.dark};
   border-radius: ${DV.sizes.baseRadius}px;
   position: relative;
-  z-index: 2;
   box-sizing: border-box;
   margin-bottom: 1rem;
 
