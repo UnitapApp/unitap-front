@@ -23,19 +23,15 @@ const BrightConnectionModal = () => {
   };
 
   const refreshConnectionButtonAction = useCallback(async () => {
-    if (!refreshUserProfile){
-      return;
-    }
-    if (loading){
-      alert('Wait for last request to get respond before making new request!');
+    if (!refreshUserProfile || loading) {
       return;
     }
     try {
       const refreshedUserProfile = await refreshUserProfile();
       if (refreshedUserProfile) {
-        (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
-          alert('Connected to Bright-ID successfully!') :
-          alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+        refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+          ? alert('Connected to Bright-ID successfully!')
+          : alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       }
     } catch (ex) {
       console.log(ex);
@@ -63,15 +59,13 @@ const BrightConnectionModal = () => {
         <Text color="green">Copy Link</Text>
       </CopyLink>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
-      {refreshUserProfile && <SecondaryButton
-        data-testid={`bright-id-connection-refresh-button`}
-        onClick={refreshConnectionButtonAction}
-      >
-        {(userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
-          `Connected to BrightID` :
-          `Press Me When Scaned`
-        }
-      </SecondaryButton>}
+      {refreshUserProfile && (
+        <SecondaryButton data-testid={`bright-id-connection-refresh-button`} onClick={refreshConnectionButtonAction}>
+          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED
+            ? `Connected to BrightID`
+            : `Press Me When Scaned`}
+        </SecondaryButton>
+      )}
     </BrightConnectionModalWrapper>
   );
 };
