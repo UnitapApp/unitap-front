@@ -52,7 +52,7 @@ describe('BrightID', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileNotVerified,
-    });
+    }).as('getUserProfile');
   };
 
   const setupGetUserProfileVerified = () => {
@@ -60,8 +60,10 @@ describe('BrightID', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileVerified,
-    });
+    }).as('getUserProfileVerified');
   };
+
+
   it('does not show BrightID linking when verified', () => {
     setupGetUserProfileVerified();
     cy.visit('/');
@@ -93,5 +95,32 @@ describe('BrightID', () => {
     const qrText = getVerificationQr(userProfileVerified);
     // @ts-ignore
     cy.get(`[data-testid=brightid-qr]`).readQRCode().should('have.property', 'text', qrText);
+  });
+
+  it('refresh BrightID connection button fail to verify', () => {
+    openBrightIdModal();
+    setupGetUserProfileNotVerified();
+    // @ts-ignore
+    cy.shouldBeCalled('getUserProfile', 1);
+    cy.get(`[data-testid=bright-id-connection-refresh-button]`).contains('Press Me When Scaned').click();
+    // @ts-ignore
+    cy.shouldBeCalled('getUserProfile', 2);
+    cy.get(`[data-testid=bright-id-connection-refresh-button]`).contains('Press Me When Scaned').click();
+    // @ts-ignore
+    cy.shouldBeCalled('getUserProfile', 3);
+    
+    cy.get(`[data-testid=brightid-modal]`).contains('Press Me When Scaned');
+  });
+
+  it('refresh BrightID connection button success to verify', () => {
+    openBrightIdModal();    
+    setupGetUserProfileVerified();
+    // @ts-ignore
+    cy.shouldBeCalled('getUserProfileVerified', 0);
+    cy.get(`[data-testid=bright-id-connection-refresh-button]`).contains('Press Me When Scaned').click();
+    // @ts-ignore
+    cy.shouldBeCalled('getUserProfileVerified', 1);
+
+    cy.get(`[data-testid=bright-id-connection-refresh-button]`).contains('Connected to BrightID');
   });
 });
