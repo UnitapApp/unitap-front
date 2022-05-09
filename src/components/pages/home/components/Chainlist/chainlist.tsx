@@ -2,14 +2,14 @@ import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
-import { Chain } from '../../../../../types';
+import { Chain } from 'types';
 import { ethers } from 'ethers';
-import { switchToNetwork } from '../../../../../utils/switchToNetwork';
-import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
-import Modal from '../../../../common/Modal/modal';
-import { Spaceman } from '../../../../../constants/spaceman';
-import ClaimModal from '../ClaimModal/claimModal';
-import { ChainListContext } from '../../../../../hooks/useChainList';
+import { switchToNetwork } from 'utils/switchToNetwork';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import Modal from 'components/common/Modal/modal';
+import { Spaceman } from 'constants/spaceman';
+import ClaimModal from 'components/pages/home/components/ClaimModal/claimModal';
+import { ChainListContext } from 'hooks/useChainList';
 
 // ###### Local Styled Components
 

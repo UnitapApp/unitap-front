@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { getAddress } from '@ethersproject/address';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import { Chain, ClaimReceipt, UserProfile } from '../types';
+import { Chain, ClaimReceipt, UserProfile } from 'types';
 import { hexStripZeros } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 

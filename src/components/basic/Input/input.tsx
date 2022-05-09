@@ -1,5 +1,5 @@
 import styled from 'styled-components/';
-import { DV } from '../designVariables';
+import { DV } from 'components/basic/designVariables';
 
 interface props {
   width?: string;

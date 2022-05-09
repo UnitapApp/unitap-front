@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
-import { getChainList } from '../api';
-import { Chain } from '../types';
+import { getChainList } from 'api';
+import { Chain } from 'types';
 
 export const ChainListContext = createContext<{
   chainList: Chain[];

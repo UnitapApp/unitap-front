@@ -3,10 +3,10 @@ import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 import styled from 'styled-components/';
 import Header from 'components/pages/home/components/Header/header';
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
-import { injected } from '../../../connectors';
-import { UserProfileProvider } from '../../../hooks/useUserProfile';
-import { ChainListProvider } from '../../../hooks/useChainList';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { injected } from 'connectors';
+import { UserProfileProvider } from 'hooks/useUserProfile';
+import { ChainListProvider } from 'hooks/useChainList';
 
 const NavWrapper = styled.div`
   position: absolute;

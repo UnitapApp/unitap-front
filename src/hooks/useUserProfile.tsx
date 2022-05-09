@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
-import { createUserProfile, getUserProfile } from '../api';
-import { UserProfile } from '../types';
+import { createUserProfile, getUserProfile } from 'api';
+import { UserProfile } from 'types';
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;

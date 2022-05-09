@@ -1,5 +1,5 @@
 import { ExternalProvider } from '@ethersproject/providers';
-import { Chain } from '../types';
+import { Chain } from 'types';
 import { convertChainObjectToMetaMaskParams, formatChainId } from './index';
 
 interface SwitchNetworkArguments {

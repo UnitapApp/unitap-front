@@ -5,13 +5,13 @@ import {
   BrightConnectionModalWrapper,
   CopyLink,
 } from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal.style';
-import { UserProfileContext } from '../../../../../hooks/useUserProfile';
+import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { SecondaryButton } from 'components/basic/Button/button';
 
 import { BrightIdVerificationStatus } from 'types';
 
-import { getVerificationQr } from '../../../../../utils';
+import { getVerificationQr } from 'utils';
 
 const BrightConnectionModal = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);

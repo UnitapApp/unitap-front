@@ -5,13 +5,13 @@ import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/componen
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt } from '../../../../../types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import { ethers } from 'ethers';
-import { getTxUrl, shortenAddress } from '../../../../../utils';
-import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
-import { claimMax } from '../../../../../api';
-import { UserProfileContext } from '../../../../../hooks/useUserProfile';
-import { ChainListContext } from '../../../../../hooks/useChainList';
+import { getTxUrl, shortenAddress } from 'utils';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { claimMax } from 'api';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { ChainListContext } from 'hooks/useChainList';
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
   const formatBalance = useCallback((amount: number) => {

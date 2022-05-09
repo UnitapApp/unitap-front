@@ -5,10 +5,10 @@ import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Butt
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
-import { UserProfileContext } from '../../../hooks/useUserProfile';
-import { BrightIdVerificationStatus } from '../../../types';
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React';
-import { shortenAddress } from '../../../utils';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { BrightIdVerificationStatus } from 'types';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { shortenAddress } from 'utils';
 
 // ###### Local Styled Components
 

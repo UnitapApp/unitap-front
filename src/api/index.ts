@@ -1,4 +1,4 @@
-import { Chain, ClaimReceipt, UserProfile } from '../types';
+import { Chain, ClaimReceipt, UserProfile } from 'types';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
