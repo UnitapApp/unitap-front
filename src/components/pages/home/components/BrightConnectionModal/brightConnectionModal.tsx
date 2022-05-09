@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
@@ -21,6 +21,22 @@ const BrightConnectionModal = () => {
     navigator.clipboard.writeText(verificationUrl);
     alert('Copied');
   };
+
+  const refreshConnectionButtonAction = useCallback(async () => {
+    try {
+      if (refreshUserProfile) {
+        const refreshedUserProfile = await refreshUserProfile();
+        if (refreshedUserProfile) {
+          (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
+            alert('Connected to Bright-ID successfully!') :
+            alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+        }
+      }
+    } catch (ex) {
+      console.log(ex);
+      alert('Error while connectiong to BrightID sever!');
+    }
+  }, [refreshUserProfile]);
 
   return (
     <BrightConnectionModalWrapper data-testid="brightid-modal">
@@ -44,7 +60,7 @@ const BrightConnectionModal = () => {
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && <SecondaryButton
         data-testid={`bright-id-connection-refresh-button`}
-        onClick={refreshUserProfile}
+        onClick={refreshConnectionButtonAction}
       >
         {(userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
           `Connected to BrightID` :
