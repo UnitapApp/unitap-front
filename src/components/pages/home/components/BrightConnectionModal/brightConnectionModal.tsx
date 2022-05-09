@@ -23,20 +23,25 @@ const BrightConnectionModal = () => {
   };
 
   const refreshConnectionButtonAction = useCallback(async () => {
+    if (!refreshUserProfile){
+      return;
+    }
+    if (loading){
+      alert('Wait for last request to get respond before making new request!');
+      return;
+    }
     try {
-      if (refreshUserProfile) {
-        const refreshedUserProfile = await refreshUserProfile();
-        if (refreshedUserProfile) {
-          (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
-            alert('Connected to Bright-ID successfully!') :
-            alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-        }
+      const refreshedUserProfile = await refreshUserProfile();
+      if (refreshedUserProfile) {
+        (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
+          alert('Connected to Bright-ID successfully!') :
+          alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       }
     } catch (ex) {
       console.log(ex);
       alert('Error while connectiong to BrightID sever!');
     }
-  }, [refreshUserProfile]);
+  }, [refreshUserProfile, loading]);
 
   return (
     <BrightConnectionModalWrapper data-testid="brightid-modal">

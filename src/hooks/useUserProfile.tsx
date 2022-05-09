@@ -14,9 +14,6 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
   const [loading, setLoading] = useState(false);
 
   const refreshUserProfile = useCallback(async () => {
-    if (loading) {
-      return userProfile;
-    }
     setLoading(true);
     try {
       const refreshedUserProfile: UserProfile = await getUserProfile(userProfile!.address);
@@ -28,7 +25,7 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
       setLoading(false);
       throw ex;
     }
-  }, [loading, userProfile, setUserProfile]);
+  }, [userProfile, setUserProfile]);
 
   useEffect(() => {
     let mounted = true;
