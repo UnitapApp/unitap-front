@@ -17,8 +17,8 @@ const BrightConnectionModal = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
-  const copyVerificationUrl = () => {
-    navigator.clipboard.writeText(verificationUrl);
+  const copyVerificationUrl = async () => {
+    await navigator.clipboard.writeText(verificationUrl);
     alert('Copied');
   };
 
