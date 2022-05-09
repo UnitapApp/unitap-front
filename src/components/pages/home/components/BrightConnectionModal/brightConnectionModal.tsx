@@ -31,7 +31,7 @@ const BrightConnectionModal = () => {
   );
   const [loading, setLoading] = useState(false);
 
-  const RefreshUserProfile = useCallback(async () => {
+  const refreshUserProfile = useCallback(async () => {
     if (brightIdVerified || loading) {
       return;
     }
@@ -73,7 +73,7 @@ const BrightConnectionModal = () => {
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       <SecondaryButton
                     data-testid={`bright-id-connection-refresh-button`}
-                    onClick={RefreshUserProfile}
+                    onClick={refreshUserProfile}
                   >
                     {(userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED)?
                     `Connected to BrightID`:
