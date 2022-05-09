@@ -9,47 +9,18 @@ import { UserProfileContext } from '../../../../../hooks/useUserProfile';
 
 import { SecondaryButton } from 'components/basic/Button/button';
 
-import { BrightIdVerificationStatus, UserProfile } from 'types';
-import { useCallback, useState } from 'react';
-
-import { getUserProfile } from 'api';
+import { BrightIdVerificationStatus } from 'types';
 
 import { getVerificationQr } from '../../../../../utils';
 
 const BrightConnectionModal = () => {
-  const {userProfile , setNewUserProfile} = useContext(UserProfileContext);
+  const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const copyVerificationUrl = () => {
     navigator.clipboard.writeText(verificationUrl);
     alert('Copied');
   };
-
-  const brightIdVerified = useMemo(
-    () => userProfile!.verificationStatus === BrightIdVerificationStatus.VERIFIED,
-    [userProfile],
-  );
-  const [loading, setLoading] = useState(false);
-
-  const refreshUserProfile = useCallback(async () => {
-    if (brightIdVerified || loading) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const refreshedUserProfile:UserProfile = await getUserProfile(userProfile!.address);
-      setNewUserProfile && setNewUserProfile(refreshedUserProfile);
-      (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED)?
-        alert('Connected to Bright-ID successfully!'):
-        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-      // closeModalHandler();
-    } catch (ex) {
-      alert('Error while connecting to Bright-ID server!');
-      console.log(ex);
-    } finally {
-      setLoading(false);
-    }
-  }, [brightIdVerified, loading, userProfile, setNewUserProfile]);
 
   return (
     <BrightConnectionModalWrapper data-testid="brightid-modal">
@@ -71,15 +42,15 @@ const BrightConnectionModal = () => {
         <Text color="green">Copy Link</Text>
       </CopyLink>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
-      <SecondaryButton
-                    data-testid={`bright-id-connection-refresh-button`}
-                    onClick={refreshUserProfile}
-                  >
-                    {(userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED)?
-                    `Connected to BrightID`:
-                    `Press Me When Scaned`
-                    }
-      </SecondaryButton>
+      {refreshUserProfile && <SecondaryButton
+        data-testid={`bright-id-connection-refresh-button`}
+        onClick={refreshUserProfile}
+      >
+        {(userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) ?
+          `Connected to BrightID` :
+          `Press Me When Scaned`
+        }
+      </SecondaryButton>}
     </BrightConnectionModalWrapper>
   );
 };

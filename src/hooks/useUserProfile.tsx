@@ -1,17 +1,38 @@
-import React, { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { createUserProfile, getUserProfile } from '../api';
-import { UserProfile } from '../types';
+import { BrightIdVerificationStatus, UserProfile } from '../types';
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
-  setNewUserProfile: ((newUserProfile : UserProfile)=> void) | null;
-}>({userProfile:null,setNewUserProfile:null});
+  refreshUserProfile: (()=> void) | null;
+  loading: boolean;
+}>({userProfile:null,refreshUserProfile:null,loading: false});
 
 export function UserProfileProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const setNewUserProfile = (newUserProfile: UserProfile)=> {
-    setUserProfile((userProfile) => newUserProfile);
-  };
+
+  const [loading, setLoading] = useState(false);
+
+  const refreshUserProfile = useCallback(async () => {
+    if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED || loading) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const refreshedUserProfile:UserProfile = await getUserProfile(userProfile!.address);
+      setUserProfile(refreshedUserProfile);
+      (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED)?
+        alert('Connected to Bright-ID successfully!'):
+        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+      // closeModalHandler();
+    } catch (ex) {
+      alert('Error while connecting to Bright-ID server!');
+      console.log(ex);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, userProfile, setUserProfile]);
+
   useEffect(() => {
     let mounted = true;
     const fun = async () => {
@@ -33,5 +54,5 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
     };
   }, [address]);
 
-  return <UserProfileContext.Provider value={{userProfile, setNewUserProfile}}>{children} </UserProfileContext.Provider>;
+  return <UserProfileContext.Provider value={{userProfile, refreshUserProfile, loading}}>{children} </UserProfileContext.Provider>;
 }
