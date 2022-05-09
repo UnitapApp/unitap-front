@@ -3,7 +3,7 @@ import { IconWrapper } from './icon.style';
 
 type props = {
   iconSrc: string;
-  width: string;
+  width?: string;
   height?: string;
 };
 

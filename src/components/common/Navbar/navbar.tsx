@@ -14,9 +14,8 @@ import { shortenAddress } from '../../../utils';
 
 const Nav = styled.div`
   display: flex;
-  border-radius: ${DV.sizes.baseRadius * 1.5};
   background-color: rgba(21, 21, 27, 0.7);
-  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
+  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 8}px;
 
   & > img {
     width: 200px;

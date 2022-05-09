@@ -1,7 +1,7 @@
 import styled from 'styled-components/';
 
 type props = {
-  width: string;
+  width?: string;
   height?: string;
 };
 

@@ -14,8 +14,10 @@ interface designVariable {
         black1: string,
         dark: string,
         dark1: string,
+        gray: string,
         transparent_black: string,
         green: string,
+        
     },
     bgGradient: {
         primary: string,
@@ -37,6 +39,7 @@ export const DV: designVariable = {
         black1: '#1E1E29',
         dark: '#11111C',
         dark1: '#030317',
+        gray: '#4C4C64',
         transparent_black: '#11111c99',
         green: '#4BF1A2',
     },
