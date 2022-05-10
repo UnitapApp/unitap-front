@@ -70,7 +70,7 @@ const Header = () => {
       </HeaderComp>
       <InputWrapper>
         {' '}
-        <Input width="360px" placeholder="Search Network / Currency" value={searchPhraseInput} onChange={searchPhraseChangeHandler}></Input>{' '}
+        <Input data-testid="search-box" width="360px" placeholder="Search Network / Currency" value={searchPhraseInput} onChange={searchPhraseChangeHandler}></Input>{' '}
       </InputWrapper>
     </>
   );
