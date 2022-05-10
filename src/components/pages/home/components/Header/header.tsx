@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { Input } from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
+import { ChainListContext } from 'hooks/useChainList';
 
 // ###### Local Styled Components
 
@@ -48,12 +49,19 @@ const InputWrapper = styled(FlexWrapper)`
   position: relative;
   bottom: ${DV.sizes.baseMargin * 2}px;
 `;
-
 const Header = () => {
+  const [searchPhraseInput, setSearchPhraseInput] = useState<string>("");
+  const { chageSearchPhrase } = useContext(ChainListContext);
+
+  const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const phrase:string = event.target.value;
+    setSearchPhraseInput(phrase);
+    chageSearchPhrase!(phrase);
+  };
   return (
     <>
       <HeaderComp>
-        <GemRight><Icon iconSrc={'headerBg/gem-1.png'}  /></GemRight>
+        <GemRight><Icon iconSrc={'headerBg/gem-1.png'} /></GemRight>
         <Spaceman><Icon iconSrc={'spman-header.png'} width="320px" height="auto" /></Spaceman>
         <p>
           Add EVM networks easily and
@@ -62,7 +70,7 @@ const Header = () => {
       </HeaderComp>
       <InputWrapper>
         {' '}
-        <Input width="360px" placeholder="Search Network / Currency"></Input>{' '}
+        <Input data-testid="search-box" width="360px" placeholder="Search Network / Currency" value={searchPhraseInput} onChange={searchPhraseChangeHandler}></Input>{' '}
       </InputWrapper>
     </>
   );

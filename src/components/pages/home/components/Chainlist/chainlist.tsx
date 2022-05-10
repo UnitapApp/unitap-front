@@ -79,7 +79,7 @@ const ChainListWrapper = styled.div`
   padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
 `;
 const ChainList = () => {
-  const { chainList } = useContext(ChainListContext);
+  const { chainListSearchResult } = useContext(ChainListContext);
 
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
 
@@ -102,7 +102,7 @@ const ChainList = () => {
   return (
     <ChainListWrapper>
       <div>
-        {chainList.map((chain) => {
+        {chainListSearchResult.map((chain) => {
           return (
             <div key={chain.chainId}>
               <ChainCard>
