@@ -49,8 +49,8 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
       // ignoreFieldNorm: false,
       // fieldNormWeight: 1,
       keys: [
+        "nativeCurrencyName",
         "chainName",
-        "chainId"
       ]
     };
     const fuse = new Fuse(chainList, fuseOptions);
