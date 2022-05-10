@@ -1,4 +1,8 @@
 version: 2.1
+executors:
+  cypress-14-19-0:
+    docker:
+      - image: "cypress/base:14.19.0"
 orbs:
   cypress: cypress-io/cypress@1
 workflows:
@@ -6,7 +10,7 @@ workflows:
     jobs:
       # first get the source code and install npm dependencies
       - cypress/install:
-          executor: cypress/base-14
+          executor: cypress-14-19-0
           # run a custom app build step
           install-command: 'yarn install --frozen-lockfile'
           build: 'yarn build'
@@ -14,7 +18,7 @@ workflows:
           # make sure app has been installed and built
           # before running tests across multiple machines
           # this avoids installing same dependencies 10 times
-          executor: cypress/base-14.17.3
+          executor: cypress-14-19-0
           requires:
             - cypress/install
           record: false # record results on Cypress Dashboard
