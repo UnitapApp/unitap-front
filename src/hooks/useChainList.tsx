@@ -42,7 +42,7 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
       // findAllMatches: false,
       // minMatchCharLength: 1,
       // location: 0,
-      // threshold: 0.6,
+      threshold: 0.2, // threshoud is between 0 and 1 where 0 is strict and 1 is accepting anything
       // distance: 100,
       // useExtendedSearch: false,
       // ignoreLocation: false,
