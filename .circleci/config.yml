@@ -3,6 +3,15 @@ executors:
   cypress-14-19-0:
     docker:
       - image: "cypress/base:14.19.0"
+  node-14-19-0:
+    docker:
+      - image: "cimg/node:14.19.0"
+jobs:
+  react-test:
+    executor: node-14-19-0
+    steps:
+      - run: yarn test
+
 orbs:
   cypress: cypress-io/cypress@1
 workflows:
@@ -26,3 +35,4 @@ workflows:
           parallelism: 4 # use 4 CircleCI machines to finish quickly
           group: 'all tests' # name this group "all tests" on the dashboard
           start: 'yarn start' # start server before running tests
+      - react-test
