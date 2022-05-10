@@ -1,10 +1,11 @@
 import React from 'react';
 import Home from 'components/pages/home';
 import './App.css';
-
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
+
+require('typeface-jetbrains-mono');
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
