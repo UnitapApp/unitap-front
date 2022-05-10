@@ -7,7 +7,7 @@ workflows:
       # first get the source code and install npm dependencies
       - cypress/install:
           # run a custom app build step
-          yarn: true
+          install-command: yarn install --frozen-lockfile
           build: 'yarn build'
       - cypress/run:
           # make sure app has been installed and built
