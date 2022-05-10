@@ -6,13 +6,15 @@ workflows:
     jobs:
       # first get the source code and install npm dependencies
       - cypress/install:
+          executor: cypress/base-14
           # run a custom app build step
-          install-command: yarn install --frozen-lockfile
+          install-command: 'yarn install --frozen-lockfile'
           build: 'yarn build'
       - cypress/run:
           # make sure app has been installed and built
           # before running tests across multiple machines
           # this avoids installing same dependencies 10 times
+          executor: cypress/base-14
           requires:
             - cypress/install
           record: false # record results on Cypress Dashboard
