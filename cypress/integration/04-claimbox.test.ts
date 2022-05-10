@@ -11,6 +11,10 @@ import {
 import { getTxUrl } from '../../src/utils';
 
 describe('Claim', () => {
+  const connectWallet = () => {
+    cy.get('[data-testid=wallet-connect]').click();
+  };
+
   beforeEach(() => {
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'error').as('spyWinConsoleError');
@@ -96,6 +100,7 @@ describe('Claim', () => {
   it('does not show modal when claimed', () => {
     setupGetUserProfileVerified();
     cy.visit('/');
+    connectWallet();
     cy.wait(1000);
 
     cy.get(`[data-testid=chain-show-claim-${chainList[0].pk}]`).click();
@@ -106,6 +111,7 @@ describe('Claim', () => {
     setupGetUserProfileNotVerified();
     setupClaimMax();
     cy.visit('/');
+    connectWallet();
     cy.wait(1000);
 
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
@@ -119,6 +125,7 @@ describe('Claim', () => {
     setupGetUserProfileVerified();
     setupClaimMax();
     cy.visit('/');
+    connectWallet();
     cy.wait(1000);
 
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();

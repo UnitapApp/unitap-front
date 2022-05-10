@@ -8,6 +8,10 @@ import {
 } from '../utils/data';
 
 describe('Landing Page', () => {
+  const connectWallet = () => {
+    cy.get('[data-testid=wallet-connect]').click();
+  };
+
   beforeEach(() => {
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'error').as('spyWinConsoleError');
@@ -80,13 +84,14 @@ describe('Landing Page', () => {
       response: userProfileNotVerified,
     }).as('createUser');
     cy.visit('/');
-
+    connectWallet();
     cy.wait('@createUser');
   });
 
   it('loads chain list', () => {
     setupGetChainListServerNotAuthenticated();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claim ');
   });
@@ -94,6 +99,7 @@ describe('Landing Page', () => {
   it('loads chain list authenticated', () => {
     setupGetChainListAuthenticated();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=chain-show-claim-${chainList[0].pk}]`).contains('Claimed');
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claim ');
   });

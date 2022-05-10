@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 import styled from 'styled-components/';
@@ -23,10 +23,6 @@ const Home: FC = () => {
       console.log(ex);
     }
   }, [activate]);
-
-  useEffect(() => {
-    connect();
-  }, [connect]);
 
   return (
     <UserProfileProvider address={account}>

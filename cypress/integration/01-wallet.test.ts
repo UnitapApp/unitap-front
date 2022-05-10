@@ -38,6 +38,10 @@ describe('Wallet', () => {
     });
   };
 
+  const connectWallet = () => {
+    cy.get('[data-testid=wallet-connect]').click();
+  };
+
   const setupGetUserProfileVerified = () => {
     cy.route({
       method: 'GET',
@@ -74,7 +78,8 @@ describe('Wallet', () => {
     setupEthBridge();
     setupGetChainListServerNotAuthenticated();
     cy.visit('/');
-    cy.get('[data-testid=wallet-connect]').click();
+    cy.get('[data-testid=wallet-connect]').contains('Connect Wallet');
+    connectWallet();
     cy.get('[data-testid=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
   });
 
@@ -89,6 +94,7 @@ describe('Wallet', () => {
 
     setupGetChainListAuthenticated();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
 
@@ -111,6 +117,7 @@ describe('Wallet', () => {
 
     setupGetChainListAuthenticated();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
 

@@ -9,6 +9,10 @@ import {
 import { getVerificationQr } from '../../src/utils';
 
 describe('BrightID', () => {
+  const connectWallet = () => {
+    cy.get('[data-testid=wallet-connect]').click();
+  };
+
   beforeEach(() => {
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'error').as('spyWinConsoleError');
@@ -63,10 +67,10 @@ describe('BrightID', () => {
     }).as('getUserProfileVerified');
   };
 
-
   it('does not show BrightID linking when verified', () => {
     setupGetUserProfileVerified();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=brightid-show-modal]`).contains('BrightID Connected').click();
     cy.get(`[data-testid=brightid-modal]`).should('not.exist');
   });
@@ -74,6 +78,7 @@ describe('BrightID', () => {
   function openBrightIdModal() {
     setupGetUserProfileNotVerified();
     cy.visit('/');
+    connectWallet();
     cy.get(`[data-testid=brightid-show-modal]`).contains('Connect BrightID').click();
     cy.get(`[data-testid=brightid-modal]`).should('exist');
   }
@@ -108,12 +113,12 @@ describe('BrightID', () => {
     cy.get(`[data-testid=bright-id-connection-refresh-button]`).contains('Press Me When Scaned').click();
     // @ts-ignore
     cy.shouldBeCalled('getUserProfile', 3);
-    
+
     cy.get(`[data-testid=brightid-modal]`).contains('Press Me When Scaned');
   });
 
   it('refresh BrightID connection button success to verify', () => {
-    openBrightIdModal();    
+    openBrightIdModal();
     setupGetUserProfileVerified();
     // @ts-ignore
     cy.shouldBeCalled('getUserProfileVerified', 0);
