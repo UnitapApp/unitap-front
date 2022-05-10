@@ -14,7 +14,7 @@ workflows:
           # make sure app has been installed and built
           # before running tests across multiple machines
           # this avoids installing same dependencies 10 times
-          executor: cypress/base-14
+          executor: cypress/base-14.17.3
           requires:
             - cypress/install
           record: false # record results on Cypress Dashboard
