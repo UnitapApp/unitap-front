@@ -30,25 +30,25 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   };
   const { active, account } = useActiveWeb3React();
 
-  const {userProfile} = useContext(UserProfileContext);
+  const { userProfile } = useContext(UserProfileContext);
   return (
     <Nav>
       <img src="logo.png" alt="" />
-      {userProfile && (
-        <BrightOutlinedButton
-          data-testid="brightid-show-modal"
-          mr={2}
-          onClick={() => {
-            if (userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-              changeModalActive(true);
-            }
-          }}
-        >
-          {userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+      <BrightOutlinedButton
+        data-testid="brightid-show-modal"
+        mr={2}
+        onClick={() => {
+          if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+            changeModalActive(true);
+          }
+        }}
+      >
+        {userProfile
+          ? userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
             ? 'BrightID Connected'
-            : 'Connect BrightID'}
-        </BrightOutlinedButton>
-      )}
+            : 'Connect BrightID'
+          : 'Loading...'}
+      </BrightOutlinedButton>
       {active ? (
         <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
       ) : (
