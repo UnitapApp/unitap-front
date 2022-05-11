@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
+import { ClaimModalWrapper, WalletAddress } from './claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { Input } from 'components/basic/Input/input';

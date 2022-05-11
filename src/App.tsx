@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from 'components/pages/home';
+import Home from 'pages/home';
 import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';

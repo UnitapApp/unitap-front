@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 import styled from 'styled-components/';
-import Header from 'components/pages/home/components/Header/header';
+import Header from './components/Header/header';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { injected } from 'connectors';
 import { UserProfileProvider } from 'hooks/useUserProfile';

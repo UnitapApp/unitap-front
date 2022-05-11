@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
-import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
+import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';

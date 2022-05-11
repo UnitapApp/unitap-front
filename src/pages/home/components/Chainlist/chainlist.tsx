@@ -8,7 +8,7 @@ import { switchToNetwork } from 'utils/switchToNetwork';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
-import ClaimModal from 'components/pages/home/components/ClaimModal/claimModal';
+import ClaimModal from '../ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
 
 // ###### Local Styled Components
