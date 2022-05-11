@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
+import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
@@ -35,6 +35,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
     <Nav>
       <img src="logo.png" alt="" />
       {userProfile && (
+        <>
         <BrightOutlinedButton
           data-testid="brightid-show-modal"
           mr={2}
@@ -48,6 +49,9 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
             ? 'BrightID Connected'
             : 'Connect BrightID'}
         </BrightOutlinedButton>
+        <BrightConnectedButton mr={2}>BrightID Connected</BrightConnectedButton>
+        </>
+
       )}
       {active ? (
         <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>

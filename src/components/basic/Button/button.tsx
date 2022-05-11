@@ -92,3 +92,17 @@ export const BrightOutlinedButton = styled(Button)`
   color: ${DV.colors.bright};
   background-color: ${DV.colors.black};
 `;
+
+
+export const BrightConnectedButton = styled(Button)`
+  border: 1px solid ${DV.colors.green};
+  color: ${DV.colors.bright};
+  background-color: ${DV.colors.black};
+  &::after  {
+    display: block;
+    content: ' ';
+    background-image: url("green-tick.png");
+  }
+`;
+
+
