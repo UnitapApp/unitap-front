@@ -3,10 +3,13 @@ import { DV } from 'components/basic/designVariables';
 
 interface props {
   width?: string;
+  iconWidth?: number,
+  iconHeight?: number,
   height?: string;
   mr?: number;
   color?: string;
   disabled?: boolean;
+  icon?: string;
 }
 
 // export const Xp = styled.p`
@@ -31,16 +34,28 @@ export const Button = styled.button<props>`
   width: ${(props) => props.width || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
 
+  &::after  {
+    display: ${(props) => (props.icon ? 'inline-block' : 'none')};
+    content: ' ';
+    background-image: ${(props) => `url(${props.icon})` || 'none'};
+    position: relative;
+    top: 2px;
+    background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
+    width: ${(props) => `${props.iconWidth}px` || 'auto'};
+    height: ${(props) => `${props.iconHeight}px` || 'auto'};
+    margin-left: 12px;
+  }
+
   &:hover {
     cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 
-    &::after {
+    /* &::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: ${DV.sizes.baseRadius * 1.5}px;
       background-color: ${(props) => !props.disabled && 'rgba(255,255,255,0.05)'};
-    }
+    } */
   }
 `;
 
@@ -54,7 +69,7 @@ export const PrimaryOutlinedButton = styled(Button)`
   color: white;
   background: ${DV.bgGradient.primary};
   position: relative;
-  z-index: 2;
+  z-index: 1;
   box-sizing: border-box;
 
   &::before {
@@ -98,10 +113,21 @@ export const BrightConnectedButton = styled(Button)`
   border: 1px solid ${DV.colors.green};
   color: ${DV.colors.bright};
   background-color: ${DV.colors.black};
+`;
+
+export const ClaimButton = styled(PrimaryOutlinedButton)`
+  width: 220px;
+`;
+
+export const ClaimedButton = styled(SecondaryButton)`
+  width: 180px;
+  color: ${DV.colors.green};
+  background-color: ${DV.colors.darkgreen};
+  text-align: left;
   &::after  {
-    display: block;
-    content: ' ';
-    background-image: url("green-tick.png");
+    position: absolute;
+    top: -8px;
+    right: 4px;
   }
 `;
 

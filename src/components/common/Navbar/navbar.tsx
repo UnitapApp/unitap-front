@@ -49,7 +49,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
             ? 'BrightID Connected'
             : 'Connect BrightID'}
         </BrightOutlinedButton>
-        <BrightConnectedButton mr={2}>BrightID Connected</BrightConnectedButton>
+        <BrightConnectedButton icon="green-tick.png" iconWidth={24} iconHeight={16} mr={2}>BrightID Connected</BrightConnectedButton>
         </>
 
       )}

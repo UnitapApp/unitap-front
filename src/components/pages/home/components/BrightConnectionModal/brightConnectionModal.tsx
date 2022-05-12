@@ -63,7 +63,7 @@ const BrightConnectionModal = () => {
         <SecondaryButton data-testid={`bright-id-connection-refresh-button`} onClick={refreshConnectionButtonAction}>
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED
             ? `Connected to BrightID`
-            : `Press Me When Scaned`}
+            : `Press me when you scanned!`}
         </SecondaryButton>
       )}
     </BrightConnectionModalWrapper>

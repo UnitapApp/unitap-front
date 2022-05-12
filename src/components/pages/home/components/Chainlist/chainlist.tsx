@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
+import { PrimaryOutlinedButton, SecondaryButton, ClaimButton, ClaimedButton } from 'components/basic/Button/button';
 import { Chain } from 'types';
 import { ethers } from 'ethers';
 import { switchToNetwork } from 'utils/switchToNetwork';
@@ -71,9 +71,6 @@ const Action = styled.div`
   display: flex;
   align-items: center;
 `;
-export const ClaimButton = styled(PrimaryOutlinedButton)`
-  width: 220px;
-`;
 
 const ChainListWrapper = styled.div`
   padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
@@ -129,6 +126,9 @@ const ChainList = () => {
                       ? 'Claimed!'
                       : `Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                   </ClaimButton>
+
+                  {/* <ClaimedButton mr={2} icon="claimIcon.png" iconWidth={52} iconHeight={58} >Claimed!</ClaimedButton> */}
+                  
                   <SecondaryButton
                     data-testid={`chain-switch-${chain.pk}`}
                     onClick={() => changeNetwork(chain)}
