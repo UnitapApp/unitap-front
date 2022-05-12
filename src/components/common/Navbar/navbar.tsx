@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
+import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
@@ -34,21 +34,25 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   return (
     <Nav>
       <img src="logo.png" alt="" />
-      <BrightOutlinedButton
-        data-testid="brightid-show-modal"
-        mr={2}
-        onClick={() => {
-          if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-            changeModalActive(true);
-          }
-        }}
-      >
-        {userProfile
-          ? userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+      {userProfile && (
+        <>
+        <BrightOutlinedButton
+          data-testid="brightid-show-modal"
+          mr={2}
+          onClick={() => {
+            if (userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+              changeModalActive(true);
+            }
+          }}
+        >
+          {userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
             ? 'BrightID Connected'
-            : 'Connect BrightID'
-          : 'Loading...'}
-      </BrightOutlinedButton>
+            : 'Connect BrightID'}
+        </BrightOutlinedButton>
+        <BrightConnectedButton mr={2}>BrightID Connected</BrightConnectedButton>
+        </>
+
+      )}
       {active ? (
         <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
       ) : (
