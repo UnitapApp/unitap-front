@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
@@ -31,27 +31,45 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   const { active, account } = useActiveWeb3React();
 
   const { userProfile } = useContext(UserProfileContext);
+
+  const connectBrightButtonLabel = useMemo(() => {
+    if (account) {
+      if (userProfile) {
+        return userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+          ? 'BrightID Connected'
+          : 'Connect BrightID';
+      }
+      return 'Loading...';
+    }
+    return 'Connect BrightID';
+  }, [account, userProfile]);
+
   return (
     <Nav>
       <img src="logo.png" alt="" />
-      {userProfile && (
-        <>
+      {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+        <BrightConnectedButton
+          data-testid="brightid-connected"
+          icon="green-tick.png"
+          iconWidth={24}
+          iconHeight={16}
+          mr={2}
+        >
+          {connectBrightButtonLabel}
+        </BrightConnectedButton>
+      ) : (
         <BrightOutlinedButton
           data-testid="brightid-show-modal"
+          disabled={!account}
           mr={2}
           onClick={() => {
-            if (userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+            if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
               changeModalActive(true);
             }
           }}
         >
-          {userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
-            ? 'BrightID Connected'
-            : 'Connect BrightID'}
+          {connectBrightButtonLabel}
         </BrightOutlinedButton>
-        <BrightConnectedButton icon="green-tick.png" iconWidth={24} iconHeight={16} mr={2}>BrightID Connected</BrightConnectedButton>
-        </>
-
       )}
       {active ? (
         <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
@@ -69,7 +87,11 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
           changeModalActive(false);
         }}
       >
-        <BrightConnectionModal />
+        <BrightConnectionModal
+          closeModalHandler={() => {
+            changeModalActive(false);
+          }}
+        />
       </Modal>
     </Nav>
   );

@@ -13,7 +13,7 @@ import { BrightIdVerificationStatus } from 'types';
 
 import { getVerificationQr } from 'utils';
 
-const BrightConnectionModal = () => {
+const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
@@ -28,16 +28,17 @@ const BrightConnectionModal = () => {
     }
     try {
       const refreshedUserProfile = await refreshUserProfile();
-      if (refreshedUserProfile) {
-        refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
-          ? alert('Connected to Bright-ID successfully!')
-          : alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+      if (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+        alert('Connected to Bright-ID successfully!');
+        closeModalHandler();
+      } else {
+        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       }
     } catch (ex) {
       console.log(ex);
       alert('Error while connectiong to BrightID sever!');
     }
-  }, [refreshUserProfile, loading]);
+  }, [refreshUserProfile, loading, closeModalHandler]);
 
   return (
     <BrightConnectionModalWrapper data-testid="brightid-modal">

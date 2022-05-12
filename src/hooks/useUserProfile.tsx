@@ -4,7 +4,7 @@ import { UserProfile } from 'types';
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
-  refreshUserProfile: (() => Promise<UserProfile | null | undefined>) | null;
+  refreshUserProfile: (() => Promise<UserProfile>) | null;
   loading: boolean;
 }>({ userProfile: null, refreshUserProfile: null, loading: false });
 
@@ -48,5 +48,9 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
     };
   }, [address]);
 
-  return <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>{children} </UserProfileContext.Provider>;
+  return (
+    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>
+      {children}{' '}
+    </UserProfileContext.Provider>
+  );
 }
