@@ -22,10 +22,9 @@ const ChainCard = styled.div`
   align-items: center;
   border: 2px solid ${DV.colors.black};
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
-  background-color: #1e1e29;
+  background-color: #1d1d29;
   margin-bottom: ${DV.sizes.baseMargin * 2}px;
   padding: ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 6}px;
-
 
   p {
     color: white;
@@ -37,6 +36,10 @@ const ChainCard = styled.div`
     &:first-child {
       margin-right: ${DV.sizes.baseMargin * 8}px;
     }
+  }
+
+  @media only screen and (max-width: 1224px) {
+    flex-direction: column;
   }
 `;
 
@@ -52,13 +55,17 @@ const ChainLogo = styled.div`
   left: -1px;
   bottom: 0;
   img {
-    /* width: 100%; */
     width: 30px;
     height: 30px;
-    /* padding: 38px ${DV.sizes.baseMargin * 1.5}px; */
-    
+  }
 
-    
+  @media only screen and (max-width: 1224px){
+    height: 64px;
+    width: 64px;
+    left: 12px;
+    bottom: unset;
+    top: 12px;
+    border-radius: 32px;
   }
 `
 
