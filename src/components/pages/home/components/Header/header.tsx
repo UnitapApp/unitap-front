@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { Input } from 'components/basic/Input/input';
+import  Input from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
 import { ChainListContext } from 'hooks/useChainList';
 
@@ -70,7 +70,9 @@ const Header = () => {
       </HeaderComp>
       <InputWrapper>
         {' '}
-        <Input data-testid="search-box" width="360px" placeholder="Search Network / Currency" value={searchPhraseInput} onChange={searchPhraseChangeHandler}></Input>{' '}
+        {/* value={searchPhraseInput} */}
+        {/* onChange={searchPhraseChangeHandler} */}
+        <Input  data-testid="search-box" icon="search.png" width="min(500px, 90%)" iconWidth='20px' iconHeight='20px' placeholder="Search Network / Currency"></Input>{' '}
       </InputWrapper>
     </>
   );

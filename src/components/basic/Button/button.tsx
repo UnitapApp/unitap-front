@@ -117,6 +117,7 @@ export const BrightConnectedButton = styled(Button)`
 
 export const ClaimButton = styled(PrimaryOutlinedButton)`
   width: 220px;
+  padding: 14px;
 `;
 
 export const ClaimedButton = styled(SecondaryButton)`
