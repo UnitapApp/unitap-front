@@ -17,11 +17,16 @@ export const ModalWrapper = styled.div`
 `;
 
 export const ModalChildrenWrapper = styled.div`
-  width: 250px;
+  width: 300px;
   margin: ${DV.sizes.baseMargin * 2}px auto;
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
+  
+  .spaceman-one {
+
+  }
+
   @media only screen and (max-width: 600px) {
     .spaceman-three {
       z-index: -1;
@@ -78,9 +83,9 @@ export const ModalContent = styled.div`
 
   .spaceman-one {
     position: absolute;
-    right: -3rem;
+    right: 0rem;
     bottom: 0;
-    width: 17rem;
+    width: 200px
   }
 
   .spaceman-two {
