@@ -85,11 +85,12 @@ const MobileNav = styled.div`
   .menu-items {
     position: fixed;
     z-index: 1000;
+    box-sizing: border-box;
     inset: 0;
     padding: ${DV.sizes.basePadding * 8}px ${DV.sizes.basePadding * 4}px;
-    background-color: rgba(5, 5, 5, 0.5);
+    background-color: rgba(5, 5, 5, 0.65);
     /* height: 100vh; */
-    width: 90%;
+    width: 100%;
     transform: translate(-100%);
     display: flex;
     justify-content: center;

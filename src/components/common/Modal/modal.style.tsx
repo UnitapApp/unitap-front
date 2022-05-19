@@ -17,18 +17,22 @@ export const ModalWrapper = styled.div`
 `;
 
 export const ModalChildrenWrapper = styled.div`
-  width: 40%;
-
+  width: 250px;
   margin: ${DV.sizes.baseMargin * 2}px auto;
-
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
+  @media only screen and (max-width: 600px) {
+    .spaceman-three {
+      z-index: -1;
+    }
+  }
 `;
 
 export const ModalContent = styled.div`
   background-color: ${DV.colors.black1};
-  width: 45%;
+  width: min(600px,90%);
+  margin: 0 5%;
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 5}px;
