@@ -23,6 +23,98 @@ const Nav = styled.div`
   }
 `;
 
+const DesktopNav = styled.div`
+  display: none;
+  @media only screen and (min-width: 992px) {
+    display: block;
+  }
+`;
+
+const MobileNav = styled.div`
+  display: none;
+  @media only screen and (max-width: 992px) {
+    display: block;
+  }
+  .checkbox {
+    position: absolute;
+    display: block;
+    height: 32px;
+    width: 32px;
+    top: 20px;
+    right: 20px;
+    z-index: 1002;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .hamburger-lines {
+    height: 26px;
+    width: 32px;
+    padding-left: ${DV.sizes.basePadding * -2}px;
+    position: absolute;
+    top: ${DV.sizes.basePadding * 3}px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .line {
+      display: block;
+      height: 4px;
+      width: 100%;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .line1 {
+      transform-origin: 0% 0%;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .line2 {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .line3 {
+      transform-origin: 0% 100%;
+      transition: transform 0.4s ease-in-out;
+    }
+  }
+
+  .menu-items {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    padding: ${DV.sizes.basePadding * 8}px ${DV.sizes.basePadding * 4}px;
+    background-color: rgba(5, 5, 5, 0.5);
+    /* height: 100vh; */
+    width: 90%;
+    transform: translate(-100%);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    transition: transform 0.5s ease-in-out;
+    text-align: center;
+  }
+
+  input[type='checkbox']:checked ~ .hamburger-lines .line1 {
+    transform: rotate(45deg);
+  }
+
+  input[type='checkbox']:checked ~ .hamburger-lines .line2 {
+    transform: scaleY(0);
+  }
+
+  input[type='checkbox']:checked ~ .hamburger-lines .line3 {
+    transform: rotate(-45deg);
+  }
+
+  input[type='checkbox']:checked ~ .menu-items {
+    transform: translateX(0);
+  }
+`;
+
 const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
@@ -47,37 +139,81 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
   return (
     <Nav>
       <img src="logo.png" alt="" />
-      {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-        <BrightConnectedButton
-          data-testid="brightid-connected"
-          icon="green-tick.png"
-          iconWidth={24}
-          iconHeight={16}
-          mr={2}
-        >
-          {connectBrightButtonLabel}
-        </BrightConnectedButton>
-      ) : (
-        <BrightOutlinedButton
-          data-testid="brightid-show-modal"
-          disabled={!account}
-          mr={2}
-          onClick={() => {
-            if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-              changeModalActive(true);
-            }
-          }}
-        >
-          {connectBrightButtonLabel}
-        </BrightOutlinedButton>
-      )}
-      {active ? (
-        <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
-      ) : (
-        <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
-          Connect Wallet
-        </LightOutlinedButton>
-      )}
+      <DesktopNav>
+        {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+          <BrightConnectedButton
+            data-testid="brightid-connected"
+            icon="green-tick.png"
+            iconWidth={24}
+            iconHeight={16}
+            mr={2}
+          >
+            {connectBrightButtonLabel}
+          </BrightConnectedButton>
+        ) : (
+          <BrightOutlinedButton
+            data-testid="brightid-show-modal"
+            disabled={!account}
+            mr={2}
+            onClick={() => {
+              if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+                changeModalActive(true);
+              }
+            }}
+          >
+            {connectBrightButtonLabel}
+          </BrightOutlinedButton>
+        )}
+        {active ? (
+          <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
+        ) : (
+          <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
+            Connect Wallet
+          </LightOutlinedButton>
+        )}
+      </DesktopNav>
+
+      <MobileNav>
+        <input className="checkbox" type="checkbox" name="" id="" />
+        <div className="hamburger-lines">
+          <span className="line line1"></span>
+          <span className="line line2"></span>
+          <span className="line line3"></span>
+        </div>
+        <div className="menu-items">
+          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+            <BrightConnectedButton
+              data-testid="brightid-connected"
+              icon="green-tick.png"
+              iconWidth={24}
+              iconHeight={16}
+              mb={2}
+            >
+              {connectBrightButtonLabel}
+            </BrightConnectedButton>
+          ) : (
+            <BrightOutlinedButton
+              data-testid="brightid-show-modal"
+              mb={2}
+              disabled={!account}
+              onClick={() => {
+                if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+                  changeModalActive(true);
+                }
+              }}
+            >
+              {connectBrightButtonLabel}
+            </BrightOutlinedButton>
+          )}
+          {active ? (
+            <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
+          ) : (
+            <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
+              Connect Wallet
+            </LightOutlinedButton>
+          )}
+        </div>
+      </MobileNav>
 
       <Modal
         spaceman={Spaceman.WITH_PHONE}

@@ -3,7 +3,7 @@ import { DV } from 'components/basic/designVariables';
 
 export const ModalWrapper = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 1010;
   left: 0;
   top: 0;
   width: 100%;
@@ -14,7 +14,6 @@ export const ModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
 `;
 
 export const ModalChildrenWrapper = styled.div`

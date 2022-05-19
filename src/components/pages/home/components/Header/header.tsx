@@ -30,6 +30,9 @@ const Spaceman = styled.div`
   position: absolute;
   right: 96px;
   bottom: -16px;
+  @media screen and (max-width: 920px) {
+    display: none;
+  }
 `
 
 
