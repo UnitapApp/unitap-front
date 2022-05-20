@@ -1,20 +1,20 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getChainList } from 'api';
 import { Chain } from 'types';
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js';
 
 export const ChainListContext = createContext<{
   chainList: Chain[];
   updateChainList: (() => Promise<void>) | null;
   chainListSearchResult: Chain[];
-  chageSearchPhrase: ((newSearchPhrase: string) => void) | null;
-}>({ chainList: [], updateChainList: null, chainListSearchResult: [], chageSearchPhrase: null });
+  changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
+}>({ chainList: [], updateChainList: null, chainListSearchResult: [], changeSearchPhrase: null });
 
 export function ChainListProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
   const mounted = useRef(false);
 
   const [chainList, setChainList] = useState<Chain[]>([]);
-  const [searchPhrase, setSearchPhrase] = useState<string>("");
+  const [searchPhrase, setSearchPhrase] = useState<string>('');
 
   const updateChainList = useCallback(async () => {
     const newChainList = await getChainList(address);
@@ -32,8 +32,7 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
   }, [address, updateChainList]);
 
   const chainListSearchResult = useMemo(() => {
-    if (searchPhrase === "")
-      return chainList;
+    if (searchPhrase === '') return chainList;
     const fuseOptions = {
       // isCaseSensitive: false,
       // includeScore: false,
@@ -48,18 +47,26 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
       // ignoreLocation: false,
       // ignoreFieldNorm: false,
       // fieldNormWeight: 1,
-      keys: [
-        "nativeCurrencyName",
-        "chainName",
-      ]
+      keys: ['nativeCurrencyName', 'chainName'],
     };
     const fuse = new Fuse(chainList, fuseOptions);
-    return fuse.search(searchPhrase).flatMap((serachResult)=>serachResult.item);
-  }, [searchPhrase, chainList])
+    return fuse.search(searchPhrase).flatMap((serachResult) => serachResult.item);
+  }, [searchPhrase, chainList]);
 
   const chageSearchPhrase = (newSearchPhrase: string) => {
     setSearchPhrase(newSearchPhrase);
   };
 
-  return <ChainListContext.Provider value={{ chainList, updateChainList, chainListSearchResult, chageSearchPhrase }}>{children} </ChainListContext.Provider>;
+  return (
+    <ChainListContext.Provider
+      value={{
+        chainList,
+        updateChainList,
+        chainListSearchResult,
+        changeSearchPhrase: chageSearchPhrase,
+      }}
+    >
+      {children}{' '}
+    </ChainListContext.Provider>
+  );
 }

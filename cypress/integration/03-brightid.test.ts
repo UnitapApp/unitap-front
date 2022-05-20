@@ -56,7 +56,6 @@ describe('BrightID', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileNotVerified,
-      delay: 200,
     }).as('getUserProfile');
   };
 
@@ -65,7 +64,6 @@ describe('BrightID', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileVerified,
-      delay: 200,
     }).as('getUserProfileVerified');
   };
 
@@ -107,9 +105,6 @@ describe('BrightID', () => {
   it('refresh BrightID connection button', () => {
     openBrightIdModal();
 
-    // Should not request again while loading
-    cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
-    cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
     cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
     // @ts-ignore
     cy.shouldBeCalled('getUserProfile', 2);

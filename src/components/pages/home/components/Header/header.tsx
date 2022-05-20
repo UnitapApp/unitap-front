@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import  Input from 'components/basic/Input/input';
+import Input from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
 import { ChainListContext } from 'hooks/useChainList';
 
@@ -24,7 +24,7 @@ const HeaderComp = styled.div`
     font-size: 24px;
     color: white;
   }
-`
+`;
 
 const Spaceman = styled.div`
   position: absolute;
@@ -33,14 +33,13 @@ const Spaceman = styled.div`
   @media screen and (max-width: 920px) {
     display: none;
   }
-`
-
+`;
 
 const GemRight = styled.div`
   position: absolute;
   right: 96px;
   top: 96px;
-`
+`;
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -53,19 +52,23 @@ const InputWrapper = styled(FlexWrapper)`
   bottom: ${DV.sizes.baseMargin * 2}px;
 `;
 const Header = () => {
-  const [searchPhraseInput, setSearchPhraseInput] = useState<string>("");
-  const { chageSearchPhrase } = useContext(ChainListContext);
+  const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
+  const { changeSearchPhrase } = useContext(ChainListContext);
 
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const phrase:string = event.target.value;
+    const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
-    chageSearchPhrase!(phrase);
+    changeSearchPhrase!(phrase);
   };
   return (
     <>
       <HeaderComp>
-        <GemRight><Icon iconSrc={'headerBg/gem-1.png'} /></GemRight>
-        <Spaceman><Icon iconSrc={'spman-header.png'} width="320px" height="auto" /></Spaceman>
+        <GemRight>
+          <Icon iconSrc={'headerBg/gem-1.png'} />
+        </GemRight>
+        <Spaceman>
+          <Icon iconSrc={'spman-header.png'} width="320px" height="auto" />
+        </Spaceman>
         <p>
           Add EVM networks easily and
           <br /> connect your BrightID to claim Gas Fee.
@@ -73,9 +76,16 @@ const Header = () => {
       </HeaderComp>
       <InputWrapper>
         {' '}
-        {/* value={searchPhraseInput} */}
-        {/* onChange={searchPhraseChangeHandler} */}
-        <Input  data-testid="search-box" icon="search.png" width="min(500px, 90%)" iconWidth='20px' iconHeight='20px' placeholder="Search Network / Currency"></Input>{' '}
+        <Input
+          testid="search-box"
+          icon="search.png"
+          width="min(500px, 90%)"
+          iconWidth="20px"
+          iconHeight="20px"
+          value={searchPhraseInput}
+          onChange={searchPhraseChangeHandler}
+          placeholder="Search Network / Currency"
+        ></Input>{' '}
       </InputWrapper>
     </>
   );

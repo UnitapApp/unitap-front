@@ -35,6 +35,7 @@ const MobileNav = styled.div`
   @media only screen and (max-width: 992px) {
     display: block;
   }
+
   .checkbox {
     position: absolute;
     display: block;
@@ -183,13 +184,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
         </div>
         <div className="menu-items">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            <BrightConnectedButton
-              data-testid="brightid-connected"
-              icon="green-tick.png"
-              iconWidth={24}
-              iconHeight={16}
-              mb={2}
-            >
+            <BrightConnectedButton icon="green-tick.png" iconWidth={24} iconHeight={16} mb={2}>
               {connectBrightButtonLabel}
             </BrightConnectedButton>
           ) : (
@@ -207,11 +202,9 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
             </BrightOutlinedButton>
           )}
           {active ? (
-            <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
+            <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
           ) : (
-            <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
-              Connect Wallet
-            </LightOutlinedButton>
+            <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
           )}
         </div>
       </MobileNav>

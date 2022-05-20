@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { PrimaryOutlinedButton, SecondaryButton, ClaimButton, ClaimedButton } from 'components/basic/Button/button';
+import { ClaimButton, SecondaryButton } from 'components/basic/Button/button';
 import { Chain } from 'types';
 import { ethers } from 'ethers';
 import { switchToNetwork } from 'utils/switchToNetwork';
@@ -28,11 +28,13 @@ const ChainCard = styled.div`
 
   p {
     color: white;
+
     span {
       color: ${DV.colors.gray};
       padding-right: ${DV.sizes.baseMargin * 1.5}px;
       font-size: 14px;
     }
+
     &:first-child {
       margin-right: ${DV.sizes.baseMargin * 8}px;
     }
@@ -54,12 +56,13 @@ const ChainLogo = styled.div`
   border-radius: ${DV.sizes.baseRadius * 1.5}px 0 0 ${DV.sizes.baseRadius * 1.5}px;
   left: -1px;
   bottom: 0;
+
   img {
     width: 30px;
     height: 30px;
   }
 
-  @media only screen and (max-width: 1224px){
+  @media only screen and (max-width: 1224px) {
     height: 64px;
     width: 64px;
     left: 12px;
@@ -67,7 +70,7 @@ const ChainLogo = styled.div`
     top: 12px;
     border-radius: 32px;
   }
-`
+`;
 
 const ChainName = styled.p`
   margin-left: ${DV.sizes.baseMargin * 6}px;
@@ -110,7 +113,9 @@ const ChainList = () => {
           return (
             <div key={chain.chainId}>
               <ChainCard>
-                <ChainLogo><img src={chain.logoUrl} alt="" /></ChainLogo>
+                <ChainLogo>
+                  <img src={chain.logoUrl} alt="" />
+                </ChainLogo>
                 <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                 <p>
                   <span>Chain ID</span> {chain.chainId}
@@ -135,7 +140,7 @@ const ChainList = () => {
                   </ClaimButton>
 
                   {/* <ClaimedButton mr={2} icon="claimIcon.png" iconWidth={52} iconHeight={58} >Claimed!</ClaimedButton> */}
-                  
+
                   <SecondaryButton
                     data-testid={`chain-switch-${chain.pk}`}
                     onClick={() => changeNetwork(chain)}
