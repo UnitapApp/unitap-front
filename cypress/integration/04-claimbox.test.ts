@@ -142,6 +142,7 @@ describe('Claim', () => {
     cy.shouldBeCalled('claimMax', 1);
 
     cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
-    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claimed');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).contains('Close').click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
   });
 });

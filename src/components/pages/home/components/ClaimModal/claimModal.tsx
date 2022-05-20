@@ -64,9 +64,18 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text fontSize="14" className="scan-qr-text">
           Claimed {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
-        <a data-testid="claim-receipt" href={getTxUrl(chain, claimReceipt!)} target="_blank" rel="noreferrer">
+        <a
+          style={{ marginBottom: '20px' }}
+          data-testid="claim-receipt"
+          href={getTxUrl(chain, claimReceipt!)}
+          target="_blank"
+          rel="noreferrer"
+        >
           View on Explorer
         </a>
+        <PrimaryButton onClick={closeModalHandler} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
+          Close
+        </PrimaryButton>
       </>
     );
   }
