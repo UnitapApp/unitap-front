@@ -7,6 +7,7 @@ interface props {
   iconHeight?: number,
   height?: string;
   mr?: number;
+  mb?: number;
   color?: string;
   disabled?: boolean;
   icon?: string;
@@ -31,6 +32,7 @@ export const Button = styled.button<props>`
   border: none;
   font-weight: bold;
   margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
+  margin-bottom: ${(props) => (props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`)};
   width: ${(props) => props.width || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
 
@@ -117,6 +119,7 @@ export const BrightConnectedButton = styled(Button)`
 
 export const ClaimButton = styled(PrimaryOutlinedButton)`
   width: 220px;
+  padding: 14px;
 `;
 
 export const ClaimedButton = styled(SecondaryButton)`

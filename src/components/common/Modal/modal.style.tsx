@@ -3,7 +3,7 @@ import { DV } from 'components/basic/designVariables';
 
 export const ModalWrapper = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 1010;
   left: 0;
   top: 0;
   width: 100%;
@@ -14,22 +14,30 @@ export const ModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
 `;
 
 export const ModalChildrenWrapper = styled.div`
-  width: 40%;
-
+  width: 300px;
   margin: ${DV.sizes.baseMargin * 2}px auto;
-
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
+  
+  .spaceman-one {
+
+  }
+
+  @media only screen and (max-width: 600px) {
+    .spaceman-three {
+      z-index: -1;
+    }
+  }
 `;
 
 export const ModalContent = styled.div`
   background-color: ${DV.colors.black1};
-  width: 45%;
+  width: min(600px,90%);
+  margin: 0 5%;
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 5}px;
@@ -75,9 +83,9 @@ export const ModalContent = styled.div`
 
   .spaceman-one {
     position: absolute;
-    right: -3rem;
+    right: 0rem;
     bottom: 0;
-    width: 17rem;
+    width: 200px
   }
 
   .spaceman-two {

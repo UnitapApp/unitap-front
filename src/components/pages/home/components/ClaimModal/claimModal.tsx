@@ -4,7 +4,7 @@ import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
-import { Input } from 'components/basic/Input/input';
+import  Input  from 'components/basic/Input/input';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import { ethers } from 'ethers';
 import { getTxUrl, shortenAddress } from 'utils';
@@ -78,9 +78,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text fontSize="14" className="scan-qr-text">
           Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
-        <Icon iconSrc={chain.logoUrl} width="42%" height="auto" />
+        <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
         <WalletAddress fontSize="12">Wallet Address</WalletAddress>
-        <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input>
+        {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}
         <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
           {brightIdVerified ? 'Claim' : 'BrightID not connected'}
         </PrimaryButton>
