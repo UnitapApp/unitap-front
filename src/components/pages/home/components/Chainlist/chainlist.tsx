@@ -42,6 +42,7 @@ const ChainCard = styled.div`
 
   @media only screen and (max-width: 1224px) {
     flex-direction: column;
+    padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 4}px;
   }
 `;
 
@@ -63,6 +64,7 @@ const ChainLogo = styled.div`
   }
 
   @media only screen and (max-width: 1224px) {
+    position: relative;
     height: 64px;
     width: 64px;
     left: 12px;
@@ -75,11 +77,29 @@ const ChainLogo = styled.div`
 const ChainName = styled.p`
   margin-left: ${DV.sizes.baseMargin * 6}px;
   width: 300px;
+  @media only screen and (max-width: 1224px) {
+    text-align: center;
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 const Action = styled.div`
   display: flex;
   align-items: center;
+  @media only screen and (max-width: 1224px) {
+    flex-direction: column;
+    width: 100%;
+    button {
+      margin-right: 0!important;
+      display: block;
+      width: 100%;
+      &:first-child {
+        margin-bottom: ${DV.sizes.baseMargin * 2}px;
+      }
+    }
+
+  }
 `;
 
 const ChainListWrapper = styled.div`
