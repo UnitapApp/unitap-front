@@ -82,6 +82,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text fontSize="14" className="scan-qr-text">
           Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
+        <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`} alt="" />
         <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}
