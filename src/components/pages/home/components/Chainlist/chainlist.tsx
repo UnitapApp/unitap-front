@@ -114,7 +114,7 @@ const ChainList = () => {
             <div key={chain.chainId}>
               <ChainCard>
                 <ChainLogo>
-                  <img src={chain.logoUrl} alt="" />
+                  <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}.svg`} alt="" />
                 </ChainLogo>
                 <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                 <p>
