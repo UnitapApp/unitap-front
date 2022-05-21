@@ -86,7 +86,7 @@ const ChainListWrapper = styled.div`
   padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
 `;
 const ChainList = () => {
-  const { chainListSearchResult } = useContext(ChainListContext);
+  const { chainList, chainListSearchResult } = useContext(ChainListContext);
 
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
 
@@ -109,6 +109,11 @@ const ChainList = () => {
   return (
     <ChainListWrapper>
       <div>
+        {!chainList.length && (
+          <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
+            Loading...
+          </div>
+        )}
         {chainListSearchResult.map((chain) => {
           return (
             <div key={chain.chainId}>

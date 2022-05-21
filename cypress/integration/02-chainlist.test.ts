@@ -89,9 +89,15 @@ describe('Landing Page', () => {
   });
 
   it('loads chain list', () => {
-    setupGetChainListServerNotAuthenticated();
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/chain/list/`,
+      response: chainList,
+      delay: 100,
+    });
     cy.visit('/');
-    connectWallet();
+    cy.get(`[data-testid=chain-list-loading]`).should('exist');
+    cy.get(`[data-testid=chain-list-loading]`).should('not.exist');
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claim ');
   });
