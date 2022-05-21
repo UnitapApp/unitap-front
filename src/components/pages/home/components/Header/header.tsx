@@ -23,6 +23,10 @@ const HeaderComp = styled.div`
     font-weight: bold;
     font-size: 24px;
     color: white;
+    @media screen and (max-width: 600px) {
+      width: 90%;
+      font-size: 20px;
+    }
   }
 `;
 
