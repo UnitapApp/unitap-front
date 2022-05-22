@@ -46,8 +46,6 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setClaimReceipt(claimReceipt);
         updateChainList();
       }
-      alert('Claimed successfully!');
-      // closeModalHandler();
     } catch (ex) {
       alert('Error while claiming');
       console.log(ex);
