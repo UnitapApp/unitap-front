@@ -1,3 +1,41 @@
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: 800;
+	src: url('../public/assets/font/JetBrainsMono-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: bold;
+  src: url('../public/assets/font/JetBrainsMono-Bold.ttf') format('truetype');
+}
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: 500;
+  src: url('../public/assets/font/JetBrainsMono-Medium.ttf') format('truetype');
+}
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: 300;
+  src: url('../public/assets/font/JetBrainsMono-Light.ttf') format('truetype');
+}
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: 200;
+  src: url('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
+}
+@font-face {
+	font-family: JetBrainsMono;
+	font-style: normal;
+	font-weight: normal;
+  src: url('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
+}
+
+
 .App {
   text-align: center;
 }
