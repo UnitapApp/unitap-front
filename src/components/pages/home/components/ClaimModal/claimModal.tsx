@@ -42,10 +42,8 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     setLoading(true);
     try {
       const claimReceipt = await claimMax(account!, chain.pk);
-      if (updateChainList) {
-        setClaimReceipt(claimReceipt);
-        updateChainList();
-      }
+      setClaimReceipt(claimReceipt);
+      await updateChainList?.();
     } catch (ex) {
       alert('Error while claiming');
       console.log(ex);

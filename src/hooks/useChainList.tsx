@@ -53,7 +53,7 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
     return fuse.search(searchPhrase).flatMap((serachResult) => serachResult.item);
   }, [searchPhrase, chainList]);
 
-  const chageSearchPhrase = (newSearchPhrase: string) => {
+  const changeSearchPhrase = (newSearchPhrase: string) => {
     setSearchPhrase(newSearchPhrase);
   };
 
@@ -63,7 +63,7 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
         chainList,
         updateChainList,
         chainListSearchResult,
-        changeSearchPhrase: chageSearchPhrase,
+        changeSearchPhrase,
       }}
     >
       {children}{' '}
