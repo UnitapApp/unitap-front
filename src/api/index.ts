@@ -2,7 +2,7 @@ import { Chain, ClaimReceipt, UserProfile } from 'types';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? '' : 'http://168.119.127.117:4549/',
+  baseURL: process.env.NODE_ENV === 'development' ? '' : process.env.REACT_APP_API_URL,
 });
 
 export async function getChainList(address: string | undefined | null) {
