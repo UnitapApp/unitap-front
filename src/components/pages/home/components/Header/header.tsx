@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import Input from 'components/basic/Input/input';
@@ -37,10 +37,11 @@ const Timer = styled.div`
   color: white;
   opacity: 1;
   z-index: 10000;
+
   span {
     margin: auto ${DV.sizes.baseMargin}px;
   }
-`
+`;
 
 const Spaceman = styled.div`
   position: absolute;
@@ -70,24 +71,41 @@ const InputWrapper = styled(FlexWrapper)`
 const Header = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
   const { changeSearchPhrase } = useContext(ChainListContext);
-
+  const [now, setNow] = useState(new Date());
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
     changeSearchPhrase!(phrase);
   };
+  const [days, setDays] = useState('00');
+  const [hours, setHours] = useState('00');
+  const [minutes, setMinutes] = useState('00');
+  const [seconds, setSeconds] = useState('00');
+
+  useEffect(() => {
+    const weekDay = now.getDay();
+    const diffToMonday = 7 - (weekDay === 0 ? 6 : weekDay) + 1;
+    const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMonday);
+    const diffTime = Math.ceil((nextMonday.getTime() - now.getTime()) / 1000);
+    setSeconds(String(diffTime % 60).padStart(2, '0'));
+    setMinutes(String(Math.floor(diffTime / 60) % 60).padStart(2, '0'));
+    setHours(String(Math.floor(diffTime / 3600) % 24).padStart(2, '0'));
+    setDays(String(Math.floor(diffTime / 86400)).padStart(2, '0'));
+  }, [now]);
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <>
       <HeaderComp>
         <Timer>
-          <span>01</span>
-          :
-          <span>18</span>
-          :
-          <span>23</span>
-          :
-          <span>30</span>
-          </Timer>
+          <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+        </Timer>
         <GemRight>
           <Icon iconSrc={'headerBg/gem-1.png'} />
         </GemRight>
