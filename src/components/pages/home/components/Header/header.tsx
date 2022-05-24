@@ -30,6 +30,18 @@ const HeaderComp = styled.div`
   }
 `;
 
+const Timer = styled.div`
+  position: absolute;
+  top: ${DV.sizes.baseMargin * 2.5}px;
+  font-size: 28px;
+  color: white;
+  opacity: 1;
+  z-index: 10000;
+  span {
+    margin: auto ${DV.sizes.baseMargin}px;
+  }
+`
+
 const Spaceman = styled.div`
   position: absolute;
   right: 96px;
@@ -67,6 +79,15 @@ const Header = () => {
   return (
     <>
       <HeaderComp>
+        <Timer>
+          <span>01</span>
+          :
+          <span>18</span>
+          :
+          <span>23</span>
+          :
+          <span>30</span>
+          </Timer>
         <GemRight>
           <Icon iconSrc={'headerBg/gem-1.png'} />
         </GemRight>
