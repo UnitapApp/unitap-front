@@ -18,7 +18,7 @@ const Nav = styled.div`
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 8}px;
 
   & > img {
-    width: 200px;
+    width: 306px;
     margin-right: auto;
   }
 `;
