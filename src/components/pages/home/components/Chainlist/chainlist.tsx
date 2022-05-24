@@ -3,13 +3,13 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, SecondaryButton } from 'components/basic/Button/button';
 import { Chain } from 'types';
-import { ethers } from 'ethers';
 import { switchToNetwork } from 'utils/switchToNetwork';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 import ClaimModal from 'components/pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
+import { fromWei } from '../../../../../utils/numbers';
 
 // ###### Local Styled Components
 
@@ -91,14 +91,14 @@ const Action = styled.div`
     flex-direction: column;
     width: 100%;
     button {
-      margin-right: 0!important;
+      margin-right: 0 !important;
       display: block;
       width: 100%;
+
       &:first-child {
         margin-bottom: ${DV.sizes.baseMargin * 2}px;
       }
     }
-
   }
 `;
 
@@ -113,7 +113,7 @@ const ChainList = () => {
   const { library, active } = useActiveWeb3React();
 
   const formatBalance = useCallback((amount: number) => {
-    const fw = ethers.utils.formatEther(amount);
+    const fw = fromWei(amount);
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
 
