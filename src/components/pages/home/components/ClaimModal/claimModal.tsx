@@ -22,7 +22,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   const { updateChainList } = useContext(ChainListContext);
 
   const brightIdVerified = useMemo(
-    () => userProfile!.verificationStatus === BrightIdVerificationStatus.VERIFIED,
+    () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
   );
   const [loading, setLoading] = useState(false);
