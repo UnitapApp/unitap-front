@@ -1,13 +1,4 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getChainList } from 'api';
 import { Chain } from 'types';
 import Fuse from 'fuse.js';
@@ -21,8 +12,6 @@ export const ChainListContext = createContext<{
 }>({ chainList: [], updateChainList: null, chainListSearchResult: [], changeSearchPhrase: null });
 
 export function ChainListProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
-  const mounted = useRef(false);
-
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const { userProfile } = useContext(UserProfileContext);
@@ -31,17 +20,11 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
       // use address only if userprofile is loaded
       userProfile ? address : null,
     );
-    if (mounted.current) {
-      setChainList(newChainList);
-    }
-  }, [address, userProfile, mounted]);
+    setChainList(newChainList);
+  }, [address, userProfile]);
 
   useEffect(() => {
-    mounted.current = true;
     updateChainList();
-    return () => {
-      mounted.current = false;
-    };
   }, [address, updateChainList]);
 
   const chainListSearchResult = useMemo(() => {

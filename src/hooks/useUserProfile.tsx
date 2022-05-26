@@ -28,7 +28,6 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
   }, [userProfile, setUserProfile]);
 
   useEffect(() => {
-    let mounted = true;
     const fun = async () => {
       if (address) {
         let newUserProfile: UserProfile | null = null;
@@ -37,15 +36,10 @@ export function UserProfileProvider({ children, address }: PropsWithChildren<{ a
         } catch (ex) {
           newUserProfile = await createUserProfile(address);
         }
-        if (mounted) {
-          setUserProfile(newUserProfile);
-        }
+        setUserProfile(newUserProfile);
       }
     };
     fun();
-    return () => {
-      mounted = false;
-    };
   }, [address]);
 
   return (
