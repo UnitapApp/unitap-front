@@ -1,7 +1,17 @@
-import React, { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { getChainList } from 'api';
 import { Chain } from 'types';
 import Fuse from 'fuse.js';
+import { UserProfileContext } from './useUserProfile';
 
 export const ChainListContext = createContext<{
   chainList: Chain[];
@@ -15,13 +25,16 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
 
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
-
+  const { userProfile } = useContext(UserProfileContext);
   const updateChainList = useCallback(async () => {
-    const newChainList = await getChainList(address);
+    const newChainList = await getChainList(
+      // use address only if userprofile is loaded
+      userProfile ? address : null,
+    );
     if (mounted.current) {
       setChainList(newChainList);
     }
-  }, [address, mounted]);
+  }, [address, userProfile, mounted]);
 
   useEffect(() => {
     mounted.current = true;
