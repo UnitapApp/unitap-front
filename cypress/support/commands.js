@@ -94,6 +94,8 @@ export class SwitchChainBridge extends CustomizedBridge {
 }
 
 export class SwitchToUnrecognizedChainBridge extends CustomizedBridge {
+  supportedChainIds = [];
+
   switchEthereumChainSpy(chainId) {}
 
   addEthereumChainSpy(chainId) {}
@@ -102,19 +104,28 @@ export class SwitchToUnrecognizedChainBridge extends CustomizedBridge {
     const { isCallbackForm, callback, method, params } = this.getSendArgs(args);
     if (method === 'wallet_switchEthereumChain') {
       this.switchEthereumChainSpy(params[0].chainId);
-      const chainId = params[0].chainId;
-      const error = {
-        code: 4902, // To-be-standardized "unrecognized chain ID" error
-        message: `Unrecognized chain ID "${chainId}". Try adding the chain using wallet_addEthereumChain first.`,
-      };
-      if (isCallbackForm) {
-        callback(error, null);
+      if (this.supportedChainIds.includes(params[0].chainId)) {
+        if (isCallbackForm) {
+          callback(null, { result: null });
+        } else {
+          return null;
+        }
       } else {
-        throw error;
+        const chainId = params[0].chainId;
+        const error = {
+          code: 4902, // To-be-standardized "unrecognized chain ID" error
+          message: `Unrecognized chain ID "${chainId}". Try adding the chain using wallet_addEthereumChain first.`,
+        };
+        if (isCallbackForm) {
+          callback(error, null);
+        } else {
+          throw error;
+        }
       }
     }
     if (method === 'wallet_addEthereumChain') {
       this.addEthereumChainSpy(params[0].chainId);
+      this.supportedChainIds.push(params[0].chainId);
       if (isCallbackForm) {
         callback(null, { result: null });
       } else {
