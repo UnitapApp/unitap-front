@@ -64,3 +64,17 @@ export function getTxUrl(chain: Chain, claimReceipt: ClaimReceipt) {
 export function getVerificationQr(userProfile: UserProfile) {
   return userProfile.verificationUrl.replace('https://app.brightid.org/', 'brightid://');
 }
+
+export async function copyToClipboard(textToCopy: string) {
+  if (navigator?.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(textToCopy);
+  } else {
+    let textArea = document.createElement('textarea');
+    textArea.value = textToCopy;
+    document.body.prepend(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand('copy');
+    textArea.remove();
+  }
+}

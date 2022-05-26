@@ -11,15 +11,19 @@ import { SecondaryButton } from 'components/basic/Button/button';
 
 import { BrightIdVerificationStatus } from 'types';
 
-import { getVerificationQr } from 'utils';
+import { copyToClipboard, getVerificationQr } from 'utils';
 
 const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const copyVerificationUrl = async () => {
-    await navigator.clipboard.writeText(verificationUrl);
-    alert('Copied');
+    try {
+      await copyToClipboard(verificationUrl);
+      alert('Copied');
+    } catch (e) {
+      alert('Could not copy the text');
+    }
   };
 
   const refreshConnectionButtonAction = useCallback(async () => {
