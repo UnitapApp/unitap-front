@@ -24,7 +24,14 @@ export function ChainListProvider({ children, address }: PropsWithChildren<{ add
   }, [address, userProfile]);
 
   useEffect(() => {
-    updateChainList();
+    const fn = async () => {
+      try {
+        await updateChainList();
+      } catch (e) {
+        fn();
+      }
+    };
+    fn();
   }, [address, updateChainList]);
 
   const chainListSearchResult = useMemo(() => {
