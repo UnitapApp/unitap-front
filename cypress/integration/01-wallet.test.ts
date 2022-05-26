@@ -107,12 +107,10 @@ describe('Wallet', () => {
   it('adds network', () => {
     const ethBridge = new SwitchToUnrecognizedChainBridge(signer, provider);
     cy.on('window:before:load', (win) => {
+      cy.spy(ethBridge, 'switchEthereumChainSpy');
+      cy.spy(ethBridge, 'addEthereumChainSpy');
       // @ts-ignore
       win.ethereum = ethBridge;
-      // @ts-ignore
-      cy.spy(win.ethereum, 'switchEthereumChainSpy');
-      // @ts-ignore
-      cy.spy(win.ethereum, 'addEthereumChainSpy');
     });
 
     setupGetChainListAuthenticated();
@@ -122,10 +120,10 @@ describe('Wallet', () => {
     const expectedChainId = formatChainId(chainList[0].chainId);
 
     cy.window().then((win) => {
-      // @ts-ignore
-      expect(win.ethereum.switchEthereumChainSpy).to.have.calledWith(expectedChainId);
-      // @ts-ignore
-      expect(win.ethereum.addEthereumChainSpy).to.have.calledWith(expectedChainId);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      expect(ethBridge.switchEthereumChainSpy).to.have.calledTwice;
+      expect(ethBridge.switchEthereumChainSpy).to.have.calledWith(expectedChainId);
+      expect(ethBridge.addEthereumChainSpy).to.have.calledWith(expectedChainId);
     });
   });
 });
