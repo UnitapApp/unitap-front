@@ -13,6 +13,8 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from '../../../../../utils/numbers';
 import RenderIf from 'components/basic/RenderIf/renderIf';
+import lottie from "lottie-web";
+import animation from '../../../../../animations/GasFee-delivery2.json';
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
   const formatBalance = useCallback((amount: number) => {
@@ -30,6 +32,15 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   const [loading, setLoading] = useState(false);
   const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
   const mounted = useRef(false);
+
+  useEffect(() => {
+    lottie.loadAnimation({
+      container: document.querySelector("#animation") as HTMLInputElement,
+      animationData: animation,
+      loop: true,
+      autoplay: true,
+    });
+  }, []);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -86,27 +97,25 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
 
-        <RenderIf isTrue={trState == 'pending'}>
-          <Icon iconSrc={'pending-spaceman.png'} width="120px" height="auto" />
-
+        <RenderIf isTrue={trState == 'pending'}>     
+          <div id='animation' style={{width:'200px'}}></div>
           <Text width="100%" fontSize="14"> Wallet Address </Text>
           <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-          <MessageButton width={'100%'}>Pending...</MessageButton>
+          <MessageButton onClick={() => setTrState('successful')} width={'100%'}>Pending...</MessageButton>
         </RenderIf>
 
         <RenderIf isTrue={trState == 'successful'}>
           <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
-
           <Text width="100%" fontSize="14"> Wallet Address </Text>
           <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-          <SuccessMessageButton width={'100%'}>Claimed Successfully</SuccessMessageButton>
+          <SuccessMessageButton onClick={() => setTrState('failed')} width={'100%'}>Claimed Successfully</SuccessMessageButton>
         </RenderIf>
 
         <RenderIf isTrue={trState == 'failed'}>
           <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
           <Text width="100%" fontSize="14"> Wallet Address </Text>
           <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-          <DangerMessageButton width={'100%'}>Claim Failed</DangerMessageButton>
+          <DangerMessageButton onClick={() => setTrState('pending')} width={'100%'}>Claim Failed</DangerMessageButton>
         </RenderIf>
       </>
     )
