@@ -12,7 +12,7 @@ type props = {
 const WalletAddress = ({ editable, children, fontSize }: props) => (
     <WalletAddressWrapper fontSize={fontSize}>
         {children}
-        <RenderIf isTrue={editable == true}> <Icon className="edit-icon" iconSrc={'edit.png'} width="16px"></Icon> </RenderIf>
+        <RenderIf isTrue={editable === true}> <Icon className="edit-icon" iconSrc={'edit.png'} width="16px"></Icon> </RenderIf>
     </WalletAddressWrapper>
 );
 
