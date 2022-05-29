@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
-import Icon from 'components/basic/Icon/Icon';
+import { ClaimModalWrapper } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { MessageButton, SuccessMessageButton, DangerMessageButton } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
@@ -12,7 +11,9 @@ import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from '../../../../../utils/numbers';
+import WalletAddress from 'components/pages/home/components/ClaimModal/walletAddress';
 import RenderIf from 'components/basic/RenderIf/renderIf';
+import Icon from 'components/basic/Icon/Icon';
 import lottie from "lottie-web";
 import animation from '../../../../../animations/GasFee-delivery2.json';
 
@@ -97,10 +98,10 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
 
-        <RenderIf isTrue={trState == 'pending'}>     
-          <div id='animation' style={{width:'200px'}}></div>
+        <RenderIf isTrue={trState == 'pending'}>
+          <div id='animation' style={{ width: '200px' }}></div>
           <Text width="100%" fontSize="14"> Wallet Address </Text>
-          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+          <WalletAddress fontSize="12" editable>{active ? shortenAddress(account) : ''}</WalletAddress>
           <MessageButton onClick={() => setTrState('successful')} width={'100%'}>Pending...</MessageButton>
         </RenderIf>
 

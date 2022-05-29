@@ -12,7 +12,7 @@ export const ClaimModalWrapper = styled.div`
   padding: ${DV.sizes.basePadding * 2}px;
 `;
 
-export const WalletAddress = styled(Text)`
+export const WalletAddressWrapper = styled(Text)`
   background: #312335;
   border: 1px solid #9347AB;
   
@@ -25,4 +25,16 @@ export const WalletAddress = styled(Text)`
 
   font-weight: 700;
   font-size: 14px;
+
+  position: relative;
+
+  .edit-icon {
+    position: absolute;
+    top: -2px;
+    right: 0;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;

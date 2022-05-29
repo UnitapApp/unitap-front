@@ -5,10 +5,11 @@ type props = {
   iconSrc: string;
   width?: string;
   height?: string;
+  className?: string;
 };
 
-const Icon = ({ iconSrc, width, height}: props) => (
-  <IconWrapper width={width} height={height}>
+const Icon = ({ iconSrc, width, height, className}: props) => (
+  <IconWrapper className={className} width={width} height={height}>
     <img src={iconSrc} alt="" />
   </IconWrapper>
 );
