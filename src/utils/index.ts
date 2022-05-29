@@ -80,3 +80,16 @@ export async function copyToClipboard(textToCopy: string) {
   document.execCommand('copy');
   textArea.remove();
 }
+
+export const diffToNextMonday = (date: Date) => {
+  const weekDay = date.getDay();
+  const diffToMonday = 7 - (weekDay === 0 ? 7 : weekDay) + 1;
+  const nextMonday = new Date(date.getFullYear(), date.getMonth(), date.getDate() + diffToMonday);
+  const diffTime = Math.ceil((nextMonday.getTime() - date.getTime()) / 1000);
+  return {
+    seconds: String(diffTime % 60).padStart(2, '0'),
+    minutes: String(Math.floor(diffTime / 60) % 60).padStart(2, '0'),
+    hours: String(Math.floor(diffTime / 3600) % 24).padStart(2, '0'),
+    days: String(Math.floor(diffTime / 86400)).padStart(2, '0'),
+  };
+};
