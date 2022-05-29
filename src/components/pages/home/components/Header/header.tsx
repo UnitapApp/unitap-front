@@ -84,7 +84,7 @@ const Header = () => {
 
   useEffect(() => {
     const weekDay = now.getDay();
-    const diffToMonday = 7 - (weekDay === 0 ? 6 : weekDay) + 1;
+    const diffToMonday = 7 - (weekDay === 0 ? 7 : weekDay) + 1;
     const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMonday);
     const diffTime = Math.ceil((nextMonday.getTime() - now.getTime()) / 1000);
     setSeconds(String(diffTime % 60).padStart(2, '0'));
