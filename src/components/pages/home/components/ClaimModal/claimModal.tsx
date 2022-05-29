@@ -4,6 +4,7 @@ import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
+import { MessageButton, SuccessMessageButton, DangerMessageButton } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import { getTxUrl, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -11,6 +12,7 @@ import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from '../../../../../utils/numbers';
+import RenderIf from 'components/basic/RenderIf/renderIf';
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
   const formatBalance = useCallback((amount: number) => {
@@ -76,6 +78,40 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
+  const [trState, setTrState] = useState('pending');
+  function getClaimBody2() {
+    return (
+      <>
+        <Text fontSize="14" className="scan-qr-text">
+          Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+        </Text>
+
+        <RenderIf isTrue={trState == 'pending'}>
+          <Icon iconSrc={'pending-spaceman.png'} width="120px" height="auto" />
+
+          <Text width="100%" fontSize="14"> Wallet Address </Text>
+          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+          <MessageButton width={'100%'}>Pending...</MessageButton>
+        </RenderIf>
+
+        <RenderIf isTrue={trState == 'successful'}>
+          <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
+
+          <Text width="100%" fontSize="14"> Wallet Address </Text>
+          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+          <SuccessMessageButton width={'100%'}>Claimed Successfully</SuccessMessageButton>
+        </RenderIf>
+
+        <RenderIf isTrue={trState == 'failed'}>
+          <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
+          <Text width="100%" fontSize="14"> Wallet Address </Text>
+          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+          <DangerMessageButton width={'100%'}>Claim Failed</DangerMessageButton>
+        </RenderIf>
+      </>
+    )
+  }
+
   function getClaimBody() {
     return (
       <>
@@ -95,7 +131,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
-      {claimReceipt ? getClaimReceipt() : getClaimBody()}
+      {claimReceipt ? getClaimReceipt() : getClaimBody2()}
     </ClaimModalWrapper>
   );
 };

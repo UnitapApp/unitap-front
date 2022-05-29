@@ -13,5 +13,16 @@ export const ClaimModalWrapper = styled.div`
 `;
 
 export const WalletAddress = styled(Text)`
-  align-self: flex-start;
+  background: #312335;
+  border: 1px solid #9347AB;
+  
+  border-radius: ${DV.sizes.baseRadius * 1.5}px;
+  text-align: center;
+  color: white;
+  box-sizing: border-box;
+  width: 100%;
+  padding: ${DV.sizes.basePadding * 1.4}px ${DV.sizes.basePadding * 3}px;
+
+  font-weight: 700;
+  font-size: 14px;
 `;
