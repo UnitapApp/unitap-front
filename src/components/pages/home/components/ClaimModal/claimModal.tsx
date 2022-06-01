@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, WalletAddress } from 'components/pages/home/components/ClaimModal/claimModal.style';
+import { ClaimModalWrapper, WalletAddress, DropIconWrapper } from 'components/pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
@@ -82,8 +82,10 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text fontSize="14" className="scan-qr-text">
           Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
         </Text>
+        <DropIconWrapper>
         <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`} alt="" />
         <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
+        </DropIconWrapper>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}
         <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>

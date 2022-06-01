@@ -15,3 +15,12 @@ export const ClaimModalWrapper = styled.div`
 export const WalletAddress = styled(Text)`
   align-self: flex-start;
 `;
+
+export const DropIconWrapper = styled.div`
+  position: relative;
+  & > img {
+    position: absolute;
+    top: 64px;
+    left: 43px;
+  }
+`
