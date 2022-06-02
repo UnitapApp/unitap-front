@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper } from 'components/pages/home/components/ClaimModal/claimModal.style';
+import { ClaimModalWrapper, DropIconWrapper } from 'components/pages/home/components/ClaimModal/claimModal.style';
+import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
-import { MessageButton, SuccessMessageButton, DangerMessageButton } from 'components/basic/MessageButton/messageButton.style';
+import {
+  DangerMessageButton,
+  MessageButton,
+  SuccessMessageButton,
+} from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import { getTxUrl, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -12,10 +17,15 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from '../../../../../utils/numbers';
 import WalletAddress from 'components/pages/home/components/ClaimModal/walletAddress';
-import RenderIf from 'components/basic/RenderIf/renderIf';
-import Icon from 'components/basic/Icon/Icon';
-import lottie from "lottie-web";
+import lottie from 'lottie-web';
 import animation from '../../../../../animations/GasFee-delivery2.json';
+
+enum ClaimState {
+  INITIAL,
+  LOADING,
+  SUCCESS,
+  FAILED,
+}
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
   const formatBalance = useCallback((amount: number) => {
@@ -25,18 +35,18 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   const { active, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { updateChainList } = useContext(ChainListContext);
+  const [claimState, setClaimState] = useState(ClaimState.INITIAL);
 
   const brightIdVerified = useMemo(
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
   );
-  const [loading, setLoading] = useState(false);
   const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
   const mounted = useRef(false);
 
   useEffect(() => {
     lottie.loadAnimation({
-      container: document.querySelector("#animation") as HTMLInputElement,
+      container: document.querySelector('#animation') as HTMLInputElement,
       animationData: animation,
       loop: true,
       autoplay: true,
@@ -50,23 +60,24 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     }; // ... and to false on unmount
   }, []);
   const claim = useCallback(async () => {
-    if (!brightIdVerified || loading) {
+    if (!brightIdVerified || claimState === ClaimState.LOADING) {
       return;
     }
-    setLoading(true);
+    setClaimState(ClaimState.LOADING);
     try {
       const claimReceipt = await claimMax(account!, chain.pk);
       setClaimReceipt(claimReceipt);
       await updateChainList?.();
+      if (mounted.current) {
+        setClaimState(ClaimState.SUCCESS);
+      }
     } catch (ex) {
       alert('Error while claiming');
-      console.log(ex);
-    } finally {
       if (mounted.current) {
-        setLoading(false);
+        setClaimState(ClaimState.INITIAL);
       }
     }
-  }, [account, brightIdVerified, chain.pk, loading, updateChainList]);
+  }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
 
   function getClaimReceipt() {
     return (
@@ -90,45 +101,13 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
-  const [trState, setTrState] = useState('pending');
-  function getClaimBody2() {
+  function getInitialBody() {
     return (
       <>
-        <Text fontSize="14" className="scan-qr-text">
-          Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-        </Text>
-
-        <RenderIf isTrue={trState == 'pending'}>
-          <div id='animation' style={{ width: '200px' }}></div>
-          <Text width="100%" fontSize="14"> Wallet Address </Text>
-          <WalletAddress fontSize="12" editable>{active ? shortenAddress(account) : ''}</WalletAddress>
-          <MessageButton onClick={() => setTrState('successful')} width={'100%'}>Pending...</MessageButton>
-        </RenderIf>
-
-        <RenderIf isTrue={trState == 'successful'}>
-          <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
-          <Text width="100%" fontSize="14"> Wallet Address </Text>
-          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-          <SuccessMessageButton onClick={() => setTrState('failed')} width={'100%'}>Claimed Successfully</SuccessMessageButton>
-        </RenderIf>
-
-        <RenderIf isTrue={trState == 'failed'}>
-          <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
-          <Text width="100%" fontSize="14"> Wallet Address </Text>
-          <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-          <DangerMessageButton onClick={() => setTrState('pending')} width={'100%'}>Claim Failed</DangerMessageButton>
-        </RenderIf>
-      </>
-    )
-  }
-
-  function getClaimBody() {
-    return (
-      <>
-        <Text fontSize="14" className="scan-qr-text">
-          Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-        </Text>
-        <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
+        <DropIconWrapper>
+          <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`} alt="" />
+          <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
+        </DropIconWrapper>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}
         <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
@@ -138,10 +117,79 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
+  function getLoadingBody() {
+    return (
+      <>
+        <div data-testid={`loading`} id="animation" style={{ width: '200px' }}></div>
+        <Text width="100%" fontSize="14">
+          {' '}
+          Wallet Address{' '}
+        </Text>
+        <WalletAddress fontSize="12" editable>
+          {active ? shortenAddress(account) : ''}
+        </WalletAddress>
+        <MessageButton width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
+          Pending...
+        </MessageButton>
+      </>
+    );
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function getSuccessBody() {
+    return (
+      <>
+        <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
+        <Text width="100%" fontSize="14">
+          {' '}
+          Wallet Address{' '}
+        </Text>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <SuccessMessageButton onClick={closeModalHandler} width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
+          Claimed Successfully
+        </SuccessMessageButton>
+      </>
+    );
+  }
+
+  function getFailedBody() {
+    return (
+      <>
+        <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
+        <Text width="100%" fontSize="14">
+          {' '}
+          Wallet Address{' '}
+        </Text>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <DangerMessageButton
+          onClick={() => setClaimState(ClaimState.INITIAL)}
+          width={'100%'}
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
+          Claim Failed
+        </DangerMessageButton>
+      </>
+    );
+  }
+
+  function getClaimBody() {
+    if (claimState === ClaimState.INITIAL) {
+      return getInitialBody();
+    } else if (claimState === ClaimState.LOADING) {
+      return getLoadingBody();
+    } else if (claimState === ClaimState.SUCCESS) {
+      return getClaimReceipt();
+    } else {
+      return getFailedBody();
+    }
+  }
+
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
-      {loading && <Text data-testid={`loading`}>Loading...</Text>}
-      {claimReceipt ? getClaimReceipt() : getClaimBody2()}
+      <Text fontSize="14" className="scan-qr-text">
+        Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+      </Text>
+      {getClaimBody()}
     </ClaimModalWrapper>
   );
 };

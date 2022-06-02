@@ -97,16 +97,6 @@ describe('Claim', () => {
     });
   };
 
-  it('does not show modal when claimed', () => {
-    setupGetUserProfileVerified();
-    cy.visit('/');
-    connectWallet();
-    cy.wait(1000);
-
-    cy.get(`[data-testid=chain-show-claim-${chainList[0].pk}]`).click();
-    cy.get(`[data-testid=chain-claim-modal-${chainList[0].pk}]`).should('not.exist');
-  });
-
   it('cannot claim with unverified BrightID', () => {
     setupGetUserProfileNotVerified();
     setupClaimMax();

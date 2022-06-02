@@ -80,3 +80,21 @@ export async function copyToClipboard(textToCopy: string) {
   document.execCommand('copy');
   textArea.remove();
 }
+
+export const convertTimeZoneToUTC = (date: Date) => {
+  return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+};
+
+export const diffToNextMonday = (date: Date) => {
+  const utcDate = convertTimeZoneToUTC(date);
+  const weekDay = utcDate.getDay();
+  const diffToMonday = 7 - (weekDay === 0 ? 7 : weekDay) + 1;
+  const nextMonday = new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate() + diffToMonday);
+  const diffTime = Math.ceil((nextMonday.getTime() - utcDate.getTime()) / 1000);
+  return {
+    seconds: String(diffTime % 60).padStart(2, '0'),
+    minutes: String(Math.floor(diffTime / 60) % 60).padStart(2, '0'),
+    hours: String(Math.floor(diffTime / 3600) % 24).padStart(2, '0'),
+    days: String(Math.floor(diffTime / 86400)).padStart(2, '0'),
+  };
+};

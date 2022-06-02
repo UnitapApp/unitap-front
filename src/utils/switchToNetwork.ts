@@ -8,7 +8,7 @@ interface SwitchNetworkArguments {
 }
 
 const USER_DENIED_REQUEST_ERROR_CODE = 4001;
-const UNRECOGNIZED_CHAIN_ERROR_CODE = 4902;
+const UNRECOGNIZED_CHAIN_ERROR_CODE = [4902, -32603];
 
 // provider.request returns Promise<any>, but wallet_switchEthereumChain must return null or throw
 // see https://github.com/rekmarks/EIPs/blob/3326-create/EIPS/eip-3326.md for more info on wallet_switchEthereumChain
@@ -23,9 +23,7 @@ export async function switchToNetwork({ provider, chain }: SwitchNetworkArgument
       params: [{ chainId: formattedChainId }],
     });
   } catch (error: any) {
-    // 4902 is the error code for attempting to switch to an unrecognized chainId
-    // @ts-ignore
-    if (error.code === UNRECOGNIZED_CHAIN_ERROR_CODE) {
+    if (UNRECOGNIZED_CHAIN_ERROR_CODE.includes(error.code)) {
       try {
         await provider.request({
           method: 'wallet_addEthereumChain',

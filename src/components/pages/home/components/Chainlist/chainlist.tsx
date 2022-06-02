@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { ClaimButton, SecondaryButton } from 'components/basic/Button/button';
+import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import { Chain } from 'types';
 import { switchToNetwork } from 'utils/switchToNetwork';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -149,22 +149,28 @@ const ChainList = () => {
                   <span>Currency</span> {chain.symbol}
                 </p>
                 <Action>
-                  <ClaimButton
-                    data-testid={`chain-show-claim-${chain.pk}`}
-                    disabled={!active}
-                    mr={2}
-                    onClick={() => {
-                      if (chain.unclaimed !== 0) {
+                  {chain.unclaimed !== 0 ? (
+                    <ClaimButton
+                      data-testid={`chain-show-claim-${chain.pk}`}
+                      disabled={!active}
+                      mr={2}
+                      onClick={() => {
                         setActiveChain(chain);
-                      }
-                    }}
-                  >
-                    {chain.unclaimed === 0
-                      ? 'Claimed!'
-                      : `Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
-                  </ClaimButton>
-
-                  {/* <ClaimedButton mr={2} icon="claimIcon.png" iconWidth={52} iconHeight={58} >Claimed!</ClaimedButton> */}
+                      }}
+                    >
+                      {`Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
+                    </ClaimButton>
+                  ) : (
+                    <ClaimedButton
+                      data-testid={`chain-claimed-${chain.pk}`}
+                      mr={2}
+                      icon="claimIcon.png"
+                      iconWidth={52}
+                      iconHeight={58}
+                    >
+                      Claimed!
+                    </ClaimedButton>
+                  )}
 
                   <SecondaryButton
                     data-testid={`chain-switch-${chain.pk}`}

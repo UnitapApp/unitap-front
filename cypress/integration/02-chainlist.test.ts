@@ -99,14 +99,14 @@ describe('Landing Page', () => {
     cy.get(`[data-testid=chain-list-loading]`).should('exist');
     cy.get(`[data-testid=chain-list-loading]`).should('not.exist');
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
-    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claim ');
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
   });
 
   it('loads chain list authenticated', () => {
     setupGetChainListAuthenticated();
     cy.visit('/');
     connectWallet();
-    cy.get(`[data-testid=chain-show-claim-${chainList[0].pk}]`).contains('Claimed');
-    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).contains('Claim ');
+    cy.get(`[data-testid=chain-claimed-${chainList[0].pk}]`).should('exist');
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
   });
 });

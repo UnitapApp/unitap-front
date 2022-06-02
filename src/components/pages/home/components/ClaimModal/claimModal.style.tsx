@@ -38,3 +38,15 @@ export const WalletAddressWrapper = styled(Text)`
     }
   }
 `;
+
+export const DropIconWrapper = styled.div`
+  position: relative;
+
+  & > img {
+    position: absolute;
+    top: 64px;
+    left: 43px;
+    width: 26px;
+    height: 26px;
+  }
+`;

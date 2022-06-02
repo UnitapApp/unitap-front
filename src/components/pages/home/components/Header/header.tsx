@@ -4,6 +4,7 @@ import { DV } from 'components/basic/designVariables';
 import Input from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
 import { ChainListContext } from 'hooks/useChainList';
+import { diffToNextMonday } from '../../../../../utils';
 
 // ###### Local Styled Components
 
@@ -83,14 +84,11 @@ const Header = () => {
   const [seconds, setSeconds] = useState('00');
 
   useEffect(() => {
-    const weekDay = now.getDay();
-    const diffToMonday = 7 - (weekDay === 0 ? 6 : weekDay) + 1;
-    const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMonday);
-    const diffTime = Math.ceil((nextMonday.getTime() - now.getTime()) / 1000);
-    setSeconds(String(diffTime % 60).padStart(2, '0'));
-    setMinutes(String(Math.floor(diffTime / 60) % 60).padStart(2, '0'));
-    setHours(String(Math.floor(diffTime / 3600) % 24).padStart(2, '0'));
-    setDays(String(Math.floor(diffTime / 86400)).padStart(2, '0'));
+    const diff = diffToNextMonday(now);
+    setSeconds(diff.seconds);
+    setMinutes(diff.minutes);
+    setHours(diff.hours);
+    setDays(diff.days);
   }, [now]);
 
   useEffect(() => {
