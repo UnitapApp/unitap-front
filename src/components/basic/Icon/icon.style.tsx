@@ -1,4 +1,4 @@
-import styled from 'styled-components/';
+import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 
 type props = {
