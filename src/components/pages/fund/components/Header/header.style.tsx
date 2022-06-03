@@ -9,17 +9,16 @@ export const HeaderWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  overflow: hidden;
 
-  p {
-    position: relative;
-    text-align: center;
-    top: 24px;
-    font-weight: bold;
-    font-size: 24px;
-    color: white;
-    @media screen and (max-width: 600px) {
-      width: 90%;
-      font-size: 20px;
-    }
+  .text {
+    position: absolute;
+    bottom: 20px;
+  }
+  
+  .spaceman {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(50%);
   }
 `;

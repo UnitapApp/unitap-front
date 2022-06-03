@@ -4,12 +4,10 @@ import { HeaderWrapper } from 'components/pages/fund/components/Header/header.st
 
 const Header = () => {
   return (
-    <>
-      <HeaderWrapper>
-        <Icon iconSrc={'assets/images/fund/header-spaceman.png'} width="320px" height="auto" />
-        <Icon iconSrc={'assets/images/fund/header-gas-fund-fee-text.png'} width="320px" height="auto" />
-      </HeaderWrapper>
-    </>
+    <HeaderWrapper>
+      <Icon className='text' iconSrc={'assets/images/fund/header-gas-fund-fee-text.png'} width="320px" height="auto" />
+      <Icon className='spaceman' iconSrc={'assets/images/fund/header-spaceman.png'} width="220px" height="auto" />
+    </HeaderWrapper>
   );
 };
 
