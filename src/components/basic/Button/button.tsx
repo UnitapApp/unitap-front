@@ -11,6 +11,7 @@ interface props {
   color?: string;
   disabled?: boolean;
   icon?: string;
+  fontSize?: string;
 }
 
 // export const Xp = styled.p`
@@ -34,6 +35,8 @@ export const Button = styled.button<props>`
   margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
   margin-bottom: ${(props) => (props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`)};
   width: ${(props) => props.width || 'auto'};
+  height: ${(props) => props.height || 'auto'};
+  font-size: ${(props) => props.fontSize || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
 
   &::after  {
@@ -44,7 +47,7 @@ export const Button = styled.button<props>`
     top: 2px;
     background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
     width: ${(props) => `${props.iconWidth}px` || 'auto'};
-    height: ${(props) => `${props.iconHeight}px` || 'auto'};
+    height: ${(props) => `${props.height}px` || 'auto'};
     margin-left: 12px;
   }
 

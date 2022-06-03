@@ -31,7 +31,7 @@ const Fund: FC = () => {
         <Navbar handleConnect={connect} />
       </NavWrapper>
       <Header />
-
+    
       <Content />
 
       <Footer>
