@@ -5,6 +5,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { injected } from 'connectors';
 
 import styled from 'styled-components/';
+import Icon from 'components/basic/Icon/Icon';
+import { Footer } from './index.style';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -28,6 +30,10 @@ const Fund: FC = () => {
         <Navbar handleConnect={connect} />
       </NavWrapper>
       <Header />
+
+      <Footer>
+        <Icon iconSrc={'assets/images/fund/footer-text.png'} width="100%"></Icon>
+      </Footer>
     </>
   );
 };
