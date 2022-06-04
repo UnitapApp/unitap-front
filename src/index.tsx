@@ -6,15 +6,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-Sentry.init({
-  dsn: 'https://ebbf4d36ea304eeeb94604f18648407c@o262681.ingest.sentry.io/6422961',
-  integrations: [new BrowserTracing()],
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://ebbf4d36ea304eeeb94604f18648407c@o262681.ingest.sentry.io/6422961',
+    integrations: [new BrowserTracing()],
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
