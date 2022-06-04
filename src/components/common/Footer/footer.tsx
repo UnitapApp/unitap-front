@@ -19,9 +19,9 @@ const FooterWrapper = styled.div`
 const Footer: FC = () => {
   return (
     <FooterWrapper>
-      <Icon iconSrc="assets/images/footer/discord.png" width="34px" height='auto' mr={4} hoverable></Icon>
+      <Icon iconSrc="assets/images/footer/twitter.png" width="34px" height='auto' mr={4} hoverable></Icon>
       <Icon iconSrc="assets/images/footer/github.png" width="34px" height='auto' mr={4} hoverable></Icon>
-      <Icon iconSrc="assets/images/footer/twitter.png" width="34px" height='auto' hoverable></Icon>
+      <Icon iconSrc="assets/images/footer/discord.png" width="34px" height='auto'  hoverable></Icon>
     </FooterWrapper>
   );
 };
