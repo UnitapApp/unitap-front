@@ -47,7 +47,7 @@ const Timer = styled.div`
 const Spaceman = styled.div`
   position: absolute;
   right: 96px;
-  bottom: -16px;
+  bottom: 0px;
   @media screen and (max-width: 920px) {
     display: none;
   }
@@ -116,7 +116,6 @@ const Header = () => {
         </p>
       </HeaderComp>
       <InputWrapper>
-        {' '}
         <Input
           testid="search-box"
           icon="search.png"
@@ -126,7 +125,8 @@ const Header = () => {
           value={searchPhraseInput}
           onChange={searchPhraseChangeHandler}
           placeholder="Search Network / Currency"
-        ></Input>{' '}
+          pl={7}
+        ></Input>
       </InputWrapper>
     </>
   );

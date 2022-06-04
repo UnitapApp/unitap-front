@@ -17,10 +17,13 @@ interface props {
   label?: string;
   postfix?: string;
   type?: string;
+  fontSize?: string;
+  pl?: number;
 }
 
 const RawInput = styled.input<props>`
   padding: ${DV.sizes.basePadding * 1.5}px;
+  padding-left: ${(props) => (props.pl ? DV.sizes.basePadding * props.pl : DV.sizes.basePadding * 1.5)}px;
   width: ${(props) => props.width || 'auto'};
   width: 100%;
   color: white;
@@ -29,7 +32,7 @@ const RawInput = styled.input<props>`
   border: 1px solid ${(props) => (props.type == 'success' ? DV.colors.green : 'unset')};
   z-index: 1;
   box-sizing: border-box;
-  font-size: 24px;
+  font-size: ${(props) => props.fontSize ? props.fontSize : '1em'};
 
   ::placeholder {
     color: ${(props) => (props.type == 'success' ? 'white' : '#979797')};
@@ -54,6 +57,14 @@ const InputWrapper = styled.div<props>`
   border-radius: ${DV.sizes.baseRadius}px;
   margin-bottom: 1rem;
   position: relative;
+
+  .input-icon {
+    position: absolute;
+    left: ${DV.sizes.basePadding * 2}px;
+    bottom: 50%;
+    transform: translateY(50%);
+    z-index: 10;
+  }
 
   .input-postfix {
     position: absolute;
@@ -80,13 +91,15 @@ const Input = ({
   type,
   postfix,
   label,
+  fontSize,
+  pl,
 }: props) => (
   <>
     <InputWrapper width={width}>
       {label ? <Label>{label}</Label> : null}
       {icon ? (
         <>
-          <Icon iconSrc={icon} width={iconWidth} height={iconHeight} />
+          <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className='input-icon' />
         </>
       ) : (
         <></>
@@ -98,6 +111,8 @@ const Input = ({
         placeholder={placeholder}
         disabled={disabled}
         type={type}
+        fontSize={fontSize}
+        pl={pl}
       ></RawInput>
       {postfix ? <p className="input-postfix">{postfix}</p> : null}
     </InputWrapper>
