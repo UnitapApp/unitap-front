@@ -5,6 +5,7 @@ import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
+import Footer from 'components/common/Footer/footer';
 
 require('typeface-jetbrains-mono');
 
@@ -20,6 +21,7 @@ function App() {
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ProviderNetwork getLibrary={getLibrary}>
           <Fund />
+          <Footer />
         </Web3ProviderNetwork>
       </Web3ReactProvider>
     </React.StrictMode>

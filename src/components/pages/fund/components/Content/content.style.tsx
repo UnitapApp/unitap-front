@@ -6,7 +6,7 @@ export const ContentWrapper = styled.div`
   border: 1px solid ${DV.colors.border_black};
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   width: min(30%, 430px);
-  margin: ${DV.sizes.baseMargin * 4}px auto ${DV.sizes.baseMargin * 14}px;
+  margin: ${DV.sizes.baseMargin * 4}px auto ${DV.sizes.baseMargin * 10}px;
   padding: ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 4}px;
   box-sizing: border-box;
   display: flex;

@@ -8,6 +8,7 @@ type props = {
   mb?: number;
   mt?: number;
   ml?: number;
+  hoverable?: boolean;
 };
 
 export const IconWrapper = styled.div<props>`
@@ -23,4 +24,6 @@ export const IconWrapper = styled.div<props>`
     margin-left: ${(props) => (props.ml ? `${props.ml * DV.sizes.baseMargin}px` : `0`)};
     margin-top: ${(props) => (props.mt ? `${props.mt * DV.sizes.baseMargin}px` : `0`)};
   }
+
+  ${(props) => (props.hoverable ? `&:hover {cursor: pointer;}` : ``)}
 `;

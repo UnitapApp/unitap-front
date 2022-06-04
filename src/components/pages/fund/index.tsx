@@ -1,13 +1,12 @@
 import React, { FC, useCallback } from 'react';
-import Navbar from 'components/common/Navbar/navbar';
-import Header from './components/Header/header';
+import styled from 'styled-components/';
+
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { injected } from 'connectors';
 
-import styled from 'styled-components/';
-import Icon from 'components/basic/Icon/Icon';
-import { Footer } from './index.style';
+import Navbar from 'components/common/Navbar/navbar';
 import Content from './components/Content/content';
+import Header from './components/Header/header';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -31,12 +30,7 @@ const Fund: FC = () => {
         <Navbar handleConnect={connect} />
       </NavWrapper>
       <Header />
-    
       <Content />
-
-      <Footer>
-        <Icon iconSrc={'assets/images/fund/footer-text.png'} width="100%"></Icon>
-      </Footer>
     </>
   );
 };
