@@ -1,6 +1,5 @@
 import React from 'react';
 import Home from 'components/pages/home';
-import Fund from 'components/pages/fund';
 import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
@@ -20,7 +19,7 @@ function App() {
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ProviderNetwork getLibrary={getLibrary}>
-          <Fund />
+          <Home />
           <Footer />
         </Web3ProviderNetwork>
       </Web3ReactProvider>
