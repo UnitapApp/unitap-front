@@ -27,24 +27,24 @@ const RawInput = styled.input<props>`
   width: ${(props) => props.width || 'auto'};
   width: 100%;
   color: white;
-  background: ${(props) => (props.type == 'success' ? DV.colors.darkgreen : DV.colors.dark)};
+  background: ${(props) => (props.type === 'success' ? DV.colors.darkgreen : DV.colors.dark)};
   border-radius: ${DV.sizes.baseRadius}px;
-  border: 1px solid ${(props) => (props.type == 'success' ? DV.colors.green : 'unset')};
+  border: 1px solid ${(props) => (props.type === 'success' ? DV.colors.green : 'unset')};
   z-index: 1;
   box-sizing: border-box;
-  font-size: ${(props) => props.fontSize ? props.fontSize : '1em'};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '1em')};
 
   ::placeholder {
-    color: ${(props) => (props.type == 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
     opacity: 1;
   }
 
   :-ms-input-placeholder {
-    color: ${(props) => (props.type == 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
   }
 
   ::-ms-input-placeholder {
-    color: ${(props) => (props.type == 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
   }
 `;
 
@@ -70,7 +70,7 @@ const InputWrapper = styled.div<props>`
     position: absolute;
     right: ${DV.sizes.basePadding * 4}px;
     bottom: ${DV.sizes.basePadding}px;
-    
+
     font-size: 12px;
     color: ${DV.colors.space_green};
 
@@ -99,7 +99,7 @@ const Input = ({
       {label ? <Label>{label}</Label> : null}
       {icon ? (
         <>
-          <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className='input-icon' />
+          <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />
         </>
       ) : (
         <></>
