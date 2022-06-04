@@ -13,9 +13,11 @@ const Dropdown = ({ label, value, icon }: props) => {
   return (
     <DropdownWrapper>
       {label ? <Label>{label}</Label> : null}
-      {icon? <Icon iconSrc={icon} /> : null}
-      <p className='dropdown-value'>{ value }</p>
-      <Icon iconSrc={'assets/images/fund/arrow-down.png'}></Icon>
+      <div className='dropdown'>
+        {icon ? <Icon iconSrc={icon} width="32px" /> : null}
+        <p className="dropdown-value">{value}</p>
+        <Icon iconSrc={'assets/images/fund/arrow-down.png'} width="14px" height="auto"></Icon>
+      </div>
     </DropdownWrapper>
   );
 };

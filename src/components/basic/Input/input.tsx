@@ -20,7 +20,7 @@ interface props {
 }
 
 const RawInput = styled.input<props>`
-  padding: ${DV.sizes.basePadding * 2}px;
+  padding: ${DV.sizes.basePadding * 1.5}px;
   width: ${(props) => props.width || 'auto'};
   width: 100%;
   color: white;
@@ -29,7 +29,7 @@ const RawInput = styled.input<props>`
   border: 1px solid ${(props) => (props.type == 'success' ? DV.colors.green : 'unset')};
   z-index: 1;
   box-sizing: border-box;
-
+  font-size: 24px;
 
   ::placeholder {
     color: ${(props) => (props.type == 'success' ? 'white' : '#979797')};
@@ -53,6 +53,18 @@ const InputWrapper = styled.div<props>`
   color: white;
   border-radius: ${DV.sizes.baseRadius}px;
   margin-bottom: 1rem;
+  position: relative;
+
+  .input-postfix {
+    position: absolute;
+    right: ${DV.sizes.basePadding * 4}px;
+    bottom: ${DV.sizes.basePadding}px;
+    
+    font-size: 12px;
+    color: ${DV.colors.space_green};
+
+    z-index: 1;
+  }
 `;
 
 const Input = ({
