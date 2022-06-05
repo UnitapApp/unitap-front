@@ -4,6 +4,7 @@ import { DV } from 'components/basic/designVariables';
 type props = {
   fontSize?: string;
   color?: string;
+  width?: string;
 };
 
 export const Text = styled.p<props>`
@@ -16,5 +17,6 @@ export const Text = styled.p<props>`
   font-size: ${(props) => props.fontSize || '16'}px;
   padding: 0;
   margin: 0;
+  width: ${(props) => props.width || 'auto'};
   margin-bottom: 1rem;
 `;

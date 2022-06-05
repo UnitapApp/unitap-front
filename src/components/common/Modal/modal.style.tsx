@@ -17,7 +17,7 @@ export const ModalWrapper = styled.div`
 `;
 
 export const ModalChildrenWrapper = styled.div`
-  width: 300px;
+  width: min(330px, 50%);
   margin: ${DV.sizes.baseMargin * 2}px auto;
   background-color: ${DV.colors.transparent_black};
   border-radius: ${DV.sizes.baseRadius * 2}px;
@@ -36,7 +36,7 @@ export const ModalChildrenWrapper = styled.div`
 
 export const ModalContent = styled.div`
   background-color: ${DV.colors.black1};
-  width: min(600px,90%);
+  width: min(750px,90%);
   margin: 0 5%;
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
@@ -85,7 +85,7 @@ export const ModalContent = styled.div`
     position: absolute;
     right: 0rem;
     bottom: 0;
-    width: 200px
+    width: 250px;
   }
 
   .spaceman-two {
