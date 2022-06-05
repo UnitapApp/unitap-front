@@ -108,7 +108,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       <>
         <DropIconWrapper>
           <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`} alt="" />
-          <Icon iconSrc={'dropIcon.png'} width="80px" height="auto" />
+          <Icon mr={2} mb={2} mt={2} ml={2} iconSrc={'dropIcon.png'} width="80px" height="auto" />
         </DropIconWrapper>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}

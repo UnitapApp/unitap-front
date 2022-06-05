@@ -7,11 +7,23 @@ type props = {
   height?: string;
   className?: string;
   mr?: number;
+  mb?: number;
+  ml?: number;
+  mt?: number;
   hoverable?: boolean;
 };
 
-const Icon = ({ iconSrc, width, height, mr, hoverable, className}: props) => (
-  <IconWrapper className={className} width={width} height={height} mr={mr} hoverable={hoverable}>
+const Icon = ({ iconSrc, width, height, mr, mb, ml, mt, hoverable, className }: props) => (
+  <IconWrapper
+    className={className}
+    width={width}
+    height={height}
+    mr={mr}
+    ml={ml}
+    mt={mt}
+    mb={mb}
+    hoverable={hoverable}
+  >
     <img src={iconSrc} alt="" />
   </IconWrapper>
 );
