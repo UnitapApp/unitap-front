@@ -45,13 +45,15 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   const mounted = useRef(false);
 
   useEffect(() => {
-    lottie.loadAnimation({
-      container: document.querySelector('#animation') as HTMLInputElement,
-      animationData: animation,
-      loop: true,
-      autoplay: true,
-    });
-  }, []);
+    if (claimState === ClaimState.LOADING) {
+      lottie.loadAnimation({
+        container: document.querySelector('#animation') as HTMLInputElement,
+        animationData: animation,
+        loop: true,
+        autoplay: true,
+      });
+    }
+  }, [claimState]);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
