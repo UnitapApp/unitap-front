@@ -11,7 +11,7 @@ type props = {
   hoverable?: boolean;
 };
 
-export const IconWrapper = styled.div<props>`
+export const IconWrapper = styled.span<props>`
   display: flex;
   justify-content: center;
 

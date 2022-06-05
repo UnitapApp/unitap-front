@@ -122,8 +122,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       <>
         <div data-testid={`loading`} id="animation" style={{ width: '200px' }}></div>
         <Text width="100%" fontSize="14">
-          {' '}
-          Wallet Address{' '}
+          Wallet Address
         </Text>
         <WalletAddress fontSize="12" editable>
           {active ? shortenAddress(account) : ''}
@@ -141,8 +140,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       <>
         <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
         <Text width="100%" fontSize="14">
-          {' '}
-          Wallet Address{' '}
+          Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         <SuccessMessageButton onClick={closeModalHandler} width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
@@ -157,8 +155,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       <>
         <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
         <Text width="100%" fontSize="14">
-          {' '}
-          Wallet Address{' '}
+          Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         <DangerMessageButton
