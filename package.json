@@ -76,6 +76,7 @@
     "eslint-plugin-react-hooks": "^4.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "jest-canvas-mock": "^2.4.0",
     "prettier": "^2.6.2",
     "serve": "^13.0.2",
     "start-server-and-test": "^1.14.0",
