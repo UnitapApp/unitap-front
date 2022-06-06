@@ -5,6 +5,8 @@ import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import Footer from 'components/common/Footer/footer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Fund from './components/pages/fund';
 
 require('typeface-jetbrains-mono');
 
@@ -19,7 +21,12 @@ function App() {
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ProviderNetwork getLibrary={getLibrary}>
-          <Home />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/fund" element={<Fund />} />
+            </Routes>
+          </BrowserRouter>
           <Footer />
         </Web3ProviderNetwork>
       </Web3ReactProvider>

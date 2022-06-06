@@ -15,7 +15,7 @@ const NavWrapper = styled.div`
 `;
 
 const Fund: FC = () => {
-  const { activate, account } = useActiveWeb3React();
+  const { activate } = useActiveWeb3React();
   const connect = useCallback(async () => {
     try {
       await activate(injected);

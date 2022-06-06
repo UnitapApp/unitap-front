@@ -1,5 +1,4 @@
 import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -15,7 +14,7 @@ export const HeaderWrapper = styled.div`
     position: absolute;
     bottom: 20px;
   }
-  
+
   .spaceman {
     position: absolute;
     bottom: 0;
