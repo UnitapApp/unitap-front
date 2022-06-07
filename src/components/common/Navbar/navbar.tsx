@@ -143,6 +143,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
       <DesktopNav>
         {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
           <BrightConnectedButton
+            className='has-icon'
             data-testid="brightid-connected"
             icon="green-tick.png"
             iconWidth={24}

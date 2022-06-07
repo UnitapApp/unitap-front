@@ -55,25 +55,30 @@ const Landing: FC = () => {
       <div className="landing__hero">
         <Icon iconSrc="assets/images/landing/logo-center.png" width="75px" height="auto" mb={3}></Icon>
         <Icon iconSrc="assets/images/landing/name-center.svg" width="190px" height="auto" mb={6}></Icon>
-        <Text fontSize="24" textAlign="center">
+        <Text fontSize="24" textAlign="center" mb={7}>
           Add EVM networks easily and connect your <br /> BrightID to claim Gas Fee and Tokens.
         </Text>
-        <div className='landing__hero__action-buttons'>
+        <div className="landing__hero__action-buttons">
           <LandingClaimIconButton
+            className="has-icon"
             icon="assets/images/landing/claim-button-logo.png"
-            iconWidth={13}
-            iconHeight={16}
-            iconMarginLeft={35}
+            iconWidth={16}
+            iconHeight={22}
+            iconMarginLeft={55}
+            fontSize="20px"
+            mr={4}
           >
             Claim Gas Fee
           </LandingClaimIconButton>
           <LandingClaimIconButton
-            icon="assets/images/landing/claim-button-logo.png"
-            iconWidth={13}
-            iconHeight={16}
-            iconMarginLeft={35}
+            className="has-icon"
+            icon="assets/images/landing/soon-logo.png"
+            iconWidth={40}
+            iconHeight={20}
+            iconMarginLeft={55}
+            fontSize="20px"
           >
-            Claim Gas Fee
+            Claim Token
           </LandingClaimIconButton>
         </div>
       </div>
