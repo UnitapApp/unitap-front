@@ -49,7 +49,7 @@ export const Button = styled.button<props>`
     background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
     width: ${(props) => `${props.iconWidth}px` || 'auto'};
     height: ${(props) => `${props.iconHeight}px` || 'auto'};
-    margin-left: ${(props) => `${props.iconMarginLeft}px` || '12px'};
+    margin-left: ${(props) => props.iconMarginLeft ? props.iconMarginLeft : '12'}px;
   }
 
   ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)}
