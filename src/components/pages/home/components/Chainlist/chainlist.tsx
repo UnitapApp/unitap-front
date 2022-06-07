@@ -3,13 +3,13 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import { Chain } from 'types';
-import { switchToNetwork } from 'utils/switchToNetwork';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 import ClaimModal from 'components/pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from '../../../../../utils/numbers';
+import { fromWei } from 'utils/numbers';
+import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 
 // ###### Local Styled Components
 
@@ -109,22 +109,13 @@ const ChainList = () => {
   const { chainList, chainListSearchResult } = useContext(ChainListContext);
 
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
-
-  const { library, active } = useActiveWeb3React();
+  const { addAndSwitchToChain } = useAddAndSwitchToChain();
+  const { active } = useActiveWeb3React();
 
   const formatBalance = useCallback((amount: number) => {
     const fw = fromWei(amount);
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
-
-  const changeNetwork = useCallback(
-    async (chain: Chain) => {
-      if (!library?.provider) return;
-      if (!active) return;
-      await switchToNetwork({ provider: library.provider, chain });
-    },
-    [active, library],
-  );
 
   return (
     <ChainListWrapper>
@@ -174,7 +165,7 @@ const ChainList = () => {
 
                   <SecondaryButton
                     data-testid={`chain-switch-${chain.pk}`}
-                    onClick={() => changeNetwork(chain)}
+                    onClick={() => addAndSwitchToChain(chain)}
                     disabled={!active}
                   >
                     Add to MetaMask
