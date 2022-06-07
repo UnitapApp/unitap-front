@@ -4,15 +4,21 @@ import { DV } from 'components/basic/designVariables';
 interface props {
   width?: string;
   iconWidth?: number;
+  smIconWidth?: number;
   iconHeight?: number;
+  smIconHeight?: number;
   iconMarginLeft?: number;
+  smIconMarginLeft?: number;
   height?: string;
   mr?: number;
+  smMr?: number;
   mb?: number;
+  smMb?: number;
   color?: string;
   disabled?: boolean;
   icon?: string;
   fontSize?: string;
+  smFontSize?: string;
 }
 
 // export const Xp = styled.p`
@@ -49,10 +55,25 @@ export const Button = styled.button<props>`
     background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
     width: ${(props) => `${props.iconWidth}px` || 'auto'};
     height: ${(props) => `${props.iconHeight}px` || 'auto'};
-    margin-left: ${(props) => props.iconMarginLeft ? props.iconMarginLeft : '12'}px;
+    margin-left: ${(props) => (props.iconMarginLeft ? props.iconMarginLeft : '12')}px;
   }
 
   ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)}
+
+  @media only screen and (max-width: 1224px) {
+    font-size: ${(props) => props.smFontSize || props.fontSize || 'auto'};
+    margin-right: ${(props) =>
+      props.smMr ? `${props.smMr * DV.sizes.baseMargin}px` : props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`};
+    margin-bottom: ${(props) =>
+      props.smMb ? `${props.smMb * DV.sizes.baseMargin}px` : props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`};
+
+    &::after {
+      background-size: ${(props) => `${props.smIconWidth}px ${props.smIconHeight}px` || '0 0'};
+      width: ${(props) => `${props.smIconWidth}px` || `${props.iconWidth}px` || 'auto'};
+      height: ${(props) => `${props.smIconHeight}px` || `${props.iconHeight}px` || 'auto'};
+      margin-left: ${(props) => `${props.smIconMarginLeft}px` || `${props.iconMarginLeft}px` || '12px'};
+    }
+  }
 `;
 
 export const PrimaryButton = styled(Button)`

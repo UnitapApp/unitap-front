@@ -126,9 +126,12 @@ const Landing: FC = () => {
             className="has-icon"
             icon="assets/images/landing/claim-button-logo.png"
             iconWidth={16}
+            smIconWidth={12}
             iconHeight={22}
+            smIconHeight={16}
             iconMarginLeft={55}
             fontSize="20px"
+            smFontSize="16px"
             mr={4}
             mb={2}
           >
@@ -138,9 +141,12 @@ const Landing: FC = () => {
             className="has-icon"
             icon="assets/images/landing/soon-logo.png"
             iconWidth={40}
+            smIconWidth={30}
             iconHeight={20}
+            smIconHeight={15}
             iconMarginLeft={55}
             fontSize="20px"
+            smFontSize="16px"
             disabled
           >
             Claim Token
