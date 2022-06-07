@@ -7,6 +7,7 @@ import { NetworkContextName } from './constants/misc';
 import Footer from 'components/common/Footer/footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './components/pages/fund';
+import Landing from 'components/pages/landing';
 
 require('typeface-jetbrains-mono');
 
@@ -16,7 +17,7 @@ function getLibrary(provider: any) {
   return new Web3Provider(provider);
 }
 
-function App() {
+function App() {  
   return (
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/fund" element={<Fund />} />
+              <Route path="/landing" element={<Landing />} />
             </Routes>
           </BrowserRouter>
           <Footer />

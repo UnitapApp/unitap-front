@@ -5,6 +5,7 @@ type props = {
   fontSize?: string;
   color?: string;
   width?: string;
+  textAlign?: string;
 };
 
 export const Text = styled.p<props>`
@@ -19,4 +20,5 @@ export const Text = styled.p<props>`
   margin: 0;
   width: ${(props) => props.width || 'auto'};
   margin-bottom: 1rem;
+  text-align: ${(props) => props.textAlign || 'left'};
 `;

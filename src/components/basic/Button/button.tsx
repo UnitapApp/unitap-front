@@ -1,10 +1,12 @@
+import React from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 
 interface props {
   width?: string;
-  iconWidth?: number,
-  iconHeight?: number,
+  iconWidth?: number;
+  iconHeight?: number;
+  iconMarginLeft?: number;
   height?: string;
   mr?: number;
   mb?: number;
@@ -39,7 +41,7 @@ export const Button = styled.button<props>`
   font-size: ${(props) => props.fontSize || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
 
-  &::after  {
+  &::after {
     display: ${(props) => (props.icon ? 'inline-block' : 'none')};
     content: ' ';
     background-image: ${(props) => `url(${props.icon})` || 'none'};
@@ -47,8 +49,8 @@ export const Button = styled.button<props>`
     top: 2px;
     background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
     width: ${(props) => `${props.iconWidth}px` || 'auto'};
-    height: ${(props) => `${props.height}px` || 'auto'};
-    margin-left: 12px;
+    height: ${(props) => `${props.iconHeight}px` || 'auto'};
+    margin-left: ${(props) => `${props.iconMarginLeft}px` || '12px'};
   }
 
   &:hover {
@@ -113,7 +115,6 @@ export const BrightOutlinedButton = styled(Button)`
   background-color: ${DV.colors.black};
 `;
 
-
 export const BrightConnectedButton = styled(Button)`
   border: 1px solid ${DV.colors.green};
   color: ${DV.colors.bright};
@@ -130,11 +131,11 @@ export const ClaimedButton = styled(SecondaryButton)`
   color: ${DV.colors.green};
   background-color: ${DV.colors.darkgreen};
   text-align: left;
-  &::after  {
+  &::after {
     position: absolute;
     top: -8px;
     right: 4px;
   }
 `;
 
-
+export const LandingClaimIconButton = styled(PrimaryOutlinedButton)``;
