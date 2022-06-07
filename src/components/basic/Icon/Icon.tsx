@@ -3,22 +3,26 @@ import { IconWrapper } from './icon.style';
 
 type props = {
   iconSrc: string;
+  smWidth?: string;
   width?: string;
   height?: string;
   className?: string;
   mr?: number;
   mb?: number;
+  smMb?: number;
   ml?: number;
   mt?: number;
   hoverable?: boolean;
 };
 
-const Icon = ({ iconSrc, width, height, mr, mb, ml, mt, hoverable, className }: props) => (
+const Icon = ({ iconSrc, width, smWidth, height, mr, mb, smMb, ml, mt, hoverable, className }: props) => (
   <IconWrapper
     className={className}
     width={width}
+    smWidth={smWidth}
     height={height}
     mr={mr}
+    smMb={smMb}
     ml={ml}
     mt={mt}
     mb={mb}
