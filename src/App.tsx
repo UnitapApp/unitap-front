@@ -7,6 +7,8 @@ import { NetworkContextName } from './constants/misc';
 import Footer from 'components/common/Footer/footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './components/pages/fund';
+import { ChainListProvider } from 'hooks/useChainList';
+import { UserProfileProvider } from './hooks/useUserProfile';
 
 require('typeface-jetbrains-mono');
 
@@ -21,13 +23,17 @@ function App() {
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ProviderNetwork getLibrary={getLibrary}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/fund" element={<Fund />} />
-            </Routes>
-          </BrowserRouter>
-          <Footer />
+          <UserProfileProvider>
+            <ChainListProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/fund" element={<Fund />} />
+                </Routes>
+              </BrowserRouter>
+              <Footer />
+            </ChainListProvider>
+          </UserProfileProvider>
         </Web3ProviderNetwork>
       </Web3ReactProvider>
     </React.StrictMode>
