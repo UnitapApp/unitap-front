@@ -7,6 +7,7 @@ import { injected } from 'connectors';
 import Navbar from 'components/common/Navbar/navbar';
 import Content from './components/Content/content';
 import Header from './components/Header/header';
+import Footer from 'components/common/Footer/footer';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -31,6 +32,7 @@ const Fund: FC = () => {
       </NavWrapper>
       <Header />
       <Content />
+      <Footer />
     </>
   );
 };

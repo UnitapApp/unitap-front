@@ -4,7 +4,6 @@ import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
-import Footer from 'components/common/Footer/footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './components/pages/fund';
 import Landing from 'components/pages/landing';
@@ -29,7 +28,6 @@ function App() {
               <Route path="/landing" element={<Landing />} />
             </Routes>
           </BrowserRouter>
-          <Footer />
         </Web3ProviderNetwork>
       </Web3ReactProvider>
     </React.StrictMode>
