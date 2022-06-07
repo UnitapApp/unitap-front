@@ -17,14 +17,16 @@ const LandingWrapper = styled.div`
 
   .landing {
     box-sizing: border-box;
+    position: relative;
 
     &__navbar {
       display: flex;
       justify-content: start;
       align-items: flex-start;
-      width: 100%;
-      height: 10vh;
+      top: 0;
+      left: 0;
       padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 10}px;
+      position: absolute;
     }
 
     &__hero {
@@ -32,7 +34,8 @@ const LandingWrapper = styled.div`
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 70vh;
+      height: 80vh;
+      padding-top: 0rem;
     }
 
     &__footer {
@@ -77,6 +80,7 @@ const Landing: FC = () => {
             iconHeight={20}
             iconMarginLeft={55}
             fontSize="20px"
+            disabled
           >
             Claim Token
           </LandingClaimIconButton>

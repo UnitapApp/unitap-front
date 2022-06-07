@@ -52,17 +52,7 @@ export const Button = styled.button<props>`
     margin-left: ${(props) => `${props.iconMarginLeft}px` || '12px'};
   }
 
-  &:hover {
-    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-
-    /* &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: ${DV.sizes.baseRadius * 1.5}px;
-      background-color: ${(props) => !props.disabled && 'rgba(255,255,255,0.05)'};
-    } */
-  }
+  ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)}
 `;
 
 export const PrimaryButton = styled(Button)`
@@ -72,8 +62,8 @@ export const PrimaryButton = styled(Button)`
 
 export const PrimaryOutlinedButton = styled(Button)`
   /* border: 1px solid ${DV.colors.primary}; */
-  color: white;
-  background: ${DV.bgGradient.primary};
+  color: ${(props) => (props.disabled ? '#C0AFC7' : 'white')};
+  background: ${(props) => (props.disabled ? '#C0AFC7' : DV.bgGradient.primary)};
   position: relative;
   z-index: 1;
   box-sizing: border-box;
