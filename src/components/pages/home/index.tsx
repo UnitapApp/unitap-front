@@ -7,7 +7,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { injected } from 'connectors';
 import { UserProfileProvider } from 'hooks/useUserProfile';
 import { ChainListProvider } from 'hooks/useChainList';
-import Footer from 'components/common/Footer/footer';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -33,7 +32,6 @@ const Home: FC = () => {
         </NavWrapper>
         <Header />
         <ChainList />
-        <Footer />
       </ChainListProvider>
     </UserProfileProvider>
   );
