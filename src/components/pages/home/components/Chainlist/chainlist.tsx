@@ -10,6 +10,7 @@ import ClaimModal from 'components/pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
+import { getChainIcon } from '../../../../../utils';
 
 // ###### Local Styled Components
 
@@ -130,7 +131,7 @@ const ChainList = () => {
             <div key={chain.chainId}>
               <ChainCard>
                 <ChainLogo>
-                  <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}.svg`} alt="" />
+                  <img src={getChainIcon(chain)} alt="" />
                 </ChainLogo>
                 <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                 <p>

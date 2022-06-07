@@ -10,7 +10,7 @@ import {
   SuccessMessageButton,
 } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
-import { getTxUrl, shortenAddress } from 'utils';
+import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -107,7 +107,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     return (
       <>
         <DropIconWrapper>
-          <img src={`${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`} alt="" />
+          <img src={getChainClaimIcon(chain)} alt="" />
           <Icon mr={2} mb={2} mt={2} ml={2} iconSrc={'dropIcon.png'} width="80px" height="auto" />
         </DropIconWrapper>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
