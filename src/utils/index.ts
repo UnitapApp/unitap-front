@@ -98,3 +98,11 @@ export const diffToNextMonday = (date: Date) => {
     days: String(Math.floor(diffTime / 86400)).padStart(2, '0'),
   };
 };
+
+export const getChainIcon = (chain: Chain) => {
+  return `${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}.svg`;
+};
+
+export const getChainClaimIcon = (chain: Chain) => {
+  return `${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`;
+};

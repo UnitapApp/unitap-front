@@ -1,8 +1,5 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components/';
-
-import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { injected } from 'connectors';
 
 import Navbar from 'components/common/Navbar/navbar';
 import Content from './components/Content/content';
@@ -16,19 +13,10 @@ const NavWrapper = styled.div`
 `;
 
 const Fund: FC = () => {
-  const { activate } = useActiveWeb3React();
-  const connect = useCallback(async () => {
-    try {
-      await activate(injected);
-    } catch (ex) {
-      console.log(ex);
-    }
-  }, [activate]);
-
   return (
     <>
       <NavWrapper>
-        <Navbar handleConnect={connect} />
+        <Navbar />
       </NavWrapper>
       <Header />
       <Content />

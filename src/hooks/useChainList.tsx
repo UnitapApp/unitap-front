@@ -3,6 +3,7 @@ import { getChainList } from 'api';
 import { Chain } from 'types';
 import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
+import useActiveWeb3React from './useActiveWeb3React';
 
 export const ChainListContext = createContext<{
   chainList: Chain[];
@@ -11,9 +12,10 @@ export const ChainListContext = createContext<{
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
 }>({ chainList: [], updateChainList: null, chainListSearchResult: [], changeSearchPhrase: null });
 
-export function ChainListProvider({ children, address }: PropsWithChildren<{ address: string | null | undefined }>) {
+export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const { account: address } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const updateChainList = useCallback(async () => {
     const newChainList = await getChainList(
