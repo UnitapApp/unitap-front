@@ -4,11 +4,12 @@ import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
-import Footer from 'components/common/Footer/footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './components/pages/fund';
+import Landing from 'components/pages/landing';
 import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
+import Footer from './components/common/Footer/footer';
 
 require('typeface-jetbrains-mono');
 
@@ -29,6 +30,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/fund" element={<Fund />} />
+                  <Route path="/landing" element={<Landing />} />
                 </Routes>
               </BrowserRouter>
               <Footer />

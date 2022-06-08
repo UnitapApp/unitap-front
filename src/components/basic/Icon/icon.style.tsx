@@ -3,9 +3,11 @@ import { DV } from 'components/basic/designVariables';
 
 type props = {
   width?: string;
+  smWidth?: string;
   height?: string;
   mr?: number;
   mb?: number;
+  smMb?: number;
   mt?: number;
   ml?: number;
   hoverable?: boolean;
@@ -26,4 +28,12 @@ export const IconWrapper = styled.span<props>`
   }
 
   ${(props) => (props.hoverable ? `&:hover {cursor: pointer;}` : ``)}
+
+  @media only screen and (max-width: 1224px) {
+    & > img {
+      width: ${(props) => props.smWidth};
+      margin-bottom: ${(props) =>
+        props.smMb ? `${props.smMb * DV.sizes.baseMargin}px` : props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`};
+    }
+  }
 `;

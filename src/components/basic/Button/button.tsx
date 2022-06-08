@@ -3,15 +3,22 @@ import { DV } from 'components/basic/designVariables';
 
 interface props {
   width?: string;
-  iconWidth?: number,
-  iconHeight?: number,
+  iconWidth?: number;
+  smIconWidth?: number;
+  iconHeight?: number;
+  smIconHeight?: number;
+  iconMarginLeft?: number;
+  smIconMarginLeft?: number;
   height?: string;
   mr?: number;
+  smMr?: number;
   mb?: number;
+  smMb?: number;
   color?: string;
   disabled?: boolean;
   icon?: string;
   fontSize?: string;
+  smFontSize?: string;
 }
 
 // export const Xp = styled.p`
@@ -39,7 +46,7 @@ export const Button = styled.button<props>`
   font-size: ${(props) => props.fontSize || 'auto'};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
 
-  &::after  {
+  &::after {
     display: ${(props) => (props.icon ? 'inline-block' : 'none')};
     content: ' ';
     background-image: ${(props) => `url(${props.icon})` || 'none'};
@@ -47,20 +54,23 @@ export const Button = styled.button<props>`
     top: 2px;
     background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
     width: ${(props) => `${props.iconWidth}px` || 'auto'};
-    height: ${(props) => `${props.height}px` || 'auto'};
-    margin-left: 12px;
+    height: ${(props) => `${props.iconHeight}px` || 'auto'};
+    margin-left: ${(props) => (props.iconMarginLeft ? props.iconMarginLeft : '12')}px;
   }
 
-  &:hover {
-    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(max-width: 1224 px) {
+    font-size: ${(props) => props.smFontSize || props.fontSize || 'auto'};
+    margin-right: ${(props) =>
+      props.smMr ? `${props.smMr * DV.sizes.baseMargin}px` : props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`};
+    margin-bottom: ${(props) =>
+      props.smMb ? `${props.smMb * DV.sizes.baseMargin}px` : props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`};
 
-    /* &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: ${DV.sizes.baseRadius * 1.5}px;
-      background-color: ${(props) => !props.disabled && 'rgba(255,255,255,0.05)'};
-    } */
+    &::after {
+      background-size: ${(props) => `${props.smIconWidth}px ${props.smIconHeight}px` || '0 0'};
+      width: ${(props) => `${props.smIconWidth}px` || `${props.iconWidth}px` || 'auto'};
+      height: ${(props) => `${props.smIconHeight}px` || `${props.iconHeight}px` || 'auto'};
+      margin-left: ${(props) => `${props.smIconMarginLeft}px` || `${props.iconMarginLeft}px` || '12px'};
+    }
   }
 `;
 
@@ -71,8 +81,8 @@ export const PrimaryButton = styled(Button)`
 
 export const PrimaryOutlinedButton = styled(Button)`
   /* border: 1px solid ${DV.colors.primary}; */
-  color: white;
-  background: ${DV.bgGradient.primary};
+  color: ${(props) => (props.disabled ? '#C0AFC7' : 'white')};
+  background: ${(props) => (props.disabled ? '#C0AFC7' : DV.bgGradient.primary)};
   position: relative;
   z-index: 1;
   box-sizing: border-box;
@@ -113,7 +123,6 @@ export const BrightOutlinedButton = styled(Button)`
   background-color: ${DV.colors.black};
 `;
 
-
 export const BrightConnectedButton = styled(Button)`
   border: 1px solid ${DV.colors.green};
   color: ${DV.colors.bright};
@@ -130,11 +139,12 @@ export const ClaimedButton = styled(SecondaryButton)`
   color: ${DV.colors.green};
   background-color: ${DV.colors.darkgreen};
   text-align: left;
-  &::after  {
+
+  &::after {
     position: absolute;
     top: -8px;
     right: 4px;
   }
 `;
 
-
+export const LandingClaimIconButton = styled(PrimaryOutlinedButton)``;
