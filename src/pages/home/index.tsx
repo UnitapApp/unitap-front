@@ -2,7 +2,7 @@ import React from 'react';
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 import styled from 'styled-components/';
-import Header from 'components/pages/home/components/Header/header';
+import Header from 'pages/home/components/Header/header';
 
 const NavWrapper = styled.div`
   position: absolute;

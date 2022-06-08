@@ -4,7 +4,7 @@ import { DV } from 'components/basic/designVariables';
 import Input from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
 import { ChainListContext } from 'hooks/useChainList';
-import { diffToNextMonday } from '../../../../../utils';
+import { diffToNextMonday } from '../../../../utils';
 
 // ###### Local Styled Components
 
