@@ -8,17 +8,23 @@ import { ChainListContext } from '../../../../../hooks/useChainList';
 import { Chain } from '../../../../../types';
 import { useAddAndSwitchToChain } from '../../../../../hooks/useAddAndSwitchToChain';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
+import { parseEther } from '@ethersproject/units';
+import { calculateGasMargin } from '../../../../../utils/web3';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
-  const { active, chainId } = useActiveWeb3React();
+  const { active, chainId, library, account } = useActiveWeb3React();
+
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
   useEffect(() => {
     if (chainList.length > 0 && !selectedChain) {
       setSelectedChain(chainList[0]);
     }
   }, [chainList, selectedChain]);
+
   const { addAndSwitchToChain } = useAddAndSwitchToChain();
+
+  const [fundAmount, setFundAmount] = useState<string>('');
 
   const isRightChain = useMemo(() => {
     if (!active || !chainId || !selectedChain) return false;
@@ -26,12 +32,40 @@ const Content: FC = () => {
   }, [selectedChain, active, chainId]);
 
   const handleSendFunds = useCallback(async () => {
-    if (!active || !chainId || !selectedChain) return;
+    if (!active || !chainId || !selectedChain || !account) return;
+    if (!fundAmount) {
+      alert('Enter fund amount');
+      return;
+    }
     if (!isRightChain) {
       await addAndSwitchToChain(selectedChain);
     }
-    //TODO: implement submit fund
-  }, [active, chainId, selectedChain, isRightChain, addAndSwitchToChain]);
+    if (!library) return;
+    const tx = {
+      from: account,
+      to: selectedChain.fundManagerAddress,
+      value: parseEther(fundAmount),
+    };
+
+    const estimatedGas = await library.estimateGas(tx).catch((err: any) => {
+      if (err?.data?.message) {
+        alert(err.data.message);
+      }
+      return {
+        error: new Error('Unexpected error. Could not estimate gas for this transaction.'),
+      };
+    });
+
+    if ('error' in estimatedGas) {
+      throw new Error('Unexpected error. Could not estimate gas for this transaction.');
+    }
+
+    return library.getSigner().sendTransaction({
+      ...tx,
+      ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
+      // gasPrice /// TODO add gasPrice based on EIP 1559
+    });
+  }, [active, chainId, selectedChain, account, isRightChain, library, fundAmount, addAndSwitchToChain]);
 
   return (
     <ContentWrapper>
@@ -44,9 +78,14 @@ const Content: FC = () => {
         <Dropdown label="Chain" value={selectedChain.chainName} icon="assets/images/fund/coin-icon.png" />
       )}
       <Input
+        className="fund-input"
+        value={fundAmount}
+        onChange={(e) => setFundAmount(e.target.value)}
         label="Fund Amount"
         postfix={selectedChain?.symbol || ''}
-        type="success"
+        type="number"
+        step="0.001"
+        styleType="success"
         placeholder="0.00"
         width="100%"
         fontSize="24px"
