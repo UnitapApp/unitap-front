@@ -58,9 +58,7 @@ export const Button = styled.button<props>`
     margin-left: ${(props) => (props.iconMarginLeft ? props.iconMarginLeft : '12')}px;
   }
 
-  ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)}
-
-  @media only screen and (max-width: 1224px) {
+  ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(max-width: 1224 px) {
     font-size: ${(props) => props.smFontSize || props.fontSize || 'auto'};
     margin-right: ${(props) =>
       props.smMr ? `${props.smMr * DV.sizes.baseMargin}px` : props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`};
@@ -141,6 +139,7 @@ export const ClaimedButton = styled(SecondaryButton)`
   color: ${DV.colors.green};
   background-color: ${DV.colors.darkgreen};
   text-align: left;
+
   &::after {
     position: absolute;
     top: -8px;
