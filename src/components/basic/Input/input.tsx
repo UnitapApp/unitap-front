@@ -4,24 +4,20 @@ import * as React from 'react';
 import Icon from '../Icon/Icon';
 import Label from '../Lable/label';
 
-interface props {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: string;
   iconWidth?: string;
   iconHeight?: string;
   icon?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  value?: any;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   testid?: string;
   label?: string;
   postfix?: string;
-  type?: string;
+  styleType?: string;
   fontSize?: string;
   pl?: number;
 }
 
-const RawInput = styled.input<props>`
+const RawInput = styled.input<InputProps>`
   padding: ${DV.sizes.basePadding * 1.5}px;
   padding-left: ${(props) => (props.pl ? DV.sizes.basePadding * props.pl : DV.sizes.basePadding * 1.5)}px;
   width: ${(props) => props.width || 'auto'};
@@ -35,20 +31,20 @@ const RawInput = styled.input<props>`
   font-size: ${(props) => (props.fontSize ? props.fontSize : '1em')};
 
   ::placeholder {
-    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
     opacity: 1;
   }
 
   :-ms-input-placeholder {
-    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
   }
 
   ::-ms-input-placeholder {
-    color: ${(props) => (props.type === 'success' ? 'white' : '#979797')};
+    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
   }
 `;
 
-const InputWrapper = styled.div<props>`
+const InputWrapper = styled.div<InputProps>`
   /* padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 4}px; */
   width: ${(props) => props.width || 'auto'};
   display: flex;
@@ -78,45 +74,24 @@ const InputWrapper = styled.div<props>`
   }
 `;
 
-const Input = ({
-  icon,
-  placeholder,
-  disabled,
-  width,
-  iconWidth,
-  iconHeight,
-  value,
-  onChange,
-  testid,
-  type,
-  postfix,
-  label,
-  fontSize,
-  pl,
-}: props) => (
-  <>
-    <InputWrapper width={width}>
-      {label ? <Label>{label}</Label> : null}
-      {icon ? (
-        <>
-          <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />
-        </>
-      ) : (
-        <></>
-      )}
-      <RawInput
-        data-testid={testid}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-        type={type}
-        fontSize={fontSize}
-        pl={pl}
-      ></RawInput>
-      {postfix ? <p className="input-postfix">{postfix}</p> : null}
-    </InputWrapper>
-  </>
-);
+const Input = (props: InputProps) => {
+  const { icon, width, iconWidth, iconHeight, testid, postfix, label } = props;
+  return (
+    <>
+      <InputWrapper width={width}>
+        {label ? <Label>{label}</Label> : null}
+        {icon ? (
+          <>
+            <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />
+          </>
+        ) : (
+          <></>
+        )}
+        <RawInput data-testid={testid} {...props} />
+        {postfix ? <p className="input-postfix">{postfix}</p> : null}
+      </InputWrapper>
+    </>
+  );
+};
 
 export default Input;
