@@ -35,7 +35,6 @@ const Content: FC = () => {
 
   return (
     <ContentWrapper>
-      {chainList.length}
       <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" />
       <p className="content-text">Fund any amount higher than 100$.</p>
       <p className="content-subtext">

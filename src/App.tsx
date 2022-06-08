@@ -9,7 +9,6 @@ import Fund from './components/pages/fund';
 import Landing from 'components/pages/landing';
 import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
-import Footer from './components/common/Footer/footer';
 
 require('typeface-jetbrains-mono');
 
@@ -33,7 +32,6 @@ function App() {
                   <Route path="/landing" element={<Landing />} />
                 </Routes>
               </BrowserRouter>
-              <Footer />
             </ChainListProvider>
           </UserProfileProvider>
         </Web3ProviderNetwork>
