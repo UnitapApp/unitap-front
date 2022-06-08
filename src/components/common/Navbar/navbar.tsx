@@ -9,6 +9,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
+import useWeb3Connector from '../../../hooks/useConnector';
 
 // ###### Local Styled Components
 
@@ -116,7 +117,9 @@ const MobileNav = styled.div`
   }
 `;
 
-const Navbar = ({ handleConnect }: { handleConnect: any }) => {
+const Navbar = () => {
+  const { connect } = useWeb3Connector();
+
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
@@ -143,6 +146,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
       <DesktopNav>
         {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
           <BrightConnectedButton
+            className='has-icon'
             data-testid="brightid-connected"
             icon="green-tick.png"
             iconWidth={24}
@@ -168,7 +172,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
         {active ? (
           <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
         ) : (
-          <LightOutlinedButton data-testid="wallet-connect" onClick={handleConnect}>
+          <LightOutlinedButton data-testid="wallet-connect" onClick={connect}>
             Connect Wallet
           </LightOutlinedButton>
         )}
@@ -203,7 +207,7 @@ const Navbar = ({ handleConnect }: { handleConnect: any }) => {
           {active ? (
             <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
           ) : (
-            <LightOutlinedButton onClick={handleConnect}>Connect Wallet</LightOutlinedButton>
+            <LightOutlinedButton onClick={connect}>Connect Wallet</LightOutlinedButton>
           )}
         </div>
       </MobileNav>

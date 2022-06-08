@@ -13,6 +13,7 @@ export type Chain = {
   claimed: string | number;
   unclaimed: string | number;
   decimals: number;
+  fundManagerAddress: string;
 };
 
 export enum BrightIdVerificationStatus {

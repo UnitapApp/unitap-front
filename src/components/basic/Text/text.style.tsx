@@ -3,8 +3,12 @@ import { DV } from 'components/basic/designVariables';
 
 type props = {
   fontSize?: string;
+  smFontSize?: string;
   color?: string;
   width?: string;
+  textAlign?: string;
+  mr?: number;
+  mb?: number;
 };
 
 export const Text = styled.p<props>`
@@ -18,5 +22,11 @@ export const Text = styled.p<props>`
   padding: 0;
   margin: 0;
   width: ${(props) => props.width || 'auto'};
-  margin-bottom: 1rem;
+  margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
+  margin-bottom: ${(props) => (props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `1rem`)};
+  text-align: ${(props) => props.textAlign || 'left'};
+
+  @media only screen and (max-width: 1224px) {
+    font-size: ${(props) => props.smFontSize || '15'}px;
+  }
 `;
