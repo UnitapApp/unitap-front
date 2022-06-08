@@ -20,19 +20,24 @@ const Nav = styled.div`
   & > img {
     width: 306px;
     margin-right: auto;
+    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+      width: 240px;
+      margin-left: ${DV.sizes.baseMargin * -6}px;
+      margin-top: ${DV.sizes.baseMargin * 0.5}px;
+    }
   }
 `;
 
 const DesktopNav = styled.div`
   display: none;
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: ${DV.breakpoints.tablet}) {
     display: block;
   }
 `;
 
 const MobileNav = styled.div`
   display: none;
-  @media only screen and (max-width: 992px) {
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     display: block;
   }
 
