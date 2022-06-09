@@ -4,7 +4,7 @@ import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
   CopyLink,
-} from 'components/pages/home/components/BrightConnectionModal/brightConnectionModal.style';
+} from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { SecondaryButton } from 'components/basic/Button/button';

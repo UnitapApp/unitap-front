@@ -7,6 +7,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import { getVerificationQr } from '../../src/utils';
+import RoutePath from '../../src/routes';
 
 describe('BrightID', () => {
   const connectWallet = () => {
@@ -69,7 +70,7 @@ describe('BrightID', () => {
 
   it('does not show BrightID linking when verified', () => {
     setupGetUserProfileVerified();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get(`[data-testid=brightid-connected]`).click();
     cy.get(`[data-testid=brightid-modal]`).should('not.exist');
@@ -77,7 +78,7 @@ describe('BrightID', () => {
 
   function openBrightIdModal() {
     setupGetUserProfileNotVerified();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get(`[data-testid=brightid-show-modal]`).contains('Connect').click();
     cy.get(`[data-testid=brightid-modal]`).should('exist');

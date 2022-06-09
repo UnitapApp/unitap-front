@@ -4,12 +4,12 @@ import { ContentWrapper } from './content.style';
 import Icon from 'components/basic/Icon/Icon';
 import Input from 'components/basic/Input/input';
 import Dropdown from 'components/basic/Dropdown/dropdown';
-import { ChainListContext } from '../../../../../hooks/useChainList';
-import { Chain } from '../../../../../types';
-import { useAddAndSwitchToChain } from '../../../../../hooks/useAddAndSwitchToChain';
-import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
+import { ChainListContext } from '../../../../hooks/useChainList';
+import { Chain } from '../../../../types';
+import { useAddAndSwitchToChain } from '../../../../hooks/useAddAndSwitchToChain';
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React';
 import { parseEther } from '@ethersproject/units';
-import { calculateGasMargin } from '../../../../../utils/web3';
+import { calculateGasMargin } from '../../../../utils/web3';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);

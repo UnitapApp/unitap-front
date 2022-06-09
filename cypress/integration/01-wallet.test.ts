@@ -13,6 +13,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import { formatChainId } from '../../src/utils';
+import RoutePath from '../../src/routes';
 
 describe('Wallet', () => {
   beforeEach(() => {
@@ -77,7 +78,7 @@ describe('Wallet', () => {
   it('wallet is connected', () => {
     setupEthBridge();
     setupGetChainListServerNotAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     cy.get('[data-testid=wallet-connect]').contains('Connect Wallet');
     connectWallet();
     cy.get('[data-testid=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
@@ -93,7 +94,7 @@ describe('Wallet', () => {
     });
 
     setupGetChainListAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);
@@ -114,7 +115,7 @@ describe('Wallet', () => {
     });
 
     setupGetChainListAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
     const expectedChainId = formatChainId(chainList[0].chainId);

@@ -1,14 +1,15 @@
 import React from 'react';
-import Home from 'components/pages/home';
+import Home from 'pages/home';
 import './App.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Fund from './components/pages/fund';
-import Landing from 'components/pages/landing';
+import Fund from './pages/fund';
+import Landing from 'pages/landing';
 import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
+import RoutePath from 'routes';
 
 require('typeface-jetbrains-mono');
 
@@ -27,9 +28,9 @@ function App() {
             <ChainListProvider>
               <BrowserRouter>
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/fund" element={<Fund />} />
-                  <Route path="/landing" element={<Landing />} />
+                  <Route path={RoutePath.FAUCET} element={<Home />} />
+                  <Route path={RoutePath.FUND} element={<Fund />} />
+                  <Route path={RoutePath.LANDING} element={<Landing />} />
                 </Routes>
               </BrowserRouter>
             </ChainListProvider>

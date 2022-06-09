@@ -9,6 +9,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import { getTxUrl } from '../../src/utils';
+import RoutePath from '../../src/routes';
 
 describe('Claim', () => {
   const connectWallet = () => {
@@ -100,7 +101,7 @@ describe('Claim', () => {
   it('cannot claim with unverified BrightID', () => {
     setupGetUserProfileNotVerified();
     setupClaimMax();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.wait(1000);
 
@@ -114,7 +115,7 @@ describe('Claim', () => {
   it('do claim', () => {
     setupGetUserProfileVerified();
     setupClaimMax();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.wait(1000);
 

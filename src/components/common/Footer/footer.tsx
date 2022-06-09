@@ -12,16 +12,17 @@ const FooterWrapper = styled.div`
   align-items: center;
   padding: ${DV.sizes.basePadding * 2}px;
   box-sizing: border-box;
-
+  position: absolute;
+  bottom: 0;
   background: ${DV.colors.black3};
 `;
 
 const Footer: FC = () => {
   return (
     <FooterWrapper>
-      <Icon iconSrc="assets/images/footer/twitter.png" width="34px" height='auto' mr={4} hoverable></Icon>
-      <Icon iconSrc="assets/images/footer/github.png" width="34px" height='auto' mr={4} hoverable></Icon>
-      <Icon iconSrc="assets/images/footer/discord.png" width="34px" height='auto'  hoverable></Icon>
+      <Icon iconSrc="assets/images/footer/twitter.png" width="34px" height="auto" mr={4} hoverable></Icon>
+      <Icon iconSrc="assets/images/footer/github.png" width="34px" height="auto" mr={4} hoverable></Icon>
+      <Icon iconSrc="assets/images/footer/discord.png" width="34px" height="auto" hoverable></Icon>
     </FooterWrapper>
   );
 };

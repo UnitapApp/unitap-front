@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, DropIconWrapper } from 'components/pages/home/components/ClaimModal/claimModal.style';
+import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton } from 'components/basic/Button/button';
 import {
@@ -15,10 +15,10 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from '../../../../../utils/numbers';
-import WalletAddress from 'components/pages/home/components/ClaimModal/walletAddress';
+import { fromWei } from '../../../../utils/numbers';
+import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
-import animation from '../../../../../animations/GasFee-delivery2.json';
+import animation from 'assets/animations/GasFee-delivery2.json';
 
 enum ClaimState {
   INITIAL,

@@ -4,7 +4,7 @@ import { DV } from 'components/basic/designVariables';
 import Input from 'components/basic/Input/input';
 import Icon from 'components/basic/Icon/Icon';
 import { ChainListContext } from 'hooks/useChainList';
-import { diffToNextMonday } from '../../../../../utils';
+import { diffToNextMonday } from '../../../../utils';
 
 // ###### Local Styled Components
 
@@ -38,6 +38,9 @@ const Timer = styled.div`
   color: white;
   opacity: 1;
   z-index: 10000;
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    top: ${DV.sizes.baseMargin * 10}px;
+  }
 
   span {
     margin: auto ${DV.sizes.baseMargin}px;

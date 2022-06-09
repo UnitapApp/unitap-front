@@ -6,6 +6,7 @@ import {
   userProfileNotVerified,
   userProfileVerified,
 } from '../utils/data';
+import RoutePath from '../../src/routes';
 
 describe('Landing Page', () => {
   const connectWallet = () => {
@@ -83,7 +84,7 @@ describe('Landing Page', () => {
       url: `/api/v1/user/create/`,
       response: userProfileNotVerified,
     }).as('createUser');
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.wait('@createUser');
   });
@@ -95,7 +96,7 @@ describe('Landing Page', () => {
       response: chainList,
       delay: 100,
     });
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     cy.get(`[data-testid=chain-list-loading]`).should('exist');
     cy.get(`[data-testid=chain-list-loading]`).should('not.exist');
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
@@ -104,7 +105,7 @@ describe('Landing Page', () => {
 
   it('loads chain list authenticated', () => {
     setupGetChainListAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get(`[data-testid=chain-claimed-${chainList[0].pk}]`).should('exist');
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
