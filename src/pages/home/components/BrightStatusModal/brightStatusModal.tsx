@@ -35,9 +35,7 @@ const BrightStatusModal = ({ closeModalHandler }: { closeModalHandler: () => voi
     );
   }
 
-  return <BrightStatusModalWrapper>
-    {failedState()}
-  </BrightStatusModalWrapper>;
+  return <BrightStatusModalWrapper>{true ? failedState() : successState()}</BrightStatusModalWrapper>;
 };
 
 export default BrightStatusModal;
