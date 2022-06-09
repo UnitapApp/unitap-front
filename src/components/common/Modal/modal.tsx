@@ -22,7 +22,7 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
             <span onClick={closeModalHandler} className="close">
               &times;
             </span>
-            <div className="bottom-background"></div>
+
             {spaceman === Spaceman.WITH_PHONE ? (
               <img className="spaceman-three" src={process.env.PUBLIC_URL + '/assets/images/spaceman3.png'} alt="" />
             ) : (
