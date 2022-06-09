@@ -5,6 +5,7 @@ import {
   TEST_ADDRESS_NEVER_USE,
   userProfileVerified,
 } from '../utils/data';
+import RoutePath from '../../src/routes';
 
 describe('Landing Page', () => {
   const connectWallet = () => {
@@ -74,7 +75,7 @@ describe('Landing Page', () => {
 
   it(`search dai and show xdai not show eidi`, () => {
     setupGetChainListServerNotAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get('[data-testid=search-box]').type('dai');
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).should('exist');
@@ -84,7 +85,7 @@ describe('Landing Page', () => {
 
   it(`search eid and show eidi not show xdai`, () => {
     setupGetChainListServerNotAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get('[data-testid=search-box]').type('eid');
     cy.get(`[data-testid=chain-name-${chainList[1].pk}]`).should('exist');
@@ -94,7 +95,7 @@ describe('Landing Page', () => {
 
   it(`search idc and show eidi not show xdai`, () => {
     setupGetChainListServerNotAuthenticated();
-    cy.visit('/');
+    cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.get('[data-testid=search-box]').type('idc');
     cy.get(`[data-testid=chain-name-${chainList[1].pk}]`).should('exist');
