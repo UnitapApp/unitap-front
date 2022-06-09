@@ -3,6 +3,7 @@ import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
 import styled from 'styled-components/';
 import Header from 'pages/home/components/Header/header';
+import Footer from '../../components/common/Footer/footer';
 
 const NavWrapper = styled.div`
   position: absolute;
@@ -18,6 +19,7 @@ const Home = () => {
       </NavWrapper>
       <Header />
       <ChainList />
+      <Footer />
     </>
   );
 };
