@@ -4,7 +4,7 @@ import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { LandingClaimIconButton } from 'components/basic/Button/button';
-import RoutePath from '../../../routes';
+import RoutePath from 'routes';
 import { useNavigate } from 'react-router-dom';
 
 const LandingWrapper = styled.div`
