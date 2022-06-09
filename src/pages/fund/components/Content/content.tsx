@@ -33,12 +33,13 @@ const Content: FC = () => {
 
   const handleSendFunds = useCallback(async () => {
     if (!active || !chainId || !selectedChain || !account) return;
+    if (!isRightChain) {
+      await addAndSwitchToChain(selectedChain);
+      return;
+    }
     if (!fundAmount) {
       alert('Enter fund amount');
       return;
-    }
-    if (!isRightChain) {
-      await addAndSwitchToChain(selectedChain);
     }
     if (!library) return;
     const tx = {
