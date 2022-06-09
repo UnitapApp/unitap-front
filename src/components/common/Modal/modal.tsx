@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
 import { ModalChildrenWrapper, ModalContent, ModalWrapper } from 'components/common/Modal/modal.style';
 import { Text } from 'components/basic/Text/text.style';
 import { Spaceman } from 'constants/spaceman';
@@ -14,17 +13,11 @@ type props = {
 };
 
 const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className }: props) => {
-  const elRef: any = useRef();
-  console.log('elem width', elRef.current.offsetWidth);
-  useEffect(() => {
-    // const elem: any = document.getElementsByClassName('xyz');
-    // hideOnClickOutside(elRef.current);
-  });
   return (
     <>
       {isOpen ? (
-        <ModalWrapper className={className}>
-          <ModalContent ref={elRef} className={'xyz'}>
+        <ModalWrapper className={className} onClick={(_e) => closeModalHandler()}>
+          <ModalContent className={'xyz'} onClick={(e) => e.stopPropagation()}>
             <Text className="modal-title"> {title} </Text>
             <span onClick={closeModalHandler} className="close">
               &times;
