@@ -4,6 +4,8 @@ import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { LandingClaimIconButton } from 'components/basic/Button/button';
+import RoutePath from '../../../routes';
+import { useNavigate } from 'react-router-dom';
 
 const LandingWrapper = styled.div`
   width: 100%;
@@ -85,13 +87,13 @@ const LandingWrapper = styled.div`
         padding: 0 5vw;
 
         &__action-buttons {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-            & Button {
-                margin-right: 0 !important;
-            }
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & Button {
+            margin-right: 0 !important;
+          }
         }
       }
 
@@ -110,6 +112,8 @@ const LandingWrapper = styled.div`
 `;
 
 const Landing: FC = () => {
+  const navigate = useNavigate();
+
   return (
     <LandingWrapper>
       <nav className="landing__navbar">
@@ -117,12 +121,20 @@ const Landing: FC = () => {
       </nav>
       <div className="landing__hero">
         <Icon iconSrc="assets/images/landing/logo-center.png" width="75px" height="auto" mb={3} smWidth="80px"></Icon>
-        <Icon iconSrc="assets/images/landing/name-center.svg" width="190px" height="auto" mb={6} smMb={3} smWidth="170px"></Icon>
+        <Icon
+          iconSrc="assets/images/landing/name-center.svg"
+          width="190px"
+          height="auto"
+          mb={6}
+          smMb={3}
+          smWidth="170px"
+        ></Icon>
         <Text fontSize="24" textAlign="center" mb={7} smFontSize="16">
           Add EVM networks easily and connect your BrightID to claim Gas Fee and Tokens.
         </Text>
         <div className="landing__hero__action-buttons">
           <LandingClaimIconButton
+            onClick={() => navigate(RoutePath.FAUCET)}
             className="has-icon"
             icon="assets/images/landing/claim-button-logo.png"
             iconWidth={16}
