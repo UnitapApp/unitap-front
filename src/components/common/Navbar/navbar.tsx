@@ -218,6 +218,7 @@ const Navbar = () => {
       </MobileNav>
 
       <Modal
+        className="bright-modal"
         spaceman={Spaceman.WITH_PHONE}
         title="connect bright id"
         isOpen={isModalActive}
