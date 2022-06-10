@@ -17,11 +17,13 @@ interface designVariable {
     dark: string;
     dark1: string;
     gray: string;
+    second_gray_light: string;
     transparent_black: string;
     green: string;
     space_green: string;
     darkgreen: string;
     warningRed: string;
+    warningPink: string;
   };
   bgGradient: {
     primary: string;
@@ -52,11 +54,13 @@ export const DV: designVariable = {
     dark: '#11111C',
     dark1: '#030317',
     gray: '#4C4C64',
+    second_gray_light: '#67677B',
     transparent_black: '#11111c99',
     space_green: '#4CE6A1',
     green: '#4BF1A2',
     darkgreen: '#274641',
     warningRed: '#EA5365',
+    warningPink: '#FF909E',
   },
   bgGradient: {
     primary: 'radial-gradient(124.04% 1117.67% at 17.05% 37.02%, #4BF2A2 0%, #564D8F 42.19%, #DD40CD 100%)',
