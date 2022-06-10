@@ -4,17 +4,17 @@ import Icon from 'components/basic/Icon/Icon';
 import { BrightStatusModalWrapper } from './brightStatusModal.style';
 import { Text } from 'components/basic/Text/text.style';
 
-const BrightStatusModal = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
+const BrightStatusModal = ({ success }: { success: true }) => {
   function successState() {
     return (
       <>
         <Icon iconSrc="./assets/images/modal/bright-icon.svg" mb={3}></Icon>
         <Icon iconSrc="./assets/images/modal/bright-success-icon.svg" mb={2} ml={-1.5}></Icon>
-        <Text color="space_green" mb={3}>
+        <Text color="space_green" mb={3} data-testid="brightid-connect-success">
           BrightID Connected
         </Text>
         <Text color="second_gray_light" fontSize="14" textAlign="center" lineHeight="1.5rem">
-          Your BrightID and Metamask Wallet connected Successfuly
+          Your BrightID and Metamask Wallet connected Successfully
         </Text>
       </>
     );
@@ -35,7 +35,7 @@ const BrightStatusModal = ({ closeModalHandler }: { closeModalHandler: () => voi
     );
   }
 
-  return <BrightStatusModalWrapper>{true ? failedState() : successState()}</BrightStatusModalWrapper>;
+  return <BrightStatusModalWrapper>{success ? successState() : failedState()}</BrightStatusModalWrapper>;
 };
 
 export default BrightStatusModal;

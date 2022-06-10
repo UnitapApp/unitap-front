@@ -116,6 +116,8 @@ describe('BrightID', () => {
     // @ts-ignore
     cy.shouldBeCalled('getUserProfileVerified', 1);
 
+    cy.get(`[data-testid=brightid-connect-success]`).should('exist');
+    cy.get(`[data-testid=close-modal]`).click();
     cy.get(`[data-testid=brightid-modal]`).should('not.exist');
     cy.get(`[data-testid=brightid-connected]`).should('exist');
   });
