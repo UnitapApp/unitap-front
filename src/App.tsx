@@ -10,6 +10,7 @@ import Landing from 'pages/landing';
 import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
+import Web3ReactManager from './components/Web3ReactManager';
 
 require('typeface-jetbrains-mono');
 
@@ -24,17 +25,19 @@ function App() {
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Web3ProviderNetwork getLibrary={getLibrary}>
-          <UserProfileProvider>
-            <ChainListProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path={RoutePath.FAUCET} element={<Home />} />
-                  <Route path={RoutePath.FUND} element={<Fund />} />
-                  <Route path={RoutePath.LANDING} element={<Landing />} />
-                </Routes>
-              </BrowserRouter>
-            </ChainListProvider>
-          </UserProfileProvider>
+          <Web3ReactManager>
+            <UserProfileProvider>
+              <ChainListProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path={RoutePath.FAUCET} element={<Home />} />
+                    <Route path={RoutePath.FUND} element={<Fund />} />
+                    <Route path={RoutePath.LANDING} element={<Landing />} />
+                  </Routes>
+                </BrowserRouter>
+              </ChainListProvider>
+            </UserProfileProvider>
+          </Web3ReactManager>
         </Web3ProviderNetwork>
       </Web3ReactProvider>
     </React.StrictMode>
