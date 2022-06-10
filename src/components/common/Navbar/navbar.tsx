@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
@@ -9,7 +9,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
-import useWeb3Connector from '../../../hooks/useConnector';
+import { injected } from '../../../connectors';
 
 // ###### Local Styled Components
 
@@ -123,7 +123,14 @@ const MobileNav = styled.div`
 `;
 
 const Navbar = () => {
-  const { connect } = useWeb3Connector();
+  const { activate } = useActiveWeb3React();
+  const connect = useCallback(async () => {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }, [activate]);
 
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
