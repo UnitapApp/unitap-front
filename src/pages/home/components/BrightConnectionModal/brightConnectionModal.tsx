@@ -12,6 +12,7 @@ import { SecondaryButton } from 'components/basic/Button/button';
 import { BrightIdVerificationStatus } from 'types';
 
 import { copyToClipboard, getVerificationQr } from 'utils';
+import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 
 const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
@@ -34,7 +35,6 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
       const refreshedUserProfile = await refreshUserProfile();
       if (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
         alert('Connected to Bright-ID successfully!');
-        closeModalHandler();
       } else {
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       }
@@ -42,7 +42,11 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
       console.log(ex);
       alert('Error while connectiong to BrightID sever!');
     }
-  }, [refreshUserProfile, loading, closeModalHandler]);
+  }, [refreshUserProfile, loading]);
+
+  if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+    return <BrightStatusModal success={true}></BrightStatusModal>;
+  }
 
   return (
     <BrightConnectionModalWrapper data-testid="brightid-modal">
@@ -66,9 +70,7 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && (
         <SecondaryButton data-testid={`bright-id-connection-refresh-button`} onClick={refreshConnectionButtonAction}>
-          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED
-            ? `Connected to BrightID`
-            : `Press me when you scanned!`}
+          Press me when you scanned!
         </SecondaryButton>
       )}
     </BrightConnectionModalWrapper>

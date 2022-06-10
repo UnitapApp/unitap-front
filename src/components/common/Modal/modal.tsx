@@ -7,7 +7,7 @@ type props = {
   title: string;
   className?: string;
   isOpen: boolean;
-  spaceman: Spaceman;
+  spaceman?: Spaceman;
   children: React.ReactNode;
   closeModalHandler: () => void;
 };
@@ -19,13 +19,13 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
         <ModalWrapper className={className} onClick={(_e) => closeModalHandler()}>
           <ModalContent className={'xyz'} onClick={(e) => e.stopPropagation()}>
             <Text className="modal-title"> {title} </Text>
-            <span onClick={closeModalHandler} className="close">
+            <span onClick={closeModalHandler} className="close" data-testid="close-modal">
               &times;
             </span>
-
-            {spaceman === Spaceman.WITH_PHONE ? (
+            {spaceman === Spaceman.WITH_PHONE && (
               <img className="spaceman-three" src={process.env.PUBLIC_URL + '/assets/images/spaceman3.png'} alt="" />
-            ) : (
+            )}
+            {spaceman === Spaceman.BOTTOM_BIG && (
               <img className="spaceman-one" src={process.env.PUBLIC_URL + '/assets/images/spaceman1.png'} alt="" />
             )}
             <ModalChildrenWrapper>{children}</ModalChildrenWrapper>

@@ -65,21 +65,6 @@ export const ModalContent = styled.div`
     padding: 0;
   }
 
-  .bottom-background {
-    width: 100%;
-    height: 100px;
-    border-radius: 0 0 ${DV.sizes.baseRadius}px ${DV.sizes.baseRadius}px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-image: url('./assets/images/modal-footer-bg.png');
-    background-size: cover;
-    -o-background-size: cover;
-    -moz-background-size: cover;
-    -webkit-background-size: cover;
-    z-index: -1;
-  }
-
   .spaceman-one {
     position: absolute;
     right: 0rem;

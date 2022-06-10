@@ -4,6 +4,7 @@ import { DV } from 'components/basic/designVariables';
 type props = {
   fontSize?: string;
   smFontSize?: string;
+  lineHeight?: string;
   color?: string;
   width?: string;
   textAlign?: string;
@@ -18,7 +19,8 @@ export const Text = styled.p<props>`
       return `${DV.colors[xyz]}!important`;
     } else return `white !important`;
   }};
-  font-size: ${(props) => props.fontSize || '16'}px;
+  font-size: ${({fontSize}) => fontSize || '16'}px;
+  line-height: ${({lineHeight}) => lineHeight || ''};
   padding: 0;
   margin: 0;
   width: ${(props) => props.width || 'auto'};
