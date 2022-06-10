@@ -1,16 +1,16 @@
+import useActiveWeb3React from './useActiveWeb3React';
 import { useCallback } from 'react';
-import { injected } from 'connectors';
-import { useWeb3React } from '@web3-react/core';
+import { injected } from '../connectors';
 
 const useWeb3Connector = () => {
-  const { activate: activateNetwork } = useWeb3React();
+  const { activate } = useActiveWeb3React();
   const connect = useCallback(async () => {
     try {
-      await activateNetwork(injected, console.log, true);
+      await activate(injected);
     } catch (ex) {
       console.log(ex);
     }
-  }, [activateNetwork]);
+  }, [activate]);
   return { connect };
 };
 

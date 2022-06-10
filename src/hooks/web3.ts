@@ -12,7 +12,7 @@ export function useEagerConnect() {
 
   // gnosisSafe.isSafeApp() races a timeout against postMessage, so it delays pageload if we are not in a safe app;
   // if we are not embedded in an iframe, it is not worth checking
-  const [triedSafe, setTriedSafe] = useState(!IS_IN_IFRAME);
+  const [triedSafe] = useState(!IS_IN_IFRAME);
 
   // try connecting to an injected connector
   useEffect(() => {
@@ -28,7 +28,7 @@ export function useEagerConnect() {
               setTried(true);
             });
           } else {
-            setTried(true);
+            setTried(false);
           }
         }
       });

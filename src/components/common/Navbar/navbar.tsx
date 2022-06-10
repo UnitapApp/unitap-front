@@ -9,7 +9,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
-import useWeb3Connector from '../../../hooks/useConnector';
+import useWeb3Connector from '../../../hooks/useWeb3Connector';
 
 // ###### Local Styled Components
 
