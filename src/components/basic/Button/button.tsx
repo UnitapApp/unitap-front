@@ -21,6 +21,7 @@ interface props {
   fontSize?: string;
   smFontSize?: string;
   fontWeight?: string;
+  size?: 'small' | 'large';
 }
 
 // export const Xp = styled.p`
@@ -47,7 +48,8 @@ export const Button = styled.button<props>`
   min-width: ${({minWidth}) => minWidth || 'auto'};
   height: ${({height}) => height || 'auto'};
   font-size: ${({fontSize}) => fontSize || 'auto'};
-  padding: .75em 1.25em;
+
+  ${({size}) => size === 'large' ? `padding: 1em 2.5em;` : `padding: .75em 1.25em;`}
 
   &::after {
     display: ${({icon}) => (icon ? 'inline-block' : 'none')};

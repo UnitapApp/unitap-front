@@ -12,6 +12,7 @@ import { parseEther } from '@ethersproject/units';
 import { calculateGasMargin } from '../../../../utils/web3';
 import Modal from 'components/common/Modal/modal';
 import SelectChainModal from '../SelectChainModal/selectChainModal';
+import ProvideGasFeeModal from '../ProvideGasFeeModal/provideGasFeeModal';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
@@ -34,6 +35,7 @@ const Content: FC = () => {
   }, [selectedChain, active, chainId]);
 
   const handleSendFunds = useCallback(async () => {
+    setProvideGasFeeModalState(true);
     if (!active || !chainId || !selectedChain || !account) return;
     if (!isRightChain) {
       await addAndSwitchToChain(selectedChain);
@@ -71,6 +73,7 @@ const Content: FC = () => {
   }, [active, chainId, selectedChain, account, isRightChain, library, fundAmount, addAndSwitchToChain]);
 
   const [modalState, setModalState] = useState(false);
+  const [provideGasFeeModalState, setProvideGasFeeModalState] = useState(false);
 
   return (
     <ContentWrapper>
@@ -115,6 +118,15 @@ const Content: FC = () => {
         <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!active}>
           {active && !isRightChain ? 'Switch Network' : 'Submit Fund'}
         </PrimaryButton>
+        <Modal
+          title="Provide Gas Fee"
+          isOpen={provideGasFeeModalState}
+          closeModalHandler={() => {
+            setProvideGasFeeModalState(false);
+          }}
+        >
+          <ProvideGasFeeModal></ProvideGasFeeModal>
+        </Modal>
       </ContentCard>
     </ContentWrapper>
   );
