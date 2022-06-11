@@ -16,8 +16,8 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
   return (
     <>
       {isOpen ? (
-        <ModalWrapper className={className} onClick={(_e) => closeModalHandler()}>
-          <ModalContent className={'xyz'} onClick={(e) => e.stopPropagation()}>
+        <ModalWrapper className={className} onClick={(_e) => closeModalHandler()} data-testid="modal-wrapper">
+          <ModalContent className={'xyz'} onClick={(e) => e.stopPropagation()} data-testid="modal-content">
             <Text className="modal-title"> {title} </Text>
             <span onClick={closeModalHandler} className="close" data-testid="close-modal">
               &times;

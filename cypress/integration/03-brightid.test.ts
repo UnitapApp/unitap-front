@@ -84,6 +84,15 @@ describe('BrightID', () => {
     cy.get(`[data-testid=brightid-modal]`).should('exist');
   }
 
+  it('closes modal on click outside', () => {
+    openBrightIdModal();
+    cy.get(`[data-testid=brightid-modal]`).should('exist');
+    cy.get(`[data-testid=modal-content]`).click();
+    cy.get(`[data-testid=brightid-modal]`).should('exist');
+    cy.get(`[data-testid=modal-wrapper]`).click('left');
+    cy.get(`[data-testid=brightid-modal]`).should('not.exist');
+  });
+
   it('copies BrightID linking url when not verified', () => {
     Cypress.on('window:before:load', (win) => {
       cy.spy(win.navigator.clipboard, 'writeText');
