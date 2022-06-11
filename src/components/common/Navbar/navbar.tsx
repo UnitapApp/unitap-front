@@ -52,7 +52,7 @@ const Navbar = () => {
             icon="green-tick.png"
             fontSize="12px"
             fontWeight='normal'
-            minWidth="160px" 
+            minWidth="175px" 
             iconWidth={14}
             iconHeight={10}
             mr={2}
@@ -65,7 +65,7 @@ const Navbar = () => {
             disabled={!account}
             fontSize="12px"
             fontWeight='normal'
-            minWidth="160px" 
+            minWidth="175px" 
             mr={2}
             onClick={() => {
               if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
@@ -77,11 +77,11 @@ const Navbar = () => {
           </BrightOutlinedButton>
         )}
         {active ? (
-          <LightOutlinedButton data-testid="wallet-connect" minWidth="160px" fontSize="12px">
+          <LightOutlinedButton data-testid="wallet-connect" minWidth="175px" fontSize="12px">
             {shortenAddress(account)}
           </LightOutlinedButton>
         ) : (
-          <LightOutlinedButton data-testid="wallet-connect" minWidth="160px" onClick={connect} fontSize="12px">
+          <LightOutlinedButton data-testid="wallet-connect" minWidth="175px" onClick={connect} fontSize="12px">
             Connect Wallet
           </LightOutlinedButton>
         )}
