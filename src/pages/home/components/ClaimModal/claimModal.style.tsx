@@ -13,12 +13,11 @@ export const ClaimModalWrapper = styled.div`
 
 export const DropIconWrapper = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & > img {
     position: absolute;
-    top: 64px;
-    left: 43px;
-    width: 26px;
-    height: 26px;
   }
 `;

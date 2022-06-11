@@ -3,14 +3,10 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { PrimaryButton } from 'components/basic/Button/button';
-import {
-  DangerMessageButton,
-  MessageButton,
-  SuccessMessageButton,
-} from 'components/basic/MessageButton/messageButton.style';
+import { PrimaryButton, SecondaryButton } from 'components/basic/Button/button';
+import { MessageButton } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
-import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
+import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -41,6 +37,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
   const mounted = useRef(false);
 
@@ -74,31 +71,46 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setClaimState(ClaimState.SUCCESS);
       }
     } catch (ex) {
-      alert('Error while claiming');
       if (mounted.current) {
-        setClaimState(ClaimState.INITIAL);
+        setClaimState(ClaimState.FAILED);
       }
     }
   }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
 
-  function getClaimReceipt() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function connectMetamaskBody() {
     return (
       <>
-        <Text fontSize="14" className="scan-qr-text">
-          Claimed {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+        <DropIconWrapper>
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
+        </DropIconWrapper>
+        <Text width="100%" fontSize="14">
+          Wallet Address
         </Text>
-        <a
-          style={{ marginBottom: '20px' }}
-          data-testid="claim-receipt"
-          href={getTxUrl(chain, claimReceipt!)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View on Explorer
-        </a>
-        <PrimaryButton onClick={closeModalHandler} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
-          Close
-        </PrimaryButton>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+          Connect Metamask
+        </SecondaryButton>
+      </>
+    );
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function connectBrightIDBody() {
+    return (
+      <>
+        <DropIconWrapper>
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
+        </DropIconWrapper>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+          Connect BrightID
+        </SecondaryButton>
       </>
     );
   }
@@ -108,12 +120,14 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       <>
         <DropIconWrapper>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon mr={2} mb={2} mt={2} ml={2} iconSrc={'dropIcon.png'} width="80px" height="auto" />
+          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        {/* <Input disabled width="100%" value={active ? shortenAddress(account) : ''}></Input> */}
-        <PrimaryButton onClick={claim} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
-          {brightIdVerified ? 'Claim' : 'BrightID not connected'}
+        <PrimaryButton onClick={claim} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+          Claim
         </PrimaryButton>
       </>
     );
@@ -136,18 +150,32 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function getSuccessBody() {
     return (
       <>
-        <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
-        <Text width="100%" fontSize="14">
-          Wallet Address
+        <Icon
+          iconSrc={'success-airdrop.png'}
+          width="70px"
+          height="auto"
+          mb={6}
+          mr={-1}
+          mt={2}
+          data-testid={`chain-claim-success-${chain.pk}`}
+        />
+        <Text width="100%" fontSize="14" color="space_green" textAlign="center">
+          0.001 xDai Calimed
         </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <SuccessMessageButton onClick={closeModalHandler} width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
-          Claimed Successfully
-        </SuccessMessageButton>
+        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+          a sample bah-bahi text in 2 lines that tell user its claimed.
+        </Text>
+        <SecondaryButton
+          onClick={closeModalHandler}
+          width={'100%'}
+          fontSize="20px"
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
+          View on Explorer
+        </SecondaryButton>
       </>
     );
   }
@@ -155,31 +183,42 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getFailedBody() {
     return (
       <>
-        <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
-        <Text width="100%" fontSize="14">
-          Wallet Address
+        <Icon
+          iconSrc={'failed-airdrop.png'}
+          width="70px"
+          height="auto"
+          mb={6}
+          mr={-1}
+          mt={2}
+          data-testid={`chain-claim-failed-${chain.pk}`}
+        />
+        <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
+          Calim Failed !
         </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <DangerMessageButton
+        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+          a sample error description text in 2 lines for ali mahdiyar or any other kalle.
+        </Text>
+        <SecondaryButton
+          fontSize="20px"
           onClick={() => setClaimState(ClaimState.INITIAL)}
           width={'100%'}
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Claim Failed
-        </DangerMessageButton>
+          Try Again
+        </SecondaryButton>
       </>
     );
   }
 
   function getClaimBody() {
-    if (claimState === ClaimState.INITIAL) {
-      return getInitialBody();
+    if (claimState === ClaimState.FAILED) {
+      return getFailedBody();
     } else if (claimState === ClaimState.LOADING) {
       return getLoadingBody();
     } else if (claimState === ClaimState.SUCCESS) {
-      return getClaimReceipt();
+      return getSuccessBody();
     } else {
-      return getFailedBody();
+      return getInitialBody();
     }
   }
 

@@ -7,13 +7,14 @@ interface props {
   label?: string;
   icon?: string;
   value: string;
+  onClick?: () => void;
 }
 
-const Dropdown = ({ label, value, icon }: props) => {
+const Dropdown = ({ label, value, icon, onClick }: props) => {
   return (
-    <DropdownWrapper>
+    <DropdownWrapper onClick={onClick}>
       {label ? <Label>{label}</Label> : null}
-      <div className='dropdown'>
+      <div className="dropdown">
         {icon ? <Icon iconSrc={icon} width="32px" /> : null}
         <p className="dropdown-value">{value}</p>
         <Icon iconSrc={'assets/images/fund/arrow-down.png'} width="14px" height="auto"></Icon>

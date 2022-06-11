@@ -1,7 +1,11 @@
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 
-export const ModalWrapper = styled.div`
+interface props {
+  size?: 'small' | 'medium' | 'large';
+}
+
+export const ModalWrapper = styled.div<props>`
   position: fixed;
   z-index: 1010;
   left: 0;
@@ -16,37 +20,25 @@ export const ModalWrapper = styled.div`
   justify-content: center;
 `;
 
-export const ModalChildrenWrapper = styled.div`
-  width: min(330px, 90%);
-  margin: ${DV.sizes.baseMargin * 2}px auto;
-  background-color: ${DV.colors.transparent_black};
-  border-radius: ${DV.sizes.baseRadius * 2}px;
-  z-index: 10;
-
-  .spaceman-one {
-  }
-
-  @media only screen and (max-width: 600px) {
-    .spaceman-three {
-      z-index: -1;
-    }
-  }
-`;
-
-export const ModalContent = styled.div`
+export const ModalContent = styled.div<props>`
   background-color: ${DV.colors.black1};
-  width: min(750px, 90%);
+  ${({ size }) =>
+    size === 'small'
+      ? `width: min(420px, 30vw);`
+      : size === 'large'
+      ? `width: min(1000px, 90%);`
+      : `width: min(750px, 90%);`}
   margin: 0 5%;
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
-  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 5}px;
+  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
   overflow: hidden;
   z-index: -2;
 
   .close {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: ${DV.sizes.basePadding * 2}px;
+    top: ${DV.sizes.basePadding * 1.5}px;
     padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 2}px;
     color: white;
     float: right;
@@ -88,5 +80,25 @@ export const ModalContent = styled.div`
     right: -5rem;
     top: 2rem;
     width: 23rem;
+  }
+`;
+
+export const ModalChildrenWrapper = styled.div<props>`
+  background-color: ${DV.colors.transparent_black};
+  ${({ size }) => (size === 'small' ? `background-color: ${DV.colors.black1};` : ``)}
+  margin: ${DV.sizes.baseMargin * 2}px auto;
+
+  border-radius: ${DV.sizes.baseRadius * 2}px;
+  z-index: 10;
+  width: min(330px, 90%);
+  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)}
+
+  .spaceman-one {
+  }
+
+  @media only screen and (max-width: 600px) {
+    .spaceman-three {
+      z-index: -1;
+    }
   }
 `;
