@@ -74,9 +74,8 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setClaimState(ClaimState.SUCCESS);
       }
     } catch (ex) {
-      alert('Error while claiming');
       if (mounted.current) {
-        setClaimState(ClaimState.INITIAL);
+        setClaimState(ClaimState.FAILED);
       }
     }
   }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
@@ -159,7 +158,12 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getFailedBody() {
     return (
       <>
-        <Icon iconSrc={'failed-airdrop.png'} width="120px" height="auto" />
+        <Icon
+          iconSrc={'failed-airdrop.png'}
+          width="120px"
+          height="auto"
+          data-testid={`chain-claim-failed-${chain.pk}`}
+        />
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
@@ -169,21 +173,21 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           width={'100%'}
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Claim Failed
+          Try Again
         </DangerMessageButton>
       </>
     );
   }
 
   function getClaimBody() {
-    if (claimState === ClaimState.INITIAL) {
-      return getInitialBody();
+    if (claimState === ClaimState.FAILED) {
+      return getFailedBody();
     } else if (claimState === ClaimState.LOADING) {
       return getLoadingBody();
     } else if (claimState === ClaimState.SUCCESS) {
       return getSuccessBody();
     } else {
-      return getFailedBody();
+      return getInitialBody();
     }
   }
 
