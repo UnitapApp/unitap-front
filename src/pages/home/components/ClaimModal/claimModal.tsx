@@ -4,11 +4,7 @@ import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton, SecondaryButton } from 'components/basic/Button/button';
-import {
-  DangerMessageButton,
-  MessageButton,
-  SuccessMessageButton,
-} from 'components/basic/MessageButton/messageButton.style';
+import { MessageButton } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -41,6 +37,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
     [userProfile],
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
   const mounted = useRef(false);
 
@@ -80,6 +77,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     }
   }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function connectMetamaskBody() {
     return (
       <>
@@ -98,6 +96,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function connectBrightIDBody() {
     return (
       <>
