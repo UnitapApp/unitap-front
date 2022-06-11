@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useCallback, useRef } from 'react';
 import { ModalChildrenWrapper, ModalContent, ModalWrapper } from 'components/common/Modal/modal.style';
 import { Text } from 'components/basic/Text/text.style';
 import { Spaceman } from 'constants/spaceman';
@@ -13,11 +14,26 @@ type props = {
 };
 
 const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className }: props) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const handleClick = useCallback(
+    (e) => {
+      if (!wrapperRef.current || !contentRef.current) return;
+      const offsetLeft = contentRef.current.offsetLeft;
+      const offsetTop = contentRef.current.offsetTop;
+      const offsetRight = wrapperRef.current.offsetWidth - offsetLeft;
+      const offsetBottom = wrapperRef.current.offsetHeight - offsetTop;
+      if (e.clientX < offsetLeft || e.clientX > offsetRight || e.clientY < offsetTop || e.clientY > offsetBottom) {
+        closeModalHandler();
+      }
+    },
+    [closeModalHandler],
+  );
   return (
     <>
       {isOpen ? (
-        <ModalWrapper className={className} onClick={(_e) => closeModalHandler()} data-testid="modal-wrapper">
-          <ModalContent className={'xyz'} onClick={(e) => e.stopPropagation()} data-testid="modal-content">
+        <ModalWrapper ref={wrapperRef} className={className} onClick={handleClick} data-testid="modal-wrapper">
+          <ModalContent ref={contentRef} className={'xyz'} data-testid="modal-content">
             <Text className="modal-title"> {title} </Text>
             <span onClick={closeModalHandler} className="close" data-testid="close-modal">
               &times;
