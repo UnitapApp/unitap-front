@@ -31,7 +31,6 @@ export type UserProfile = {
 
 export type ClaimReceipt = {
   pk: PK;
-  txHash: string;
   chain: PK;
   datetime: string;
   amount: number;

@@ -10,7 +10,7 @@ import {
   SuccessMessageButton,
 } from 'components/basic/MessageButton/messageButton.style';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
-import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
+import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -81,27 +81,27 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     }
   }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
 
-  function getClaimReceipt() {
-    return (
-      <>
-        <Text fontSize="14" className="scan-qr-text">
-          Claimed {formatBalance(chain.maxClaimAmount)} {chain.symbol}
-        </Text>
-        <a
-          style={{ marginBottom: '20px' }}
-          data-testid="claim-receipt"
-          href={getTxUrl(chain, claimReceipt!)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View on Explorer
-        </a>
-        <PrimaryButton onClick={closeModalHandler} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
-          Close
-        </PrimaryButton>
-      </>
-    );
-  }
+  // function getClaimReceipt() {
+  //   return (
+  //     <>
+  //       <Text fontSize="14" className="scan-qr-text">
+  //         Claimed {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+  //       </Text>
+  //       {/*<a*/}
+  //       {/*  style={{ marginBottom: '20px' }}*/}
+  //       {/*  data-testid="claim-receipt"*/}
+  //       {/*  href={getTxUrl(chain, claimReceipt!)}*/}
+  //       {/*  target="_blank"*/}
+  //       {/*  rel="noreferrer"*/}
+  //       {/*>*/}
+  //       {/*  View on Explorer*/}
+  //       {/*</a>*/}
+  //       <PrimaryButton onClick={closeModalHandler} width="100%" data-testid={`chain-claim-action-${chain.pk}`}>
+  //         Close
+  //       </PrimaryButton>
+  //     </>
+  //   );
+  // }
 
   function getInitialBody() {
     return (
@@ -136,11 +136,15 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function getSuccessBody() {
     return (
       <>
-        <Icon iconSrc={'success-airdrop.png'} width="120px" height="auto" />
+        <Icon
+          iconSrc={'success-airdrop.png'}
+          width="120px"
+          height="auto"
+          data-testid={`chain-claim-success-${chain.pk}`}
+        />
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
@@ -177,7 +181,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     } else if (claimState === ClaimState.LOADING) {
       return getLoadingBody();
     } else if (claimState === ClaimState.SUCCESS) {
-      return getClaimReceipt();
+      return getSuccessBody();
     } else {
       return getFailedBody();
     }
