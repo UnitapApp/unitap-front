@@ -5,7 +5,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { LandingClaimIconButton } from 'components/basic/Button/button';
 import RoutePath from 'routes';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const LandingWrapper = styled.div`
   width: 100%;
@@ -112,8 +112,6 @@ const LandingWrapper = styled.div`
 `;
 
 const Landing: FC = () => {
-  const navigate = useNavigate();
-
   return (
     <LandingWrapper>
       <nav className="landing__navbar">
