@@ -11,34 +11,30 @@ import { diffToNextMonday } from '../../../../utils';
 const HeaderComp = styled.div`
   display: flex;
   background-image: url('/headerBg.png');
-  height: 300px;
+  background-size: cover;
+  height: 175px;
   background-size: cover;
   justify-content: center;
-  align-items: center;
   position: relative;
+  overflow: hidden;
 
-  p {
-    position: relative;
-    text-align: center;
-    top: 24px;
-    font-weight: bold;
-    font-size: 24px;
-    color: white;
-    @media screen and (max-width: 600px) {
-      width: 90%;
-      font-size: 20px;
-    }
+  @media only screen and (max-width: ${DV.breakpoints.desktop}) {
+    height: calc(175px + (${DV.sizes.baseMargin * 6}px));
   }
 `;
 
 const Timer = styled.div`
   position: absolute;
-  top: ${DV.sizes.baseMargin * 2.5}px;
-  font-size: 28px;
+  top: ${DV.sizes.baseMargin * 2.3}px;
   color: white;
   opacity: 1;
-  z-index: 10000;
-  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+  z-index: 10;
+
+  font-family: 'Open Sans';
+  font-size: 24px;
+
+  @media only screen and (max-width: ${DV.breakpoints.desktop}) {
+    height: calc(175px + (${DV.sizes.baseMargin * 10}px));
     top: ${DV.sizes.baseMargin * 10}px;
   }
 
@@ -49,8 +45,7 @@ const Timer = styled.div`
 
 const Spaceman = styled.div`
   position: absolute;
-  right: 96px;
-  bottom: 0px;
+  bottom: -90px;
   @media screen and (max-width: 920px) {
     display: none;
   }
@@ -111,12 +106,8 @@ const Header = () => {
           <Icon iconSrc={'headerBg/gem-1.png'} />
         </GemRight>
         <Spaceman>
-          <Icon iconSrc={'spman-header.png'} width="320px" height="auto" />
+          <Icon iconSrc={'assets/images/claim/spaceman-header.svg'} width="170px" height="auto" />
         </Spaceman>
-        <p>
-          Add EVM networks easily and
-          <br /> connect your BrightID to claim Gas Fee.
-        </p>
       </HeaderComp>
       <InputWrapper>
         <Input

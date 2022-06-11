@@ -10,10 +10,8 @@ const FooterWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 65px;
   padding: ${DV.sizes.basePadding * 2}px;
-  box-sizing: border-box;
-  position: absolute;
-  bottom: 0;
   background: ${DV.colors.black3};
 `;
 
