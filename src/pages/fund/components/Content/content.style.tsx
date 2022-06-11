@@ -12,7 +12,7 @@ export const ContentCard = styled.div`
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   width: min(30%, 430px);
   padding: ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 4}px;
-  margin: ${DV.sizes.baseMargin * 3}px auto ${DV.sizes.baseMargin * 5}px;
+  margin: ${DV.sizes.baseMargin * 4}px auto ${DV.sizes.baseMargin * 8}px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

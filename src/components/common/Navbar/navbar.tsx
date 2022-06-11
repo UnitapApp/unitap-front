@@ -1,5 +1,10 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
+import {
+  BrightConnectedButton,
+  BrightOutlinedButton,
+  LightOutlinedButton,
+  PrimaryOutlinedButton,
+} from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
 import { Spaceman } from 'constants/spaceman';
@@ -10,6 +15,8 @@ import { shortenAddress } from 'utils';
 import { injected } from '../../../connectors';
 import Icon from 'components/basic/Icon/Icon';
 import { NavbarWrapper, DesktopNav, MobileNav } from './navbar.style';
+import { useLocation, useNavigate } from 'react-router-dom';
+import RoutePath from 'routes';
 
 const Navbar = () => {
   const { activate } = useActiveWeb3React();
@@ -41,18 +48,25 @@ const Navbar = () => {
     return 'Connect BrightID';
   }, [account, userProfile]);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <NavbarWrapper>
       <Icon iconSrc="logo.png" width="250px" height="40px" mrAuto></Icon>
       <DesktopNav>
-        {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+        {location.pathname === RoutePath.FUND ? (
+          <PrimaryOutlinedButton onClick={() => navigate(RoutePath.FAUCET)} mr={2} minWidth="175px">
+            Claim Gas Fee
+          </PrimaryOutlinedButton>
+        ) : userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
           <BrightConnectedButton
             className="has-icon"
             data-testid="brightid-connected"
             icon="green-tick.png"
             fontSize="12px"
-            fontWeight='normal'
-            minWidth="175px" 
+            fontWeight="normal"
+            minWidth="175px"
             iconWidth={14}
             iconHeight={10}
             mr={2}
@@ -64,8 +78,8 @@ const Navbar = () => {
             data-testid="brightid-show-modal"
             disabled={!account}
             fontSize="12px"
-            fontWeight='normal'
-            minWidth="175px" 
+            fontWeight="normal"
+            minWidth="175px"
             mr={2}
             onClick={() => {
               if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
