@@ -18,7 +18,7 @@ const HeaderComp = styled.div`
   position: relative;
   overflow: hidden;
 
-  @media only screen and (max-width: ${DV.breakpoints.desktop}) {
+  @media only screen and (max-width: 1200px) {
     height: calc(175px + (${DV.sizes.baseMargin * 6}px));
   }
 `;
@@ -33,7 +33,7 @@ const Timer = styled.div`
   font-family: 'Open Sans';
   font-size: 24px;
 
-  @media only screen and (max-width: ${DV.breakpoints.desktop}) {
+  @media only screen and (max-width: 1200px) {
     height: calc(175px + (${DV.sizes.baseMargin * 10}px));
     top: ${DV.sizes.baseMargin * 10}px;
   }
