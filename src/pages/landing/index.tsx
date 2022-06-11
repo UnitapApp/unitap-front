@@ -5,7 +5,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { LandingClaimIconButton } from 'components/basic/Button/button';
 import RoutePath from 'routes';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LandingWrapper = styled.div`
   width: 100%;
@@ -133,22 +133,23 @@ const Landing: FC = () => {
           Add EVM networks easily and connect your BrightID to claim Gas Fee and Tokens.
         </Text>
         <div className="landing__hero__action-buttons">
-          <LandingClaimIconButton
-            onClick={() => navigate(RoutePath.FAUCET)}
-            className="has-icon"
-            icon="assets/images/landing/claim-button-logo.svg"
-            iconWidth={16}
-            smIconWidth={12}
-            iconHeight={22}
-            smIconHeight={16}
-            iconMarginLeft={55}
-            fontSize="20px"
-            smFontSize="16px"
-            mr={4}
-            mb={2}
-          >
-            Claim Gas Fee
-          </LandingClaimIconButton>
+          <Link to={RoutePath.FAUCET}>
+            <LandingClaimIconButton
+              className="has-icon"
+              icon="assets/images/landing/claim-button-logo.svg"
+              iconWidth={16}
+              smIconWidth={12}
+              iconHeight={22}
+              smIconHeight={16}
+              iconMarginLeft={55}
+              fontSize="20px"
+              smFontSize="16px"
+              mr={4}
+              mb={2}
+            >
+              Claim Gas Fee
+            </LandingClaimIconButton>
+          </Link>
           <LandingClaimIconButton
             className="has-icon"
             icon="assets/images/landing/soon-logo.svg"

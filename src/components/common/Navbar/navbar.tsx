@@ -14,8 +14,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
 import { injected } from '../../../connectors';
 import Icon from 'components/basic/Icon/Icon';
-import { NavbarWrapper, DesktopNav, MobileNav } from './navbar.style';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { DesktopNav, MobileNav, NavbarWrapper } from './navbar.style';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 
 const Navbar = () => {
@@ -53,12 +53,21 @@ const Navbar = () => {
 
   return (
     <NavbarWrapper>
-      <Icon iconSrc="logo.svg" width="250px" height="40px" mrAuto></Icon>
+      <Icon
+        iconSrc="logo.svg"
+        width="250px"
+        height="40px"
+        mrAuto
+        onClick={() => navigate(RoutePath.LANDING)}
+        style={{ cursor: 'pointer' }}
+      />
       <DesktopNav>
         {location.pathname === RoutePath.FUND ? (
-          <PrimaryOutlinedButton onClick={() => navigate(RoutePath.FAUCET)} mr={2} minWidth="175px">
-            Claim Gas Fee
-          </PrimaryOutlinedButton>
+          <Link to={RoutePath.FAUCET}>
+            <PrimaryOutlinedButton mr={2} minWidth="175px">
+              Claim Gas Fee
+            </PrimaryOutlinedButton>
+          </Link>
         ) : userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
           <BrightConnectedButton
             className="has-icon"
