@@ -19,40 +19,40 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const RawInput = styled.input<InputProps>`
   padding: ${DV.sizes.basePadding * 1.5}px;
-  padding-left: ${(props) => (props.pl ? DV.sizes.basePadding * props.pl : DV.sizes.basePadding * 1.5)}px;
-  width: ${(props) => props.width || 'auto'};
+  padding-left: ${({ pl }) => (pl ? DV.sizes.basePadding * pl : DV.sizes.basePadding * 1.5)}px;
+  width: ${({ width }) => width || 'auto'};
   width: 100%;
   color: white;
-  background: ${(props) => (props.type === 'success' ? DV.colors.darkgreen : DV.colors.dark)};
+  background: ${({ styleType }) => (styleType === 'success' ? DV.colors.darkgreen : DV.colors.dark)};
   border-radius: ${DV.sizes.baseRadius}px;
-  border: 1px solid ${(props) => (props.type === 'success' ? DV.colors.green : 'unset')};
+  border: 1px solid ${({ styleType }) => (styleType === 'success' ? DV.colors.green : 'unset')};
   z-index: 1;
   box-sizing: border-box;
-  font-size: ${(props) => (props.fontSize ? props.fontSize : '1em')};
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : '1em')};
 
   ::placeholder {
-    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
-    opacity: 1;
+    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
   }
 
   :-ms-input-placeholder {
-    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
+    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
   }
 
   ::-ms-input-placeholder {
-    color: ${(props) => (props.styleType === 'success' ? 'white' : '#979797')};
+    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
   }
 `;
 
 const InputWrapper = styled.div<InputProps>`
   /* padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 4}px; */
-  width: ${(props) => props.width || 'auto'};
+  width: ${({ width }) => width || 'auto'};
   display: flex;
   flex-direction: column;
   color: white;
   border-radius: ${DV.sizes.baseRadius}px;
   margin-bottom: 1rem;
   position: relative;
+  height: auto;
 
   .input-icon {
     position: absolute;
@@ -65,7 +65,7 @@ const InputWrapper = styled.div<InputProps>`
   .input-postfix {
     position: absolute;
     right: ${DV.sizes.basePadding * 4}px;
-    bottom: ${DV.sizes.basePadding}px;
+    bottom: 20%;
 
     font-size: 12px;
     color: ${DV.colors.space_green};
@@ -77,20 +77,12 @@ const InputWrapper = styled.div<InputProps>`
 const Input = (props: InputProps) => {
   const { icon, width, iconWidth, iconHeight, testid, postfix, label } = props;
   return (
-    <>
-      <InputWrapper width={width}>
-        {label ? <Label>{label}</Label> : null}
-        {icon ? (
-          <>
-            <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />
-          </>
-        ) : (
-          <></>
-        )}
-        <RawInput data-testid={testid} {...props} />
-        {postfix ? <p className="input-postfix">{postfix}</p> : null}
-      </InputWrapper>
-    </>
+    <InputWrapper width={width}>
+      {label && <Label>{label}</Label>}
+      {icon && <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />}
+      <RawInput data-testid={testid} {...props} />
+      {postfix && <p className="input-postfix">{postfix}</p>}
+    </InputWrapper>
   );
 };
 

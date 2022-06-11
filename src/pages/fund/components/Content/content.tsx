@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { PrimaryButton } from 'components/basic/Button/button';
-import { ContentWrapper } from './content.style';
+import { ContentCard, ContentWrapper } from './content.style';
 import Icon from 'components/basic/Icon/Icon';
 import Input from 'components/basic/Input/input';
 import Dropdown from 'components/basic/Dropdown/dropdown';
@@ -70,30 +70,31 @@ const Content: FC = () => {
 
   return (
     <ContentWrapper>
-      <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" />
-      <p className="content-text">Fund any amount higher than 100$.</p>
-      <p className="content-subtext">
-        99% of fund amount goes for Claim Gas Fees. <br /> 1% of fund amount goes for Unitap development.
-      </p>
-      {selectedChain && (
-        <Dropdown label="Chain" value={selectedChain.chainName} icon="assets/images/fund/coin-icon.png" />
-      )}
-      <Input
-        className="fund-input"
-        value={fundAmount}
-        onChange={(e) => setFundAmount(e.target.value)}
-        label="Fund Amount"
-        postfix={selectedChain?.symbol || ''}
-        type="number"
-        step="0.001"
-        styleType="success"
-        placeholder="0.00"
-        width="100%"
-        fontSize="24px"
-      />
-      <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!active}>
-        {active && !isRightChain ? 'Switch Network' : 'Submit Fund'}
-      </PrimaryButton>
+      <ContentCard>
+        <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" mb={2}/>
+        <p className="content-subtext">
+          99% of fund amount goes for Claim Gas Fees. <br /> 1% of fund amount goes for Unitap development.
+        </p>
+        {selectedChain && (
+          <Dropdown label="Chain" value={selectedChain.chainName} icon="assets/images/fund/coin-icon.png" />
+        )}
+        <Input
+          className="fund-input"
+          value={fundAmount}
+          onChange={(e) => setFundAmount(e.target.value)}
+          label="Fund Amount"
+          postfix={selectedChain?.symbol || ''}
+          type="number"
+          step="0.001"
+          styleType="success"
+          placeholder="0.00"
+          width="100%"
+          fontSize="24px"
+        />
+        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!active}>
+          {active && !isRightChain ? 'Switch Network' : 'Submit Fund'}
+        </PrimaryButton>
+      </ContentCard>
     </ContentWrapper>
   );
 };
