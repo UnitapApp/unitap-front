@@ -92,7 +92,6 @@ export const PrimaryOutlinedButton = styled(Button)`
   background: ${({disabled}) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
   position: relative;
   z-index: 1;
-  box-sizing: border-box;
 
   &::before {
     content: '';

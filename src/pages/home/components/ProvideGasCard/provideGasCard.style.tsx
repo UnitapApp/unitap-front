@@ -1,0 +1,30 @@
+import styled from 'styled-components';
+import { DV } from 'components/basic/designVariables';
+
+export const ProvideGasCardWrapper = styled.div`
+  width: 100%;
+  height: 100px;
+  max-width: 1280px;
+  background: ${DV.bgGradient.dark};
+  margin: 1rem auto;
+  padding: ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 7}px ${DV.sizes.basePadding * 3}px
+    ${DV.sizes.basePadding * 10}px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+  border-radius: ${DV.sizes.baseRadius * 1.5}px;
+  position: relative;
+  border: none;
+
+  &::before {
+    content: '';
+    display: block;
+    z-index: -1;
+    position: absolute;
+    background: url('assets/images/claim/provide-fund-hand.svg') #000;
+    background-repeat: no-repeat;
+    inset: 0;
+    margin: 0.1rem;
+    border-radius: ${DV.sizes.baseRadius * 1.5 - 1}px;
+  }
+`;
