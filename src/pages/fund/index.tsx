@@ -6,18 +6,10 @@ import Content from './components/Content/content';
 import Header from './components/Header/header';
 import Footer from 'components/common/Footer/footer';
 
-const NavWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  z-index: 2;
-`;
-
 const Fund: FC = () => {
   return (
     <>
-      <NavWrapper>
-        <Navbar />
-      </NavWrapper>
+      <Navbar />
       <Header />
       <Content />
       <Footer />
