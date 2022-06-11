@@ -9,7 +9,6 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   iconWidth?: string;
   iconHeight?: string;
   icon?: string;
-  testid?: string;
   label?: string;
   postfix?: string;
   styleType?: string;
@@ -75,7 +74,7 @@ const InputWrapper = styled.div<InputProps>`
 `;
 
 const Input = (props: InputProps) => {
-  const { icon, width, iconWidth, iconHeight, testid, postfix, label } = props;
+  const { icon, width, iconWidth, iconHeight, postfix, label } = props;
   return (
     <>
       <InputWrapper width={width}>
@@ -87,7 +86,7 @@ const Input = (props: InputProps) => {
         ) : (
           <></>
         )}
-        <RawInput data-testid={testid} {...props} />
+        <RawInput {...props} />
         {postfix ? <p className="input-postfix">{postfix}</p> : null}
       </InputWrapper>
     </>

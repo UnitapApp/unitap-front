@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { IconWrapper } from './icon.style';
 
-type props = {
-  iconSrc: string;
-  smWidth?: string;
+interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   width?: string;
   height?: string;
-  className?: string;
+  smWidth?: string;
   mr?: number;
   mrAuto?: boolean;
   mb?: number;
@@ -14,23 +12,12 @@ type props = {
   ml?: number;
   mt?: number;
   hoverable?: boolean;
-};
+  iconSrc: string;
+}
 
-const Icon = ({ iconSrc, width, smWidth, height, mr, mrAuto, mb, smMb, ml, mt, hoverable, className }: props) => (
-  <IconWrapper
-    className={className}
-    width={width}
-    smWidth={smWidth}
-    height={height}
-    mr={mr}
-    mrAuto={mrAuto}
-    smMb={smMb}
-    ml={ml}
-    mt={mt}
-    mb={mb}
-    hoverable={hoverable}
-  >
-    <img src={iconSrc} alt="" />
+const Icon = (props: IconProps) => (
+  <IconWrapper {...props}>
+    <img src={props.iconSrc} alt="" />
   </IconWrapper>
 );
 
