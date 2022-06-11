@@ -2,19 +2,12 @@ import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 
 export const NavbarWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  z-index: 11;
   display: flex;
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 10}px;
-
-  & > img {
-    margin-right: auto;
-    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
-      width: 240px;
-      margin-left: ${DV.sizes.baseMargin * -6}px;
-      margin-top: ${DV.sizes.baseMargin * 0.5}px;
-    }
-  }
 `;
-
 
 export const DesktopNav = styled.div`
   display: none;

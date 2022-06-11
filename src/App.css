@@ -35,6 +35,12 @@
   src: url('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
 
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 
 .App {
   text-align: center;

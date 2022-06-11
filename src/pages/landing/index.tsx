@@ -117,10 +117,10 @@ const Landing: FC = () => {
   return (
     <LandingWrapper>
       <nav className="landing__navbar">
-        <Icon iconSrc="logo.png" width="270px" height="auto"></Icon>
+        <Icon iconSrc="logo.svg" width="270px" height="auto"></Icon>
       </nav>
       <div className="landing__hero">
-        <Icon iconSrc="assets/images/landing/logo-center.png" width="75px" height="auto" mb={3} smWidth="80px"></Icon>
+        <Icon iconSrc="assets/images/landing/logo-center.svg" width="75px" height="auto" mb={3} smWidth="80px"></Icon>
         <Icon
           iconSrc="assets/images/landing/name-center.svg"
           width="190px"
@@ -136,7 +136,7 @@ const Landing: FC = () => {
           <LandingClaimIconButton
             onClick={() => navigate(RoutePath.FAUCET)}
             className="has-icon"
-            icon="assets/images/landing/claim-button-logo.png"
+            icon="assets/images/landing/claim-button-logo.svg"
             iconWidth={16}
             smIconWidth={12}
             iconHeight={22}
@@ -151,7 +151,7 @@ const Landing: FC = () => {
           </LandingClaimIconButton>
           <LandingClaimIconButton
             className="has-icon"
-            icon="assets/images/landing/soon-logo.png"
+            icon="assets/images/landing/soon-logo.svg"
             iconWidth={40}
             smIconWidth={30}
             iconHeight={20}
@@ -166,9 +166,9 @@ const Landing: FC = () => {
         </div>
       </div>
       <footer className="landing__footer">
-        <Icon iconSrc="assets/images/footer/twitter.png" width="34px" height="auto" mr={4} hoverable></Icon>
-        <Icon iconSrc="assets/images/footer/github.png" width="34px" height="auto" mr={4} hoverable></Icon>
-        <Icon iconSrc="assets/images/footer/discord.png" width="34px" height="auto" hoverable></Icon>
+        <Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+        <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+        <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
       </footer>
     </LandingWrapper>
   );

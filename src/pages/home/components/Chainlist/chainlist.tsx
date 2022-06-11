@@ -49,7 +49,7 @@ const ChainCard = styled.div`
 
 const ChainLogo = styled.div`
   background-color: ${DV.colors.black};
-  height: 102px;
+  height: 101%;
   width: 48px;
   position: absolute;
   display: flex;
@@ -57,7 +57,7 @@ const ChainLogo = styled.div`
   align-items: center;
   border-radius: ${DV.sizes.baseRadius * 1.5}px 0 0 ${DV.sizes.baseRadius * 1.5}px;
   left: -1px;
-  bottom: 0;
+  bottom: -1px;
 
   img {
     width: 30px;

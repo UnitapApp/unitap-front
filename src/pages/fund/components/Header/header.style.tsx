@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 export const HeaderWrapper = styled.div`
   display: flex;
   background-image: url('/headerBg.png');
-  height: max(180px, 20vh);
+  height: 170px;
   background-size: cover;
   justify-content: center;
   align-items: center;
