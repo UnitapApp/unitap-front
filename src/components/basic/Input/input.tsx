@@ -29,14 +29,8 @@ const RawInput = styled.input<InputProps>`
   z-index: 1;
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '1em')};
 
-  ::placeholder {
-    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
-  }
-
-  :-ms-input-placeholder {
-    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
-  }
-
+  ::placeholder,
+  :-ms-input-placeholder,
   ::-ms-input-placeholder {
     color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
   }
