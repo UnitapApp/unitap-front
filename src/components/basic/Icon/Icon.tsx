@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconWrapper } from './icon.style';
 
-interface IconProps extends React.InputHTMLAttributes<HTMLSpanElement> {
+interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   width?: string;
   height?: string;
   smWidth?: string;
