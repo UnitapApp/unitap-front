@@ -139,7 +139,7 @@ const Header = () => {
       </HeaderComp>
       <InputWrapper>
         <Input
-          testid="search-box"
+          data-testid="search-box"
           icon="search.png"
           width="min(500px, 90%)"
           iconWidth="20px"

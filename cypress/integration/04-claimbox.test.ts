@@ -8,7 +8,6 @@ import {
   userProfileNotVerified,
   userProfileVerified,
 } from '../utils/data';
-import { getTxUrl } from '../../src/utils';
 import RoutePath from '../../src/routes';
 
 describe('Claim', () => {
@@ -90,6 +89,15 @@ describe('Claim', () => {
     }).as('claimMax');
   };
 
+  const setupClaimMaxError = () => {
+    cy.route({
+      method: 'POST',
+      url: `/api/v1/chain/${chainList[1].pk}/claim-max/${TEST_ADDRESS_NEVER_USE}`,
+      status: 503,
+      response: {},
+      delay: 500,
+    }).as('claimMaxError');
+  };
   // @ts-ignore
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
@@ -112,9 +120,37 @@ describe('Claim', () => {
     cy.shouldBeCalled('claimMax', 0);
   });
 
+  function claimSuccess() {
+    setupClaimMax();
+    setupGetChainListAuthenticatedClaimed();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=loading`).should('exist');
+    // @ts-ignore
+    cy.shouldBeCalled('claimMax', 1);
+
+    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
+    cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
+  }
+
   it('do claim', () => {
     setupGetUserProfileVerified();
-    setupClaimMax();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.wait(1000);
+
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=loading`).should('not.exist');
+
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+  });
+
+  it('claim error and retry to succeed', () => {
+    setupGetUserProfileVerified();
+    setupClaimMaxError();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
     cy.wait(1000);
@@ -130,10 +166,10 @@ describe('Claim', () => {
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('exist');
     // @ts-ignore
-    cy.shouldBeCalled('claimMax', 1);
+    cy.shouldBeCalled('claimMaxError', 1);
 
-    cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
-    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).contains('Close').click();
-    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
+    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
+    cy.get(`[data-testid=chain-claim-failed-${chainList[1].pk}]`).should('exist');
+    claimSuccess();
   });
 });
