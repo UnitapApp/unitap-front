@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <NavbarWrapper>
-      <Icon iconSrc="logo.png" width="250px" height="40px" mrAuto></Icon>
+      <Icon iconSrc="logo.svg" width="250px" height="40px" mrAuto></Icon>
       <DesktopNav>
         {location.pathname === RoutePath.FUND ? (
           <PrimaryOutlinedButton onClick={() => navigate(RoutePath.FAUCET)} mr={2} minWidth="175px">
@@ -63,7 +63,7 @@ const Navbar = () => {
           <BrightConnectedButton
             className="has-icon"
             data-testid="brightid-connected"
-            icon="green-tick.png"
+            icon="green-tick.svg"
             fontSize="12px"
             fontWeight="normal"
             minWidth="175px"
@@ -110,7 +110,7 @@ const Navbar = () => {
         </div>
         <div className="menu-items">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            <BrightConnectedButton icon="green-tick.png" iconWidth={24} iconHeight={16} mb={2}>
+            <BrightConnectedButton icon="green-tick.svg" iconWidth={24} iconHeight={16} mb={2}>
               {connectBrightButtonLabel}
             </BrightConnectedButton>
           ) : (

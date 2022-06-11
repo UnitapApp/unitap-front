@@ -78,7 +78,7 @@ const Content: FC = () => {
   return (
     <ContentWrapper>
       <ContentCard>
-        <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" mb={2} />
+        <Icon iconSrc={'assets/images/fund/content-header.svg'} width="220px" height="auto" mb={2} />
         <p className="content-subtext">
           99% of fund amount goes for Claim Gas Fees. <br /> 1% of fund amount goes for Unitap development.
         </p>
