@@ -10,6 +10,8 @@ import { useAddAndSwitchToChain } from '../../../../hooks/useAddAndSwitchToChain
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React';
 import { parseEther } from '@ethersproject/units';
 import { calculateGasMargin } from '../../../../utils/web3';
+import Modal from 'components/common/Modal/modal';
+import SelectChainModal from '../SelectChainModal/selectChainModal';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
@@ -68,16 +70,35 @@ const Content: FC = () => {
     });
   }, [active, chainId, selectedChain, account, isRightChain, library, fundAmount, addAndSwitchToChain]);
 
+  const [modalState, setModalState] = useState(false);
+
   return (
     <ContentWrapper>
       <ContentCard>
-        <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" mb={2}/>
+        <Icon iconSrc={'assets/images/fund/content-header.png'} width="220px" height="auto" mb={2} />
         <p className="content-subtext">
           99% of fund amount goes for Claim Gas Fees. <br /> 1% of fund amount goes for Unitap development.
         </p>
         {selectedChain && (
-          <Dropdown label="Chain" value={selectedChain.chainName} icon="assets/images/fund/coin-icon.png" />
+          <Dropdown
+            onClick={() => {
+              setModalState(true);
+            }}
+            label="Chain"
+            value={selectedChain.chainName}
+            icon="assets/images/fund/coin-icon.png"
+          />
         )}
+        <Modal
+          title="Select Chain"
+          isOpen={modalState}
+          size='small'
+          closeModalHandler={() => {
+            setModalState(false);
+          }}
+        >
+          <SelectChainModal></SelectChainModal>
+        </Modal>
         <Input
           className="fund-input"
           value={fundAmount}

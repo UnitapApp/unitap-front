@@ -9,26 +9,27 @@ type props = {
   width?: string;
   textAlign?: string;
   mr?: number;
+  mrAuto?: boolean;
   mb?: number;
 };
 
 export const Text = styled.p<props>`
-  color: ${(props): string => {
-    const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === props.color);
+  color: ${({ color }): string => {
+    const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === color);
     if (xyz) {
       return `${DV.colors[xyz]}!important`;
     } else return `white !important`;
   }};
-  font-size: ${({fontSize}) => fontSize || '16'}px;
-  line-height: ${({lineHeight}) => lineHeight || ''};
+  font-size: ${({ fontSize }) => fontSize || '16'}px;
+  line-height: ${({ lineHeight }) => lineHeight || ''};
   padding: 0;
   margin: 0;
-  width: ${(props) => props.width || 'auto'};
-  margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
-  margin-bottom: ${(props) => (props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `1rem`)};
-  text-align: ${(props) => props.textAlign || 'left'};
+  width: ${({ width }) => width || 'auto'};
+  margin-right: ${({ mr, mrAuto }) => (mr ? `${mr * DV.sizes.baseMargin}px` : mrAuto ? 'auto' : '')};
+  margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : `1rem`)};
+  text-align: ${({ textAlign }) => textAlign || 'left'};
 
   @media only screen and (max-width: 1224px) {
-    font-size: ${(props) => props.smFontSize || '15'}px;
+    font-size: ${({ smFontSize }) => smFontSize || '15'}px;
   }
 `;

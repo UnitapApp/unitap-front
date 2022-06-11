@@ -27,7 +27,6 @@ const RawInput = styled.input<InputProps>`
   border-radius: ${DV.sizes.baseRadius}px;
   border: 1px solid ${({ styleType }) => (styleType === 'success' ? DV.colors.green : 'unset')};
   z-index: 1;
-  box-sizing: border-box;
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '1em')};
 
   ::placeholder {
