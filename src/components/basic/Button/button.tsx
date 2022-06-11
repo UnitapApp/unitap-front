@@ -3,6 +3,7 @@ import { DV } from 'components/basic/designVariables';
 
 interface props {
   width?: string;
+  minWidth?: string;
   iconWidth?: number;
   smIconWidth?: number;
   iconHeight?: number;
@@ -19,15 +20,16 @@ interface props {
   icon?: string;
   fontSize?: string;
   smFontSize?: string;
+  fontWeight?: string;
 }
 
 // export const Xp = styled.p`
-//     color: ${(props) => DV.colors[props.color]};
+//     color: ${(props) => DV.colors[color]};
 // `
 
 export const Text = styled.p<props>`
-  color: ${(props): string => {
-    const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === props.color);
+  color: ${({color}): string => {
+    const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === color);
     if (xyz) {
       return `${DV.colors[xyz]}!important`;
     } else return `${DV.colors.black}!important`;
@@ -38,38 +40,41 @@ export const Button = styled.button<props>`
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   position: relative;
   border: none;
-  font-weight: bold;
-  margin-right: ${(props) => (props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`)};
-  margin-bottom: ${(props) => (props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`)};
-  width: ${(props) => props.width || 'auto'};
-  height: ${(props) => props.height || 'auto'};
-  font-size: ${(props) => props.fontSize || 'auto'};
-  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 3}px;
+  font-weight: ${({fontWeight}) => fontWeight || 'bold'};
+  margin-right: ${({mr}) => (mr ? `${mr * DV.sizes.baseMargin}px` : '')};
+  margin-bottom: ${({mb}) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
+  width: ${({width}) => width || 'auto'};
+  min-width: ${({minWidth}) => minWidth || 'auto'};
+  height: ${({height}) => height || 'auto'};
+  font-size: ${({fontSize}) => fontSize || 'auto'};
+  padding: .75em 1.25em;
 
   &::after {
-    display: ${(props) => (props.icon ? 'inline-block' : 'none')};
+    display: ${({icon}) => (icon ? 'inline-block' : 'none')};
     content: ' ';
-    background-image: ${(props) => `url(${props.icon})` || 'none'};
+    background-image: ${({icon}) => `url(${icon})` || 'none'};
     position: relative;
     top: 2px;
-    background-size: ${(props) => `${props.iconWidth}px ${props.iconHeight}px` || '0 0'};
-    width: ${(props) => `${props.iconWidth}px` || 'auto'};
-    height: ${(props) => `${props.iconHeight}px` || 'auto'};
-    margin-left: ${(props) => (props.iconMarginLeft ? props.iconMarginLeft : '12')}px;
+    background-size: ${({iconWidth, iconHeight}) => `${iconWidth}px ${iconHeight}px` || '0 0'};
+    width: ${({iconWidth}) => `${iconWidth}px` || 'auto'};
+    height: ${({iconHeight}) => `${iconHeight}px` || 'auto'};
+    margin-left: ${({iconMarginLeft}) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${(props) => (props.disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(max-width: 1224 px) {
-    font-size: ${(props) => props.smFontSize || props.fontSize || 'auto'};
-    margin-right: ${(props) =>
-      props.smMr ? `${props.smMr * DV.sizes.baseMargin}px` : props.mr ? `${props.mr * DV.sizes.baseMargin}px` : `0`};
-    margin-bottom: ${(props) =>
-      props.smMb ? `${props.smMb * DV.sizes.baseMargin}px` : props.mb ? `${props.mb * DV.sizes.baseMargin}px` : `0`};
+  ${({disabled}) => (disabled ? `` : `&:hover {cursor: pointer;}`)} 
+  
+  @media only screen and(max-width: 1224px) {
+    font-size: ${({smFontSize, fontSize}) => smFontSize || fontSize || 'auto'};
+    margin-right: ${({smMr, mr}) =>
+      smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
+    margin-bottom: ${({smMb, mb}) =>
+      smMb ? `${smMb * DV.sizes.baseMargin}px` : mb ? `${mb * DV.sizes.baseMargin}px` : `0`};
 
     &::after {
-      background-size: ${(props) => `${props.smIconWidth}px ${props.smIconHeight}px` || '0 0'};
-      width: ${(props) => `${props.smIconWidth}px` || `${props.iconWidth}px` || 'auto'};
-      height: ${(props) => `${props.smIconHeight}px` || `${props.iconHeight}px` || 'auto'};
-      margin-left: ${(props) => `${props.smIconMarginLeft}px` || `${props.iconMarginLeft}px` || '12px'};
+      background-size: ${({smIconWidth, smIconHeight}) => `${smIconWidth}px ${smIconHeight}px` || '0 0'};
+      width: ${({smIconWidth, iconWidth}) => `${smIconWidth}px` || `${iconWidth}px` || 'auto'};
+      height: ${({smIconHeight, iconHeight}) => `${smIconHeight}px` || `${iconHeight}px` || 'auto'};
+      margin-left: ${({smIconMarginLeft, iconMarginLeft}) => `${smIconMarginLeft}px` || `${iconMarginLeft}px` || '12px'};
     }
   }
 `;
@@ -81,8 +86,8 @@ export const PrimaryButton = styled(Button)`
 
 export const PrimaryOutlinedButton = styled(Button)`
   /* border: 1px solid ${DV.colors.primary}; */
-  color: ${(props) => (props.disabled ? '#C0AFC7' : 'white')};
-  background: ${(props) => (props.disabled ? '#C0AFC7' : DV.bgGradient.primary)};
+  color: ${({disabled}) => (disabled ? '#C0AFC7' : 'white')};
+  background: ${({disabled}) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
   position: relative;
   z-index: 1;
   box-sizing: border-box;
@@ -124,8 +129,8 @@ export const BrightOutlinedButton = styled(Button)`
 `;
 
 export const BrightConnectedButton = styled(Button)`
-  border: 1px solid ${DV.colors.green};
-  color: ${DV.colors.bright};
+  border: 1px solid ${DV.colors.bright};
+  color: ${DV.colors.space_green};
   background-color: ${DV.colors.black};
 `;
 

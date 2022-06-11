@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
 import { BrightConnectedButton, BrightOutlinedButton, LightOutlinedButton } from 'components/basic/Button/button';
 import Modal from 'components/common/Modal/modal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
@@ -10,117 +8,8 @@ import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
 import { injected } from '../../../connectors';
-
-// ###### Local Styled Components
-
-const Nav = styled.div`
-  display: flex;
-  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 8}px;
-
-  & > img {
-    width: 306px;
-    margin-right: auto;
-    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
-      width: 240px;
-      margin-left: ${DV.sizes.baseMargin * -6}px;
-      margin-top: ${DV.sizes.baseMargin * 0.5}px;
-    }
-  }
-`;
-
-const DesktopNav = styled.div`
-  display: none;
-  @media only screen and (min-width: ${DV.breakpoints.tablet}) {
-    display: block;
-  }
-`;
-
-const MobileNav = styled.div`
-  display: none;
-  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
-    display: block;
-  }
-
-  .checkbox {
-    position: absolute;
-    display: block;
-    height: 32px;
-    width: 32px;
-    top: 20px;
-    right: 20px;
-    z-index: 1002;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .hamburger-lines {
-    height: 26px;
-    width: 32px;
-    padding-left: ${DV.sizes.basePadding * -2}px;
-    position: absolute;
-    top: ${DV.sizes.basePadding * 3}px;
-    right: 20px;
-    z-index: 1001;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .line {
-      display: block;
-      height: 4px;
-      width: 100%;
-      border-radius: 10px;
-      background: white;
-    }
-
-    .line1 {
-      transform-origin: 0% 0%;
-      transition: transform 0.4s ease-in-out;
-    }
-
-    .line2 {
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .line3 {
-      transform-origin: 0% 100%;
-      transition: transform 0.4s ease-in-out;
-    }
-  }
-
-  .menu-items {
-    position: fixed;
-    z-index: 1000;
-    box-sizing: border-box;
-    inset: 0;
-    padding: ${DV.sizes.basePadding * 8}px ${DV.sizes.basePadding * 4}px;
-    background-color: rgba(5, 5, 5, 0.65);
-    /* height: 100vh; */
-    width: 100%;
-    transform: translate(-100%);
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    transition: transform 0.5s ease-in-out;
-    text-align: center;
-  }
-
-  input[type='checkbox']:checked ~ .hamburger-lines .line1 {
-    transform: rotate(45deg);
-  }
-
-  input[type='checkbox']:checked ~ .hamburger-lines .line2 {
-    transform: scaleY(0);
-  }
-
-  input[type='checkbox']:checked ~ .hamburger-lines .line3 {
-    transform: rotate(-45deg);
-  }
-
-  input[type='checkbox']:checked ~ .menu-items {
-    transform: translateX(0);
-  }
-`;
+import Icon from 'components/basic/Icon/Icon';
+import { NavbarWrapper, DesktopNav, MobileNav } from './navbar.style';
 
 const Navbar = () => {
   const { activate } = useActiveWeb3React();
@@ -153,16 +42,18 @@ const Navbar = () => {
   }, [account, userProfile]);
 
   return (
-    <Nav>
-      <img src="logo.png" alt="" />
+    <NavbarWrapper>
+      <Icon iconSrc="logo.png" width="250px" height="40px" mrAuto></Icon>
       <DesktopNav>
         {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
           <BrightConnectedButton
             className="has-icon"
             data-testid="brightid-connected"
             icon="green-tick.png"
-            iconWidth={24}
-            iconHeight={16}
+            fontSize="12px"
+            fontWeight='normal'
+            iconWidth={14}
+            iconHeight={10}
             mr={2}
           >
             {connectBrightButtonLabel}
@@ -171,6 +62,8 @@ const Navbar = () => {
           <BrightOutlinedButton
             data-testid="brightid-show-modal"
             disabled={!account}
+            fontSize="12px"
+            fontWeight='normal'
             mr={2}
             onClick={() => {
               if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
@@ -182,9 +75,11 @@ const Navbar = () => {
           </BrightOutlinedButton>
         )}
         {active ? (
-          <LightOutlinedButton data-testid="wallet-connect">{shortenAddress(account)}</LightOutlinedButton>
+          <LightOutlinedButton data-testid="wallet-connect" minWidth="160px" fontSize="12px">
+            {shortenAddress(account)}
+          </LightOutlinedButton>
         ) : (
-          <LightOutlinedButton data-testid="wallet-connect" onClick={connect}>
+          <LightOutlinedButton data-testid="wallet-connect" onClick={connect} fontSize="12px">
             Connect Wallet
           </LightOutlinedButton>
         )}
@@ -239,7 +134,7 @@ const Navbar = () => {
           }}
         />
       </Modal>
-    </Nav>
+    </NavbarWrapper>
   );
 };
 
