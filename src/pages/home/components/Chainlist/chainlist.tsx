@@ -105,6 +105,11 @@ const Action = styled.div`
   }
 `;
 
+const AddMetamaskButton = styled(SecondaryButton)`
+  padding-top: 12px;
+  padding-bottom: 12px;
+`;
+
 const ChainListWrapper = styled.div`
   padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
 `;
@@ -166,13 +171,13 @@ const ChainList = () => {
                     </ClaimedButton>
                   )}
 
-                  <SecondaryButton
+                  <AddMetamaskButton
                     data-testid={`chain-switch-${chain.pk}`}
                     onClick={() => addAndSwitchToChain(chain)}
                     disabled={!active}
                   >
                     Add to MetaMask
-                  </SecondaryButton>
+                  </AddMetamaskButton>
                 </Action>
               </ChainCard>
             </div>
