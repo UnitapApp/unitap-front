@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   BrightConnectedButton,
   BrightOutlinedButton,
@@ -12,20 +12,13 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
-import { injected } from '../../../connectors';
 import { DesktopNav, MobileNav, NavbarWrapper, NavLogo } from './navbar.style';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
+import useWeb3Connector from '../../../hooks/useWeb3Connector';
 
 const Navbar = () => {
-  const { activate } = useActiveWeb3React();
-  const connect = useCallback(async () => {
-    try {
-      await activate(injected);
-    } catch (ex) {
-      console.log(ex);
-    }
-  }, [activate]);
+  const { connect } = useWeb3Connector();
 
   const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
   const changeModalActive = (state: boolean) => {
