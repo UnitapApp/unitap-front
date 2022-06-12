@@ -13,8 +13,7 @@ import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { shortenAddress } from 'utils';
 import { injected } from '../../../connectors';
-import Icon from 'components/basic/Icon/Icon';
-import { DesktopNav, MobileNav, NavbarWrapper } from './navbar.style';
+import { DesktopNav, MobileNav, NavbarWrapper, NavLogo } from './navbar.style';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 
@@ -53,7 +52,7 @@ const Navbar = () => {
 
   return (
     <NavbarWrapper>
-      <Icon
+      <NavLogo
         iconSrc="logo.svg"
         width="250px"
         height="40px"

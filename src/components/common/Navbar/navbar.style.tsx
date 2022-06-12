@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
+import Icon from 'components/basic/Icon/Icon';
 
 export const NavbarWrapper = styled.div`
   position: absolute;
@@ -10,6 +11,10 @@ export const NavbarWrapper = styled.div`
   @media screen and (max-width: ${DV.breakpoints.tablet}) {
     padding-left: ${DV.sizes.basePadding * 4}px;
   }
+`;
+
+export const NavLogo = styled(Icon)`
+  margin-left: -${DV.sizes.baseMargin * 5}px;
 `;
 
 export const DesktopNav = styled.div`
