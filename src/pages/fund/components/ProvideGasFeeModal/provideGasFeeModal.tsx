@@ -10,8 +10,8 @@ const ProvideGasFeeModal: FC = () => {
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/success-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="space_green" textAlign="center">
-          1000 xDAI Funded
+        <Text fontSize="14px" color="space_green" textAlign="center" breakOverflow>
+          1000 xDAI Funded ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
         </Text>
         <SecondaryButton fontSize='14px' size="large">View on Explorer</SecondaryButton>
       </>
@@ -22,8 +22,8 @@ const ProvideGasFeeModal: FC = () => {
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/failed-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="warningRed" textAlign="center">
-          1000 xDAI Fund Failed
+        <Text fontSize="14px" color="warningRed" textAlign="center" breakOverflow>
+          1000 xDAI Fund Failed eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         </Text>
         <SecondaryButton fontSize='14px' size="large">Try Again</SecondaryButton>
       </>

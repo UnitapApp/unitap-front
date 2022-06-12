@@ -72,7 +72,7 @@ const InputWrapper = styled.div<InputProps>`
 `;
 
 const Input = (props: InputProps) => {
-  const { icon, width, iconWidth, iconHeight, postfix, label, testid, mb, p } = props;
+  const { icon, width, iconWidth, iconHeight, postfix, label, testid, mb } = props;
   return (
     <InputWrapper width={width} mb={mb}>
       {label && <Label>{label}</Label>}
