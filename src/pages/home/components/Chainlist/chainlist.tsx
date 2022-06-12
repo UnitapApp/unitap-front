@@ -11,6 +11,7 @@ import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
+import Icon from 'components/basic/Icon/Icon';
 
 // ###### Local Styled Components
 
@@ -154,6 +155,7 @@ const ChainList = () => {
                       data-testid={`chain-show-claim-${chain.pk}`}
                       disabled={!active}
                       mr={2}
+                      mlAuto
                       onClick={() => {
                         setActiveChain(chain);
                       }}
@@ -164,6 +166,7 @@ const ChainList = () => {
                     <ClaimedButton
                       data-testid={`chain-claimed-${chain.pk}`}
                       mr={2}
+                      mlAuto
                       icon="claimIcon.png"
                       iconWidth={52}
                       iconHeight={58}
@@ -184,6 +187,7 @@ const ChainList = () => {
             </div>
           );
         })}
+        {chainListSearchResult.length === 0 && chainList.length && <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>}
       </div>
 
       <Modal
