@@ -11,6 +11,7 @@ import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
+import Icon from 'components/basic/Icon/Icon';
 
 // ###### Local Styled Components
 
@@ -184,6 +185,7 @@ const ChainList = () => {
             </div>
           );
         })}
+        {chainListSearchResult.length === 0 && chainList.length && <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>}
       </div>
 
       <Modal
