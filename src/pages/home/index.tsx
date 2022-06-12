@@ -13,6 +13,7 @@ import { ChainListContext } from 'hooks/useChainList';
 import { DV } from 'components/basic/designVariables';
 import { diffToNextMonday } from 'utils';
 import { Text } from 'components/basic/Text/text.style';
+import Icon from 'components/basic/Icon/Icon';
 
 const HomeContentWrapper = styled.div`
   display: flex;
@@ -94,17 +95,20 @@ const Timer = () => {
   );
 };
 
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const InputWrapper = styled(FlexWrapper)`
+const SearchInputWrapper = styled.div`
   position: relative;
+  border: 1px solid ${DV.colors.gray};
+  border-radius: ${DV.sizes.baseRadius}px;
+
+  .icon-right {
+    position: absolute;
+    right: ${DV.sizes.basePadding * 2}px;
+    top: ${DV.sizes.basePadding * 1.5}px;
+    z-index: 10;
+  }
 `;
 
-const Search = () => {
+const SearchInput = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
   const { changeSearchPhrase } = useContext(ChainListContext);
 
@@ -115,19 +119,23 @@ const Search = () => {
   };
 
   return (
-    <InputWrapper>
+    <SearchInputWrapper>
       <Input
         data-testid="search-box"
         icon="search.png"
-        width="min(500px, 90%)"
+        width="100%"
+        fontSize='14px'
         iconWidth="20px"
         iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Search Network / Currency"
         pl={7}
+        p={2}
+        mb={0}
       ></Input>
-    </InputWrapper>
+      <Icon iconSrc="assets/images/claim/slash-icon.svg" hoverable className="icon-right"></Icon>
+    </SearchInputWrapper>
   );
 };
 
@@ -139,10 +147,11 @@ const Home = () => {
         <Header />
         <HomeContentWrapper>
           <Row>
-            <Col xs={12} md={6}>
-              <Search />
+            <Col xs={12} md={4}>
+              <SearchInput />
             </Col>
-            <Col xs={12} md={6}>
+            <Col xs={0} md={4}></Col>
+            <Col xs={12} md={4}>
               <Timer />
             </Col>
           </Row>
