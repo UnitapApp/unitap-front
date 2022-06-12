@@ -5,6 +5,7 @@ type props = {
   fontSize?: string;
   smFontSize?: string;
   lineHeight?: string;
+  breakOverflow?: boolean;
   color?: string;
   width?: string;
   textAlign?: string;
@@ -32,4 +33,12 @@ export const Text = styled.p<props>`
   @media only screen and (${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize }) => smFontSize || '15'}px;
   }
+
+  ${({ breakOverflow }) =>
+    breakOverflow &&
+    `
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+    `}
 `;

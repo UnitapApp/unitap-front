@@ -11,12 +11,12 @@ import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
+import Icon from 'components/basic/Icon/Icon';
 
 // ###### Local Styled Components
 
 const ChainCard = styled.div`
-  max-width: 1280px;
-  gap: ${DV.sizes.baseMargin * 2}px;
+  width: 100%;
   margin: auto;
   position: relative;
   display: flex;
@@ -111,8 +111,10 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainListWrapper = styled.div`
-  padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
+  padding: ${DV.sizes.baseRadius * 3}px 0;
+  width: 100%;
 `;
+
 const ChainList = () => {
   const { chainList, chainListSearchResult } = useContext(ChainListContext);
 
@@ -153,6 +155,7 @@ const ChainList = () => {
                       data-testid={`chain-show-claim-${chain.pk}`}
                       disabled={!active}
                       mr={2}
+                      mlAuto
                       onClick={() => {
                         setActiveChain(chain);
                       }}
@@ -163,6 +166,7 @@ const ChainList = () => {
                     <ClaimedButton
                       data-testid={`chain-claimed-${chain.pk}`}
                       mr={2}
+                      mlAuto
                       icon="claimIcon.png"
                       iconWidth={52}
                       iconHeight={58}
@@ -183,6 +187,7 @@ const ChainList = () => {
             </div>
           );
         })}
+        {chainListSearchResult.length === 0 && chainList.length && <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>}
       </div>
 
       <Modal

@@ -11,6 +11,7 @@ interface props {
   iconMarginLeft?: number;
   smIconMarginLeft?: number;
   height?: string;
+  mlAuto?: boolean;
   mr?: number;
   smMr?: number;
   mb?: number;
@@ -44,6 +45,7 @@ export const Button = styled.button<props>`
   font-weight: ${({ fontWeight }) => fontWeight || 'bold'};
   margin-right: ${({ mr }) => (mr ? `${mr * DV.sizes.baseMargin}px` : '')};
   margin-bottom: ${({ mb }) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
+  margin-left: ${({ mlAuto }) => (mlAuto ? 'auto' : '')};
   width: ${({ width }) => width || 'auto'};
   min-width: ${({ minWidth }) => minWidth || 'auto'};
   height: ${({ height }) => height || 'auto'};
@@ -62,8 +64,7 @@ export const Button = styled.button<props>`
     margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints
-    .smallDesktop}) {
+  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize, fontSize }) => smFontSize || fontSize || 'auto'};
     margin-right: ${({ smMr, mr }) =>
       smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
