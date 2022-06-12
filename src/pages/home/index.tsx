@@ -24,22 +24,35 @@ const HomeContentWrapper = styled.div`
   padding: ${DV.sizes.basePadding * 4.5}px ${DV.sizes.basePadding * 11.25}px;
 `;
 
-const Row = styled.div`
+interface rowProps {
+  mdReverse?: boolean
+}
+
+const Row = styled.div<rowProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    flex-direction: ${({mdReverse}) => mdReverse ? `column-reverse` : 'row'};
+  }
 `;
 
 interface props {
+  xlg?: number;
+  lg?: number;
   md?: number;
   xs?: number;
 }
 
 const Col = styled.div<props>`
-  width: ${({ md }) => (md ? `${(md * 100) / 12}%` : '100%')};
+  width: ${({ xlg }) => (xlg ? `${(xlg * 100) / 12}%` : '100%')};
 
-  @media only screen and (max-width: ${DV.breakpoints.desktop}) {
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
+    width: ${({ lg }) => (lg ? `${(lg * 100) / 12}%` : '100%')};
+  }
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     width: ${({ md }) => (md ? `${(md * 100) / 12}%` : '100%')};
   }
   @media only screen and (max-width: ${DV.breakpoints.mobile}) {
@@ -59,6 +72,10 @@ const TimerWrapper = styled.div`
   align-items: center;
   padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 6}px ${DV.sizes.basePadding}px
     ${DV.sizes.basePadding * 3}px;
+
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    margin: 0 auto 1rem;
+  } 
 `;
 
 const Timer = () => {
@@ -146,12 +163,12 @@ const Home = () => {
       <Body>
         <Header />
         <HomeContentWrapper>
-          <Row>
-            <Col xs={12} md={4}>
+          <Row mdReverse>
+            <Col xs={12} md={12} lg={5.5} xlg={4}>
               <SearchInput />
             </Col>
-            <Col xs={0} md={4}></Col>
-            <Col xs={12} md={4}>
+            <Col xs={0} md={0} lg={0.5} xlg={3.5}></Col>
+            <Col xs={12} md={12} lg={6} xlg={4.5}>
               <Timer />
             </Col>
           </Row>
