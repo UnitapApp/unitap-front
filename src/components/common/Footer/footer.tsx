@@ -23,9 +23,15 @@ const PbyBright = styled(Icon)`
 const Footer: FC = () => {
   return (
     <FooterWrapper>
-      <Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
-      <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
-      <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
+      <span onClick={() => window.open('http://twitter.com/unitap_app', '_blank')}>
+        <Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+      </span>
+      <span onClick={() => window.open('https://github.com/UnitapApp', '_blank')}>
+        <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+      </span>
+      <span onClick={() => window.open('https://discord.gg/kH8WeQ6tuF', '_blank')}>
+        <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
+      </span>
       <PbyBright iconSrc="Poweredbybright.svg" width="160px" height="auto"></PbyBright>
     </FooterWrapper>
   );
