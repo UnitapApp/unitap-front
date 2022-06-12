@@ -13,10 +13,12 @@ import { calculateGasMargin } from '../../../../utils/web3';
 import Modal from 'components/common/Modal/modal';
 import SelectChainModal from '../SelectChainModal/selectChainModal';
 import ProvideGasFeeModal from '../ProvideGasFeeModal/provideGasFeeModal';
+import useWeb3Connector from '../../../../hooks/useWeb3Connector';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
   const { active, chainId, library, account } = useActiveWeb3React();
+  const { connect } = useWeb3Connector();
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
   useEffect(() => {
@@ -35,13 +37,16 @@ const Content: FC = () => {
   }, [selectedChain, active, chainId]);
 
   const handleSendFunds = useCallback(async () => {
-    setProvideGasFeeModalState(true);
-    if (!active || !chainId || !selectedChain || !account) return;
+    if (!active) {
+      await connect();
+      return;
+    }
+    if (!chainId || !selectedChain || !account) return;
     if (!isRightChain) {
       await addAndSwitchToChain(selectedChain);
       return;
     }
-    if (!fundAmount) {
+    if (!Number(fundAmount)) {
       alert('Enter fund amount');
       return;
     }
@@ -53,27 +58,36 @@ const Content: FC = () => {
     };
 
     const estimatedGas = await library.estimateGas(tx).catch((err: any) => {
-      if (err?.data?.message) {
-        alert(err.data.message);
-      }
-      return {
-        error: new Error('Unexpected error. Could not estimate gas for this transaction.'),
-      };
+      return err;
     });
 
     if ('error' in estimatedGas) {
-      throw new Error('Unexpected error. Could not estimate gas for this transaction.');
+      const message = estimatedGas?.error?.message;
+      if (message) {
+        if (message.includes('insufficient funds')) {
+          setProvideGasFeeError('Error: Insufficient Funds');
+        } else {
+          setProvideGasFeeError(message);
+        }
+      } else {
+        setProvideGasFeeError('Unexpected error. Could not estimate gas for this transaction.');
+      }
+      return;
     }
 
-    return library.getSigner().sendTransaction({
+    library.getSigner().sendTransaction({
       ...tx,
       ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
       // gasPrice /// TODO add gasPrice based on EIP 1559
     });
-  }, [active, chainId, selectedChain, account, isRightChain, library, fundAmount, addAndSwitchToChain]);
+  }, [active, chainId, selectedChain, account, isRightChain, fundAmount, library, connect, addAndSwitchToChain]);
 
   const [modalState, setModalState] = useState(false);
-  const [provideGasFeeModalState, setProvideGasFeeModalState] = useState(false);
+  const [provideGasFeeError, setProvideGasFeeError] = useState('');
+
+  const closeModalHandler = () => {
+    setProvideGasFeeError('');
+  };
 
   return (
     <ContentWrapper>
@@ -95,7 +109,7 @@ const Content: FC = () => {
         <Modal
           title="Select Chain"
           isOpen={modalState}
-          size='small'
+          size="small"
           closeModalHandler={() => {
             setModalState(false);
           }}
@@ -115,17 +129,14 @@ const Content: FC = () => {
           width="100%"
           fontSize="24px"
         />
-        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!active}>
-          {active && !isRightChain ? 'Switch Network' : 'Submit Fund'}
+        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds}>
+          {!active ? 'Connect Wallet' : !isRightChain ? 'Switch Network' : 'Submit Fund'}
         </PrimaryButton>
-        <Modal
-          title="Provide Gas Fee"
-          isOpen={provideGasFeeModalState}
-          closeModalHandler={() => {
-            setProvideGasFeeModalState(false);
-          }}
-        >
-          <ProvideGasFeeModal></ProvideGasFeeModal>
+        <Modal title="Provide Gas Fee" isOpen={!!provideGasFeeError} closeModalHandler={closeModalHandler}>
+          <ProvideGasFeeModal
+            closeModalHandler={closeModalHandler}
+            provideGasFeeError={provideGasFeeError}
+          ></ProvideGasFeeModal>
         </Modal>
       </ContentCard>
     </ContentWrapper>
