@@ -64,6 +64,7 @@ describe('Landing Page', () => {
       method: 'GET',
       url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
       response: chainListAuthenticatedClaimedFirst,
+      delay: CYPRESS_FAST_INTERVAL / 4,
     }).as('chainListAuthenticated');
   };
   const setupGetUserProfileNotExists = () => {
@@ -95,7 +96,7 @@ describe('Landing Page', () => {
       method: 'GET',
       url: `/api/v1/chain/list/`,
       response: chainList,
-      delay: CYPRESS_FAST_INTERVAL / 2,
+      delay: CYPRESS_FAST_INTERVAL / 4,
     });
     cy.visit(RoutePath.FAUCET);
     cy.get(`[data-testid=chain-list-loading]`).should('exist');
