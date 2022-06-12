@@ -79,7 +79,7 @@ describe('Wallet', () => {
     setupEthBridge();
     setupGetChainListServerNotAuthenticated();
     cy.visit(RoutePath.FAUCET);
-    // cy.get('[data-testid=wallet-connect]').contains('Connect Wallet');
+    cy.get('[data-testid=wallet-connect]').contains('Connect Wallet');
     connectWallet();
     cy.get('[data-testid=wallet-connect]').contains(TEST_ADDRESS_NEVER_USE_SHORTENED);
   });

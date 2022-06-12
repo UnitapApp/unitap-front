@@ -38,11 +38,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:cypress": "cross-env REACT_APP_IS_CYPRESS='true' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:e2e": "cypress run",
-    "cypress": "cypress open"
+    "cypress": "start-server-and-test 'yarn start:cypress' http://localhost:3000 'cypress open'"
   },
   "browserslist": {
     "production": [
@@ -68,6 +68,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@zxing/browser": "^0.1.1",
     "@zxing/library": "^0.19.1",
+    "cross-env": "^7.0.3",
     "cypress": "^9.6.0",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
