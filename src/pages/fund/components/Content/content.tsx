@@ -14,6 +14,7 @@ import Modal from 'components/common/Modal/modal';
 import SelectChainModal from '../SelectChainModal/selectChainModal';
 import ProvideGasFeeModal from '../ProvideGasFeeModal/provideGasFeeModal';
 import useWeb3Connector from '../../../../hooks/useWeb3Connector';
+import { getChainIcon } from '../../../../utils';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
@@ -87,6 +88,7 @@ const Content: FC = () => {
 
   const closeModalHandler = () => {
     setProvideGasFeeError('');
+    setModalState(false);
   };
 
   return (
@@ -103,18 +105,15 @@ const Content: FC = () => {
             }}
             label="Chain"
             value={selectedChain.chainName}
-            icon="assets/images/fund/coin-icon.png"
+            icon={getChainIcon(selectedChain)}
           />
         )}
-        <Modal
-          title="Select Chain"
-          isOpen={modalState}
-          size="small"
-          closeModalHandler={() => {
-            setModalState(false);
-          }}
-        >
-          <SelectChainModal></SelectChainModal>
+        <Modal title="Select Chain" isOpen={modalState} size="small" closeModalHandler={closeModalHandler}>
+          <SelectChainModal
+            closeModalHandler={closeModalHandler}
+            selectedChain={selectedChain}
+            setSelectedChain={setSelectedChain}
+          ></SelectChainModal>
         </Modal>
         <Input
           className="fund-input"

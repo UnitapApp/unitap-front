@@ -57,16 +57,19 @@ const Drops = styled.span`
     right: 7vw;
     top: 60%;
   }
+
   .second_drop {
     right: 40vw;
     top: 50%;
     transform: rotate(5deg);
   }
+
   .third_drop {
     left: 40vw;
     top: 47%;
     transform: rotate(-20deg);
   }
+
   .forth_drop {
     left: 5vw;
     top: 50%;
@@ -95,12 +98,12 @@ const InputWrapper = styled(FlexWrapper)`
 const Header = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
   const { changeSearchPhrase } = useContext(ChainListContext);
-  const [now, setNow] = useState(new Date());
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
     changeSearchPhrase!(phrase);
   };
+  const [now, setNow] = useState(new Date());
   const [days, setDays] = useState('00');
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
@@ -131,10 +134,10 @@ const Header = () => {
           <Icon iconSrc={'assets/images/claim/spaceman-header.svg'} width="170px" height="auto" />
         </Spaceman>
         <Drops>
-          <Icon iconSrc="assets/images/claim/drop.svg" width="19px" height="auto" className='first_drop'></Icon>
-          <Icon iconSrc="assets/images/claim/drop.svg" width="20px" height="auto" className='second_drop'></Icon>
-          <Icon iconSrc="assets/images/claim/drop.svg" width="23px" height="auto" className='third_drop'></Icon>
-          <Icon iconSrc="assets/images/claim/drop.svg" width="18px" height="auto" className='forth_drop'></Icon>
+          <Icon iconSrc="assets/images/claim/drop.svg" width="19px" height="auto" className="first_drop"></Icon>
+          <Icon iconSrc="assets/images/claim/drop.svg" width="20px" height="auto" className="second_drop"></Icon>
+          <Icon iconSrc="assets/images/claim/drop.svg" width="23px" height="auto" className="third_drop"></Icon>
+          <Icon iconSrc="assets/images/claim/drop.svg" width="18px" height="auto" className="forth_drop"></Icon>
         </Drops>
       </HeaderComp>
       <InputWrapper>

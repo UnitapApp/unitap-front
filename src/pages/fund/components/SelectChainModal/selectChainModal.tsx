@@ -1,23 +1,52 @@
-import React, { FC } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { SelectChainModalWrapper } from './selectChainModal.style';
 import { ModalSearch } from './modalSearch.style';
 import ChainItem from './chainItem';
+import { ChainListContext } from '../../../../hooks/useChainList';
+import { getChainIcon } from '../../../../utils';
+import { Chain } from '../../../../types';
 
-const SelectChainModal: FC = () => {
-  const chains = [
-    { id: 1, icon: 'assets/images/modal/gnosis-icon.svg', title: 'Gnosis Chain', selected: true },
-    { id: 2, icon: 'assets/images/modal/idchain-icon.svg', title: 'ID-Chain', selected: false },
-  ];
+const SelectChainModal = ({
+  selectedChain,
+  setSelectedChain,
+  closeModalHandler,
+}: {
+  selectedChain: Chain | null;
+  setSelectedChain: (chain: Chain) => any;
+  closeModalHandler: () => any;
+}) => {
+  const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
+  const { changeSearchPhrase, chainListSearchResult } = useContext(ChainListContext);
+  const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const phrase: string = event.target.value;
+    setSearchPhraseInput(phrase);
+    changeSearchPhrase!(phrase);
+  };
 
-  const chainsList = chains.map((chain) => (
-    <ChainItem key={chain.id} icon={chain.icon} title={chain.title} selected={chain.selected} onClick={() => {}}></ChainItem>
+  const chainsList = chainListSearchResult.map((chain) => (
+    <ChainItem
+      key={chain.chainId}
+      icon={getChainIcon(chain)}
+      title={chain.chainName}
+      selected={selectedChain?.chainId === chain.chainId}
+      onClick={() => {
+        setSelectedChain(chain);
+        closeModalHandler();
+      }}
+    ></ChainItem>
   ));
 
   return (
     <SelectChainModalWrapper>
-      <ModalSearch placeholder="Search Network" width="100%" mb={2}></ModalSearch>
-      <hr className='hr'/>
+      <ModalSearch
+        value={searchPhraseInput}
+        onChange={searchPhraseChangeHandler}
+        placeholder="Search Network"
+        width="100%"
+        mb={2}
+      ></ModalSearch>
+      <hr className="hr" />
       {chainsList}
     </SelectChainModalWrapper>
   );
