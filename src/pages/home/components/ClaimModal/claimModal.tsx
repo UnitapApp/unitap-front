@@ -90,26 +90,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
-          Connect Metamask
-        </SecondaryButton>
-      </>
-    );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function connectBrightIDBody() {
-    return (
-      <>
-        <DropIconWrapper>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
-        </DropIconWrapper>
-        <Text width="100%" fontSize="14">
-          Wallet Address
-        </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
-          Connect BrightID
+          Connect Wallet
         </SecondaryButton>
       </>
     );
