@@ -19,5 +19,6 @@ export const DropIconWrapper = styled.div`
 
   & > img {
     position: absolute;
+    top: 65px;
   }
 `;
