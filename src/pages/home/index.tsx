@@ -38,10 +38,6 @@ interface props {
 const Col = styled.div<props>`
   width: ${({ md }) => (md ? `${(md * 100) / 12}%` : '100%')};
 
-  & > * {
-    width: fit-content;
-  }
-
   @media only screen and (max-width: ${DV.breakpoints.desktop}) {
     width: ${({ md }) => (md ? `${(md * 100) / 12}%` : '100%')};
   }
@@ -58,6 +54,10 @@ const TimerWrapper = styled.div`
   align-self: flex-end;
   display: flex;
   margin-left: auto;
+  width: fit-content;
+  align-items: center;
+  padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 6}px ${DV.sizes.basePadding}px
+    ${DV.sizes.basePadding * 3}px;
 `;
 
 const Timer = () => {
@@ -84,10 +84,12 @@ const Timer = () => {
 
   return (
     <TimerWrapper>
-      <Text color="gray" fontSize="12px">
+      <Text color="gray" fontSize="12" mb={0} mr={3}>
         next launch in
       </Text>
-      <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+      <Text color="white" fontSize="24" mb={0}>
+        {days}:{hours}:{minutes}:{seconds}
+      </Text>
     </TimerWrapper>
   );
 };

@@ -110,7 +110,7 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainListWrapper = styled.div`
-  padding: ${DV.sizes.baseRadius * 4}px 0;
+  padding: ${DV.sizes.baseRadius * 3}px 0;
   width: 100%;
 `;
 
