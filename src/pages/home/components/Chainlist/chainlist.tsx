@@ -155,6 +155,7 @@ const ChainList = () => {
                       data-testid={`chain-show-claim-${chain.pk}`}
                       disabled={!active}
                       mr={2}
+                      mlAuto
                       onClick={() => {
                         setActiveChain(chain);
                       }}
@@ -165,6 +166,7 @@ const ChainList = () => {
                     <ClaimedButton
                       data-testid={`chain-claimed-${chain.pk}`}
                       mr={2}
+                      mlAuto
                       icon="claimIcon.png"
                       iconWidth={52}
                       iconHeight={58}
