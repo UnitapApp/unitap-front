@@ -13,6 +13,7 @@ interface designVariable {
     black1: string;
     black2: string;
     black3: string;
+    black4: string;
     border_black: string;
     dark: string;
     dark1: string;
@@ -53,6 +54,7 @@ export const DV: designVariable = {
     black1: '#1E1E29',
     black2: '#21212C',
     black3: '#1a1a24',
+    black4: '#15151B',
     border_black: '#13131e',
     dark: '#11111C',
     dark1: '#030317',

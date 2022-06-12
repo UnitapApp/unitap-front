@@ -14,11 +14,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   styleType?: string;
   fontSize?: string;
   pl?: number;
+  p?: number;
   testid?: string;
+  mb?: number;
 }
 
 const RawInput = styled.input<InputProps>`
-  padding: ${DV.sizes.basePadding * 1.5}px;
+  padding: ${({ p }) => (p ? DV.sizes.basePadding * p : DV.sizes.basePadding * 1.5)}px;
   padding-left: ${({ pl }) => (pl ? DV.sizes.basePadding * pl : DV.sizes.basePadding * 1.5)}px;
   width: ${({ width }) => width || 'auto'};
   width: 100%;
@@ -32,7 +34,9 @@ const RawInput = styled.input<InputProps>`
   ::placeholder,
   :-ms-input-placeholder,
   ::-ms-input-placeholder {
-    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.placeholderGray)};
+    color: ${({ styleType }) => (styleType === 'success' ? DV.colors.placeholderGreen : DV.colors.gray)};
+    font-weight: 400;
+    font-size: 14px;
   }
 `;
 
@@ -43,7 +47,7 @@ const InputWrapper = styled.div<InputProps>`
   flex-direction: column;
   color: white;
   border-radius: ${DV.sizes.baseRadius}px;
-  margin-bottom: 1rem;
+  margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : '1rem')};
   position: relative;
   height: auto;
 
@@ -68,12 +72,12 @@ const InputWrapper = styled.div<InputProps>`
 `;
 
 const Input = (props: InputProps) => {
-  const { icon, width, iconWidth, iconHeight, postfix, label, testid } = props;
+  const { icon, width, iconWidth, iconHeight, postfix, label, testid, mb, p } = props;
   return (
-    <InputWrapper width={width}>
+    <InputWrapper width={width} mb={mb}>
       {label && <Label>{label}</Label>}
       {icon && <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />}
-      <RawInput data-testid={testid} {...props} />
+      <RawInput data-testid={testid} {...props}/>
       {postfix && <p className="input-postfix">{postfix}</p>}
     </InputWrapper>
   );

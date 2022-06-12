@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 import ChainList from './components/Chainlist/chainlist';
 import Navbar from 'components/common/Navbar/navbar';
@@ -7,6 +8,20 @@ import Footer from '../../components/common/Footer/footer';
 import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
 
 import { Body } from 'components/common/Body/body';
+import { DV } from 'components/basic/designVariables';
+import Timer from './components/Timer/timer';
+import SearchInput from './components/SearchInput/searchInput';
+import { Row } from 'components/basic/Row/row';
+import { Col } from 'components/basic/Col/col';
+
+const HomeContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: ${DV.sizes.basePadding * 4.5}px ${DV.sizes.basePadding * 11.25}px;
+`;
 
 const Home = () => {
   return (
@@ -14,8 +29,19 @@ const Home = () => {
       <Navbar />
       <Body>
         <Header />
-        <ChainList />
-        <ProvideGasCard />
+        <HomeContentWrapper>
+          <Row mdReverse>
+            <Col xs={12} md={12} lg={5.5} xlg={4}>
+              <SearchInput />
+            </Col>
+            <Col xs={0} md={0} lg={0.5} xlg={3.5}></Col>
+            <Col xs={12} md={12} lg={6} xlg={4.5}>
+              <Timer />
+            </Col>
+          </Row>
+          <ChainList />
+          <ProvideGasCard />
+        </HomeContentWrapper>
       </Body>
       <Footer />
     </>
