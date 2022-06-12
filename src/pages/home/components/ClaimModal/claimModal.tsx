@@ -144,7 +144,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           data-testid={`chain-claim-success-${chain.pk}`}
         />
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          0.001 xDai Calimed
+          0.001 xDai Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           Your request is submitted successfully!
@@ -155,7 +155,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          View on Explorer
+          Close
         </SecondaryButton>
       </>
     );
