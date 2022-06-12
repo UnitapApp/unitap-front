@@ -15,8 +15,7 @@ import { getChainIcon } from '../../../../utils';
 // ###### Local Styled Components
 
 const ChainCard = styled.div`
-  max-width: 1280px;
-  gap: ${DV.sizes.baseMargin * 2}px;
+  width: 100%;
   margin: auto;
   position: relative;
   display: flex;
@@ -111,8 +110,10 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainListWrapper = styled.div`
-  padding: ${DV.sizes.baseRadius * 4}px ${DV.sizes.baseRadius * 4}px;
+  padding: ${DV.sizes.baseRadius * 4}px 0;
+  width: 100%;
 `;
+
 const ChainList = () => {
   const { chainList, chainListSearchResult } = useContext(ChainListContext);
 
