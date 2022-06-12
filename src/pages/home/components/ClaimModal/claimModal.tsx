@@ -147,7 +147,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           0.001 xDai Calimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          a sample bah-bahi text in 2 lines that tell user its claimed.
+          Your request is submitted successfully!
         </Text>
         <SecondaryButton
           onClick={closeModalHandler}
@@ -174,10 +174,10 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           data-testid={`chain-claim-failed-${chain.pk}`}
         />
         <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
-          Calim Failed !
+          Claim Failed!
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          a sample error description text in 2 lines for ali mahdiyar or any other kalle.
+          An error happened while processing your request
         </Text>
         <SecondaryButton
           fontSize="20px"
