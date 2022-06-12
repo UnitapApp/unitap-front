@@ -16,7 +16,7 @@ const ProvideGasFeeModal = ({
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/success-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="space_green" textAlign="center">
+        <Text fontSize="14px" color="space_green" textAlign="center" breakOverflow>
           1000 xDAI Funded
         </Text>
         <SecondaryButton fontSize="14px" size="large">
@@ -30,7 +30,7 @@ const ProvideGasFeeModal = ({
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/failed-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="warningRed" textAlign="center">
+        <Text fontSize="14px" color="warningRed" textAlign="center" breakOverflow>
           {provideGasFeeError}
         </Text>
         <SecondaryButton onClick={closeModalHandler} fontSize="14px" size="large">
