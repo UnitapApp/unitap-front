@@ -90,7 +90,7 @@ const Action = styled.div`
   flex: 4;
   display: flex;
   align-items: center;
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
     width: 100%;
     button {

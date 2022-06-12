@@ -29,7 +29,7 @@ export const Text = styled.p<props>`
   margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : `1rem`)};
   text-align: ${({ textAlign }) => textAlign || 'left'};
 
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize }) => smFontSize || '15'}px;
   }
 `;
