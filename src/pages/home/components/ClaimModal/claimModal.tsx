@@ -81,7 +81,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function connectMetamaskBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper imgPositionTop="65px">
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -99,7 +99,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getInitialBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper imgPositionTop='65px' >
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -134,15 +134,18 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getSuccessBody() {
     return (
       <>
-        <Icon
-          iconSrc={'success-airdrop.png'}
-          width="70px"
-          height="auto"
-          mb={6}
-          mr={-1}
-          mt={2}
-          data-testid={`chain-claim-success-${chain.pk}`}
-        />
+        <DropIconWrapper imgPositionLeft='17px' imgPositionTop='50px' >
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon
+            iconSrc={'assets/images/claim/success-drop-icon.svg'}
+            width="70px"
+            height="auto"
+            mb={6}
+            mr={-1}
+            mt={2}
+            data-testid={`chain-claim-success-${chain.pk}`}
+          />
+        </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
           0.001 xDai Claimed
         </Text>
