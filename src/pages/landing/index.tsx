@@ -53,7 +53,7 @@ const LandingWrapper = styled.div`
     }
   }
 
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     width: 100%;
     height: 100vh;
     overflow: hidden;

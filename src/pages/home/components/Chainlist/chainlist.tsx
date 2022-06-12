@@ -16,6 +16,7 @@ import { getChainIcon } from '../../../../utils';
 
 const ChainCard = styled.div`
   max-width: 1280px;
+  gap: ${DV.sizes.baseMargin * 2}px;
   margin: auto;
   position: relative;
   display: flex;
@@ -29,6 +30,7 @@ const ChainCard = styled.div`
 
   p {
     color: white;
+    flex: 2;
 
     span {
       color: ${DV.colors.gray};
@@ -41,7 +43,7 @@ const ChainCard = styled.div`
     }
   }
 
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     flex-direction: column;
     padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 4}px;
   }
@@ -64,31 +66,31 @@ const ChainLogo = styled.div`
     height: 30px;
   }
 
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     position: relative;
     height: 64px;
     width: 64px;
-    left: 12px;
     bottom: unset;
-    top: 12px;
     border-radius: 32px;
   }
 `;
 
-const ChainName = styled.p`
-  margin-left: ${DV.sizes.baseMargin * 6}px;
-  width: 300px;
-  @media only screen and (max-width: 1224px) {
+const ChainName = styled.div`
+  flex: 3;
+  color: white;
+  margin-left: ${DV.sizes.baseMargin * 4}px;
+  //width: 300px;
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     text-align: center;
-    margin-left: 0;
-    width: 100%;
+    margin: 0;
   }
 `;
 
 const Action = styled.div`
+  flex: 4;
   display: flex;
   align-items: center;
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
     width: 100%;
     button {
@@ -101,6 +103,11 @@ const Action = styled.div`
       }
     }
   }
+`;
+
+const AddMetamaskButton = styled(SecondaryButton)`
+  padding-top: 12px;
+  padding-bottom: 12px;
 `;
 
 const ChainListWrapper = styled.div`
@@ -164,13 +171,13 @@ const ChainList = () => {
                     </ClaimedButton>
                   )}
 
-                  <SecondaryButton
+                  <AddMetamaskButton
                     data-testid={`chain-switch-${chain.pk}`}
                     onClick={() => addAndSwitchToChain(chain)}
                     disabled={!active}
                   >
                     Add to MetaMask
-                  </SecondaryButton>
+                  </AddMetamaskButton>
                 </Action>
               </ChainCard>
             </div>

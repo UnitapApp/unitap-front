@@ -34,6 +34,7 @@ interface designVariable {
   breakpoints: {
     mobile: string;
     tablet: string;
+    smallDesktop: string;
     desktop: string;
   };
 }
@@ -73,6 +74,7 @@ export const DV: designVariable = {
   breakpoints: {
     mobile: '600px',
     tablet: '992px',
+    smallDesktop: '1224px',
     desktop: '1440px',
   },
 };
