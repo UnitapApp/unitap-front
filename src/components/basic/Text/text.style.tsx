@@ -12,6 +12,7 @@ type props = {
   mr?: number;
   mrAuto?: boolean;
   mb?: number;
+  mdMb?: number;
 };
 
 export const Text = styled.p<props>`
@@ -29,9 +30,13 @@ export const Text = styled.p<props>`
   margin-right: ${({ mr, mrAuto }) => (mr ? `${mr * DV.sizes.baseMargin}px` : mrAuto ? 'auto' : '')};
   margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : `1rem`)};
   text-align: ${({ textAlign }) => textAlign || 'left'};
-
-  @media only screen and (${DV.breakpoints.smallDesktop}) {
+  
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize }) => smFontSize || '15'}px;
+  }
+  
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    margin-bottom: ${({ mdMb }) => (mdMb ? `${mdMb * DV.sizes.baseMargin}px` : '')};
   }
 
   ${({ breakOverflow }) =>

@@ -25,10 +25,10 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
               <Icon iconSrc='assets/images/modal/exit.svg'/>
             </span>
             {spaceman === Spaceman.WITH_PHONE && (
-              <img className="spaceman-three" src={process.env.PUBLIC_URL + '/assets/images/spaceman3.png'} alt="" />
+              <img className="spaceman-three" src={process.env.PUBLIC_URL + 'assets/images/modal/scan_spaceman.svg'} alt="" />
             )}
             {spaceman === Spaceman.BOTTOM_BIG && (
-              <img className="spaceman-one" src={process.env.PUBLIC_URL + '/assets/images/spaceman1.png'} alt="" />
+              <img className="spaceman-one" src={process.env.PUBLIC_URL + 'assets/images/modal/claim_spaceman.svg'} alt="" />
             )}
             <ModalChildrenWrapper size={size}>{children}</ModalChildrenWrapper>
           </ModalContent>

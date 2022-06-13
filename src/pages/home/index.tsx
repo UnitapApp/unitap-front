@@ -15,12 +15,18 @@ import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
 
 const HomeContentWrapper = styled.div`
+  max-width: 1310px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: ${DV.sizes.basePadding * 4.5}px ${DV.sizes.basePadding * 11.25}px;
+
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
+  }
 `;
 
 const Home = () => {

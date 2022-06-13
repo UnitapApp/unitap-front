@@ -94,9 +94,10 @@ const Content: FC = () => {
   return (
     <ContentWrapper>
       <ContentCard>
-        <Icon iconSrc={'assets/images/fund/content-header.svg'} width="220px" height="auto" mb={2} />
+        <Icon iconSrc={'assets/images/fund/help-fund-the-tap.svg'} width="220px" height="auto" mb={2} />
         <p className="content-subtext">
-          99% of fund amount goes for Claim Gas Fees. <br /> 1% of fund amount goes for Unitap development.
+          99% of contributions will be distributed via the tap.
+          <br /> 1% of contributions will fund Unitap development.
         </p>
         {selectedChain && (
           <Dropdown
@@ -128,8 +129,8 @@ const Content: FC = () => {
           width="100%"
           fontSize="24px"
         />
-        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds}>
-          {!active ? 'Connect Wallet' : !isRightChain ? 'Switch Network' : 'Submit Fund'}
+        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!Number(fundAmount) && isRightChain && active}>
+          {!active ? 'Connect Wallet' : !isRightChain ? 'Switch Network' : 'Submit Contribution'}
         </PrimaryButton>
         <Modal title="Provide Gas Fee" isOpen={!!provideGasFeeError} closeModalHandler={closeModalHandler}>
           <ProvideGasFeeModal

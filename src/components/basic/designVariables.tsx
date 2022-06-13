@@ -30,6 +30,7 @@ interface designVariable {
   };
   bgGradient: {
     primary: string;
+    primaryDisabled: string;
     dark: string;
   };
   breakpoints: {
@@ -71,6 +72,7 @@ export const DV: designVariable = {
   },
   bgGradient: {
     primary: 'radial-gradient(124.04% 1117.67% at 17.05% 37.02%, #4BF2A2 0%, #564D8F 42.19%, #DD40CD 100%)',
+    primaryDisabled: 'radial-gradient(124.04% 1117.67% at 17.05% 37.02%, #98bdab 0%, #726d8e 42.19%, #c498bf 100%)',
     dark: 'radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2A3837 0%, #3F2B44 42.19%, #322837 100%)',
   },
   breakpoints: {

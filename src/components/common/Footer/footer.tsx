@@ -18,6 +18,10 @@ const FooterWrapper = styled.div`
 const PbyBright = styled(Icon)`
   position: absolute;
   right: ${DV.sizes.basePadding * 10}px;
+
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    display: none;
+  }
 `;
 
 const Footer: FC = () => {

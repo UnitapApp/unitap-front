@@ -4,6 +4,7 @@ import { DV } from 'components/basic/designVariables';
 type props = {
   width?: string;
   smWidth?: string;
+  xsWidth?: string;
   height?: string;
   mr?: number;
   mrAuto?: boolean;
@@ -36,6 +37,12 @@ export const IconWrapper = styled.span<props>`
       width: ${({ smWidth }) => smWidth};
       margin-bottom: ${({ smMb, mb }) =>
         smMb ? `${smMb * DV.sizes.baseMargin}px` : mb ? `${mb * DV.sizes.baseMargin}px` : ''};
+    }
+  }
+  
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    & > img {
+      width: ${({ xsWidth }) => xsWidth};
     }
   }
 `;
