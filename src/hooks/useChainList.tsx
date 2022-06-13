@@ -4,6 +4,7 @@ import { Chain } from 'types';
 import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
+import { RefreshContext } from 'context/RefreshContext';
 
 export const ChainListContext = createContext<{
   chainList: Chain[];
@@ -17,6 +18,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const { account: address } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
+  const { fastRefresh } = useContext(RefreshContext);
   const updateChainList = useCallback(async () => {
     const newChainList = await getChainList(
       // use address only if userprofile is loaded
@@ -34,7 +36,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       }
     };
     fn();
-  }, [address, updateChainList]);
+  }, [address, updateChainList, fastRefresh]);
 
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;

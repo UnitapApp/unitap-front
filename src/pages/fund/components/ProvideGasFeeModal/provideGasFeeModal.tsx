@@ -1,19 +1,27 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { ProvideGasFeeModalWrapper } from './ProvideGasFeeModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { SecondaryButton } from 'components/basic/Button/button';
 
-const ProvideGasFeeModal: FC = () => {
+const ProvideGasFeeModal = ({
+  provideGasFeeError,
+  closeModalHandler,
+}: {
+  provideGasFeeError: string;
+  closeModalHandler: () => void;
+}) => {
   function successful() {
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/success-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="space_green" textAlign="center">
+        <Text fontSize="14px" color="space_green" textAlign="center" breakOverflow>
           1000 xDAI Funded
         </Text>
-        <SecondaryButton fontSize='14px' size="large">View on Explorer</SecondaryButton>
+        <SecondaryButton fontSize="14px" size="large">
+          View on Explorer
+        </SecondaryButton>
       </>
     );
   }
@@ -22,15 +30,17 @@ const ProvideGasFeeModal: FC = () => {
     return (
       <>
         <Icon mb={3} iconSrc="assets/images/fund/failed-provide-spaceman.svg"></Icon>
-        <Text fontSize="14px" color="warningRed" textAlign="center">
-          1000 xDAI Fund Failed
+        <Text fontSize="14px" color="warningRed" textAlign="center" breakOverflow>
+          {provideGasFeeError}
         </Text>
-        <SecondaryButton fontSize='14px' size="large">Try Again</SecondaryButton>
+        <SecondaryButton onClick={closeModalHandler} fontSize="14px" size="large">
+          Try Again
+        </SecondaryButton>
       </>
     );
   }
 
-  return <ProvideGasFeeModalWrapper>{false ? successful() : failed()}</ProvideGasFeeModalWrapper>;
+  return <ProvideGasFeeModalWrapper>{provideGasFeeError ? failed() : successful()}</ProvideGasFeeModalWrapper>;
 };
 
 export default ProvideGasFeeModal;

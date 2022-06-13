@@ -16,22 +16,24 @@ export function useEagerConnect() {
 
   // try connecting to an injected connector
   useEffect(() => {
-    if (!active && triedSafe) {
-      injected.isAuthorized().then((isAuthorized) => {
-        if (isAuthorized) {
-          activate(injected, undefined, true).catch(() => {
-            setTried(true);
-          });
-        } else {
-          if (isMobile && window.ethereum) {
+    if (process.env.REACT_APP_IS_CYPRESS !== 'true') {
+      if (!active && triedSafe) {
+        injected.isAuthorized().then((isAuthorized) => {
+          if (isAuthorized) {
             activate(injected, undefined, true).catch(() => {
               setTried(true);
             });
           } else {
-            setTried(false);
+            if (isMobile && window.ethereum) {
+              activate(injected, undefined, true).catch(() => {
+                setTried(true);
+              });
+            } else {
+              setTried(false);
+            }
           }
-        }
-      });
+        });
+      }
     }
   }, [activate, active, triedSafe]);
 

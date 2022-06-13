@@ -53,7 +53,7 @@ const LandingWrapper = styled.div`
     }
   }
 
-  @media only screen and (max-width: 1224px) {
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -165,9 +165,15 @@ const Landing: FC = () => {
         </div>
       </div>
       <footer className="landing__footer">
-        <Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
-        <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
-        <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
+        <span onClick={() => window.open('http://twitter.com/unitap_app', '_blank')}>
+          <Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+        </span>
+        <span onClick={() => window.open('https://github.com/UnitapApp', '_blank')}>
+          <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
+        </span>
+        <span onClick={() => window.open('https://discord.gg/kH8WeQ6tuF', '_blank')}>
+          <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
+        </span>
       </footer>
     </LandingWrapper>
   );

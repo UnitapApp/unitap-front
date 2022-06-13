@@ -7,6 +7,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import RoutePath from '../../src/routes';
+import { CYPRESS_FAST_INTERVAL } from '../../src/constants/intervals';
 
 describe('Landing Page', () => {
   const connectWallet = () => {
@@ -63,7 +64,8 @@ describe('Landing Page', () => {
       method: 'GET',
       url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
       response: chainListAuthenticatedClaimedFirst,
-    });
+      delay: CYPRESS_FAST_INTERVAL / 4,
+    }).as('chainListAuthenticated');
   };
   const setupGetUserProfileNotExists = () => {
     cy.route({
@@ -94,7 +96,7 @@ describe('Landing Page', () => {
       method: 'GET',
       url: `/api/v1/chain/list/`,
       response: chainList,
-      delay: 100,
+      delay: CYPRESS_FAST_INTERVAL / 4,
     });
     cy.visit(RoutePath.FAUCET);
     cy.get(`[data-testid=chain-list-loading]`).should('exist');
@@ -109,5 +111,8 @@ describe('Landing Page', () => {
     connectWallet();
     cy.get(`[data-testid=chain-claimed-${chainList[0].pk}]`).should('exist');
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
+    cy.wait(CYPRESS_FAST_INTERVAL);
+    // @ts-ignore
+    cy.shouldBeCalled('chainListAuthenticated', 2);
   });
 });

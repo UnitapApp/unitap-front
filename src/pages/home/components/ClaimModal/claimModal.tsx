@@ -81,7 +81,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function connectMetamaskBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper imgPositionTop="65px">
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -90,26 +90,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
-          Connect Metamask
-        </SecondaryButton>
-      </>
-    );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function connectBrightIDBody() {
-    return (
-      <>
-        <DropIconWrapper>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
-        </DropIconWrapper>
-        <Text width="100%" fontSize="14">
-          Wallet Address
-        </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <SecondaryButton onClick={() => {}} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
-          Connect BrightID
+          Connect Wallet
         </SecondaryButton>
       </>
     );
@@ -118,7 +99,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getInitialBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper imgPositionTop='65px' >
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -153,20 +134,23 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getSuccessBody() {
     return (
       <>
-        <Icon
-          iconSrc={'success-airdrop.png'}
-          width="70px"
-          height="auto"
-          mb={6}
-          mr={-1}
-          mt={2}
-          data-testid={`chain-claim-success-${chain.pk}`}
-        />
+        <DropIconWrapper imgPositionLeft='17px' imgPositionTop='50px' >
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon
+            iconSrc={'assets/images/claim/success-drop-icon.svg'}
+            width="70px"
+            height="auto"
+            mb={6}
+            mr={-1}
+            mt={2}
+            data-testid={`chain-claim-success-${chain.pk}`}
+          />
+        </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          0.001 xDai Calimed
+          0.001 xDai Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          a sample bah-bahi text in 2 lines that tell user its claimed.
+          Your request is submitted successfully!
         </Text>
         <SecondaryButton
           onClick={closeModalHandler}
@@ -174,7 +158,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          View on Explorer
+          Close
         </SecondaryButton>
       </>
     );
@@ -193,10 +177,10 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           data-testid={`chain-claim-failed-${chain.pk}`}
         />
         <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
-          Calim Failed !
+          Claim Failed!
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          a sample error description text in 2 lines for ali mahdiyar or any other kalle.
+          An error happened while processing your request
         </Text>
         <SecondaryButton
           fontSize="20px"

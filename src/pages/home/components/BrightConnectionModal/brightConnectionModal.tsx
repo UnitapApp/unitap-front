@@ -33,9 +33,7 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
     }
     try {
       const refreshedUserProfile = await refreshUserProfile();
-      if (refreshedUserProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
-        alert('Connected to Bright-ID successfully!');
-      } else {
+      if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       }
     } catch (ex) {

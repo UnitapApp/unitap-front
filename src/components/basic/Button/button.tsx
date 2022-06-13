@@ -11,6 +11,7 @@ interface props {
   iconMarginLeft?: number;
   smIconMarginLeft?: number;
   height?: string;
+  mlAuto?: boolean;
   mr?: number;
   smMr?: number;
   mb?: number;
@@ -29,7 +30,7 @@ interface props {
 // `
 
 export const Text = styled.p<props>`
-  color: ${({color}): string => {
+  color: ${({ color }): string => {
     const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === color);
     if (xyz) {
       return `${DV.colors[xyz]}!important`;
@@ -41,42 +42,41 @@ export const Button = styled.button<props>`
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   position: relative;
   border: none;
-  font-weight: ${({fontWeight}) => fontWeight || 'bold'};
-  margin-right: ${({mr}) => (mr ? `${mr * DV.sizes.baseMargin}px` : '')};
-  margin-bottom: ${({mb}) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
-  width: ${({width}) => width || 'auto'};
-  min-width: ${({minWidth}) => minWidth || 'auto'};
-  height: ${({height}) => height || 'auto'};
-  font-size: ${({fontSize}) => fontSize || 'auto'};
+  font-weight: ${({ fontWeight }) => fontWeight || 'bold'};
+  margin-right: ${({ mr }) => (mr ? `${mr * DV.sizes.baseMargin}px` : '')};
+  margin-bottom: ${({ mb }) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
+  margin-left: ${({ mlAuto }) => (mlAuto ? 'auto' : '')};
+  width: ${({ width }) => width || 'auto'};
+  min-width: ${({ minWidth }) => minWidth || 'auto'};
+  height: ${({ height }) => height || 'auto'};
+  font-size: ${({ fontSize }) => fontSize || 'auto'};
 
-  ${({size}) => size === 'large' ? `padding: 1em 2.5em;` : `padding: .75em 1.25em;`}
-
+  ${({ size }) => (size === 'large' ? `padding: 1em 2.5em;` : `padding: .75em 1.25em;`)}
   &::after {
-    display: ${({icon}) => (icon ? 'inline-block' : 'none')};
+    display: ${({ icon }) => (icon ? 'inline-block' : 'none')};
     content: ' ';
-    background-image: ${({icon}) => `url(${icon})` || 'none'};
+    background-image: ${({ icon }) => `url(${icon})` || 'none'};
     position: relative;
     top: 2px;
-    background-size: ${({iconWidth, iconHeight}) => `${iconWidth}px ${iconHeight}px` || '0 0'};
-    width: ${({iconWidth}) => `${iconWidth}px` || 'auto'};
-    height: ${({iconHeight}) => `${iconHeight}px` || 'auto'};
-    margin-left: ${({iconMarginLeft}) => (iconMarginLeft ? iconMarginLeft : '12')}px;
+    background-size: ${({ iconWidth, iconHeight }) => `${iconWidth}px ${iconHeight}px` || '0 0'};
+    width: ${({ iconWidth }) => `${iconWidth}px` || 'auto'};
+    height: ${({ iconHeight }) => `${iconHeight}px` || 'auto'};
+    margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${({disabled}) => (disabled ? `` : `&:hover {cursor: pointer;}`)} 
-  
-  @media only screen and(max-width: 1224px) {
-    font-size: ${({smFontSize, fontSize}) => smFontSize || fontSize || 'auto'};
-    margin-right: ${({smMr, mr}) =>
+  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints.smallDesktop}) {
+    font-size: ${({ smFontSize, fontSize }) => smFontSize || fontSize || 'auto'};
+    margin-right: ${({ smMr, mr }) =>
       smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
-    margin-bottom: ${({smMb, mb}) =>
+    margin-bottom: ${({ smMb, mb }) =>
       smMb ? `${smMb * DV.sizes.baseMargin}px` : mb ? `${mb * DV.sizes.baseMargin}px` : `0`};
 
     &::after {
-      background-size: ${({smIconWidth, smIconHeight}) => `${smIconWidth}px ${smIconHeight}px` || '0 0'};
-      width: ${({smIconWidth, iconWidth}) => `${smIconWidth}px` || `${iconWidth}px` || 'auto'};
-      height: ${({smIconHeight, iconHeight}) => `${smIconHeight}px` || `${iconHeight}px` || 'auto'};
-      margin-left: ${({smIconMarginLeft, iconMarginLeft}) => `${smIconMarginLeft}px` || `${iconMarginLeft}px` || '12px'};
+      background-size: ${({ smIconWidth, smIconHeight }) => `${smIconWidth}px ${smIconHeight}px` || '0 0'};
+      width: ${({ smIconWidth, iconWidth }) => `${smIconWidth}px` || `${iconWidth}px` || 'auto'};
+      height: ${({ smIconHeight, iconHeight }) => `${smIconHeight}px` || `${iconHeight}px` || 'auto'};
+      margin-left: ${({ smIconMarginLeft, iconMarginLeft }) =>
+        `${smIconMarginLeft}px` || `${iconMarginLeft}px` || '12px'};
     }
   }
 `;
@@ -88,8 +88,8 @@ export const PrimaryButton = styled(Button)`
 
 export const PrimaryOutlinedButton = styled(Button)`
   /* border: 1px solid ${DV.colors.primary}; */
-  color: ${({disabled}) => (disabled ? '#C0AFC7' : 'white')};
-  background: ${({disabled}) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
+  color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
+  background: ${({ disabled }) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
   position: relative;
   z-index: 1;
 
