@@ -63,7 +63,7 @@ const Timer = () => {
   return (
     <TimerWrapper>
       <TimerLabel color="gray" fontSize="12" mb={0} mr={3}>
-        next launch in
+        Next Claim Period
       </TimerLabel>
       <TimerCount color="white" fontSize="24" mb={0}>
         {days}:{hours}:{minutes}:{seconds}
