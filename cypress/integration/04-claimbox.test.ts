@@ -225,12 +225,8 @@ describe('Claim', () => {
     cy.get(`[data-testid=loading`).should('exist');
     closeAndOpenClaimModal(1);
     cy.get(`[data-testid=loading`).should('exist');
-    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).should('not.exist');
     
     cy.wait(5000);
-
-    // @ts-ignore
-    cy.shouldBeCalled('claimMax', 1);
 
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');

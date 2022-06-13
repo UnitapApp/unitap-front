@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getChainList } from 'api';
-import { Chain } from 'types';
+import { claimMax, getChainList } from 'api';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
@@ -12,29 +12,38 @@ enum ClaimState {
   SUCCESS,
   FAILED,
 }
+
 export const ChainListContext = createContext<{
   chainList: Chain[];
-  updateChainList: (() => Promise<void>) | null;
   chainListSearchResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
-  claimState : ClaimState;
-  setClaimState : (newClaimState:ClaimState) => void;
-}>({ chainList: [],
-  updateChainList: null,
+  claimState: ClaimState;
+  claim: (chainPK: number) => void;
+}>({
+  chainList: [],
   chainListSearchResult: [],
   changeSearchPhrase: null,
   claimState: ClaimState.INITIAL,
-  setClaimState : (newClaimState:ClaimState) => {},
+  claim: (chainPK: number) => {},
 });
 
 export function ChainListProvider({ children }: PropsWithChildren<{}>) {
+  const [claimState, setClaimState] = useState<ClaimState>(ClaimState.INITIAL);
 
-  const [claimState, setClaimStateFun] = useState<ClaimState>(ClaimState.INITIAL);
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
-  const { account: address } = useActiveWeb3React();
+  const { account: address, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
+
+  const brightIdVerified = useMemo(
+    () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
+    [userProfile],
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
+
   const updateChainList = useCallback(async () => {
     const newChainList = await getChainList(
       // use address only if userprofile is loaded
@@ -42,6 +51,24 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     );
     setChainList(newChainList);
   }, [address, userProfile]);
+
+  const claim = useCallback(
+    async (chainPk: number) => {
+      if (!brightIdVerified || claimState === ClaimState.LOADING) {
+        return;
+      }
+      setClaimState(ClaimState.LOADING);
+      try {
+        const newClaimReceipt = await claimMax(account!, chainPk);
+        setClaimReceipt(newClaimReceipt);
+        await updateChainList?.();
+        setClaimState(ClaimState.SUCCESS);
+      } catch (ex) {
+        setClaimState(ClaimState.FAILED);
+      }
+    },
+    [account, brightIdVerified, claimState, updateChainList, setClaimState],
+  );
 
   useEffect(() => {
     const fn = async () => {
@@ -54,7 +81,6 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     fn();
   }, [address, updateChainList, fastRefresh]);
 
-  const setClaimState = (newClaimState: ClaimState) => setClaimStateFun(newClaimState);
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
     const fuseOptions = {
@@ -85,11 +111,11 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     <ChainListContext.Provider
       value={{
         chainList,
-        updateChainList,
+        //updateChainList,
         chainListSearchResult,
         changeSearchPhrase,
         claimState,
-        setClaimState,
+        claim,
       }}
     >
       {children}{' '}

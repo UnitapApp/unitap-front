@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton, SecondaryButton } from 'components/basic/Button/button';
 import { MessageButton } from 'components/basic/MessageButton/messageButton.style';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
+import { Chain } from 'types';
 import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { claimMax } from 'api';
-import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from '../../../../utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
@@ -29,15 +27,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
   const { active, account } = useActiveWeb3React();
-  const { userProfile } = useContext(UserProfileContext);
-  const { updateChainList, claimState , setClaimState} = useContext(ChainListContext);
 
-  const brightIdVerified = useMemo(
-    () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
-    [userProfile],
-  );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
+  const { claimState, claim } = useContext(ChainListContext);
+
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -57,24 +49,6 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
       mounted.current = false;
     }; // ... and to false on unmount
   }, []);
-  const claim = useCallback(async () => {
-    if (!brightIdVerified || claimState === ClaimState.LOADING) {
-      return;
-    }
-    setClaimState(ClaimState.LOADING);
-    try {
-      const claimReceipt = await claimMax(account!, chain.pk);
-      setClaimReceipt(claimReceipt);
-      await updateChainList?.();
-      if (mounted.current) {
-        setClaimState(ClaimState.SUCCESS);
-      }
-    } catch (ex) {
-      if (mounted.current) {
-        setClaimState(ClaimState.FAILED);
-      }
-    }
-  }, [account, brightIdVerified, chain.pk, claimState, updateChainList, setClaimState]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function connectMetamaskBody() {
@@ -106,7 +80,12 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <PrimaryButton onClick={claim} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+        <PrimaryButton
+          onClick={() => claim(chain.pk)}
+          width="100%"
+          fontSize="20px"
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
           Claim
         </PrimaryButton>
       </>
@@ -170,7 +149,12 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           An error happened while processing your request
         </Text>
-        <SecondaryButton fontSize="20px" onClick={claim} width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
+        <SecondaryButton
+          fontSize="20px"
+          onClick={() => claim(chain.pk)}
+          width={'100%'}
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
           Try Again
         </SecondaryButton>
       </>
