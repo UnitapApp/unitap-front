@@ -5,6 +5,7 @@ interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   width?: string;
   height?: string;
   smWidth?: string;
+  xsWidth?: string;
   mr?: number;
   mrAuto?: boolean;
   mb?: number;
