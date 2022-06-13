@@ -2,7 +2,7 @@ import useActiveWeb3React from './useActiveWeb3React';
 import { useCallback } from 'react';
 import { injected } from '../connectors';
 
-export default () => {
+const useWeb3Connector = () => {
   const { activate } = useActiveWeb3React();
   const connect = useCallback(async () => {
     try {
@@ -13,3 +13,5 @@ export default () => {
   }, [activate]);
   return { connect };
 };
+
+export default useWeb3Connector;
