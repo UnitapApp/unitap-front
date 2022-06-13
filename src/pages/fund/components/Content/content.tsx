@@ -129,7 +129,7 @@ const Content: FC = () => {
           width="100%"
           fontSize="24px"
         />
-        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds}>
+        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!Number(fundAmount)}>
           {!active ? 'Connect Wallet' : !isRightChain ? 'Switch Network' : 'Submit Contribution'}
         </PrimaryButton>
         <Modal title="Provide Gas Fee" isOpen={!!provideGasFeeError} closeModalHandler={closeModalHandler}>

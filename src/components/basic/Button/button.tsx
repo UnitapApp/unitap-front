@@ -64,8 +64,9 @@ export const Button = styled.button<props>`
     margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints
-    .smallDesktop}) {
+  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} 
+  
+  @media only screen and(${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize, fontSize }) => smFontSize || fontSize || 'auto'};
     margin-right: ${({ smMr, mr }) =>
       smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
@@ -83,8 +84,8 @@ export const Button = styled.button<props>`
 `;
 
 export const PrimaryButton = styled(Button)`
-  background: ${DV.bgGradient.primary};
-  color: white;
+  background: ${({ disabled }) => (disabled ? `${DV.bgGradient.primaryDisabled}` : `${DV.bgGradient.primary}`)}; 
+  color: ${({ disabled }) => (disabled ? `${DV.colors.gray}` : 'white')};
 `;
 
 export const PrimaryOutlinedButton = styled(Button)`

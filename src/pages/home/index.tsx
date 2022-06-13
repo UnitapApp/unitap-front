@@ -21,6 +21,10 @@ const HomeContentWrapper = styled.div`
   justify-content: center;
   width: 100%;
   padding: ${DV.sizes.basePadding * 4.5}px ${DV.sizes.basePadding * 11.25}px;
+  
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
+  }
 `;
 
 const Home = () => {

@@ -24,7 +24,7 @@ export const ModalContent = styled.div<props>`
   background-color: ${DV.colors.black1};
   ${({ size }) =>
     size === 'small'
-      ? `width: min(420px, 30vw);`
+      ? `width: min(420px, 90%);`
       : size === 'large'
       ? `width: min(1000px, 90%);`
       : `width: min(880px, 90%);`}
