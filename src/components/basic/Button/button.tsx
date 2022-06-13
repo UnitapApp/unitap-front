@@ -64,7 +64,8 @@ export const Button = styled.button<props>`
     margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints.smallDesktop}) {
+  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} @media only screen and(${DV.breakpoints
+    .smallDesktop}) {
     font-size: ${({ smFontSize, fontSize }) => smFontSize || fontSize || 'auto'};
     margin-right: ${({ smMr, mr }) =>
       smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
@@ -141,7 +142,9 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 `;
 
 export const ClaimedButton = styled(SecondaryButton)`
-  width: 180px;
+  width: 220px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   color: ${DV.colors.green};
   background-color: ${DV.colors.darkgreen};
   text-align: left;

@@ -17,6 +17,7 @@ import Icon from 'components/basic/Icon/Icon';
 
 const ChainCard = styled.div`
   width: 100%;
+  gap: 18px;
   margin: auto;
   position: relative;
   display: flex;
@@ -87,10 +88,10 @@ const ChainName = styled.div`
 `;
 
 const Action = styled.div`
-  flex: 4;
+  flex: 5;
   display: flex;
   align-items: center;
-  @media only screen and (${DV.breakpoints.smallDesktop}) {
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
     width: 100%;
     button {
@@ -187,7 +188,9 @@ const ChainList = () => {
             </div>
           );
         })}
-        {chainListSearchResult.length === 0 && chainList.length && <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>}
+        {chainListSearchResult.length === 0 && chainList.length && (
+          <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>
+        )}
       </div>
 
       <Modal
