@@ -64,6 +64,16 @@ describe('Claim', () => {
     });
   };
 
+  const setupGetChainListAuthenticatedClaimedDelaied = () => {
+    setupGetChainListServerGeneral();
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      response: chainListAuthenticatedClaimed,
+      delay: 5000,
+    });
+  };
+
   const setupGetUserProfileNotVerified = () => {
     cy.route({
       method: 'GET',
@@ -172,5 +182,60 @@ describe('Claim', () => {
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-claim-failed-${chainList[1].pk}]`).should('exist');
     claimSuccess();
+  });
+
+  function closeAndOpenClaimModal(chainIndex:number){
+    cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
+    cy.get(`[data-testid=close-modal]`).should('exist').click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('not.exist');
+
+    cy.get(`[data-testid=chain-show-claim-${chainList[chainIndex].pk}]`).should('exist').click();
+    cy.get(`[data-testid=loading`).should('not.exist');
+    cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
+
+  };
+
+  it('close button closes the modal and it can get opened again', () => {
+    setupGetUserProfileVerified();
+    setupClaimMax();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.wait(1000);
+
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=loading`).should('not.exist');
+
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+    closeAndOpenClaimModal(1);
+  });
+
+  it('error if multiple claim api calls are called concurrent by reopening claim modal', () => {
+    setupGetUserProfileVerified();
+    setupClaimMax();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.wait(1000);
+
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=loading`).should('not.exist');
+
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+
+    setupGetChainListAuthenticatedClaimedDelaied();
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=loading`).should('exist');
+    closeAndOpenClaimModal(1);
+    cy.get(`[data-testid=loading`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).should('not.exist');
+    
+    // @ts-ignore
+    cy.shouldBeCalled('claimMax', 1);
+
+
+
+    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
+    cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
   });
 });
