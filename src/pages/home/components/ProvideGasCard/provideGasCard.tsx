@@ -10,11 +10,11 @@ const ProvideGasCard = () => {
   return (
     <ProvideGasCardWrapper>
       <Text fontSize="16" mb={0} mdMb={2}>
-        <strong> Enjoying Unitap?</strong> Your Donation helps more users to claim Gas Fees.
+        <strong> Enjoying Unitap?</strong> Donate to help support more users access this service.
       </Text>
       <Link to={RoutePath.FUND}>
         <PrimaryOutlinedButton width="230px" fontSize="14" height="46px">
-          Provide Gas Fee
+          Help fund Gas Fees
         </PrimaryOutlinedButton>
       </Link>
     </ProvideGasCardWrapper>
