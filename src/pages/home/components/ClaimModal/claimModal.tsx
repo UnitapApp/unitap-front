@@ -30,8 +30,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   }, []);
   const { active, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
-  const { updateChainList } = useContext(ChainListContext);
-  const [claimState, setClaimState] = useState(ClaimState.INITIAL);
+  const { updateChainList, claimState , setClaimState} = useContext(ChainListContext);
 
   const brightIdVerified = useMemo(
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
@@ -75,7 +74,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         setClaimState(ClaimState.FAILED);
       }
     }
-  }, [account, brightIdVerified, chain.pk, claimState, updateChainList]);
+  }, [account, brightIdVerified, chain.pk, claimState, updateChainList, setClaimState]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function connectMetamaskBody() {
