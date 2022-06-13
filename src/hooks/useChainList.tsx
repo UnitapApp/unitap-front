@@ -6,14 +6,30 @@ import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
 
+enum ClaimState {
+  INITIAL,
+  LOADING,
+  SUCCESS,
+  FAILED,
+}
 export const ChainListContext = createContext<{
   chainList: Chain[];
   updateChainList: (() => Promise<void>) | null;
   chainListSearchResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
-}>({ chainList: [], updateChainList: null, chainListSearchResult: [], changeSearchPhrase: null });
+  claimState : ClaimState;
+  setClaimState : (newClaimState:ClaimState) => void;
+}>({ chainList: [],
+  updateChainList: null,
+  chainListSearchResult: [],
+  changeSearchPhrase: null,
+  claimState: ClaimState.INITIAL,
+  setClaimState : (newClaimState:ClaimState) => {},
+});
 
 export function ChainListProvider({ children }: PropsWithChildren<{}>) {
+
+  const [claimState, setClaimStateFun] = useState<ClaimState>(ClaimState.INITIAL);
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const { account: address } = useActiveWeb3React();
@@ -38,6 +54,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     fn();
   }, [address, updateChainList, fastRefresh]);
 
+  const setClaimState = (newClaimState: ClaimState) => setClaimStateFun(newClaimState);
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
     const fuseOptions = {
@@ -71,6 +88,8 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         updateChainList,
         chainListSearchResult,
         changeSearchPhrase,
+        claimState,
+        setClaimState,
       }}
     >
       {children}{' '}
