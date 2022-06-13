@@ -39,7 +39,7 @@ const LandingWrapper = styled.div`
       align-items: center;
       justify-content: center;
       height: 80vh;
-      padding: 0 26vw;
+      padding: 0 24vw;
     }
 
     &__footer {
@@ -116,10 +116,17 @@ const Landing: FC = () => {
   return (
     <LandingWrapper>
       <nav className="landing__navbar">
-        <Icon iconSrc="logo.svg" width="270px" xsWidth='40vw' height="auto"></Icon>
+        <Icon iconSrc="logo.svg" width="270px" xsWidth="40vw" height="auto"></Icon>
       </nav>
       <div className="landing__hero">
-        <Icon iconSrc="assets/images/landing/logo-center.svg" width="75px" height="auto" mb={3} smMb={1} smWidth="80px"></Icon>
+        <Icon
+          iconSrc="assets/images/landing/logo-center.svg"
+          width="75px"
+          height="auto"
+          mb={3}
+          smMb={1}
+          smWidth="80px"
+        ></Icon>
         <Icon
           iconSrc="assets/images/landing/name-center.svg"
           width="190px"
@@ -128,7 +135,7 @@ const Landing: FC = () => {
           smMb={1}
           smWidth="170px"
         ></Icon>
-        <Text fontSize="28" textAlign="center" mb={7} smFontSize="18">
+        <Text fontSize="28" textAlign="center" mb={7} smFontSize="20">
           A gateway to networks and communities.
         </Text>
         <div className="landing__hero__action-buttons">
@@ -143,7 +150,7 @@ const Landing: FC = () => {
               iconMarginLeft={100}
               fontSize="20px"
               smFontSize="16px"
-              width='280px'
+              width="280px"
               mr={4}
               mb={2}
             >
@@ -160,7 +167,7 @@ const Landing: FC = () => {
             iconMarginLeft={55}
             fontSize="20px"
             smFontSize="16px"
-            width='280px'
+            width="280px"
             disabled
           >
             Token Tap

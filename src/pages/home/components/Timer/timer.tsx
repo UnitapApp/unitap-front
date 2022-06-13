@@ -15,11 +15,26 @@ const TimerWrapper = styled.div`
   margin-left: auto;
   width: fit-content;
   align-items: center;
-  padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 6}px ${DV.sizes.basePadding}px
+  padding: ${DV.sizes.basePadding}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding}px
     ${DV.sizes.basePadding * 3}px;
 
   @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     margin: 0 auto 1rem;
+  }
+`;
+
+const TimerCount = styled(Text)`
+  @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
+    font-size: 24px;
+  }
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    font-size: 22px;
+  }
+`;
+
+const TimerLabel = styled(Text)`
+  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+    font-size: 12px;
   }
 `;
 
@@ -47,12 +62,12 @@ const Timer = () => {
 
   return (
     <TimerWrapper>
-      <Text color="gray" fontSize="12" mb={0} mr={3}>
+      <TimerLabel color="gray" fontSize="12" mb={0} mr={3}>
         next launch in
-      </Text>
-      <Text color="white" fontSize="24" mb={0}>
+      </TimerLabel>
+      <TimerCount color="white" fontSize="24" mb={0}>
         {days}:{hours}:{minutes}:{seconds}
-      </Text>
+      </TimerCount>
     </TimerWrapper>
   );
 };
