@@ -1,10 +1,6 @@
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 
-interface props {
-  imgPositionLeft?: string,
-  imgPositionTop: string
-}
 
 export const ClaimModalWrapper = styled.div`
   display: flex;
@@ -16,7 +12,7 @@ export const ClaimModalWrapper = styled.div`
   padding: ${DV.sizes.basePadding * 2}px;
 `;
 
-export const DropIconWrapper = styled.div<props>`
+export const DropIconWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -24,7 +20,12 @@ export const DropIconWrapper = styled.div<props>`
 
   & > img {
     position: absolute;
-    top: ${({imgPositionTop})=> imgPositionTop};
-    left: ${({imgPositionLeft})=> imgPositionLeft || ''};
+    top: 43px;
+  }
+
+  .state-logo {
+    position: absolute;
+    right: -10px;
+    top: 56px;
   }
 `;

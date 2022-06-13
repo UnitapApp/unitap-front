@@ -27,7 +27,7 @@ export const ModalContent = styled.div<props>`
       ? `width: min(420px, 30vw);`
       : size === 'large'
       ? `width: min(1000px, 90%);`
-      : `width: min(750px, 90%);`}
+      : `width: min(880px, 90%);`}
   margin: 0 5%;
   position: relative;
   border-radius: ${DV.sizes.baseRadius * 2}px;
@@ -59,9 +59,9 @@ export const ModalContent = styled.div<props>`
 
   .spaceman-one {
     position: absolute;
-    right: 0rem;
-    bottom: 0;
-    width: 250px;
+    right: -150px;
+    bottom: -50px;
+    width: 380px;
     z-index: -1;
     @media only screen and (max-width: ${DV.breakpoints.mobile}) {
       width: 200px;
@@ -77,9 +77,9 @@ export const ModalContent = styled.div<props>`
 
   .spaceman-three {
     position: absolute;
-    right: -5rem;
+    right: -40px;
     top: 2rem;
-    width: 23rem;
+    width: 330px;
   }
 `;
 

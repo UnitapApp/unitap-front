@@ -56,7 +56,7 @@ const Drops = styled.span`
 
 const Spaceman = styled.div`
   position: absolute;
-  bottom: -90px;
+  bottom: -80px;
   @media screen and (max-width: 920px) {
     display: none;
   }
@@ -66,7 +66,7 @@ const Header = () => {
   return (
     <HeaderComp>
       <Spaceman>
-        <Icon iconSrc={'assets/images/claim/spaceman-header.svg'} width="170px" height="auto" />
+        <Icon iconSrc={'assets/images/claim/spaceman-header.svg'} width="180px" height="auto" />
       </Spaceman>
       <Drops>
         <Icon iconSrc="assets/images/claim/drop.svg" width="19px" height="auto" className="first_drop"></Icon>

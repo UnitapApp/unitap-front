@@ -81,9 +81,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function connectMetamaskBody() {
     return (
       <>
-        <DropIconWrapper imgPositionTop="65px">
+        <DropIconWrapper>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -99,9 +99,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getInitialBody() {
     return (
       <>
-        <DropIconWrapper imgPositionTop='65px' >
+        <DropIconWrapper>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'dropIcon.png'} width="90px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -134,17 +134,10 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getSuccessBody() {
     return (
       <>
-        <DropIconWrapper imgPositionLeft='17px' imgPositionTop='50px' >
+        <DropIconWrapper>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon
-            iconSrc={'assets/images/claim/success-drop-icon.svg'}
-            width="70px"
-            height="auto"
-            mb={6}
-            mr={-1}
-            mt={2}
-            data-testid={`chain-claim-success-${chain.pk}`}
-          />
+          <Icon iconSrc='assets/images/modal/successful-state-check.svg' width='30px' className='state-logo'/>
+          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
           0.001 xDai Claimed
@@ -167,15 +160,11 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getFailedBody() {
     return (
       <>
-        <Icon
-          iconSrc={'failed-airdrop.png'}
-          width="70px"
-          height="auto"
-          mb={6}
-          mr={-1}
-          mt={2}
-          data-testid={`chain-claim-failed-${chain.pk}`}
-        />
+        <DropIconWrapper>
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon iconSrc='assets/images/modal/failed-state-x.svg' width='30px' className='state-logo'/>
+          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+        </DropIconWrapper>
         <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
           Claim Failed!
         </Text>
