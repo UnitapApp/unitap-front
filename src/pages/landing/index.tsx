@@ -11,7 +11,8 @@ const LandingWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background-image: url('assets/images/landing/background.png');
+  background: ${DV.colors.dark};
+  background-image: url('assets/images/landing/background-wave.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -57,7 +58,7 @@ const LandingWrapper = styled.div`
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background-image: url('assets/images/landing/background.png');
+    background-image: url('assets/images/landing/background-wave.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
