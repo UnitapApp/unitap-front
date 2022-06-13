@@ -13,6 +13,7 @@ import { fromWei } from '../../../../utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
+import styled from 'styled-components';
 
 enum ClaimState {
   INITIAL,
@@ -67,7 +68,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </SecondaryButton>
       </>
     );
-  }
+  };
 
   function getInitialBody() {
     return (
@@ -90,7 +91,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </PrimaryButton>
       </>
     );
-  }
+  };
 
   function getLoadingBody() {
     return (
@@ -107,8 +108,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </MessageButton>
       </>
     );
-  }
-
+  };
   function getSuccessBody() {
     return (
       <>
@@ -131,9 +131,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         >
           Close
         </SecondaryButton>
-      </>
+      </div>
     );
-  }
+  };
 
   function getFailedBody() {
     return (
@@ -157,9 +157,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         >
           Try Again
         </SecondaryButton>
-      </>
+      </div>
     );
-  }
+  };
 
   function getClaimBody() {
     if (claimState === ClaimState.FAILED) {
@@ -171,7 +171,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     } else {
       return getInitialBody();
     }
-  }
+  };
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
