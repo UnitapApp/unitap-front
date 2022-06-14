@@ -57,9 +57,9 @@ export function convertChainObjectToMetaMaskParams(chain: Chain) {
   ];
 }
 
-// export function getTxUrl(chain: Chain, claimReceipt: ClaimReceipt) {
-//   return `${chain.explorerUrl}tx/${claimReceipt.txHash}`;
-// }
+export function getTxUrl(chain: Chain, txHash: string) {
+  return `${chain.explorerUrl}tx/${txHash}`;
+}
 
 export function getVerificationQr(userProfile: UserProfile) {
   return userProfile.verificationUrl.replace('https://app.brightid.org/', 'brightid://');

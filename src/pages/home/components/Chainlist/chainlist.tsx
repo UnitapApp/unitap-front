@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
@@ -8,7 +8,7 @@ import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 import ClaimModal from 'pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from 'utils/numbers';
+import { formatBalance } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
@@ -122,11 +122,6 @@ const ChainList = () => {
   const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
   const { addAndSwitchToChain } = useAddAndSwitchToChain();
   const { active } = useActiveWeb3React();
-
-  const formatBalance = useCallback((amount: number) => {
-    const fw = fromWei(amount);
-    return Number(fw) < 0.000001 ? '< 0.000001' : fw;
-  }, []);
 
   const windowSize = window.innerWidth;
 

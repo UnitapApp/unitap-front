@@ -9,12 +9,12 @@ import { Chain } from '../../../../types';
 import { useAddAndSwitchToChain } from '../../../../hooks/useAddAndSwitchToChain';
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React';
 import { parseEther } from '@ethersproject/units';
-import { calculateGasMargin } from '../../../../utils/web3';
 import Modal from 'components/common/Modal/modal';
 import SelectChainModal from '../SelectChainModal/selectChainModal';
 import ProvideGasFeeModal from '../ProvideGasFeeModal/provideGasFeeModal';
 import useWeb3Connector from '../../../../hooks/useWeb3Connector';
 import { getChainIcon } from '../../../../utils';
+import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from '../../../../utils/web3';
 
 const Content: FC = () => {
   const { chainList } = useContext(ChainListContext);
@@ -32,10 +32,27 @@ const Content: FC = () => {
 
   const [fundAmount, setFundAmount] = useState<string>('');
 
+  const [modalState, setModalState] = useState(false);
+  const [provideGasFeeError, setProvideGasFeeError] = useState('');
+  const [txHash, setTxHash] = useState('');
   const isRightChain = useMemo(() => {
     if (!active || !chainId || !selectedChain) return false;
     return chainId === Number(selectedChain.chainId);
   }, [selectedChain, active, chainId]);
+
+  const handleTransactionError = useCallback((error: any) => {
+    if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
+    const message = error?.error?.message;
+    if (message) {
+      if (message.includes('insufficient funds')) {
+        setProvideGasFeeError('Error: Insufficient Funds');
+      } else {
+        setProvideGasFeeError(message);
+      }
+    } else {
+      setProvideGasFeeError('Unexpected error. Could not estimate gas for this transaction.');
+    }
+  }, []);
 
   const handleSendFunds = useCallback(async () => {
     if (!active) {
@@ -63,31 +80,38 @@ const Content: FC = () => {
     });
 
     if ('error' in estimatedGas) {
-      const message = estimatedGas?.error?.message;
-      if (message) {
-        if (message.includes('insufficient funds')) {
-          setProvideGasFeeError('Error: Insufficient Funds');
-        } else {
-          setProvideGasFeeError(message);
-        }
-      } else {
-        setProvideGasFeeError('Unexpected error. Could not estimate gas for this transaction.');
-      }
-      return;
+      handleTransactionError(estimatedGas);
     }
 
-    library.getSigner().sendTransaction({
-      ...tx,
-      ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
-      // gasPrice /// TODO add gasPrice based on EIP 1559
-    });
-  }, [active, chainId, selectedChain, account, isRightChain, fundAmount, library, connect, addAndSwitchToChain]);
-
-  const [modalState, setModalState] = useState(false);
-  const [provideGasFeeError, setProvideGasFeeError] = useState('');
+    library
+      .getSigner()
+      .sendTransaction({
+        ...tx,
+        ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
+        // gasPrice /// TODO add gasPrice based on EIP 1559
+      })
+      .then((tx) => {
+        setTxHash(tx.hash);
+      })
+      .catch((err) => {
+        handleTransactionError(err);
+      });
+  }, [
+    active,
+    chainId,
+    selectedChain,
+    account,
+    isRightChain,
+    fundAmount,
+    library,
+    connect,
+    addAndSwitchToChain,
+    handleTransactionError,
+  ]);
 
   const closeModalHandler = () => {
     setProvideGasFeeError('');
+    setTxHash('');
     setModalState(false);
   };
 
@@ -129,13 +153,22 @@ const Content: FC = () => {
           width="100%"
           fontSize="24px"
         />
-        <PrimaryButton width="100%" height="3.5rem" fontSize="20px" onClick={handleSendFunds} disabled={!Number(fundAmount) && isRightChain && active}>
+        <PrimaryButton
+          width="100%"
+          height="3.5rem"
+          fontSize="20px"
+          onClick={handleSendFunds}
+          disabled={!Number(fundAmount) && isRightChain && active}
+        >
           {!active ? 'Connect Wallet' : !isRightChain ? 'Switch Network' : 'Submit Contribution'}
         </PrimaryButton>
-        <Modal title="Provide Gas Fee" isOpen={!!provideGasFeeError} closeModalHandler={closeModalHandler}>
+        <Modal title="Provide Gas Fee" isOpen={!!provideGasFeeError || !!txHash} closeModalHandler={closeModalHandler}>
           <ProvideGasFeeModal
+            fundAmount={fundAmount}
             closeModalHandler={closeModalHandler}
             provideGasFeeError={provideGasFeeError}
+            txHash={txHash}
+            selectedChain={selectedChain}
           ></ProvideGasFeeModal>
         </Modal>
       </ContentCard>

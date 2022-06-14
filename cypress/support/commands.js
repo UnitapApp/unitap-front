@@ -15,6 +15,10 @@ const reader = new BrowserMultiFormatReader();
 export class CustomizedBridge extends Eip1193Bridge {
   chainId = 4;
 
+  on(...args) {
+    console.log('on called', ...args);
+  }
+
   async sendAsync(...args) {
     console.debug('sendAsync called', ...args);
     return this.send(...args);

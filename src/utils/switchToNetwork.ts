@@ -1,14 +1,12 @@
 import { ExternalProvider } from '@ethersproject/providers';
 import { Chain } from 'types';
 import { convertChainObjectToMetaMaskParams, formatChainId } from './index';
+import { UNRECOGNIZED_CHAIN_ERROR_CODE, USER_DENIED_REQUEST_ERROR_CODE } from './web3';
 
 interface SwitchNetworkArguments {
   provider: ExternalProvider;
   chain: Chain;
 }
-
-const USER_DENIED_REQUEST_ERROR_CODE = 4001;
-const UNRECOGNIZED_CHAIN_ERROR_CODE = [4902, -32603];
 
 // provider.request returns Promise<any>, but wallet_switchEthereumChain must return null or throw
 // see https://github.com/rekmarks/EIPs/blob/3326-create/EIPS/eip-3326.md for more info on wallet_switchEthereumChain

@@ -11,7 +11,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from '../../../../utils/numbers';
+import { formatBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
@@ -24,10 +24,6 @@ enum ClaimState {
 }
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
-  const formatBalance = useCallback((amount: number) => {
-    const fw = fromWei(amount);
-    return Number(fw) < 0.000001 ? '< 0.000001' : fw;
-  }, []);
   const { active, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { updateChainList } = useContext(ChainListContext);
