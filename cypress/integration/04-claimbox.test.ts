@@ -121,6 +121,7 @@ describe('Claim', () => {
   });
 
   function claimSuccess() {
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
     setupClaimMax();
     setupGetChainListAuthenticatedClaimed();
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
@@ -145,7 +146,7 @@ describe('Claim', () => {
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
     cy.get(`[data-testid=loading`).should('not.exist');
 
-    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+    claimSuccess();
   });
 
   it('claim error and retry to succeed', () => {

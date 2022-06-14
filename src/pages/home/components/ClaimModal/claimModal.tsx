@@ -134,9 +134,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getSuccessBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc='assets/images/modal/successful-state-check.svg' width='30px' className='state-logo'/>
+          <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="30px" className="state-logo" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
@@ -160,9 +160,9 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   function getFailedBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc='assets/images/modal/failed-state-x.svg' width='30px' className='state-logo'/>
+          <Icon iconSrc="assets/images/modal/failed-state-x.svg" width="30px" className="state-logo" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
@@ -171,12 +171,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           An error happened while processing your request
         </Text>
-        <SecondaryButton
-          fontSize="20px"
-          onClick={() => setClaimState(ClaimState.INITIAL)}
-          width={'100%'}
-          data-testid={`chain-claim-action-${chain.pk}`}
-        >
+        <SecondaryButton fontSize="20px" onClick={claim} width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
           Try Again
         </SecondaryButton>
       </>
