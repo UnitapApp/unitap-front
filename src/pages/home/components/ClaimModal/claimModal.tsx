@@ -130,7 +130,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         >
           Close
         </SecondaryButton>
-      </div>
+      </>
     );
   };
 
@@ -156,7 +156,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         >
           Try Again
         </SecondaryButton>
-      </div>
+      </>
     );
   };
 
