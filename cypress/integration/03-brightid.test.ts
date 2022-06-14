@@ -121,7 +121,7 @@ describe('BrightID', () => {
 
     cy.wait(200);
     setupGetUserProfileVerified();
-    cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
+    cy.get(`[data-testid=bright-id-connection-refresh-button-try-again]`).click();
     // @ts-ignore
     cy.shouldBeCalled('getUserProfileVerified', 1);
 

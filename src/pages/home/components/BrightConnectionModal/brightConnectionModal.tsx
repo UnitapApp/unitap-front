@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
@@ -18,6 +18,7 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
+  const [tried, setTried] = useState(false);
   const copyVerificationUrl = async () => {
     try {
       await copyToClipboard(verificationUrl);
@@ -34,11 +35,15 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
     try {
       const refreshedUserProfile = await refreshUserProfile();
       if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
+        setTried(true);
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+      } else {
+        setTried(false);
       }
     } catch (ex) {
       console.log(ex);
-      alert('Error while connectiong to BrightID sever!');
+      alert('Error while connecting to BrightID sever!');
+      setTried(true);
     }
   }, [refreshUserProfile, loading]);
 
@@ -47,7 +52,7 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
   }
 
   return (
-    <BrightConnectionModalWrapper data-testid="brightid-modal" warning={false}>
+    <BrightConnectionModalWrapper data-testid="brightid-modal" warning={tried}>
       <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
       <Text fontSize="14" className="scan-qr-text">
         Scan QR Code
@@ -67,8 +72,11 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
       </CopyLink>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && (
-        <SecondaryButton data-testid={`bright-id-connection-refresh-button`} onClick={refreshConnectionButtonAction}>
-          Press me when you scanned!
+        <SecondaryButton
+          data-testid={`bright-id-connection-refresh-button${tried ? '-try-again' : ''}`}
+          onClick={refreshConnectionButtonAction}
+        >
+          {tried ? 'Scan or Use Link and Try Again' : 'Click here after confirming in BrightID app!'}
         </SecondaryButton>
       )}
     </BrightConnectionModalWrapper>
