@@ -13,7 +13,6 @@ import { fromWei } from '../../../../utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
-import styled from 'styled-components';
 
 enum ClaimState {
   INITIAL,
@@ -147,7 +146,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           Claim Failed!
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          An error happened while processing your request
+          An error occurred while processing your request
         </Text>
         <SecondaryButton
           fontSize="20px"
