@@ -29,9 +29,18 @@ export type UserProfile = {
   verificationStatus: BrightIdVerificationStatus;
 };
 
+export enum ClaimReceiptState {
+  PENDING = "0",
+  VERIFIED = "1",
+  REJECTED = "2",
+}
+
+
 export type ClaimReceipt = {
   pk: PK;
+  txHash: string|null;
   chain: PK;
   datetime: string;
   amount: number;
+  status: ClaimReceiptState;
 };

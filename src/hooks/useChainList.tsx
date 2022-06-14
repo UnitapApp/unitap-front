@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getChainList } from 'api';
+import { claimMax, getChainList, getActiveClaimHistory } from 'api';
 import { BrightIdVerificationStatus, Chain, ClaimReceipt } from 'types';
 import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
@@ -19,22 +19,24 @@ export const ChainListContext = createContext<{
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claimState: ClaimState;
   claim: (chainPK: number) => void;
+  activeClaimHistory: ClaimReceipt[];
 }>({
   chainList: [],
   chainListSearchResult: [],
   changeSearchPhrase: null,
   claimState: ClaimState.INITIAL,
   claim: (chainPK: number) => {},
+  activeClaimHistory: [],
 });
 
 export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   const [claimState, setClaimState] = useState<ClaimState>(ClaimState.INITIAL);
-
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
   const { account: address, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
+  const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>([]);
 
   const brightIdVerified = useMemo(
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
@@ -81,6 +83,25 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     fn();
   }, [address, updateChainList, fastRefresh]);
 
+  const updateActiveClaimHistory = useCallback(async () => {
+    if (address) {
+      const date = new Date();
+      const newClaimHistory = await getActiveClaimHistory(address, date);
+      setActiveClaimHistory(newClaimHistory);
+    }
+  }, [address, setActiveClaimHistory]);
+
+  useEffect(() => {
+    const fn = async () => {
+      try {
+        await updateActiveClaimHistory();
+      } catch (e) {
+        fn();
+      }
+    };
+    fn();
+  }, [fastRefresh, updateActiveClaimHistory]);
+
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
     const fuseOptions = {
@@ -111,14 +132,14 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     <ChainListContext.Provider
       value={{
         chainList,
-        //updateChainList,
         chainListSearchResult,
         changeSearchPhrase,
         claimState,
         claim,
+        activeClaimHistory,
       }}
     >
-      {children}{' '}
+      {children}
     </ChainListContext.Provider>
   );
 }
