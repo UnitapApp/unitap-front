@@ -3,7 +3,11 @@ import { DV } from 'components/basic/designVariables';
 
 type props = {
   fontSize?: string;
+  xsFontSize?: string;
   smFontSize?: string;
+  mdFontSize?: string;
+  lgFontSize?: string;
+  xlgFontSize?: string;
   lineHeight?: string;
   breakOverflow?: boolean;
   color?: string;
