@@ -17,10 +17,10 @@ const ProvideGasFeeModal = ({
       <>
         <Icon mb={3} iconSrc="assets/images/fund/success-provide-spaceman.svg"></Icon>
         <Text fontSize="14px" color="space_green" textAlign="center" breakOverflow>
-          1000 xDAI Funded
+          {/*TODO: write success text "1000 xDAI Funded"*/}
         </Text>
         <SecondaryButton fontSize="14px" size="large">
-          View on Explorer
+          {/*TODO: "View on Explorer"*/}
         </SecondaryButton>
       </>
     );

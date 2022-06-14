@@ -128,6 +128,8 @@ const ChainList = () => {
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
 
+  const windowSize = window.innerWidth;
+
   return (
     <ChainListWrapper>
       <div>
@@ -189,7 +191,12 @@ const ChainList = () => {
           );
         })}
         {chainListSearchResult.length === 0 && chainList.length && (
-          <Icon iconSrc="assets/images/claim/empty-list.svg" width="100%"></Icon>
+          <Icon
+            iconSrc={
+              windowSize > 992 ? 'assets/images/claim/empty-list.svg' : 'assets/images/claim/empty-list-mobile.svg'
+            }
+            width="100%"
+          />
         )}
       </div>
 

@@ -76,9 +76,10 @@ export const DV: designVariable = {
     dark: 'radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2A3837 0%, #3F2B44 42.19%, #322837 100%)',
   },
   breakpoints: {
-    mobile: '600px',
-    tablet: '992px',
-    smallDesktop: '1224px',
-    desktop: '1440px',
+    mobile: '600px', // xs
+    tablet: '992px', // sm
+    smallDesktop: '1224px', // md
+    desktop: '1440px', // lg 
+    // bigger than 1440px -> // xlg
   },
 };
