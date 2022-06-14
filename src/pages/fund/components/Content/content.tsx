@@ -34,7 +34,7 @@ const Content: FC = () => {
 
   const [modalState, setModalState] = useState(false);
   const [provideGasFeeError, setProvideGasFeeError] = useState('');
-  const [txHash, setTxHash] = useState('');
+  const [txHash, setTxHash] = useState('qqq');
   const isRightChain = useMemo(() => {
     if (!active || !chainId || !selectedChain) return false;
     return chainId === Number(selectedChain.chainId);
