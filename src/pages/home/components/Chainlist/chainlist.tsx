@@ -23,7 +23,7 @@ const ChainCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid ${DV.colors.black};
+  border: 1px solid ${DV.colors.black};
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   background-color: #1d1d29;
   margin-bottom: ${DV.sizes.baseMargin * 2}px;
@@ -51,7 +51,7 @@ const ChainCard = styled.div`
 `;
 
 const ChainLogo = styled.div`
-  background-color: ${DV.colors.black};
+  background-color: ${DV.colors.black5};
   height: 101%;
   width: 48px;
   position: absolute;

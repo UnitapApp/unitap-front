@@ -44,6 +44,7 @@ const SearchInput = () => {
         pl={7}
         p={2}
         mb={0}
+        backgroundColor="black1"
       ></Input>
       <Icon iconSrc="assets/images/claim/slash-icon.svg" hoverable className="icon-right"></Icon>
     </SearchInputWrapper>
