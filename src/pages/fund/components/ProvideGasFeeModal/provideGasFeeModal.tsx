@@ -28,7 +28,9 @@ const ProvideGasFeeModal = ({
         {selectedChain && (
           <>
             <Text fontSize="14px" color="space_green" textAlign="center" breakOverflow>
-              {formatBalance(Number(fundAmount))} {selectedChain.symbol} Fund transaction submitted
+              Thanks for your donation!
+              <br />
+              {formatBalance(Number(fundAmount))} {selectedChain.symbol} donation transaction submitted
             </Text>
             <SecondaryButton
               fontSize="14px"
