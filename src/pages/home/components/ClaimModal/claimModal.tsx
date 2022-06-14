@@ -140,7 +140,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          0.001 xDai Claimed
+          {formatBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           Your request is submitted successfully!
