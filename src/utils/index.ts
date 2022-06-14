@@ -46,6 +46,7 @@ export function formatChainId(chainId: string) {
 }
 
 export function convertChainObjectToMetaMaskParams(chain: Chain) {
+  console.log(JSON.stringify(chain));
   return [
     {
       chainId: formatChainId(chain.chainId),

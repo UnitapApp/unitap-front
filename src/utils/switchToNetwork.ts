@@ -33,6 +33,9 @@ export async function switchToNetwork({ provider, chain }: SwitchNetworkArgument
         chainAdded = true;
       } catch (err: any) {
         if (err.code !== USER_DENIED_REQUEST_ERROR_CODE) {
+          if (err.message) {
+            alert(err.message);
+          }
           throw err;
         }
       }
@@ -47,6 +50,9 @@ export async function switchToNetwork({ provider, chain }: SwitchNetworkArgument
           });
         } catch (err: any) {
           if (err.code !== USER_DENIED_REQUEST_ERROR_CODE) {
+            if (err.message) {
+              alert(err.message);
+            }
             throw err;
           }
         }
