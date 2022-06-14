@@ -47,7 +47,7 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
   }
 
   return (
-    <BrightConnectionModalWrapper data-testid="brightid-modal">
+    <BrightConnectionModalWrapper data-testid="brightid-modal" warning={false}>
       <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
       <Text fontSize="14" className="scan-qr-text">
         Scan QR Code
