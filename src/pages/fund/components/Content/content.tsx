@@ -42,7 +42,7 @@ const Content: FC = () => {
 
   const handleTransactionError = useCallback((error: any) => {
     if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
-    const message = error?.error?.message;
+    const message = error?.data?.message || error?.error?.message;
     if (message) {
       if (message.includes('insufficient funds')) {
         setProvideGasFeeError('Error: Insufficient Funds');
@@ -79,8 +79,9 @@ const Content: FC = () => {
       return err;
     });
 
-    if ('error' in estimatedGas) {
+    if ('error' in estimatedGas || 'code' in estimatedGas) {
       handleTransactionError(estimatedGas);
+      return;
     }
 
     library
