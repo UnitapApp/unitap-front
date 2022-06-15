@@ -2,6 +2,7 @@ import { CustomizedBridge, provider, signer } from '../support/commands';
 import {
   chainList,
   chainListAuthenticatedClaimedFirst,
+  emptyClaimHistoryResponse,
   TEST_ADDRESS_NEVER_USE,
   userProfileVerified,
 } from '../utils/data';
@@ -31,6 +32,11 @@ describe('Landing Page', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileVerified,
+    });
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      response: emptyClaimHistoryResponse,
     });
   };
   const setupEthBridge = () => {

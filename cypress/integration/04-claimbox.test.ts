@@ -4,6 +4,7 @@ import {
   chainListAuthenticatedClaimed,
   chainListAuthenticatedClaimedFirst,
   claimMaxResponse,
+  emptyClaimHistoryResponse,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
   userProfileVerified,
@@ -80,6 +81,11 @@ describe('Claim', () => {
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileNotVerified,
     });
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      response: emptyClaimHistoryResponse,
+    });
   };
 
   const setupGetUserProfileVerified = () => {
@@ -87,6 +93,11 @@ describe('Claim', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileVerified,
+    });
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      response: emptyClaimHistoryResponse,
     });
   };
 
@@ -184,15 +195,14 @@ describe('Claim', () => {
     claimSuccess();
   });
 
-  function closeAndOpenClaimModal(chainIndex:number){
+  function closeAndOpenClaimModal(chainIndex: number) {
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
     cy.get(`[data-testid=close-modal]`).should('exist').click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('not.exist');
 
     cy.get(`[data-testid=chain-show-claim-${chainList[chainIndex].pk}]`).should('exist').click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
-
-  };
+  }
 
   it('close button closes the modal and it can get opened again', () => {
     setupGetUserProfileVerified();
@@ -225,7 +235,7 @@ describe('Claim', () => {
     cy.get(`[data-testid=loading`).should('exist');
     closeAndOpenClaimModal(1);
     cy.get(`[data-testid=loading`).should('exist');
-    
+
     cy.wait(5000);
 
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));

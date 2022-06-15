@@ -13,6 +13,7 @@ import Timer from './components/Timer/timer';
 import SearchInput from './components/SearchInput/searchInput';
 import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
+import ClaimModal from './components/ClaimModal/claimModal';
 
 const HomeContentWrapper = styled.div`
   max-width: 1310px;
@@ -49,6 +50,7 @@ const Home = () => {
           <ProvideGasCard />
         </HomeContentWrapper>
       </Body>
+      <ClaimModal />
       <Footer />
     </>
   );

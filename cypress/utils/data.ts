@@ -1,4 +1,4 @@
-import { BrightIdVerificationStatus, Chain, ClaimReceipt } from '../../src/types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimReceiptState } from '../../src/types';
 
 import { shortenAddress } from '../../src/utils';
 import { Wallet } from '@ethersproject/wallet';
@@ -26,6 +26,7 @@ export const chainList: Chain[] = [
     maxClaimAmount: 10000000000000000,
     claimed: 'N/A',
     unclaimed: 'N/A',
+    fundManagerAddress: '0x58f2f1035AbB8B1912412Ce4668E3815e8B7Efa0',
   },
   {
     pk: 2,
@@ -40,6 +41,7 @@ export const chainList: Chain[] = [
     maxClaimAmount: 1000,
     claimed: 'N/A',
     unclaimed: 'N/A',
+    fundManagerAddress: '0x58f2f1035AbB2a2912412Ce4668E3815e8B7Efa0',
   },
 ];
 
@@ -124,4 +126,7 @@ export const claimMaxResponse: ClaimReceipt = {
   chain: 1,
   datetime: '2022-04-23T16:17:23.615399Z',
   amount: 1000000000000,
+  status: ClaimReceiptState.PENDING,
 };
+
+export const emptyClaimHistoryResponse: ClaimReceipt[] = [];

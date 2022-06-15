@@ -2,11 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
-import { Chain } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import Modal from 'components/common/Modal/modal';
-import { Spaceman } from 'constants/spaceman';
-import ClaimModal from 'pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
 import { fromWei } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
@@ -117,9 +113,8 @@ const ChainListWrapper = styled.div`
 `;
 
 const ChainList = () => {
-  const { chainList, chainListSearchResult } = useContext(ChainListContext);
+  const { chainList, chainListSearchResult, openClaimModal } = useContext(ChainListContext);
 
-  const [activeChain, setActiveChain] = React.useState<Chain | null>(null);
   const { addAndSwitchToChain } = useAddAndSwitchToChain();
   const { active } = useActiveWeb3React();
 
@@ -153,15 +148,14 @@ const ChainList = () => {
                   <span>Currency</span> {chain.symbol}
                 </p>
                 <Action>
+                  {/* to-do migrate buttom logic*/}
                   {chain.unclaimed !== 0 ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${chain.pk}`}
                       disabled={!active}
                       mr={2}
                       mlAuto
-                      onClick={() => {
-                        setActiveChain(chain);
-                      }}
+                      onClick={() => openClaimModal(chain)}
                     >
                       {`Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                     </ClaimButton>
@@ -199,24 +193,6 @@ const ChainList = () => {
           />
         )}
       </div>
-
-      <Modal
-        spaceman={Spaceman.BOTTOM_BIG}
-        title="claim gas fee"
-        isOpen={!!activeChain}
-        closeModalHandler={() => {
-          setActiveChain(null);
-        }}
-      >
-        {activeChain && (
-          <ClaimModal
-            chain={activeChain}
-            closeModalHandler={() => {
-              setActiveChain(null);
-            }}
-          />
-        )}
-      </Modal>
     </ChainListWrapper>
   );
 };

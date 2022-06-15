@@ -13,6 +13,8 @@ import { fromWei } from '../../../../utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
+import Modal from 'components/common/Modal/modal';
+import { Spaceman } from 'constants/spaceman';
 
 enum ClaimState {
   INITIAL,
@@ -21,14 +23,14 @@ enum ClaimState {
   FAILED,
 }
 
-const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
+const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const formatBalance = useCallback((amount: number) => {
     const fw = fromWei(amount);
     return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   }, []);
   const { active, account } = useActiveWeb3React();
 
-  const { claimState, claim } = useContext(ChainListContext);
+  const { claimState, claim, closeClaimModal } = useContext(ChainListContext);
 
   const mounted = useRef(false);
 
@@ -67,7 +69,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </SecondaryButton>
       </>
     );
-  };
+  }
 
   function getInitialBody() {
     return (
@@ -90,7 +92,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </PrimaryButton>
       </>
     );
-  };
+  }
 
   function getLoadingBody() {
     return (
@@ -107,7 +109,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </MessageButton>
       </>
     );
-  };
+  }
   function getSuccessBody() {
     return (
       <>
@@ -123,7 +125,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           Your request is submitted successfully!
         </Text>
         <SecondaryButton
-          onClick={closeModalHandler}
+          onClick={closeClaimModal}
           width={'100%'}
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
@@ -132,7 +134,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </SecondaryButton>
       </>
     );
-  };
+  }
 
   function getFailedBody() {
     return (
@@ -158,7 +160,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
         </SecondaryButton>
       </>
     );
-  };
+  }
 
   function getClaimBody() {
     if (claimState === ClaimState.FAILED) {
@@ -170,7 +172,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
     } else {
       return getInitialBody();
     }
-  };
+  }
 
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
@@ -182,4 +184,18 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   );
 };
 
+const ClaimModal = () => {
+  const { closeClaimModal, activeChain } = useContext(ChainListContext);
+
+  return (
+    <Modal
+      spaceman={Spaceman.BOTTOM_BIG}
+      title="claim gas fee"
+      isOpen={!!activeChain}
+      closeModalHandler={closeClaimModal}
+    >
+      {activeChain && <ClaimModalBody chain={activeChain} />}
+    </Modal>
+  );
+};
 export default ClaimModal;
