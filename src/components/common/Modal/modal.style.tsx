@@ -80,6 +80,9 @@ export const ModalContent = styled.div<props>`
     right: -40px;
     top: 2rem;
     width: 330px;
+    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+      width: 220px;
+    }
   }
 `;
 
@@ -91,8 +94,8 @@ export const ModalChildrenWrapper = styled.div<props>`
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
   width: min(330px, 90%);
-  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)}
 
+  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)}
   .spaceman-one {
   }
 
