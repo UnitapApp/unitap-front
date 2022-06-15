@@ -17,7 +17,7 @@ import {
   latestBlock,
 } from '../fake_tx_data';
 import { SupportedChainId } from '../../../src/constants/chains';
-import { decodeEthCall, encodeEthResult, keccak256 } from './abiutils';
+import { keccak256 } from './abiutils';
 import { Eip1193Bridge } from '@ethersproject/experimental';
 
 function isTheSameAddress(address1: string, address2: string) {
@@ -196,29 +196,30 @@ export class CustomizedBridge extends Eip1193Bridge {
       setResult(this.context.getLatestBlock().number);
     }
     if (method === 'eth_call') {
-      for (const contractAddress in this.context.handlers) {
-        if (isTheSameAddress(contractAddress, params[0].to)) {
-          const { abi, handler } = this.context.handlers[contractAddress];
-          const decoded = decodeEthCall(abi, params[0].data);
-          if (handler[decoded.method]) {
-            const res = await handler[decoded.method](this.context, decoded.inputs);
-            setResult(encodeEthResult(abi, decoded.method, res));
-          }
-        }
-      }
+      // for (const contractAddress in this.context.handlers) {
+      //   if (isTheSameAddress(contractAddress, params[0].to)) {
+      //     const { abi, handler } = this.context.handlers[contractAddress];
+      //     const decoded = decodeEthCall(abi, params[0].data);
+      //     if (handler[decoded.method]) {
+      //       const res = await handler[decoded.method](this.context, decoded.inputs);
+      //       setResult(encodeEthResult(abi, decoded.method, res));
+      //     }
+      //   }
+      // }
     }
 
     if (method === 'eth_sendTransaction') {
-      for (const contractAddress in this.context.handlers) {
-        if (isTheSameAddress(contractAddress, params[0].to)) {
-          const { abi, handler } = this.context.handlers[contractAddress];
-          const decoded = decodeEthCall(abi, params[0].data);
-          if (handler[decoded.method]) {
-            await handler[decoded.method](this.context, decoded.inputs);
-            setResult(this.context.getFakeTransactionHash());
-          }
-        }
-      }
+      // for (const contractAddress in this.context.handlers) {
+      //   if (isTheSameAddress(contractAddress, params[0].to)) {
+      //     const { abi, handler } = this.context.handlers[contractAddress];
+      //     const decoded = decodeEthCall(abi, params[0].data);
+      //     if (handler[decoded.method]) {
+      //       await handler[decoded.method](this.context, decoded.inputs);
+      //       setResult(this.context.getFakeTransactionHash());
+      //     }
+      //   }
+      // }
+      setResult(this.context.getFakeTransactionHash());
     }
 
     if (resultIsSet) {
