@@ -18,6 +18,10 @@ export const toWei = (amount: BigNumber.Value, decimals = 18) => {
 };
 
 export const formatBalance = (amount: number) => {
+  return amount < 0.000001 ? '< 0.000001' : amount;
+};
+
+export const formatWeiBalance = (amount: number) => {
   const fw = fromWei(amount);
-  return Number(fw) < 0.000001 ? '< 0.000001' : fw;
+  return formatBalance(Number(fw));
 };

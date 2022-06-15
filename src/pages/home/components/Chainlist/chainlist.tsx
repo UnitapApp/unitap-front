@@ -8,7 +8,7 @@ import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 import ClaimModal from 'pages/home/components/ClaimModal/claimModal';
 import { ChainListContext } from 'hooks/useChainList';
-import { formatBalance } from 'utils/numbers';
+import { formatWeiBalance } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
@@ -158,7 +158,7 @@ const ChainList = () => {
                         setActiveChain(chain);
                       }}
                     >
-                      {`Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
+                      {`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                     </ClaimButton>
                   ) : (
                     <ClaimedButton
