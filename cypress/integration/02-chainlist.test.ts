@@ -1,4 +1,3 @@
-import { CustomizedBridge, provider, signer } from '../support/commands';
 import {
   chainList,
   chainListAuthenticatedClaimedFirst,
@@ -8,6 +7,7 @@ import {
 } from '../utils/data';
 import RoutePath from '../../src/routes';
 import { CYPRESS_FAST_INTERVAL } from '../../src/constants/intervals';
+import { getCustomizedBridge } from '../utils/ethbridge/customizedbridge';
 
 describe('Landing Page', () => {
   const connectWallet = () => {
@@ -38,7 +38,7 @@ describe('Landing Page', () => {
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
       // @ts-ignore
-      win.ethereum = new CustomizedBridge(signer, provider);
+      win.ethereum = getCustomizedBridge();
     });
   };
 
