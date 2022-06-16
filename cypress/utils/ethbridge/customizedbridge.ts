@@ -74,10 +74,17 @@ export class CustomizedBridge extends Eip1193Bridge {
   };
 
   on(key: string, f: any) {
+    let found = false;
     for (const k of enumKeys(EventHandlerKey)) {
       if (key === EventHandlerKey[k]) {
+        found = true;
         this.eventListeners[key] = f;
+        break;
       }
+    }
+    if (!found) {
+      console.error(`Bridge: Unknown Event Key ${key}`);
+      throw Error(`Bridge: Unknown Event Key ${key}`);
     }
   }
 
