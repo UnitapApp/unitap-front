@@ -147,7 +147,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Close
+          Done
         </SecondaryButton>
       </>
     );

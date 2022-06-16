@@ -197,7 +197,7 @@ const ChainList = () => {
 
       <Modal
         spaceman={Spaceman.BOTTOM_BIG}
-        title="claim gas fee"
+        title="Claim Gas Fee"
         isOpen={!!activeChain}
         closeModalHandler={() => {
           setActiveChain(null);
