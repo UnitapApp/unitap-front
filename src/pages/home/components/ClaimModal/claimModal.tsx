@@ -5,7 +5,7 @@ import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimM
 import Icon from 'components/basic/Icon/Icon';
 import { PrimaryButton, SecondaryButton } from 'components/basic/Button/button';
 import { MessageButton } from 'components/basic/MessageButton/messageButton.style';
-import { Chain } from 'types';
+import { Chain, ClaimBoxState } from 'types';
 import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { ChainListContext } from 'hooks/useChainList';
@@ -30,7 +30,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }, []);
   const { active, account } = useActiveWeb3React();
 
-  const { claimState, claim, closeClaimModal } = useContext(ChainListContext);
+  const { claimState, claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ChainListContext);
 
   const mounted = useRef(false);
 
@@ -152,7 +152,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         </Text>
         <SecondaryButton
           fontSize="20px"
-          onClick={() => claim(chain.pk)}
+          onClick={retryClaim}
           width={'100%'}
           data-testid={`chain-claim-action-${chain.pk}`}
         >
@@ -163,11 +163,13 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }
 
   function getClaimBody() {
-    if (claimState === ClaimState.FAILED) {
+    if (claimBoxStatus.status === ClaimBoxState.REJECTED) {
       return getFailedBody();
-    } else if (claimState === ClaimState.LOADING) {
+    } else if (claimBoxStatus.status === ClaimBoxState.PENDING) {
       return getLoadingBody();
-    } else if (claimState === ClaimState.SUCCESS) {
+    } else if (claimBoxStatus.status === ClaimBoxState.REQUEST) {
+      return getLoadingBody();
+    } else if (claimBoxStatus.status === ClaimBoxState.VERIFIED) {
       return getSuccessBody();
     } else {
       return getInitialBody();

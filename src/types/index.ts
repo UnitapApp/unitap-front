@@ -30,15 +30,23 @@ export type UserProfile = {
 };
 
 export enum ClaimReceiptState {
-  PENDING = "0",
-  VERIFIED = "1",
-  REJECTED = "2",
+  PENDING = '0',
+  VERIFIED = '1',
+  REJECTED = '2',
 }
 
+export enum ClaimBoxState {
+  CLOSED = '-3',
+  INITIAL = '-2',
+  REQUEST = '-1',
+  PENDING = '0',
+  VERIFIED = '1',
+  REJECTED = '2',
+}
 
 export type ClaimReceipt = {
   pk: PK;
-  txHash: string|null;
+  txHash: string | null;
   chain: PK;
   datetime: string;
   amount: number;

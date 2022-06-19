@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { claimMax, getChainList, getActiveClaimHistory } from 'api';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimReceiptState } from 'types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimReceiptState, ClaimBoxState } from 'types';
 import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
@@ -24,6 +24,8 @@ export const ChainListContext = createContext<{
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
   activeChain: Chain | null;
+  claimBoxStatus: { status: ClaimBoxState; lastFailTrx: string | null };
+  retryClaim: () => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -34,6 +36,8 @@ export const ChainListContext = createContext<{
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
   activeChain: null,
+  claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailTrx: null },
+  retryClaim: () => {},
 });
 
 export function ChainListProvider({ children }: PropsWithChildren<{}>) {
@@ -43,6 +47,10 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
 
   const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>([]);
   const [activeClaimReceipt, setActiveClaimReceipt] = useState<ClaimReceipt | null>(null);
+  const [claimBoxStatus, setClaimBoxStatus] = useState<{ status: ClaimBoxState; lastFailTrx: string | null }>({
+    status: ClaimBoxState.CLOSED,
+    lastFailTrx: null,
+  });
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
 
@@ -67,18 +75,31 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   }, [address, userProfile]);
 
   const claim = useCallback(
+    // to-do request state is better to use only claim state
+    // to-do tell user about failing to communicate with server
     async (chainPk: number) => {
       if (!brightIdVerified || claimState === ClaimState.LOADING) {
         return;
       }
+      // rename to better name
       setClaimState(ClaimState.LOADING);
+      setClaimBoxStatus((claimBoxStatus) => {
+        return { status: ClaimBoxState.REQUEST, lastFailTrx: claimBoxStatus.lastFailTrx };
+      });
       try {
         const newClaimReceipt = await claimMax(account!, chainPk);
         setClaimReceipt(newClaimReceipt);
         await updateChainList?.();
         setClaimState(ClaimState.SUCCESS);
+        setClaimBoxStatus((claimBoxStatus) => {
+          return { status: ClaimBoxState.PENDING, lastFailTrx: claimBoxStatus.lastFailTrx };
+        });
       } catch (ex) {
         setClaimState(ClaimState.FAILED);
+        setClaimBoxStatus((claimBoxStatus) => {
+          //to-do change the state below
+          return { status: ClaimBoxState.INITIAL, lastFailTrx: claimBoxStatus.lastFailTrx };
+        });
       }
     },
     [account, brightIdVerified, claimState, updateChainList, setClaimState],
@@ -136,22 +157,72 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   }, []);
 
   useEffect(() => {
-    const fn = () => {
-      if (activeChain) setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain));
-    };
-    fn();
+    if (activeChain) {
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain));
+    }
   }, [activeChain, setActiveClaimReceipt, activeClaimHistory, getActiveClaimReciept]);
 
   const openClaimModal = useCallback(
     (chain: Chain) => {
       setActiveChain(chain);
+      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailTrx: null });
     },
-    [setActiveChain],
+    [setActiveChain, setClaimBoxStatus],
   );
 
   const closeClaimModal = useCallback(() => {
     setActiveChain(null);
-  }, [setActiveChain]);
+    setClaimBoxStatus({ status: ClaimBoxState.CLOSED, lastFailTrx: null });
+  }, [setActiveChain, setClaimBoxStatus]);
+
+  const retryClaim = useCallback(() => {
+    if (activeClaimReceipt && activeClaimReceipt.txHash)
+      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailTrx: activeClaimReceipt.txHash });
+  }, [activeClaimReceipt, setClaimBoxStatus]);
+
+  useEffect(() => {
+    setClaimBoxStatus((claimBoxStatus) => {
+      //closed claim box
+      if (activeChain === null) return { status: ClaimBoxState.CLOSED, lastFailTrx: null };
+
+      // verified
+      if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
+        return { status: ClaimBoxState.VERIFIED, lastFailTrx: null };
+
+      //pending
+      if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.PENDING)
+        return { status: ClaimBoxState.PENDING, lastFailTrx: claimBoxStatus.lastFailTrx };
+
+      //fail after fail
+      if (
+        activeClaimReceipt &&
+        activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
+        activeClaimReceipt.txHash !== claimBoxStatus.lastFailTrx
+      )
+        return { status: ClaimBoxState.REJECTED, lastFailTrx: activeClaimReceipt.txHash };
+
+      //initial | request after fail
+      if (
+        activeClaimReceipt &&
+        activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
+        (claimBoxStatus.status === ClaimBoxState.PENDING || claimBoxStatus.status === ClaimBoxState.INITIAL)
+      )
+        return claimBoxStatus;
+
+      //simple reject
+      if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.REJECTED)
+        return { status: ClaimBoxState.REJECTED, lastFailTrx: activeClaimReceipt.txHash };
+
+      //simple initial and request
+      if (
+        activeClaimReceipt === null &&
+        (claimBoxStatus.status === ClaimBoxState.INITIAL || claimBoxStatus.status === ClaimBoxState.REQUEST)
+      )
+        return claimBoxStatus;
+
+      return claimBoxStatus;
+    });
+  }, [activeClaimReceipt, setClaimBoxStatus, activeChain]);
 
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
@@ -191,6 +262,8 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         openClaimModal,
         closeClaimModal,
         activeChain,
+        claimBoxStatus,
+        retryClaim,
       }}
     >
       {children}
