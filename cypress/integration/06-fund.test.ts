@@ -113,7 +113,7 @@ describe('Submit Fund', () => {
     });
   }
 
-  it(`submit fund`, () => {
+  it(`submit fund and handle errors`, () => {
     const fundAmount = '50000';
     getReady(fundAmount);
     submitFundInsufficientFunds(fundAmount);
