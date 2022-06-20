@@ -9,7 +9,7 @@ import RoutePath from '../../src/routes';
 import { CustomizedBridge, getCustomizedBridge, TransactionStatus } from '../utils/ethbridge/customizedbridge';
 import { CYPRESS_FAST_INTERVAL } from '../../src/constants/intervals';
 
-describe('Landing Page', () => {
+describe('Submit Fund', () => {
   let ethBridge: CustomizedBridge;
   const selectedChain = chainList[1];
 
