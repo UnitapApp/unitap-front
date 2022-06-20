@@ -73,6 +73,9 @@ export const ModalContent = styled.div<props>`
     right: 0.5rem;
     top: 7rem;
     width: 7rem;
+    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
+      display: none;
+    }
   }
 
   .spaceman-three {
@@ -80,8 +83,9 @@ export const ModalContent = styled.div<props>`
     right: -40px;
     top: 2rem;
     width: 330px;
+
     @media only screen and (max-width: ${DV.breakpoints.mobile}) {
-      width: 220px;
+      display: none;
     }
   }
 `;

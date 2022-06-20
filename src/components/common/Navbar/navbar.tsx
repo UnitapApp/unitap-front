@@ -140,7 +140,7 @@ const Navbar = () => {
       <Modal
         className="bright-modal"
         spaceman={Spaceman.WITH_PHONE}
-        title="connect bright id"
+        title="Connect your BrightID"
         isOpen={isModalActive}
         closeModalHandler={() => {
           changeModalActive(false);
