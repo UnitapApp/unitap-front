@@ -14,6 +14,8 @@ export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2).address;
 
 export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(TEST_ADDRESS_NEVER_USE);
 
+export const SAMPLE_ERROR_MESSAGE = 'An error occurred';
+
 export const chainList: Chain[] = [
   {
     pk: 1,

@@ -8,7 +8,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 import { formatChainId } from '../../../src/utils';
 
-import { TEST_ADDRESS_NEVER_USE, TEST_PRIVATE_KEY } from '../data';
+import { SAMPLE_ERROR_MESSAGE, TEST_ADDRESS_NEVER_USE, TEST_PRIVATE_KEY } from '../data';
 import BigNumber from 'bignumber.js';
 import {
   fakeBlockByNumberResponse,
@@ -19,6 +19,7 @@ import {
 import { SupportedChainId } from '../../../src/constants/chains';
 import { keccak256 } from './abiutils';
 import { Eip1193Bridge } from '@ethersproject/experimental';
+import { GENERIC_ERROR_CODE, GENERIC_ERROR_CODE_2, USER_DENIED_REQUEST_ERROR_CODE } from '../../../src/utils/web3';
 
 function isTheSameAddress(address1: string, address2: string) {
   return address1.toLowerCase() === address2.toLowerCase();
@@ -52,12 +53,38 @@ export class CustomizedBridgeContext {
   }
 }
 
-enum EventHandlerKey {
+export enum EventHandlerKey {
   CHAIN_CHANGED = 'chainChanged',
   ACCOUNTS_CHANGED = 'accountsChanged',
   CLOSE = 'close',
   NETWORK_CHANGED = 'networkChanged',
 }
+
+export enum TransactionStatus {
+  SUCCESS = 'success',
+  INSUFFICIENT_FUND = 'insufficientFund',
+  USER_DENIED = 'rejected',
+  FAILED = 'failed',
+}
+
+const insufficientFundTransactionError = {
+  code: GENERIC_ERROR_CODE_2,
+  message: `err: insufficient funds for gas * price + value: address ${TEST_ADDRESS_NEVER_USE} have 2000 want 10000000000000000000000000 (supplied gas 14995852)`,
+};
+const insufficientFundGasEstimateError = {
+  code: GENERIC_ERROR_CODE,
+  message: 'Internal JSON-RPC error.',
+  data: {
+    code: GENERIC_ERROR_CODE_2,
+    message: `insufficient funds for transfer: address ${TEST_ADDRESS_NEVER_USE}`,
+  },
+};
+const userDeniedTransactionError = {
+  code: USER_DENIED_REQUEST_ERROR_CODE,
+  message: 'MetaMask Tx Signature: User denied transaction signature.',
+  stack:
+    '{\n  "code": 4001,\n  "message": "MetaMask Tx Signature: User denied transaction signature.",\n  "stack": "Error: MetaMask Tx Signature: User denied transaction signature.\\n...',
+};
 
 function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
   return Object.keys(obj).filter((k) => Number.isNaN(+k)) as K[];
@@ -72,6 +99,17 @@ export class CustomizedBridge extends Eip1193Bridge {
     [EventHandlerKey.CLOSE]: function handleClose(code: number, reason: string) {},
     [EventHandlerKey.NETWORK_CHANGED]: function handleNetworkChanged(networkId: string | number) {},
   };
+
+  transactionStatus = TransactionStatus.SUCCESS;
+  transactionWaitTime = 0;
+
+  setTransactionStatus(status: TransactionStatus) {
+    this.transactionStatus = status;
+  }
+
+  setTransactionWaitTime(waitTime: number) {
+    this.transactionWaitTime = waitTime;
+  }
 
   on(key: string, f: any) {
     let found = false;
@@ -127,10 +165,17 @@ export class CustomizedBridge extends Eip1193Bridge {
     const { isCallbackForm, callback, method, params } = this.getSendArgs(args);
     let result = null;
     let resultIsSet = false;
+    let runError = null;
+    let errorIsSet = false;
 
     function setResult(r: any) {
       result = r;
       resultIsSet = true;
+    }
+
+    function setError(e: any) {
+      runError = e;
+      errorIsSet = true;
     }
 
     if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
@@ -149,12 +194,7 @@ export class CustomizedBridge extends Eip1193Bridge {
           code: 4902, // To-be-standardized "unrecognized chain ID" error
           message: `Unrecognized chain ID "${chainId}". Try adding the chain using wallet_addEthereumChain first.`,
         };
-        if (isCallbackForm) {
-          callback(error, null);
-          return;
-        } else {
-          throw error;
-        }
+        setError(error);
       }
     }
     if (method === 'wallet_addEthereumChain') {
@@ -164,9 +204,6 @@ export class CustomizedBridge extends Eip1193Bridge {
     }
     if (method === 'eth_chainId') {
       setResult(formatChainId(String(this.context.chainId)));
-    }
-    if (method === 'eth_estimateGas') {
-      setResult('0xba7f');
     }
     if (method === 'eth_getBlockByNumber') {
       if (params[0] === 'latest') {
@@ -214,7 +251,13 @@ export class CustomizedBridge extends Eip1193Bridge {
       //   }
       // }
     }
-
+    if (method === 'eth_estimateGas') {
+      if (this.transactionStatus === TransactionStatus.INSUFFICIENT_FUND) {
+        setError(insufficientFundGasEstimateError);
+      } else {
+        setResult('0xba7f');
+      }
+    }
     if (method === 'eth_sendTransaction') {
       // for (const contractAddress in this.context.handlers) {
       //   if (isTheSameAddress(contractAddress, params[0].to)) {
@@ -226,31 +269,48 @@ export class CustomizedBridge extends Eip1193Bridge {
       //     }
       //   }
       // }
-      setResult(this.context.getFakeTransactionHash());
+      if (this.transactionStatus === TransactionStatus.SUCCESS) {
+        setResult(this.context.getFakeTransactionHash());
+      } else if (this.transactionStatus === TransactionStatus.USER_DENIED) {
+        setError(userDeniedTransactionError);
+      } else if (this.transactionStatus === TransactionStatus.INSUFFICIENT_FUND) {
+        setError(insufficientFundTransactionError);
+      } else {
+        setError({ error: { message: SAMPLE_ERROR_MESSAGE } });
+      }
+      if (this.transactionWaitTime) {
+        await sleep(this.transactionWaitTime);
+      }
     }
 
-    if (resultIsSet) {
+    if (errorIsSet) {
+      if (isCallbackForm) {
+        callback(runError, null);
+      } else {
+        throw runError;
+      }
+    } else if (resultIsSet) {
       if (isCallbackForm) {
         callback(null, { result });
-        return;
       } else {
         return result;
       }
-    }
-    try {
-      const result = await super.send(method, params);
-      if (isCallbackForm) {
-        callback(null, { result });
-      } else {
-        return result;
-      }
-    } catch (error) {
-      console.log({ isCallbackForm, callback, method, params });
+    } else {
+      try {
+        const result = await super.send(method, params);
+        if (isCallbackForm) {
+          callback(null, { result });
+        } else {
+          return result;
+        }
+      } catch (error) {
+        console.log({ isCallbackForm, callback, method, params });
 
-      if (isCallbackForm) {
-        callback(error, null);
-      } else {
-        throw error;
+        if (isCallbackForm) {
+          callback(error, null);
+        } else {
+          throw error;
+        }
       }
     }
   }
