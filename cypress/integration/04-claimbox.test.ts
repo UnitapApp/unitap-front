@@ -5,8 +5,11 @@ import {
   chainListAuthenticatedClaimedFirst,
   claimMaxResponse,
   emptyClaimHistoryResponse,
+  getClaimHistoryRespondFailed,
   getClaimHistoryRespondPending,
+  getClaimHistoryRespondPendingAfterFail,
   getClaimHistoryRespondSuccessful,
+  getClaimHistoryRespondSuccessfullAfterFail,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
   userProfileVerified,
@@ -313,15 +316,6 @@ describe('Claim', () => {
   const setupPendingClaimState = (chainId: number) => {
     cy.intercept(
       {
-        method: 'POST',
-        url: `/api/v1/chain/${chainList[1].pk}/claim-max/${TEST_ADDRESS_NEVER_USE}/`,
-
-        // delay: 0,
-      },
-      { body: claimMaxResponse },
-    );
-    cy.intercept(
-      {
         method: 'GET',
         url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
       },
@@ -340,6 +334,71 @@ describe('Claim', () => {
     );
   };
 
+  const setupPreReclaimState = (chainId: number) => {
+    cy.intercept(
+      {
+        method: 'POST',
+        url: `/api/v1/chain/${chainList[1].pk}/claim-max/${TEST_ADDRESS_NEVER_USE}/`,
+      },
+      {
+        body: claimMaxResponse,
+        delay: 4000,
+      },
+    );
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      },
+      {
+        body: getClaimHistoryRespondFailed(chainId),
+      },
+    );
+  };
+  const setupPendingReclaimState = (chainId: number) => {
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      },
+      getClaimHistoryRespondPendingAfterFail(chainId),
+    );
+  };
+  const setupSuccessReclaimState = (chainId: number) => {
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      },
+      {
+        body: getClaimHistoryRespondSuccessfullAfterFail(chainId),
+      },
+    );
+  };
+
+  it('should stay on request state after closeing and reopening the claim modal', () => {
+    setupGetChainListServerGeneral();
+    setupGetUserProfileVerified();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.wait(1000);
+
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
+
+    setupPreClaimState();
+    cy.wait(2000);
+    cy.get(`[data-testid=chain-claim-initial-${chainList[1].pk}`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+
+    cy.wait(2000);
+    cy.get(`[data-testid=chain-claim-request-${chainList[1].pk}`).should('exist');
+
+    cy.get(`[data-testid=close-modal`).click();
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-request-${chainList[1].pk}]`).should('exist');
+  });
+
   it('do claim', () => {
     setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
@@ -348,22 +407,59 @@ describe('Claim', () => {
     cy.wait(1000);
 
     cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
-    cy.get(`[data-testid=loading`).should('not.exist');
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('exist');
 
     setupPreClaimState();
+    cy.wait(2000);
+    cy.get(`[data-testid=chain-claim-initial-${chainList[1].pk}`).should('exist');
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
 
     cy.wait(2000);
-    cy.get(`[data-testid=request`).should('exist');
+    cy.get(`[data-testid=chain-claim-request-${chainList[1].pk}`).should('exist');
 
     cy.wait(2000);
     setupPendingClaimState(chainList[1].pk);
 
-    cy.get(`[data-testid=pending]`).should('exist');
+    cy.get(`[data-testid=chain-claim-pending-${chainList[1].pk}]`).should('exist');
 
     cy.wait(2000);
     setupSuccessClaimState(chainList[1].pk);
+
+    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
+    cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
+
+    cy.wait(2000);
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
+  });
+
+  it('do claim after fail', () => {
+    setupGetChainListServerGeneral();
+    setupGetUserProfileVerified();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.wait(1000);
+
+    setupPreReclaimState(chainList[1].pk);
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=chain-claim-failed-${chainList[1].pk}`).should('exist');
+    cy.wait(2000);
+
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+
+    cy.get(`[data-testid=chain-claim-initial-${chainList[1].pk}`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+
+    cy.wait(2000);
+    cy.get(`[data-testid=chain-claim-request-${chainList[1].pk}`).should('exist');
+
+    cy.wait(2000);
+    setupPendingReclaimState(chainList[1].pk);
+
+    cy.get(`[data-testid=chain-claim-pending-${chainList[1].pk}]`).should('exist');
+
+    cy.wait(2000);
+    setupSuccessReclaimState(chainList[1].pk);
 
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');

@@ -45,8 +45,6 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     }; // ... and to false on unmount
   }, []);
 
-  if (!chain) return <></>;
-  const b = chain;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function connectMetamaskBody({ chain }: { chain: Chain }) {
     return (
@@ -69,7 +67,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getInitialBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -91,7 +89,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getRequestBody() {
     return (
       <>
-        <DropIconWrapper data-testid={'request'}>
+        <DropIconWrapper data-testid={`chain-claim-request-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -126,7 +124,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getPendingBody() {
     return (
       <>
-        <div data-testid={`pending`} id="animation" style={{ width: '200px' }}></div>
+        <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>

@@ -63,36 +63,6 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
     setChainList(newChainList);
   }, [address, userProfile]);
 
-  const claim = useCallback(
-    // to-do request state is better to use only claim state
-    // to-do tell user about failing to communicate with server
-    async (claimChainPk: number) => {
-      if (!brightIdVerified || claimRequest.filter((chainPk) => chainPk === claimChainPk)) {
-        return;
-      }
-      // rename to better name
-      setClaimRequest((claimRequest) => [...claimRequest, claimChainPk]);
-      setClaimBoxStatus((claimBoxStatus) => {
-        return { status: ClaimBoxState.REQUEST, lastFailPk: claimBoxStatus.lastFailPk };
-      });
-      try {
-        await claimMax(account!, claimChainPk);
-        setClaimRequest((claimRequest) => claimRequest.filter((chainPk) => chainPk !== claimChainPk));
-        setClaimBoxStatus((claimBoxStatus) => {
-          return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
-        });
-      } catch (ex) {
-        console.log('something went wrong');
-        setClaimRequest((claimRequest) => claimRequest.filter((objChainPk) => objChainPk !== claimChainPk));
-        setClaimBoxStatus((claimBoxStatus) => {
-          //to-do change the state below
-          return { status: ClaimBoxState.INITIAL, lastFailPk: claimBoxStatus.lastFailPk };
-        });
-      }
-    },
-    [account, brightIdVerified, setClaimRequest, claimRequest],
-  );
-
   useEffect(() => {
     const fn = async () => {
       try {
@@ -116,14 +86,14 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       try {
         await updateActiveClaimHistory();
       } catch (e) {
-        console.log('error while updating claim history');
+        fn();
       }
     };
     fn();
   }, [fastRefresh, updateActiveClaimHistory]);
 
   const getActiveClaimReciept = useCallback((activeClaimHistory: ClaimReceipt[], activeChain: Chain | null) => {
-    if (activeChain === null) return null;
+    if (!activeChain) return null;
     const verified = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
         claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain === activeChain.pk,
@@ -137,9 +107,9 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain === activeChain.pk,
     );
 
-    if (verified) return verified[0];
-    if (pending) return pending[0];
-    if (rejected) return rejected[0];
+    if (verified.length > 0) return verified[0];
+    if (pending.length > 0) return pending[0];
+    if (rejected.length > 0) return rejected[0];
 
     return null;
   }, []);
@@ -164,14 +134,13 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   }, [setActiveChain, setClaimBoxStatus]);
 
   const retryClaim = useCallback(() => {
-    if (activeClaimReceipt && activeClaimReceipt.txHash)
-      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailPk: activeClaimReceipt.pk });
+    if (activeClaimReceipt) setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailPk: activeClaimReceipt.pk });
   }, [activeClaimReceipt, setClaimBoxStatus]);
 
   useEffect(() => {
     setClaimBoxStatus((claimBoxStatus) => {
       //closed claim box
-      if (activeChain === null) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
+      if (!activeChain) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
 
       // verified
       if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
@@ -182,28 +151,52 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
 
       //request
-      if (claimRequest.filter((chainPk) => chainPk === activeChain.pk))
+      if (claimRequest.filter((chainPk) => chainPk === activeChain.pk).length >= 1) {
         return { status: ClaimBoxState.REQUEST, lastFailPk: claimBoxStatus.lastFailPk };
-
-      //fail they don't agree that it is failed
-      if (
-        activeClaimReceipt &&
-        activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
-        activeClaimReceipt.txHash !== claimBoxStatus.lastFailPk
-      )
-        return { status: ClaimBoxState.REJECTED, lastFailPk: claimBoxStatus.lastFailPk };
+      }
 
       //initial | initial after fail
       if (
-        activeClaimReceipt === null ||
+        !activeClaimReceipt ||
         (activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
-          activeClaimReceipt.txHash !== claimBoxStatus.lastFailPk)
+          activeClaimReceipt.pk === claimBoxStatus.lastFailPk)
       )
         return { status: ClaimBoxState.INITIAL, lastFailPk: claimBoxStatus.lastFailPk };
 
+      //fail rejected
+      if (
+        activeClaimReceipt &&
+        activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
+        activeClaimReceipt.pk !== claimBoxStatus.lastFailPk
+      )
+        return { status: ClaimBoxState.REJECTED, lastFailPk: claimBoxStatus.lastFailPk };
+
       return claimBoxStatus;
     });
-  }, [activeClaimReceipt, setClaimBoxStatus, activeChain, claimRequest]);
+  }, [activeClaimReceipt, setClaimBoxStatus, activeChain, claimRequest, activeClaimHistory]);
+
+  const claim = useCallback(
+    // to-do request state is better to use only claim state
+    // to-do tell user about failing to communicate with server
+    async (claimChainPk: number) => {
+      if (!brightIdVerified || claimRequest.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+        return;
+      }
+      // rename to better name
+      setClaimRequest((claimRequest) => [...claimRequest, claimChainPk]);
+      try {
+        await claimMax(account!, claimChainPk);
+
+        await updateActiveClaimHistory();
+
+        setClaimRequest((claimRequest) => claimRequest.filter((chainPk) => chainPk !== claimChainPk));
+      } catch (ex) {
+        await updateActiveClaimHistory();
+        setClaimRequest((claimRequest) => claimRequest.filter((chainPk) => chainPk !== claimChainPk));
+      }
+    },
+    [account, brightIdVerified, setClaimRequest, claimRequest, updateActiveClaimHistory],
+  );
 
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
