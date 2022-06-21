@@ -16,13 +16,6 @@ import animation from 'assets/animations/GasFee-delivery2.json';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 
-enum ClaimState {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILED,
-}
-
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const formatBalance = useCallback((amount: number) => {
     const fw = fromWei(amount);
@@ -30,12 +23,12 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }, []);
   const { active, account } = useActiveWeb3React();
 
-  const { claimState, claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ChainListContext);
+  const { claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ChainListContext);
 
   const mounted = useRef(false);
 
   useEffect(() => {
-    if (claimState === ClaimState.LOADING) {
+    if (claimBoxStatus.status === ClaimBoxState.PENDING) {
       lottie.loadAnimation({
         container: document.querySelector('#animation') as HTMLInputElement,
         animationData: animation,
@@ -43,7 +36,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         autoplay: true,
       });
     }
-  }, [claimState]);
+  }, [claimBoxStatus]);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -52,8 +45,10 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     }; // ... and to false on unmount
   }, []);
 
+  if (!chain) return <></>;
+  const b = chain;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function connectMetamaskBody() {
+  function connectMetamaskBody({ chain }: { chain: Chain }) {
     return (
       <>
         <DropIconWrapper>
@@ -93,6 +88,23 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       </>
     );
   }
+  function getRequestBody() {
+    return (
+      <>
+        <DropIconWrapper data-testid={'request'}>
+          <img src={getChainClaimIcon(chain)} alt="" />
+          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+        </DropIconWrapper>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <PrimaryButton disabled={true} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+          Pending ...
+        </PrimaryButton>
+      </>
+    );
+  }
 
   function getLoadingBody() {
     return (
@@ -106,6 +118,23 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         </WalletAddress>
         <MessageButton width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
           Pending...
+        </MessageButton>
+      </>
+    );
+  }
+
+  function getPendingBody() {
+    return (
+      <>
+        <div data-testid={`pending`} id="animation" style={{ width: '200px' }}></div>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
+        <WalletAddress fontSize="12" editable>
+          {active ? shortenAddress(account) : ''}
+        </WalletAddress>
+        <MessageButton width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
+          Close
         </MessageButton>
       </>
     );
@@ -163,16 +192,16 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }
 
   function getClaimBody() {
-    if (claimBoxStatus.status === ClaimBoxState.REJECTED) {
-      return getFailedBody();
-    } else if (claimBoxStatus.status === ClaimBoxState.PENDING) {
-      return getLoadingBody();
+    if (claimBoxStatus.status === ClaimBoxState.INITIAL) {
+      return getInitialBody();
     } else if (claimBoxStatus.status === ClaimBoxState.REQUEST) {
-      return getLoadingBody();
+      return getRequestBody();
+    } else if (claimBoxStatus.status === ClaimBoxState.PENDING) {
+      return getPendingBody();
     } else if (claimBoxStatus.status === ClaimBoxState.VERIFIED) {
       return getSuccessBody();
     } else {
-      return getInitialBody();
+      return getFailedBody();
     }
   }
 
@@ -187,17 +216,16 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 };
 
 const ClaimModal = () => {
-  const { closeClaimModal, activeChain } = useContext(ChainListContext);
+  const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ChainListContext);
 
   return (
-    <Modal
-      spaceman={Spaceman.BOTTOM_BIG}
-      title="claim gas fee"
-      isOpen={!!activeChain}
-      closeModalHandler={closeClaimModal}
-    >
-      {activeChain && <ClaimModalBody chain={activeChain} />}
-    </Modal>
+    <>
+      {claimBoxStatus.status !== ClaimBoxState.CLOSED && activeChain && (
+        <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" closeModalHandler={closeClaimModal} isOpen={true}>
+          <ClaimModalBody chain={activeChain} />
+        </Modal>
+      )}
+    </>
   );
 };
 export default ClaimModal;

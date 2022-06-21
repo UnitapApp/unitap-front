@@ -24,7 +24,7 @@ export const ChainListContext = createContext<{
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
   activeChain: Chain | null;
-  claimBoxStatus: { status: ClaimBoxState; lastFailTrx: string | null };
+  claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
   retryClaim: () => void;
 }>({
   chainList: [],
@@ -36,7 +36,7 @@ export const ChainListContext = createContext<{
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
   activeChain: null,
-  claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailTrx: null },
+  claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
   retryClaim: () => {},
 });
 
@@ -47,9 +47,9 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
 
   const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>([]);
   const [activeClaimReceipt, setActiveClaimReceipt] = useState<ClaimReceipt | null>(null);
-  const [claimBoxStatus, setClaimBoxStatus] = useState<{ status: ClaimBoxState; lastFailTrx: string | null }>({
+  const [claimBoxStatus, setClaimBoxStatus] = useState<{ status: ClaimBoxState; lastFailPk: number | null }>({
     status: ClaimBoxState.CLOSED,
-    lastFailTrx: null,
+    lastFailPk: null,
   });
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
@@ -84,7 +84,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       // rename to better name
       setClaimState(ClaimState.LOADING);
       setClaimBoxStatus((claimBoxStatus) => {
-        return { status: ClaimBoxState.REQUEST, lastFailTrx: claimBoxStatus.lastFailTrx };
+        return { status: ClaimBoxState.REQUEST, lastFailPk: claimBoxStatus.lastFailPk };
       });
       try {
         const newClaimReceipt = await claimMax(account!, chainPk);
@@ -92,13 +92,14 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         await updateChainList?.();
         setClaimState(ClaimState.SUCCESS);
         setClaimBoxStatus((claimBoxStatus) => {
-          return { status: ClaimBoxState.PENDING, lastFailTrx: claimBoxStatus.lastFailTrx };
+          return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
         });
       } catch (ex) {
+        console.log('something went wrong');
         setClaimState(ClaimState.FAILED);
         setClaimBoxStatus((claimBoxStatus) => {
           //to-do change the state below
-          return { status: ClaimBoxState.INITIAL, lastFailTrx: claimBoxStatus.lastFailTrx };
+          return { status: ClaimBoxState.INITIAL, lastFailPk: claimBoxStatus.lastFailPk };
         });
       }
     },
@@ -128,7 +129,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       try {
         await updateActiveClaimHistory();
       } catch (e) {
-        fn();
+        console.log('error while updating claim history');
       }
     };
     fn();
@@ -165,41 +166,41 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   const openClaimModal = useCallback(
     (chain: Chain) => {
       setActiveChain(chain);
-      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailTrx: null });
+      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailPk: null });
     },
     [setActiveChain, setClaimBoxStatus],
   );
 
   const closeClaimModal = useCallback(() => {
     setActiveChain(null);
-    setClaimBoxStatus({ status: ClaimBoxState.CLOSED, lastFailTrx: null });
+    setClaimBoxStatus({ status: ClaimBoxState.CLOSED, lastFailPk: null });
   }, [setActiveChain, setClaimBoxStatus]);
 
   const retryClaim = useCallback(() => {
     if (activeClaimReceipt && activeClaimReceipt.txHash)
-      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailTrx: activeClaimReceipt.txHash });
+      setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailPk: activeClaimReceipt.pk });
   }, [activeClaimReceipt, setClaimBoxStatus]);
 
   useEffect(() => {
     setClaimBoxStatus((claimBoxStatus) => {
       //closed claim box
-      if (activeChain === null) return { status: ClaimBoxState.CLOSED, lastFailTrx: null };
+      if (activeChain === null) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
 
       // verified
       if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
-        return { status: ClaimBoxState.VERIFIED, lastFailTrx: null };
+        return { status: ClaimBoxState.VERIFIED, lastFailPk: null };
 
       //pending
       if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.PENDING)
-        return { status: ClaimBoxState.PENDING, lastFailTrx: claimBoxStatus.lastFailTrx };
+        return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
 
       //fail after fail
       if (
         activeClaimReceipt &&
         activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
-        activeClaimReceipt.txHash !== claimBoxStatus.lastFailTrx
+        activeClaimReceipt.txHash !== claimBoxStatus.lastFailPk
       )
-        return { status: ClaimBoxState.REJECTED, lastFailTrx: activeClaimReceipt.txHash };
+        return { status: ClaimBoxState.REJECTED, lastFailPk: activeClaimReceipt.pk };
 
       //initial | request after fail
       if (
@@ -211,7 +212,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
 
       //simple reject
       if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.REJECTED)
-        return { status: ClaimBoxState.REJECTED, lastFailTrx: activeClaimReceipt.txHash };
+        return { status: ClaimBoxState.REJECTED, lastFailPk: activeClaimReceipt.pk };
 
       //simple initial and request
       if (
