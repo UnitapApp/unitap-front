@@ -5,20 +5,11 @@ import Fuse from 'fuse.js';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
-import { ignoreNextOnError } from '@sentry/browser/types/helpers';
-
-enum ClaimState {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILED,
-}
 
 export const ChainListContext = createContext<{
   chainList: Chain[];
   chainListSearchResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
-  claimState: ClaimState;
   claim: (chainPK: number) => void;
   activeClaimReceipt: ClaimReceipt | null;
   closeClaimModal: () => void;
@@ -30,7 +21,6 @@ export const ChainListContext = createContext<{
   chainList: [],
   chainListSearchResult: [],
   changeSearchPhrase: null,
-  claimState: ClaimState.INITIAL,
   claim: (chainPK: number) => {},
   activeClaimReceipt: null,
   closeClaimModal: () => {},
@@ -41,7 +31,6 @@ export const ChainListContext = createContext<{
 });
 
 export function ChainListProvider({ children }: PropsWithChildren<{}>) {
-  const [claimState, setClaimState] = useState<ClaimState>(ClaimState.INITIAL);
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
 
@@ -54,8 +43,8 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [claimReceipt, setClaimReceipt] = useState<ClaimReceipt | null>(null);
+  // list of chian.pk of requesting claims
+  const [claimRequest, setClaimRequest] = useState<number[]>([]);
 
   const { account: address, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
@@ -77,33 +66,31 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   const claim = useCallback(
     // to-do request state is better to use only claim state
     // to-do tell user about failing to communicate with server
-    async (chainPk: number) => {
-      if (!brightIdVerified || claimState === ClaimState.LOADING) {
+    async (claimChainPk: number) => {
+      if (!brightIdVerified || claimRequest.filter((chainPk) => chainPk === claimChainPk)) {
         return;
       }
       // rename to better name
-      setClaimState(ClaimState.LOADING);
+      setClaimRequest((claimRequest) => [...claimRequest, claimChainPk]);
       setClaimBoxStatus((claimBoxStatus) => {
         return { status: ClaimBoxState.REQUEST, lastFailPk: claimBoxStatus.lastFailPk };
       });
       try {
-        const newClaimReceipt = await claimMax(account!, chainPk);
-        setClaimReceipt(newClaimReceipt);
-        await updateChainList?.();
-        setClaimState(ClaimState.SUCCESS);
+        await claimMax(account!, claimChainPk);
+        setClaimRequest((claimRequest) => claimRequest.filter((chainPk) => chainPk !== claimChainPk));
         setClaimBoxStatus((claimBoxStatus) => {
           return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
         });
       } catch (ex) {
         console.log('something went wrong');
-        setClaimState(ClaimState.FAILED);
+        setClaimRequest((claimRequest) => claimRequest.filter((objChainPk) => objChainPk !== claimChainPk));
         setClaimBoxStatus((claimBoxStatus) => {
           //to-do change the state below
           return { status: ClaimBoxState.INITIAL, lastFailPk: claimBoxStatus.lastFailPk };
         });
       }
     },
-    [account, brightIdVerified, claimState, updateChainList, setClaimState],
+    [account, brightIdVerified, setClaimRequest, claimRequest],
   );
 
   useEffect(() => {
@@ -194,36 +181,29 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.PENDING)
         return { status: ClaimBoxState.PENDING, lastFailPk: claimBoxStatus.lastFailPk };
 
-      //fail after fail
+      //request
+      if (claimRequest.filter((chainPk) => chainPk === activeChain.pk))
+        return { status: ClaimBoxState.REQUEST, lastFailPk: claimBoxStatus.lastFailPk };
+
+      //fail they don't agree that it is failed
       if (
         activeClaimReceipt &&
         activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
         activeClaimReceipt.txHash !== claimBoxStatus.lastFailPk
       )
-        return { status: ClaimBoxState.REJECTED, lastFailPk: activeClaimReceipt.pk };
+        return { status: ClaimBoxState.REJECTED, lastFailPk: claimBoxStatus.lastFailPk };
 
-      //initial | request after fail
+      //initial | initial after fail
       if (
-        activeClaimReceipt &&
-        activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
-        (claimBoxStatus.status === ClaimBoxState.PENDING || claimBoxStatus.status === ClaimBoxState.INITIAL)
+        activeClaimReceipt === null ||
+        (activeClaimReceipt.status === ClaimReceiptState.REJECTED &&
+          activeClaimReceipt.txHash !== claimBoxStatus.lastFailPk)
       )
-        return claimBoxStatus;
-
-      //simple reject
-      if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.REJECTED)
-        return { status: ClaimBoxState.REJECTED, lastFailPk: activeClaimReceipt.pk };
-
-      //simple initial and request
-      if (
-        activeClaimReceipt === null &&
-        (claimBoxStatus.status === ClaimBoxState.INITIAL || claimBoxStatus.status === ClaimBoxState.REQUEST)
-      )
-        return claimBoxStatus;
+        return { status: ClaimBoxState.INITIAL, lastFailPk: claimBoxStatus.lastFailPk };
 
       return claimBoxStatus;
     });
-  }, [activeClaimReceipt, setClaimBoxStatus, activeChain]);
+  }, [activeClaimReceipt, setClaimBoxStatus, activeChain, claimRequest]);
 
   const chainListSearchResult = useMemo(() => {
     if (searchPhrase === '') return chainList;
@@ -257,7 +237,6 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
         chainList,
         chainListSearchResult,
         changeSearchPhrase,
-        claimState,
         claim,
         activeClaimReceipt,
         openClaimModal,
