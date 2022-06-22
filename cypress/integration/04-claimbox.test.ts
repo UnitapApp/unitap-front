@@ -435,7 +435,7 @@ describe('Claim', () => {
     cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
 
     cy.wait(2000);
-    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=close-modal]`).click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
   });
 
@@ -471,7 +471,7 @@ describe('Claim', () => {
     cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
 
     cy.wait(2000);
-    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
+    cy.get(`[data-testid=close-modal]`).click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[1].pk}]`).should('not.exist');
   });
 });

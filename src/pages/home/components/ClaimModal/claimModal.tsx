@@ -3,10 +3,14 @@ import { useContext, useEffect, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { PrimaryButton, SecondaryButton } from 'components/basic/Button/button';
-import { MessageButton } from 'components/basic/MessageButton/messageButton.style';
+import {
+  PrimaryButton,
+  SecondaryButton,
+  SecondaryGreenColorButton,
+  ClaimBoxRequestButton,
+} from 'components/basic/Button/button';
 import { Chain, ClaimBoxState } from 'types';
-import { getChainClaimIcon, shortenAddress } from 'utils';
+import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
@@ -23,7 +27,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   // }, []);
   const { active, account } = useActiveWeb3React();
 
-  const { claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ClaimContext);
+  const { claim, closeClaimModal, retryClaim, claimBoxStatus, activeClaimReceipt } = useContext(ClaimContext);
 
   const mounted = useRef(false);
 
@@ -97,26 +101,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <PrimaryButton disabled={true} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+        <ClaimBoxRequestButton width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
           Pending ...
-        </PrimaryButton>
-      </>
-    );
-  }
-
-  function getLoadingBody() {
-    return (
-      <>
-        <div data-testid={`loading`} id="animation" style={{ width: '200px' }}></div>
-        <Text width="100%" fontSize="14">
-          Wallet Address
-        </Text>
-        <WalletAddress fontSize="12" editable>
-          {active ? shortenAddress(account) : ''}
-        </WalletAddress>
-        <MessageButton width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
-          Pending...
-        </MessageButton>
+        </ClaimBoxRequestButton>
       </>
     );
   }
@@ -125,15 +112,19 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
-        <Text width="100%" fontSize="14">
-          Wallet Address
+        <Text width="100%" fontSize="14" color="space_green" textAlign="center">
+          Claim transaction submitted
         </Text>
-        <WalletAddress fontSize="12" editable>
-          {active ? shortenAddress(account) : ''}
-        </WalletAddress>
-        <MessageButton width={'100%'} data-testid={`chain-claim-action-${chain.pk}`}>
+        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+          The claim transaction will be compeleted soon
+        </Text>
+        <SecondaryGreenColorButton
+          onClick={closeClaimModal}
+          width={'100%'}
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
           Close
-        </MessageButton>
+        </SecondaryGreenColorButton>
       </>
     );
   }
@@ -149,15 +140,16 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          Your request is submitted successfully!
+          We succefully transferd {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
         </Text>
         <SecondaryButton
-          onClick={closeClaimModal}
+          onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
           width={'100%'}
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
+          color="space_green"
         >
-          Done
+          View on Explorer
         </SecondaryButton>
       </>
     );
