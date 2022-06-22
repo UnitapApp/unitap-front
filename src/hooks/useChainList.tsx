@@ -6,7 +6,7 @@ import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
 
-export const ChainListContext = createContext<{
+export const ClaimContext = createContext<{
   chainList: Chain[];
   chainListSearchResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
@@ -30,7 +30,7 @@ export const ChainListContext = createContext<{
   retryClaim: () => {},
 });
 
-export function ChainListProvider({ children }: PropsWithChildren<{}>) {
+export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [chainList, setChainList] = useState<Chain[]>([]);
   const [searchPhrase, setSearchPhrase] = useState<string>('');
 
@@ -225,7 +225,7 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
   };
 
   return (
-    <ChainListContext.Provider
+    <ClaimContext.Provider
       value={{
         chainList,
         chainListSearchResult,
@@ -240,6 +240,6 @@ export function ChainListProvider({ children }: PropsWithChildren<{}>) {
       }}
     >
       {children}
-    </ChainListContext.Provider>
+    </ClaimContext.Provider>
   );
 }

@@ -7,7 +7,6 @@ import { NetworkContextName } from './constants/misc';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './pages/fund';
 import Landing from 'pages/landing';
-import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import Web3ReactManager from './components/Web3ReactManager';
@@ -29,15 +28,13 @@ function App() {
           <Web3ReactManager>
             <RefreshContextProvider>
               <UserProfileProvider>
-                <ChainListProvider>
-                  <BrowserRouter>
-                    <Routes>
-                      <Route path={RoutePath.FAUCET} element={<Home />} />
-                      <Route path={RoutePath.FUND} element={<Fund />} />
-                      <Route path={RoutePath.LANDING} element={<Landing />} />
-                    </Routes>
-                  </BrowserRouter>
-                </ChainListProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path={RoutePath.FAUCET} element={<Home />} />
+                    <Route path={RoutePath.FUND} element={<Fund />} />
+                    <Route path={RoutePath.LANDING} element={<Landing />} />
+                  </Routes>
+                </BrowserRouter>
               </UserProfileProvider>
             </RefreshContextProvider>
           </Web3ReactManager>

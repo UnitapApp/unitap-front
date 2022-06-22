@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { ChainListContext } from 'hooks/useChainList';
+import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
@@ -113,7 +113,7 @@ const ChainListWrapper = styled.div`
 `;
 
 const ChainList = () => {
-  const { chainList, chainListSearchResult, openClaimModal } = useContext(ChainListContext);
+  const { chainList, chainListSearchResult, openClaimModal } = useContext(ClaimContext);
 
   const { addAndSwitchToChain } = useAddAndSwitchToChain();
   const { active } = useActiveWeb3React();

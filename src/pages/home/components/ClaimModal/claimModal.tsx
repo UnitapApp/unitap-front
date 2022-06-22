@@ -8,7 +8,7 @@ import { MessageButton } from 'components/basic/MessageButton/messageButton.styl
 import { Chain, ClaimBoxState } from 'types';
 import { getChainClaimIcon, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { ChainListContext } from 'hooks/useChainList';
+import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
@@ -23,7 +23,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   // }, []);
   const { active, account } = useActiveWeb3React();
 
-  const { claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ChainListContext);
+  const { claim, closeClaimModal, retryClaim, claimBoxStatus } = useContext(ClaimContext);
 
   const mounted = useRef(false);
 
@@ -214,7 +214,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 };
 
 const ClaimModal = () => {
-  const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ChainListContext);
+  const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ClaimContext);
 
   return (
     <>

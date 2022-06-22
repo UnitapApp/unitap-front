@@ -48,7 +48,6 @@ export type ClaimReceipt = {
   pk: PK;
   txHash: string | null;
   chain: PK;
-  txHash: string | null;
   datetime: string;
   // amount: BigInt;
   amount: number;
