@@ -23,7 +23,6 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
       setLoading(false);
       return refreshedUserProfile;
     } catch (ex) {
-      console.log(ex);
       setLoading(false);
       throw ex;
     }
