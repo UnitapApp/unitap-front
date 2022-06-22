@@ -17,6 +17,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   p?: number;
   testid?: string;
   mb?: number;
+  backgroundColor?: string;
 }
 
 const RawInput = styled.input<InputProps>`
@@ -26,6 +27,12 @@ const RawInput = styled.input<InputProps>`
   width: 100%;
   color: white;
   background: ${({ styleType }) => (styleType === 'success' ? DV.colors.darkgreen : DV.colors.dark)};
+  background: ${({ backgroundColor }): string => {
+    const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === backgroundColor);
+    if (xyz) {
+      return `${DV.colors[xyz]}!important`;
+    } else return ``;
+  }};
   border-radius: ${DV.sizes.baseRadius}px;
   border: 1px solid ${({ styleType }) => (styleType === 'success' ? DV.colors.green : 'unset')};
   z-index: 1;

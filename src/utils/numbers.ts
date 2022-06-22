@@ -16,3 +16,12 @@ export const toWei = (amount: BigNumber.Value, decimals = 18) => {
   if (bnAmount.isZero()) return 0;
   return bnAmount.multipliedBy(toBN(10).pow(decimals)).toNumber();
 };
+
+export const formatBalance = (amount: number) => {
+  return amount < 0.000001 ? '< 0.000001' : amount;
+};
+
+export const formatWeiBalance = (amount: number) => {
+  const fw = fromWei(amount);
+  return formatBalance(Number(fw));
+};

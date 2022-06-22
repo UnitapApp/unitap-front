@@ -11,7 +11,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { claimMax } from 'api';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from '../../../../utils/numbers';
+import { formatWeiBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
@@ -24,10 +24,6 @@ enum ClaimState {
 }
 
 const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHandler: () => void }) => {
-  const formatBalance = useCallback((amount: number) => {
-    const fw = fromWei(amount);
-    return Number(fw) < 0.000001 ? '< 0.000001' : fw;
-  }, []);
   const { active, account } = useActiveWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { updateChainList, claimState , setClaimState} = useContext(ChainListContext);
@@ -139,7 +135,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          {formatBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
+          {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           Your request is submitted successfully!
@@ -150,7 +146,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Close
+          Done
         </SecondaryButton>
       </>
     );
@@ -192,7 +188,7 @@ const ClaimModal = ({ chain, closeModalHandler }: { chain: Chain; closeModalHand
   return (
     <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
       <Text fontSize="14" className="scan-qr-text">
-        Claim {formatBalance(chain.maxClaimAmount)} {chain.symbol}
+        Claim {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol}
       </Text>
       {getClaimBody()}
     </ClaimModalWrapper>

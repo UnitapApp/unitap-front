@@ -24,7 +24,7 @@ const Navbar = () => {
   const changeModalActive = (state: boolean) => {
     setIsModalActive(state);
   };
-  const { active, account } = useActiveWeb3React();
+  const { active, account, chainId } = useActiveWeb3React();
 
   const { userProfile } = useContext(UserProfileContext);
 
@@ -53,6 +53,7 @@ const Navbar = () => {
         onClick={() => navigate(RoutePath.LANDING)}
         style={{ cursor: 'pointer' }}
       />
+      {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
       <DesktopNav>
         {location.pathname === RoutePath.FUND ? (
           <Link to={RoutePath.FAUCET}>
@@ -139,7 +140,7 @@ const Navbar = () => {
       <Modal
         className="bright-modal"
         spaceman={Spaceman.WITH_PHONE}
-        title="connect bright id"
+        title="Connect your BrightID"
         isOpen={isModalActive}
         closeModalHandler={() => {
           changeModalActive(false);

@@ -4,14 +4,15 @@ import { Chain } from '../types';
 import { switchToNetwork } from '../utils/switchToNetwork';
 
 export const useAddAndSwitchToChain = () => {
-  const { library, active } = useActiveWeb3React();
+  const { library, active, chainId } = useActiveWeb3React();
   const addAndSwitchToChain = useCallback(
     async (chain: Chain) => {
       if (!library?.provider || !active) return false;
+      if (String(chainId) === chain.chainId) return;
       await switchToNetwork({ provider: library.provider, chain });
       return true;
     },
-    [active, library],
+    [active, chainId, library],
   );
   return { addAndSwitchToChain };
 };

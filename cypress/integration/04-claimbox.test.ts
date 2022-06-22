@@ -1,4 +1,3 @@
-import { CustomizedBridge, provider, signer } from '../support/commands';
 import {
   chainList,
   chainListAuthenticatedClaimed,
@@ -9,6 +8,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import RoutePath from '../../src/routes';
+import { getCustomizedBridge } from '../utils/ethbridge/customizedbridge';
 
 describe('Claim', () => {
   const connectWallet = () => {
@@ -112,7 +112,7 @@ describe('Claim', () => {
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
       // @ts-ignore
-      win.ethereum = new CustomizedBridge(signer, provider);
+      win.ethereum = getCustomizedBridge();
     });
   };
 

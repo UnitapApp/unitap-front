@@ -1,11 +1,4 @@
 import {
-  CustomizedBridge,
-  provider,
-  signer,
-  SwitchChainBridge,
-  SwitchToUnrecognizedChainBridge,
-} from '../support/commands';
-import {
   chainList,
   chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
@@ -14,6 +7,7 @@ import {
 } from '../utils/data';
 import { formatChainId } from '../../src/utils';
 import RoutePath from '../../src/routes';
+import { getCustomizedBridge } from '../utils/ethbridge/customizedbridge';
 
 describe('Wallet', () => {
   beforeEach(() => {
@@ -35,7 +29,7 @@ describe('Wallet', () => {
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
       // @ts-ignore
-      win.ethereum = new CustomizedBridge(signer, provider);
+      win.ethereum = getCustomizedBridge();
     });
   };
 
@@ -85,7 +79,7 @@ describe('Wallet', () => {
   });
 
   it('switches to network', () => {
-    const ethBridge = new SwitchChainBridge(signer, provider);
+    const ethBridge = getCustomizedBridge();
     cy.on('window:before:load', (win) => {
       // @ts-ignore
       win.ethereum = ethBridge;
@@ -106,7 +100,7 @@ describe('Wallet', () => {
   });
 
   it('adds network', () => {
-    const ethBridge = new SwitchToUnrecognizedChainBridge(signer, provider);
+    const ethBridge = getCustomizedBridge();
     cy.on('window:before:load', (win) => {
       cy.spy(ethBridge, 'switchEthereumChainSpy');
       cy.spy(ethBridge, 'addEthereumChainSpy');
@@ -117,7 +111,10 @@ describe('Wallet', () => {
     setupGetChainListAuthenticated();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
+    cy.get(`[data-testid=chain-id]`).contains('4');
     cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
+    cy.get(`[data-testid=chain-id]`).contains(chainList[0].chainId);
     const expectedChainId = formatChainId(chainList[0].chainId);
 
     cy.window().then((win) => {

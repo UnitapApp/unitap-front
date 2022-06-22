@@ -26,6 +26,7 @@ const SelectChainModal = ({
 
   const chainsList = chainListSearchResult.map((chain) => (
     <ChainItem
+      data-testid={`select-chain-modal-item-${chain.pk}`}
       key={chain.chainId}
       icon={getChainIcon(chain)}
       title={chain.chainName}
@@ -34,7 +35,7 @@ const SelectChainModal = ({
         setSelectedChain(chain);
         closeModalHandler();
       }}
-    ></ChainItem>
+    />
   ));
 
   return (
@@ -45,7 +46,7 @@ const SelectChainModal = ({
         placeholder="Search Network"
         width="100%"
         mb={2}
-      ></ModalSearch>
+      />
       <hr className="hr" />
       {chainsList}
     </SelectChainModalWrapper>
