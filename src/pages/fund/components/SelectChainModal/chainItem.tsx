@@ -5,11 +5,12 @@ import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 
-interface props {
+interface ChainItemProps {
   icon: string;
   title: string;
   selected?: boolean;
   onClick: () => void;
+  'data-testid'?: string;
 }
 
 const ChainItemWrapper = styled.div`
@@ -22,7 +23,7 @@ const ChainItemWrapper = styled.div`
   display: flex;
   padding: ${DV.sizes.basePadding * 1.5}px;
   align-items: center;
-  
+
   margin-top: ${DV.sizes.basePadding * 1.5}px;
 
   :hover {
@@ -30,11 +31,14 @@ const ChainItemWrapper = styled.div`
   }
 `;
 
-const ChainItem = ({ icon, title, selected, onClick }: props) => {
+const ChainItem = (props: ChainItemProps) => {
+  const { title, selected, icon, onClick } = props;
   return (
-    <ChainItemWrapper onClick={onClick}>
+    <ChainItemWrapper onClick={onClick} data-testid={props['data-testid']}>
       <Icon mr={2} width="32px" iconSrc={icon}></Icon>
-      <Text mb={0} mrAuto>{title}</Text>
+      <Text mb={0} mrAuto>
+        {title}
+      </Text>
 
       {selected && <Icon iconSrc="assets/images/modal/check.svg" width="13px" height="auto" mr={2} />}
     </ChainItemWrapper>

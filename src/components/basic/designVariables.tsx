@@ -14,6 +14,7 @@ interface designVariable {
     black2: string;
     black3: string;
     black4: string;
+    black5: string;
     border_black: string;
     dark: string;
     dark1: string;
@@ -56,6 +57,7 @@ export const DV: designVariable = {
     black2: '#21212C',
     black3: '#1a1a24',
     black4: '#15151B',
+    black5: '#1b1b26',
     border_black: '#13131e',
     dark: '#11111C',
     dark1: '#030317',
@@ -79,7 +81,7 @@ export const DV: designVariable = {
     mobile: '600px', // xs
     tablet: '992px', // sm
     smallDesktop: '1224px', // md
-    desktop: '1440px', // lg 
+    desktop: '1440px', // lg
     // bigger than 1440px -> // xlg
   },
 };

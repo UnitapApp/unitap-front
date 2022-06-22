@@ -1,7 +1,11 @@
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 
-export const BrightConnectionModalWrapper = styled.div`
+interface props {
+  warning?: boolean;
+}
+
+export const BrightConnectionModalWrapper = styled.div<props>`
   display: flex;
   flex-direction: column;
 
@@ -19,6 +23,10 @@ export const BrightConnectionModalWrapper = styled.div`
     width: 70%;
     z-index: 10;
   }
+  border-radius: 18px;
+
+
+  ${({ warning }) => warning ? `border: 2px solid ${DV.colors.warningRed}` : ''};
 `;
 
 export const CopyLink = styled.div`

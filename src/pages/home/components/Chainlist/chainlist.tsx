@@ -1,10 +1,10 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { ChainListContext } from 'hooks/useChainList';
-import { fromWei } from 'utils/numbers';
+import { formatWeiBalance } from 'utils/numbers';
 import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
 import { getChainIcon } from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
@@ -19,7 +19,7 @@ const ChainCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid ${DV.colors.black};
+  border: 1px solid ${DV.colors.black};
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   background-color: #1d1d29;
   margin-bottom: ${DV.sizes.baseMargin * 2}px;
@@ -47,7 +47,7 @@ const ChainCard = styled.div`
 `;
 
 const ChainLogo = styled.div`
-  background-color: ${DV.colors.black};
+  background-color: ${DV.colors.black5};
   height: 101%;
   width: 48px;
   position: absolute;
@@ -118,11 +118,6 @@ const ChainList = () => {
   const { addAndSwitchToChain } = useAddAndSwitchToChain();
   const { active } = useActiveWeb3React();
 
-  const formatBalance = useCallback((amount: number) => {
-    const fw = fromWei(amount);
-    return Number(fw) < 0.000001 ? '< 0.000001' : fw;
-  }, []);
-
   const windowSize = window.innerWidth;
 
   return (
@@ -157,7 +152,7 @@ const ChainList = () => {
                       mlAuto
                       onClick={() => openClaimModal(chain)}
                     >
-                      {`Claim ${formatBalance(chain.maxClaimAmount)} ${chain.symbol}`}
+                      {`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}
                     </ClaimButton>
                   ) : (
                     <ClaimedButton

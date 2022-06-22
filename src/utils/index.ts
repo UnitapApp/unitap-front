@@ -57,9 +57,11 @@ export function convertChainObjectToMetaMaskParams(chain: Chain) {
   ];
 }
 
-// export function getTxUrl(chain: Chain, claimReceipt: ClaimReceipt) {
-//   return `${chain.explorerUrl}tx/${claimReceipt.txHash}`;
-// }
+export function getTxUrl(chain: Chain, txHash: string) {
+  let explorerUrl = chain.explorerUrl;
+  explorerUrl = explorerUrl.endsWith('/') ? explorerUrl : `${explorerUrl}/`;
+  return `${explorerUrl}tx/${txHash}`;
+}
 
 export function getVerificationQr(userProfile: UserProfile) {
   return userProfile.verificationUrl.replace('https://app.brightid.org/', 'brightid://');
@@ -118,3 +120,7 @@ export const getChainIcon = (chain: Chain) => {
 export const getChainClaimIcon = (chain: Chain) => {
   return `${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`;
 };
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

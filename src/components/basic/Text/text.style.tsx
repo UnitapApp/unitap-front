@@ -34,11 +34,11 @@ export const Text = styled.p<props>`
   margin-right: ${({ mr, mrAuto }) => (mr ? `${mr * DV.sizes.baseMargin}px` : mrAuto ? 'auto' : '')};
   margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : `1rem`)};
   text-align: ${({ textAlign }) => textAlign || 'left'};
-  
+
   @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize }) => smFontSize || '15'}px;
   }
-  
+
   @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     margin-bottom: ${({ mdMb }) => (mdMb ? `${mdMb * DV.sizes.baseMargin}px` : '')};
   }
@@ -46,8 +46,8 @@ export const Text = styled.p<props>`
   ${({ breakOverflow }) =>
     breakOverflow &&
     `
-      overflow-wrap: break-word;
+      overflow-wrap: normal;
       word-wrap: break-word;
-      hyphens: auto;
+      hyphens: none;
     `}
 `;

@@ -1,4 +1,3 @@
-import { CustomizedBridge, provider, signer } from '../support/commands';
 import {
   chainList,
   chainListAuthenticatedClaimed,
@@ -15,6 +14,7 @@ import {
   userProfileVerified,
 } from '../utils/data';
 import RoutePath from '../../src/routes';
+import { getCustomizedBridge } from '../utils/ethbridge/customizedbridge';
 
 describe('Claim', () => {
   const connectWallet = () => {
@@ -171,7 +171,7 @@ describe('Claim', () => {
   const setupEthBridge = () => {
     cy.on('window:before:load', (win) => {
       // @ts-ignore
-      win.ethereum = new CustomizedBridge(signer, provider);
+      win.ethereum = getCustomizedBridge();
     });
   };
   /*
@@ -243,14 +243,15 @@ describe('Claim', () => {
     claimSuccess();
   });
 
-  function closeAndOpenClaimModal(chainIndex: number) {
+  function closeAndOpenClaimModal(chainIndex:number){
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
     cy.get(`[data-testid=close-modal]`).should('exist').click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('not.exist');
 
     cy.get(`[data-testid=chain-show-claim-${chainList[chainIndex].pk}]`).should('exist').click();
     cy.get(`[data-testid=chain-claim-modal-${chainList[chainIndex].pk}]`).should('exist');
-  }
+
+  };
 
   it('close button closes the modal and it can get opened again', () => {
     setupGetUserProfileVerified();
@@ -283,8 +284,13 @@ describe('Claim', () => {
     cy.get(`[data-testid=loading`).should('exist');
     closeAndOpenClaimModal(1);
     cy.get(`[data-testid=loading`).should('exist');
-
+    cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).should('not.exist');
+    
     cy.wait(5000);
+
+    // @ts-ignore
+    cy.shouldBeCalled('claimMax', 1);
+
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-claim-success-${chainList[1].pk}]`).should('exist');
     cy.get(`[data-testid=chain-claim-action-${chainList[1].pk}]`).click();
