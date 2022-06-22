@@ -21,16 +21,12 @@ export function FundProvider({ children }: PropsWithChildren<{}>) {
   const [searchPhrase, setSearchPhrase] = useState<string>('');
 
   const { account: address } = useActiveWeb3React();
-  const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
   const updateChainList = useCallback(async () => {
-    const newChainList = await getChainList(
-      // use address only if userprofile is loaded
-      userProfile ? address : null,
-    );
+    const newChainList = await getChainList(address ? address : null);
     setChainList(newChainList);
-  }, [address, userProfile]);
+  }, [address]);
 
   useEffect(() => {
     const fn = async () => {

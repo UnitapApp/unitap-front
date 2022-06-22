@@ -6,16 +6,19 @@ import Header from './components/Header/header';
 import Footer from 'components/common/Footer/footer';
 
 import { Body } from 'components/common/Body/body';
+import { FundProvider } from 'hooks/useChainListFund';
 
 const Fund: FC = () => {
   return (
     <>
-      <Navbar />
-      <Body>
-        <Header />
-        <Content />
-      </Body>
-      <Footer />
+      <FundProvider>
+        <Navbar />
+        <Body>
+          <Header />
+          <Content />
+        </Body>
+        <Footer />
+      </FundProvider>
     </>
   );
 };
