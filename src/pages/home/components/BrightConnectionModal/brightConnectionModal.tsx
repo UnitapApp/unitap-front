@@ -41,7 +41,6 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
         setTried(false);
       }
     } catch (ex) {
-      console.log(ex);
       alert('Error while connecting to BrightID sever!');
       setTried(true);
     }

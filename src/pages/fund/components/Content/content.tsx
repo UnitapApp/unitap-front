@@ -18,7 +18,6 @@ import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from '../../../../
 
 const Content: FC = () => {
   const { chainList } = useContext(FundContext);
-  console.log(chainList);
   const { active, chainId, library, account } = useActiveWeb3React();
   const { connect } = useWeb3Connector();
 
@@ -58,7 +57,6 @@ const Content: FC = () => {
   const [submittingFundTransaction, setSubmittingFundTransaction] = useState(false);
 
   const loading = useMemo(() => {
-    console.log(submittingFundTransaction, active, chainId, selectedChain, account);
     if (submittingFundTransaction) return true;
     if (!active) return false;
     return !chainId || !selectedChain || !account;
