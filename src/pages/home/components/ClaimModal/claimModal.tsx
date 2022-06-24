@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import {
+  ClaimBoxRequestButton,
   PrimaryButton,
   SecondaryButton,
   SecondaryGreenColorButton,
-  ClaimBoxRequestButton,
 } from 'components/basic/Button/button';
 import { Chain, ClaimBoxState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
@@ -31,16 +31,20 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
   const mounted = useRef(false);
 
+  const [lottieLoaded, setLottieLoaded] = useState(false);
   useEffect(() => {
     if (claimBoxStatus.status === ClaimBoxState.PENDING) {
-      lottie.loadAnimation({
-        container: document.querySelector('#animation') as HTMLInputElement,
-        animationData: animation,
-        loop: true,
-        autoplay: true,
-      });
+      if (!lottieLoaded) {
+        lottie.loadAnimation({
+          container: document.querySelector('#animation') as HTMLInputElement,
+          animationData: animation,
+          loop: true,
+          autoplay: true,
+        });
+        setLottieLoaded(true);
+      }
     }
-  }, [claimBoxStatus]);
+  }, [claimBoxStatus, lottieLoaded]);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -90,6 +94,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       </>
     );
   }
+
   function getRequestBody() {
     return (
       <>
@@ -128,6 +133,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       </>
     );
   }
+
   function getSuccessBody() {
     return (
       <>
