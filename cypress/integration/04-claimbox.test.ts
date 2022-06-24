@@ -293,7 +293,7 @@ describe('Claim', () => {
     );
   };
 
-  it('should stay on request state after closeing and reopening the claim modal', () => {
+  it('do claim (state persists after closing the modal)', () => {
     setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
     cy.visit(RoutePath.FAUCET);
@@ -311,34 +311,21 @@ describe('Claim', () => {
     cy.get(`[data-testid=close-modal`).click();
     cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
     cy.get(`[data-testid=chain-claim-request-${chainPk}]`).should('exist');
-  });
-
-  it('do claim', () => {
-    setupGetChainListServerGeneral();
-    setupGetUserProfileVerified();
-    cy.visit(RoutePath.FAUCET);
-    connectWallet();
-
-    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
-    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
-
-    setupPreClaimState();
-    cy.get(`[data-testid=chain-claim-initial-${chainPk}`).should('exist');
-    cy.get(`[data-testid=chain-claim-action-${chainPk}]`).click();
-
-    cy.get(`[data-testid=chain-claim-request-${chainPk}`).should('exist');
-
     setupPendingClaimState();
 
     cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
 
+    cy.get(`[data-testid=close-modal`).click();
+    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+    cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
     setupSuccessClaimState();
 
     // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
     cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
 
     cy.get(`[data-testid=close-modal]`).click();
-    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('not.exist');
+    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+    cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
   });
 
   it('do claim after fail', () => {
