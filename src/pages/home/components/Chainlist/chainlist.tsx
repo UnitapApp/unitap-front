@@ -162,6 +162,7 @@ const ChainList = () => {
                       icon="claimIcon.png"
                       iconWidth={52}
                       iconHeight={58}
+                      onClick={() => openClaimModal(chain)}
                     >
                       Claimed!
                     </ClaimedButton>
