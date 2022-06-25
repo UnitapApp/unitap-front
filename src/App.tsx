@@ -11,6 +11,7 @@ import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import Web3ReactManager from './components/Web3ReactManager';
 import { RefreshContextProvider } from './context/RefreshContext';
+import { ClaimProvider } from './hooks/useChainList';
 
 require('typeface-jetbrains-mono');
 
@@ -28,13 +29,15 @@ function App() {
           <Web3ReactManager>
             <RefreshContextProvider>
               <UserProfileProvider>
-                <BrowserRouter>
-                  <Routes>
-                    <Route path={RoutePath.FAUCET} element={<Home />} />
-                    <Route path={RoutePath.FUND} element={<Fund />} />
-                    <Route path={RoutePath.LANDING} element={<Landing />} />
-                  </Routes>
-                </BrowserRouter>
+                <ClaimProvider>
+                  <BrowserRouter>
+                    <Routes>
+                      <Route path={RoutePath.FAUCET} element={<Home />} />
+                      <Route path={RoutePath.FUND} element={<Fund />} />
+                      <Route path={RoutePath.LANDING} element={<Landing />} />
+                    </Routes>
+                  </BrowserRouter>
+                </ClaimProvider>
               </UserProfileProvider>
             </RefreshContextProvider>
           </Web3ReactManager>

@@ -14,7 +14,6 @@ import SearchInput from './components/SearchInput/searchInput';
 import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
 import ClaimModal from './components/ClaimModal/claimModal';
-import { ClaimProvider } from 'hooks/useChainList';
 
 const HomeContentWrapper = styled.div`
   max-width: 1310px;
@@ -34,27 +33,25 @@ const HomeContentWrapper = styled.div`
 const Home = () => {
   return (
     <>
-      <ClaimProvider>
-        <Navbar />
-        <Body>
-          <Header />
-          <HomeContentWrapper>
-            <Row mdReverse>
-              <Col xs={12} md={12} lg={5.5} xlg={4}>
-                <SearchInput />
-              </Col>
-              <Col xs={0} md={0} lg={0.5} xlg={3.5}></Col>
-              <Col xs={12} md={12} lg={6} xlg={4.5}>
-                <Timer />
-              </Col>
-            </Row>
-            <ChainList />
-            <ProvideGasCard />
-          </HomeContentWrapper>
-        </Body>
-        <ClaimModal />
-        <Footer />
-      </ClaimProvider>
+      <Navbar />
+      <Body>
+        <Header />
+        <HomeContentWrapper>
+          <Row mdReverse>
+            <Col xs={12} md={12} lg={5.5} xlg={4}>
+              <SearchInput />
+            </Col>
+            <Col xs={0} md={0} lg={0.5} xlg={3.5}></Col>
+            <Col xs={12} md={12} lg={6} xlg={4.5}>
+              <Timer />
+            </Col>
+          </Row>
+          <ChainList />
+          <ProvideGasCard />
+        </HomeContentWrapper>
+      </Body>
+      <ClaimModal />
+      <Footer />
     </>
   );
 };
