@@ -45,7 +45,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
   return (
     <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>
-      {children}{' '}
+      {children}
     </UserProfileContext.Provider>
   );
 }

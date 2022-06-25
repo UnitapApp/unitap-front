@@ -53,3 +53,8 @@ export type ClaimReceipt = {
   amount: number;
   status: ClaimReceiptState;
 };
+
+export type ClaimBoxStateContainer = {
+  status: ClaimBoxState;
+  lastFailPk: number | null;
+};

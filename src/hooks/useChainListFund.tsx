@@ -1,10 +1,10 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getChainList, getActiveClaimHistory } from 'api';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimReceiptState, ClaimBoxState } from 'types';
-import Fuse from 'fuse.js';
-import { UserProfileContext } from './useUserProfile';
+import { getChainList } from 'api';
+import { Chain } from 'types';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
+import searchChainList from 'utils/hook/searchChainList';
+import tryUntilSuccess from 'utils/hook/tryUntilSuccess';
 
 export const FundContext = createContext<{
   chainList: Chain[];
@@ -28,38 +28,9 @@ export function FundProvider({ children }: PropsWithChildren<{}>) {
     setChainList(newChainList);
   }, [address]);
 
-  useEffect(() => {
-    const fn = async () => {
-      try {
-        await updateChainList();
-      } catch (e) {
-        fn();
-      }
-    };
-    fn();
-  }, [address, updateChainList, fastRefresh]);
+  useEffect(() => tryUntilSuccess(updateChainList), [address, updateChainList, fastRefresh]);
 
-  const chainListSearchResult = useMemo(() => {
-    if (searchPhrase === '') return chainList;
-    const fuseOptions = {
-      // isCaseSensitive: false,
-      // includeScore: false,
-      // shouldSort: true,
-      // includeMatches: false,
-      // findAllMatches: false,
-      // minMatchCharLength: 1,
-      // location: 0,
-      threshold: 0.2, // threshoud is between 0 and 1 where 0 is strict and 1 is accepting anything
-      // distance: 100,
-      // useExtendedSearch: false,
-      // ignoreLocation: false,
-      // ignoreFieldNorm: false,
-      // fieldNormWeight: 1,
-      keys: ['nativeCurrencyName', 'chainName'],
-    };
-    const fuse = new Fuse(chainList, fuseOptions);
-    return fuse.search(searchPhrase).flatMap((serachResult) => serachResult.item);
-  }, [searchPhrase, chainList]);
+  const chainListSearchResult = useMemo(() => searchChainList(searchPhrase, chainList), [searchPhrase, chainList]);
 
   const changeSearchPhrase = (newSearchPhrase: string) => {
     setSearchPhrase(newSearchPhrase);
