@@ -9,16 +9,20 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { SecondaryButton } from 'components/basic/Button/button';
 
-import { BrightIdVerificationStatus } from 'types';
+import { BrightIdModalState, BrightIdVerificationStatus } from 'types';
 
 import { copyToClipboard, getVerificationQr } from 'utils';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
+import Modal from 'components/common/Modal/modal';
+import { Spaceman } from 'constants/spaceman';
+import { ClaimContext } from 'hooks/useChainList';
 
-const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
+const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const [tried, setTried] = useState(false);
+
   const copyVerificationUrl = async () => {
     try {
       await copyToClipboard(verificationUrl);
@@ -79,6 +83,21 @@ const BrightConnectionModal = ({ closeModalHandler }: { closeModalHandler: () =>
         </SecondaryButton>
       )}
     </BrightConnectionModalWrapper>
+  );
+};
+
+const BrightConnectionModal = () => {
+  const { brightidModalStatus, closeBrightIdModal } = useContext(ClaimContext);
+  return (
+    <Modal
+      className="bright-modal"
+      spaceman={Spaceman.WITH_PHONE}
+      title="Connect your BrightID"
+      isOpen={brightidModalStatus !== BrightIdModalState.CLOSED}
+      closeModalHandler={closeBrightIdModal}
+    >
+      <BrightConnectionModalBody />
+    </Modal>
   );
 };
 

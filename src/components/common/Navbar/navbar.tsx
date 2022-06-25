@@ -5,9 +5,6 @@ import {
   LightOutlinedButton,
   PrimaryOutlinedButton,
 } from 'components/basic/Button/button';
-import Modal from 'components/common/Modal/modal';
-import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
-import { Spaceman } from 'constants/spaceman';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -16,14 +13,12 @@ import { DesktopNav, MobileNav, NavbarWrapper, NavLogo } from './navbar.style';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import useWeb3Connector from '../../../hooks/useWeb3Connector';
+import { ClaimContext } from 'hooks/useChainList';
 
 const Navbar = () => {
   const { connect } = useWeb3Connector();
 
-  const [isModalActive, setIsModalActive] = React.useState<boolean>(false);
-  const changeModalActive = (state: boolean) => {
-    setIsModalActive(state);
-  };
+  const { openBrightIdModal } = useContext(ClaimContext);
   const { active, account, chainId } = useActiveWeb3React();
 
   const { userProfile } = useContext(UserProfileContext);
@@ -85,7 +80,7 @@ const Navbar = () => {
             mr={2}
             onClick={() => {
               if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-                changeModalActive(true);
+                openBrightIdModal();
               }
             }}
           >
@@ -122,7 +117,7 @@ const Navbar = () => {
               disabled={!account}
               onClick={() => {
                 if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-                  changeModalActive(true);
+                  openBrightIdModal();
                 }
               }}
             >
@@ -136,22 +131,6 @@ const Navbar = () => {
           )}
         </div>
       </MobileNav>
-
-      <Modal
-        className="bright-modal"
-        spaceman={Spaceman.WITH_PHONE}
-        title="Connect your BrightID"
-        isOpen={isModalActive}
-        closeModalHandler={() => {
-          changeModalActive(false);
-        }}
-      >
-        <BrightConnectionModal
-          closeModalHandler={() => {
-            changeModalActive(false);
-          }}
-        />
-      </Modal>
     </NavbarWrapper>
   );
 };

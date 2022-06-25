@@ -1,6 +1,13 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { claimMax, getChainList, getActiveClaimHistory } from 'api';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimBoxState, ClaimBoxStateContainer } from 'types';
+import {
+  BrightIdVerificationStatus,
+  Chain,
+  ClaimReceipt,
+  ClaimBoxState,
+  ClaimBoxStateContainer,
+  BrightIdModalState,
+} from 'types';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
@@ -21,6 +28,9 @@ export const ClaimContext = createContext<{
   activeChain: Chain | null;
   claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
   retryClaim: () => void;
+  openBrightIdModal: () => void;
+  closeBrightIdModal: () => void;
+  brightidModalStatus: BrightIdModalState;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -32,6 +42,9 @@ export const ClaimContext = createContext<{
   activeChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
   retryClaim: () => {},
+  openBrightIdModal: () => {},
+  closeBrightIdModal: () => {},
+  brightidModalStatus: BrightIdModalState.CLOSED,
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -44,6 +57,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     status: ClaimBoxState.CLOSED,
     lastFailPk: null,
   });
+  const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
 
@@ -125,6 +139,13 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     setSearchPhrase(newSearchPhrase);
   };
 
+  const openBrightIdModal = () => {
+    setBrightidModalStatus(BrightIdModalState.OPENED);
+  };
+  const closeBrightIdModal = () => {
+    setBrightidModalStatus(BrightIdModalState.CLOSED);
+  };
+
   return (
     <ClaimContext.Provider
       value={{
@@ -138,6 +159,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         activeChain,
         claimBoxStatus,
         retryClaim,
+        openBrightIdModal,
+        closeBrightIdModal,
+        brightidModalStatus,
       }}
     >
       {children}
