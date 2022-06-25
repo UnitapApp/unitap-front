@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { SelectChainModalWrapper } from './selectChainModal.style';
 import { ModalSearch } from './modalSearch.style';
 import ChainItem from './chainItem';
-import { ChainListContext } from '../../../../hooks/useChainList';
+import { ClaimContext } from '../../../../hooks/useChainList';
 import { getChainIcon } from '../../../../utils';
 import { Chain } from '../../../../types';
 
@@ -17,7 +17,7 @@ const SelectChainModal = ({
   closeModalHandler: () => any;
 }) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
-  const { changeSearchPhrase, chainListSearchResult } = useContext(ChainListContext);
+  const { changeSearchPhrase, chainListSearchResult } = useContext(ClaimContext);
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);

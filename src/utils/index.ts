@@ -87,11 +87,23 @@ export const convertTimeZoneToUTC = (date: Date) => {
   return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 };
 
-export const diffToNextMonday = (date: Date) => {
+export const getNextMonday = (date: Date) => {
   const utcDate = convertTimeZoneToUTC(date);
   const weekDay = utcDate.getDay();
   const diffToMonday = 7 - (weekDay === 0 ? 7 : weekDay) + 1;
-  const nextMonday = new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate() + diffToMonday);
+  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate() + diffToMonday);
+};
+
+export const getLastMonday = (date: Date) => {
+  const utcDate = convertTimeZoneToUTC(date);
+  const weekDay = utcDate.getDay();
+  const diffToMonday = - (weekDay === 0 ? 7 : weekDay) + 1;
+  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate() + diffToMonday);
+};
+
+export const diffToNextMonday = (date: Date) => {
+  const utcDate = convertTimeZoneToUTC(date);
+  const nextMonday = getNextMonday(date);
   const diffTime = Math.ceil((nextMonday.getTime() - utcDate.getTime()) / 1000);
   return {
     seconds: String(diffTime % 60).padStart(2, '0'),

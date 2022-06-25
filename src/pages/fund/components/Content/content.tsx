@@ -4,7 +4,7 @@ import { ContentCard, ContentWrapper } from './content.style';
 import Icon from 'components/basic/Icon/Icon';
 import Input from 'components/basic/Input/input';
 import Dropdown from 'components/basic/Dropdown/dropdown';
-import { ChainListContext } from '../../../../hooks/useChainList';
+import { ClaimContext } from '../../../../hooks/useChainList';
 import { Chain } from '../../../../types';
 import { useAddAndSwitchToChain } from '../../../../hooks/useAddAndSwitchToChain';
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React';
@@ -17,7 +17,7 @@ import { getChainIcon } from '../../../../utils';
 import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from '../../../../utils/web3';
 
 const Content: FC = () => {
-  const { chainList } = useContext(ChainListContext);
+  const { chainList } = useContext(ClaimContext);
   const { active, chainId, library, account } = useActiveWeb3React();
   const { connect } = useWeb3Connector();
 

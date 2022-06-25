@@ -23,7 +23,6 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
       setLoading(false);
       return refreshedUserProfile;
     } catch (ex) {
-      console.log(ex);
       setLoading(false);
       throw ex;
     }
@@ -46,7 +45,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
   return (
     <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>
-      {children}{' '}
+      {children}
     </UserProfileContext.Provider>
   );
 }

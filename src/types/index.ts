@@ -29,10 +29,32 @@ export type UserProfile = {
   verificationStatus: BrightIdVerificationStatus;
 };
 
+export enum ClaimReceiptState {
+  PENDING = '0',
+  VERIFIED = '1',
+  REJECTED = '2',
+}
+
+export enum ClaimBoxState {
+  CLOSED = '-3',
+  INITIAL = '-2',
+  REQUEST = '-1',
+  PENDING = '0',
+  VERIFIED = '1',
+  REJECTED = '2',
+}
+
 export type ClaimReceipt = {
   pk: PK;
-  chain: PK;
   txHash: string | null;
+  chain: PK;
   datetime: string;
+  // amount: BigInt;
   amount: number;
+  status: ClaimReceiptState;
+};
+
+export type ClaimBoxStateContainer = {
+  status: ClaimBoxState;
+  lastFailPk: number | null;
 };

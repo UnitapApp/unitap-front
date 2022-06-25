@@ -7,11 +7,11 @@ import { NetworkContextName } from './constants/misc';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './pages/fund';
 import Landing from 'pages/landing';
-import { ChainListProvider } from 'hooks/useChainList';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import Web3ReactManager from './components/Web3ReactManager';
 import { RefreshContextProvider } from './context/RefreshContext';
+import { ClaimProvider } from './hooks/useChainList';
 
 require('typeface-jetbrains-mono');
 
@@ -29,7 +29,7 @@ function App() {
           <Web3ReactManager>
             <RefreshContextProvider>
               <UserProfileProvider>
-                <ChainListProvider>
+                <ClaimProvider>
                   <BrowserRouter>
                     <Routes>
                       <Route path={RoutePath.FAUCET} element={<Home />} />
@@ -37,7 +37,7 @@ function App() {
                       <Route path={RoutePath.LANDING} element={<Landing />} />
                     </Routes>
                   </BrowserRouter>
-                </ChainListProvider>
+                </ClaimProvider>
               </UserProfileProvider>
             </RefreshContextProvider>
           </Web3ReactManager>

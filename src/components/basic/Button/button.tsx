@@ -64,8 +64,8 @@ export const Button = styled.button<props>`
     margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
-  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)} 
-  
+  ${({ disabled }) => (disabled ? `` : `&:hover {cursor: pointer;}`)}
+
   @media only screen and(${DV.breakpoints.smallDesktop}) {
     font-size: ${({ smFontSize, fontSize }) => smFontSize || fontSize || 'auto'};
     margin-right: ${({ smMr, mr }) =>
@@ -84,7 +84,7 @@ export const Button = styled.button<props>`
 `;
 
 export const PrimaryButton = styled(Button)`
-  background: ${({ disabled }) => (disabled ? `${DV.bgGradient.primaryDisabled}` : `${DV.bgGradient.primary}`)}; 
+  background: ${({ disabled }) => (disabled ? `${DV.bgGradient.primaryDisabled}` : `${DV.bgGradient.primary}`)};
   color: ${({ disabled }) => (disabled ? `${DV.colors.gray}` : 'white')};
 `;
 
@@ -113,6 +113,12 @@ export const LightOutlinedButton = styled(Button)`
   border: 1px solid white;
 `;
 
+export const ClaimBoxRequestButton = styled(Button)`
+  background: ${DV.bgGradient.dark};
+  color: white;
+  border: 1px solid ${DV.colors.dark1};
+`;
+
 export const SecondaryButton = styled(Button)`
   background-color: ${DV.colors.dark};
   color: ${DV.colors.secondary};
@@ -123,6 +129,12 @@ export const GreenOutlinedButton = styled(Button)`
   background: ${DV.colors.dark};
   color: ${DV.colors.green};
   border: 1px solid ${DV.colors.green};
+`;
+
+export const SecondaryGreenColorButton = styled(Button)`
+  background: ${DV.colors.dark};
+  color: ${DV.colors.green};
+  border: 2px solid ${DV.colors.dark1};
 `;
 
 export const BrightOutlinedButton = styled(Button)`

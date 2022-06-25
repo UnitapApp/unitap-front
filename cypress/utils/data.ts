@@ -1,4 +1,4 @@
-import { BrightIdVerificationStatus, Chain, ClaimReceipt } from '../../src/types';
+import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimReceiptState } from '../../src/types';
 
 import { shortenAddress } from '../../src/utils';
 import { Wallet } from '@ethersproject/wallet';
@@ -129,5 +129,62 @@ export const claimMaxResponse: ClaimReceipt = {
   txHash: '0x26c59bf189bc48e8e9d1b0cf190187546bf3f311123d0a61e601eda30edadaab',
   chain: 1,
   datetime: '2022-04-23T16:17:23.615399Z',
-  amount: 1000000000000,
+  // amount: BigInt('10000000000000000'),
+  amount: 100000000,
+  status: ClaimReceiptState.PENDING,
+};
+
+export const emptyClaimHistoryResponse: ClaimReceipt[] = [];
+
+export const createClaimHistory: (chainPk: number, claimStatus: ClaimReceiptState, pk: number) => ClaimReceipt = (
+  chainPk,
+  claimStatus,
+  pk,
+) => {
+  const date = new Date();
+  // const claimAmount: BigInt = BigInt('10000000000000000');
+  const claimAmount = 10000000;
+
+  return {
+    pk: pk,
+    txHash: 'ac66sas6d66sd79900-vd',
+    chain: chainPk,
+    datetime: date.toString(),
+    amount: claimAmount,
+    status: claimStatus,
+  };
+};
+
+export const getClaimHistoryRespondPending = (chainPk: number) => {
+  const pk = 1023;
+  return [createClaimHistory(chainPk, ClaimReceiptState.PENDING, pk)];
+};
+export const getClaimHistoryRespondSuccessful = (chainPk: number) => {
+  const pk = 1023;
+  return [createClaimHistory(chainPk, ClaimReceiptState.VERIFIED, pk)];
+};
+export const getClaimHistoryRespondFailed = (chainPk: number) => {
+  const pk = 1023;
+  return [createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk)];
+};
+export const getClaimHistoryRespondPendingAfterFail = (chainPk: number) => {
+  const pk = 1023;
+  return [
+    createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
+    createClaimHistory(chainPk, ClaimReceiptState.PENDING, pk + 1),
+  ];
+};
+export const getClaimHistoryRespondSuccessfullAfterFail = (chainPk: number) => {
+  const pk = 1023;
+  return [
+    createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
+    createClaimHistory(chainPk, ClaimReceiptState.VERIFIED, pk + 1),
+  ];
+};
+export const getClaimHistoryRespondFailAfterFail = (chainPk: number) => {
+  const pk = 1023;
+  return [
+    createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
+    createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk + 1),
+  ];
 };

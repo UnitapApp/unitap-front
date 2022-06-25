@@ -7,9 +7,7 @@ const useWeb3Connector = () => {
   const connect = useCallback(async () => {
     try {
       await activate(injected);
-    } catch (ex) {
-      console.log(ex);
-    }
+    } catch (ex) {}
   }, [activate]);
   return { connect };
 };

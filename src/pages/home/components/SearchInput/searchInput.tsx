@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 
-import { ChainListContext } from 'hooks/useChainList';
+import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
 import Input from 'components/basic/Input/input';
 
@@ -21,7 +21,7 @@ const SearchInputWrapper = styled.div`
 
 const SearchInput = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
-  const { changeSearchPhrase } = useContext(ChainListContext);
+  const { changeSearchPhrase } = useContext(ClaimContext);
 
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phrase: string = event.target.value;
@@ -35,7 +35,7 @@ const SearchInput = () => {
         data-testid="search-box"
         icon="search.png"
         width="100%"
-        fontSize='14px'
+        fontSize="14px"
         iconWidth="20px"
         iconHeight="20px"
         value={searchPhraseInput}

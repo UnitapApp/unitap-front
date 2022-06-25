@@ -1,6 +1,7 @@
 import {
   chainList,
   chainListAuthenticatedClaimedFirst,
+  emptyClaimHistoryResponse,
   TEST_ADDRESS_NEVER_USE,
   TEST_ADDRESS_NEVER_USE_SHORTENED,
   userProfileVerified,
@@ -42,6 +43,11 @@ describe('Wallet', () => {
       method: 'GET',
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       response: userProfileVerified,
+    });
+    cy.route({
+      method: 'GET',
+      url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/claims?**`,
+      response: emptyClaimHistoryResponse,
     });
   };
   const setupGetChainListServerGeneral = () => {
