@@ -36,7 +36,9 @@ export enum ClaimReceiptState {
 }
 
 export enum ClaimBoxState {
-  CLOSED = '-3',
+  CLOSED = '-5',
+  WALLET_NOT_CONNECTED = '-4',
+  BRIGHTID_NOT_VERIFIED = '-3',
   INITIAL = '-2',
   REQUEST = '-1',
   PENDING = '0',

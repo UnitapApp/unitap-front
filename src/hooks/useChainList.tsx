@@ -31,6 +31,7 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => void;
   closeBrightIdModal: () => void;
   brightidModalStatus: BrightIdModalState;
+  openBrightIdModalFromClaimModal: () => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -45,6 +46,7 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => {},
   closeBrightIdModal: () => {},
   brightidModalStatus: BrightIdModalState.CLOSED,
+  openBrightIdModalFromClaimModal: () => {},
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -109,9 +111,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
+        getClaimBoxState(address, brightIdVerified, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
       ),
-    [activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
+    [address, brightIdVerified, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
   );
 
   const claim = useCallback(
@@ -145,6 +147,10 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeBrightIdModal = () => {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
+  const openBrightIdModalFromClaimModal = () => {
+    setBrightidModalStatus(BrightIdModalState.OPENED);
+    setActiveChain(null);
+  };
 
   return (
     <ClaimContext.Provider
@@ -162,6 +168,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         openBrightIdModal,
         closeBrightIdModal,
         brightidModalStatus,
+        openBrightIdModalFromClaimModal,
       }}
     >
       {children}
