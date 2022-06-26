@@ -86,7 +86,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Check BrighID Status
+          Connect BrightID
         </PrimaryButton>
       </>
     );
