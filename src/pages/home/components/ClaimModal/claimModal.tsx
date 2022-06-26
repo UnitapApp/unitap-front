@@ -58,7 +58,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getWalletNotConnectedBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -72,7 +72,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getBrightNotConnectedBody() {
     return (
       <>
-        <DropIconWrapper>
+        <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
@@ -208,8 +208,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }
 
   function getClaimBody() {
-    if (claimBoxStatus.status === ClaimBoxState.WALLET_NOT_CONNECTED) return getWalletNotConnectedBody();
-    else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_VERIFIED) {
+    if (claimBoxStatus.status === ClaimBoxState.WALLET_NOT_CONNECTED) {
+      return getWalletNotConnectedBody();
+    } else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_VERIFIED) {
       return getBrightNotConnectedBody();
     } else if (claimBoxStatus.status === ClaimBoxState.INITIAL) {
       return getInitialBody();
