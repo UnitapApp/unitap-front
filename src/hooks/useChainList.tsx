@@ -1,13 +1,12 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getChainList, getActiveClaimHistory } from 'api';
-import { BrightIdVerificationStatus, Chain, ClaimReceipt, ClaimBoxState, ClaimBoxStateContainer } from 'types';
+import { claimMax, getActiveClaimHistory, getChainList } from 'api';
+import { BrightIdVerificationStatus, Chain, ClaimBoxState, ClaimBoxStateContainer, ClaimReceipt } from 'types';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
 import { RefreshContext } from 'context/RefreshContext';
 import searchChainList from 'utils/hook/searchChainList';
 import getClaimBoxState from 'utils/hook/getClaimBoxState';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
-import tryUntilSuccess from 'utils/hook/tryUntilSuccess';
 import removeRequest from 'utils/hook/claimRequests';
 
 export const ClaimContext = createContext<{
@@ -60,19 +59,25 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   );
 
   const updateChainList = useCallback(async () => {
-    const newChainList = await getChainList(userProfile ? address : null);
-    setChainList(newChainList);
+    try {
+      const newChainList = await getChainList(userProfile ? address : null);
+      setChainList(newChainList);
+    } catch (e) {}
   }, [address, userProfile]);
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (address) {
-      const newClaimHistory = await getActiveClaimHistory(address);
-      setActiveClaimHistory(newClaimHistory);
+      try {
+        const newClaimHistory = await getActiveClaimHistory(address);
+        setActiveClaimHistory(newClaimHistory);
+      } catch (e) {}
     }
   }, [address]);
 
-  useEffect(() => tryUntilSuccess(updateChainList), [address, updateChainList, fastRefresh]);
-  useEffect(() => tryUntilSuccess(updateActiveClaimHistory), [fastRefresh, updateActiveClaimHistory]);
+  useEffect(() => {
+    updateChainList();
+    updateActiveClaimHistory();
+  }, [fastRefresh, updateActiveClaimHistory, updateChainList]);
 
   useEffect(() => {
     if (activeChain) {
