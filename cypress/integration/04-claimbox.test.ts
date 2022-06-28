@@ -360,10 +360,9 @@ describe('Claim', () => {
   });
 
   it('do claim connect brightid and wallet via claim modal', () => {
-    setupGetChainListServerGeneral();
-    //setupGetUserProfileVerified();
+    setupGetChainListAuthenticated();
+    setupGetUserProfileNotVerified();
     cy.visit(RoutePath.FAUCET);
-    //connectWallet();
 
     cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
     cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
@@ -378,13 +377,7 @@ describe('Claim', () => {
     cy.get(`[data-testid=brightid-modal]`).should('exist');
 
     setupGetUserProfileVerified();
-    cy.wait(1000);
     cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
-    cy.get(`[data-testid=brightid-connect-success]`).should('exist');
-
-    cy.get(`[data-testid=close-modal`).click();
-    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
-    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
 
     setupPreClaimState();
     cy.get(`[data-testid=chain-claim-initial-${chainPk}`).should('exist');
