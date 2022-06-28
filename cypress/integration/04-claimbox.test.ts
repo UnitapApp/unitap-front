@@ -23,12 +23,32 @@ describe('Claim', () => {
     cy.get('[data-testid=wallet-connect]').click();
   };
 
+  const setupGetChainListAuthenticated = () => {
+    setupGetChainListServerGeneral();
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      },
+      {
+        body: chainListAuthenticatedClaimedFirst,
+      },
+    );
+  };
+
   beforeEach(() => {
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'error').as('spyWinConsoleError');
       cy.spy(win.console, 'warn').as('spyWinConsoleWarn');
     });
-    //cy.server({ force404: true });
+    cy.intercept(
+      {
+        url: `**/api/**`,
+      },
+      {
+        statusCode: 404,
+      },
+    );
     setupEthBridge();
     setupGetChainListAuthenticated();
   });
@@ -45,31 +65,6 @@ describe('Claim', () => {
       },
       {
         body: chainList,
-      },
-    );
-  };
-  const setupGetChainListServerNotAuthenticated = () => {
-    setupGetChainListServerGeneral();
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
-      },
-      {
-        body: chainList,
-      },
-    );
-  };
-
-  const setupGetChainListAuthenticated = () => {
-    setupGetChainListServerGeneral();
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
-      },
-      {
-        body: chainListAuthenticatedClaimedFirst,
       },
     );
   };
@@ -325,7 +320,6 @@ describe('Claim', () => {
   }
 
   it('do claim (state persists after closing the modal)', () => {
-    setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
@@ -339,7 +333,6 @@ describe('Claim', () => {
   });
 
   it('do claim after fail', () => {
-    setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
@@ -370,7 +363,6 @@ describe('Claim', () => {
   });
 
   it('do claim connect brightid and wallet via claim modal', () => {
-    setupGetChainListAuthenticated();
     setupGetUserProfileNotVerified();
     cy.visit(RoutePath.FAUCET);
 
