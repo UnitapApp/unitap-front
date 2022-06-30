@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
@@ -9,7 +9,7 @@ import {
   SecondaryButton,
   SecondaryGreenColorButton,
 } from 'components/basic/Button/button';
-import { Chain, ClaimBoxState } from 'types';
+import { BrightIdModalState, Chain, ClaimBoxState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { ClaimContext } from 'hooks/useChainList';
@@ -28,7 +28,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   // }, []);
   const { active, account } = useActiveWeb3React();
   const { connect } = useWeb3Connector();
-  const { claim, closeClaimModal, retryClaim, claimBoxStatus, activeClaimReceipt, openBrightIdModalFromClaimModal } =
+  const { claim, closeClaimModal, retryClaim, claimBoxStatus, activeClaimReceipt, openBrightIdModal } =
     useContext(ClaimContext);
 
   const mounted = useRef(false);
@@ -81,7 +81,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
         <PrimaryButton
-          onClick={openBrightIdModalFromClaimModal}
+          onClick={openBrightIdModal}
           width="100%"
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
@@ -237,12 +237,19 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 const ClaimModal = () => {
   const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ClaimContext);
-
+  const { brightidModalStatus } = useContext(ClaimContext);
+  const isOpen = useMemo(() => {
+    return (
+      !!activeChain &&
+      claimBoxStatus.status !== ClaimBoxState.CLOSED &&
+      brightidModalStatus === BrightIdModalState.CLOSED
+    );
+  }, [activeChain, brightidModalStatus, claimBoxStatus.status]);
   return (
     <>
-      {claimBoxStatus.status !== ClaimBoxState.CLOSED && activeChain && (
+      {isOpen && (
         <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" closeModalHandler={closeClaimModal} isOpen={true}>
-          <ClaimModalBody chain={activeChain} />
+          <ClaimModalBody chain={activeChain!} />
         </Modal>
       )}
     </>

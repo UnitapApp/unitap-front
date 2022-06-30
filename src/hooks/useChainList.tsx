@@ -1,12 +1,12 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getChainList, getActiveClaimHistory } from 'api';
+import { claimMax, getActiveClaimHistory, getChainList } from 'api';
 import {
+  BrightIdModalState,
   BrightIdVerificationStatus,
   Chain,
-  ClaimReceipt,
   ClaimBoxState,
   ClaimBoxStateContainer,
-  BrightIdModalState,
+  ClaimReceipt,
 } from 'types';
 import { UserProfileContext } from './useUserProfile';
 import useActiveWeb3React from './useActiveWeb3React';
@@ -30,7 +30,6 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => void;
   closeBrightIdModal: () => void;
   brightidModalStatus: BrightIdModalState;
-  openBrightIdModalFromClaimModal: () => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -45,7 +44,6 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => {},
   closeBrightIdModal: () => {},
   brightidModalStatus: BrightIdModalState.CLOSED,
-  openBrightIdModalFromClaimModal: () => {},
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -122,7 +120,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   );
 
   const claim = useCallback(
-    // to-do tell user about failing to communicate with server
+    //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
       if (!brightIdVerified || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
         return;
@@ -152,10 +150,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeBrightIdModal = () => {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
-  const openBrightIdModalFromClaimModal = () => {
-    setBrightidModalStatus(BrightIdModalState.OPENED);
-    setActiveChain(null);
-  };
 
   return (
     <ClaimContext.Provider
@@ -173,7 +167,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         openBrightIdModal,
         closeBrightIdModal,
         brightidModalStatus,
-        openBrightIdModalFromClaimModal,
       }}
     >
       {children}

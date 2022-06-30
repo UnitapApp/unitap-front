@@ -22,6 +22,7 @@ const BrightConnectionModalBody = () => {
   const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const [tried, setTried] = useState(false);
+  const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
 
   const copyVerificationUrl = async () => {
     try {
@@ -43,12 +44,15 @@ const BrightConnectionModalBody = () => {
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       } else {
         setTried(false);
+        if (!!activeChain) {
+          closeBrightIdModal();
+        }
       }
     } catch (ex) {
       alert('Error while connecting to BrightID sever!');
       setTried(true);
     }
-  }, [refreshUserProfile, loading]);
+  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal]);
 
   if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
