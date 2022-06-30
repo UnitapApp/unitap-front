@@ -23,12 +23,32 @@ describe('Claim', () => {
     cy.get('[data-testid=wallet-connect]').click();
   };
 
+  const setupGetChainListAuthenticated = () => {
+    setupGetChainListServerGeneral();
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      },
+      {
+        body: chainListAuthenticatedClaimedFirst,
+      },
+    );
+  };
+
   beforeEach(() => {
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'error').as('spyWinConsoleError');
       cy.spy(win.console, 'warn').as('spyWinConsoleWarn');
     });
-    //cy.server({ force404: true });
+    cy.intercept(
+      {
+        url: `**/api/**`,
+      },
+      {
+        statusCode: 404,
+      },
+    );
     setupEthBridge();
     setupGetChainListAuthenticated();
   });
@@ -45,31 +65,6 @@ describe('Claim', () => {
       },
       {
         body: chainList,
-      },
-    );
-  };
-  const setupGetChainListServerNotAuthenticated = () => {
-    setupGetChainListServerGeneral();
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
-      },
-      {
-        body: chainList,
-      },
-    );
-  };
-
-  const setupGetChainListAuthenticated = () => {
-    setupGetChainListServerGeneral();
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
-      },
-      {
-        body: chainListAuthenticatedClaimedFirst,
       },
     );
   };
@@ -293,8 +288,38 @@ describe('Claim', () => {
     );
   };
 
+  function claimSubmitSuccessState() {
+    setupPreClaimState();
+    cy.get(`[data-testid=chain-claim-initial-${chainPk}`).should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainPk}]`).click();
+
+    cy.get(`[data-testid=chain-claim-request-${chainPk}`).should('exist');
+  }
+
+  function claimPendingState(checkStatePersistence: boolean) {
+    setupPendingClaimState();
+    cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
+
+    if (checkStatePersistence) {
+      cy.get(`[data-testid=close-modal`).click();
+      cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+      cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
+    }
+  }
+
+  function claimSuccessState(checkStatePersistence: boolean) {
+    setupSuccessClaimState();
+    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
+    cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
+
+    if (checkStatePersistence) {
+      cy.get(`[data-testid=close-modal]`).click();
+      cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+      cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
+    }
+  }
+
   it('do claim (state persists after closing the modal)', () => {
-    setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
@@ -302,34 +327,12 @@ describe('Claim', () => {
     cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
     cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
 
-    setupPreClaimState();
-    cy.get(`[data-testid=chain-claim-initial-${chainPk}`).should('exist');
-    cy.get(`[data-testid=chain-claim-action-${chainPk}]`).click();
-
-    cy.get(`[data-testid=chain-claim-request-${chainPk}`).should('exist');
-
-    cy.get(`[data-testid=close-modal`).click();
-    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
-    cy.get(`[data-testid=chain-claim-request-${chainPk}]`).should('exist');
-    setupPendingClaimState();
-
-    cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
-
-    cy.get(`[data-testid=close-modal`).click();
-    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
-    cy.get(`[data-testid=chain-claim-pending-${chainPk}]`).should('exist');
-    setupSuccessClaimState();
-
-    // cy.get(`[data-testid=claim-receipt]`).should('have.attr', 'href', getTxUrl(chainList[1], claimMaxResponse));
-    cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
-
-    cy.get(`[data-testid=close-modal]`).click();
-    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
-    cy.get(`[data-testid=chain-claim-success-${chainPk}]`).should('exist');
+    claimSubmitSuccessState();
+    claimPendingState(true);
+    claimSuccessState(true);
   });
 
   it('do claim after fail', () => {
-    setupGetChainListServerGeneral();
     setupGetUserProfileVerified();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
@@ -357,5 +360,47 @@ describe('Claim', () => {
 
     cy.get(`[data-testid=close-modal]`).click();
     cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('not.exist');
+  });
+
+  function claimStateConnectWallet() {
+    cy.get('[data-testid=chain-claim-wallet-not-connected]').should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainPk}]`).click();
+  }
+
+  function claimStateBrightIdNotConnected() {
+    cy.get('[data-testid=chain-claim-brightid-not-connected]').should('exist');
+    cy.get(`[data-testid=chain-claim-action-${chainPk}]`).click();
+
+    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('not.exist');
+    cy.get(`[data-testid=brightid-modal]`).should('exist');
+
+    cy.get(`[data-testid=bright-id-connection-refresh-button]`).click();
+    setupGetUserProfileVerified();
+    cy.get(`[data-testid=bright-id-connection-refresh-button-try-again]`).click();
+  }
+
+  it('do claim connect brightid and wallet via claim modal', () => {
+    setupGetUserProfileNotVerified();
+    cy.visit(RoutePath.FAUCET);
+
+    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
+    claimStateConnectWallet();
+    claimStateBrightIdNotConnected();
+    claimSubmitSuccessState();
+    claimPendingState(false);
+    claimSuccessState(false);
+  });
+
+  it('do claim connect brightid via claim modal', () => {
+    setupGetUserProfileNotVerified();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
+    cy.get(`[data-testid=chain-show-claim-${chainPk}]`).click();
+    cy.get(`[data-testid=chain-claim-modal-${chainPk}]`).should('exist');
+    claimStateBrightIdNotConnected();
+    claimSubmitSuccessState();
+    claimPendingState(false);
+    claimSuccessState(false);
   });
 });

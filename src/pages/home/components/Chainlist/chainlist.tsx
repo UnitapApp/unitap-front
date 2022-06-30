@@ -147,7 +147,6 @@ const ChainList = () => {
                   {chain.unclaimed !== 0 ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${chain.pk}`}
-                      disabled={!active}
                       mr={2}
                       mlAuto
                       onClick={() => openClaimModal(chain)}
