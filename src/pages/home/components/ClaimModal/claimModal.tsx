@@ -62,6 +62,10 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
+        <WalletAddress fontSize="12">Not Connected</WalletAddress>
         <PrimaryButton onClick={connect} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
           Connect Wallet
         </PrimaryButton>
