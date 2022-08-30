@@ -27,6 +27,7 @@ export type UserProfile = {
   address: string;
   verificationUrl: string;
   verificationStatus: BrightIdVerificationStatus;
+  totalWeeklyClaimsRemaining: number;
 };
 
 export enum ClaimReceiptState {

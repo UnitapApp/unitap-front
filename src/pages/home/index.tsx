@@ -42,8 +42,8 @@ const Home = () => {
             <Col xs={12} md={12} lg={5.5} xlg={4}>
               <SearchInput />
             </Col>
-            <Col xs={0} md={0} lg={0.5} xlg={3.5}></Col>
-            <Col xs={12} md={12} lg={6} xlg={4.5}>
+            <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
+            <Col xs={12} md={12} lg={6} xlg={6.5}>
               <Timer />
             </Col>
           </Row>

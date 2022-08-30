@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 
 import { diffToNextMonday } from 'utils';
 import { Text } from 'components/basic/Text/text.style';
+import { UserProfileContext } from '../../../../hooks/useUserProfile';
 
 const TimerWrapper = styled.div`
   font-family: 'Open Sans';
@@ -32,6 +33,10 @@ const TimerCount = styled(Text)`
   }
 `;
 
+const RemainingCount = styled(TimerCount)`
+  text-align: center;
+`;
+
 const TimerLabel = styled(Text)`
   @media only screen and (max-width: ${DV.breakpoints.mobile}) {
     font-size: 12px;
@@ -44,6 +49,7 @@ const Timer = () => {
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
+  const { userProfile } = useContext(UserProfileContext);
 
   useEffect(() => {
     const diff = diffToNextMonday(now);
@@ -62,10 +68,16 @@ const Timer = () => {
 
   return (
     <TimerWrapper>
-      <TimerLabel color="gray" fontSize="12" mb={0} mr={3}>
+      <TimerLabel color="gray" fontSize="12" mb={0} mr={1}>
+        Claim available for this period:
+      </TimerLabel>
+      <RemainingCount color="green" fontSize="16" mb={0} mr={1}>
+        {userProfile ? userProfile.totalWeeklyClaimsRemaining : '-'}
+      </RemainingCount>
+      <TimerLabel color="gray" fontSize="12" mb={0} mr={1}>
         Next Claim Period
       </TimerLabel>
-      <TimerCount color="white" fontSize="24" mb={0}>
+      <TimerCount color="white" fontSize="16" mb={0}>
         {days}:{hours}:{minutes}:{seconds}
       </TimerCount>
     </TimerWrapper>

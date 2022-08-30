@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 });
 
 export async function getChainList(address: string | undefined | null) {
-  const url = address ? `/api/v1/chain/list/${address}` : '/api/v1/chain/list/';
+  const url = address ? `/api/v1/chain/list/${address}/` : '/api/v1/chain/list/';
   const response = await axiosInstance.get<Chain[]>(url);
   return response.data;
 }
