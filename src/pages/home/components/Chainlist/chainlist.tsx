@@ -181,108 +181,73 @@ const ChainList = () => {
         {chainListSearchResult.map((chain) => {
           return (
             <div key={chain.chainId}>
-              <ChainCardTop>
-                {/* <ChainLogo> */}
-                <img src={getChainIcon(chain)} alt="" />
-                {/* </ChainLogo> */}
-                <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
-                <p>
-                  <span>Chain ID</span> {chain.chainId}
-                </p>
-                <p>
-                  <span>Currency</span> {chain.symbol}
-                </p>
-                <Action>
-                  {/* to-do migrate buttom logic*/}
-                  {chain.unclaimed !== 0 ? (
-                    <ClaimButton
-                      data-testid={`chain-show-claim-${chain.pk}`}
+              <ChainCard>
+                <ChainCardTop>
+                  <ChainCardTopLeft>
+                    <img className="chain-logo" src={getChainIcon(chain)} alt="polygon logo" />
+                    <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
+                    <img className="arrow-icon" src="assets/images/arrow-icon.svg" />
+                  </ChainCardTopLeft>
+                  <ChainCardTopRight>
+                    <AddMetamaskButton
                       mr={2}
-                      mlAuto
-                      onClick={() => openClaimModal(chain)}
+                      disabled={!active}
+                      data-testid={`chain-switch-${chain.pk}`}
+                      onClick={() => addAndSwitchToChain(chain)}
                     >
-                      {`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}
-                    </ClaimButton>
-                  ) : (
-                    <ClaimedButton
-                      data-testid={`chain-claimed-${chain.pk}`}
-                      mr={2}
-                      mlAuto
-                      icon="claimIcon.png"
-                      iconWidth={52}
-                      iconHeight={58}
-                      onClick={() => openClaimModal(chain)}
-                    >
-                      Claimed!
-                    </ClaimedButton>
-                  )}
-
-                  <AddMetamaskButton
-                    data-testid={`chain-switch-${chain.pk}`}
-                    onClick={() => addAndSwitchToChain(chain)}
-                    disabled={!active}
-                  >
-                    Add to MetaMask
-                  </AddMetamaskButton>
-                </Action>
-              </ChainCardTop>
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
+                        alt="metamask logo"
+                      />
+                      Add
+                    </AddMetamaskButton>
+                    <Action>
+                      {/* to-do migrate buttom logic*/}
+                      {chain.unclaimed !== 0 ? (
+                        <ClaimButton
+                          data-testid={`chain-show-claim-${chain.pk}`}
+                          mlAuto
+                          onClick={() => openClaimModal(chain)}
+                        >
+                          <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+                        </ClaimButton>
+                      ) : (
+                        <ClaimedButton
+                          data-testid={`chain-claimed-${chain.pk}`}
+                          mlAuto
+                          icon="../assets/images/claim/claimedIcon.svg"
+                          iconWidth={24}
+                          iconHeight={20}
+                          onClick={() => openClaimModal(chain)}
+                        >
+                          <p>Claimed!</p>
+                        </ClaimedButton>
+                      )}
+                    </Action>
+                  </ChainCardTopRight>
+                </ChainCardTop>
+                <ChainCardBottom>
+                  <ChainCardInfo>
+                    <ChainCardInfoTitle>Currency</ChainCardInfoTitle>
+                    <ChainCardInfoValue>{chain.symbol}</ChainCardInfoValue>
+                  </ChainCardInfo>
+                  <ChainCardInfo>
+                    <ChainCardInfoTitle>Chain ID</ChainCardInfoTitle>
+                    <ChainCardInfoValue>{chain.chainId}</ChainCardInfoValue>
+                  </ChainCardInfo>
+                  <ChainCardInfo>
+                    <ChainCardInfoTitle>This Round Claims</ChainCardInfoTitle>
+                    <ChainCardInfoValue>2,134</ChainCardInfoValue>
+                  </ChainCardInfo>
+                  <ChainCardInfo>
+                    <ChainCardInfoTitle>Total Claims</ChainCardInfoTitle>
+                    <ChainCardInfoValue>2.134</ChainCardInfoValue>
+                  </ChainCardInfo>
+                </ChainCardBottom>
+              </ChainCard>
             </div>
           );
         })}
-        <div>
-          <ChainCard>
-            <ChainCardTop>
-              <ChainCardTopLeft>
-                <img
-                  className="chain-logo"
-                  src="https://seeklogo.com/images/P/polygon-matic-logo-86F4D6D773-seeklogo.com.png"
-                  alt="polygon logo"
-                />
-                <ChainName>Polygon</ChainName>
-                <img className="arrow-icon" src="assets/images/arrow-icon.svg" />
-              </ChainCardTopLeft>
-              <ChainCardTopRight>
-                <AddMetamaskButton mr={2} disabled={!active}>
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                    alt="metamask logo"
-                  />
-                  Add
-                </AddMetamaskButton>
-                <Action>
-                  {/* to-do migrate buttom logic*/}
-                  {false ? (
-                    <ClaimButton mlAuto>
-                      <p>Claim 0.1 MATIC</p>
-                    </ClaimButton>
-                  ) : (
-                    <ClaimedButton mlAuto icon="../assets/images/claim/claimedIcon.svg" iconWidth={24} iconHeight={20}>
-                      <p>Claimed!</p>
-                    </ClaimedButton>
-                  )}
-                </Action>
-              </ChainCardTopRight>
-            </ChainCardTop>
-            <ChainCardBottom>
-              <ChainCardInfo>
-                <ChainCardInfoTitle>Currency</ChainCardInfoTitle>
-                <ChainCardInfoValue>FTM</ChainCardInfoValue>
-              </ChainCardInfo>
-              <ChainCardInfo>
-                <ChainCardInfoTitle>Chain ID</ChainCardInfoTitle>
-                <ChainCardInfoValue>137</ChainCardInfoValue>
-              </ChainCardInfo>
-              <ChainCardInfo>
-                <ChainCardInfoTitle>This Round Claims</ChainCardInfoTitle>
-                <ChainCardInfoValue>2,134</ChainCardInfoValue>
-              </ChainCardInfo>
-              <ChainCardInfo>
-                <ChainCardInfoTitle>Total Claims</ChainCardInfoTitle>
-                <ChainCardInfoValue>2.134</ChainCardInfoValue>
-              </ChainCardInfo>
-            </ChainCardBottom>
-          </ChainCard>
-        </div>
         {chainListSearchResult.length === 0 && chainList.length && (
           <Icon
             iconSrc={
