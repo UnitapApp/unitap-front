@@ -34,6 +34,18 @@
 	font-weight: normal;
   src: url('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
+@font-face {
+	font-family: NotoSans;
+	font-style: normal;
+	font-weight: normal;
+  src: url('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: NotoSansMono;
+	font-style: normal;
+	font-weight: normal;
+  src: url('../public/assets/font/NotoSansMono/NotoSansMono-Regular.ttf') format('truetype');
+}
 
 * {
   padding: 0;

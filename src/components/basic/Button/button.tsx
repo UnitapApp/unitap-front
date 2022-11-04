@@ -152,20 +152,39 @@ export const BrightConnectedButton = styled(Button)`
 export const ClaimButton = styled(PrimaryOutlinedButton)`
   width: 220px;
   padding: 14px;
-`;
+  
+  p {
+    background: ${DV.bgGradient.primary};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  ::before {
+    background: #030317 !important;
+  }
+  `;
 
-export const ClaimedButton = styled(SecondaryButton)`
+export const ClaimedButton = styled(PrimaryOutlinedButton)`
   width: 220px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 11px;
+  padding-bottom: 11px;
   color: ${DV.colors.green};
-  background-color: ${DV.colors.darkgreen};
   text-align: left;
-
+  padding-left: 24px;
+  p {
+    background: ${DV.bgGradient.primary};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  ::before {
+    background: #1B1B26;
+  }
+  
   &::after {
     position: absolute;
-    top: -8px;
-    right: 4px;
+    top: 10px;
+    right: 20px;
   }
 `;
 
