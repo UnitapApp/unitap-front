@@ -56,6 +56,10 @@ const ChainCardTopLeft = styled.div`
 
     cursor: pointer;
   }
+
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    margin-bottom: ${DV.sizes.baseMargin * 2}px;
+  }
 `;
 
 const ChainCardTopRight = styled.div`
@@ -69,15 +73,27 @@ const ChainCardBottom = styled.div`
   align-items: center;
   width: 100%;
   background-color: #1b1b26;
-  height: 40px;
+  min-height: 40px;
   border-radius: 0 0 ${DV.sizes.baseRadius * 1.5}px ${DV.sizes.baseRadius * 1.5}px;
+  flex-wrap: wrap;
+  padding: 0 ${DV.sizes.basePadding * 2}px;
+
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    padding: ${DV.sizes.basePadding * 0.75}px ${DV.sizes.basePadding}px;
+  }
 `;
 
 const ChainCardInfo = styled.div`
   flex: 1;
+  min-width: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
+    justify-content: flex-start;
+    padding-left: ${DV.sizes.basePadding}px;
+  }
 `;
 
 const ChainCardInfoTitle = styled.div`
@@ -104,14 +120,13 @@ const ChainName = styled.div`
 
   @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     text-align: center;
-    margin: 0;
   }
 `;
 
 const Action = styled.div`
   flex: 5;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
@@ -121,10 +136,6 @@ const Action = styled.div`
       margin-right: 0 !important;
       display: block;
       width: 100%;
-
-      &:first-child {
-        margin-bottom: ${DV.sizes.baseMargin * 2}px;
-      }
     }
   }
 `;
@@ -137,7 +148,7 @@ const AddMetamaskButton = styled(SecondaryButton)`
   background-color: #21212c;
   border: 2px solid #1b1b26;
   gap: ${DV.sizes.baseMargin * 1.5}px;
-  min-height: 40px;
+  height: 40px;
 
   img {
     width: 20px;
