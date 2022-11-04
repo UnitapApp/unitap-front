@@ -170,7 +170,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          We succefully transferd {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
+          we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
         </Text>
         <SecondaryButton
           onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
