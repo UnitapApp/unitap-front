@@ -31,6 +31,8 @@ export const chainList: Chain[] = [
     claimed: 'N/A',
     unclaimed: 'N/A',
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
+    totalClaims: 2000,
+    totalClaimsSinceLastMonday: 10,
   },
   {
     pk: 2,
@@ -46,6 +48,8 @@ export const chainList: Chain[] = [
     claimed: 'N/A',
     unclaimed: 'N/A',
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
+    totalClaims: 2000,
+    totalClaimsSinceLastMonday: 10,
   },
 ];
 

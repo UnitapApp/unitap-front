@@ -14,6 +14,8 @@ export type Chain = {
   unclaimed: string | number;
   decimals: number;
   fundManagerAddress: string;
+  totalClaims: number;
+  totalClaimsSinceLastMonday: number;
 };
 
 export enum BrightIdVerificationStatus {
