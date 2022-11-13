@@ -186,7 +186,7 @@ const ChainList = () => {
                   <ChainCardTopLeft>
                     <img className="chain-logo" src={getChainIcon(chain)} alt="polygon logo" />
                     <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
-                    <img className="arrow-icon" src="assets/images/arrow-icon.svg" />
+                    <img className="arrow-icon" src="assets/images/arrow-icon.svg" alt="arrow" />
                   </ChainCardTopLeft>
                   <ChainCardTopRight>
                     <AddMetamaskButton
@@ -237,11 +237,11 @@ const ChainList = () => {
                   </ChainCardInfo>
                   <ChainCardInfo>
                     <ChainCardInfoTitle>This Round Claims</ChainCardInfoTitle>
-                    <ChainCardInfoValue>2,134</ChainCardInfoValue>
+                    <ChainCardInfoValue>{chain.totalClaimsSinceLastMonday}</ChainCardInfoValue>
                   </ChainCardInfo>
                   <ChainCardInfo>
                     <ChainCardInfoTitle>Total Claims</ChainCardInfoTitle>
-                    <ChainCardInfoValue>2.134</ChainCardInfoValue>
+                    <ChainCardInfoValue>{chain.totalClaims}</ChainCardInfoValue>
                   </ChainCardInfo>
                 </ChainCardBottom>
               </ChainCard>
