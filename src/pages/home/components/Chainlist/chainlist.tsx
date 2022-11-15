@@ -17,6 +17,7 @@ const ChainCard = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-bottom: 1rem;
 `;
 
 const ChainCardTop = styled.div`
