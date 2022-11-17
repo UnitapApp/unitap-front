@@ -7,6 +7,7 @@ export type Chain = {
   symbol: string;
   chainId: string;
   logoUrl: string;
+  modalUrl: string;
   explorerUrl: string;
   rpcUrl: string;
   maxClaimAmount: number;

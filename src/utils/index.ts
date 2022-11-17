@@ -114,11 +114,11 @@ export const diffToNextMonday = (date: Date) => {
 };
 
 export const getChainIcon = (chain: Chain) => {
-  return `${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}.svg`;
+  return chain.logoUrl;
 };
 
 export const getChainClaimIcon = (chain: Chain) => {
-  return `${process.env.PUBLIC_URL}/assets/chains/${chain.chainId}-claim.svg`;
+  return chain.modalUrl;
 };
 
 export function sleep(ms: number) {
