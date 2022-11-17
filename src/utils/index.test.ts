@@ -13,8 +13,8 @@ describe('utils', () => {
       decimals: 18,
       explorerUrl: 'https://blockscout.com/xdai/mainnet',
       rpcUrl: 'https://rpc.gnosischain.com',
-      logoUrl:
-        'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75',
+      logoUrl: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75',
+      modalUrl: 'https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75',
       maxClaimAmount: 10000000000000000,
       claimed: 'N/A',
       unclaimed: 'N/A',
@@ -32,6 +32,7 @@ describe('utils', () => {
       explorerUrl: 'https://explorer.idchain.one/',
       rpcUrl: 'https://idchain.one/rpc/',
       logoUrl: 'https://explorer.idchain.one/images/idchain-plain.svg',
+      modalUrl: 'https://explorer.idchain.one/images/idchain-plain.svg',
       maxClaimAmount: 1000,
       claimed: 'N/A',
       unclaimed: 'N/A',
