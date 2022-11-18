@@ -6,6 +6,7 @@ import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './pages/fund';
+import Landing_deprecated from 'pages/landing';
 import Landing from 'pages/landing';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';

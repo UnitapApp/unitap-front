@@ -41,6 +41,30 @@
   src: url('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');
 }
 @font-face {
+	font-family: NotoSans;
+	font-style: normal;
+	font-weight: 500;
+  src: url('../public/assets/font/NotoSans/NotoSans-SemiBold.ttf') format('truetype');
+}
+@font-face {
+	font-family: NotoSans;
+	font-style: normal;
+	font-weight: bold;
+  src: url('../public/assets/font/NotoSans/NotoSans-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: NotoSans;
+  font-style: normal;
+  font-weight: 700;
+  src: url('../public/assets/font/NotoSans/NotoSans-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: NotoSans;
+  font-style: normal;
+  font-weight: 800;
+  src: url('../public/assets/font/NotoSans/NotoSans-Black.ttf') format('truetype');
+}
+@font-face {
 	font-family: NotoSansMono;
 	font-style: normal;
 	font-weight: normal;

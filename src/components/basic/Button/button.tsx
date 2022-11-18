@@ -10,6 +10,12 @@ interface props {
   smIconHeight?: number;
   iconMarginLeft?: number;
   smIconMarginLeft?: number;
+  iconLeftWidth?: number;
+  smIconLeftWidth?: number;
+  iconLeftHeight?: number;
+  smIconLeftHeight?: number;
+  iconLeftMarginLeft?: number;
+  smIconLeftMarginLeft?: number;
   height?: string;
   mlAuto?: boolean;
   mr?: number;
@@ -19,6 +25,7 @@ interface props {
   color?: string;
   disabled?: boolean;
   icon?: string;
+  iconLeft?: string;
   fontSize?: string;
   smFontSize?: string;
   fontWeight?: string;
@@ -50,8 +57,26 @@ export const Button = styled.button<props>`
   min-width: ${({ minWidth }) => minWidth || 'auto'};
   height: ${({ height }) => height || 'auto'};
   font-size: ${({ fontSize }) => fontSize || 'auto'};
+  cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   ${({ size }) => (size === 'large' ? `padding: 1em 2.5em;` : `padding: .75em 1.25em;`)}
+  &::before {
+    display: ${({ iconLeft }) => (iconLeft ? 'inline-block' : 'none')};
+    content: ' ';
+    background-image: ${({ iconLeft }) => `url(${iconLeft})` || 'none'};
+    position: relative;
+    top: 2px;
+    background-size: ${({ iconLeftWidth, iconLeftHeight }) => `${iconLeftWidth}px ${iconLeftHeight}px` || '0 0'};
+    width: ${({ iconLeftWidth }) => `${iconLeftWidth}px` || 'auto'};
+    height: ${({ iconLeftHeight }) => `${iconLeftHeight}px` || 'auto'};
+    margin-right: ${({ iconLeftMarginLeft }) => (iconLeftMarginLeft ? iconLeftMarginLeft : '12')}px;
+    margin-left: -12px;
+    margin-top: -2px;
+  }
+
   &::after {
     display: ${({ icon }) => (icon ? 'inline-block' : 'none')};
     content: ' ';
@@ -72,6 +97,15 @@ export const Button = styled.button<props>`
       smMr ? `${smMr * DV.sizes.baseMargin}px` : mr ? `${mr * DV.sizes.baseMargin}px` : `0`};
     margin-bottom: ${({ smMb, mb }) =>
       smMb ? `${smMb * DV.sizes.baseMargin}px` : mb ? `${mb * DV.sizes.baseMargin}px` : `0`};
+
+    &::before {
+      background-size: ${({ smIconLeftWidth, smIconLeftHeight }) =>
+        `${smIconLeftWidth}px ${smIconLeftHeight}px` || '0 0'};
+      width: ${({ smIconLeftWidth, iconLeftWidth }) => `${smIconLeftWidth}px` || `${iconLeftWidth}px` || 'auto'};
+      height: ${({ smIconLeftHeight, iconLeftHeight }) => `${smIconLeftHeight}px` || `${iconLeftHeight}px` || 'auto'};
+      margin-left: ${({ smIconLeftMarginLeft, iconLeftMarginLeft }) =>
+        `${smIconLeftMarginLeft}px` || `${iconLeftMarginLeft}px` || '12px'};
+    }
 
     &::after {
       background-size: ${({ smIconWidth, smIconHeight }) => `${smIconWidth}px ${smIconHeight}px` || '0 0'};
@@ -108,9 +142,31 @@ export const PrimaryOutlinedButton = styled(Button)`
 `;
 
 export const LightOutlinedButton = styled(Button)`
-  background: ${DV.bgGradient.dark};
+  background: transparent;
   color: white;
-  border: 1px solid white;
+  border: 2px solid ${DV.colors.gray90};
+  border-radius: ${DV.sizes.baseRadius}px;
+  font-family: NotoSansMono;
+  padding: 0.65em 1em;
+`;
+
+export const GradientOutlinedButton = styled(Button)`
+  color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
+  background: ${DV.bgGradient.primary};
+  position: relative;
+  z-index: 1;
+  border-radius: ${DV.sizes.baseRadius}px;
+
+  &::before {
+    content: '';
+    display: block;
+    z-index: -1;
+    position: absolute;
+    background: ${DV.colors.gray00};
+    inset: 0;
+    margin: 2px;
+    border-radius: ${DV.sizes.baseRadius-1}px;
+  }
 `;
 
 export const ClaimBoxRequestButton = styled(Button)`
@@ -141,12 +197,20 @@ export const BrightOutlinedButton = styled(Button)`
   border: 1px solid ${DV.colors.bright};
   color: ${DV.colors.bright};
   background-color: ${DV.colors.black};
+  border-radius: ${DV.sizes.baseRadius}px;
 `;
 
 export const BrightConnectedButton = styled(Button)`
-  border: 1px solid ${DV.colors.bright};
-  color: ${DV.colors.space_green};
+  border: 2px solid ${DV.colors.bright};
+  color: ${DV.colors.bright};
   background-color: ${DV.colors.black};
+  border-radius: ${DV.sizes.baseRadius}px;
+`;
+
+export const BrightPrimaryButton = styled(Button)`
+  background: ${DV.colors.bright};
+  color: ${DV.colors.gray00};
+  border-radius: ${DV.sizes.baseRadius}px;
 `;
 
 export const ClaimButton = styled(PrimaryOutlinedButton)`
@@ -188,10 +252,9 @@ export const ClaimedButton = styled(PrimaryOutlinedButton)`
     right: 20px;
 
     @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
-      display: none; 
+      display: none;
     }
   }
-
 `;
 
 export const LandingClaimIconButton = styled(PrimaryOutlinedButton)``;
