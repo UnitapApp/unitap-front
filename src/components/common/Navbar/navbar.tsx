@@ -16,6 +16,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import useWeb3Connector from '../../../hooks/useWeb3Connector';
 import { ClaimContext } from 'hooks/useChainList';
+import Icon from 'components/basic/Icon/Icon';
 
 const Navbar = () => {
   const { connect } = useWeb3Connector();
@@ -90,7 +91,7 @@ const Navbar = () => {
           </BrightPrimaryButton>
         )}
         {active ? (
-          <LightOutlinedButton data-testid="wallet-connect" minWidth="155px" fontSize="12px" fontWeight="400">
+          <LightOutlinedButton data-testid="wallet-connect" minWidth="155px" fontSize="12px" fontWeight="400" mr={2}>
             {shortenAddress(account)}
           </LightOutlinedButton>
         ) : (
@@ -100,10 +101,12 @@ const Navbar = () => {
             fontWeight="500"
             onClick={connect}
             fontSize="12px"
+            mr={2}
           >
             Connect Wallet
           </GradientOutlinedButton>
         )}
+        <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" hoverable></Icon>
       </DesktopNav>
 
       <MobileNav>

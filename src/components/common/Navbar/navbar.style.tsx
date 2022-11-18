@@ -8,14 +8,10 @@ export const NavbarWrapper = styled.div`
   position: fixed;
   z-index: 100;
   background-color: ${DV.colors.gray10};
-  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 10}px;
-  @media screen and (max-width: ${DV.breakpoints.tablet}) {
-    padding-left: ${DV.sizes.basePadding * 4}px;
-  }
+  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 4}px;
 `;
 
 export const NavLogo = styled(Icon)`
-  margin-left: -${DV.sizes.baseMargin * 2}px;
 `;
 
 export const DesktopNav = styled.div`
