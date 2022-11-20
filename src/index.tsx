@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import './index.css';
+import './index.sass';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
