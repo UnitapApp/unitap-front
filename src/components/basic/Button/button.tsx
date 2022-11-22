@@ -48,7 +48,6 @@ export const Text = styled.p<props>`
 export const Button = styled.button<props>`
   border-radius: ${DV.sizes.baseRadius * 1.5}px;
   position: relative;
-  border: none;
   font-weight: ${({ fontWeight }) => fontWeight || 'bold'};
   margin-right: ${({ mr }) => (mr ? `${mr * DV.sizes.baseMargin}px` : '')};
   margin-bottom: ${({ mb }) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
@@ -146,8 +145,6 @@ export const LightOutlinedButton = styled(Button)`
   color: white;
   border: 2px solid ${DV.colors.gray90};
   border-radius: ${DV.sizes.baseRadius}px;
-  font-family: NotoSansMono;
-  padding: 0.65em 1em;
 `;
 
 export const GradientOutlinedButton = styled(Button)`
@@ -215,7 +212,7 @@ export const BrightPrimaryButton = styled(Button)`
 
 export const ClaimButton = styled(PrimaryOutlinedButton)`
   width: 220px;
-  padding: 14px;
+  font-weight: 600;
 
   p {
     background: ${DV.bgGradient.primary};
@@ -228,19 +225,9 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
   }
 `;
 
-export const ClaimedButton = styled(PrimaryOutlinedButton)`
+export const ClaimedButton = styled(Button)`
   width: 220px;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  color: ${DV.colors.green};
   text-align: left;
-  padding-left: 24px;
-
-  p {
-    background: ${DV.bgGradient.primary};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 
   ::before {
     background: #1b1b26;

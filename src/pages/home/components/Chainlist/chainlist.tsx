@@ -30,7 +30,7 @@ const ChainCardTop = styled.div`
   padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 2}px
     ${DV.sizes.basePadding * 1.5}px;
 
-  p {
+  > p {
     color: white;
     flex: 2;
   }
@@ -45,19 +45,6 @@ const ChainCardTopLeft = styled.div`
   display: flex;
   align-items: center;
 
-  .chain-logo {
-    width: 30px;
-    height: 30px;
-  }
-
-  .arrow-icon {
-    width: 8px;
-    margin-left: ${DV.sizes.baseMargin * 0.5}px;
-    margin-top: 1px;
-
-    cursor: pointer;
-  }
-
   @media only screen and (max-width: ${DV.breakpoints.tablet}) {
     margin-bottom: ${DV.sizes.baseMargin * 2}px;
   }
@@ -65,7 +52,7 @@ const ChainCardTopLeft = styled.div`
 
 const ChainCardTopRight = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 `;
 
 const ChainCardBottom = styled.div`
@@ -95,23 +82,6 @@ const ChainCardInfo = styled.div`
     justify-content: flex-start;
     padding-left: ${DV.sizes.basePadding}px;
   }
-`;
-
-const ChainCardInfoTitle = styled.div`
-  color: #67677b;
-
-  font-family: NotoSans;
-  font-size: 14px;
-  line-height: 19px;
-`;
-
-const ChainCardInfoValue = styled.div`
-  color: white;
-  margin-left: ${DV.sizes.baseMargin * 1.5}px;
-
-  font-family: NotoSansMono;
-  font-size: 14px;
-  line-height: 19px;
 `;
 
 const ChainName = styled.div`
@@ -149,12 +119,12 @@ const AddMetamaskButton = styled(SecondaryButton)`
   background-color: #21212c;
   border: 2px solid #1b1b26;
   gap: ${DV.sizes.baseMargin * 1.5}px;
-  height: 40px;
+  font-weight: 500;
 
   img {
     width: 20px;
     height: 20px;
-    transform: scale(1.3);
+    transform: scale(1.4);
   }
 `;
 
@@ -184,10 +154,10 @@ const ChainList = () => {
             <div key={chain.chainId}>
               <ChainCard>
                 <ChainCardTop>
-                  <ChainCardTopLeft>
-                    <img className="chain-logo" src={getChainIcon(chain)} alt="polygon logo" />
+                  <ChainCardTopLeft className='hover:cursor-pointer'>
+                    <img className="chain-logo w-10 h-10" src={getChainIcon(chain)} alt="polygon logo" />
                     <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
-                    <img className="arrow-icon" src="assets/images/arrow-icon.svg" alt="arrow" />
+                    <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
                   </ChainCardTopLeft>
                   <ChainCardTopRight>
                     <AddMetamaskButton
@@ -195,6 +165,7 @@ const ChainList = () => {
                       disabled={!active}
                       data-testid={`chain-switch-${chain.pk}`}
                       onClick={() => addAndSwitchToChain(chain)}
+                      className='font-medium hover:cursor-pointer text-sm'
                     >
                       <img
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -209,6 +180,7 @@ const ChainList = () => {
                           data-testid={`chain-show-claim-${chain.pk}`}
                           mlAuto
                           onClick={() => openClaimModal(chain)}
+                          className='text-sm'
                         >
                           <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
                         </ClaimButton>
@@ -220,8 +192,9 @@ const ChainList = () => {
                           iconWidth={24}
                           iconHeight={20}
                           onClick={() => openClaimModal(chain)}
+                          className='text-sm bg-dark-space-green border-2 border-space-green'
                         >
-                          <p>Claimed!</p>
+                          <p className='text-space-green flex-[2] font-medium text-sm'>Claimed!</p>
                         </ClaimedButton>
                       )}
                     </Action>
@@ -229,20 +202,20 @@ const ChainList = () => {
                 </ChainCardTop>
                 <ChainCardBottom>
                   <ChainCardInfo>
-                    <ChainCardInfoTitle>Currency</ChainCardInfoTitle>
-                    <ChainCardInfoValue>{chain.symbol}</ChainCardInfoValue>
+                    <p className="chain-card__info__title text-sm text-gray-90">Currency</p>
+                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.symbol}</p>
                   </ChainCardInfo>
                   <ChainCardInfo>
-                    <ChainCardInfoTitle>Chain ID</ChainCardInfoTitle>
-                    <ChainCardInfoValue>{chain.chainId}</ChainCardInfoValue>
+                    <p className="chain-card__info__title text-sm text-gray-90">Chain ID</p>
+                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.chainId}</p>
                   </ChainCardInfo>
                   <ChainCardInfo>
-                    <ChainCardInfoTitle>This Round Claims</ChainCardInfoTitle>
-                    <ChainCardInfoValue>{chain.totalClaimsSinceLastMonday}</ChainCardInfoValue>
+                    <p className="chain-card__info__title text-sm text-gray-90">This Round Claims</p>
+                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaimsSinceLastMonday}</p>
                   </ChainCardInfo>
                   <ChainCardInfo>
-                    <ChainCardInfoTitle>Total Claims</ChainCardInfoTitle>
-                    <ChainCardInfoValue>{chain.totalClaims}</ChainCardInfoValue>
+                    <p className="chain-card__info__title text-sm text-gray-90">Total Claims</p>
+                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaims}</p>
                   </ChainCardInfo>
                 </ChainCardBottom>
               </ChainCard>
