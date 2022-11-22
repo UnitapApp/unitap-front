@@ -6,51 +6,16 @@ import Icon from 'components/basic/Icon/Icon';
 // ###### Local Styled Components
 
 const HeaderComp = styled.div`
-  display: flex;
-  background-image: url('/headerBg.png');
   background-size: cover;
   height: 170px;
   background-size: cover;
-  justify-content: center;
   position: relative;
   overflow: hidden;
+  background-color: ${DV.colors.gray20};
+  border-radius: ${DV.sizes.basePadding * 2}px;
 
   @media only screen and (max-width: 1200px) {
     height: calc(175px + (${DV.sizes.baseMargin * 6}px));
-  }
-`;
-
-const Drops = styled.span`
-  position: relative;
-  width: 100%;
-  height: 100%;
-
-  & > * {
-    position: absolute;
-    filter: blur(1px);
-  }
-
-  .first_drop {
-    right: 7vw;
-    top: 60%;
-  }
-
-  .second_drop {
-    right: 40vw;
-    top: 50%;
-    transform: rotate(5deg);
-  }
-
-  .third_drop {
-    left: 40vw;
-    top: 47%;
-    transform: rotate(-20deg);
-  }
-
-  .forth_drop {
-    left: 5vw;
-    top: 50%;
-    transform: rotate(-25deg);
   }
 `;
 
@@ -59,18 +24,20 @@ const Spaceman = styled.div`
   bottom: -80px;
 `;
 
+const Spaceship = styled.img`
+  position: absolute;
+  left: 0;
+  transform: translate(-30%, -32%) scale(1.1);
+`;
+
 const Header = () => {
   return (
     <HeaderComp>
+      <Spaceship src='assets/images/gas-tap/header-spaceship.svg'/>
+      <Icon iconSrc='assets/images/gas-tap/gas-tap-text-logo.png' width='140' height='50'/>
       <Spaceman>
         <Icon iconSrc={'assets/images/claim/header-spaceman.png'} width="180px" height="auto" />
       </Spaceman>
-      <Drops>
-        <Icon iconSrc="assets/images/claim/drop.svg" width="19px" height="auto" className="first_drop"></Icon>
-        <Icon iconSrc="assets/images/claim/drop.svg" width="20px" height="auto" className="second_drop"></Icon>
-        <Icon iconSrc="assets/images/claim/drop.svg" width="23px" height="auto" className="third_drop"></Icon>
-        <Icon iconSrc="assets/images/claim/drop.svg" width="18px" height="auto" className="forth_drop"></Icon>
-      </Drops>
     </HeaderComp>
   );
 };

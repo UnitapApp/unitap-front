@@ -6,6 +6,7 @@ export const NavbarWrapper = styled.div`
   width: 100%;
   display: flex;
   position: fixed;
+  top: 0;
   z-index: 100;
   background-color: ${DV.colors.gray10};
   padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 4}px;

@@ -36,8 +36,12 @@ const Home = () => {
     <>
       <Navbar />
       <Body>
-        <Header />
         <HomeContentWrapper>
+          <Row>
+            <Col xs={24} md={24} lg={24} xlg={24}>
+              <Header />  
+            </Col>
+          </Row>
           <Row mdReverse>
             <Col xs={12} md={12} lg={5.5} xlg={4}>
               <SearchInput />
