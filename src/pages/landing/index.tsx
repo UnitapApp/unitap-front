@@ -118,7 +118,7 @@ const Landing: FC = () => {
     <>
       <Navbar />
       <LandingWrapper>
-        <nav className="landing__navbar">
+        <nav className="landing__navbar px-4">
           <Icon iconSrc="logo.svg" width="270px" xsWidth="40vw" height="auto"></Icon>
         </nav>
         <div className="landing__hero">

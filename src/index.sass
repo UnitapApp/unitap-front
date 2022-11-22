@@ -1,0 +1,94 @@
+
+*:not(i)
+  font-family: NotoSans
+
+
+code
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace
+
+
+/* Chrome, Safari, Edge, Opera */
+.fund-input::-webkit-outer-spin-button,
+.fund-input::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+
+/* Firefox */
+.fund-input
+  -moz-appearance: textfield
+
+
+@tailwind base
+@tailwind components
+@tailwind utilities
+
+
+body
+  margin: 0
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  font-family: NotoSans
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  background-color: #21212C
+
+@mixin btn
+  @apply ease-out duration-300
+
+
+@layer base
+
+  // TYPOGRAPHY
+
+  h1
+    @apply text-3xl font-semibold items-center
+
+
+  h2
+    @apply text-2xl font-semibold
+
+  h3
+    @apply text-xl font-semibold
+
+  h4
+    @apply text-lg font-medium
+
+@layer components
+
+
+  .card
+    @apply rounded-3xl py-7 px-6
+
+  // BUTTON COLOR
+
+
+
+  // BUTTON SIZE
+
+
+
+  // STATUS
+
+  .status-red
+    @apply bg-red-100 text-red-500
+
+
+//@layer utilities
+//  .primary-shadow-xl
+//    filter: drop-shadow(0px 8px 18px rgba(81, 88, 246, 0.15))
+
+
+.countdown-container
+  div
+    @apply flex justify-center items-center flex-col
+
+  p
+    &:first-child
+      @apply text-5xl font-bold
+
+    &:last-child
+      @apply text-label text-sm font-medium
+
+
