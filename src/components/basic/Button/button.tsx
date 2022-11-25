@@ -164,6 +164,11 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
   }
 `;
 
+export const NoCurrencyButton = styled(Button)`
+  background: ${DV.colors.gray90};
+  color: ${DV.colors.gray70};
+`;
+
 export const ClaimedButton = styled(PrimaryOutlinedButton)`
   width: 220px;
   padding-top: 11px;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
+import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
@@ -205,6 +205,9 @@ const ChainList = () => {
                     <Action>
                       {/* to-do migrate buttom logic*/}
                       {chain.unclaimed !== 0 ? (
+                        // <NoCurrencyButton disabled fontSize='13px'>
+                        //   Currently out of balance
+                        // </NoCurrencyButton>
                         <ClaimButton
                           data-testid={`chain-show-claim-${chain.pk}`}
                           mlAuto
