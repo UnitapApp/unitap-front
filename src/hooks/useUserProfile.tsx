@@ -1,7 +1,7 @@
-import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
-import { createUserProfile, getUserProfile } from 'api';
-import { UserProfile } from 'types';
-import useActiveWeb3React from './useActiveWeb3React';
+import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
+import { createUserProfile, getUserProfile } from "api";
+import { UserProfile } from "types";
+import { useWeb3React } from "@web3-react/core";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
@@ -11,7 +11,7 @@ export const UserProfileContext = createContext<{
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const { account: address } = useActiveWeb3React();
+  const { account: address } = useWeb3React();
 
   const [loading, setLoading] = useState(false);
 

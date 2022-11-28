@@ -1,33 +1,35 @@
-import * as React from 'react';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Text } from 'components/basic/Text/text.style';
-import { ClaimModalWrapper, DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
-import Icon from 'components/basic/Icon/Icon';
+import * as React from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Text } from "components/basic/Text/text.style";
+import { ClaimModalWrapper, DropIconWrapper } from "pages/home/components/ClaimModal/claimModal.style";
+import Icon from "components/basic/Icon/Icon";
 import {
   ClaimBoxRequestButton,
   PrimaryButton,
   SecondaryButton,
-  SecondaryGreenColorButton,
-} from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, ClaimBoxState } from 'types';
-import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
-import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
-import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
-import lottie from 'lottie-web';
-import animation from 'assets/animations/GasFee-delivery2.json';
-import Modal from 'components/common/Modal/modal';
-import { Spaceman } from 'constants/spaceman';
-import useWeb3Connector from 'hooks/useWeb3Connector';
+  SecondaryGreenColorButton
+} from "components/basic/Button/button";
+import { BrightIdModalState, Chain, ClaimBoxState } from "types";
+import { getChainClaimIcon, getTxUrl, shortenAddress } from "utils";
+import { ClaimContext } from "hooks/useChainList";
+import { formatWeiBalance } from "utils/numbers";
+import WalletAddress from "pages/home/components/ClaimModal/walletAddress";
+import lottie from "lottie-web";
+import animation from "assets/animations/GasFee-delivery2.json";
+import Modal from "components/common/Modal/modal";
+import { Spaceman } from "constants/spaceman";
+import useWalletActivation from "../../../../hooks/useWalletActivation";
+import { useWeb3React } from "@web3-react/core";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   // const formatBalance = useCallback((amount: number) => {
   //   const fw = fromWei(amount);
   //   return Number(fw) < 0.000001 ? '< 0.000001' : fw;
   // }, []);
-  const { active, account } = useActiveWeb3React();
-  const { connect } = useWeb3Connector();
+  const { account } = useWeb3React();
+  const active = !!account;
+
+  const { tryActivation } = useWalletActivation();
   const { claim, closeClaimModal, retryClaim, claimBoxStatus, activeClaimReceipt, openBrightIdModal } =
     useContext(ClaimContext);
 
@@ -38,10 +40,10 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     if (claimBoxStatus.status === ClaimBoxState.PENDING) {
       if (!lottieLoaded) {
         lottie.loadAnimation({
-          container: document.querySelector('#animation') as HTMLInputElement,
+          container: document.querySelector("#animation") as HTMLInputElement,
           animationData: animation,
           loop: true,
-          autoplay: true,
+          autoplay: true
         });
         setLottieLoaded(true);
       }
@@ -60,13 +62,14 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       <>
         <DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
         <WalletAddress fontSize="12">Not Connected</WalletAddress>
-        <PrimaryButton onClick={connect} width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+        <PrimaryButton onClick={tryActivation} width="100%" fontSize="20px"
+                       data-testid={`chain-claim-action-${chain.pk}`}>
           Connect Wallet
         </PrimaryButton>
       </>
@@ -78,12 +81,12 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       <>
         <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ""}</WalletAddress>
         <PrimaryButton
           onClick={openBrightIdModal}
           width="100%"
@@ -101,12 +104,12 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ""}</WalletAddress>
         <PrimaryButton
           onClick={() => claim(chain.pk)}
           width="100%"
@@ -124,12 +127,12 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       <>
         <DropIconWrapper data-testid={`chain-claim-request-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
+        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ""}</WalletAddress>
         <ClaimBoxRequestButton width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
           Pending ...
         </ClaimBoxRequestButton>
@@ -140,7 +143,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getPendingBody() {
     return (
       <>
-        <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
+        <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: "200px" }}></div>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
           Claim transaction submitted
         </Text>
@@ -149,7 +152,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         </Text>
         <SecondaryGreenColorButton
           onClick={closeClaimModal}
-          width={'100%'}
+          width={"100%"}
           data-testid={`chain-claim-action-${chain.pk}`}
         >
           Close
@@ -164,7 +167,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="30px" className="state-logo" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
           {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
@@ -173,8 +176,8 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
         </Text>
         <SecondaryButton
-          onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
-          width={'100%'}
+          onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), "_blank")}
+          width={"100%"}
           fontSize="20px"
           data-testid={`chain-claim-action-${chain.pk}`}
           color="space_green"
@@ -191,7 +194,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
           <img src={getChainClaimIcon(chain)} alt="" />
           <Icon iconSrc="assets/images/modal/failed-state-x.svg" width="30px" className="state-logo" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon iconSrc={"assets/images/modal/drop-icon.svg"} width="52px" mb={4} mt={1} height="auto" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
           Claim Failed!
@@ -202,7 +205,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <SecondaryButton
           fontSize="20px"
           onClick={retryClaim}
-          width={'100%'}
+          width={"100%"}
           data-testid={`chain-claim-action-${chain.pk}`}
         >
           Try Again

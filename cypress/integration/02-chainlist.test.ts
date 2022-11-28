@@ -3,21 +3,22 @@ import {
   chainListAuthenticatedClaimedFirst,
   TEST_ADDRESS_NEVER_USE,
   userProfileNotVerified,
-  userProfileVerified,
-} from '../utils/data';
-import RoutePath from '../../src/routes';
-import { CYPRESS_FAST_INTERVAL } from '../../src/constants/intervals';
-import { getCustomizedBridge } from '../utils/ethbridge/customizedbridge';
+  userProfileVerified
+} from "../utils/data";
+import RoutePath from "../../src/routes";
+import { CYPRESS_FAST_INTERVAL } from "../../src/constants/intervals";
+import { getCustomizedBridge } from "../utils/ethbridge/customizedbridge";
 
-describe('Landing Page', () => {
+describe("Landing Page", () => {
   const connectWallet = () => {
-    cy.get('[data-testid=wallet-connect]').click();
+    cy.get("[data-testid=wallet-connect]").click();
+    cy.get("[data-testid=wallet-connect]").click();
   };
 
   beforeEach(() => {
-    cy.on('window:before:load', (win) => {
-      cy.spy(win.console, 'error').as('spyWinConsoleError');
-      cy.spy(win.console, 'warn').as('spyWinConsoleWarn');
+    cy.on("window:before:load", (win) => {
+      cy.spy(win.console, "error").as("spyWinConsoleError");
+      cy.spy(win.console, "warn").as("spyWinConsoleWarn");
     });
     setupEthBridge();
     cy.server({ force404: true });
@@ -25,18 +26,18 @@ describe('Landing Page', () => {
   });
 
   afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0);
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0);
+    cy.get("@spyWinConsoleError").should("have.callCount", 0);
+    cy.get("@spyWinConsoleWarn").should("have.callCount", 0);
   });
   const setupGetUserProfileVerified = () => {
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
-      response: userProfileVerified,
+      response: userProfileVerified
     });
   };
   const setupEthBridge = () => {
-    cy.on('window:before:load', (win) => {
+    cy.on("window:before:load", (win) => {
       // @ts-ignore
       win.ethereum = getCustomizedBridge();
     });
@@ -44,75 +45,75 @@ describe('Landing Page', () => {
 
   const setupGetChainListServerGeneral = () => {
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/chain/list/`,
-      response: chainList,
+      response: chainList
     });
   };
   const setupGetChainListServerNotAuthenticated = () => {
     setupGetChainListServerGeneral();
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
-      response: chainList,
+      response: chainList
     });
   };
 
   const setupGetChainListAuthenticated = () => {
     setupGetChainListServerGeneral();
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
       response: chainListAuthenticatedClaimedFirst,
-      delay: CYPRESS_FAST_INTERVAL / 4,
-    }).as('chainListAuthenticated');
+      delay: CYPRESS_FAST_INTERVAL / 4
+    }).as("chainListAuthenticated");
   };
   const setupGetUserProfileNotExists = () => {
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/user/${TEST_ADDRESS_NEVER_USE}/`,
       status: 404,
-      response: {},
+      response: {}
     });
   };
 
-  it('creates user if not exists', () => {
+  it("creates user if not exists", () => {
     setupGetChainListServerNotAuthenticated();
 
     setupGetUserProfileNotExists();
 
     cy.route({
-      method: 'POST',
+      method: "POST",
       url: `/api/v1/user/create/`,
-      response: userProfileNotVerified,
-    }).as('createUser');
+      response: userProfileNotVerified
+    }).as("createUser");
     cy.visit(RoutePath.FAUCET);
     connectWallet();
-    cy.wait('@createUser');
+    cy.wait("@createUser");
   });
 
-  it('loads chain list', () => {
+  it("loads chain list", () => {
     cy.route({
-      method: 'GET',
+      method: "GET",
       url: `/api/v1/chain/list/`,
       response: chainList,
-      delay: CYPRESS_FAST_INTERVAL / 4,
+      delay: CYPRESS_FAST_INTERVAL / 4
     });
     cy.visit(RoutePath.FAUCET);
-    cy.get(`[data-testid=chain-list-loading]`).should('exist');
-    cy.get(`[data-testid=chain-list-loading]`).should('not.exist');
+    cy.get(`[data-testid=chain-list-loading]`).should("exist");
+    cy.get(`[data-testid=chain-list-loading]`).should("not.exist");
     cy.get(`[data-testid=chain-name-${chainList[0].pk}]`).contains(chainList[0].chainName);
-    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should("exist");
   });
 
-  it('loads chain list authenticated', () => {
+  it("loads chain list authenticated", () => {
     setupGetChainListAuthenticated();
     cy.visit(RoutePath.FAUCET);
     connectWallet();
-    cy.get(`[data-testid=chain-claimed-${chainList[0].pk}]`).should('exist');
-    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should('exist');
+    cy.get(`[data-testid=chain-claimed-${chainList[0].pk}]`).should("exist");
+    cy.get(`[data-testid=chain-show-claim-${chainList[1].pk}]`).should("exist");
     cy.wait(CYPRESS_FAST_INTERVAL);
     // @ts-ignore
-    cy.shouldBeCalled('chainListAuthenticated', 2);
+    cy.shouldBeCalled("chainListAuthenticated", 2);
   });
 });
