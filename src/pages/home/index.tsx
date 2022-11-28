@@ -1,20 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import ChainList from './components/Chainlist/chainlist';
-import Navbar from 'components/common/Navbar/navbar';
-import Header from 'pages/home/components/Header/header';
-import Footer from '../../components/common/Footer/footer';
-import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
+import ChainList from "./components/Chainlist/chainlist";
+import Navbar from "components/common/Navbar/navbar";
+import Header from "pages/home/components/Header/header";
+import Footer from "../../components/common/Footer/footer";
+import ProvideGasCard from "./components/ProvideGasCard/provideGasCard";
 
-import { Body } from 'components/common/Body/body';
-import { DV } from 'components/basic/designVariables';
-import Timer from './components/Timer/timer';
-import SearchInput from './components/SearchInput/searchInput';
-import { Row } from 'components/basic/Row/row';
-import { Col } from 'components/basic/Col/col';
-import ClaimModal from './components/ClaimModal/claimModal';
-import BrightConnectionModal from './components/BrightConnectionModal/brightConnectionModal';
+import { Body } from "components/common/Body/body";
+import { DV } from "components/basic/designVariables";
+import Timer from "./components/Timer/timer";
+import SearchInput from "./components/SearchInput/searchInput";
+import { Row } from "components/basic/Row/row";
+import { Col } from "components/basic/Col/col";
+import ClaimModal from "./components/ClaimModal/claimModal";
+import BrightConnectionModal from "./components/BrightConnectionModal/brightConnectionModal";
 
 const HomeContentWrapper = styled.div`
   max-width: 1310px;

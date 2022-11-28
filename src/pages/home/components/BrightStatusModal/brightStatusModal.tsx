@@ -1,8 +1,7 @@
-import React from 'react';
-
-import Icon from 'components/basic/Icon/Icon';
-import { BrightStatusModalWrapper } from './brightStatusModal.style';
-import { Text } from 'components/basic/Text/text.style';
+import React from "react";
+import Icon from "components/basic/Icon/Icon";
+import { BrightStatusModalWrapper } from "./brightStatusModal.style";
+import { Text } from "components/basic/Text/text.style";
 
 const BrightStatusModal = ({ success }: { success: true }) => {
   function successState() {

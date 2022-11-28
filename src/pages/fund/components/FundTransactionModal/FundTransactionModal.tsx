@@ -1,20 +1,19 @@
-import React from 'react';
-
-import { FundTransactionModalWrapper } from './FundTransactionModal.style';
-import Icon from 'components/basic/Icon/Icon';
-import { Text } from 'components/basic/Text/text.style';
-import { SecondaryButton } from 'components/basic/Button/button';
-import { Chain } from '../../../../types';
-import { formatBalance } from '../../../../utils/numbers';
-import { getTxUrl } from '../../../../utils';
+import React from "react";
+import { FundTransactionModalWrapper } from "./FundTransactionModal.style";
+import Icon from "components/basic/Icon/Icon";
+import { Text } from "components/basic/Text/text.style";
+import { SecondaryButton } from "components/basic/Button/button";
+import { Chain } from "../../../../types";
+import { formatBalance } from "../../../../utils/numbers";
+import { getTxUrl } from "../../../../utils";
 
 const FundTransactionModal = ({
-  selectedChain,
-  txHash,
-  provideGasFeeError,
-  closeModalHandler,
-  fundAmount,
-}: {
+                                selectedChain,
+                                txHash,
+                                provideGasFeeError,
+                                closeModalHandler,
+                                fundAmount
+                              }: {
   provideGasFeeError: string;
   txHash: string;
   selectedChain: Chain | null;
@@ -36,7 +35,7 @@ const FundTransactionModal = ({
               fontSize="14px"
               size="large"
               onClick={() => {
-                window.open(getTxUrl(selectedChain, txHash), '_blank');
+                window.open(getTxUrl(selectedChain, txHash), "_blank");
               }}
             >
               View on Explorer

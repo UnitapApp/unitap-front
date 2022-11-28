@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
-import Icon from 'components/basic/Icon/Icon';
+import React from "react";
+import styled from "styled-components/";
+import { DV } from "components/basic/designVariables";
+import Icon from "components/basic/Icon/Icon";
 
 // ###### Local Styled Components
 
@@ -63,7 +63,7 @@ const Header = () => {
   return (
     <HeaderComp>
       <Spaceman>
-        <Icon iconSrc={'assets/images/claim/header-spaceman.png'} width="180px" height="auto" />
+        <Icon iconSrc={"assets/images/claim/header-spaceman.png"} width="180px" height="auto" />
       </Spaceman>
       <Drops>
         <Icon iconSrc="assets/images/claim/drop.svg" width="19px" height="auto" className="first_drop"></Icon>

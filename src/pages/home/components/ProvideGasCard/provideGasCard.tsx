@@ -1,10 +1,9 @@
-import React from 'react';
-
-import { ProvideGasCardWrapper } from './provideGasCard.style';
-import { Text } from 'components/basic/Text/text.style';
-import { PrimaryOutlinedButton } from 'components/basic/Button/button';
-import RoutePath from '../../../../routes';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { ProvideGasCardWrapper } from "./provideGasCard.style";
+import { Text } from "components/basic/Text/text.style";
+import { PrimaryOutlinedButton } from "components/basic/Button/button";
+import RoutePath from "../../../../routes";
+import { Link } from "react-router-dom";
 
 const ProvideGasCard = () => {
   return (
