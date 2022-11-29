@@ -48,7 +48,7 @@ const Home = () => {
             </Col>
             <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
             <Col xs={12} md={12} lg={6} xlg={6.5}>
-              <Timer />
+              {/* <Timer /> */}
             </Col>
           </Row>
           <ChainList />

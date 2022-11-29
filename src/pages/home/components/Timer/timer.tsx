@@ -25,6 +25,8 @@ const TimerWrapper = styled.div`
 `;
 
 const TimerCount = styled(Text)`
+  font-family: NotoSansMono;
+
   @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     font-size: 24px;
   }
@@ -67,20 +69,14 @@ const Timer = () => {
   }, []);
 
   return (
-    <TimerWrapper>
+    <div className="timer-wrapper flex items-center">
       <TimerLabel color="gray" fontSize="12" mb={0} mr={1}>
-        Claim available for this period:
+        Next Round:
       </TimerLabel>
-      <RemainingCount color="green" fontSize="16" mb={0} mr={1}>
-        {userProfile ? userProfile.totalWeeklyClaimsRemaining : '-'}
-      </RemainingCount>
-      <TimerLabel color="gray" fontSize="12" mb={0} mr={1}>
-        Next Claim Period
-      </TimerLabel>
-      <TimerCount color="white" fontSize="16" mb={0}>
-        {days}:{hours}:{minutes}:{seconds}
+      <TimerCount color="white" fontSize="12" mb={0}>
+        {days} : {hours} : {minutes} : {seconds}
       </TimerCount>
-    </TimerWrapper>
+    </div>
   );
 };
 
