@@ -39,7 +39,7 @@ const Home = () => {
         <HomeContentWrapper>
           <Row>
             <Col xs={24} md={24} lg={24} xlg={24}>
-              <Header />  
+              <Header />
             </Col>
           </Row>
           <Row mdReverse>
@@ -47,9 +47,32 @@ const Home = () => {
               <SearchInput />
             </Col>
             <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
-            <Col xs={12} md={12} lg={6} xlg={6.5}>
-              {/* <Timer /> */}
-            </Col>
+            <div className="flex justify-end items-center ml-auto">
+              <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
+                <div className={`switch__option w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                  EVM
+                </div>
+                <div
+                  className={`switch__option w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
+                    false ? `text-white` : `text-gray80`
+                  }`}
+                >
+                  nonEVM
+                </div>
+              </div>
+              <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
+                <div className={`switch__option w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                  Mainnets
+                </div>
+                <div
+                  className={`switch__option w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
+                    false ? `text-white` : `text-gray80`
+                  }`}
+                >
+                  Testnets
+                </div>
+              </div>
+            </div>
           </Row>
           <ChainList />
           <ProvideGasCard />

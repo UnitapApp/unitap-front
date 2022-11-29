@@ -30,7 +30,7 @@ const SearchInput = () => {
   };
 
   return (
-    <SearchInputWrapper>
+    <div className='search-input relative border-gray30 border-2 bg-gray40 rounded-xl'>
       <Input
         data-testid="search-box"
         icon="search.png"
@@ -40,14 +40,14 @@ const SearchInput = () => {
         iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
-        placeholder="Search Network / Currency"
+        placeholder="Chain name, currency, id"
         pl={7}
-        p={2}
+        p={1.5}
         mb={0}
         backgroundColor="black1"
       ></Input>
-      <Icon iconSrc="assets/images/claim/slash-icon.svg" hoverable className="icon-right"></Icon>
-    </SearchInputWrapper>
+      <Icon iconSrc="assets/images/claim/slash-icon.svg" hoverable className="icon-right absolute right-4 top-[10px] z-10"></Icon>
+    </div>
   );
 };
 
