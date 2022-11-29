@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
-import Label from '../Lable/label';
+import Label from '../Label/label';
 import { DropdownWrapper } from './dropdownWrapper';
 
 interface DropdownProps {

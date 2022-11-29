@@ -1,6 +1,6 @@
 
 *:not(i)
-  font-family: NotoSans
+  font-family: 'Noto Sans', sans-serif
 
 
 code
@@ -29,10 +29,9 @@ body
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif; */
-  font-family: NotoSans
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  background-color: #21212C
+  @apply bg-body
 
 @mixin btn
   @apply ease-out duration-300
@@ -60,6 +59,9 @@ body
 
   .card
     @apply rounded-3xl py-7 px-6
+
+  .home-widget
+    @apply rounded-xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-dark-grey-2
 
   // BUTTON COLOR
 
