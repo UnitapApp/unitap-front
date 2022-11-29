@@ -142,7 +142,7 @@ const ChainList = () => {
   const windowSize = window.innerWidth;
 
   return (
-    <ChainListWrapper>
+    <ChainListWrapper className='mb-20'>
       <div>
         {!chainList.length && (
           <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">

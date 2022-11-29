@@ -75,6 +75,7 @@ const Home = () => {
             </div>
           </Row>
           <ChainList />
+          <p className='provide-gas-title text-white text-xl mr-auto mb-3'>GasTap Chains Balances</p>
           <ProvideGasCard />
         </HomeContentWrapper>
       </Body>
