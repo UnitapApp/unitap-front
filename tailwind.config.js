@@ -20,6 +20,8 @@ module.exports = {
         gray: '#BFBFBF',
         yellowC: '#FFD166',
         greenC: '#7FE3CA',
+        gray00: '#0C0C17',
+        gray10: '#11111C',
         gray20: '#13131E',
         gray30: '#1B1B26',
         gray40: '#1E1E29',

@@ -17,6 +17,7 @@ import RoutePath from 'routes';
 import useWeb3Connector from '../../../hooks/useWeb3Connector';
 import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import NavbarDropdown from './navbarDropdown';
 
 const Navbar = () => {
   const { connect } = useWeb3Connector();
@@ -107,6 +108,7 @@ const Navbar = () => {
           </GradientOutlinedButton>
         )}
         <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" hoverable></Icon>
+        <NavbarDropdown />
       </DesktopNav>
 
       <MobileNav>
