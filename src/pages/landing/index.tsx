@@ -22,10 +22,10 @@ const Landing: FC = () => {
         <section
           id="home-nft"
           className={
-            'items-center px-12 home-widget py-6 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
+            'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 home-widget py-6 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
           }
         >
-          <div className={'flex flex-col gap-4 justify-center'}>
+          <div className={'flex gap-4 md:flex-row flex-col items-center justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Genesis Pass NFT</h3>
             <p>1,136 / 2,000 Minted</p>
           </div>
@@ -81,7 +81,7 @@ const Landing: FC = () => {
           ></Widget>
         </section>
 
-        <section id={'home-future-taps'} className={'flex gap-4 justify-between '}>
+        <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
           <Widget
             description={'Where users can learn to user web 3 technologies'}
             className={'flex-1'}
@@ -115,7 +115,7 @@ const Landing: FC = () => {
             title={'Unitap Stats'}
             titleClass={'!justify-center'}
           >
-            <div className={'flex justify-between mt-4'}>
+            <div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
               <div className={'flex flex-col gap-2 items-center'}>
                 <p className={'text-xl text-space-green font-semibold'}>10</p>
                 <p className={'text-gradient-primary text-xs font-medium'}>EVM Networks</p>
@@ -135,37 +135,37 @@ const Landing: FC = () => {
             </div>
           </Widget>
         </section>
-        <section id="home-footer" className={'flex gap-4'}>
+        <section id="home-footer" className={'flex gap-4 md:flex-row flex-col'}>
           <div
             className={
-              'home-widget w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
+              'home-widget md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
             }
           >
             <h2 className={'text-white'}>Donate to UNITAP</h2>
           </div>
-          <div className={'w-2/3 home-widget after:inset-auto flex'}>
+          <div className={'md:w-2/3 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             <div
               className={
-                'flex justify-center items-center cursor-pointer px-8 border-r-3 border-dark-gray-6 rounded-l-2xl hover:bg-light-space-green transition duration-300 ease-in-out'
+                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 sm:rounded-l-2xl hover:bg-light-space-green transition duration-300 ease-in-out'
               }
             >
               <img src={'/assets/images/landing/twitter-icon.svg'} />
             </div>
             <div
               className={
-                'flex justify-center items-center cursor-pointer px-8 border-r-3 border-dark-gray-6 hover:bg-blue-200 transition duration-300 ease-in-out'
+                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 hover:bg-blue-200 transition duration-300 ease-in-out'
               }
             >
               <img src={'/assets/images/landing/github-icon.svg'} />
             </div>
             <div
               className={
-                'flex justify-center items-center cursor-pointer px-8 border-r-3 border-dark-gray-6 hover:bg-purple-200 transition duration-300 ease-in-out'
+                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 hover:bg-purple-200 transition duration-300 ease-in-out'
               }
             >
               <img src={'/assets/images/landing/discord-icon.svg'} />
             </div>
-            <div className={'flex flex-grow justify-center items-center text-white'}>
+            <div className={'flex flex-grow justify-center items-center text-white py-6 sm:py-0'}>
               <h2>Community</h2>
             </div>
           </div>
