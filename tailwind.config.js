@@ -21,6 +21,7 @@ module.exports = {
         gray: '#BFBFBF',
         yellowC: '#FFD166',
         greenC: '#7FE3CA',
+        'dark-gray-3': '#0C0C17',
         'light-gray': '#EBECEF',
         'light-gray-2': '#EDF2F3',
         'dark-gray': '#757575',
@@ -37,6 +38,7 @@ module.exports = {
       backgroundImage: {
         'home-header-texture': "url('../public/assets/images/landing/home-header-texture.png')",
         'gastap-texture': "url('../public/assets/images/landing/gastap-texture.png')",
+        'g-primary': 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)',
         // 'token-left': "url('/img/tokenLeft-background.svg')",
         // gradient: 'linear-gradient(135deg,#5158f6,#822df5 33.76%,#f3a761)',
         // g1: 'linear-gradient(90.54deg, rgba(239, 71, 111, 0.15) -2.28%, rgba(146, 84, 153, 0.15) 102.51%);',

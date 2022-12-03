@@ -65,10 +65,28 @@ body
 
   // BUTTON COLOR
 
+  .gradient-outline-button
+    @apply text-white bg-g-primary relative z-10 rounded-md before:content-['']
+    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-dark-gray-3
+    button
+      background: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
 
 
   // BUTTON SIZE
+  .btn-default
+    button
+      @apply text-sm
 
+  .btn-large
+    button
+      @apply text-md
+
+  .btn-small
+    @apply px-3 py-2 before:rounded-lg rounded-lg
+    button
+      @apply text-xs font-semibold
 
 
   // STATUS
