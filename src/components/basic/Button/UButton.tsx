@@ -12,7 +12,7 @@ export interface UButtonPropsInterface extends React.HTMLAttributes<HTMLElement>
 }
 
 export type UButtonProps = PropsWithChildren<UButtonPropsInterface>;
-
+// todo btn-small is not reactive
 const UButton = (props: UButtonProps) => {
   const { className, children, description, title, icon, buttonTitle, size } = props;
   return (

@@ -54,6 +54,13 @@ body
   h4
     @apply text-lg font-medium
 
+  .text-gradient-primary
+    @apply bg-g-primary bg-clip-text
+    -webkit-text-fill-color: transparent
+
+// FLEX SIZES
+//  .flex
+
 @layer components
 
 
@@ -61,17 +68,36 @@ body
     @apply rounded-3xl py-7 px-6
 
   .home-widget
-    @apply rounded-xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-dark-grey-2
+    @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-dark-grey-2
+    &:hover
+      .widget-icon
+        @apply animate-wiggle
+
+  //.discord
+  //  &:hover
+  //    svg
+  //      color: white
+
 
   // BUTTON COLOR
 
   .gradient-outline-button
-    @apply text-white bg-g-primary relative z-10 rounded-md before:content-['']
+    @apply bg-g-primary relative z-10 before:content-['']
     @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-dark-gray-3
     button
-      background: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)
-      -webkit-background-clip: text
+      @apply bg-g-primary bg-clip-text
       -webkit-text-fill-color: transparent
+
+  .secondary-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply bg-g-primary bg-clip-text
+      -webkit-text-fill-color: transparent
+
+  .green-text-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply text-space-green
 
 
   // BUTTON SIZE

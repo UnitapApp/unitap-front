@@ -6,6 +6,8 @@ export interface WidgetPropsInterface extends React.HTMLAttributes<HTMLElement> 
   description?: string;
   title?: string;
   buttonTitle?: string;
+  buttonClass?: string;
+  titleClass?: string;
   icon?: string;
 
   buttonAction?(): void;
@@ -14,23 +16,24 @@ export interface WidgetPropsInterface extends React.HTMLAttributes<HTMLElement> 
 export type WidgetProps = PropsWithChildren<WidgetPropsInterface>;
 
 const Widget = (props: WidgetProps) => {
-  const { className, children, description, title, icon, buttonTitle, buttonAction } = props;
+  const { className, children, description, title, icon, buttonTitle, buttonAction, buttonClass, titleClass } = props;
   return (
-    <div className={`${className ? className : ''} home-widget px-4 py-4`}>
-      <header className={'flex gap-4 justify-between'}>
-        <div className={'flex gap-3 flex-auto'}>
+    <div className={`${className ? className : ''} home-widget px-4 pt-4 pb-3`}>
+      <header className={`flex gap-4 justify-between`}>
+        <div className={`${titleClass ? titleClass : ''} flex gap-3 flex-auto`}>
           <p className={'text-white text-xl font-semibold'}>{title}</p>
-          {icon && <img src={`/assets/images/landing/${icon}`} />}
+          {icon && <img className={'widget-icon'} src={`/assets/images/landing/${icon}`} />}
         </div>
-        <div>
-          {/*<button>{buttonTitle}</button>*/}
-          <UButton className={'gradient-outline-button'} size={'small'}>
-            {buttonTitle}
-          </UButton>
-        </div>
+        {buttonTitle && (
+          <div>
+            <UButton className={`${buttonClass ? buttonClass : 'gradient-outline-button'} `} size={'small'}>
+              {buttonTitle}
+            </UButton>
+          </div>
+        )}
       </header>
-      <p className={'text-gray-100 text-xs font-normal py-4'}>{description}</p>
-      <main>{children}</main>
+      {description && <p className={'text-gray-100 text-xs font-normal py-4'}>{description}</p>}
+      <main className={'relative z-10'}>{children}</main>
     </div>
   );
 };
