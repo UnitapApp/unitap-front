@@ -4,7 +4,36 @@ import Widget from './components/widget';
 import UButton from '../../components/basic/Button/UButton';
 
 const Landing: FC = () => {
-  const [tokenList, setTokenList] = useState([1, 2, 3]);
+  const [tokenList] = useState([1, 2, 3]);
+  const [socialLinks] = useState([
+    {
+      img: 'twitter-icon.svg',
+      localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
+      link: '',
+    },
+    {
+      img: 'github-icon.svg',
+      localClass: 'hover:bg-blue-200',
+      link: '',
+    },
+    {
+      img: 'discord-icon.svg',
+      localClass: 'hover:bg-purple-200',
+      link: '',
+    },
+  ]);
+  const [stats] = useState([
+    { name: 'EVM Networks', number: 10 },
+    { name: 'Non-EVM Networks', number: 12 },
+    { name: 'Test Networks', number: 3 },
+    { name: 'Gas Fees Claimed', number: '7,324' },
+  ]);
+  const [futureTaps] = useState([
+    { name: 'Learn Tap', description: 'Where users can learn to user web 3 technologies' },
+    { name: 'Stake Tap', description: 'Where users can learn to user web 3 technologies' },
+    { name: 'Launch Tap', description: 'Where users can learn to user web 3 technologies' },
+  ]);
+
   return (
     <>
       <Navbar />
@@ -82,29 +111,16 @@ const Landing: FC = () => {
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
-          <Widget
-            description={'Where users can learn to user web 3 technologies'}
-            className={'flex-1'}
-            title={'Learn Tap'}
-            buttonTitle={'Soon...'}
-            buttonClass={'secondary-button'}
-          ></Widget>
-
-          <Widget
-            description={'Where users can learn to user web 3 technologies'}
-            className={'flex-1'}
-            title={'Stake Tap'}
-            buttonTitle={'Soon...'}
-            buttonClass={'secondary-button'}
-          ></Widget>
-
-          <Widget
-            description={'Where users can learn to user web 3 technologies'}
-            className={'flex-1'}
-            title={'Launch Tap'}
-            buttonTitle={'Soon...'}
-            buttonClass={'secondary-button'}
-          ></Widget>
+          {futureTaps.map((tap) => (
+            <Widget
+              key={tap.name}
+              description={tap.description}
+              className={'flex-1'}
+              title={tap.name}
+              buttonTitle={'Soon...'}
+              buttonClass={'secondary-button'}
+            ></Widget>
+          ))}
         </section>
 
         <section id="home-stats" className={'flex gap-4 justify-between'}>
@@ -116,22 +132,12 @@ const Landing: FC = () => {
             titleClass={'!justify-center'}
           >
             <div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
-              <div className={'flex flex-col gap-2 items-center'}>
-                <p className={'text-xl text-space-green font-semibold'}>10</p>
-                <p className={'text-gradient-primary text-xs font-medium'}>EVM Networks</p>
-              </div>
-              <div className={'flex flex-col gap-2 items-center'}>
-                <p className={'text-xl text-space-green font-semibold'}>10</p>
-                <p className={'text-gradient-primary text-xs font-medium'}>Non-EVM Networks</p>
-              </div>
-              <div className={'flex flex-col gap-2 items-center'}>
-                <p className={'text-xl text-space-green font-semibold'}>10</p>
-                <p className={'text-gradient-primary text-xs font-medium'}>Test Networks</p>
-              </div>
-              <div className={'flex flex-col gap-2 items-center'}>
-                <p className={'text-xl text-space-green font-semibold'}>7,324</p>
-                <p className={'text-gradient-primary text-xs font-medium'}>Gas Fees Claimed</p>
-              </div>
+              {stats.map((stat) => (
+                <div key={stat.name} className={'flex flex-col gap-2 items-center'}>
+                  <p className={'text-xl text-space-green font-semibold'}>{stat.number}</p>
+                  <p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
+                </div>
+              ))}
             </div>
           </Widget>
         </section>
@@ -144,27 +150,15 @@ const Landing: FC = () => {
             <h2 className={'text-white'}>Donate to UNITAP</h2>
           </div>
           <div className={'md:w-2/3 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
-            <div
-              className={
-                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 sm:rounded-l-2xl hover:bg-light-space-green transition duration-300 ease-in-out'
-              }
-            >
-              <img src={'/assets/images/landing/twitter-icon.svg'} />
-            </div>
-            <div
-              className={
-                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 hover:bg-blue-200 transition duration-300 ease-in-out'
-              }
-            >
-              <img src={'/assets/images/landing/github-icon.svg'} />
-            </div>
-            <div
-              className={
-                'flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 hover:bg-purple-200 transition duration-300 ease-in-out'
-              }
-            >
-              <img src={'/assets/images/landing/discord-icon.svg'} />
-            </div>
+            {socialLinks.map((social) => (
+              <div
+                key={social.link}
+                className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 transition duration-300 ease-in-out`}
+              >
+                <img src={`/assets/images/landing/${social.img}`} />
+              </div>
+            ))}
+
             <div className={'flex flex-grow justify-center items-center text-white py-6 sm:py-0'}>
               <h2>Community</h2>
             </div>
