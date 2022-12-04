@@ -1,9 +1,10 @@
 import React, { useContext, useMemo } from "react";
 import {
   BrightConnectedButton,
-  BrightOutlinedButton,
+  BrightPrimaryButton,
+  GradientOutlinedButton,
   LightOutlinedButton,
-  PrimaryOutlinedButton
+  PrimaryOutlinedButton,
 } from "components/basic/Button/button";
 import { UserProfileContext } from "hooks/useUserProfile";
 import { BrightIdVerificationStatus } from "types";
@@ -14,6 +15,7 @@ import RoutePath from "routes";
 import { ClaimContext } from "hooks/useChainList";
 import useWalletActivation from "../../../hooks/useWalletActivation";
 import { useWeb3React } from "@web3-react/core";
+import Icon from 'components/basic/Icon/Icon';
 
 const Navbar = () => {
   const { tryActivation } = useWalletActivation();
@@ -28,8 +30,8 @@ const Navbar = () => {
     if (account) {
       if (userProfile) {
         return userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
-          ? "BrightID Connected"
-          : "Connect BrightID";
+          ? 'Connected'
+          : 'Connect BrightID';
       }
       return "Loading...";
     }
@@ -42,9 +44,9 @@ const Navbar = () => {
   return (
     <NavbarWrapper>
       <NavLogo
-        iconSrc="logo.svg"
-        width="250px"
-        height="40px"
+        iconSrc="assets/images/navbar/navbar_logo_v1.3.svg"
+        width="140px"
+        height="32px"
         mrAuto
         onClick={() => navigate(RoutePath.LANDING)}
         style={{ cursor: "pointer" }}
@@ -61,23 +63,23 @@ const Navbar = () => {
           <BrightConnectedButton
             className="has-icon"
             data-testid="brightid-connected"
-            icon="green-tick.svg"
+            iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
             fontSize="12px"
-            fontWeight="normal"
-            minWidth="175px"
-            iconWidth={14}
-            iconHeight={10}
+            fontWeight="500"
+            minWidth="130px"
+            iconLeftWidth={16}
+            iconLeftHeight={16}
             mr={2}
           >
             {connectBrightButtonLabel}
           </BrightConnectedButton>
         ) : (
-          <BrightOutlinedButton
+          <BrightPrimaryButton
             data-testid="brightid-show-modal"
             disabled={!account}
             fontSize="12px"
-            fontWeight="normal"
-            minWidth="175px"
+            fontWeight="800"
+            minWidth="150px"
             mr={2}
             onClick={() => {
               if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
@@ -86,17 +88,25 @@ const Navbar = () => {
             }}
           >
             {connectBrightButtonLabel}
-          </BrightOutlinedButton>
+          </BrightPrimaryButton>
         )}
         {active ? (
-          <LightOutlinedButton data-testid="wallet-connect" minWidth="175px" fontSize="12px">
+          <LightOutlinedButton data-testid="wallet-connect" minWidth="155px" fontSize="12px" fontWeight="400" mr={2}>
             {shortenAddress(account)}
           </LightOutlinedButton>
         ) : (
-          <LightOutlinedButton data-testid="wallet-connect" minWidth="175px" onClick={tryActivation} fontSize="12px">
+          <GradientOutlinedButton
+            data-testid="wallet-connect"
+            minWidth="155px"
+            fontWeight="500"
+            onClick={tryActivation}
+            fontSize="12px"
+            mr={2}
+          >
             Connect Wallet
-          </LightOutlinedButton>
+          </GradientOutlinedButton>
         )}
+        <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" hoverable></Icon>
       </DesktopNav>
 
       <MobileNav>
@@ -108,14 +118,24 @@ const Navbar = () => {
         </div>
         <div className="menu-items">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            <BrightConnectedButton icon="green-tick.svg" iconWidth={24} iconHeight={16} mb={2}>
+            <BrightConnectedButton
+              iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
+              fontSize="12px"
+              fontWeight="500"
+              iconLeftWidth={16}
+              iconLeftHeight={16}
+              mb={2}
+            >
               {connectBrightButtonLabel}
             </BrightConnectedButton>
           ) : (
-            <BrightOutlinedButton
+            <BrightPrimaryButton
               data-testid="brightid-show-modal"
               mb={2}
               disabled={!account}
+              fontSize="12px"
+              fontWeight="800"
+              minWidth="150px"
               onClick={() => {
                 if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
                   openBrightIdModal();
@@ -123,12 +143,12 @@ const Navbar = () => {
               }}
             >
               {connectBrightButtonLabel}
-            </BrightOutlinedButton>
+            </BrightPrimaryButton>
           )}
           {active ? (
             <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
           ) : (
-            <LightOutlinedButton onClick={tryActivation}>Connect Wallet</LightOutlinedButton>
+            <GradientOutlinedButton onClick={tryActivation}>Connect Wallet</GradientOutlinedButton>
           )}
         </div>
       </MobileNav>

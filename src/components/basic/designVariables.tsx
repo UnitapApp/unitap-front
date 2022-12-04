@@ -19,6 +19,8 @@ interface designVariable {
     dark: string;
     dark1: string;
     gray: string;
+    gray00: string;
+    gray10: string;
     gray70: string;
     gray90: string;
     placeholderGray: string;
@@ -64,6 +66,8 @@ export const DV: designVariable = {
     dark: '#11111C',
     dark1: '#030317',
     gray: '#4C4C64',
+    gray00: '#0C0C17',
+    gray10: '#11111C',
     gray70: '#30303A',
     gray90: '#67677B',
     placeholderGray: '#979797',

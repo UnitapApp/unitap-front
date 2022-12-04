@@ -1,0 +1,140 @@
+
+*:not(i)
+  font-family: 'Noto Sans', sans-serif
+
+
+code
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace
+
+
+/* Chrome, Safari, Edge, Opera */
+.fund-input::-webkit-outer-spin-button,
+.fund-input::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+
+/* Firefox */
+.fund-input
+  -moz-appearance: textfield
+
+
+@tailwind base
+@tailwind components
+@tailwind utilities
+
+
+body
+  margin: 0
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  @apply bg-body
+
+@mixin btn
+  @apply ease-out duration-300
+
+
+@layer base
+
+  // TYPOGRAPHY
+
+  h1
+    @apply text-3xl font-semibold items-center
+
+
+  h2
+    @apply text-2xl font-semibold
+
+  h3
+    @apply text-xl font-semibold
+
+  h4
+    @apply text-lg font-medium
+
+  .text-gradient-primary
+    @apply bg-g-primary bg-clip-text
+    -webkit-text-fill-color: transparent
+
+// FLEX SIZES
+//  .flex
+
+@layer components
+
+
+  .card
+    @apply rounded-3xl py-7 px-6
+
+  .home-widget
+    @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-dark-grey-2
+    &:hover
+      .widget-icon
+        @apply animate-wiggle
+
+  //.discord
+  //  &:hover
+  //    svg
+  //      color: white
+
+
+  // BUTTON COLOR
+
+  .gradient-outline-button
+    @apply bg-g-primary relative z-10 before:content-['']
+    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-dark-gray-3
+    button
+      @apply bg-g-primary bg-clip-text
+      -webkit-text-fill-color: transparent
+
+  .secondary-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply bg-g-primary bg-clip-text
+      -webkit-text-fill-color: transparent
+
+  .green-text-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply text-space-green
+
+
+  // BUTTON SIZE
+  .btn-default
+    button
+      @apply text-sm
+
+  .btn-large
+    button
+      @apply text-md
+
+  .btn-small
+    @apply px-3 py-2 before:rounded-lg rounded-lg
+    button
+      @apply text-xs font-semibold
+
+
+  // STATUS
+
+  .status-red
+    @apply bg-red-100 text-red-500
+
+
+//@layer utilities
+//  .primary-shadow-xl
+//    filter: drop-shadow(0px 8px 18px rgba(81, 88, 246, 0.15))
+
+
+.countdown-container
+  div
+    @apply flex justify-center items-center flex-col
+
+  p
+    &:first-child
+      @apply text-5xl font-bold
+
+    &:last-child
+      @apply text-label text-sm font-medium
+
+

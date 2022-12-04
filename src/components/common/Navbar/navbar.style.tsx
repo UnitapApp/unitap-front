@@ -3,24 +3,21 @@ import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 
 export const NavbarWrapper = styled.div`
-  position: absolute;
   width: 100%;
-  z-index: 11;
   display: flex;
-  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 10}px;
-  @media screen and (max-width: ${DV.breakpoints.tablet}) {
-    padding-left: ${DV.sizes.basePadding * 4}px;
-  }
+  position: fixed;
+  z-index: 100;
+  background-color: ${DV.colors.gray10};
+  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 4}px;
 `;
 
 export const NavLogo = styled(Icon)`
-  margin-left: -${DV.sizes.baseMargin * 5}px;
 `;
 
 export const DesktopNav = styled.div`
   display: none;
   @media only screen and (min-width: ${DV.breakpoints.tablet}) {
-    display: block;
+    display: flex;
   }
 `;
 
@@ -47,7 +44,7 @@ export const MobileNav = styled.div`
     width: 32px;
     padding-left: ${DV.sizes.basePadding * -2}px;
     position: absolute;
-    top: ${DV.sizes.basePadding * 3}px;
+    top: ${DV.sizes.basePadding * 2}px;
     right: 20px;
     z-index: 1001;
     display: flex;

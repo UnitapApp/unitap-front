@@ -2,7 +2,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import * as React from 'react';
 import Icon from '../Icon/Icon';
-import Label from '../Lable/label';
+import Label from '../Label/label';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: string;
@@ -84,7 +84,7 @@ const Input = (props: InputProps) => {
     <InputWrapper width={width} mb={mb}>
       {label && <Label>{label}</Label>}
       {icon && <Icon iconSrc={icon} width={iconWidth} height={iconHeight} className="input-icon" />}
-      <RawInput data-testid={testid} {...props}/>
+      <RawInput data-testid={testid} {...props} />
       {postfix && <p className="input-postfix">{postfix}</p>}
     </InputWrapper>
   );
