@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'xl1440': '1440px'
+        xl1440: '1440px',
       },
       width: {
         68: '17rem',
@@ -34,6 +34,7 @@ module.exports = {
         gray50: '#21212C',
         gray80: '#4C4C5C',
         gray90: '#67677B',
+        gray100: '#B5B5C6',
         'light-gray': '#EBECEF',
         'light-gray-2': '#EDF2F3',
         'dark-gray': '#757575',
@@ -93,6 +94,10 @@ module.exports = {
       animation: {
         wiggle: 'wiggle 1s ease-in-out, wiggle 1s ease-in-out',
         flip: 'flip 0.5s ease-in ',
+      },
+      transitionProperty: {
+        height: 'height',
+        spacing: 'margin, padding',
       },
     },
   },

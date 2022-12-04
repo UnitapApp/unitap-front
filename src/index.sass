@@ -122,6 +122,17 @@ body
   .status-red
     @apply bg-red-100 text-red-500
 
+  .navbar-dropdown__item
+    @apply w-52 flex items-center h-11 justify-between bg-gray30 rounded-lg border-2 border-gray40 px-4 mb-2
+    &__title
+      @apply text-white text-sm font-semibold
+
+    &--active
+      @apply bg-gray10 rounded-lg border-2 border-gray100 px-4 mb-2
+      &__title
+        @apply text-white text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text
+      
+
 
 //@layer utilities
 //  .primary-shadow-xl

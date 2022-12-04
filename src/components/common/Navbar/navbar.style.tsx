@@ -2,23 +2,12 @@ import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 
-export const NavbarWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  background-color: ${DV.colors.gray10};
-  padding: ${DV.sizes.basePadding * 1.5}px ${DV.sizes.basePadding * 4}px;
-`;
-
-export const NavLogo = styled(Icon)`
-`;
-
 export const DesktopNav = styled.div`
   display: none;
   @media only screen and (min-width: ${DV.breakpoints.tablet}) {
     display: flex;
+    display: flex;
+    align-items: center;
   }
 `;
 
