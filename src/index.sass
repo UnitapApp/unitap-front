@@ -1,6 +1,6 @@
 
 *:not(i)
-  font-family: NotoSans
+  font-family: 'Noto Sans', sans-serif
 
 .font-mono
   font-family: NotoSansMono !important
@@ -31,10 +31,9 @@ body
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif; */
-  font-family: NotoSans
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  background-color: #21212C
+  @apply bg-body
 
 @mixin btn
   @apply ease-out duration-300
@@ -57,18 +56,65 @@ body
   h4
     @apply text-lg font-medium
 
+  .text-gradient-primary
+    @apply bg-g-primary bg-clip-text
+    -webkit-text-fill-color: transparent
+
+// FLEX SIZES
+//  .flex
+
 @layer components
 
 
   .card
     @apply rounded-3xl py-7 px-6
 
+  .home-widget
+    @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-dark-grey-2
+    &:hover
+      .widget-icon
+        @apply animate-wiggle
+
+  //.discord
+  //  &:hover
+  //    svg
+  //      color: white
+
+
   // BUTTON COLOR
 
+  .gradient-outline-button
+    @apply bg-g-primary relative z-10 before:content-['']
+    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-dark-gray-3
+    button
+      @apply bg-g-primary bg-clip-text
+      -webkit-text-fill-color: transparent
+
+  .secondary-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply bg-g-primary bg-clip-text
+      -webkit-text-fill-color: transparent
+
+  .green-text-button
+    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    button
+      @apply text-space-green
 
 
   // BUTTON SIZE
+  .btn-default
+    button
+      @apply text-sm
 
+  .btn-large
+    button
+      @apply text-md
+
+  .btn-small
+    @apply px-3 py-2 before:rounded-lg rounded-lg
+    button
+      @apply text-xs font-semibold
 
 
   // STATUS

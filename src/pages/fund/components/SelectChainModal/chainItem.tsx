@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { DV } from 'components/basic/designVariables';
+import React from "react";
+import styled from "styled-components";
+import { DV } from "components/basic/designVariables";
 
-import Icon from 'components/basic/Icon/Icon';
-import { Text } from 'components/basic/Text/text.style';
+import Icon from "components/basic/Icon/Icon";
+import { Text } from "components/basic/Text/text.style";
 
 interface ChainItemProps {
   icon: string;
   title: string;
   selected?: boolean;
   onClick: () => void;
-  'data-testid'?: string;
+  "data-testid"?: string;
 }
 
 const ChainItemWrapper = styled.div`
@@ -34,7 +34,7 @@ const ChainItemWrapper = styled.div`
 const ChainItem = (props: ChainItemProps) => {
   const { title, selected, icon, onClick } = props;
   return (
-    <ChainItemWrapper onClick={onClick} data-testid={props['data-testid']}>
+    <ChainItemWrapper onClick={onClick} data-testid={props["data-testid"]}>
       <Icon mr={2} width="32px" iconSrc={icon}></Icon>
       <Text mb={0} mrAuto>
         {title}

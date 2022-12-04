@@ -1,20 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import ChainList from './components/Chainlist/chainlist';
-import Navbar from 'components/common/Navbar/navbar';
-import Header from 'pages/home/components/Header/header';
-import Footer from '../../components/common/Footer/footer';
-import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
+import ChainList from "./components/Chainlist/chainlist";
+import Navbar from "components/common/Navbar/navbar";
+import Header from "pages/home/components/Header/header";
+import Footer from "../../components/common/Footer/footer";
+import ProvideGasCard from "./components/ProvideGasCard/provideGasCard";
 
-import { Body } from 'components/common/Body/body';
-import { DV } from 'components/basic/designVariables';
-import Timer from './components/Timer/timer';
-import SearchInput from './components/SearchInput/searchInput';
-import { Row } from 'components/basic/Row/row';
-import { Col } from 'components/basic/Col/col';
-import ClaimModal from './components/ClaimModal/claimModal';
-import BrightConnectionModal from './components/BrightConnectionModal/brightConnectionModal';
+import { Body } from "components/common/Body/body";
+import { DV } from "components/basic/designVariables";
+import Timer from "./components/Timer/timer";
+import SearchInput from "./components/SearchInput/searchInput";
+import { Row } from "components/basic/Row/row";
+import { Col } from "components/basic/Col/col";
+import ClaimModal from "./components/ClaimModal/claimModal";
+import BrightConnectionModal from "./components/BrightConnectionModal/brightConnectionModal";
 
 const HomeContentWrapper = styled.div`
   max-width: 1310px;
@@ -47,13 +47,13 @@ const Home = () => {
               <SearchInput />
             </Col>
             <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
-            <div className="flex justify-end items-center ml-auto">
+            <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
-                <div className={`switch__option w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
                   EVM
                 </div>
                 <div
-                  className={`switch__option w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
+                  className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
                     false ? `text-white` : `text-gray80`
                   }`}
                 >
@@ -61,11 +61,11 @@ const Home = () => {
                 </div>
               </div>
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
-                <div className={`switch__option w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
                   Mainnets
                 </div>
                 <div
-                  className={`switch__option w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
+                  className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
                     false ? `text-white` : `text-gray80`
                   }`}
                 >

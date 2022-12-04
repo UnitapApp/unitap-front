@@ -1,25 +1,26 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { PrimaryButton } from 'components/basic/Button/button';
-import { ContentCard, ContentWrapper } from './content.style';
-import Icon from 'components/basic/Icon/Icon';
-import Input from 'components/basic/Input/input';
-import Dropdown from 'components/basic/Dropdown/dropdown';
-import { ClaimContext } from '../../../../hooks/useChainList';
-import { Chain } from '../../../../types';
-import { useAddAndSwitchToChain } from '../../../../hooks/useAddAndSwitchToChain';
-import useActiveWeb3React from '../../../../hooks/useActiveWeb3React';
-import { parseEther } from '@ethersproject/units';
-import Modal from 'components/common/Modal/modal';
-import SelectChainModal from '../SelectChainModal/selectChainModal';
-import FundTransactionModal from '../FundTransactionModal/FundTransactionModal';
-import useWeb3Connector from '../../../../hooks/useWeb3Connector';
-import { getChainIcon } from '../../../../utils';
-import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from '../../../../utils/web3';
+import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { PrimaryButton } from "components/basic/Button/button";
+import { ContentCard, ContentWrapper } from "./content.style";
+import Icon from "components/basic/Icon/Icon";
+import Input from "components/basic/Input/input";
+import Dropdown from "components/basic/Dropdown/dropdown";
+import { ClaimContext } from "../../../../hooks/useChainList";
+import { Chain } from "../../../../types";
+import { parseEther } from "@ethersproject/units";
+import Modal from "components/common/Modal/modal";
+import SelectChainModal from "../SelectChainModal/selectChainModal";
+import FundTransactionModal from "../FundTransactionModal/FundTransactionModal";
+import { getChainIcon } from "../../../../utils";
+import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from "../../../../utils/web3";
+import useWalletActivation from "../../../../hooks/useWalletActivation";
+import useSelectChain from "../../../../hooks/useSelectChain";
+import { useWeb3React } from "@web3-react/core";
 
 const Content: FC = () => {
   const { chainList } = useContext(ClaimContext);
-  const { active, chainId, library, account } = useActiveWeb3React();
-  const { connect } = useWeb3Connector();
+  const { chainId, provider, account } = useWeb3React();
+  const active = !!account;
+  const { tryActivation } = useWalletActivation();
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
   useEffect(() => {
@@ -28,13 +29,13 @@ const Content: FC = () => {
     }
   }, [chainList, selectedChain]);
 
-  const { addAndSwitchToChain } = useAddAndSwitchToChain();
+  const addAndSwitchToChain = useSelectChain();
 
-  const [fundAmount, setFundAmount] = useState<string>('');
+  const [fundAmount, setFundAmount] = useState<string>("");
 
   const [modalState, setModalState] = useState(false);
-  const [fundTransactionError, setFundTransactionError] = useState('');
-  const [txHash, setTxHash] = useState('');
+  const [fundTransactionError, setFundTransactionError] = useState("");
+  const [txHash, setTxHash] = useState("");
   const isRightChain = useMemo(() => {
     if (!active || !chainId || !selectedChain) return false;
     return chainId === Number(selectedChain.chainId);
@@ -44,13 +45,13 @@ const Content: FC = () => {
     if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
     const message = error?.data?.message || error?.error?.message;
     if (message) {
-      if (message.includes('insufficient funds')) {
-        setFundTransactionError('Error: Insufficient Funds');
+      if (message.includes("insufficient funds")) {
+        setFundTransactionError("Error: Insufficient Funds");
       } else {
         setFundTransactionError(message);
       }
     } else {
-      setFundTransactionError('Unexpected error. Could not estimate gas for this transaction.');
+      setFundTransactionError("Unexpected error. Could not estimate gas for this transaction.");
     }
   }, []);
 
@@ -64,7 +65,7 @@ const Content: FC = () => {
 
   const handleSendFunds = useCallback(async () => {
     if (!active) {
-      await connect();
+      await tryActivation();
       return;
     }
     if (!chainId || !selectedChain || !account || loading) return;
@@ -73,31 +74,31 @@ const Content: FC = () => {
       return;
     }
     if (!Number(fundAmount)) {
-      alert('Enter fund amount');
+      alert("Enter fund amount");
       return;
     }
-    if (!library) return;
+    if (!provider) return;
     const tx = {
       from: account,
       to: selectedChain.fundManagerAddress,
-      value: parseEther(fundAmount),
+      value: parseEther(fundAmount)
     };
     setSubmittingFundTransaction(true);
-    const estimatedGas = await library.estimateGas(tx).catch((err: any) => {
+    const estimatedGas = await provider.estimateGas(tx).catch((err: any) => {
       return err;
     });
 
-    if ('error' in estimatedGas || 'code' in estimatedGas) {
+    if ("error" in estimatedGas || "code" in estimatedGas) {
       handleTransactionError(estimatedGas);
       setSubmittingFundTransaction(false);
       return;
     }
 
-    library
+    provider
       .getSigner()
       .sendTransaction({
         ...tx,
-        ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
+        ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {})
         // gasPrice /// TODO add gasPrice based on EIP 1559
       })
       .then((tx) => {
@@ -117,32 +118,32 @@ const Content: FC = () => {
     loading,
     isRightChain,
     fundAmount,
-    library,
-    connect,
+    provider,
+    tryActivation,
     addAndSwitchToChain,
-    handleTransactionError,
+    handleTransactionError
   ]);
 
   const closeModalHandler = () => {
-    setFundTransactionError('');
-    setTxHash('');
+    setFundTransactionError("");
+    setTxHash("");
     setModalState(false);
   };
 
   const fundActionButtonLabel = useMemo(() => {
     if (!active) {
-      return 'Connect Wallet';
+      return "Connect Wallet";
     }
     if (loading) {
-      return 'Loading...';
+      return "Loading...";
     }
-    return !isRightChain ? 'Switch Network' : 'Submit Contribution';
+    return !isRightChain ? "Switch Network" : "Submit Contribution";
   }, [active, isRightChain, loading]);
 
   return (
     <ContentWrapper>
       <ContentCard>
-        <Icon iconSrc={'assets/images/fund/help-fund-the-tap.svg'} width="220px" height="auto" mb={2} />
+        <Icon iconSrc={"assets/images/fund/help-fund-the-tap.svg"} width="220px" height="auto" mb={2} />
         <p className="content-subtext">
           99% of contributions will be distributed via the tap.
           <br /> 1% of contributions will fund Unitap development.
@@ -171,7 +172,7 @@ const Content: FC = () => {
           value={fundAmount}
           onChange={(e) => setFundAmount(e.target.value)}
           label="Fund Amount"
-          postfix={selectedChain?.symbol || ''}
+          postfix={selectedChain?.symbol || ""}
           type="number"
           step="0.001"
           styleType="success"

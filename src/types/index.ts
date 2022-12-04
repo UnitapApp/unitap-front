@@ -72,3 +72,13 @@ export enum BrightIdModalState {
   CONNECTED_NOT_VERIFIED = '3',
   CONNECTED_AND_VERIFIED = '4',
 }
+
+export enum Network {
+  MAINNET = '0',
+  TESTNET = '1',
+}
+
+export enum Machine { 
+  EVM = '0',
+  NONEVM = '1',
+}

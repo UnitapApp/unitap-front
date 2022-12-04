@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
-import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
-import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
-import { useAddAndSwitchToChain } from 'hooks/useAddAndSwitchToChain';
-import { getChainIcon } from '../../../../utils';
-import Icon from 'components/basic/Icon/Icon';
+import React, { useContext } from "react";
+import styled from "styled-components/";
+import { DV } from "components/basic/designVariables";
+import { ClaimButton, ClaimedButton, SecondaryButton } from "components/basic/Button/button";
+import { ClaimContext } from "hooks/useChainList";
+import { formatWeiBalance } from "utils/numbers";
+import { getChainIcon } from "../../../../utils";
+import Icon from "components/basic/Icon/Icon";
+import useSelectChain from "../../../../hooks/useSelectChain";
+import { useWeb3React } from "@web3-react/core";
 
 // ###### Local Styled Components
 
@@ -27,8 +27,7 @@ const ChainCardTop = styled.div`
   align-items: center;
   border-radius: ${DV.sizes.baseRadius * 1.5}px ${DV.sizes.baseRadius * 1.5}px 0 0;
   background-color: #1e1e29;
-  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 2}px
-    ${DV.sizes.basePadding * 1.5}px;
+  padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 1.5}px;
 
   > p {
     color: white;
@@ -136,8 +135,9 @@ const ChainListWrapper = styled.div`
 const ChainList = () => {
   const { chainList, chainListSearchResult, openClaimModal } = useContext(ClaimContext);
 
-  const { addAndSwitchToChain } = useAddAndSwitchToChain();
-  const { active } = useActiveWeb3React();
+  const addAndSwitchToChain = useSelectChain();
+  const { account } = useWeb3React();
+  const active = !!account;
 
   const windowSize = window.innerWidth;
 
@@ -145,7 +145,7 @@ const ChainList = () => {
     <ChainListWrapper className='mb-20'>
       <div>
         {!chainList.length && (
-          <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
+          <div style={{ color: "white", textAlign: "center" }} data-testid="chain-list-loading">
             Loading...
           </div>
         )}
@@ -176,6 +176,9 @@ const ChainList = () => {
                     <Action>
                       {/* to-do migrate buttom logic*/}
                       {chain.unclaimed !== 0 ? (
+                        // <NoCurrencyButton disabled fontSize='13px'>
+                        //   Currently out of balance
+                        // </NoCurrencyButton>
                         <ClaimButton
                           data-testid={`chain-show-claim-${chain.pk}`}
                           mlAuto
@@ -225,7 +228,7 @@ const ChainList = () => {
         {chainListSearchResult.length === 0 && chainList.length && (
           <Icon
             iconSrc={
-              windowSize > 992 ? 'assets/images/claim/empty-list.svg' : 'assets/images/claim/empty-list-mobile.svg'
+              windowSize > 992 ? "assets/images/claim/empty-list.svg" : "assets/images/claim/empty-list-mobile.svg"
             }
             width="100%"
           />

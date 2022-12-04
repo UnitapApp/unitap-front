@@ -1,29 +1,29 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from "react";
 import {
   BrightConnectedButton,
-  BrightOutlinedButton,
   BrightPrimaryButton,
   GradientOutlinedButton,
   LightOutlinedButton,
   PrimaryOutlinedButton,
-} from 'components/basic/Button/button';
-import { UserProfileContext } from 'hooks/useUserProfile';
-import { BrightIdVerificationStatus } from 'types';
-import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { shortenAddress } from 'utils';
-import { DesktopNav, MobileNav, NavbarWrapper, NavLogo } from './navbar.style';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import RoutePath from 'routes';
-import useWeb3Connector from '../../../hooks/useWeb3Connector';
-import { ClaimContext } from 'hooks/useChainList';
+} from "components/basic/Button/button";
+import { UserProfileContext } from "hooks/useUserProfile";
+import { BrightIdVerificationStatus } from "types";
+import { shortenAddress } from "utils";
+import { DesktopNav, MobileNav, NavbarWrapper, NavLogo } from "./navbar.style";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import RoutePath from "routes";
+import { ClaimContext } from "hooks/useChainList";
+import useWalletActivation from "../../../hooks/useWalletActivation";
+import { useWeb3React } from "@web3-react/core";
 import Icon from 'components/basic/Icon/Icon';
 import NavbarDropdown from './navbarDropdown';
 
 const Navbar = () => {
-  const { connect } = useWeb3Connector();
+  const { tryActivation } = useWalletActivation();
 
   const { openBrightIdModal } = useContext(ClaimContext);
-  const { active, account, chainId } = useActiveWeb3React();
+  const { account, chainId } = useWeb3React();
+  const active = !!account;
 
   const { userProfile } = useContext(UserProfileContext);
 
@@ -34,9 +34,9 @@ const Navbar = () => {
           ? 'Connected'
           : 'Connect BrightID';
       }
-      return 'Loading...';
+      return "Loading...";
     }
-    return 'Connect BrightID';
+    return "Connect BrightID";
   }, [account, userProfile]);
 
   const location = useLocation();
@@ -50,9 +50,9 @@ const Navbar = () => {
         height="32px"
         mrAuto
         onClick={() => navigate(RoutePath.LANDING)}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       />
-      {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
+      {process.env.REACT_APP_IS_CYPRESS === "true" && <span data-testid="chain-id">{chainId}</span>}
       <DesktopNav>
         {location.pathname === RoutePath.FUND ? (
           <Link to={RoutePath.FAUCET}>
@@ -100,7 +100,7 @@ const Navbar = () => {
             data-testid="wallet-connect"
             minWidth="155px"
             fontWeight="500"
-            onClick={connect}
+            onClick={tryActivation}
             fontSize="12px"
             mr={2}
           >
@@ -108,7 +108,7 @@ const Navbar = () => {
           </GradientOutlinedButton>
         )}
         <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" hoverable></Icon>
-        <NavbarDropdown />
+        {/* <NavbarDropdown /> */}
       </DesktopNav>
 
       <MobileNav>
@@ -150,7 +150,7 @@ const Navbar = () => {
           {active ? (
             <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
           ) : (
-            <GradientOutlinedButton onClick={connect}>Connect Wallet</GradientOutlinedButton>
+            <GradientOutlinedButton onClick={tryActivation}>Connect Wallet</GradientOutlinedButton>
           )}
         </div>
       </MobileNav>

@@ -1,20 +1,20 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getActiveClaimHistory, getChainList } from 'api';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { claimMax, getActiveClaimHistory, getChainList } from "api";
 import {
   BrightIdModalState,
   BrightIdVerificationStatus,
   Chain,
   ClaimBoxState,
   ClaimBoxStateContainer,
-  ClaimReceipt,
-} from 'types';
-import { UserProfileContext } from './useUserProfile';
-import useActiveWeb3React from './useActiveWeb3React';
-import { RefreshContext } from 'context/RefreshContext';
-import searchChainList from 'utils/hook/searchChainList';
-import getClaimBoxState from 'utils/hook/getClaimBoxState';
-import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
-import removeRequest from 'utils/hook/claimRequests';
+  ClaimReceipt
+} from "types";
+import { UserProfileContext } from "./useUserProfile";
+import { RefreshContext } from "context/RefreshContext";
+import searchChainList from "utils/hook/searchChainList";
+import getClaimBoxState from "utils/hook/getClaimBoxState";
+import getActiveClaimReciept from "utils/hook/getActiveClaimReciept";
+import removeRequest from "utils/hook/claimRequests";
+import { useWeb3React } from "@web3-react/core";
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -34,27 +34,33 @@ export const ClaimContext = createContext<{
   chainList: [],
   chainListSearchResult: [],
   changeSearchPhrase: null,
-  claim: (chainPK: number) => {},
+  claim: (chainPK: number) => {
+  },
   activeClaimReceipt: null,
-  closeClaimModal: () => {},
-  openClaimModal: (chain: Chain) => {},
+  closeClaimModal: () => {
+  },
+  openClaimModal: (chain: Chain) => {
+  },
   activeChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
-  retryClaim: () => {},
-  openBrightIdModal: () => {},
-  closeBrightIdModal: () => {},
-  brightidModalStatus: BrightIdModalState.CLOSED,
+  retryClaim: () => {
+  },
+  openBrightIdModal: () => {
+  },
+  closeBrightIdModal: () => {
+  },
+  brightidModalStatus: BrightIdModalState.CLOSED
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [chainList, setChainList] = useState<Chain[]>([]);
-  const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const [searchPhrase, setSearchPhrase] = useState<string>("");
 
   const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>([]);
   const [activeClaimReceipt, setActiveClaimReceipt] = useState<ClaimReceipt | null>(null);
   const [claimBoxStatus, setClaimBoxStatus] = useState<ClaimBoxStateContainer>({
     status: ClaimBoxState.CLOSED,
-    lastFailPk: null,
+    lastFailPk: null
   });
   const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
 
@@ -63,20 +69,21 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
 
-  const { account: address, account } = useActiveWeb3React();
+  const { account: address, account } = useWeb3React();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
   const brightIdVerified = useMemo(
     () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
-    [userProfile],
+    [userProfile]
   );
 
   const updateChainList = useCallback(async () => {
     try {
       const newChainList = await getChainList(userProfile ? address : null);
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) {
+    }
   }, [address, userProfile]);
 
   const updateActiveClaimHistory = useCallback(async () => {
@@ -84,7 +91,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
       try {
         const newClaimHistory = await getActiveClaimHistory(address);
         setActiveClaimHistory(newClaimHistory);
-      } catch (e) {}
+      } catch (e) {
+      }
     }
   }, [address]);
 
@@ -114,9 +122,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(address, brightIdVerified, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
+        getClaimBoxState(address, brightIdVerified, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests)
       ),
-    [address, brightIdVerified, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
+    [address, brightIdVerified, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory]
   );
 
   const claim = useCallback(
@@ -135,7 +143,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [account, brightIdVerified, claimRequests, updateActiveClaimHistory],
+    [account, brightIdVerified, claimRequests, updateActiveClaimHistory]
   );
 
   const chainListSearchResult = useMemo(() => searchChainList(searchPhrase, chainList), [searchPhrase, chainList]);
@@ -166,7 +174,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         retryClaim,
         openBrightIdModal,
         closeBrightIdModal,
-        brightidModalStatus,
+        brightidModalStatus
       }}
     >
       {children}

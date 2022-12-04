@@ -225,6 +225,11 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
   }
 `;
 
+export const NoCurrencyButton = styled(Button)`
+  background: ${DV.colors.gray90};
+  color: ${DV.colors.gray70};
+`;
+
 export const ClaimedButton = styled(Button)`
   width: 220px;
   text-align: left;
