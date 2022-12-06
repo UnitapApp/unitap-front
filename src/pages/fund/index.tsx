@@ -5,16 +5,14 @@ import Content from './components/Content/content';
 import Header from './components/Header/header';
 import Footer from 'components/common/Footer/footer';
 
-import { Body } from 'components/common/Body/body';
-
 const Fund: FC = () => {
   return (
     <>
       <Navbar />
-      <Body>
+      <div className={'unitap-body'}>
         <Header />
         <Content />
-      </Body>
+      </div>
       <Footer />
     </>
   );

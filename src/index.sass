@@ -60,11 +60,22 @@ body
     @apply bg-g-primary bg-clip-text
     -webkit-text-fill-color: transparent
 
-// FLEX SIZES
-//  .flex
+  // FLEX SIZES
+
+  .flex--1
+    flex: 1
+
+  .flex-2
+    flex: 2
+
+  .flex-3
+    flex: 3
+
+  .flex-4
+    flex: 4
+
 
 @layer components
-
 
   .card
     @apply rounded-3xl py-7 px-6
@@ -75,29 +86,28 @@ body
       .widget-icon
         @apply animate-wiggle
 
-  //.discord
-  //  &:hover
-  //    svg
-  //      color: white
+  .unitap-body
+    @apply h-auto mt-16
+    min-height: calc(100vh - 65px)
 
 
   // BUTTON COLOR
 
   .gradient-outline-button
     @apply bg-g-primary relative z-10 before:content-['']
-    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-dark-gray-3
+    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-gray00
     button
       @apply bg-g-primary bg-clip-text
       -webkit-text-fill-color: transparent
 
   .secondary-button
-    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    @apply border-2 border-dark-gray-5 bg-gray00
     button
       @apply bg-g-primary bg-clip-text
       -webkit-text-fill-color: transparent
 
   .green-text-button
-    @apply border-2 border-dark-gray-5 bg-dark-gray-3
+    @apply border-2 border-dark-gray-5 bg-gray00
     button
       @apply text-space-green
 
@@ -131,7 +141,6 @@ body
       @apply bg-gray10 rounded-lg border-2 border-gray100 px-4 mb-2
       &__title
         @apply text-white text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text
-      
 
 
 //@layer utilities

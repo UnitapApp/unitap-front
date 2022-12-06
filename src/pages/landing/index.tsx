@@ -76,7 +76,7 @@ const Landing: FC = () => {
               {tokenList.map((token) => (
                 <li
                   key={token}
-                  className={'flex text-xs bg-dark-gray-4 rounded-xl py-3 px-3 items-center justify-between mb-2'}
+                  className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
                 >
                   <div className={'flex gap-2 items-center'}>
                     <p>#1</p>
@@ -147,14 +147,14 @@ const Landing: FC = () => {
               'home-widget md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
             }
           >
-            <h2 className={'text-white'}>Donate to UNITAP</h2>
+            <h2 className={'text-white'}>Donate to Unitap</h2>
           </div>
           <div className={'md:w-2/3 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             {socialLinks.map((social) => (
               <a
                 href={social.link}
                 key={social.link}
-                className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 transition duration-300 ease-in-out`}
+                className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
               >
                 <img src={`/assets/images/landing/${social.img}`} />
               </a>

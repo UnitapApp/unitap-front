@@ -1,55 +1,43 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
 
-import ChainList from "./components/Chainlist/chainlist";
-import Navbar from "components/common/Navbar/navbar";
-import Header from "pages/home/components/Header/header";
-import Footer from "../../components/common/Footer/footer";
-import ProvideGasCard from "./components/ProvideGasCard/provideGasCard";
-
-import { Body } from "components/common/Body/body";
-import { DV } from "components/basic/designVariables";
-import Timer from "./components/Timer/timer";
-import SearchInput from "./components/SearchInput/searchInput";
-import { Row } from "components/basic/Row/row";
-import { Col } from "components/basic/Col/col";
-import ClaimModal from "./components/ClaimModal/claimModal";
-import BrightConnectionModal from "./components/BrightConnectionModal/brightConnectionModal";
-
-const HomeContentWrapper = styled.div`
-  max-width: 1310px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: ${DV.sizes.basePadding * 4.5}px ${DV.sizes.basePadding * 11.25}px;
-
-  @media only screen and (max-width: ${DV.breakpoints.mobile}) {
-    padding: ${DV.sizes.basePadding * 2}px ${DV.sizes.basePadding * 3}px;
-  }
-`;
+import ChainList from './components/Chainlist/chainlist';
+import Navbar from 'components/common/Navbar/navbar';
+import Header from 'pages/home/components/Header/header';
+import Footer from '../../components/common/Footer/footer';
+import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
+import SearchInput from './components/SearchInput/searchInput';
+import { Row } from 'components/basic/Row/row';
+import { Col } from 'components/basic/Col/col';
+import ClaimModal from './components/ClaimModal/claimModal';
+import BrightConnectionModal from './components/BrightConnectionModal/brightConnectionModal';
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      <Body>
-        <HomeContentWrapper>
+      <div className={'unitap-body'}>
+        <div
+          className={
+            'max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20'
+          }
+        >
           <Row>
             <Col xs={24} md={24} lg={24} xlg={24}>
               <Header />
             </Col>
           </Row>
           <Row mdReverse>
-            <Col xs={12} md={12} lg={5.5} xlg={4}>
+            <Col xs={12} md={12} lg={5.5} xlg={4} className={'mt-1 lg:mt-0'}>
               <SearchInput />
             </Col>
-            <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
+            <Col className={'mb-1 lg:mb-0'} xs={0} md={0} lg={0.5} xlg={1.5}></Col>
             <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
-                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div
+                  className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${
+                    true ? `text-white` : `text-gray80`
+                  }`}
+                >
                   EVM
                 </div>
                 <div
@@ -61,7 +49,11 @@ const Home = () => {
                 </div>
               </div>
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
-                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div
+                  className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${
+                    true ? `text-white` : `text-gray80`
+                  }`}
+                >
                   Mainnets
                 </div>
                 <div
@@ -75,10 +67,10 @@ const Home = () => {
             </div>
           </Row>
           <ChainList />
-          <p className='provide-gas-title text-white text-xl mr-auto mb-3'>GasTap Chains Balances</p>
+          <p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
           <ProvideGasCard />
-        </HomeContentWrapper>
-      </Body>
+        </div>
+      </div>
       <ClaimModal />
       <BrightConnectionModal />
       <Footer />

@@ -69,13 +69,11 @@ const Timer = () => {
   }, []);
 
   return (
-    <div className="timer-wrapper flex items-center">
-      <TimerLabel color="gray" fontSize="12" mb={0} mr={1}>
-        Next Round:
-      </TimerLabel>
-      <TimerCount color="white" fontSize="12" mb={0}>
+    <div className="timer-wrapper flex mt-2 items-center">
+      <p className={'text-gray mr-2 text-sm'}>Next Round:</p>
+      <p className={'text-white font-medium text-md lg:text-2xl'}>
         {days} : {hours} : {minutes} : {seconds}
-      </TimerCount>
+      </p>
     </div>
   );
 };
