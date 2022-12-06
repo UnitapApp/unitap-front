@@ -51,7 +51,7 @@ const Landing: FC = () => {
         <section
           id="home-nft"
           className={
-            'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 home-widget py-6 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
+            'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 home-widget py-10 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
           }
         >
           <div className={'flex gap-4 md:flex-row flex-col items-center justify-center'}>
@@ -151,12 +151,13 @@ const Landing: FC = () => {
           </div>
           <div className={'md:w-2/3 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             {socialLinks.map((social) => (
-              <div
+              <a
+                href={social.link}
                 key={social.link}
                 className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-dark-gray-6 transition duration-300 ease-in-out`}
               >
                 <img src={`/assets/images/landing/${social.img}`} />
-              </div>
+              </a>
             ))}
 
             <div className={'flex flex-grow justify-center items-center text-white py-6 sm:py-0'}>
