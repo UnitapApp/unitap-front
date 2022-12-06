@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import ChainList from "./components/Chainlist/chainlist";
@@ -15,6 +15,8 @@ import { Row } from "components/basic/Row/row";
 import { Col } from "components/basic/Col/col";
 import ClaimModal from "./components/ClaimModal/claimModal";
 import BrightConnectionModal from "./components/BrightConnectionModal/brightConnectionModal";
+import { ChainType, Network } from "types";
+import { ClaimContext } from "hooks/useChainList";
 
 const HomeContentWrapper = styled.div`
   max-width: 1310px;
@@ -32,6 +34,9 @@ const HomeContentWrapper = styled.div`
 `;
 
 const Home = () => {
+  const {selectedNetwork, setSelectedNetwork} = useContext(ClaimContext);
+  const {selectedChainType, setSelectedChainType} = useContext(ClaimContext);
+
   return (
     <>
       <Navbar />
@@ -49,25 +54,27 @@ const Home = () => {
             <Col xs={0} md={0} lg={0.5} xlg={1.5}></Col>
             <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
-                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${selectedChainType===ChainType.EVM ? `text-white` : `text-gray80`}`} onClick={() => {setSelectedChainType(ChainType.EVM)}}>
                   EVM
                 </div>
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
-                    false ? `text-white` : `text-gray80`
+                    selectedChainType===ChainType.NONEVM ? `text-white` : `text-gray80`
                   }`}
+                  onClick={() => {setSelectedChainType(ChainType.NONEVM)}}
                 >
                   nonEVM
                 </div>
               </div>
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
-                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${true ? `text-white` : `text-gray80`}`}>
+                <div className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${selectedNetwork===Network.MAINNET ? `text-white` : `text-gray80`}`} onClick={() => {setSelectedNetwork(Network.MAINNET)}}>
                   Mainnets
                 </div>
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer ${
-                    false ? `text-white` : `text-gray80`
+                    selectedNetwork===Network.TESTNET ? `text-white` : `text-gray80`
                   }`}
+                  onClick={() => {setSelectedNetwork(Network.TESTNET)}}
                 >
                   Testnets
                 </div>

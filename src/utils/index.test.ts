@@ -21,6 +21,8 @@ describe('utils', () => {
       fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
       totalClaims: 2000,
       totalClaimsSinceLastMonday: 10,
+      isTestnet: false,
+      chainType: 'EVM',
     },
     {
       pk: 2,
@@ -39,6 +41,8 @@ describe('utils', () => {
       fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
       totalClaims: 2000,
       totalClaimsSinceLastMonday: 10,
+      isTestnet: true,
+      chainType: 'Non-EVM',
     },
   ];
   const txHash = '0xbc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a';

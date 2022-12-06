@@ -17,6 +17,8 @@ export type Chain = {
   fundManagerAddress: string;
   totalClaims: number;
   totalClaimsSinceLastMonday: number;
+  isTestnet: boolean;
+  chainType: string;
 };
 
 export enum BrightIdVerificationStatus {
@@ -78,7 +80,7 @@ export enum Network {
   TESTNET = '1',
 }
 
-export enum Machine { 
+export enum ChainType { 
   EVM = '0',
   NONEVM = '1',
 }
