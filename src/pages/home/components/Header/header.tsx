@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { BrightIdVerificationStatus } from 'types';
 
 // ###### Local Styled Components
 
@@ -19,6 +21,8 @@ const Spaceship = styled.img`
 `;
 
 const Header = () => {
+  const { userProfile } = useContext(UserProfileContext);
+
   return (
     <div className="header h-[152px] bg-gray20 rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6">
       <Spaceship className="z-0" src="assets/images/gas-tap/header-spaceship.svg" />
@@ -28,24 +32,28 @@ const Header = () => {
       </div>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {true ? (
-            <div className='claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3'>
-              <Icon iconSrc='assets/images/gas-tap/dabe.svg' width='36px' height='auto'/>
-              <Icon iconSrc='assets/images/gas-tap/dabe.svg' width='36px' height='auto'/>
-              <Icon iconSrc='assets/images/gas-tap/empty-dabe.svg' width='36px' height='auto'/>
-              <Icon iconSrc='assets/images/gas-tap/empty-dabe.svg' width='36px' height='auto'/>
-              <Icon iconSrc='assets/images/gas-tap/empty-dabe.svg' width='36px' height='auto'/>
-            </div>
+          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+            userProfile.totalWeeklyClaimsRemaining == 2 ? (
+              <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray80">
+                <p className="claim-stat__not-claimed__text px-5 py-4 text-white text-xs">
+                  You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
+                </p>
+              </div>
+            ) : (
+              <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+                <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
+                <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
+                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+              </div>
+            )
           ) : (
-            <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray80">
-              <p className="claim-stat__not-claimed__text px-5 py-4 text-white text-xs">
-                You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
-              </p>
-            </div>
+            <></>
           )}
         </div>
-        <div className='spaceman absolute bottom-2 right-0'>
-          <Icon className='z-0' iconSrc={'assets/images/claim/header-spaceman.svg'} width="120px" height="auto" />
+        <div className="spaceman absolute bottom-2 right-0">
+          <Icon className="z-0" iconSrc={'assets/images/claim/header-spaceman.svg'} width="120px" height="auto" />
         </div>
       </div>
     </div>
