@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { LightOutlinedButton } from 'components/basic/Button/button';
 import RoutePath from '../../../../routes';
 import { Link } from 'react-router-dom';
 import Icon from 'components/basic/Icon/Icon';
+import { ClaimContext } from 'hooks/useChainList';
 
 const ProvideGasCard = () => {
+  const [chainListIndex, setChainListIndex] = React.useState(0);
+  const { chainList } = useContext(ClaimContext);
+
+  setInterval(() => {
+    if (chainListIndex > chainList.length - 5) {
+      setChainListIndex(0);
+    } else {
+      setChainListIndex(chainListIndex + 4);
+    }
+  }, 10000);
+
   return (
     <div className="provide-gas pb-4 sm:pb-0 w-full flex flex-col sm:flex-row items-center bg-gray40 border-2 border-gray30 rounded-xl">
       <section className={'flex flex-col md:flex-row'}>
         <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
-            MATIC{' '}
-            <Icon
-              className="ml-2"
-              iconSrc="https://bafybeih472n6xodygw34uoq7cvzfjvaj4xtp5xj7ikwq5zwqjwf7zvcu2a.ipfs.w3s.link/4.svg"
-              width="auto"
-              height="22px"
-            />
+            {chainList[chainListIndex].symbol}
+            <Icon className="ml-2" iconSrc={chainList[chainListIndex].logoUrl} width="auto" height="22px" />
           </div>
           <p className="chain__info text-xs text-gray90 flex">
             balance: <span className="chain__info__balance text-white ml-1">1,322</span>
@@ -24,13 +31,8 @@ const ProvideGasCard = () => {
         </div>
         <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
-            MATIC{' '}
-            <Icon
-              className="ml-2"
-              iconSrc="https://bafybeif5f5axdngc4h2rtxqyphoyizxkntr56gt3poqw2puorvplob6yfa.ipfs.w3s.link/5.svg"
-              width="auto"
-              height="22px"
-            />
+            {chainList[chainListIndex + 1].symbol}
+            <Icon className="ml-2" iconSrc={chainList[chainListIndex + 1].logoUrl} width="auto" height="22px" />
           </div>
           <p className="chain__info text-xs text-gray90 flex">
             balance: <span className="chain__info__balance text-white ml-1">1,322</span>
@@ -40,10 +42,10 @@ const ProvideGasCard = () => {
       <section className={'flex flex-col md:flex-row'}>
         <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
-            MATIC{' '}
+            {chainList[chainListIndex + 2].symbol}
             <Icon
               className="ml-2"
-              iconSrc="https://bafybeidileki3i5uyuhkyegrkyiv5cpq43ot2brb6b2kgitkn6e65gffcq.ipfs.w3s.link/ipfs/bafybeidileki3i5uyuhkyegrkyiv5cpq43ot2brb6b2kgitkn6e65gffcq/250.svg"
+              iconSrc={chainList[chainListIndex + 2].logoUrl}
               width="auto"
               height="22px"
             />
@@ -54,10 +56,10 @@ const ProvideGasCard = () => {
         </div>
         <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
-            MATIC{' '}
+            {chainList[(chainListIndex + 3) % chainList.length].symbol}
             <Icon
               className="ml-2"
-              iconSrc="https://bafybeih472n6xodygw34uoq7cvzfjvaj4xtp5xj7ikwq5zwqjwf7zvcu2a.ipfs.w3s.link/4.svg"
+              iconSrc={chainList[(chainListIndex + 3) % chainList.length].logoUrl}
               width="auto"
               height="22px"
             />

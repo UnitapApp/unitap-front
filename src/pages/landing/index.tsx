@@ -4,14 +4,14 @@ import Widget from './components/widget';
 import UButton from '../../components/basic/Button/UButton';
 import RoutePath from 'routes';
 import { useNavigate } from 'react-router-dom';
-import sortChainList from 'utils/hook/sortChainList';
+import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
 import { chainList } from '../../../cypress/utils/data';
 import { ClaimContext } from 'hooks/useChainList';
 
 const Landing: FC = () => {
   const { chainList } = useContext(ClaimContext);
 
-  const sortedChainList = useMemo(() => sortChainList(chainList), [chainList]);
+  const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
 
   const [socialLinks] = useState([
     {
@@ -116,7 +116,12 @@ const Landing: FC = () => {
             buttonTitle={'Go to Tap'}
             onButtonClick={() => navigate(RoutePath.TOKEN)}
           >
-            <UButton className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'} buttonClassName="cursor-default">Beta</UButton>
+            <UButton
+              className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}
+              buttonClassName="cursor-default"
+            >
+              Beta
+            </UButton>
           </Widget>
 
           <Widget
@@ -168,7 +173,11 @@ const Landing: FC = () => {
           >
             <h2 className={'text-white'}>Donate to Unitap</h2>
           </div> */}
-          <div className={'md:w-[100%] min-h-36 md:h-36 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
+          <div
+            className={
+              'md:w-[100%] min-h-36 md:h-36 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'
+            }
+          >
             {socialLinks.map((social) => (
               <div
                 onClick={() => window.open(social.link, '_blank')}

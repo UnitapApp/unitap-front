@@ -1,6 +1,6 @@
 import { Chain } from 'types';
 
-const sortChainList = (chainList: Chain[]) => {
+export const sortChainListByTotalClaimWeekly = (chainList: Chain[]) => {
   const sortedChainList = chainList.sort((a, b) => {
     if (a.totalClaimsSinceLastMonday < b.totalClaimsSinceLastMonday) {
       return 1;
@@ -12,5 +12,3 @@ const sortChainList = (chainList: Chain[]) => {
   });
   return sortedChainList;
 };
-
-export default sortChainList;
