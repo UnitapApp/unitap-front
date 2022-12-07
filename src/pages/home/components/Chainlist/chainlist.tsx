@@ -121,7 +121,9 @@ const ChainList = () => {
                   }
                 >
                   <div className="hover:cursor-pointer items-center flex">
-                    <img className="chain-logo w-10 h-10" src={getChainIcon(chain)} alt="polygon logo" />
+                    <span className='chain-logo-container w-10 h-10 flex justify-center'>
+                      <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
+                    </span>
                     <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
                     <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
                   </div>
