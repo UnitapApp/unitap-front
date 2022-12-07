@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
+import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
 import { getChainIcon } from '../../../../utils';
@@ -120,8 +120,8 @@ const ChainList = () => {
                     'pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
                   }
                 >
-                  <div className="hover:cursor-pointer items-center flex">
-                    <span className='chain-logo-container w-10 h-10 flex justify-center'>
+                  <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
+                    <span className="chain-logo-container w-10 h-10 flex justify-center">
                       <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
                     </span>
                     <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
@@ -131,25 +131,28 @@ const ChainList = () => {
                   <div
                     className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 !w-full sm:w-auto'}
                   >
-                    <AddMetamaskButton
-                      mr={2}
-                      disabled={!active}
-                      data-testid={`chain-switch-${chain.pk}`}
-                      onClick={() => addAndSwitchToChain(chain)}
-                      className="font-medium hover:cursor-pointer text-sm w-full sm:w-52"
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                        alt="metamask logo"
-                      />
-                      Add
-                    </AddMetamaskButton>
+                    <div className="w-full sm:w-auto items-center sm:items-end">
+                      <AddMetamaskButton
+                        disabled={!active}
+                        data-testid={`chain-switch-${chain.pk}`}
+                        onClick={() => addAndSwitchToChain(chain)}
+                        className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
+                      >
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
+                          alt="metamask logo"
+                        />
+                        Add
+                      </AddMetamaskButton>
+                    </div>
+
                     <Action className={'w-full sm:w-auto items-center sm:items-end '}>
                       {/* todo migrate buttom logic*/}
-                      {chain.unclaimed !== 0 ? (
-                        // <NoCurrencyButton disabled fontSize='13px'>
-                        //   Currently out of balance
-                        // </NoCurrencyButton>
+                      {chain.needsFunding ? (
+                        <NoCurrencyButton disabled fontSize="13px">
+                          Currently out of balance
+                        </NoCurrencyButton>
+                      ) : chain.unclaimed !== 0 ? (
                         <ClaimButton
                           data-testid={`chain-show-claim-${chain.pk}`}
                           mlAuto
@@ -180,24 +183,30 @@ const ChainList = () => {
                   }
                 >
                   <div
-                    className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-center md:justify-start'}
+                    className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
                   >
                     <p className="chain-card__info__title text-sm text-gray-90">Currency</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.symbol}</p>
                   </div>
                   <div
-                    className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-center md:justify-start'}
+                    className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
                   >
                     <p className="chain-card__info__title text-sm text-gray-90">Chain ID</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.chainId}</p>
                   </div>
-                  <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-center'}>
+                  <div
+                    className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}
+                  >
                     <p className="chain-card__info__title text-sm text-gray-90">This Round Claims</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">
                       {chain.totalClaimsSinceLastMonday}
                     </p>
                   </div>
-                  <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-center md:justify-end'}>
+                  <div
+                    className={
+                      'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center md:justify-end'
+                    }
+                  >
                     <p className="chain-card__info__title text-sm text-gray-90">Total Claims</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaims}</p>
                   </div>

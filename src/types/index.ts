@@ -19,6 +19,7 @@ export type Chain = {
   totalClaimsSinceLastMonday: number;
   isTestnet: boolean;
   chainType: string;
+  needsFunding: boolean;
 };
 
 export enum BrightIdVerificationStatus {

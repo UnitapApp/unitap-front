@@ -34,6 +34,9 @@ export const chainList: Chain[] = [
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
     totalClaims: 2000,
     totalClaimsSinceLastMonday: 10,
+    needsFunding: true,
+    isTestnet: true,
+    chainType: 'EVM',
   },
   {
     pk: 2,
@@ -52,6 +55,9 @@ export const chainList: Chain[] = [
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
     totalClaims: 2000,
     totalClaimsSinceLastMonday: 10,
+    needsFunding: false,
+    isTestnet: false,
+    chainType: 'EVM',
   },
 ];
 

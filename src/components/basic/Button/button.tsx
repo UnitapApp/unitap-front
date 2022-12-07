@@ -144,7 +144,7 @@ export const LightOutlinedButton = styled(Button)`
   background: transparent;
   color: white;
   border: 2px solid ${DV.colors.gray90};
-  border-radius: ${DV.sizes.baseRadius}px;  
+  border-radius: ${DV.sizes.baseRadius}px;
 `;
 
 export const GradientOutlinedButton = styled(Button)`
@@ -162,7 +162,7 @@ export const GradientOutlinedButton = styled(Button)`
     background: ${DV.colors.gray00};
     inset: 0;
     margin: 2px;
-    border-radius: ${DV.sizes.baseRadius-1}px;
+    border-radius: ${DV.sizes.baseRadius - 1}px;
   }
 `;
 
@@ -228,6 +228,7 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 export const NoCurrencyButton = styled(Button)`
   background: ${DV.colors.gray90};
   color: ${DV.colors.gray70};
+  width: 220px;
 `;
 
 export const ClaimedButton = styled(Button)`
@@ -242,10 +243,6 @@ export const ClaimedButton = styled(Button)`
     position: absolute;
     top: 10px;
     right: 20px;
-
-    @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
-      display: none;
-    }
   }
 `;
 
