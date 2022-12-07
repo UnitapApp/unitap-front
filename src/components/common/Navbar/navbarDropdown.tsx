@@ -51,7 +51,7 @@ const NavbarDropdown = ({ className, onMouseOver, onMouseLeave }: NavbarDropdown
 
   return (
     <div
-      className={`navbar-dropdown absolute z-10 top-[70px] right-8 bg-gray20 rounded-lg border-2 px-3 pb-1 pt-[10px] border-gray00 ${
+      className={`navbar-dropdown absolute z-10 top-[70px] right-8 bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ''
       }`}
       onMouseOver={onMouseOver}

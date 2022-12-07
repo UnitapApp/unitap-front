@@ -43,7 +43,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [isDropdownVisibleTimeout, setIsDropdownVisibleTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [isDropdownVisibleTimeout, setIsDropdownVisibleTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const showDropdown = () => {
     if (isDropdownVisibleTimeout) {
@@ -60,7 +60,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar w-[100%] fixed flex items-center top-0 z-100 bg-gray10 py-3 px-8">
+    <div className="navbar w-full fixed flex items-center top-0 z-100 bg-gray10 py-3 px-8">
       <Icon
         className="navbar__logo cursor-pointer"
         iconSrc="assets/images/navbar/navbar_logo_v1.3.svg"

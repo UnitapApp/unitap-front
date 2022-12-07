@@ -6,9 +6,9 @@ import Icon from 'components/basic/Icon/Icon';
 
 const ProvideGasCard = () => {
   return (
-    <div className="provide-gas w-full flex items-center bg-gray40 border-2 border-gray30 rounded-xl">
+    <div className="provide-gas pb-4 sm:pb-0 w-full flex flex-col sm:flex-row items-center bg-gray40 border-2 border-gray30 rounded-xl">
       <section className={'flex flex-col md:flex-row'}>
-        <div className="chain p-5 lg:w-36 xl:w-40 border-r-2 border-r-gray30">
+        <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
             MATIC{' '}
             <Icon
@@ -22,7 +22,7 @@ const ProvideGasCard = () => {
             balance: <span className="chain__info__balance text-white ml-1">1,322</span>
           </p>
         </div>
-        <div className="chain p-5 lg:w-36 xl:w-40 border-r-2 border-r-gray30">
+        <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
             MATIC{' '}
             <Icon
@@ -38,7 +38,7 @@ const ProvideGasCard = () => {
         </div>
       </section>
       <section className={'flex flex-col md:flex-row'}>
-        <div className="chain p-5 lg:w-36 xl:w-40 border-r-2 border-r-gray30">
+        <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
             MATIC{' '}
             <Icon
@@ -52,7 +52,7 @@ const ProvideGasCard = () => {
             balance: <span className="chain__info__balance text-white ml-1">1,322</span>
           </p>
         </div>
-        <div className="chain p-5 lg:w-36 xl:w-40 border-r-2 border-r-gray30">
+        <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
           <div className="chain__name flex mb-4 text-white">
             MATIC{' '}
             <Icon
@@ -68,7 +68,7 @@ const ProvideGasCard = () => {
         </div>
       </section>
       <Link className="m-auto" to={RoutePath.FUND}>
-        <LightOutlinedButton className={'!bg-gray00'} width="230px" fontSize="14" height="46px">
+        <LightOutlinedButton className={'!bg-gray00 !w-48 lg:!w-60'} fontSize="14" height="46px">
           Provide Gas Fee
         </LightOutlinedButton>
       </Link>
