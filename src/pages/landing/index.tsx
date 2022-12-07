@@ -1,25 +1,33 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 import Navbar from 'components/common/Navbar/navbar';
 import Widget from './components/widget';
 import UButton from '../../components/basic/Button/UButton';
+import RoutePath from 'routes';
+import { useNavigate } from 'react-router-dom';
+import sortChainList from 'utils/hook/sortChainList';
+import { chainList } from '../../../cypress/utils/data';
+import { ClaimContext } from 'hooks/useChainList';
 
 const Landing: FC = () => {
-  const [tokenList] = useState([1, 2, 3]);
+  const { chainList } = useContext(ClaimContext);
+
+  const sortedChainList = useMemo(() => sortChainList(chainList), [chainList]);
+
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
       localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
-      link: '',
+      link: 'http://twitter.com/unitap_app',
     },
     {
       img: 'github-icon.svg',
       localClass: 'hover:bg-blue-200',
-      link: '',
+      link: 'https://github.com/UnitapApp',
     },
     {
       img: 'discord-icon.svg',
       localClass: 'hover:bg-purple-200',
-      link: '',
+      link: 'https://discord.gg/kH8WeQ6tuF',
     },
   ]);
   const [stats] = useState([
@@ -33,6 +41,8 @@ const Landing: FC = () => {
     { name: 'Stake Tap', description: 'Where users can learn to user web 3 technologies' },
     { name: 'Launch Tap', description: 'Where users can learn to user web 3 technologies' },
   ]);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -48,7 +58,7 @@ const Landing: FC = () => {
           <h4>A gateway to Networks and Communities.</h4>
         </section>
 
-        <section
+        {/* <section
           id="home-nft"
           className={
             'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 home-widget py-10 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
@@ -61,7 +71,7 @@ const Landing: FC = () => {
           <div>
             <UButton className={'gradient-outline-button'}>Go to Mint Page</UButton>
           </div>
-        </section>
+        </section> */}
 
         <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
           <Widget
@@ -70,25 +80,32 @@ const Landing: FC = () => {
             className={'after:bg-gastap-texture flex-1'}
             title={'Gas Tap'}
             buttonTitle={'Go to Tap'}
+            onButtonClick={() => navigate(RoutePath.FAUCET)}
           >
-            <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
-            <ul className={'text-white'}>
-              {tokenList.map((token) => (
-                <li
-                  key={token}
-                  className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
-                >
-                  <div className={'flex gap-2 items-center'}>
-                    <p>#1</p>
-                    <img src={'/assets/images/tokens/fantom.svg'} alt={'fantom'} />
-                    <p>Fantom</p>
-                  </div>
-                  <p>
-                    1,377 <span>claims</span>
-                  </p>
-                </li>
-              ))}
-            </ul>
+            {sortedChainList.length > 0 && (
+              <>
+                <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
+                <ul className={'text-white'}>
+                  {sortedChainList.slice(0, 3).map((token, index) => (
+                    <li
+                      key={token.chainId}
+                      className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
+                    >
+                      <div className={'flex gap-2 items-center'}>
+                        <p>#{index + 1}</p>
+                        <span className="token-logo-container w-6 h-6 flex items-center justify-center">
+                          <img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
+                        </span>
+                        <p>{token.chainName}</p>
+                      </div>
+                      <p>
+                        {token.totalClaimsSinceLastMonday} <span>claims</span>
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </Widget>
 
           <Widget
@@ -97,8 +114,9 @@ const Landing: FC = () => {
             className={'after:bg-tokentap-texture flex-1'}
             title={'Token Tap'}
             buttonTitle={'Go to Tap'}
+            onButtonClick={() => navigate(RoutePath.TOKEN)}
           >
-            <UButton className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}>Beta</UButton>
+            <UButton className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'} buttonClassName="cursor-default">Beta</UButton>
           </Widget>
 
           <Widget
@@ -144,20 +162,21 @@ const Landing: FC = () => {
         <section id="home-footer" className={'flex gap-4 md:flex-row flex-col'}>
           <div
             className={
-              'home-widget md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
+              'home-widget cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
             }
+            onClick={() => navigate(RoutePath.DONATE)}
           >
             <h2 className={'text-white'}>Donate to Unitap</h2>
           </div>
           <div className={'md:w-2/3 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             {socialLinks.map((social) => (
-              <a
-                href={social.link}
+              <div
+                onClick={() => window.open(social.link, '_blank')}
                 key={social.link}
                 className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
               >
                 <img src={`/assets/images/landing/${social.img}`} />
-              </a>
+              </div>
             ))}
 
             <div className={'flex flex-grow justify-center items-center text-white py-6 sm:py-0'}>

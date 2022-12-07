@@ -7,21 +7,23 @@ export interface UButtonPropsInterface extends React.HTMLAttributes<HTMLElement>
   buttonTitle?: string;
   icon?: string;
   size?: string;
+  buttonClassName?: string;
 
-  buttonAction?(): void;
+  onClick?(): void;
 }
 
 export type UButtonProps = PropsWithChildren<UButtonPropsInterface>;
 // todo btn-small is not reactive
 const UButton = (props: UButtonProps) => {
-  const { className, children, size } = props;
+  const { className, buttonClassName, children, size, onClick } = props;
   return (
     <div
+      onClick={onClick}
       className={`btn-small ${size ? `btn-${size}` : 'btn-default'} ${
         className ? className : 'text-sm'
       } flex justify-center items-center`}
     >
-      <button>{children}</button>
+      <button className={`${buttonClassName ? buttonClassName : ''}`}>{children}</button>
     </div>
   );
 };

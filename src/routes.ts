@@ -1,8 +1,9 @@
 enum RoutePath {
   LANDING = '/',
-  FAUCET = '/gas-faucet',
+  FAUCET = '/gas-tap',
+  TOKEN = '/token-tap',
+  DONATE = '/donate',
   FUND = '/fund',
-  TOKEN = '/token',
   PRIZE = '/prize',
 }
 

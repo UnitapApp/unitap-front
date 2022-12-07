@@ -63,7 +63,7 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
             key={item.name}
             onClick={() => (item.link ? navigate(item.link) : null)}
             className={`navbar-dropdown__item ${location.pathname === item.route && 'navbar-dropdown__item--active'} ${
-              !item.link && 'cursor-not-allowed'
+              !item.link && 'cursor-default'
             }`}
           >
             <p
@@ -79,12 +79,12 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
       })}
 
       <div
-        className={`navbar-dropdown__item w-52 flex items-center h-11 justify-between bg-gray00 rounded-lg border-2 border-gray00 px-4 mt-12`}
+        className={`navbar-dropdown__item cursor-default w-52 flex items-center h-11 justify-between bg-gray00 rounded-lg border-2 border-gray00 px-4 mt-12`}
       >
         <p className="navbar-dropdown__item__title text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text">
           Mint UGP NFT
         </p>
-        <Icon iconSrc="assets/images/navbar/navbar-dropdown-mint.svg" width="auto" height="28px" />
+        <Icon iconSrc="assets/images/navbar/navbar-dropdown-soon.svg" width="33px" height="auto" />
       </div>
     </div>
   );
