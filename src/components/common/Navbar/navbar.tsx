@@ -55,7 +55,7 @@ const Navbar = () => {
   const hideDropdown = () => {
     let timeout = setTimeout(() => {
       setIsDropdownVisible(false);
-    }, 300);
+    }, 500);
     setIsDropdownVisibleTimeout(timeout);
   };
 
@@ -146,7 +146,7 @@ const Navbar = () => {
         )}
         <span
           className="navbar__dropdown cursor-pointer"
-          onMouseOver={() => showDropdown()}
+          onMouseEnter={() => showDropdown()}
           onMouseLeave={() => hideDropdown()}
           onClick={() => setIsDropdownVisible(!isDropdownVisible)}
         >
@@ -154,7 +154,7 @@ const Navbar = () => {
           {isDropdownVisible && (
             <NavbarDropdown
               className="navbar__dropdown__component"
-              onMouseOver={() => showDropdown()}
+              onMouseEnter={() => showDropdown()}
               onMouseLeave={() => hideDropdown()}
             />
           )}

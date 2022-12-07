@@ -1,7 +1,7 @@
-import { Chain } from 'types';
+import { Chain, ChainType, Network } from 'types';
 import Fuse from 'fuse.js';
 
-const searchChainList = (searchPhrase: string, chainList: Chain[]) => {
+const getSearchQueryResult = (searchPhrase: string, chainList: Chain[]) => {
   if (searchPhrase === '') return chainList;
   const fuseOptions = {
     // isCaseSensitive: false,
@@ -21,6 +21,36 @@ const searchChainList = (searchPhrase: string, chainList: Chain[]) => {
   };
   const fuse = new Fuse(chainList, fuseOptions);
   return fuse.search(searchPhrase).flatMap((serachResult) => serachResult.item);
+};
+
+const getNetworkFilterResult = (selectedNetwork: Network, chainList: Chain[]) => {
+  if (selectedNetwork === Network.MAINNET) {
+    chainList = chainList.filter((chain) => chain.isTestnet === false);
+  } else if (selectedNetwork === Network.TESTNET) {
+    chainList = chainList.filter((chain) => chain.isTestnet === true);
+  }
+  return chainList;
+};
+
+const getChainTypeFilterResult = (selectedChainType: ChainType, chainList: Chain[]) => {
+  if (selectedChainType === ChainType.EVM) {
+    chainList = chainList.filter((chain) => chain.chainType === 'EVM');
+  } else if (selectedChainType === ChainType.NONEVM) {
+    chainList = chainList.filter((chain) => chain.chainType === 'NONEVM');
+  }
+  return chainList;
+};
+
+const searchChainList = (
+  searchPhrase: string,
+  chainList: Chain[],
+  selectedNetwork: Network,
+  selectedChainType: ChainType,
+) => {
+  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
+  searchChainListResult = getNetworkFilterResult(selectedNetwork, searchChainListResult);
+  searchChainListResult = getChainTypeFilterResult(selectedChainType, searchChainListResult);
+  return searchChainListResult;
 };
 
 export default searchChainList;
