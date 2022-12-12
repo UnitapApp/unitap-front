@@ -1,19 +1,20 @@
-import React from "react";
-import Home from "pages/home";
-import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Fund from "./pages/fund";
-import Landing from "pages/landing";
-import { UserProfileProvider } from "./hooks/useUserProfile";
-import RoutePath from "routes";
-import { RefreshContextProvider } from "./context/RefreshContext";
-import { ClaimProvider } from "./hooks/useChainList";
-import ApplicationUpdater from "state/application/updater";
-import store from "./state";
-import { Provider } from "react-redux";
-import Web3Provider from "components/Web3Provider";
+import React from 'react';
+import Home from 'pages/home';
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Fund from './pages/fund';
+import Landing from 'pages/landing';
+import Donate from 'pages/donate';
+import { UserProfileProvider } from './hooks/useUserProfile';
+import RoutePath from 'routes';
+import { RefreshContextProvider } from './context/RefreshContext';
+import { ClaimProvider } from './hooks/useChainList';
+import ApplicationUpdater from 'state/application/updater';
+import store from './state';
+import { Provider } from 'react-redux';
+import Web3Provider from 'components/Web3Provider';
 
-require("typeface-jetbrains-mono");
+require('typeface-jetbrains-mono');
 
 function Updaters() {
   return (
@@ -37,6 +38,7 @@ function App() {
                     <Route path={RoutePath.FAUCET} element={<Home />} />
                     <Route path={RoutePath.FUND} element={<Fund />} />
                     <Route path={RoutePath.LANDING} element={<Landing />} />
+                    <Route path={RoutePath.DONATE} element={<Donate />} />
                   </Routes>
                 </BrowserRouter>
               </ClaimProvider>

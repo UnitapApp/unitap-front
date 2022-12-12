@@ -5,7 +5,6 @@ import UButton from '../../components/basic/Button/UButton';
 import RoutePath from 'routes';
 import { useNavigate } from 'react-router-dom';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
-import { chainList } from '../../../cypress/utils/data';
 import { ClaimContext } from 'hooks/useChainList';
 
 const Landing: FC = () => {
@@ -165,19 +164,15 @@ const Landing: FC = () => {
           </Widget>
         </section>
         <section id="home-footer" className={'flex gap-4 md:flex-row flex-col'}>
-          {/* <div
+          <div
             className={
               'home-widget cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
             }
             onClick={() => navigate(RoutePath.DONATE)}
           >
             <h2 className={'text-white'}>Donate to Unitap</h2>
-          </div> */}
-          <div
-            className={
-              'md:w-[100%] min-h-36 md:h-36 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'
-            }
-          >
+          </div>
+          <div className={'md:w-2/3 md:h-36 home-widget after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             {socialLinks.map((social) => (
               <div
                 onClick={() => window.open(social.link, '_blank')}
