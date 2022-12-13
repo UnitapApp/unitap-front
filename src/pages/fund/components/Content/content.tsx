@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { PrimaryButton } from "components/basic/Button/button";
-import { ContentCard, ContentWrapper } from "./content.style";
+import { ContentCard } from "./content.style";
 import Icon from "components/basic/Icon/Icon";
 import Input from "components/basic/Input/input";
 import Dropdown from "components/basic/Dropdown/dropdown";
@@ -141,12 +141,14 @@ const Content: FC = () => {
   }, [active, isRightChain, loading]);
 
   return (
-    <ContentWrapper>
-      <ContentCard>
-        <Icon iconSrc={"assets/images/fund/help-fund-the-tap.svg"} width="220px" height="auto" mb={2} />
-        <p className="content-subtext">
+    <div className="content-wrapper flex justify-center">
+      <ContentCard className="bg-gray20 rounded-xl py-6 px-4">
+        <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+        <p className="text-gray100 text-xs mb-3 z-1">
           99% of contributions will be distributed via the tap.
-          <br /> 1% of contributions will fund Unitap development.
+        </p>
+        <p className="text-gray100 text-xs z-1">
+          1% of contributions will fund Unitap development.
         </p>
         {selectedChain && (
           <Dropdown
@@ -203,8 +205,9 @@ const Content: FC = () => {
             selectedChain={selectedChain}
           />
         </Modal>
+        <img src="./assets/images/fund/provide-gas-fee-planet.svg" className="absolute -left-64 -top-16 scale-150 z-0" />
       </ContentCard>
-    </ContentWrapper>
+    </div>
   );
 };
 
