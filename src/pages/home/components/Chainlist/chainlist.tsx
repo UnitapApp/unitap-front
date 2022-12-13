@@ -185,19 +185,19 @@ const ChainList = () => {
                   <div
                     className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
                   >
-                    <p className="chain-card__info__title text-sm text-gray-90">Currency</p>
+                    <p className="chain-card__info__title text-sm text-gray90">Currency</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.symbol}</p>
                   </div>
                   <div
                     className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
                   >
-                    <p className="chain-card__info__title text-sm text-gray-90">Chain ID</p>
+                    <p className="chain-card__info__title text-sm text-gray90">Chain ID</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.chainId}</p>
                   </div>
                   <div
                     className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}
                   >
-                    <p className="chain-card__info__title text-sm text-gray-90">This Round Claims</p>
+                    <p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">
                       {chain.totalClaimsSinceLastMonday}
                     </p>
@@ -207,7 +207,7 @@ const ChainList = () => {
                       'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center md:justify-end'
                     }
                   >
-                    <p className="chain-card__info__title text-sm text-gray-90">Total Claims</p>
+                    <p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaims}</p>
                   </div>
                 </div>

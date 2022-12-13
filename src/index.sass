@@ -80,7 +80,7 @@ body
   .card
     @apply rounded-3xl py-7 px-6
 
-  .home-widget
+  .uni-card
     @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20
     &:hover
       .widget-icon
@@ -96,18 +96,43 @@ body
   .gradient-outline-button
     @apply bg-g-primary relative z-10 before:content-['']
     @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-gray00
+    //@apply relative
+
+    // todo try to update gradient border method (the current approach is unstable regarding spacing)
+
+    //color: #FFF
+    //background: #000
+    //background-clip: padding-box
+    ///* !importanté */
+    //border: solid 5px transparent
+    ///* !importanté */
+    //border-radius: 1em
+    //box-sizing: border-box
+    //
+    //&:before
+    //  content: ''
+    //  position: absolute
+    //  inset: 0
+    //  z-index: -1
+    //  margin: -5px
+    //  /* !importanté */
+    //  border-radius: inherit
+    //  /* !importanté */
+    //  background: linear-gradient(to right, red, orange)
+
+
     button
       @apply bg-g-primary bg-clip-text
       -webkit-text-fill-color: transparent
 
   .secondary-button
-    @apply border-2 border-dark-gray-5 bg-gray00
+    @apply border-2 border-gray50 bg-gray00
     button
       @apply bg-g-primary bg-clip-text
       -webkit-text-fill-color: transparent
 
   .green-text-button
-    @apply border-2 border-dark-gray-5 bg-gray00
+    @apply border-2 border-gray50 bg-gray00
     button
       @apply text-space-green
 
