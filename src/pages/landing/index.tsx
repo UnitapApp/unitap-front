@@ -58,7 +58,7 @@ const Landing: FC = () => {
           <h4>A gateway to Networks and Communities.</h4>
         </section>
 
-        {/* <section
+        <section
           id="home-nft"
           className={
             'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 home-widget py-10 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
@@ -69,9 +69,12 @@ const Landing: FC = () => {
             <p>1,136 / 2,000 Minted</p>
           </div>
           <div>
-            <UButton className={'gradient-outline-button'}>Go to Mint Page</UButton>
+            <UButton
+              className={'gradient-outline-button'}
+              onClick={() => navigate(RoutePath.NFT)}
+            >Go to Mint Page</UButton>
           </div>
-        </section> */}
+        </section>
 
         <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
           <Widget

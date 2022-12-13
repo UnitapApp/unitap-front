@@ -12,6 +12,7 @@ import ApplicationUpdater from "state/application/updater";
 import store from "./state";
 import { Provider } from "react-redux";
 import Web3Provider from "components/Web3Provider";
+import NFT from "pages/nft";
 
 require("typeface-jetbrains-mono");
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path={RoutePath.FAUCET} element={<Home />} />
                     <Route path={RoutePath.FUND} element={<Fund />} />
                     <Route path={RoutePath.LANDING} element={<Landing />} />
+                    <Route path={RoutePath.NFT} element={<NFT />} />
                   </Routes>
                 </BrowserRouter>
               </ClaimProvider>
