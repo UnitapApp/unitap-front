@@ -64,7 +64,7 @@ const Navbar = () => {
       <Icon
         className="navbar__logo cursor-pointer"
         iconSrc="assets/images/navbar/navbar_logo_v1.3.svg"
-        width="140px"
+        width="auto"
         height="32px"
         mrAuto
         onClick={() => navigate(RoutePath.LANDING)}
