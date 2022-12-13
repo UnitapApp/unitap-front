@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import Icon from 'components/basic/Icon/Icon';
-import { UserProfileContext } from 'hooks/useUserProfile';
-import { BrightIdVerificationStatus } from 'types';
 
 const Spaceship = styled.img`
   position: absolute;
@@ -13,7 +11,7 @@ const Spaceship = styled.img`
 const Header = () => {
 
   return (
-    <div className="header w-full h-[152px] bg-gray20 rounded-2xl flex flex-col justify-between items-start overflow-hidden relative p-6 mb-6">
+    <div className="header w-full h-[152px] bg-gray20 rounded-2xl flex flex-col justify-between items-start overflow-hidden relative p-6 mb-4">
       <div className="header-top z-10 flex items-center h-auto">
         <Icon className="gas-tap h-auto w-[305px] mb-1 mr-4" iconSrc="assets/images/nft/nft-typo-logo.png" />
         <Icon className="gas-tap h-auto w-12 mb-1" iconSrc="assets/images/nft/nft-badge.svg" />

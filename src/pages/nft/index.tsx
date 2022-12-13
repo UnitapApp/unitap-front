@@ -4,6 +4,7 @@ import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
 import Footer from 'components/common/Footer/footer';
 import Icon from 'components/basic/Icon/Icon';
+import Collapse from './components/Collapse/Collapse';
 
 const NFT = () => {
   return (
@@ -14,7 +15,7 @@ const NFT = () => {
           <div className='flex wrap w-full'>
             <Header />
           </div>
-          <div className='flex wrap w-full gap-x-4'>
+          <div className='flex wrap w-full gap-x-4 mb-4'>
             <div className='card md:w-7/12'>
               <p className='title font-bold mb-4'>Unitap Pass Benefits</p>
               <p className='subtitle text-sm leading-7 font-light'>Unitap Passes work with Prize Tap, an upcoming feature for Unitap.
@@ -32,7 +33,8 @@ const NFT = () => {
               <Icon iconSrc='assets/images/nft/launch-spaceship.svg' />
             </div>
           </div>
-
+          <Collapse className="mb-4" title='Unitap Pass Sale' icon="assets/images/nft/nft-pass-sale-icon.svg"></Collapse>
+          <Collapse className="mb-4" title='Questions' icon="assets/images/nft/nft-questions-icon.svg"></Collapse>
         </div>
       </div>
       <Footer />
