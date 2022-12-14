@@ -12,6 +12,7 @@ import ApplicationUpdater from "state/application/updater";
 import store from "./state";
 import { Provider } from "react-redux";
 import Web3Provider from "components/Web3Provider";
+import About from "pages/about";
 
 require("typeface-jetbrains-mono");
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path={RoutePath.FAUCET} element={<Home />} />
                     <Route path={RoutePath.FUND} element={<Fund />} />
                     <Route path={RoutePath.LANDING} element={<Landing />} />
+                    <Route path={RoutePath.ABOUT} element={<About />} />
                   </Routes>
                 </BrowserRouter>
               </ClaimProvider>
