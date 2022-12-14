@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { PrimaryButton } from "components/basic/Button/button";
+import { ClaimButton, PrimaryButton } from "components/basic/Button/button";
 import { ContentCard } from "./content.style";
 import Icon from "components/basic/Icon/Icon";
 import Input from "components/basic/Input/input";
@@ -142,70 +142,74 @@ const Content: FC = () => {
 
   return (
     <div className="content-wrapper flex justify-center">
-      <ContentCard className="bg-gray20 rounded-xl py-6 px-4">
-        <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
-        <p className="text-gray100 text-xs mb-3 z-1">
-          99% of contributions will be distributed via the tap.
-        </p>
-        <p className="text-gray100 text-xs z-1">
-          1% of contributions will fund Unitap development.
-        </p>
-        {selectedChain && (
-          <Dropdown
-            data-testid="fund-chain-dropdown"
-            onClick={() => {
-              setModalState(true);
-            }}
-            label="Chain"
-            value={selectedChain.chainName}
-            icon={getChainIcon(selectedChain)}
-          />
-        )}
-        <Modal title="Select Chain" isOpen={modalState} size="small" closeModalHandler={closeModalHandler}>
-          <SelectChainModal
+      <ContentCard className="bg-gray20 rounded-xl py-6 px-4 z-0">
+        <img src="./assets/images/fund/provide-gas-fee-planet.svg" className="absolute -left-64 -top-16 scale-150 z-10" />
+        <span className="z-100">
+          <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+          <p className="text-gray100 text-xs mb-3 z-1">
+            99% of contributions will be distributed via the tap.
+          </p>
+          <p className="text-gray100 text-xs z-1">
+            1% of contributions will fund Unitap development.
+          </p>
+          {selectedChain && (
+            <Dropdown
+              data-testid="fund-chain-dropdown"
+              onClick={() => {
+                setModalState(true);
+              }}
+              label="Chain"
+              value={selectedChain.chainName}
+              icon={getChainIcon(selectedChain)}
+            />
+          )}
+          <Modal title="Select Chain" isOpen={modalState} size="small" closeModalHandler={closeModalHandler}>
+            <SelectChainModal
+              closeModalHandler={closeModalHandler}
+              selectedChain={selectedChain}
+              setSelectedChain={setSelectedChain}
+            ></SelectChainModal>
+          </Modal>
+          <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
+            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer bg-gray30">
+              <Icon iconSrc="assets/images/tokens/fantom.svg" width="32px" height="auto" />
+              <Icon iconSrc="assets/images/fund/arrow-down.png" width="14px" height="auto" />
+            </div>
+            <div className="select-box__info w-full flex flex-col justify-between my-2 ml-3 mr-4">
+              <div className="select-box__info__top w-full flex items-center justify-between">
+                <p className="select-box__info__coin-symbol text-white text-xs font-semibold">TLS</p>
+                <p className="select-box__info__coin-balance text-gray100 text-xs font-semibold">Balance: 1,049.00</p>
+              </div>
+              <div className="select-box__info__amount w-full">
+                <input className="w-full text-xl bg-transparent text-white" type="number" step="0.001" placeholder="0.00" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+              </div>
+            </div>
+          </div>
+          <ClaimButton
+            width="100% !important"
+            height="3.5rem"
+            fontSize="20px"
+            onClick={handleSendFunds}
+            disabled={!Number(fundAmount) && isRightChain && active}
+            data-testid="fund-action"
+          >
+            {fundActionButtonLabel}
+          </ClaimButton>
+          <Modal
+            title="Provide Gas Fee"
+            isOpen={!!fundTransactionError || !!txHash}
             closeModalHandler={closeModalHandler}
-            selectedChain={selectedChain}
-            setSelectedChain={setSelectedChain}
-          ></SelectChainModal>
-        </Modal>
-        <Input
-          data-testid="fund-input"
-          className="fund-input"
-          value={fundAmount}
-          onChange={(e) => setFundAmount(e.target.value)}
-          label="Fund Amount"
-          postfix={selectedChain?.symbol || ""}
-          type="number"
-          step="0.001"
-          styleType="success"
-          placeholder="0.00"
-          width="100%"
-          fontSize="24px"
-        />
-        <PrimaryButton
-          width="100%"
-          height="3.5rem"
-          fontSize="20px"
-          onClick={handleSendFunds}
-          disabled={!Number(fundAmount) && isRightChain && active}
-          data-testid="fund-action"
-        >
-          {fundActionButtonLabel}
-        </PrimaryButton>
-        <Modal
-          title="Provide Gas Fee"
-          isOpen={!!fundTransactionError || !!txHash}
-          closeModalHandler={closeModalHandler}
-        >
-          <FundTransactionModal
-            fundAmount={fundAmount}
-            closeModalHandler={closeModalHandler}
-            provideGasFeeError={fundTransactionError}
-            txHash={txHash}
-            selectedChain={selectedChain}
-          />
-        </Modal>
-        <img src="./assets/images/fund/provide-gas-fee-planet.svg" className="absolute -left-64 -top-16 scale-150 z-0" />
+          >
+            <FundTransactionModal
+              fundAmount={fundAmount}
+              closeModalHandler={closeModalHandler}
+              provideGasFeeError={fundTransactionError}
+              txHash={txHash}
+              selectedChain={selectedChain}
+            />
+          </Modal>
+
+        </span>
       </ContentCard>
     </div>
   );
