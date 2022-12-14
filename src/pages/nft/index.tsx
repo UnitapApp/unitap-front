@@ -33,8 +33,40 @@ const NFT = () => {
               <Icon iconSrc='assets/images/nft/launch-spaceship.svg' />
             </div>
           </div>
-          <Collapse className="mb-4" title='Unitap Pass Sale' icon="assets/images/nft/nft-pass-sale-icon.svg"></Collapse>
-          <Collapse className="mb-4" title='Questions' icon="assets/images/nft/nft-questions-icon.svg"></Collapse>
+          <Collapse className="mb-4" title='Unitap Pass Sale' icon="assets/images/nft/nft-pass-sale-icon.svg">
+            <>
+              <p className='collapse-text'>
+                10,000 Unitap Passes total will be sold for .1 Eth each using a small batch sale and a BrightID Aura gated sale.
+              </p>
+              <p className='collapse-title'>Small batch sale</p>
+              <p className='collapse-text'>
+                A maximum of 2,000 Unitap Passes will be sold in small batches, with a starting batch size of 100.
+                Anyone can buy Passes up to the number left in the current batch.
+                When a batch sells out, Unitap will decide whether to start a new batch or to transition to the Aura gated sale.
+              </p>
+              <p className='collapse-title'>Aura gated sale</p>
+              <p className='collapse-text'>
+                The remaining Unitap Passes will be sold gated by BrightID Aura verification. Anyone with Aura verification can deposit Eth to automatically purchase one Unitap Pass per day while supplies last.
+              </p>
+            </>
+          </Collapse>
+          <Collapse className="mb-4" title='Questions' icon="assets/images/nft/nft-questions-icon.svg">
+            <>
+              <p className='collapse-title'>
+                Will Unitap Passes contribute to wealth disparity?
+              </p>
+              <p className='collapse-text mb-8'>
+                No. Unitap strives to provide immense value to every person for free. Even if Unitap Passes are worth much more than their purchase price, the value one person will get from holding multiple Passes will not exceed the immense value each person will receive from Unitap for free.
+              </p>
+              <p className='collapse-title'>
+                Where will the money go?
+              </p>
+              <p className='collapse-text'>
+                All money received from the sale of Unitap Passes will go to support Unitap and BrightID (a core component of Unitap). Unitap has chosen to use Bright DAO for its govenance and will make proposals to receive $BRIGHT as needed to pay for its operations. Any money raised that exceeds the immediate needs of the Unitap team will be used to buy $BRIGHT tokens and deposit them in Bright DAO’s community pool.
+                Bright DAO is a large community Gardens DAO with over 1400 members. 
+              </p>
+            </>
+          </Collapse>
         </div>
       </div>
       <Footer />
