@@ -171,7 +171,7 @@ const Content: FC = () => {
             ></SelectChainModal>
           </Modal>
           <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
-            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer bg-gray30">
+            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer bg-gray30" onClick={() => setModalState(true)}>
               <Icon iconSrc="assets/images/tokens/fantom.svg" width="32px" height="auto" />
               <Icon iconSrc="assets/images/fund/arrow-down.png" width="14px" height="auto" />
             </div>

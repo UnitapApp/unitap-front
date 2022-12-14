@@ -21,7 +21,6 @@ export const ModalWrapper = styled.div<props>`
 `;
 
 export const ModalContent = styled.div<props>`
-  background-color: ${DV.colors.black1};
   ${({ size }) =>
     size === 'small'
       ? `width: min(420px, 90%);`
@@ -91,8 +90,7 @@ export const ModalContent = styled.div<props>`
 `;
 
 export const ModalChildrenWrapper = styled.div<props>`
-  background-color: ${DV.colors.transparent_black};
-  ${({ size }) => (size === 'small' ? `background-color: ${DV.colors.black1};` : ``)}
+  ${({ size }) => (size === 'small' ? `` : ``)}
   margin: ${DV.sizes.baseMargin * 2}px auto;
 
   border-radius: ${DV.sizes.baseRadius * 2}px;

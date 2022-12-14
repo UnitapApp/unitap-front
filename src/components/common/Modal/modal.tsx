@@ -19,8 +19,8 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
     <>
       {isOpen && (
         <ModalWrapper className={className} onClick={(_e) => closeModalHandler()} data-testid="modal-wrapper">
-          <ModalContent className={'xyz'} size={size} onClick={(e) => e.stopPropagation()} data-testid="modal-content">
-            <Text className="modal-title"> {title} </Text>
+          <ModalContent className={'xyz bg-gray20 border-2 border-gray40'} size={size} onClick={(e) => e.stopPropagation()} data-testid="modal-content">
+            <Text className="modal-title" fontSize="20"> {title} </Text>
             <span onClick={closeModalHandler} className="close" data-testid="close-modal">
               <Icon iconSrc='assets/images/modal/exit.svg'/>
             </span>
