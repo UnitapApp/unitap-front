@@ -33,21 +33,22 @@ const Header = () => {
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            userProfile.totalWeeklyClaimsRemaining == 2 ? (
-              <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray80">
-                <p className="claim-stat__not-claimed__text px-5 py-4 text-white text-xs">
-                  You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
-                </p>
-              </div>
-            ) : (
-              <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
-                <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
-                <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
-                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-                <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-              </div>
-            )
+            // userProfile.totalWeeklyClaimsRemaining == 2 ? (
+            //   <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray80">
+            //     <p className="claim-stat__not-claimed__text px-5 py-4 text-white text-xs">
+            //       You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
+            //     </p>
+            //   </div>
+            // ) : (
+            //   <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+            //     <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
+            //     <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
+            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
+            //   </div>
+            // )
+            <></>
           ) : (
             <></>
           )}
