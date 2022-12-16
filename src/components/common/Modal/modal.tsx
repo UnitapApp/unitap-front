@@ -19,17 +19,16 @@ const Modal = ({ spaceman, title, children, isOpen, closeModalHandler, className
     <>
       {isOpen && (
         <ModalWrapper className={className} onClick={(_e) => closeModalHandler()} data-testid="modal-wrapper">
-          <ModalContent className={'xyz'} size={size} onClick={(e) => e.stopPropagation()} data-testid="modal-content">
-            <Text className="modal-title"> {title} </Text>
-            <span onClick={closeModalHandler} className="close" data-testid="close-modal">
+          <ModalContent 
+            className={`bg-gray40 rounded-2xl border-2 border-gray80`} 
+            onClick={(e) => e.stopPropagation()} 
+            data-testid="modal-content"
+            size={size} 
+          >
+            <p className="modal-title font-bold text-sm text-center mx-auto text-white"> {title} </p>
+            <span onClick={closeModalHandler} className="close absolute right-4 top-4 cursor-pointer" data-testid="close-modal">
               <Icon iconSrc='assets/images/modal/exit.svg'/>
             </span>
-            {spaceman === Spaceman.WITH_PHONE && (
-              <img className="spaceman-three" src={process.env.PUBLIC_URL + 'assets/images/modal/scan_spaceman.svg'} alt="" />
-            )}
-            {spaceman === Spaceman.BOTTOM_BIG && (
-              <img className="spaceman-one" src={process.env.PUBLIC_URL + 'assets/images/modal/claim_spaceman.svg'} alt="" />
-            )}
             <ModalChildrenWrapper size={size}>{children}</ModalChildrenWrapper>
           </ModalContent>
         </ModalWrapper>

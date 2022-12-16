@@ -7,7 +7,7 @@ import {
 } from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
-import { SecondaryButton } from 'components/basic/Button/button';
+import { ClaimButton, SecondaryButton } from 'components/basic/Button/button';
 
 import { BrightIdModalState, BrightIdVerificationStatus } from 'types';
 
@@ -16,6 +16,7 @@ import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { Spaceman } from 'constants/spaceman';
 import { ClaimContext } from 'hooks/useChainList';
+import Icon from 'components/basic/Icon/Icon';
 
 const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
@@ -59,33 +60,39 @@ const BrightConnectionModalBody = () => {
   }
 
   return (
-    <BrightConnectionModalWrapper data-testid="brightid-modal" warning={tried}>
-      <img src={process.env.PUBLIC_URL + '/assets/images/bright-icon.png'} alt="" />
-      <Text fontSize="14" className="scan-qr-text">
+    <BrightConnectionModalWrapper className='bright-connection-modal flex flex-col items-center justify-center pt-4' data-testid="brightid-modal" warning={tried}>
+      <p className="scan-qr-text text-sm text-white mb-3">
         Scan QR Code
-      </Text>
+      </p>
       <img
         data-testid="brightid-qr"
-        className="qr-code"
+        className="qr-code !w-4/12 z-10 mb-4"
         src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationQr}`}
         alt="qr-code"
       />
-      <Text fontSize="14" className="or-text">
-        or
-      </Text>
-      <CopyLink onClick={copyVerificationUrl} data-testid="brightid-copy-link">
-        <img src={process.env.PUBLIC_URL + '/assets/images/copy-link.png'} alt="" />
-        <Text color="green">Copy Link</Text>
+      <p className="text-xs text-white mb-4">or</p>
+      <CopyLink onClick={copyVerificationUrl} data-testid="brightid-copy-link" className='flex text-space-green mb-10 z-10'>
+        <Icon iconSrc={process.env.PUBLIC_URL + '/assets/images/copy-link.png'} width="16px" height="19px" className='mr-3' />
+        <p className='text-space-green font-medium cursor-pointer hover:underline'>Copy Link</p>
       </CopyLink>
+      <span className='notice flex mb-3'>
+        <Icon className='mr-2' iconSrc='assets/images/modal/gray-danger.svg' />
+        <p className='text-xs text-gray90 font-light'>  Submit Connection after connecting with brighID app. </p>
+      </span>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && (
-        <SecondaryButton
+        <ClaimButton
           data-testid={`bright-id-connection-refresh-button${tried ? '-try-again' : ''}`}
           onClick={refreshConnectionButtonAction}
+          className="!w-full mb-4"
         >
-          {tried ? 'Scan or Use Link and Try Again' : 'Click here after confirming in BrightID app!'}
-        </SecondaryButton>
+          {tried ? <p className='font-semibold'>Scan or Use Link and Try Again</p> : <p className='font-semibold'>Submit Connection</p>}
+        </ClaimButton>
       )}
+      <span className='dont-have-bright-id flex justify-between w-full'>
+        <p className='text-xs text-gray100'>Don’t have a verified BrightID account?</p>
+        <p className='text-xs font-semibold cursor-pointer underline text-white'>Get Verified on BrightID</p>
+      </span>
     </BrightConnectionModalWrapper>
   );
 };
@@ -95,8 +102,8 @@ const BrightConnectionModal = () => {
   return (
     <Modal
       className="bright-modal"
-      spaceman={Spaceman.WITH_PHONE}
       title="Connect your BrightID"
+      size='small'
       isOpen={brightidModalStatus !== BrightIdModalState.CLOSED}
       closeModalHandler={closeBrightIdModal}
     >
