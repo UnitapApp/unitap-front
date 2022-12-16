@@ -12,6 +12,7 @@ import ClaimModal from './components/ClaimModal/claimModal';
 import BrightConnectionModal from './components/BrightConnectionModal/brightConnectionModal';
 import { ChainType, Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
+import ConnectMetamaskModal from './components/ConnectMetamaskModal/connectMetamaskModal';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);
@@ -90,6 +91,7 @@ const Home = () => {
       </div>
       <ClaimModal />
       <BrightConnectionModal />
+      <ConnectMetamaskModal />
       <Footer />
     </>
   );
