@@ -147,6 +147,12 @@ export const LightOutlinedButton = styled(Button)`
   border-radius: ${DV.sizes.baseRadius}px;
 `;
 
+export const WhiteOutlinedButton = styled(Button)`
+  color: white;
+  border: 2px solid #ffffff;
+  border-radius: ${DV.sizes.baseRadius * 1.5}px;
+`;
+
 export const GradientOutlinedButton = styled(Button)`
   color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
   background: ${DV.bgGradient.primary};
