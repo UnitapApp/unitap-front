@@ -33,7 +33,7 @@ const Footer: FC = () => {
       <span onClick={() => window.open('https://github.com/UnitapApp', '_blank')}>
         <Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
       </span>
-      <span onClick={() => window.open('https://discord.gg/kH8WeQ6tuF', '_blank')}>
+      <span onClick={() => window.open('https://discord.gg/sHWNyYjyrz', '_blank')}>
         <Icon iconSrc="assets/images/footer/discord.svg" width="34px" height="auto" hoverable></Icon>
       </span>
       <PbyBright iconSrc="Poweredbybright.svg" width="160px" height="auto"></PbyBright>
