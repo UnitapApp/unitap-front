@@ -13,6 +13,7 @@ import BrightConnectionModal from './components/BrightConnectionModal/brightConn
 import { ChainType, Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import ConnectMetamaskModal from './components/ConnectMetamaskModal/connectMetamaskModal';
+import CreateBrightIdAccountModal from './components/CreateBrightIdAccountModal/createBrightIdAccountModal';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);
@@ -92,6 +93,7 @@ const Home = () => {
       <ClaimModal />
       <BrightConnectionModal />
       <ConnectMetamaskModal />
+      <CreateBrightIdAccountModal />
       <Footer />
     </>
   );
