@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Fund from './pages/fund';
 import Landing from 'pages/landing';
 import Donate from 'pages/donate';
+import NFT from 'pages/nft';
+
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import { RefreshContextProvider } from './context/RefreshContext';
@@ -13,6 +15,7 @@ import ApplicationUpdater from 'state/application/updater';
 import store from './state';
 import { Provider } from 'react-redux';
 import Web3Provider from 'components/Web3Provider';
+
 import ConnectBrightIdModal from 'pages/home/components/ConnectBrightIdModal/connectBrightIdModal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
 import ConnectMetamaskModal from 'pages/home/components/ConnectMetamaskModal/connectMetamaskModal';
@@ -43,6 +46,7 @@ function App() {
                     <Route path={RoutePath.FUND} element={<Fund />} />
                     <Route path={RoutePath.LANDING} element={<Landing />} />
                     <Route path={RoutePath.DONATE} element={<Donate />} />
+                    <Route path={RoutePath.NFT} element={<NFT />} />
                   </Routes>
                   <ConnectBrightIdModal />
                   <BrightConnectionModal />

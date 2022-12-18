@@ -93,7 +93,12 @@ const Landing: FC = () => {
             </p>
           </div>
           <div>
-            <UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
+            <UButton
+              size={'btn-large'}
+              className={'secondary-button'}
+              icon={'/assets/images/landing/arrow-right.svg'}
+              onClick={() => navigate(RoutePath.NFT)}
+            >
               Go to Mint Page
             </UButton>
           </div>
