@@ -6,6 +6,7 @@ import ChainItem from './chainItem';
 import { ClaimContext } from '../../../../hooks/useChainList';
 import { getChainIcon } from '../../../../utils';
 import { Chain } from '../../../../types';
+import Icon from 'components/basic/Icon/Icon';
 
 const SelectChainModal = ({
   selectedChain,
@@ -39,15 +40,14 @@ const SelectChainModal = ({
   ));
 
   return (
-    <SelectChainModalWrapper>
-      <ModalSearch
+    <SelectChainModalWrapper className='relative'>
+      <input
+        className='bg-gray10 border-2 !border-gray30 rounded-lg p-4 pl-[52px] mb-2 w-full text-white z-1'
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Search Network"
-        width="100%"
-        mb={2}
       />
-      <hr className="hr" />
+      <Icon className='absolute left-4 top-4' iconSrc='assets/images/modal/search-icon.svg' width='20px' height='20px' />
       {chainsList}
     </SelectChainModalWrapper>
   );

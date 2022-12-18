@@ -10,7 +10,6 @@ const Fund: FC = () => {
     <>
       <Navbar />
       <div className={'unitap-body'}>
-        <Header />
         <Content />
       </div>
       <Footer />

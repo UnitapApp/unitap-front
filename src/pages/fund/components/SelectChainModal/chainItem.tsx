@@ -1,9 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import { DV } from "components/basic/designVariables";
 
 import Icon from "components/basic/Icon/Icon";
-import { Text } from "components/basic/Text/text.style";
 
 interface ChainItemProps {
   icon: string;
@@ -13,35 +10,16 @@ interface ChainItemProps {
   "data-testid"?: string;
 }
 
-const ChainItemWrapper = styled.div`
-  border: 1px solid #e6e6e6;
-
-  background: #21212c;
-  border: 1px solid #11111c;
-  border-radius: 12px;
-
-  display: flex;
-  padding: ${DV.sizes.basePadding * 1.5}px;
-  align-items: center;
-
-  margin-top: ${DV.sizes.basePadding * 1.5}px;
-
-  :hover {
-    cursor: pointer;
-  }
-`;
-
 const ChainItem = (props: ChainItemProps) => {
   const { title, selected, icon, onClick } = props;
   return (
-    <ChainItemWrapper onClick={onClick} data-testid={props["data-testid"]}>
+    <div className="bg-gray30 rounded-xl border-2 border-gray50 flex p-4 pl-3 items-center mt-3 cursor-pointer" onClick={onClick} data-testid={props["data-testid"]}>
       <Icon mr={2} width="32px" iconSrc={icon}></Icon>
-      <Text mb={0} mrAuto>
-        {title}
-      </Text>
-
+      <p className="token-symbol text-white font-semibold mr-auto">{title}</p>
+      <p className="balance mr-2 text-gray90 text-xs">Contract Balance: </p>
+      <p className="balance-amount text-white text-xs">20.37</p>
       {selected && <Icon iconSrc="assets/images/modal/check.svg" width="13px" height="auto" mr={2} />}
-    </ChainItemWrapper>
+    </div>
   );
 };
 

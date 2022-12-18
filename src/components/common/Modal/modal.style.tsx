@@ -33,7 +33,7 @@ export const ModalContent = styled.div<props>`
   overflow: hidden;
   z-index: -2;
 
-  }
+}
 `;
 
 export const ModalChildrenWrapper = styled.div<props>`
@@ -44,9 +44,7 @@ export const ModalChildrenWrapper = styled.div<props>`
   z-index: 10;
   width: min(330px, 90%);
 
-  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)}
-
-  @media only screen and (max-width: 600px) {
+  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)} @media only screen and(max-width: 600 px) {
     .spaceman-three {
       z-index: -1;
     }

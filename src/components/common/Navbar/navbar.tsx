@@ -71,13 +71,6 @@ const Navbar = () => {
       />
       {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
       <DesktopNav>
-        {location.pathname === RoutePath.FUND && (
-          <Link to={RoutePath.FAUCET}>
-            <PrimaryOutlinedButton mr={2} minWidth="175px">
-              Claim Gas Fee
-            </PrimaryOutlinedButton>
-          </Link>
-        )}
         {active ? (
           userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
             <>
