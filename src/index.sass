@@ -39,6 +39,26 @@ body
   @apply ease-out duration-300
 
 
+#home-nft
+  .btn-large
+    img
+      @apply transition duration-300
+
+  &:hover
+    .btn-large
+      img
+        @apply translate-x-0.5 transition duration-300
+
+.home-footer-social-link
+  img
+    @apply transition duration-300 transform-gpu
+
+  &:hover
+    img
+      @apply transition duration-300 transform-gpu
+      @apply scale-125
+
+
 @layer base
 
   // TYPOGRAPHY
@@ -81,6 +101,22 @@ body
     @apply rounded-3xl py-7 px-6
 
   .uni-card
+    @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20 overflow-hidden
+    @apply transition-all duration-250 after:transition-all after:duration-250
+    .card-text
+      @apply transition duration-300
+
+    &:hover
+      //@apply transition-all duration-300
+
+      .widget-icon
+        @apply animate-wiggle ease-linear
+      //animation-delay: 300ms
+
+      & > .card-text
+        @apply -translate-y-1 transition duration-300
+
+  .uni-card--refactor
     @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20
     &:hover
       .widget-icon
@@ -95,7 +131,7 @@ body
 
   .gradient-outline-button
     @apply bg-g-primary relative z-10 before:content-['']
-    @apply before:block before:-z-10 before:absolute before:inset-[1px]  before:bg-gray00
+    @apply before:block before:-z-10 before:absolute before:inset-[1px] before:bg-gray00
     //@apply relative
 
     // todo try to update gradient border method (the current approach is unstable regarding spacing)
@@ -143,11 +179,17 @@ body
       @apply text-sm
 
   .btn-large
+    @apply py-2.5 px-4 border-[3px]
+    border-radius: 0.75rem !important
+
+    &:before
+      border-radius: 0.75rem !important
+
     button
-      @apply text-md
+      @apply font-medium
 
   .btn-small
-    @apply px-3 py-2 before:rounded-lg rounded-lg
+    @apply px-3 py-2
     button
       @apply text-xs font-semibold
 

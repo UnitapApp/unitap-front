@@ -30,15 +30,33 @@ const Landing: FC = () => {
     },
   ]);
   const [stats] = useState([
-    { name: 'EVM Networks', number: 10 },
-    { name: 'Non-EVM Networks', number: 12 },
+    { name: 'Unitap Users', number: '23,509' },
+    { name: 'EVM Networks', number: 12 },
     { name: 'Test Networks', number: 3 },
     { name: 'Gas Fees Claimed', number: '7,324' },
   ]);
   const [futureTaps] = useState([
-    { name: 'Learn Tap', description: 'Where users can learn to user web 3 technologies' },
-    { name: 'Stake Tap', description: 'Where users can learn to user web 3 technologies' },
-    { name: 'Launch Tap', description: 'Where users can learn to user web 3 technologies' },
+    {
+      name: 'Learn Tap',
+      icon: 'learntap-icon.png',
+      description: 'Where users can learn to user web 3 technologies',
+      class: '',
+      iconSize: 'w-6',
+    },
+    {
+      name: 'Stake Tap',
+      icon: 'staketap-icon.png',
+      description: 'Where users can learn to user web 3 technologies',
+      class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
+      iconSize: 'w-7 h-8',
+    },
+    {
+      name: 'Launch Tap',
+      icon: 'launchtap-icon.png',
+      description: 'Where users can learn to user web 3 technologies',
+      class: 'after:bg-launchtap-texture after:right-0 after:w-28',
+      iconSize: 'w-6',
+    },
   ]);
 
   const navigate = useNavigate();
@@ -50,35 +68,43 @@ const Landing: FC = () => {
         <section
           id="home-header"
           className={
-            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center pl-12'
+            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:pl-12 overflow-hidden'
           }
         >
-          <h1 className={'font-bold text-4xl'}>UNITAP</h1>
-          <h4>A gateway to Networks and Communities.</h4>
+          <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} />
+          <h4 className={'text-gradient-primary'}>
+            Unitap is an onboarding tool for networks and communities and a gateway for users to web3
+          </h4>
         </section>
 
-        {/* <section
+        <section
           id="home-nft"
           className={
-            'items-center px-12 md:flex-row flex-col gap-4 md:gap-0 uni-card py-10 after:inset-auto after:left-0 after:top-0 after:w-32 after:h-24 flex justify-between after:rounded-2xl after:bg-nft-texture text-white'
+            'items-center px-12 text-center sm:text-left md:flex-row flex-col gap-4 md:gap-0 uni-card py-3 ' +
+            'after:inset-auto after:left-0 after:-top-10 after:w-36 after:h-32 flex justify-between ' +
+            'after:rounded-2xl after:bg-nft-texture text-white hover:bg-gray00 cursor-pointer hover:after:top-2'
           }
         >
-          <div className={'flex gap-4 md:flex-row flex-col items-center justify-center'}>
+          <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Genesis Pass NFT</h3>
-            <p>1,136 / 2,000 Minted</p>
+            <p className={'text-gray100'}>
+              <span className={'text-white'}>13</span> of <span className={'text-white'}>100</span> Passes are left in
+              the current batch. Mint your Passes now
+            </p>
           </div>
           <div>
-            <UButton className={'gradient-outline-button'}>Go to Mint Page</UButton>
+            <UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
+              Go to Mint Page
+            </UButton>
           </div>
-        </section> */}
+        </section>
 
         <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
           <Widget
             description={'Claim gas fees for any reason and make  transactions easily'}
             icon={'gastap-icon.svg'}
-            className={'after:bg-gastap-texture flex-1'}
+            className={'after:bg-gastap-texture flex-1 hover:bg-gray00 cursor-pointer'}
             title={'Gas Tap'}
-            buttonTitle={'Go to Tap'}
             onButtonClick={() => navigate(RoutePath.FAUCET)}
           >
             {sortedChainList.length > 0 && (
@@ -110,37 +136,43 @@ const Landing: FC = () => {
           <Widget
             description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
             icon={'tokentap-icon.svg'}
-            className={'after:bg-tokentap-texture flex-1'}
+            iconSize={'w-8'}
+            className={'after:bg-tokentap-texture flex-1 hover:bg-gray00 cursor-pointer'}
             title={'Token Tap'}
-            buttonTitle={'Go to Tap'}
+            buttonTitle={'Beta'}
+            buttonClass={'green-text-button'}
             onButtonClick={() => navigate(RoutePath.TOKEN)}
           >
-            <UButton
-              className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}
-              buttonClassName="cursor-default"
-            >
-              Beta
-            </UButton>
+            {/*<UButton*/}
+            {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
+            {/*  buttonClassName="cursor-default"*/}
+            {/*>*/}
+            {/*  Beta*/}
+            {/*</UButton>*/}
           </Widget>
 
           <Widget
             description={'Where everyone has chances to win larger prizes'}
-            className={'flex-1'}
+            className={'after:bg-prizetap-texture after:w-88 after:-top-8 flex-1'}
+            icon={'prizetap-icon.png'}
+            iconSize={'w-8 h-7'}
             title={'Prize Tap'}
             buttonTitle={'Soon...'}
-            buttonClass={'secondary-button'}
+            buttonClass={'secondary-button !bg-gray30'}
           ></Widget>
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
           {futureTaps.map((tap) => (
             <Widget
+              icon={tap.icon}
+              iconSize={tap.iconSize}
               key={tap.name}
               description={tap.description}
-              className={'flex-1'}
+              className={`${tap.class} flex-1 pb-12`}
               title={tap.name}
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button'}
+              buttonClass={'secondary-button !bg-gray30'}
             ></Widget>
           ))}
         </section>
@@ -166,25 +198,32 @@ const Landing: FC = () => {
         <section id="home-footer" className={'flex gap-4 md:flex-row flex-col'}>
           <div
             className={
-              'uni-card cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
+              'uni-card hover:bg-gray00 hover:after:top-3 cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto ' +
+              'after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center'
             }
             onClick={() => navigate(RoutePath.DONATE)}
           >
-            <h2 className={'text-white'}>Donate to Unitap</h2>
+            <h2 className={'text-white card-text'}>Donate to Unitap</h2>
           </div>
           <div className={'md:w-2/3 md:h-36 uni-card after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0'}>
             {socialLinks.map((social) => (
               <div
                 onClick={() => window.open(social.link, '_blank')}
                 key={social.link}
-                className={`${social.localClass} flex justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
+                className={`${social.localClass} flex home-footer-social-link cursor-pointer justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
               >
-                <img src={`/assets/images/landing/${social.img}`} />
+                <img className={''} src={`/assets/images/landing/${social.img}`} />
               </div>
             ))}
 
-            <div className={'flex flex-grow justify-center items-center text-white py-6 sm:py-0'}>
-              <h2>Community</h2>
+            <div
+              onClick={() => navigate(RoutePath.DONATE)}
+              className={
+                'uni-card hover:bg-gray00 hover:after:top-4 cursor-pointer after:bg-what-is-unitap after:left-auto after:!right-0 after:w-44 after:h-36' +
+                ' flex flex-grow justify-center items-center text-white py-6 sm:py-0 rounded-tl-none rounded-bl-none'
+              }
+            >
+              <h2 className={'card-text'}>What is Unitap ?</h2>
             </div>
           </div>
         </section>
