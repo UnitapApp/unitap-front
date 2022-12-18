@@ -46,14 +46,14 @@ const Landing: FC = () => {
     {
       name: 'Stake Tap',
       icon: 'staketap-icon.png',
-      description: 'Where users can learn to user web 3 technologies',
+      description: 'a public good staking platform where users can earn rewards by staking their assets',
       class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
       iconSize: 'w-7 h-8',
     },
     {
       name: 'Launch Tap',
       icon: 'launchtap-icon.png',
-      description: 'Where users can learn to user web 3 technologies',
+      description: 'A public good launch pad where every unique human will benefit from each launch through Prize Tap',
       class: 'after:bg-launchtap-texture after:right-0 after:w-28',
       iconSize: 'w-6',
     },
