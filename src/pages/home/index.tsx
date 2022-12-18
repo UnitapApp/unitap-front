@@ -9,12 +9,8 @@ import SearchInput from './components/SearchInput/searchInput';
 import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
 import ClaimModal from './components/ClaimModal/claimModal';
-import BrightConnectionModal from './components/BrightConnectionModal/brightConnectionModal';
 import { ChainType, Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
-import ConnectMetamaskModal from './components/ConnectMetamaskModal/connectMetamaskModal';
-import CreateBrightIdAccountModal from './components/CreateBrightIdAccountModal/createBrightIdAccountModal';
-import ConnectBrightIdModal from './components/ConnectBrightIdModal/connectBrightIdModal';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);

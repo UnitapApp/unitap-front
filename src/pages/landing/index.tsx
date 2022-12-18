@@ -3,7 +3,7 @@ import Navbar from 'components/common/Navbar/navbar';
 import Widget from './components/widget';
 import UButton from '../../components/basic/Button/UButton';
 import RoutePath from 'routes';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
 import { ClaimContext } from 'hooks/useChainList';
 
@@ -71,7 +71,7 @@ const Landing: FC = () => {
             'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:pl-12 overflow-hidden'
           }
         >
-          <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} />
+          <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} alt={'logo'} />
           <h4 className={'text-gradient-primary'}>
             Unitap is an onboarding tool for networks and communities and a gateway for users to web3
           </h4>
@@ -105,7 +105,7 @@ const Landing: FC = () => {
         </section>
 
         <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
-          <a className={'flex-1 '} onClick={() => navigate(RoutePath.FAUCET)}>
+          <Link className={'flex-1 '} to={RoutePath.FAUCET}>
             <Widget
               description={'Claim gas fees for any reason and make  transactions easily'}
               icon={'gastap-icon.svg'}
@@ -138,9 +138,9 @@ const Landing: FC = () => {
                 </>
               )}
             </Widget>
-          </a>
+          </Link>
 
-          <a className={'flex-1'} onClick={() => navigate(RoutePath.FAUCET)}>
+          <Link className={'flex-1'} to={RoutePath.FAUCET}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
@@ -158,7 +158,7 @@ const Landing: FC = () => {
               {/*  Beta*/}
               {/*</UButton>*/}
             </Widget>
-          </a>
+          </Link>
 
           <Widget
             description={'Where everyone has chances to win larger prizes'}
