@@ -75,7 +75,8 @@ const ConnectMetamaskModal = () => {
     <Modal
       title="Connect Metamask"
       size='small'
-      isOpen={brightidModalStatus !== BrightIdModalState.CLOSED}
+      // isOpen={brightidModalStatus !== BrightIdModalState.CLOSED}
+      isOpen={false}
       closeModalHandler={closeBrightIdModal}
     >
       <ConnectMetamaskModalContent />

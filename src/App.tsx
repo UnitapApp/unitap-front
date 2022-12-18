@@ -13,6 +13,10 @@ import ApplicationUpdater from 'state/application/updater';
 import store from './state';
 import { Provider } from 'react-redux';
 import Web3Provider from 'components/Web3Provider';
+import ConnectBrightIdModal from 'pages/home/components/ConnectBrightIdModal/connectBrightIdModal';
+import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
+import ConnectMetamaskModal from 'pages/home/components/ConnectMetamaskModal/connectMetamaskModal';
+import CreateBrightIdAccountModal from 'pages/home/components/CreateBrightIdAccountModal/createBrightIdAccountModal';
 
 require('typeface-jetbrains-mono');
 
@@ -40,6 +44,10 @@ function App() {
                     <Route path={RoutePath.LANDING} element={<Landing />} />
                     <Route path={RoutePath.DONATE} element={<Donate />} />
                   </Routes>
+                  <ConnectBrightIdModal />
+                  <BrightConnectionModal />
+                  <ConnectMetamaskModal />
+                  <CreateBrightIdAccountModal />
                 </BrowserRouter>
               </ClaimProvider>
             </UserProfileProvider>

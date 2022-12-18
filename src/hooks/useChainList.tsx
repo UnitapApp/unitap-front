@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { claimMax, getActiveClaimHistory, getChainList } from 'api';
 import {
+  BrightIdConnectionModalState,
   BrightIdModalState,
   BrightIdVerificationStatus,
   Chain,
@@ -8,6 +9,7 @@ import {
   ClaimBoxState,
   ClaimBoxStateContainer,
   ClaimReceipt,
+  HaveBrightIdAccountModalState,
   Network,
 } from 'types';
 import { UserProfileContext } from './useUserProfile';
@@ -32,6 +34,12 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => void;
   closeBrightIdModal: () => void;
   brightidModalStatus: BrightIdModalState;
+  openHaveBrightIdAccountModal: () => void;
+  closeHaveBrightIdAccountModal: () => void;
+  haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState;
+  openBrightIdConnectionModal: () => void;
+  closeBrightIdConnectionModal: () => void;
+  brightIdConnectionModalStatus: BrightIdConnectionModalState;
   selectedNetwork: Network;
   selectedChainType: ChainType;
   setSelectedNetwork: (network: Network) => void;
@@ -50,6 +58,12 @@ export const ClaimContext = createContext<{
   openBrightIdModal: () => {},
   closeBrightIdModal: () => {},
   brightidModalStatus: BrightIdModalState.CLOSED,
+  openHaveBrightIdAccountModal: () => {},
+  closeHaveBrightIdAccountModal: () => {},
+  haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
+  openBrightIdConnectionModal: () => {},
+  closeBrightIdConnectionModal: () => {},
+  brightIdConnectionModalStatus: BrightIdConnectionModalState.CLOSED,
   selectedNetwork: Network.MAINNET,
   selectedChainType: ChainType.EVM,
   setSelectedNetwork: (network: Network) => {},
@@ -67,6 +81,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     lastFailPk: null,
   });
   const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
+  const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(HaveBrightIdAccountModalState.CLOSED);
+  const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(BrightIdConnectionModalState.CLOSED);
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
 
@@ -167,6 +183,20 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
 
+  const openHaveBrightIdAccountModal = () => {
+    setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.OPENED);
+  };
+  const closeHaveBrightIdAccountModal = () => {
+    setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.CLOSED);
+  };
+  
+  const openBrightIdConnectionModal = () => {
+    setBrightIdConnectionModalStatus(BrightIdConnectionModalState.OPENED);
+  };
+  const closeBrightIdConnectionModal = () => {
+    setBrightIdConnectionModalStatus(BrightIdConnectionModalState.CLOSED);
+  };
+
 
   return (
     <ClaimContext.Provider
@@ -184,6 +214,12 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         openBrightIdModal,
         closeBrightIdModal,
         brightidModalStatus,
+        openHaveBrightIdAccountModal,
+        closeHaveBrightIdAccountModal,
+        haveBrightIdAccountModalStatus,
+        openBrightIdConnectionModal,
+        closeBrightIdConnectionModal,
+        brightIdConnectionModalStatus,
         selectedNetwork,
         setSelectedNetwork,
         selectedChainType,

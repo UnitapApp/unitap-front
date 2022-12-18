@@ -92,10 +92,6 @@ const Home = () => {
         </div>
       </div>
       <ClaimModal />
-      <BrightConnectionModal />
-      <ConnectMetamaskModal />
-      <CreateBrightIdAccountModal />
-      <ConnectBrightIdModal />
       <Footer />
     </>
   );

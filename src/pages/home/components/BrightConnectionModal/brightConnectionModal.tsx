@@ -9,7 +9,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton, SecondaryButton } from 'components/basic/Button/button';
 
-import { BrightIdModalState, BrightIdVerificationStatus } from 'types';
+import { BrightIdConnectionModalState, BrightIdVerificationStatus } from 'types';
 
 import { copyToClipboard, getVerificationQr } from 'utils';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
@@ -60,7 +60,7 @@ const BrightConnectionModalBody = () => {
   }
 
   return (
-    <BrightConnectionModalWrapper className='bright-connection-modal flex flex-col items-center justify-center pt-4' data-testid="brightid-modal" warning={tried}>
+    <BrightConnectionModalWrapper className='bright-connection-modal flex flex-col items-center justify-center pt-4' data-testid="brightid-modal">
       <p className="scan-qr-text text-sm text-white mb-3">
         Scan QR Code
       </p>
@@ -91,21 +91,21 @@ const BrightConnectionModalBody = () => {
       )}
       <span className='dont-have-bright-id flex justify-between w-full'>
         <p className='text-xs text-gray100'>Don’t have a verified BrightID account?</p>
-        <p className='text-xs font-semibold cursor-pointer underline text-white'>Get Verified on BrightID</p>
+        <p className='text-xs font-semibold cursor-pointer underline text-white' onClick={() => {window.open('https://brightid.gitbook.io/brightid/getting-verified', '_blank')}}>Get Verified on BrightID</p>
       </span>
     </BrightConnectionModalWrapper>
   );
 };
 
 const BrightConnectionModal = () => {
-  const { brightidModalStatus, closeBrightIdModal } = useContext(ClaimContext);
+  const { brightIdConnectionModalStatus, closeBrightIdConnectionModal } = useContext(ClaimContext);
   return (
     <Modal
       className="bright-modal"
       title="Connect your BrightID"
       size='small'
-      isOpen={brightidModalStatus !== BrightIdModalState.CLOSED}
-      closeModalHandler={closeBrightIdModal}
+      isOpen={brightIdConnectionModalStatus !== BrightIdConnectionModalState.CLOSED}
+      closeModalHandler={closeBrightIdConnectionModal}
     >
       <BrightConnectionModalBody />
     </Modal>

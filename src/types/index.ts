@@ -76,6 +76,16 @@ export enum BrightIdModalState {
   CONNECTED_AND_VERIFIED = '4',
 }
 
+export enum HaveBrightIdAccountModalState {
+  CLOSED = '0',
+  OPENED = '1',
+}
+
+export enum BrightIdConnectionModalState {
+  CLOSED = '0',
+  OPENED = '1',
+}
+
 export enum Network {
   MAINNET = '0',
   TESTNET = '1',
