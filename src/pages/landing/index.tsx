@@ -105,56 +105,60 @@ const Landing: FC = () => {
         </section>
 
         <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
-          <Widget
-            description={'Claim gas fees for any reason and make  transactions easily'}
-            icon={'gastap-icon.svg'}
-            className={'after:bg-gastap-texture flex-1 hover:bg-gray00 cursor-pointer'}
-            title={'Gas Tap'}
-            onButtonClick={() => navigate(RoutePath.FAUCET)}
-          >
-            {sortedChainList.length > 0 && (
-              <>
-                <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
-                <ul className={'text-white'}>
-                  {sortedChainList.slice(0, 3).map((token, index) => (
-                    <li
-                      key={token.chainId}
-                      className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
-                    >
-                      <div className={'flex gap-2 items-center'}>
-                        <p>#{index + 1}</p>
-                        <span className="token-logo-container w-6 h-6 flex items-center justify-center">
-                          <img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
-                        </span>
-                        <p>{token.chainName}</p>
-                      </div>
-                      <p>
-                        {token.totalClaimsSinceLastMonday} <span>claims</span>
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </Widget>
+          <a className={'flex-1 '} onClick={() => navigate(RoutePath.FAUCET)}>
+            <Widget
+              description={'Claim gas fees for any reason and make  transactions easily'}
+              icon={'gastap-icon.svg'}
+              iconSize={'w-7'}
+              className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer'}
+              title={'Gas Tap'}
+            >
+              {sortedChainList.length > 0 && (
+                <>
+                  <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
+                  <ul className={'text-white'}>
+                    {sortedChainList.slice(0, 3).map((token, index) => (
+                      <li
+                        key={token.chainId}
+                        className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
+                      >
+                        <div className={'flex gap-2 items-center'}>
+                          <p>#{index + 1}</p>
+                          <span className="token-logo-container w-6 h-6 flex items-center justify-center">
+                            <img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
+                          </span>
+                          <p>{token.chainName}</p>
+                        </div>
+                        <p>
+                          {token.totalClaimsSinceLastMonday} <span>claims</span>
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </Widget>
+          </a>
 
-          <Widget
-            description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
-            icon={'tokentap-icon.svg'}
-            iconSize={'w-8'}
-            className={'after:bg-tokentap-texture flex-1 hover:bg-gray00 cursor-pointer'}
-            title={'Token Tap'}
-            buttonTitle={'Beta'}
-            buttonClass={'green-text-button'}
-            onButtonClick={() => navigate(RoutePath.TOKEN)}
-          >
-            {/*<UButton*/}
-            {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
-            {/*  buttonClassName="cursor-default"*/}
-            {/*>*/}
-            {/*  Beta*/}
-            {/*</UButton>*/}
-          </Widget>
+          <a className={'flex-1'} onClick={() => navigate(RoutePath.FAUCET)}>
+            <Widget
+              description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
+              icon={'tokentap-icon.svg'}
+              iconSize={'w-8'}
+              className={'h-full after:bg-tokentap-texture flex-1 hover:bg-gray00 cursor-pointer'}
+              title={'Token Tap'}
+              buttonTitle={'Beta'}
+              buttonClass={'green-text-button'}
+              onButtonClick={() => navigate(RoutePath.TOKEN)}
+            >
+              {/*<UButton*/}
+              {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
+              {/*  buttonClassName="cursor-default"*/}
+              {/*>*/}
+              {/*  Beta*/}
+              {/*</UButton>*/}
+            </Widget>
+          </a>
 
           <Widget
             description={'Where everyone has chances to win larger prizes'}
