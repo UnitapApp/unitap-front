@@ -33,9 +33,6 @@ export const ModalContent = styled.div<props>`
   overflow: hidden;
   z-index: -2;
 
-    @media only screen and (max-width: ${DV.breakpoints.mobile}) {
-      display: none;
-    }
   }
 `;
 

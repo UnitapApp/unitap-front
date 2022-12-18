@@ -89,9 +89,9 @@ const BrightConnectionModalBody = () => {
           {tried ? <p className='font-semibold'>Scan or Use Link and Try Again</p> : <p className='font-semibold'>Submit Connection</p>}
         </ClaimButton>
       )}
-      <span className='dont-have-bright-id flex justify-between w-full'>
-        <p className='text-xs text-gray100'>Don’t have a verified BrightID account?</p>
-        <p className='text-xs font-semibold cursor-pointer underline text-white' onClick={() => {window.open('https://brightid.gitbook.io/brightid/getting-verified', '_blank')}}>Get Verified on BrightID</p>
+      <span className='dont-have-bright-id md:flex flex-col md:flex-row items-center md:justify-between w-full'>
+        <p className='text-xs text-gray100 text-center mb-2 md:mb-0'>Don’t have a verified BrightID account?</p>
+        <p className='text-xs font-semibold cursor-pointer underline text-white text-center' onClick={() => {window.open('https://brightid.gitbook.io/brightid/getting-verified', '_blank')}}>Get Verified on BrightID</p>
       </span>
     </BrightConnectionModalWrapper>
   );
