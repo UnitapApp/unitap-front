@@ -9,6 +9,7 @@ module.exports = {
       },
       width: {
         68: '17rem',
+        88: '22rem',
         100: '25rem',
         104: '26rem',
       },
@@ -62,6 +63,10 @@ module.exports = {
         'home-header-texture': "url('../public/assets/images/landing/home-header-texture.png')",
         'gastap-texture': "url('../public/assets/images/landing/gastap-texture.png')",
         'tokentap-texture': "url('../public/assets/images/landing/tokentap-texture.png')",
+        'prizetap-texture': "url('../public/assets/images/landing/prizetap-texture.png')",
+        'launchtap-texture': "url('../public/assets/images/landing/launchtap-texture.png')",
+        'staketap-texture': "url('../public/assets/images/landing/staketap-texture.png')",
+        'what-is-unitap': "url('../public/assets/images/landing/what-is-unitap.png')",
         'nft-texture': "url('../public/assets/images/landing/genesis-nft.png')",
         'donate-texture': "url('../public/assets/images/landing/donate-texture.png')",
         'donate-texture-s': "url('../public/assets/images/donate/donate-texture.svg')",
@@ -93,6 +98,10 @@ module.exports = {
       transitionProperty: {
         height: 'height',
         spacing: 'margin, padding',
+      },
+      transitionDuration: {
+        0: '0ms',
+        250: '250ms',
       },
     },
   },

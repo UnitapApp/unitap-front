@@ -9,6 +9,7 @@ export interface WidgetPropsInterface extends React.HTMLAttributes<HTMLElement> 
   buttonClass?: string;
   titleClass?: string;
   icon?: string;
+  iconSize?: string;
   buttonClassName?: string;
 
   onButtonClick?(): void;
@@ -27,20 +28,27 @@ const Widget = (props: WidgetProps) => {
     buttonTitle,
     buttonClass,
     titleClass,
+    iconSize,
     onButtonClick,
   } = props;
   return (
     <div className={`${className ? className : ''} uni-card px-4 pt-4 pb-3`}>
-      <header className={`flex gap-4 justify-between`}>
+      <header className={`flex gap-4 justify-between h-10`}>
         <div className={`${titleClass ? titleClass : ''} flex gap-3 flex-auto`}>
           <p className={'text-white text-xl font-semibold'}>{title}</p>
-          {icon && <img className={'widget-icon'} src={`/assets/images/landing/${icon}`} alt={'widget'} />}
+          {icon && (
+            <img
+              className={`${iconSize ? iconSize : ''} widget-icon`}
+              src={`/assets/images/landing/${icon}`}
+              alt={'widget'}
+            />
+          )}
         </div>
         {buttonTitle && (
           <div>
             <UButton
               className={`${buttonClass ? buttonClass : 'gradient-outline-button'} `}
-              size={'small'}
+              size={'btn-small'}
               onClick={onButtonClick}
               buttonClassName={buttonClassName}
             >
