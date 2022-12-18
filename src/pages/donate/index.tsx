@@ -5,16 +5,43 @@ import Footer from '../../components/common/Footer/footer';
 
 const Home = () => {
   const [networks] = useState([
-    { name: 'Bitcoin', icon: 'btc.svg', isSelected: false },
-    { name: 'Evm Networks', icon: 'eth.svg', isSelected: false },
-    { name: 'Solana', icon: 'solana.svg', isSelected: false },
+    {
+      name: 'Bitcoin',
+      icon: 'btc.svg',
+      address: 'bc1qpcn3ztcgltws9ced8ktmn075dmqvj7dxu73fag',
+      qr: 'btc-address.png',
+      isSelected: false,
+    },
+    {
+      name: 'Evm Networks',
+      icon: 'eth.svg',
+      address: '0xdB1F064C0b188a95b7801050474Da26fc95eb01Eq',
+      qr: 'ETH-address.png',
+      isSelected: false,
+    },
+    {
+      name: 'Solana',
+      icon: 'solana.svg',
+      address: 'pRogDW5qSapudKBgeD2oTSaKku4jNgn3FE7RXo1ojrb',
+      qr: 'solana-address.png',
+      isSelected: false,
+    },
   ]);
 
-  const [selectedNetwork, setSelectedNetwork] = useState(false);
+  const [selectedNetwork, setSelectedNetwork] = useState({
+    name: '',
+    icon: '',
+    address: '',
+    qr: '',
+    isSelected: false,
+  });
 
-  function selectNetwork() {
-    setSelectedNetwork(!selectedNetwork);
-    networks[0].isSelected = !selectedNetwork;
+  function selectNetwork(index: number) {
+    networks.map((net) => {
+      net.isSelected = false;
+    });
+    setSelectedNetwork(networks[index]);
+    networks[index].isSelected = true;
   }
 
   return (
@@ -22,12 +49,13 @@ const Home = () => {
       <Navbar />
       <div className={'unitap-body flex justify-center items-center px-4 py-8'}>
         <div className={'uni-card after:bg-donate-texture-p  after:w-60 after:top-0 after:h-56 px-4 py-6'}>
-          <div className={'h-64 flex flex-col justify-end items-center'}>
-            {selectedNetwork && <p className={'text-white font-semibold text-lg z-10 relative'}>Unitap Wallet</p>}
+          <div className={'h-72 flex flex-col justify-end items-center mb-12'}>
+            {selectedNetwork.name && <p className={'text-white font-semibold text-lg z-10 relative'}>Unitap Wallet</p>}
             <img
-              src={`/assets/images/donate/${selectedNetwork ? 'qr.svg' : 'donate-img.png'}`}
-              className={'mb-12 m-auto z-10'}
+              src={`/assets/images/donate/${selectedNetwork.qr ? selectedNetwork.qr : 'donate-img.png'}`}
+              className={`${selectedNetwork.qr ? 'w-52' : 'w-36'} relative  m-auto z-10`}
             />
+            {selectedNetwork.name && <p className={'text-space-green'}>{selectedNetwork.address}</p>}
           </div>
           <h2 className={'text-white mb-4'}>Donate to Unitap</h2>
 
@@ -36,9 +64,9 @@ const Home = () => {
           </p>
           <label className={'text-gray90 text-xs mb-2 inline-block'}>Select network</label>
           <div className={'flex flex-col sm:flex-row justify-between gap-2 '}>
-            {networks.map((network) => (
+            {networks.map((network, index) => (
               <div
-                onClick={selectNetwork}
+                onClick={() => selectNetwork(index)}
                 key={network.name}
                 className={`${
                   network.isSelected
