@@ -1,20 +1,20 @@
-import React from "react";
-import Home from "pages/home";
-import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Fund from "./pages/fund";
-import Landing from "pages/landing";
-import { UserProfileProvider } from "./hooks/useUserProfile";
-import RoutePath from "routes";
-import { RefreshContextProvider } from "./context/RefreshContext";
-import { ClaimProvider } from "./hooks/useChainList";
-import ApplicationUpdater from "state/application/updater";
-import store from "./state";
-import { Provider } from "react-redux";
-import Web3Provider from "components/Web3Provider";
-import NFT from "pages/nft";
+import React from 'react';
+import Home from 'pages/home';
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Fund from './pages/fund';
+import Landing from 'pages/landing';
+import NFT from 'pages/nft';
+import { UserProfileProvider } from './hooks/useUserProfile';
+import RoutePath from 'routes';
+import { RefreshContextProvider } from './context/RefreshContext';
+import { ClaimProvider } from './hooks/useChainList';
+import ApplicationUpdater from 'state/application/updater';
+import store from './state';
+import { Provider } from 'react-redux';
+import Web3Provider from 'components/Web3Provider';
 
-require("typeface-jetbrains-mono");
+require('typeface-jetbrains-mono');
 
 function Updaters() {
   return (
