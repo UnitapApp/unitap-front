@@ -142,10 +142,14 @@ body
     min-height: calc(100vh - 65px)
 
 
+  .gradient-outline-card
+    @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-2xl overflow-hidden
+    @apply before:block before:-z-10 before:absolute before:inset-[3px] before:rounded-xl before:bg-gray00
+
   // BUTTON COLOR
 
   .gradient-outline-button
-    @apply bg-g-primary relative z-10 before:content-['']
+    @apply bg-g-primary relative z-10 before:content-[''] 
     @apply before:block before:-z-10 before:absolute before:inset-[1px] before:bg-gray00
     //@apply relative
 
