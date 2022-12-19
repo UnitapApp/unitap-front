@@ -5,7 +5,7 @@ enum RoutePath {
   DONATE = '/donate',
   FUND = '/fund',
   PRIZE = '/prize',
-  NFT = '/nft'
+  NFT = '/pass'
 }
 
 export default RoutePath;
