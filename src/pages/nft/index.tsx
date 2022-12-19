@@ -4,6 +4,7 @@ import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
 import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
+import NFTTimer from './components/NFTTimer/nftTimer';
 
 const NFT = () => {
   return (
@@ -36,13 +37,13 @@ const NFT = () => {
                   address on another network.
                 </li>
               </ul>
-              <p className="text-gradient-primary text-xs font-medium">
-                As Unitap adds taps and features, we will offer new benefits to Unitap Pass holders.
+              <p className="text-gradient-primary text-sm font-semibold">
+                As Unitap adds taps and features,<br />
+                we will offer new benefits to Unitap Pass holders.
               </p>
             </div>
-            <div className="card md:w-5/12">
-              <p className="title font-semibold text-xl mb-2">02 : 23 : 58 : 03</p>
-              <p className="subtitle text-sm leading-7 font-medium text-gray100 mb-16">To Launch</p>
+            <div className="card md:w-5/12 p-2">
+              <NFTTimer className="mb-14"/>
               <img
                 className={'w-52 animate-rocket m-auto relative right-3'}
                 src={'/assets/images/nft/rocketship.png'}
