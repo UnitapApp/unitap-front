@@ -26,7 +26,7 @@ export const ModalContent = styled.div<props>`
       ? `width: min(420px, 90%);`
       : size === 'large'
       ? `width: min(1000px, 90%);`
-      : `width: min(880px, 90%);`}
+      : `width: min(500px, 90%);`}
   margin: 0 5%;
   position: relative;
   padding: ${DV.sizes.basePadding * 2}px;
@@ -37,16 +37,6 @@ export const ModalContent = styled.div<props>`
 `;
 
 export const ModalChildrenWrapper = styled.div<props>`
-  background-color: ${DV.colors.transparent_black};
-  ${({ size }) => (size === 'small' ? `background-color: ${DV.colors.black1};` : ``)}
-
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
-  width: min(330px, 90%);
-
-  ${({ size }) => (size === 'small' ? ` width: 100%;` : ``)} @media only screen and(max-width: 600 px) {
-    .spaceman-three {
-      z-index: -1;
-    }
-  }
 `;

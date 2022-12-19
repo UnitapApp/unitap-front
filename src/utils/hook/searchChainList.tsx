@@ -41,7 +41,15 @@ const getChainTypeFilterResult = (selectedChainType: ChainType, chainList: Chain
   return chainList;
 };
 
-const searchChainList = (
+export const searchChainListSimple = (
+  searchPhrase: string,
+  chainList: Chain[],
+) => {
+  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
+  return searchChainListResult;
+};
+
+export const searchChainList = (
   searchPhrase: string,
   chainList: Chain[],
   selectedNetwork: Network,
@@ -53,4 +61,3 @@ const searchChainList = (
   return searchChainListResult;
 };
 
-export default searchChainList;

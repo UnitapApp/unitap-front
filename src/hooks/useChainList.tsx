@@ -14,15 +14,16 @@ import {
 } from 'types';
 import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
-import searchChainList from 'utils/hook/searchChainList';
 import getClaimBoxState from 'utils/hook/getClaimBoxState';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import removeRequest from 'utils/hook/claimRequests';
 import { useWeb3React } from '@web3-react/core';
+import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
   chainListSearchResult: Chain[];
+  chainListSearchSimpleResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claim: (chainPK: number) => void;
   activeClaimReceipt: ClaimReceipt | null;
@@ -47,6 +48,7 @@ export const ClaimContext = createContext<{
 }>({
   chainList: [],
   chainListSearchResult: [],
+  chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
   claim: (chainPK: number) => {},
   activeClaimReceipt: null,
@@ -171,6 +173,11 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
     [searchPhrase, chainList, selectedNetwork, selectedChainType],
   );
+  
+  const chainListSearchSimpleResult = useMemo(
+    () => searchChainListSimple(searchPhrase, chainList),
+    [searchPhrase, chainList],
+  );
 
   const changeSearchPhrase = (newSearchPhrase: string) => {
     setSearchPhrase(newSearchPhrase);
@@ -203,6 +210,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
       value={{
         chainList,
         chainListSearchResult,
+        chainListSearchSimpleResult,
         changeSearchPhrase,
         claim,
         activeClaimReceipt,
