@@ -6,7 +6,7 @@ import Fund from './pages/fund';
 import Landing from 'pages/landing';
 import Donate from 'pages/donate';
 import NFT from 'pages/nft';
-
+import TokenTap from "pages/token-tap";
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import { RefreshContextProvider } from './context/RefreshContext';
@@ -47,6 +47,7 @@ function App() {
                     <Route path={RoutePath.LANDING} element={<Landing />} />
                     <Route path={RoutePath.DONATE} element={<Donate />} />
                     <Route path={RoutePath.NFT} element={<NFT />} />
+                    <Route path={RoutePath.TOKEN} element={<TokenTap />} />
                   </Routes>
                   <ConnectBrightIdModal />
                   <BrightConnectionModal />
