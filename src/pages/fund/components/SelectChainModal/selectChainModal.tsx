@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 
 import { SelectChainModalWrapper } from './selectChainModal.style';
-import { ModalSearch } from './modalSearch.style';
 import ChainItem from './chainItem';
 import { ClaimContext } from '../../../../hooks/useChainList';
 import { getChainIcon } from '../../../../utils';
@@ -18,37 +17,40 @@ const SelectChainModal = ({
   closeModalHandler: () => any;
 }) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
-  const { changeSearchPhrase, chainListSearchResult } = useContext(ClaimContext);
+  const { changeSearchPhrase, chainListSearchSimpleResult } = useContext(ClaimContext);
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
     changeSearchPhrase!(phrase);
   };
 
-  const chainsList = chainListSearchResult.map((chain) => (
-    <ChainItem
-      data-testid={`select-chain-modal-item-${chain.pk}`}
-      key={chain.chainId}
-      icon={getChainIcon(chain)}
-      title={chain.chainName}
-      selected={selectedChain?.chainId === chain.chainId}
-      onClick={() => {
-        setSelectedChain(chain);
-        closeModalHandler();
-      }}
-    />
-  ));
-
   return (
-    <SelectChainModalWrapper className='relative'>
+    <SelectChainModalWrapper className="relative bg-gray20 pt-4">
       <input
-        className='bg-gray10 border-2 !border-gray30 rounded-lg p-4 pl-[52px] mb-2 w-full text-white z-1'
+        className="bg-gray10 border-2 !border-gray30 rounded-lg p-4 py-3.5 pl-[52px] mb-2 w-full text-white z-1"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Search Network"
       />
-      <Icon className='absolute left-4 top-4' iconSrc='assets/images/modal/search-icon.svg' width='20px' height='20px' />
-      {chainsList}
+      <Icon
+        className="absolute left-4 top-8"
+        iconSrc="assets/images/modal/search-icon.svg"
+        width="20px"
+        height="20px"
+      />
+      {chainListSearchSimpleResult.map((chain) => (
+        <ChainItem
+          data-testid={`select-chain-modal-item-${chain.pk}`}
+          key={chain.chainId}
+          icon={getChainIcon(chain)}
+          title={chain.chainName}
+          selected={selectedChain?.chainId === chain.chainId}
+          onClick={() => {
+            setSelectedChain(chain);
+            closeModalHandler();
+          }}
+        />
+      ))}
     </SelectChainModalWrapper>
   );
 };

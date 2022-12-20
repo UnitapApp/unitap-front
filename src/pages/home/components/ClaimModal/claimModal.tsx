@@ -255,7 +255,7 @@ const ClaimModal = () => {
   return (
     <>
       {isOpen && (
-        <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" closeModalHandler={closeClaimModal} isOpen={true}>
+        <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" size="small" closeModalHandler={closeClaimModal} isOpen={true}>
           <ClaimModalBody chain={activeChain!} />
         </Modal>
       )}
