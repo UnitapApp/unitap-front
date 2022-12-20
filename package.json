@@ -11,6 +11,10 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@uniswap/redux-multicall": "^1.1.5",
+    "@uniswap/sdk-core": "^3.0.2",
+    "@uniswap/token-lists": "^1.0.0-beta.30",
+    "@uniswap/v3-periphery": "^1.4.1",
     "@walletconnect/ethereum-provider": "^1.7.7",
     "@web3-react/coinbase-wallet": "^8.0.22-beta.0",
     "@web3-react/core": "^8.0.35-beta.0",
@@ -43,6 +47,10 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
+    "contracts:compile:abi": "typechain --target ethers-v5 --out-dir src/abis/types \"./src/abis/**/*.json\"",
+    "contracts:compile:uniswaphelpers": "typechain --target ethers-v5 --out-dir src/abis/types/uniswap \"./node_modules/@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json\"",
+    "contracts:compile": "yarn contracts:compile:abi && yarn contracts:compile:uniswaphelpers",
+    "prepare": "yarn contracts:compile",
     "start": "react-scripts start",
     "start:cypress": "cross-env REACT_APP_IS_CYPRESS='true' react-scripts start",
     "build": "react-scripts build",
@@ -63,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.0.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.25",
@@ -86,11 +95,12 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "jest-canvas-mock": "^2.4.0",
+    "node-sass": "^7.0.1",
     "prettier": "^2.6.2",
     "sass": "^1.53.0",
-    "node-sass": "^7.0.1",
     "serve": "^13.0.2",
     "start-server-and-test": "^1.14.0",
+    "typechain": "^8.0.0",
     "typescript": "^4.6.3"
   }
 }

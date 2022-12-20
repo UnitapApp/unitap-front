@@ -4,13 +4,13 @@
 export enum SupportedChainId {
   MAINNET = 1,
   RINKEBY = 4,
-  IDCHAIN = 74,
-  GNOSIS = 100,
+  GOERLI = 5,
 }
 
 export const CHAIN_IDS_TO_NAMES = {
   [SupportedChainId.MAINNET]: 'mainnet',
   [SupportedChainId.RINKEBY]: 'rinkeby',
+  [SupportedChainId.GOERLI]: 'goerli',
 };
 
 /**
@@ -28,3 +28,7 @@ export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [SupportedChainId.MAINNET];
 export const L1_CHAIN_IDS = [SupportedChainId.MAINNET, SupportedChainId.RINKEBY] as const;
 
 export type SupportedL1ChainId = typeof L1_CHAIN_IDS[number];
+
+export function isSupportedChain(chainId: number | null | undefined): chainId is SupportedChainId {
+  return !!chainId && !!SupportedChainId[chainId];
+}
