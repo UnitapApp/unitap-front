@@ -47,7 +47,7 @@ const NFT = () => {
                 className={'w-52 animate-rocket m-auto relative right-3'}
                 src={'/assets/images/nft/rocketship.png'}
               />
-              <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
+              <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} alt={'rocket'} />
             </div>
           </div>
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg">
