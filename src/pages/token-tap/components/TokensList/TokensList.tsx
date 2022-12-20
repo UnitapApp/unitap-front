@@ -45,16 +45,6 @@ const ChainCardInfo = styled.div`
   }
 `;
 
-const ChainName = styled.div`
-  flex: 3;
-  color: white;
-  margin-left: ${DV.sizes.baseMargin * 1.5}px;
-
-  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
-    text-align: center;
-  }
-`;
-
 const Action = styled.div`
   //flex: 5;
   display: flex;
@@ -107,68 +97,81 @@ const TokensList = () => {
         return (
           <div key={chain.chainId}>
             <ChainCard>
-              <div
-                className={
-                  'pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
-                }
-              >
-                <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
-                  <span className="chain-logo-container w-10 h-10 flex justify-center">
-                    <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
-                  </span>
-                  <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
-                  <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
-                </div>
-
-                <div
-                  className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 !w-full sm:w-auto'}
-                >
-                  <div className="w-full sm:w-auto items-center sm:items-end">
-                    <AddMetamaskButton
-                      disabled={!active}
-                      data-testid={`chain-switch-${chain.pk}`}
-                      onClick={() => addAndSwitchToChain(chain)}
-                      className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
-                    >
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                        alt="metamask logo"
-                      />
-                      Add
-                    </AddMetamaskButton>
+              <span className="flex flex-col">
+                <div className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl">
+                  <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
+                    <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
+                      <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
+                    </span>
+                    <span className="w-max">
+                      <p
+                        className="text-white text-center md:text-left flex mb-2"
+                        data-testid={`chain-name-${chain.pk}`}
+                      >
+                        {chain.chainName}
+                        <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
+                      </p>
+                      <p className="text-xs text-white font-medium">Decentralized verification system</p>
+                    </span>
                   </div>
 
-                  <Action className={'w-full sm:w-auto items-center sm:items-end '}>
-                    {/* todo migrate buttom logic*/}
-                    {chain.needsFunding ? (
-                      <NoCurrencyButton disabled fontSize="13px">
-                        Currently out of balance
-                      </NoCurrencyButton>
-                    ) : chain.unclaimed !== 0 ? (
-                      <ClaimButton
-                        data-testid={`chain-show-claim-${chain.pk}`}
-                        mlAuto
-                        onClick={() => openClaimModal(chain)}
-                        className="text-sm m-auto"
+                  <div
+                    className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 !w-full sm:w-auto'}
+                  >
+                    <div className="w-full sm:w-auto items-center sm:items-end">
+                      <AddMetamaskButton
+                        disabled={!active}
+                        data-testid={`chain-switch-${chain.pk}`}
+                        onClick={() => addAndSwitchToChain(chain)}
+                        className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
                       >
-                        <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
-                      </ClaimButton>
-                    ) : (
-                      <ClaimedButton
-                        data-testid={`chain-claimed-${chain.pk}`}
-                        mlAuto
-                        icon="../assets/images/claim/claimedIcon.svg"
-                        iconWidth={24}
-                        iconHeight={20}
-                        onClick={() => openClaimModal(chain)}
-                        className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
-                      >
-                        <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
-                      </ClaimedButton>
-                    )}
-                  </Action>
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
+                          alt="metamask logo"
+                        />
+                        Add
+                      </AddMetamaskButton>
+                    </div>
+
+                    <Action className={'w-full sm:w-auto items-center sm:items-end '}>
+                      {/* todo migrate buttom logic*/}
+                      {chain.needsFunding ? (
+                        <NoCurrencyButton disabled fontSize="13px">
+                          Currently out of balance
+                        </NoCurrencyButton>
+                      ) : chain.unclaimed !== 0 ? (
+                        <ClaimButton
+                          data-testid={`chain-show-claim-${chain.pk}`}
+                          mlAuto
+                          onClick={() => openClaimModal(chain)}
+                          className="text-sm m-auto"
+                        >
+                          <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+                        </ClaimButton>
+                      ) : (
+                        <ClaimedButton
+                          data-testid={`chain-claimed-${chain.pk}`}
+                          mlAuto
+                          icon="../assets/images/claim/claimedIcon.svg"
+                          iconWidth={24}
+                          iconHeight={20}
+                          onClick={() => openClaimModal(chain)}
+                          className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
+                        >
+                          <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
+                        </ClaimedButton>
+                      )}
+                    </Action>
+                  </div>
                 </div>
-              </div>
+                <p className="text-xs text-gray100 pl-[68px] pt-4 pr-6 text-justify pb-10 bg-gray40">
+                  Anyone is welcome to play to help verify those they already know. The first 2000 users who are
+                  verified in Aura can claim 2 xDai. You do not need to play to become verified by Aura; You just need
+                  to know one person who is playing Aura. To meet other Aura players and discuss strategy, join the Aura
+                  discord.
+                </p>
+              </span>
+
               <div
                 className={
                   'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl p-4 justify-between'
