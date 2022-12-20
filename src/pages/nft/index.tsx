@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
 import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
 import NFTTimer from './components/NFTTimer/nftTimer';
+import MintNFTCard from './components/MintNFTCard/mintNftCard';
 
 const NFT = () => {
+  const [isPreLaunch, setIsPreLaunch] = useState(true);
+
   return (
     <>
       <Navbar />
@@ -42,14 +45,20 @@ const NFT = () => {
                 we will offer new benefits to Unitap Pass holders.
               </p>
             </div>
-            <div className="card md:w-5/12 p-2">
-              <NFTTimer className="mb-14"/>
-              <img
-                className={'w-52 animate-rocket m-auto relative right-3'}
-                src={'/assets/images/nft/rocketship.png'}
-              />
-              <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} alt={'rocket'} />
-            </div>
+            {isPreLaunch ? (
+              <div className="card md:w-5/12 p-2" onClick={() => setIsPreLaunch(!isPreLaunch)}>
+                <NFTTimer className="mb-14" />
+                <img
+                  className={'w-52 animate-rocket m-auto relative right-3'}
+                  src={'/assets/images/nft/rocketship.png'}
+                />
+                <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
+              </div>
+            ) : (
+              <div className="card md:w-5/12 p-0 h-full overflow-hidden">
+                <MintNFTCard />
+              </div>
+            )}
           </div>
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg">
             <>
