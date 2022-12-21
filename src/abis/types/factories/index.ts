@@ -2,3 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export { FundManager__factory } from "./FundManager__factory";
+export { Pass__factory } from "./Pass__factory";

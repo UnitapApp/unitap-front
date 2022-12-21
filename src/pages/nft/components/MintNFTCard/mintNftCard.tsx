@@ -1,11 +1,50 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useWeb3React } from '@web3-react/core';
+import { usePassContract } from '../../../../hooks/useContract';
 import { ClaimButton } from 'components/basic/Button/button';
+
 import Icon from 'components/basic/Icon/Icon';
-import React, { useState } from 'react';
+import { usePassCallback } from 'hooks/pass/usePassCallback';
+
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
   const [claimedCount, setClaimedCount] = useState(13);
   const [maxCount, setMaxCount] = useState(15);
+
+  const { chainId, provider, account } = useWeb3React();
+  const passContract = usePassContract();
+  
+  const { callback: mintPassCallback } = usePassCallback(count.toString());
+  const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const mounted = useRef(false);
+  
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  const mintPass = useCallback(async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const tx = await mintPassCallback?.();
+      if (tx) {
+        setSubmittedTxHash(tx.hash);
+      }
+    } catch (e) {
+      console.log('mint failed');
+      console.log(e);
+    }
+    if (mounted.current) {
+      setLoading(false);
+    }
+  }, [loading, mintPassCallback]);
+
 
   return (
     <div className="mint-nft-card h-full flex flex-col justify-between ">
@@ -68,7 +107,7 @@ const MintNFTCard = () => {
             )}
           </div>
         </div>
-        <ClaimButton height="48px" width='100% !important'>
+        <ClaimButton onClick={mintPass} height="48px" width='100% !important'>
           <p>Mint Unitap Pass</p>
         </ClaimButton>
       </div>

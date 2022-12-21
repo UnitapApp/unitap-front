@@ -3,14 +3,16 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { load, save } from "redux-localstorage-simple";
 import { isTestEnv } from "utils/env";
 
+import transactions from './transactions/reducer';
 import application from "./application/reducer";
 import { updateVersion } from "./global/actions";
 import user from "./user/reducer";
 
-const PERSISTED_KEYS: string[] = ["user"];
+const PERSISTED_KEYS: string[] = ["user", "transactions"];
 
 const store = configureStore({
   reducer: {
+    transactions,
     application,
     user
   },

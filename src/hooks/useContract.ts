@@ -4,11 +4,14 @@ import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import MulticallJson from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
 import { useWeb3React } from '@web3-react/core';
-import { SupportedChainId } from 'constants/chains';
-import { Providers } from 'constants/providers';
+import { Pass } from '../abis/types';
+import PASS_ABI from '../abis/Pass.json';
+
+import { Providers } from '../constants/providers';
 import { useMemo } from 'react';
 import { UniswapInterfaceMulticall } from '../abis/types/uniswap';
-import { MULTICALL_ADDRESS } from '../constants/addresses';
+import { MULTICALL_ADDRESS, PASS_ADDRESS } from '../constants/addresses';
+import { SupportedChainId } from '../constants/chains';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -67,4 +70,8 @@ export function getContract(
 
 export function useInterfaceMulticall() {
   return useContract<UniswapInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as UniswapInterfaceMulticall;
+}
+
+export function usePassContract() {
+  return useContract<Pass>(PASS_ADDRESS, PASS_ABI, true);
 }

@@ -29,6 +29,8 @@ export const L1_CHAIN_IDS = [SupportedChainId.MAINNET, SupportedChainId.RINKEBY]
 
 export type SupportedL1ChainId = typeof L1_CHAIN_IDS[number];
 
+export const L2_CHAIN_IDS: readonly SupportedChainId[] = [] as const;
+
 export function isSupportedChain(chainId: number | null | undefined): chainId is SupportedChainId {
   return !!chainId && !!SupportedChainId[chainId];
 }

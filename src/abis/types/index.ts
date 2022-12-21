@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { FundManager } from "./FundManager";
+export type { Pass } from "./Pass";
 export * as factories from "./factories";
 export { FundManager__factory } from "./factories/FundManager__factory";
+export { Pass__factory } from "./factories/Pass__factory";
