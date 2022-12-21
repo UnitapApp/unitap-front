@@ -36,13 +36,13 @@ const MintNFTCard = () => {
           </p>
         </div>
       </div>
-      <div className="mint-nft-card__actions bg-gray30 w-full flex gap-x-2 justify-between items-center py-3 px-4">
-        <div className="mint-nft-card__actions__quantity flex items-center">
+      <div className="mint-nft-card__actions bg-gray30 w-full flex-col lg:flex-row flex gap-2 justify-between items-center py-3 px-4">
+        <div className="mint-nft-card__actions__quantity w-full lg:w-auto flex items-center">
           <div
-            className={`text-white border-2 border-gray60 w-12 h-12 flex justify-center py-3 items-center rounded-l-xl ${
+            className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-l-xl ${
               count == 1 ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
             }`}
-            onClick={() => count != 1 ? setCount(count - 1) : null}
+            onClick={() => (count != 1 ? setCount(count - 1) : null)}
           >
             {count == 1 ? (
               <Icon iconSrc="assets/images/nft/nft-minus-gray.svg" />
@@ -51,15 +51,15 @@ const MintNFTCard = () => {
             )}
           </div>
           <div
-            className={`text-white border-y-2 border-gray60 w-14 py-3 h-12 flex items-center justify-center font-bold cursor-default`}
+            className={`text-white border-y-2 border-gray60  py-3 flex-1 h-12 min-w-[48px] flex items-center justify-center font-bold cursor-default`}
           >
             {count}
           </div>
           <div
-            className={`text-white border-2 border-gray60 w-12 h-12 flex justify-center py-3 items-center rounded-r-xl ${
+            className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-r-xl ${
               count == maxCount - claimedCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
             }`}
-            onClick={() => count != maxCount - claimedCount ? setCount(count + 1) : null}
+            onClick={() => (count != maxCount - claimedCount ? setCount(count + 1) : null)}
           >
             {count == maxCount - claimedCount ? (
               <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
@@ -68,7 +68,7 @@ const MintNFTCard = () => {
             )}
           </div>
         </div>
-        <ClaimButton height="48px" width='100% !important'>
+        <ClaimButton height="48px" width="100% !important">
           <p>Mint Unitap Pass</p>
         </ClaimButton>
       </div>

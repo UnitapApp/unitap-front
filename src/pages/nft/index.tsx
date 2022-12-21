@@ -13,8 +13,8 @@ const NFT = () => {
   return (
     <>
       <Navbar />
-      <div className="unitap-body">
-        <div className="max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20">
+      <div className="content-wrapper">
+        <div className="m-auto flex flex-col justify-center items-center w-full">
           <div className="flex wrap w-full">
             <Header />
           </div>
@@ -41,11 +41,12 @@ const NFT = () => {
                 </li>
               </ul>
               <p className="text-gradient-primary text-sm font-semibold">
-                As Unitap adds taps and features,<br />
+                As Unitap adds taps and features,
+                <br />
                 we will offer new benefits to Unitap Pass holders.
               </p>
             </div>
-            {isPreLaunch ? (
+            {!isPreLaunch ? (
               <div className="card md:w-5/12 p-2" onClick={() => setIsPreLaunch(!isPreLaunch)}>
                 <NFTTimer className="mb-14" />
                 <img
