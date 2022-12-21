@@ -4,6 +4,9 @@ cypress/screenshots/
 .idea
 .vscode
 
+/src/abis/types
+/src/types/contracts
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
