@@ -110,15 +110,12 @@ body
     @apply text-sm font-medium text-white leading-7
 
   .open-collapse
-    @apply transition-all duration-300 mr-6 mb-6 mt-5
-    margin-left: 62px
-    height: unset
+    @apply transition-all duration-500 ease-in-out mb-6 mt-5 max-h-[400px]
+    opacity: 1
 
   .close-collapse
-    @apply transition-all duration-300 mr-6 overflow-hidden p-0 m-0
-    margin-left: 62px
-    height: 0
-    visibility: hidden
+    @apply transition-all duration-500 ease-in-out p-0 m-0 max-h-[4px]
+    opacity: 0
 
   .uni-card
     @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20 overflow-hidden
