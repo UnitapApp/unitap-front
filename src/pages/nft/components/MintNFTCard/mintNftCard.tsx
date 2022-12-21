@@ -21,7 +21,7 @@ const MintNFTCard = () => {
             <span className="text-white"> ETH</span>
           </p>
         </div>
-        <div className="mint-nft-card__nft__image w-full mb-28 flex justify-center">
+        <div className="mint-nft-card__nft__image w-full my-14 flex justify-center">
           <div className="mint-nft-card__nft__image__wrapper gradient-outline-card w-40 h-56">
             <div className="w-full h-full overflow-hidden rounded-xl">
               <img src="https://picsum.photos/200/300" alt="nft" className="rounded-xl" />
