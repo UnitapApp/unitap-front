@@ -29,11 +29,10 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
     },
     {
       name: 'Token Tap',
-      link: null,
-      icon: 'assets/images/navbar/navbar-dropdown-soon.svg',
-      // icon: 'assets/images/navbar/navbar-dropdown-token-tap.svg',
-      iconWidth: '33px',
-      iconHeight: 'auto',
+      link: RoutePath.TOKEN,
+      icon: 'assets/images/navbar/navbar-dropdown-token-tap.svg',
+      iconWidth: 'auto',
+      iconHeight: '28px',
       route: RoutePath.TOKEN,
     },
     {
@@ -51,7 +50,7 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
 
   return (
     <div
-      className={`navbar-dropdown absolute z-10 top-[70px] right-8 bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
+      className={`navbar-dropdown absolute z-10 top-[70px] right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ''
       }`}
       onMouseEnter={() => onMouseEnter()}
@@ -62,9 +61,9 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
           <div
             key={item.name}
             onClick={() => (item.link ? navigate(item.link) : null)}
-            className={`navbar-dropdown__item ${location.pathname === item.route && 'navbar-dropdown__item--active'} ${
-              !item.link && 'cursor-default'
-            }`}
+            className={`navbar-dropdown__item cursor-pointer border-gray40 transition-all duration-75 border-2 ${
+              location.pathname === item.route ? 'navbar-dropdown__item--active border-gray100' : item.link && 'hover:bg-gray20'
+            } ${!item.link && 'cursor-default'}`}
           >
             <p
               className={`navbar-dropdown__item__title ${
@@ -79,12 +78,13 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
       })}
 
       <div
-        className={`navbar-dropdown__item cursor-default w-52 flex items-center h-11 justify-between bg-gray00 rounded-lg border-2 border-gray00 px-4 mt-12`}
+        onClick={() => navigate(RoutePath.NFT)}
+        className={`navbar-dropdown__item cursor-pointer gradient-outline-card-light flex items-center justify-between !h-auto bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 pl-4 pr-2 py-2.5 mt-12`}
       >
         <p className="navbar-dropdown__item__title text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text">
           Mint UGP NFT
         </p>
-        <Icon iconSrc="assets/images/navbar/navbar-dropdown-soon.svg" width="33px" height="auto" />
+        <Icon iconSrc="assets/images/navbar/navbar-dropdown-mint.svg" width="auto" height="26px" />
       </div>
     </div>
   );
