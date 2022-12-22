@@ -26,7 +26,7 @@ const Landing: FC = () => {
     {
       img: 'discord-icon.svg',
       localClass: 'hover:bg-purple-200',
-      link: 'https://discord.gg/sHWNyYjyrz',
+      link: 'https://discord.gg/unitap',
     },
   ]);
   const [stats] = useState([
