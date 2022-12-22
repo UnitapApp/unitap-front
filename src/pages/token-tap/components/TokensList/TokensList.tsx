@@ -174,36 +174,17 @@ const TokensList = () => {
 
               <div
                 className={
-                  'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl p-4 justify-between'
+                  'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between'
                 }
               >
-                <div
-                  className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
-                >
-                  <p className="chain-card__info__title text-sm text-gray-90">Currency</p>
-                  <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.symbol}</p>
+                <div className='flex gap-x-2 items-center text-sm'>
+                  <p className='text-gray100'><span className='text-white'>1,137 </span> of <span className='text-white'> 2,000 </span> are left to claim on Gnosis chain</p>
+                  <Icon iconSrc={getChainIcon(chain)} width="auto" height="16px"/>
                 </div>
-                <div
-                  className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
-                >
-                  <p className="chain-card__info__title text-sm text-gray-90">Chain ID</p>
-                  <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.chainId}</p>
-                </div>
-                <div
-                  className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}
-                >
-                  <p className="chain-card__info__title text-sm text-gray-90">This Round Claims</p>
-                  <p className="chain-card__info__value font-mono text-sm text-white ml-3">
-                    {chain.totalClaimsSinceLastMonday}
-                  </p>
-                </div>
-                <div
-                  className={
-                    'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center md:justify-end'
-                  }
-                >
-                  <p className="chain-card__info__title text-sm text-gray-90">Total Claims</p>
-                  <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaims}</p>
+                
+                <div className='flex gap-x-6 items-center'>
+                  <Icon className='cursor-pointer' iconSrc='assets/images/token-tap/twitter-icon.svg' width='auto' height='20px'/>
+                  <Icon className='cursor-pointer' iconSrc='assets/images/token-tap/discord-icon.svg' width='auto' height='20px'/>
                 </div>
               </div>
             </ChainCard>
