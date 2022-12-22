@@ -34,8 +34,8 @@ const Header = () => {
         <div className="claim-stat z-10">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
             // userProfile.totalWeeklyClaimsRemaining == 2 ? (
-            //   <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray80">
-            //     <p className="claim-stat__not-claimed__text px-5 py-4 text-white text-xs">
+            //   <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
+            //     <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
             //       You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
             //     </p>
             //   </div>
