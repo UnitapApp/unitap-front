@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
 import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
+import NFTTimer from './components/NFTTimer/nftTimer';
+import MintNFTCard from './components/MintNFTCard/mintNftCard';
 
 const NFT = () => {
+  const [isPreLaunch, setIsPreLaunch] = useState(true);
+
   return (
     <>
       <Navbar />
-      <div className="unitap-body">
-        <div className="max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20">
+      <div className="content-wrapper">
+        <div className="m-auto flex flex-col justify-center items-center w-full">
           <div className="flex wrap w-full">
             <Header />
           </div>
@@ -36,19 +40,27 @@ const NFT = () => {
                   address on another network.
                 </li>
               </ul>
-              <p className="text-gradient-primary text-xs font-medium">
-                As Unitap adds taps and features, we will offer new benefits to Unitap Pass holders.
+              <p className="text-gradient-primary text-sm font-semibold">
+                As Unitap adds taps and features,
+                <br />
+                we will offer new benefits to Unitap Pass holders.
               </p>
             </div>
-            <div className="card md:w-5/12">
-              <p className="title font-semibold text-xl mb-2">02 : 23 : 58 : 03</p>
-              <p className="subtitle text-sm leading-7 font-medium text-gray100 mb-16">To Launch</p>
-              <img
-                className={'w-52 animate-rocket m-auto relative right-3'}
-                src={'/assets/images/nft/rocketship.png'}
-              />
-              <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} alt={'rocket'} />
-            </div>
+
+            {!isPreLaunch ? (
+              <div className="card md:w-5/12 p-2" onClick={() => setIsPreLaunch(!isPreLaunch)}>
+                <NFTTimer className="mb-14" />
+                <img
+                  className={'w-52 animate-rocket m-auto relative right-3'}
+                  src={'/assets/images/nft/rocketship.png'}
+                />
+                <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
+              </div>
+            ) : (
+              <div className="card md:w-5/12 p-0 h-full overflow-hidden">
+                <MintNFTCard />
+              </div>
+            )}
           </div>
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg">
             <>
