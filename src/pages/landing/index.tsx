@@ -86,7 +86,7 @@ const Landing: FC = () => {
           }
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
-            <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Genesis Pass NFT</h3>
+            <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
             <p className={'text-gray100'}>
               <span className={'text-white'}>13</span> of <span className={'text-white'}>100</span> Passes are left in
               the current batch. Mint your Passes now
