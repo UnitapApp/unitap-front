@@ -1,18 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 
 // ###### Local Styled Components
-
-const HeaderComp = styled.div`
-  @media only screen and (max-width: 1200px) {
-    height: calc(175px + (${DV.sizes.baseMargin * 6}px));
-  }
-`;
 
 const Spaceship = styled.img`
   position: absolute;

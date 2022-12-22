@@ -1,26 +1,38 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-import { useWeb3React } from '@web3-react/core';
-import { usePassContract } from '../../../../hooks/useContract';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ClaimButton } from 'components/basic/Button/button';
 
 import Icon from 'components/basic/Icon/Icon';
-import { usePassCallback } from 'hooks/pass/usePassCallback';
-
+import { useUnitapPassMultiMintCallback } from '../../../../hooks/pass/useUnitapPassMultiMintCallback';
+import { useUnitapBatchSale } from '../../../../hooks/pass/useUnitapBatchSale';
+import JSBI from 'jsbi';
+import { CurrencyAmount } from '@uniswap/sdk-core';
+import useNativeCurrency from '../../../../hooks/useNativeCurrency';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
-  const [claimedCount, setClaimedCount] = useState(13);
-  const [maxCount, setMaxCount] = useState(15);
+  const claimedCount = 13;
+  const maxCount = 15;
+  const { price } = useUnitapBatchSale();
 
-  const { chainId, provider, account } = useWeb3React();
-  const passContract = usePassContract();
-  
-  const { callback: mintPassCallback } = usePassCallback(count.toString());
+  const nativeCurrency = useNativeCurrency();
+
+  const priceAmount = useMemo(() => {
+    if (!price) return null;
+    const amount = JSBI.BigInt(price.toString());
+    return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
+  }, [nativeCurrency, price]);
+
+  const totalPriceAmount = useMemo(() => {
+    if (!priceAmount) return null;
+    return priceAmount.multiply(count);
+  }, [count, priceAmount]);
+
+  const { callback: mintPassCallback } = useUnitapPassMultiMintCallback(count);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
-  
+
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -44,7 +56,6 @@ const MintNFTCard = () => {
       setLoading(false);
     }
   }, [loading, mintPassCallback]);
-
 
   return (
     <div className="mint-nft-card h-full flex flex-col justify-between ">
@@ -70,8 +81,12 @@ const MintNFTCard = () => {
         <div className="mint-nft-card__nft__price text-sm font-semibold flex w-full justify-between mt-auto">
           <p className="text-white">{count > 1 && 'Total'} Price:</p>
           <p className="text-gray100 flex gap-x-1.5">
-            {count > 1 && <p>{count} x 0.10 ETH = </p>}
-            <span className="text-white"> {count * 0.1} ETH</span>
+            {count > 1 && (
+              <p>
+                {count} x {priceAmount?.toSignificant(5) || '0'} ETH ={' '}
+              </p>
+            )}
+            <span className="text-white">{totalPriceAmount?.toSignificant(5) || '0'} ETH</span>
           </p>
         </div>
       </div>
@@ -79,11 +94,11 @@ const MintNFTCard = () => {
         <div className="mint-nft-card__actions__quantity flex items-center">
           <div
             className={`text-white border-2 border-gray60 w-12 h-12 flex justify-center py-3 items-center rounded-l-xl ${
-              count == 1 ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
+              count === 1 ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
             }`}
-            onClick={() => count != 1 ? setCount(count - 1) : null}
+            onClick={() => (count !== 1 ? setCount(count - 1) : null)}
           >
-            {count == 1 ? (
+            {count === 1 ? (
               <Icon iconSrc="assets/images/nft/nft-minus-gray.svg" />
             ) : (
               <Icon iconSrc="assets/images/nft/nft-minus-white.svg" />
@@ -96,18 +111,18 @@ const MintNFTCard = () => {
           </div>
           <div
             className={`text-white border-2 border-gray60 w-12 h-12 flex justify-center py-3 items-center rounded-r-xl ${
-              count == maxCount - claimedCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
+              count === maxCount - claimedCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
             }`}
-            onClick={() => count != maxCount - claimedCount ? setCount(count + 1) : null}
+            onClick={() => (count !== maxCount - claimedCount ? setCount(count + 1) : null)}
           >
-            {count == maxCount - claimedCount ? (
+            {count === maxCount - claimedCount ? (
               <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
             ) : (
               <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
             )}
           </div>
         </div>
-        <ClaimButton onClick={mintPass} height="48px" width='100% !important'>
+        <ClaimButton onClick={mintPass} height="48px" width="100% !important">
           <p>Mint Unitap Pass</p>
         </ClaimButton>
       </div>

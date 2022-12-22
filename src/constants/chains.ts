@@ -20,12 +20,12 @@ export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(Support
   (id) => typeof id === 'number',
 ) as SupportedChainId[];
 
-export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [SupportedChainId.MAINNET];
+export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [SupportedChainId.GOERLI];
 
 /**
  * All the chain IDs that are running the Ethereum protocol.
  */
-export const L1_CHAIN_IDS = [SupportedChainId.MAINNET, SupportedChainId.RINKEBY] as const;
+export const L1_CHAIN_IDS = [SupportedChainId.GOERLI] as const;
 
 export type SupportedL1ChainId = typeof L1_CHAIN_IDS[number];
 

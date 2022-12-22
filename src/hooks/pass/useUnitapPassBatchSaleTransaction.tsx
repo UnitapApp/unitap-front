@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
+import React, { useMemo } from 'react';
 import { useTransactionAdder } from 'state/transactions/hooks';
 import { TransactionInfo } from 'state/transactions/types';
 import { calculateGasMargin } from 'utils/calculateGasMargin';
 import isZero from 'utils/isZero';
-
 
 interface Call {
   address: string;
@@ -27,8 +26,7 @@ interface FailedCall extends CallEstimate {
   error: Error;
 }
 
-// returns a function that will execute a swap, if the parameters are all valid
-export default function usePassTransaction(
+export default function useUnitapPassBatchSaleTransaction(
   account: string | null | undefined,
   chainId: number | undefined,
   provider: JsonRpcProvider | undefined,
@@ -36,7 +34,6 @@ export default function usePassTransaction(
   info: TransactionInfo,
 ): { callback: null | (() => Promise<TransactionResponse>) } {
   const addTransaction = useTransactionAdder();
-
   return useMemo(() => {
     if (!provider || !account || !chainId) {
       return { callback: null };
@@ -95,7 +92,7 @@ export default function usePassTransaction(
           const firstNoErrorCall = estimatedCalls.find<CallEstimate>(
             (call): call is CallEstimate => !('error' in call),
           );
-          if (!firstNoErrorCall) throw new Error(`Unexpected error. Could not estimate gas for the swap.`);
+          if (!firstNoErrorCall) throw new Error(`Unexpected error. Could not estimate gas for the transaction.`);
           bestCallOption = firstNoErrorCall;
         }
 
@@ -114,7 +111,7 @@ export default function usePassTransaction(
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response) => {
-            // we can set state of success here
+            addTransaction(response, info);
             return response;
           })
           .catch((error) => {
@@ -123,9 +120,9 @@ export default function usePassTransaction(
               throw new Error(`Transaction rejected`);
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              console.error(`Dibs Transaction failed`);
+              console.error(`UnitapPassBatchSale Transaction failed`);
 
-              throw new Error(`Dibs Transaction failed: ${error.reason ?? error.message ?? ''}`);
+              throw new Error(`UnitapPassBatchSale Transaction failed: ${error.reason ?? error.message ?? ''}`);
             }
           });
       },

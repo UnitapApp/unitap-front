@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { LightOutlinedButton } from 'components/basic/Button/button';
 import RoutePath from '../../../../routes';
 import { Link } from 'react-router-dom';
-import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
 import { Text } from 'components/basic/Text/text.style';
 import { ProvideGasCardWrapper } from './provideGasCard.style';
@@ -23,8 +22,7 @@ const ProvideGasCard = () => {
   if (true) {
     return (
       <ProvideGasCardWrapper>
-
-      {/* <div className="provide-gas pb-4 sm:pb-0 w-full flex flex-col sm:flex-row items-center bg-gray40 border-2 border-gray30 rounded-xl">
+        {/* <div className="provide-gas pb-4 sm:pb-0 w-full flex flex-col sm:flex-row items-center bg-gray40 border-2 border-gray30 rounded-xl">
       </div> */}
         {/* <section className={'flex flex-col md:flex-row'}>
           <div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
@@ -85,10 +83,10 @@ const ProvideGasCard = () => {
           </LightOutlinedButton>
         </Link>
       </ProvideGasCardWrapper>
-    )
+    );
   }
 
-  return <></>
+  return <></>;
 };
 
 export default ProvideGasCard;

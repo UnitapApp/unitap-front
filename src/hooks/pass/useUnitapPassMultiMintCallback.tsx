@@ -1,36 +1,36 @@
 import React, { useMemo } from 'react';
-import { keccak256 } from '@ethersproject/keccak256';
-import { toUtf8Bytes } from '@ethersproject/strings';
 import { useWeb3React } from '@web3-react/core';
 import { CallbackState, UseCallbackReturns } from './utils';
-import { usePassContract } from 'hooks/useContract';
-import usePassTransaction from './usePassTransaction';
-import { MintTransactionInfo, RegisterTransactionInfo, TransactionType } from 'state/transactions/types';
+import useUnitapPassBatchSaleTransaction from './useUnitapPassBatchSaleTransaction';
+import { MintTransactionInfo, TransactionType } from 'state/transactions/types';
+import { BigNumberish } from 'ethers';
+import { useUnitapBatchSale } from './useUnitapBatchSale';
+import { useUnitapPassBatchSaleContract } from '../useContract';
 
-export function usePassCallback(count: string): UseCallbackReturns {
+export function useUnitapPassMultiMintCallback(count: BigNumberish): UseCallbackReturns {
   const { account, chainId, provider } = useWeb3React();
-
-  const passContract = usePassContract();
+  const { price } = useUnitapBatchSale();
+  const passContract = useUnitapPassBatchSaleContract();
 
   const calls = useMemo(() => {
-    if (!passContract || !account || !count) {
+    if (!passContract || !account || !count || !price) {
       return [];
     }
-    
-    return [
+    const data = [
       {
         address: passContract.address,
         calldata: passContract.interface.encodeFunctionData('multiMint', [count, account]) ?? '',
-        value: '0x0',
+        value: price.mul(count).toHexString(),
       },
     ];
-  }, [passContract, account, count]);
+    return data;
+  }, [account, count, passContract, price]);
 
   const info: MintTransactionInfo = {
     type: TransactionType.MINT,
   };
 
-  const { callback } = usePassTransaction(account, chainId, provider, calls, info);
+  const { callback } = useUnitapPassBatchSaleTransaction(account, chainId, provider, calls, info);
 
   return useMemo(() => {
     if (!provider || !account || !chainId || !callback) {

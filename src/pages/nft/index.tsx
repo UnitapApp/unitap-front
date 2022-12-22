@@ -8,7 +8,7 @@ import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
 
 const NFT = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(true);
+  const [isPreLaunch, setIsPreLaunch] = useState(false);
 
   return (
     <>
@@ -41,7 +41,8 @@ const NFT = () => {
                 </li>
               </ul>
               <p className="text-gradient-primary text-sm font-semibold">
-                As Unitap adds taps and features,<br />
+                As Unitap adds taps and features,
+                <br />
                 we will offer new benefits to Unitap Pass holders.
               </p>
             </div>

@@ -3440,6 +3440,14 @@
     "@metamask/detect-provider" "^1.2.0"
     "@web3-react/types" "^8.0.20-beta.0"
 
+"@web3-react/network@^8.0.27-beta.0":
+  version "8.0.27-beta.0"
+  resolved "https://registry.yarnpkg.com/@web3-react/network/-/network-8.0.27-beta.0.tgz#7cb522b02efc9d0f877ac285f350810fbf322292"
+  integrity sha512-kLHilUpLkDejx0C5Rr57puQSEVA+BQmT58xN6D/elphcZpVHAIkbh/MCYm0XrnLmqq0uOjw+jDhEYBBn80ncHQ==
+  dependencies:
+    "@ethersproject/providers" "^5"
+    "@web3-react/types" "^8.0.20-beta.0"
+
 "@web3-react/store@^8.0.25-beta.0":
   version "8.0.25-beta.0"
   resolved "https://registry.yarnpkg.com/@web3-react/store/-/store-8.0.25-beta.0.tgz#853a029a9f82d8950e306adb455ba308f908c8f4"
@@ -8443,11 +8451,6 @@ jsbi@^3.1.4:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.2.5.tgz#b37bb90e0e5c2814c1c2a1bcd8c729888a2e37d6"
   integrity sha512-aBE4n43IPvjaddScbvWRA2YlTzKEynHzu7MqOyTipdHucf/VxS63ViCjxYRg86M8Rxwbt/GfzHl1kKERkt45fQ==
-
-jsbi@^4.2.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.0.tgz#b54ee074fb6fcbc00619559305c8f7e912b04741"
-  integrity sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==
 
 jsbn@~0.1.0:
   version "0.1.1"
