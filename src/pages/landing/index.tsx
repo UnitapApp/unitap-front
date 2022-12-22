@@ -226,7 +226,7 @@ const Landing: FC = () => {
             ))}
 
             <div
-              onClick={() => navigate(RoutePath.DONATE)}
+              onClick={() => navigate(RoutePath.ABOUT)}
               className={
                 'uni-card hover:bg-gray00 hover:after:top-4 cursor-pointer after:bg-what-is-unitap after:left-auto after:!right-0 after:w-44 after:h-36' +
                 ' flex flex-grow justify-center items-center text-white py-6 sm:py-0 rounded-tl-none rounded-bl-none'
