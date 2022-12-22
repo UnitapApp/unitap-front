@@ -160,17 +160,17 @@ const Content: FC = () => {
             ></SelectChainModal>
           </Modal>
           <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
-            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer bg-gray30" onClick={() => setModalState(true)}>
+            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60" onClick={() => setModalState(true)}>
               {selectedChain ? <Icon iconSrc={getChainIcon(selectedChain)} width="auto" height="32px" /> : <span className="w-8 h-8 rounded-full bg-gray50"></span>}
               <Icon iconSrc="assets/images/fund/arrow-down.png" width="14px" height="auto" />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between my-2 ml-3 mr-4">
+            <div className="select-box__info w-full flex flex-col justify-between my-2 ml-3 mr-4 bg-gray40">
               <div className="select-box__info__top w-full flex items-center justify-between">
                 <p className="select-box__info__coin-symbol text-white text-xs font-semibold">{selectedChain?.symbol}</p>
                 {/* <p className="select-box__info__coin-balance text-gray100 text-xs font-semibold">Balance: 1,049.00</p> */}
               </div>
               <div className="select-box__info__amount w-full">
-                <input className="w-full text-xl bg-transparent text-white" type="number" step="0.001" placeholder="0.00" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                <input className="w-full text-xl bg-transparent text-white" type="number" step="0.001" placeholder="Enter Amount" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
               </div>
             </div>
           </div>

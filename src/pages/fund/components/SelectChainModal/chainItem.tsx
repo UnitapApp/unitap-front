@@ -1,19 +1,23 @@
-import React from "react";
+import React from 'react';
 
-import Icon from "components/basic/Icon/Icon";
+import Icon from 'components/basic/Icon/Icon';
 
 interface ChainItemProps {
   icon: string;
   title: string;
   selected?: boolean;
   onClick: () => void;
-  "data-testid"?: string;
+  'data-testid'?: string;
 }
 
 const ChainItem = (props: ChainItemProps) => {
   const { title, selected, icon, onClick } = props;
   return (
-    <div className="bg-gray30 rounded-xl border-2 border-gray50 flex px-4 py-3.5 pl-3 items-center mt-3 cursor-pointer" onClick={onClick} data-testid={props["data-testid"]}>
+    <div
+      className="bg-gray30 rounded-xl border-2 transition-all duration-50 border-gray50 hover:bg-gray40 hover:border-gray80 flex px-4 py-3.5 pl-3 items-center mt-3 cursor-pointer"
+      onClick={onClick}
+      data-testid={props['data-testid']}
+    >
       <Icon mr={2} width="32px" iconSrc={icon}></Icon>
       <p className="token-symbol text-white font-semibold mr-auto">{title}</p>
       <p className="balance mr-2 text-gray90 text-xs">Contract Balance: </p>
