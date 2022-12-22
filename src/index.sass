@@ -141,6 +141,17 @@ body
     @apply h-auto pt-16
     min-height: calc(100vh - 65px)
 
+  .content-wrapper
+    @apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto
+
+  .gradient-outline-card-light
+    @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-xl overflow-hidden
+    @apply before:block before:-z-10 before:absolute before:inset-[2px] before:rounded-lg before:bg-gray00
+
+  .gradient-outline-card
+    @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-2xl overflow-hidden
+    @apply before:block before:-z-10 before:absolute before:inset-[3px] before:rounded-xl before:bg-gray00
+
   .about-section
     @apply mb-6
     
