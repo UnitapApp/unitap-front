@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Text } from "components/basic/Text/text.style";
-import { ClaimModalWrapper, DropIconWrapper } from "pages/home/components/ClaimModal/claimModal.style";
+import { DropIconWrapper } from "pages/home/components/ClaimModal/claimModal.style";
 import Icon from "components/basic/Icon/Icon";
 import {
   ClaimBoxRequestButton,
@@ -233,12 +233,14 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   }
 
   return (
-    <ClaimModalWrapper data-testid={`chain-claim-modal-${chain.pk}`}>
+    <div 
+      className="claim-modal-wrapper flex flex-col items-center justify-center pt-5" 
+      data-testid={`chain-claim-modal-${chain.pk}`}>
       <Text fontSize="14" className="scan-qr-text">
         Claim {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol}
       </Text>
       {getClaimBody()}
-    </ClaimModalWrapper>
+    </div>
   );
 };
 
