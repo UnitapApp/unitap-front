@@ -140,7 +140,7 @@ const Landing: FC = () => {
             </Widget>
           </Link>
 
-          <Link className={'flex-1'} to={RoutePath.FAUCET}>
+          <Link className={'flex-1'} to={RoutePath.TOKEN}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
