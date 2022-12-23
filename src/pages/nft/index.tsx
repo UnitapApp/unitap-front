@@ -18,7 +18,7 @@ const NFT = () => {
           <div className="flex wrap w-full">
             <Header />
           </div>
-          <div className="flex flex-col md:flex-row wrap w-full gap-4 mb-4">
+          <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
             <div className="card md:w-7/12">
               <p className="title font-bold mb-4">Unitap Pass Benefits</p>
               <p className="subtitle text-sm leading-7 font-light">
