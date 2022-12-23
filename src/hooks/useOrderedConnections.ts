@@ -1,7 +1,7 @@
-import { ConnectionType } from "connection";
-import { getConnection } from "connection/utils";
-import { useMemo } from "react";
-import { useAppSelector } from "state/hooks";
+import { ConnectionType } from 'connection';
+import { getConnection } from 'connection/utils';
+import { useMemo } from 'react';
+import { useAppSelector } from 'state/hooks';
 
 const SELECTABLE_WALLETS = [ConnectionType.INJECTED];
 
@@ -20,7 +20,7 @@ export default function useOrderedConnections() {
     orderedConnectionTypes.push(...SELECTABLE_WALLETS.filter((wallet) => wallet !== selectedWallet));
 
     // Add network connection last as it should be the fallback.
-    // orderedConnectionTypes.push(ConnectionType.NETWORK);
+    orderedConnectionTypes.push(ConnectionType.NETWORK);
 
     return orderedConnectionTypes.map(getConnection);
   }, [selectedWallet]);

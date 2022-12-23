@@ -8,7 +8,7 @@ import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
 
 const NFT = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(true);
+  const [isPreLaunch, setIsPreLaunch] = useState(false);
 
   return (
     <>
@@ -46,8 +46,7 @@ const NFT = () => {
                 we will offer new benefits to Unitap Pass holders.
               </p>
             </div>
-
-            {!isPreLaunch ? (
+            {isPreLaunch ? (
               <div className="card md:w-5/12 p-2" onClick={() => setIsPreLaunch(!isPreLaunch)}>
                 <NFTTimer className="mb-14" />
                 <img

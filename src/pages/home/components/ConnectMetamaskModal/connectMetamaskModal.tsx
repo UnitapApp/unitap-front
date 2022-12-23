@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
@@ -13,7 +13,6 @@ import Icon from 'components/basic/Icon/Icon';
 
 const ConnectMetamaskModalContent = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
-  const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const [tried, setTried] = useState(false);
   const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
 
@@ -76,7 +75,7 @@ const ConnectMetamaskModalContent = () => {
 };
 
 const ConnectMetamaskModal = () => {
-  const { brightidModalStatus, closeBrightIdModal } = useContext(ClaimContext);
+  const { closeBrightIdModal } = useContext(ClaimContext);
   return (
     <Modal
       title="Connect Metamask"

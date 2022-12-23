@@ -12,7 +12,6 @@ import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import { RefreshContextProvider } from './context/RefreshContext';
 import { ClaimProvider } from './hooks/useChainList';
-import ApplicationUpdater from 'state/application/updater';
 import store from './state';
 import { Provider } from 'react-redux';
 import Web3Provider from 'components/Web3Provider';
@@ -21,13 +20,22 @@ import ConnectBrightIdModal from 'pages/home/components/ConnectBrightIdModal/con
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
 import ConnectMetamaskModal from 'pages/home/components/ConnectMetamaskModal/connectMetamaskModal';
 import CreateBrightIdAccountModal from 'pages/home/components/CreateBrightIdAccountModal/createBrightIdAccountModal';
+import { BlockNumberProvider } from 'lib/hooks/useBlockNumber';
+
+import ApplicationUpdater from 'state/application/updater';
+import TransactionUpdater from 'state/transactions/updater';
+import UserUpdater from 'state/user/updater';
+import { MulticallUpdater } from 'lib/state/multicall';
 
 require('typeface-jetbrains-mono');
 
 function Updaters() {
   return (
     <>
+      <UserUpdater />
       <ApplicationUpdater />
+      <TransactionUpdater />
+      <MulticallUpdater />
     </>
   );
 }
@@ -41,21 +49,22 @@ function App() {
             <UserProfileProvider>
               <ClaimProvider>
                 <BrowserRouter>
-                  <Updaters />
-                  <Routes>
-                    <Route path={RoutePath.FAUCET} element={<Home />} />
-                    <Route path={RoutePath.FUND} element={<Fund />} />
-                    <Route path={RoutePath.LANDING} element={<Landing />} />
-
-                    <Route path={RoutePath.DONATE} element={<Donate />} />
-                    <Route path={RoutePath.NFT} element={<NFT />} />
-                    <Route path={RoutePath.ABOUT} element={<About />} />
-                    <Route path={RoutePath.TOKEN} element={<TokenTap />} />
-                  </Routes>
-                  <ConnectBrightIdModal />
-                  <BrightConnectionModal />
-                  <ConnectMetamaskModal />
-                  <CreateBrightIdAccountModal />
+                  <BlockNumberProvider>
+                    <Updaters />
+                    <Routes>
+                      <Route path={RoutePath.FAUCET} element={<Home />} />
+                      <Route path={RoutePath.FUND} element={<Fund />} />
+                      <Route path={RoutePath.LANDING} element={<Landing />} />
+                      <Route path={RoutePath.DONATE} element={<Donate />} />
+                      <Route path={RoutePath.NFT} element={<NFT />} />
+                      <Route path={RoutePath.ABOUT} element={<About />} />
+                      <Route path={RoutePath.TOKEN} element={<TokenTap />} />
+                    </Routes>
+                    <ConnectBrightIdModal />
+                    <BrightConnectionModal />
+                    <ConnectMetamaskModal />
+                    <CreateBrightIdAccountModal />
+                  </BlockNumberProvider>
                 </BrowserRouter>
               </ClaimProvider>
             </UserProfileProvider>
