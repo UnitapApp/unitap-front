@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ClaimButton } from 'components/basic/Button/button';
 
 import Icon from 'components/basic/Icon/Icon';
@@ -7,12 +7,25 @@ import { useUnitapBatchSale } from '../../../../hooks/pass/useUnitapBatchSale';
 import JSBI from 'jsbi';
 import { CurrencyAmount } from '@uniswap/sdk-core';
 import useNativeCurrency from '../../../../hooks/useNativeCurrency';
+import useSelectChain from 'hooks/useSelectChain';
+import { useWeb3React } from '@web3-react/core';
+import { SupportedChainId } from '../../../../constants/chains';
+import { ClaimContext } from 'hooks/useChainList';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
   const claimedCount = 13;
   const maxCount = 15;
   const { price } = useUnitapBatchSale();
+
+  const { chainId } = useWeb3React();
+
+  const addAndSwitchToChain = useSelectChain();
+
+  const isRightChain = useMemo(() => {
+    if (!chainId) return false;
+    return chainId === SupportedChainId.GOERLI;
+  }, [chainId]);
 
   const nativeCurrency = useNativeCurrency();
 
@@ -32,6 +45,14 @@ const MintNFTCard = () => {
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
+
+  const { chainList } = useContext(ClaimContext);
+
+  const switchNetwork = () => {
+    const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString())
+    if (!goerliChain) return;
+    addAndSwitchToChain(goerliChain);
+  }
 
   useEffect(() => {
     mounted.current = true;
@@ -122,9 +143,15 @@ const MintNFTCard = () => {
             )}
           </div>
         </div>
-        <ClaimButton onClick={mintPass} height="48px" width="100% !important">
-          <p>Mint Unitap Pass</p>
-        </ClaimButton>
+        {isRightChain ? (
+          <ClaimButton onClick={mintPass} height="48px" width="100% !important">
+            <p>Mint Unitap Pass</p>
+          </ClaimButton>
+        ) : (
+          <ClaimButton onClick={switchNetwork} height="48px" width="100% !important">
+            <p>Switch Network </p>
+          </ClaimButton>
+        )}
       </div>
     </div>
   );
