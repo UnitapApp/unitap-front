@@ -26,7 +26,7 @@ const Landing: FC = () => {
     {
       img: 'discord-icon.svg',
       localClass: 'hover:bg-purple-200',
-      link: 'https://discord.gg/sHWNyYjyrz',
+      link: 'https://discord.gg/unitap',
     },
   ]);
   const [stats] = useState([
@@ -39,14 +39,14 @@ const Landing: FC = () => {
     {
       name: 'Learn Tap',
       icon: 'learntap-icon.png',
-      description: 'Where users can learn to user web 3 technologies',
+      description: 'Where users can learn to use web 3 technologies',
       class: '',
       iconSize: 'w-6',
     },
     {
       name: 'Stake Tap',
       icon: 'staketap-icon.png',
-      description: 'a public good staking platform where users can earn rewards by staking their assets',
+      description: 'A public good staking platform where users can earn rewards by staking their assets',
       class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
       iconSize: 'w-7 h-8',
     },
@@ -64,11 +64,11 @@ const Landing: FC = () => {
   return (
     <>
       <Navbar />
-      <main className={'flex flex-col gap-6 px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto'}>
+      <main className={'flex flex-col gap-6 content-wrapper'}>
         <section
           id="home-header"
           className={
-            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:pl-12 overflow-hidden'
+            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
           }
         >
           <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} alt={'logo'} />
@@ -86,7 +86,7 @@ const Landing: FC = () => {
           }
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
-            <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Genesis Pass NFT</h3>
+            <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
             <p className={'text-gray100'}>
               <span className={'text-white'}>13</span> of <span className={'text-white'}>100</span> Passes are left in
               the current batch. Mint your Passes now
@@ -140,7 +140,7 @@ const Landing: FC = () => {
             </Widget>
           </Link>
 
-          <Link className={'flex-1'} to={RoutePath.FAUCET}>
+          <Link className={'flex-1'} to={RoutePath.TOKEN}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
@@ -226,7 +226,7 @@ const Landing: FC = () => {
             ))}
 
             <div
-              onClick={() => navigate(RoutePath.DONATE)}
+              onClick={() => navigate(RoutePath.ABOUT)}
               className={
                 'uni-card hover:bg-gray00 hover:after:top-4 cursor-pointer after:bg-what-is-unitap after:left-auto after:!right-0 after:w-44 after:h-36' +
                 ' flex flex-grow justify-center items-center text-white py-6 sm:py-0 rounded-tl-none rounded-bl-none'
