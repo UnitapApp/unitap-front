@@ -19,27 +19,30 @@ const NFT = () => {
             <Header />
           </div>
           <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
-            <div className="card md:w-7/12">
-              <p className="title font-bold mb-4">Unitap Pass Benefits</p>
-              <p className="subtitle text-sm leading-7 font-light">
-                Unitap Passes work with Prize Tap, an upcoming feature for Unitap. Unitap Pass holders will receive the
-                following benefits:
-              </p>
-              <ul className="text-sm list-disc pl-4 leading-7 font-light mb-12">
-                <li className="">
-                  Unitap Pass holders won’t have to visit the Unitap App to claim entries. Unitap will deliver free
-                  entries to each Pass holder’s wallet address each period, with no gas or interaction needed.
-                </li>
-                <li className="">
-                  Unitap Pass holders will receive more entries than basic users. The more Unitap Passes someone holds,
-                  the more entries they will have automatically delivered to them: one additional entry per Unitap Pass.
-                </li>
-                <li className="">
-                  Unitap Passes are minted on Ethereum mainnet, but we can deliver offerings to the same address on
-                  other networks. We can also have the user sign a message (gasless) specifying their preferred delivery
-                  address on another network.
-                </li>
-              </ul>
+            <div className="card md:w-7/12 flex flex-col justify-between">
+              <span>
+                <p className="title font-bold mb-4">Unitap Pass Benefits</p>
+                <p className="subtitle text-sm leading-7 font-light">
+                  Unitap Passes work with Prize Tap, an upcoming feature for Unitap. Unitap Pass holders will receive
+                  the following benefits:
+                </p>
+                <ul className="text-sm list-disc pl-4 leading-7 font-light mb-12">
+                  <li className="">
+                    Unitap Pass holders won’t have to visit the Unitap App to claim entries. Unitap will deliver free
+                    entries to each Pass holder’s wallet address each period, with no gas or interaction needed.
+                  </li>
+                  <li className="">
+                    Unitap Pass holders will receive more entries than basic users. The more Unitap Passes someone
+                    holds, the more entries they will have automatically delivered to them: one additional entry per
+                    Unitap Pass.
+                  </li>
+                  <li className="">
+                    Unitap Passes are minted on Ethereum mainnet, but we can deliver offerings to the same address on
+                    other networks. We can also have the user sign a message (gasless) specifying their preferred
+                    delivery address on another network.
+                  </li>
+                </ul>
+              </span>
               <p className="text-gradient-primary text-sm font-semibold">
                 As Unitap adds taps and features,
                 <br />

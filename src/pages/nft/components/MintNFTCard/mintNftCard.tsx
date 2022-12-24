@@ -104,7 +104,7 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
             <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
               <div className="w-full h-full overflow-hidden rounded-lg">
-                <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="w-full object-cover"></video>
+                <video src='assets/videos/unitap-pass.mp4' autoPlay muted loop className="w-full object-cover"></video>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@ const MintNFTCard = () => {
             <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
               <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
                 <div className="w-full h-full overflow-hidden rounded-lg">
-                  <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="w-full object-cover"></video>
+                  <video src='assets/videos/unitap-pass.mp4' autoPlay muted loop className="w-full object-cover"></video>
                 </div>
               </div>
             </div>
