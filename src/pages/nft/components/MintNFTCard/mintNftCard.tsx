@@ -101,7 +101,7 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft__image w-full my-9 flex justify-center">
             <div className="mint-nft-card__nft__image__wrapper gradient-outline-card w-40 h-56">
               <div className="w-full h-full overflow-hidden rounded-xl">
-                <img src="https://picsum.photos/200/300" alt="nft" className="rounded-xl" />
+                <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="h-full object-cover"></video>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ const MintNFTCard = () => {
             <div className="mint-nft-card__nft__image w-full my-14 flex justify-center">
               <div className="mint-nft-card__nft__image__wrapper gradient-outline-card w-40 h-56">
                 <div className="w-full h-full overflow-hidden rounded-xl">
-                  <img src="https://picsum.photos/200/300" alt="nft" className="rounded-xl" />
+                  <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="h-full object-cover"></video>
                 </div>
               </div>
             </div>
