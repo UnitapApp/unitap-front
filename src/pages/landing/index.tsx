@@ -6,11 +6,18 @@ import RoutePath from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
 import { ClaimContext } from 'hooks/useChainList';
+import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 
 const Landing: FC = () => {
   const { chainList } = useContext(ClaimContext);
 
   const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
+
+  const { batchSoldCount, batchSize } = useUnitapBatchSale();
+
+  const maxCount = useMemo(() => batchSize || 0, [batchSize]);
+  const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
+
 
   const [socialLinks] = useState([
     {
@@ -87,10 +94,10 @@ const Landing: FC = () => {
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
-            <p className={'text-gray100'}>
-              <span className={'text-white'}>13</span> of <span className={'text-white'}>100</span> Passes are left in
+            {maxCount > 0 && <p className={'text-gray100'}>
+              <span className={'text-white'}>{remainingCount}</span> of <span className={'text-white'}>{maxCount}</span> Passes are left in
               the current batch. Mint your Passes now
-            </p>
+            </p>}
           </div>
           <div>
             <UButton

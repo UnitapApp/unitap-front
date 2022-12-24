@@ -16,9 +16,9 @@ import useWalletActivation from 'hooks/useWalletActivation';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
-  const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
   const [transactionState, setTransactionState] = useState(TransactionState.IDLE);
-
+  
+  const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
