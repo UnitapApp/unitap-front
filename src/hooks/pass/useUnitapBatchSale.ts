@@ -21,15 +21,25 @@ export function useUnitapBatchSale() {
   const unitapPassBatchSaleContract = useUnitapPassBatchSaleContract();
   const { account } = useWeb3React();
 
-  const priceCall = useMemo(() => {
+  const batchDetailsCall = useMemo(() => {
     if (!account) return [];
-    return [unitapPassBatchSaleInterface.encodeFunctionData('price', [])];
+    return [
+      unitapPassBatchSaleInterface.encodeFunctionData('price', []),
+      unitapPassBatchSaleInterface.encodeFunctionData('batchSize', []),
+      unitapPassBatchSaleInterface.encodeFunctionData('batchSoldCount', []),
+    ];
   }, [account]);
 
-  const [priceResult] = useSingleContractWithCallData(unitapPassBatchSaleContract, priceCall);
-
+  const [priceResult, batchSizeResult, batchSoldCountResult] = useSingleContractWithCallData(
+    unitapPassBatchSaleContract,
+    batchDetailsCall,
+  );
   const price: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['price']> | undefined =
     priceResult?.result?.[0];
+  const batchSize: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSize']> | undefined =
+    batchSizeResult?.result?.[0];
+  const batchSoldCount: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSoldCount']> | undefined =
+    batchSoldCountResult?.result?.[0];
 
-  return { price };
+  return { price, batchSize, batchSoldCount };
 }

@@ -14,9 +14,10 @@ import { ClaimContext } from 'hooks/useChainList';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
-  const claimedCount = 13;
-  const maxCount = 15;
-  const { price } = useUnitapBatchSale();
+  const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
+
+  const maxCount = useMemo(() => batchSize || 0, [batchSize]);
+  const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
   const { chainId } = useWeb3React();
 
@@ -49,10 +50,10 @@ const MintNFTCard = () => {
   const { chainList } = useContext(ClaimContext);
 
   const switchNetwork = () => {
-    const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString())
+    const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString());
     if (!goerliChain) return;
     addAndSwitchToChain(goerliChain);
-  }
+  };
 
   useEffect(() => {
     mounted.current = true;
@@ -83,7 +84,7 @@ const MintNFTCard = () => {
       <div className="mint-nft-card__nft p-4 h-full flex flex-col justify-between">
         <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between mb-7">
           <p className="text-gray100">
-            <span className="text-white"> {claimedCount} </span> of
+            <span className="text-white"> {remainingCount} </span> of
             <span className="text-white"> {maxCount} </span>
             Left in current batch
           </p>
@@ -132,11 +133,11 @@ const MintNFTCard = () => {
           </div>
           <div
             className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-r-xl ${
-              count === maxCount - claimedCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
+              count === maxCount - remainingCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
             }`}
-            onClick={() => (count !== maxCount - claimedCount ? setCount(count + 1) : null)}
+            onClick={() => (count !== maxCount - remainingCount ? setCount(count + 1) : null)}
           >
-            {count === maxCount - claimedCount ? (
+            {count === maxCount - remainingCount ? (
               <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
             ) : (
               <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
