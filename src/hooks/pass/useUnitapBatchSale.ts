@@ -1,7 +1,6 @@
 import { Interface } from '@ethersproject/abi';
 import UnitapPassBatchSale_ABI from '../../abis/UnitapPassBatchSale.json';
 import { useUnitapPassBatchSaleContract } from 'hooks/useContract';
-import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
 import { useSingleContractWithCallData } from '../../lib/hooks/multicall';
 import { UnitapPassBatchSale } from '../../abis/types';
@@ -19,16 +18,14 @@ export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<
 
 export function useUnitapBatchSale() {
   const unitapPassBatchSaleContract = useUnitapPassBatchSaleContract();
-  const { account } = useWeb3React();
 
   const batchDetailsCall = useMemo(() => {
-    if (!account) return [];
     return [
       unitapPassBatchSaleInterface.encodeFunctionData('price', []),
       unitapPassBatchSaleInterface.encodeFunctionData('batchSize', []),
       unitapPassBatchSaleInterface.encodeFunctionData('batchSoldCount', []),
     ];
-  }, [account]);
+  }, []);
 
   const [priceResult, batchSizeResult, batchSoldCountResult] = useSingleContractWithCallData(
     unitapPassBatchSaleContract,

@@ -16,6 +16,7 @@ import useWalletActivation from '../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
 import Icon from 'components/basic/Icon/Icon';
 import NavbarDropdown from './navbarDropdown';
+import { useUnitapPass } from '../../../hooks/pass/useUnitapPass';
 
 const Navbar = () => {
   const { tryActivation } = useWalletActivation();
@@ -23,7 +24,7 @@ const Navbar = () => {
   const { openBrightIdModal } = useContext(ClaimContext);
   const { account, chainId } = useWeb3React();
   const active = !!account;
-
+  const { balance: unitapPassBalance } = useUnitapPass();
   const { userProfile } = useContext(UserProfileContext);
 
   const connectBrightButtonLabel = useMemo(() => {
@@ -70,59 +71,62 @@ const Navbar = () => {
       {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
       <DesktopNav>
         {active ? (
-          userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            <>
-              <BrightConnectedButton
-                className="has-icon"
-                data-testid="brightid-connected"
-                iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
-                fontSize="12px"
-                fontWeight="500"
-                minWidth="130px"
-                iconLeftWidth={16}
-                iconLeftHeight={16}
-                mr={2}
-              >
-                {connectBrightButtonLabel}
-              </BrightConnectedButton>
-              <LightOutlinedButton
-                data-testid="wallet-connect"
-                minWidth="155px"
-                fontSize="12px"
-                fontWeight="400"
-                mr={2}
-              >
-                {shortenAddress(account)}
-              </LightOutlinedButton>
-            </>
-          ) : (
-            <>
-              <BrightPrimaryButton
-                data-testid="brightid-show-modal"
-                disabled={!account}
-                fontSize="12px"
-                fontWeight="800"
-                minWidth="150px"
-                mr={2}
-                onClick={() => {
-                  if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-                    openBrightIdModal();
-                  }
-                }}
-              >
-                {connectBrightButtonLabel}
-              </BrightPrimaryButton>
-              <LightOutlinedButton
-                data-testid="wallet-connect"
-                minWidth="155px"
-                fontSize="12px"
-                fontWeight="400"
-                mr={2}
-              >
-                {shortenAddress(account)}
-              </LightOutlinedButton>
-            </>
-          )
+          <>
+            <div style={{ color: 'white', paddingRight: '10px' }}>{unitapPassBalance?.toNumber() || 0} UP</div>
+            {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+              <>
+                <BrightConnectedButton
+                  className="has-icon"
+                  data-testid="brightid-connected"
+                  iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
+                  fontSize="12px"
+                  fontWeight="500"
+                  minWidth="130px"
+                  iconLeftWidth={16}
+                  iconLeftHeight={16}
+                  mr={2}
+                >
+                  {connectBrightButtonLabel}
+                </BrightConnectedButton>
+                <LightOutlinedButton
+                  data-testid="wallet-connect"
+                  minWidth="155px"
+                  fontSize="12px"
+                  fontWeight="400"
+                  mr={2}
+                >
+                  {shortenAddress(account)}
+                </LightOutlinedButton>
+              </>
+            ) : (
+              <>
+                <BrightPrimaryButton
+                  data-testid="brightid-show-modal"
+                  disabled={!account}
+                  fontSize="12px"
+                  fontWeight="800"
+                  minWidth="150px"
+                  mr={2}
+                  onClick={() => {
+                    if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+                      openBrightIdModal();
+                    }
+                  }}
+                >
+                  {connectBrightButtonLabel}
+                </BrightPrimaryButton>
+                <LightOutlinedButton
+                  data-testid="wallet-connect"
+                  minWidth="155px"
+                  fontSize="12px"
+                  fontWeight="400"
+                  mr={2}
+                >
+                  {shortenAddress(account)}
+                </LightOutlinedButton>
+              </>
+            )}
+          </>
         ) : (
           <GradientOutlinedButton
             data-testid="wallet-connect"
