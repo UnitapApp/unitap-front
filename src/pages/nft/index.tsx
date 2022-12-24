@@ -56,7 +56,7 @@ const NFT = () => {
                 <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
               </div>
             ) : (
-              <div className="card md:w-5/12 p-0 h-full overflow-hidden">
+              <div className="card md:w-5/12 p-0 overflow-hidden">
                 <MintNFTCard />
               </div>
             )}

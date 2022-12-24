@@ -76,6 +76,13 @@ export enum BrightIdModalState {
   CONNECTED_AND_VERIFIED = '4',
 }
 
+export enum TransactionState {
+  IDLE = '0',
+  PENDING = '1',
+  ACCEPTED = '2',
+  FAILED = '3',
+}
+
 export enum HaveBrightIdAccountModalState {
   CLOSED = '0',
   OPENED = '1',
