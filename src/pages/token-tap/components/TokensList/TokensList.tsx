@@ -18,33 +18,6 @@ const ChainCard = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ChainCardTopLeft = styled.div`
-  display: flex;
-  align-items: center;
-
-  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
-    margin-bottom: ${DV.sizes.baseMargin * 2}px;
-  }
-`;
-
-const ChainCardTopRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ChainCardInfo = styled.div`
-  flex: 1;
-  min-width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
-    justify-content: flex-start;
-    padding-left: ${DV.sizes.basePadding}px;
-  }
-`;
-
 const Action = styled.div`
   //flex: 5;
   display: flex;

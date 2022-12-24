@@ -1,20 +1,18 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { ClaimButton, PrimaryButton } from "components/basic/Button/button";
-import { ContentCard } from "./content.style";
-import Icon from "components/basic/Icon/Icon";
-import Input from "components/basic/Input/input";
-import Dropdown from "components/basic/Dropdown/dropdown";
-import { ClaimContext } from "../../../../hooks/useChainList";
-import { Chain } from "../../../../types";
-import { parseEther } from "@ethersproject/units";
-import Modal from "components/common/Modal/modal";
-import SelectChainModal from "../SelectChainModal/selectChainModal";
-import FundTransactionModal from "../FundTransactionModal/FundTransactionModal";
-import { getChainIcon } from "../../../../utils";
-import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from "../../../../utils/web3";
-import useWalletActivation from "../../../../hooks/useWalletActivation";
-import useSelectChain from "../../../../hooks/useSelectChain";
-import { useWeb3React } from "@web3-react/core";
+import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { ClaimButton } from 'components/basic/Button/button';
+import { ContentCard } from './content.style';
+import Icon from 'components/basic/Icon/Icon';
+import { ClaimContext } from '../../../../hooks/useChainList';
+import { Chain } from '../../../../types';
+import { parseEther } from '@ethersproject/units';
+import Modal from 'components/common/Modal/modal';
+import SelectChainModal from '../SelectChainModal/selectChainModal';
+import FundTransactionModal from '../FundTransactionModal/FundTransactionModal';
+import { getChainIcon } from '../../../../utils';
+import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from '../../../../utils/web3';
+import useWalletActivation from '../../../../hooks/useWalletActivation';
+import useSelectChain from '../../../../hooks/useSelectChain';
+import { useWeb3React } from '@web3-react/core';
 
 const Content: FC = () => {
   const { chainList } = useContext(ClaimContext);
@@ -31,11 +29,11 @@ const Content: FC = () => {
 
   const addAndSwitchToChain = useSelectChain();
 
-  const [fundAmount, setFundAmount] = useState<string>("");
+  const [fundAmount, setFundAmount] = useState<string>('');
 
   const [modalState, setModalState] = useState(false);
-  const [fundTransactionError, setFundTransactionError] = useState("");
-  const [txHash, setTxHash] = useState("");
+  const [fundTransactionError, setFundTransactionError] = useState('');
+  const [txHash, setTxHash] = useState('');
   const isRightChain = useMemo(() => {
     if (!active || !chainId || !selectedChain) return false;
     return chainId === Number(selectedChain.chainId);
@@ -45,13 +43,13 @@ const Content: FC = () => {
     if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
     const message = error?.data?.message || error?.error?.message;
     if (message) {
-      if (message.includes("insufficient funds")) {
-        setFundTransactionError("Error: Insufficient Funds");
+      if (message.includes('insufficient funds')) {
+        setFundTransactionError('Error: Insufficient Funds');
       } else {
         setFundTransactionError(message);
       }
     } else {
-      setFundTransactionError("Unexpected error. Could not estimate gas for this transaction.");
+      setFundTransactionError('Unexpected error. Could not estimate gas for this transaction.');
     }
   }, []);
 
@@ -74,21 +72,21 @@ const Content: FC = () => {
       return;
     }
     if (!Number(fundAmount)) {
-      alert("Enter fund amount");
+      alert('Enter fund amount');
       return;
     }
     if (!provider) return;
     const tx = {
       from: account,
       to: selectedChain.fundManagerAddress,
-      value: parseEther(fundAmount)
+      value: parseEther(fundAmount),
     };
     setSubmittingFundTransaction(true);
     const estimatedGas = await provider.estimateGas(tx).catch((err: any) => {
       return err;
     });
 
-    if ("error" in estimatedGas || "code" in estimatedGas) {
+    if ('error' in estimatedGas || 'code' in estimatedGas) {
       handleTransactionError(estimatedGas);
       setSubmittingFundTransaction(false);
       return;
@@ -98,7 +96,7 @@ const Content: FC = () => {
       .getSigner()
       .sendTransaction({
         ...tx,
-        ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {})
+        ...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
         // gasPrice /// TODO add gasPrice based on EIP 1559
       })
       .then((tx) => {
@@ -121,37 +119,36 @@ const Content: FC = () => {
     provider,
     tryActivation,
     addAndSwitchToChain,
-    handleTransactionError
+    handleTransactionError,
   ]);
 
   const closeModalHandler = () => {
-    setFundTransactionError("");
-    setTxHash("");
+    setFundTransactionError('');
+    setTxHash('');
     setModalState(false);
   };
 
   const fundActionButtonLabel = useMemo(() => {
     if (!active) {
-      return "Connect Wallet";
+      return 'Connect Wallet';
     }
     if (loading) {
-      return "Loading...";
+      return 'Loading...';
     }
-    return !isRightChain ? "Switch Network" : "Submit Contribution";
+    return !isRightChain ? 'Switch Network' : 'Submit Contribution';
   }, [active, isRightChain, loading]);
 
   return (
     <div className="content-wrapper flex justify-center">
       <ContentCard className="bg-gray20 rounded-xl py-6 px-4 z-0">
-        <img src="./assets/images/fund/provide-gas-fee-planet.svg" className="absolute -left-64 -top-16 scale-150 z-10" />
+        <img
+          src="./assets/images/fund/provide-gas-fee-planet.svg"
+          className="absolute -left-64 -top-16 scale-150 z-10"
+        />
         <span className="z-100">
           <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
-          <p className="text-gray100 text-xs mb-3 z-1">
-            99% of contributions will be distributed via the tap.
-          </p>
-          <p className="text-gray100 text-xs z-1">
-            1% of contributions will fund Unitap development.
-          </p>
+          <p className="text-gray100 text-xs mb-3 z-1">99% of contributions will be distributed via the tap.</p>
+          <p className="text-gray100 text-xs z-1">1% of contributions will fund Unitap development.</p>
           <Modal titleLeft="Select Chain" isOpen={modalState} size="medium" closeModalHandler={closeModalHandler}>
             <SelectChainModal
               closeModalHandler={closeModalHandler}
@@ -160,17 +157,33 @@ const Content: FC = () => {
             ></SelectChainModal>
           </Modal>
           <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
-            <div className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60" onClick={() => setModalState(true)}>
-              {selectedChain ? <Icon iconSrc={getChainIcon(selectedChain)} width="auto" height="32px" /> : <span className="w-8 h-8 rounded-full bg-gray50"></span>}
+            <div
+              className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60"
+              onClick={() => setModalState(true)}
+            >
+              {selectedChain ? (
+                <Icon iconSrc={getChainIcon(selectedChain)} width="auto" height="32px" />
+              ) : (
+                <span className="w-8 h-8 rounded-full bg-gray50"></span>
+              )}
               <Icon iconSrc="assets/images/fund/arrow-down.png" width="14px" height="auto" />
             </div>
             <div className="select-box__info w-full flex flex-col justify-between my-2 ml-3 mr-4 bg-gray40">
               <div className="select-box__info__top w-full flex items-center justify-between">
-                <p className="select-box__info__coin-symbol text-white text-xs font-semibold">{selectedChain?.symbol}</p>
+                <p className="select-box__info__coin-symbol text-white text-xs font-semibold">
+                  {selectedChain?.symbol}
+                </p>
                 {/* <p className="select-box__info__coin-balance text-gray100 text-xs font-semibold">Balance: 1,049.00</p> */}
               </div>
               <div className="select-box__info__amount w-full">
-                <input className="w-full text-xl bg-transparent text-white" type="number" step="0.001" placeholder="Enter Amount" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                <input
+                  className="w-full text-xl bg-transparent text-white"
+                  type="number"
+                  step="0.001"
+                  placeholder="Enter Amount"
+                  value={fundAmount}
+                  onChange={(e) => setFundAmount(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -197,7 +210,6 @@ const Content: FC = () => {
               selectedChain={selectedChain}
             />
           </Modal>
-
         </span>
       </ContentCard>
     </div>

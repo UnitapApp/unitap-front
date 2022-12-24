@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
-import Icon from 'components/basic/Icon/Icon';
 
 export const DesktopNav = styled.div`
   display: none;

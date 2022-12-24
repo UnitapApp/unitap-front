@@ -4,13 +4,12 @@ import {
   BrightPrimaryButton,
   GradientOutlinedButton,
   LightOutlinedButton,
-  PrimaryOutlinedButton,
 } from 'components/basic/Button/button';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import { shortenAddress } from 'utils';
 import { DesktopNav, MobileNav } from './navbar.style';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import { ClaimContext } from 'hooks/useChainList';
 import useWalletActivation from '../../../hooks/useWalletActivation';
@@ -39,7 +38,6 @@ const Navbar = () => {
     return 'Connect BrightID';
   }, [account, userProfile]);
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
