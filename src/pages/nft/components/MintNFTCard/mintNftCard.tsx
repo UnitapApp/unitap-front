@@ -103,7 +103,7 @@ const MintNFTCard = () => {
         <div className="mint-nft-card__nft__price text-sm font-semibold flex w-full justify-between mt-auto">
           <p className="text-white">{count > 1 && 'Total'} Price:</p>
           <p className="text-gray100 flex gap-x-1.5">
-            {count > 1 && (
+            {count > 1 && isRightChain && (
               <p>
                 {count} x {priceAmount?.toSignificant(5) || '0'} ETH ={' '}
               </p>
@@ -113,37 +113,39 @@ const MintNFTCard = () => {
         </div>
       </div>
       <div className="mint-nft-card__actions bg-gray30 w-full flex-col lg:flex-row flex gap-2 justify-between items-center py-3 px-4">
-        <div className="mint-nft-card__actions__quantity w-full lg:w-auto flex items-center">
-          <div
-            className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-l-xl ${
-              count === 1 ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
-            }`}
-            onClick={() => (count !== 1 ? setCount(count - 1) : null)}
-          >
-            {count === 1 ? (
-              <Icon iconSrc="assets/images/nft/nft-minus-gray.svg" />
-            ) : (
-              <Icon iconSrc="assets/images/nft/nft-minus-white.svg" />
-            )}
+        {isRightChain && (
+          <div className="mint-nft-card__actions__quantity w-full lg:w-auto flex items-center">
+            <div
+              className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-l-xl ${
+                count === 1 ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
+              }`}
+              onClick={() => (count !== 1 ? setCount(count - 1) : null)}
+            >
+              {count === 1 ? (
+                <Icon iconSrc="assets/images/nft/nft-minus-gray.svg" />
+              ) : (
+                <Icon iconSrc="assets/images/nft/nft-minus-white.svg" />
+              )}
+            </div>
+            <div
+              className={`text-white border-y-2 border-gray60  py-3 flex-1 h-12 min-w-[48px] flex items-center justify-center font-bold cursor-default`}
+            >
+              {count}
+            </div>
+            <div
+              className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-r-xl ${
+                count === maxCount - remainingCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
+              }`}
+              onClick={() => (count !== maxCount - remainingCount ? setCount(count + 1) : null)}
+            >
+              {count === maxCount - remainingCount ? (
+                <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
+              ) : (
+                <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
+              )}
+            </div>
           </div>
-          <div
-            className={`text-white border-y-2 border-gray60  py-3 flex-1 h-12 min-w-[48px] flex items-center justify-center font-bold cursor-default`}
-          >
-            {count}
-          </div>
-          <div
-            className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-r-xl ${
-              count === maxCount - remainingCount ? 'cursor-default' : 'cursor-pointer hover:bg-primaryGradient'
-            }`}
-            onClick={() => (count !== maxCount - remainingCount ? setCount(count + 1) : null)}
-          >
-            {count === maxCount - remainingCount ? (
-              <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
-            ) : (
-              <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
-            )}
-          </div>
-        </div>
+        )}
         {isRightChain ? (
           <ClaimButton onClick={mintPass} height="48px" width="100% !important">
             <p>Mint Unitap Pass</p>
