@@ -12,6 +12,7 @@ import { useWeb3React } from '@web3-react/core';
 import { SupportedChainId } from '../../../../constants/chains';
 import { ClaimContext } from 'hooks/useChainList';
 import { TransactionState } from 'types';
+import useWalletActivation from 'hooks/useWalletActivation';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
@@ -21,7 +22,7 @@ const MintNFTCard = () => {
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-  const { chainId } = useWeb3React();
+  const { chainId, account } = useWeb3React();
 
   const addAndSwitchToChain = useSelectChain();
 
@@ -48,6 +49,8 @@ const MintNFTCard = () => {
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
+  
+  const { tryActivation } = useWalletActivation();
 
   const { chainList } = useContext(ClaimContext);
 
@@ -192,13 +195,17 @@ const MintNFTCard = () => {
                 </div>
               </div>
             )}
-            {isRightChain ? (
+            { !account ? 
+              <ClaimButton onClick={tryActivation} height="48px" width="100% !important">
+                <p>Connect Wallet</p>
+              </ClaimButton>
+            : isRightChain ? (
               <ClaimButton onClick={mintPass} height="48px" width="100% !important">
                 <p>Mint Unitap Pass</p>
               </ClaimButton>
             ) : (
               <ClaimButton onClick={switchNetwork} height="48px" width="100% !important">
-                <p>Switch Network </p>
+                <p>Switch Network</p>
               </ClaimButton>
             )}
           </div>
