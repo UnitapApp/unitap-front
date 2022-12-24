@@ -72,7 +72,10 @@ const Navbar = () => {
       <DesktopNav>
         {active ? (
           <>
-            <div style={{ color: 'white', paddingRight: '10px' }}>{unitapPassBalance?.toNumber() || 0} UP</div>
+            <div className='up-count flex p-2 pr-3 mr-3 bg-gray40 items-center rounded-xl'>
+              <Icon className='mr-5' iconSrc='assets/images/navbar/up-icon.svg' width="auto" height='24px'/>
+              <p className='text-white text-xs font-bold'> {unitapPassBalance?.toNumber() || 0} UP </p>
+            </div>
             {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
               <>
                 <BrightConnectedButton
