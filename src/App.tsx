@@ -58,7 +58,7 @@ function App() {
                       <Route path={RoutePath.DONATE} element={<Donate />} />
                       <Route path={RoutePath.NFT} element={<NFT />} />
                       <Route path={RoutePath.ABOUT} element={<About />} />
-                      <Route path={RoutePath.TOKEN} element={<TokenTap />} />
+                      {/* <Route path={RoutePath.TOKEN} element={<TokenTap />} /> */}
                     </Routes>
                     <ConnectBrightIdModal />
                     <BrightConnectionModal />

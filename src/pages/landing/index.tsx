@@ -91,6 +91,7 @@ const Landing: FC = () => {
             'after:inset-auto after:left-0 after:-top-10 after:w-36 after:h-32 flex justify-between ' +
             'after:rounded-2xl after:bg-nft-texture text-white hover:bg-gray00 cursor-pointer hover:after:top-2'
           }
+          onClick={() => navigate(RoutePath.NFT)}
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
@@ -104,7 +105,6 @@ const Landing: FC = () => {
               size={'btn-large'}
               className={'secondary-button'}
               icon={'/assets/images/landing/arrow-right.svg'}
-              onClick={() => navigate(RoutePath.NFT)}
             >
               Go to Mint Page
             </UButton>
@@ -147,16 +147,15 @@ const Landing: FC = () => {
             </Widget>
           </Link>
 
-          <Link className={'flex-1'} to={RoutePath.TOKEN}>
+          <section className={'flex-1'}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
               iconSize={'w-8'}
-              className={'h-full after:bg-tokentap-texture flex-1 hover:bg-gray00 cursor-pointer'}
+              className={'h-full after:bg-tokentap-texture flex-1'}
               title={'Token Tap'}
-              buttonTitle={'Beta'}
-              buttonClass={'green-text-button'}
-              onButtonClick={() => navigate(RoutePath.TOKEN)}
+              buttonTitle={'Soon...'}
+              buttonClass={'secondary-button !bg-gray30'}
             >
               {/*<UButton*/}
               {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
@@ -165,7 +164,7 @@ const Landing: FC = () => {
               {/*  Beta*/}
               {/*</UButton>*/}
             </Widget>
-          </Link>
+          </section>
 
           <Widget
             description={'Where everyone has chances to win larger prizes'}

@@ -29,10 +29,10 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
     },
     {
       name: 'Token Tap',
-      link: RoutePath.TOKEN,
-      icon: 'assets/images/navbar/navbar-dropdown-token-tap.svg',
-      iconWidth: 'auto',
-      iconHeight: '28px',
+      link: null,
+      icon: 'assets/images/navbar/navbar-dropdown-soon.svg',
+      iconWidth: '33px',
+      iconHeight: 'auto',
       route: RoutePath.TOKEN,
     },
     {
