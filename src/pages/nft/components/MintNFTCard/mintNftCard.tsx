@@ -101,10 +101,10 @@ const MintNFTCard = () => {
       {transactionState !== TransactionState.IDLE ? (
         <div className="mint-nft-card__success p-4 h-full flex flex-col justify-between">
           <p className="text-gradient-primary mx-auto font-bold text-sm">UNITAP PASS</p>
-          <div className="mint-nft-card__nft__image w-full my-9 flex justify-center">
-            <div className="mint-nft-card__nft__image__wrapper gradient-outline-card w-40 h-56">
-              <div className="w-full h-full overflow-hidden rounded-xl">
-                <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="h-full object-cover"></video>
+          <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
+            <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
+              <div className="w-full h-full overflow-hidden rounded-lg">
+                <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="w-full object-cover"></video>
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const MintNFTCard = () => {
       ) : (
         <>
           <div className="mint-nft-card__nft p-4 h-full flex flex-col justify-between">
-            <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between mb-7">
+            <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between">
               <p className="text-gray100">
                 <span className="text-white"> {remainingCount} </span> of
                 <span className="text-white"> {maxCount} </span>
@@ -142,10 +142,10 @@ const MintNFTCard = () => {
                 <span className="text-white"> ETH</span>
               </p>
             </div>
-            <div className="mint-nft-card__nft__image w-full my-14 flex justify-center">
-              <div className="mint-nft-card__nft__image__wrapper gradient-outline-card w-40 h-56">
-                <div className="w-full h-full overflow-hidden rounded-xl">
-                  <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="h-full object-cover"></video>
+            <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
+              <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
+                <div className="w-full h-full overflow-hidden rounded-lg">
+                  <video src='assets/videos/unitap-pass.mp4' autoPlay loop preload="auto" className="w-full object-cover"></video>
                 </div>
               </div>
             </div>
