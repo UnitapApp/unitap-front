@@ -11,6 +11,7 @@ export interface WidgetPropsInterface extends React.HTMLAttributes<HTMLElement> 
   icon?: string;
   iconSize?: string;
   buttonClassName?: string;
+  unClickable?: boolean;
 
   onButtonClick?(): void;
 }
@@ -30,6 +31,7 @@ const Widget = (props: WidgetProps) => {
     titleClass,
     iconSize,
     onButtonClick,
+    unClickable,
   } = props;
   return (
     <div className={`${className ? className : ''} uni-card px-4 pt-4 pb-3`}>
@@ -47,6 +49,7 @@ const Widget = (props: WidgetProps) => {
         {buttonTitle && (
           <div>
             <UButton
+              unClickable={unClickable}
               className={`${buttonClass ? buttonClass : 'gradient-outline-button'} `}
               size={'btn-small'}
               onClick={onButtonClick}

@@ -8,6 +8,7 @@ export interface UButtonPropsInterface extends React.HTMLAttributes<HTMLElement>
   icon?: string;
   size?: string;
   buttonClassName?: string;
+  unClickable?: boolean;
 
   onClick?(): void;
 }
@@ -15,7 +16,7 @@ export interface UButtonPropsInterface extends React.HTMLAttributes<HTMLElement>
 export type UButtonProps = PropsWithChildren<UButtonPropsInterface>;
 // todo btn-small is not reactive
 const UButton = (props: UButtonProps) => {
-  const { className, buttonClassName, children, size, onClick, icon } = props;
+  const { className, buttonClassName, children, size, onClick, icon, unClickable } = props;
 
   function buttonSize(size: string) {
     return `btn-${size}`;
@@ -24,11 +25,17 @@ const UButton = (props: UButtonProps) => {
   return (
     <div
       onClick={onClick}
-      className={`before:rounded-lg rounded-lg ${size ? size : 'btn-default'} ${
-        className ? className : 'text-sm'
-      } flex justify-center items-center gap-2`}
+      className={`before:rounded-lg rounded-lg ${size ? size : 'btn-default'} ${className ? className : 'text-sm'} ${
+        unClickable ? 'cursor-default' : 'cursor-pointer before:cursor-pointer'
+      } flex justify-center items-center ${icon ? 'gap-2' : 'gap-0'}`}
     >
-      <button className={`${buttonClassName ? buttonClassName : ''}`}>{children}</button>
+      <button
+        className={`${buttonClassName ? buttonClassName : ''} ${
+          unClickable ? 'cursor-default' : 'cursor-pointer before:cursor-pointer'
+        }`}
+      >
+        {children}
+      </button>
       <img src={icon} />
     </div>
   );

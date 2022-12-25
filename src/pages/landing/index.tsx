@@ -117,6 +117,8 @@ const Landing: FC = () => {
               iconSize={'w-7'}
               className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer'}
               title={'Gas Tap'}
+              buttonTitle={'Go to Tap'}
+              buttonClass={'gradient-outline-button'}
             >
               {sortedChainList.length > 0 && (
                 <>
@@ -154,14 +156,7 @@ const Landing: FC = () => {
               title={'Token Tap'}
               buttonTitle={'Soon...'}
               buttonClass={'secondary-button !bg-gray30'}
-            >
-              {/*<UButton*/}
-              {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
-              {/*  buttonClassName="cursor-default"*/}
-              {/*>*/}
-              {/*  Beta*/}
-              {/*</UButton>*/}
-            </Widget>
+            ></Widget>
           </section>
 
           <Widget
@@ -184,6 +179,7 @@ const Landing: FC = () => {
               description={tap.description}
               className={`${tap.class} flex-1 pb-12`}
               title={tap.name}
+              unClickable
               buttonTitle={'Soon...'}
               buttonClass={'secondary-button !bg-gray30'}
             ></Widget>
