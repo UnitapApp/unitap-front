@@ -18,7 +18,6 @@ const Landing: FC = () => {
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
@@ -75,7 +74,7 @@ const Landing: FC = () => {
         <section
           id="home-header"
           className={
-            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
+            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
           }
         >
           <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} alt={'logo'} />
@@ -95,17 +94,16 @@ const Landing: FC = () => {
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
-            {maxCount > 0 && <p className={'text-gray100'}>
-              <span className={'text-white'}>{remainingCount}</span> of <span className={'text-white'}>{maxCount}</span> Passes are left in
-              the current batch. Mint your Passes now
-            </p>}
+            {maxCount > 0 && (
+              <p className={'text-gray100'}>
+                <span className={'text-white'}>{remainingCount}</span> of{' '}
+                <span className={'text-white'}>{maxCount}</span> Passes are left in the current batch. Mint your Passes
+                now
+              </p>
+            )}
           </div>
           <div>
-            <UButton
-              size={'btn-large'}
-              className={'secondary-button'}
-              icon={'/assets/images/landing/arrow-right.svg'}
-            >
+            <UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
               Go to Mint Page
             </UButton>
           </div>
