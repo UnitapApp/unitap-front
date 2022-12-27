@@ -109,13 +109,13 @@ const Landing: FC = () => {
           </div>
         </section>
 
-        <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
-          <Link className={'flex-1 '} to={RoutePath.FAUCET}>
+        <section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
+          <Link className={'flex--1'} to={RoutePath.FAUCET}>
             <Widget
               description={'Claim gas fees for any reason and make  transactions easily'}
               icon={'gastap-icon.svg'}
               iconSize={'w-7'}
-              className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer'}
+              className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
               title={'Gas Tap'}
               buttonTitle={'Go to Tap'}
               buttonClass={'gradient-outline-button'}
@@ -147,7 +147,7 @@ const Landing: FC = () => {
             </Widget>
           </Link>
 
-          <section className={'flex-1'}>
+          <section className={'flex--1'}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
@@ -159,15 +159,17 @@ const Landing: FC = () => {
             ></Widget>
           </section>
 
-          <Widget
-            description={'Where everyone has chances to win larger prizes'}
-            className={'after:bg-prizetap-texture after:w-88 after:-top-8 flex-1'}
-            icon={'prizetap-icon.png'}
-            iconSize={'w-8 h-7'}
-            title={'Prize Tap'}
-            buttonTitle={'Soon...'}
-            buttonClass={'secondary-button !bg-gray30'}
-          ></Widget>
+          <section className={'flex--1'}>
+            <Widget
+              description={'Where everyone has chances to win larger prizes'}
+              className={'after:bg-prizetap-texture h-full after:w-full after:-top-8'}
+              icon={'prizetap-icon.png'}
+              iconSize={'w-8 h-7'}
+              title={'Prize Tap'}
+              buttonTitle={'Soon...'}
+              buttonClass={'secondary-button !bg-gray30'}
+            ></Widget>
+          </section>
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
