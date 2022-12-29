@@ -18,7 +18,6 @@ const Landing: FC = () => {
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
@@ -75,7 +74,7 @@ const Landing: FC = () => {
         <section
           id="home-header"
           className={
-            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-44 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
+            'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
           }
         >
           <img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} alt={'logo'} />
@@ -95,30 +94,31 @@ const Landing: FC = () => {
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
-            {maxCount > 0 && <p className={'text-gray100'}>
-              <span className={'text-white'}>{remainingCount}</span> of <span className={'text-white'}>{maxCount}</span> Passes are left in
-              the current batch. Mint your Passes now
-            </p>}
+            {maxCount > 0 && (
+              <p className={'text-gray100'}>
+                <span className={'text-white'}>{remainingCount}</span> of{' '}
+                <span className={'text-white'}>{maxCount}</span> Passes are left in the current batch. Mint your Passes
+                now
+              </p>
+            )}
           </div>
           <div>
-            <UButton
-              size={'btn-large'}
-              className={'secondary-button'}
-              icon={'/assets/images/landing/arrow-right.svg'}
-            >
+            <UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
               Go to Mint Page
             </UButton>
           </div>
         </section>
 
-        <section id="home-taps" className={'flex lg:flex-row flex-col gap-4 justify-between'}>
-          <Link className={'flex-1 '} to={RoutePath.FAUCET}>
+        <section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
+          <Link className={'flex--1'} to={RoutePath.FAUCET}>
             <Widget
               description={'Claim gas fees for any reason and make  transactions easily'}
               icon={'gastap-icon.svg'}
               iconSize={'w-7'}
-              className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer'}
+              className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
               title={'Gas Tap'}
+              buttonTitle={'Go to Tap'}
+              buttonClass={'gradient-outline-button'}
             >
               {sortedChainList.length > 0 && (
                 <>
@@ -147,7 +147,7 @@ const Landing: FC = () => {
             </Widget>
           </Link>
 
-          <section className={'flex-1'}>
+          <section className={'flex--1'}>
             <Widget
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
@@ -156,25 +156,20 @@ const Landing: FC = () => {
               title={'Token Tap'}
               buttonTitle={'Soon...'}
               buttonClass={'secondary-button !bg-gray30'}
-            >
-              {/*<UButton*/}
-              {/*  className={'green-text-button inline-flex py-1.5 px-2.5 mt-[182px]'}*/}
-              {/*  buttonClassName="cursor-default"*/}
-              {/*>*/}
-              {/*  Beta*/}
-              {/*</UButton>*/}
-            </Widget>
+            ></Widget>
           </section>
 
-          <Widget
-            description={'Where everyone has chances to win larger prizes'}
-            className={'after:bg-prizetap-texture after:w-88 after:-top-8 flex-1'}
-            icon={'prizetap-icon.png'}
-            iconSize={'w-8 h-7'}
-            title={'Prize Tap'}
-            buttonTitle={'Soon...'}
-            buttonClass={'secondary-button !bg-gray30'}
-          ></Widget>
+          <section className={'flex--1'}>
+            <Widget
+              description={'Where everyone has chances to win larger prizes'}
+              className={'after:bg-prizetap-texture h-full after:w-full after:-top-8'}
+              icon={'prizetap-icon.png'}
+              iconSize={'w-8 h-7'}
+              title={'Prize Tap'}
+              buttonTitle={'Soon...'}
+              buttonClass={'secondary-button !bg-gray30'}
+            ></Widget>
+          </section>
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
@@ -186,6 +181,7 @@ const Landing: FC = () => {
               description={tap.description}
               className={`${tap.class} flex-1 pb-12`}
               title={tap.name}
+              unClickable
               buttonTitle={'Soon...'}
               buttonClass={'secondary-button !bg-gray30'}
             ></Widget>
