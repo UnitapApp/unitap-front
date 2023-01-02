@@ -13,9 +13,6 @@ import { useMemo } from 'react';
 import { UniswapInterfaceMulticall } from '../abis/types/uniswap';
 import { MULTICALL_ADDRESS, UNITAP_PASS_ADDRESS, UNITAP_PASS_BATCH_SALE_ADDRESS } from '../constants/addresses';
 import { SupportedChainId } from '../constants/chains';
-import { FundManager } from '../abis/types';
-import { Chain } from '../types';
-import FUND_MANAGER_ABI from '../abis/FundManager.json';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -51,13 +48,13 @@ export function getSigner(library: any, account: string): any {
   return library.getSigner(account).connectUnchecked();
 }
 
-export function getContract(
+export function getContract<T extends Contract>(
   address: string,
   ABI: any,
   library: Web3Provider,
   account?: string,
   targetChainId?: SupportedChainId,
-): Contract | null {
+): T | null {
   if (!isAddress(address) || address === AddressZero) {
     throw new Error(`Invalid 'address' parameter '${address}'.`);
   }
@@ -76,35 +73,10 @@ export function useInterfaceMulticall() {
   return useContract<UniswapInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as UniswapInterfaceMulticall;
 }
 
-
 export function useUnitapPassContract() {
   return useContract<UnitapPass>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true);
 }
 
 export function useUnitapPassBatchSaleContract() {
   return useContract<UnitapPassBatchSale>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true);
-}
-
-export function useFundManagerContracts(chainList?: Chain[]): FundManager[] {
-  const { provider, account, chainId } = useWeb3React();
-  return useMemo(() => {
-    if (!chainList?.length || !provider || !chainId) return [];
-    return chainList.reduce((acc, chain) => {
-      try {
-        const contract = getContract(
-          chain.fundManagerAddress,
-          FUND_MANAGER_ABI,
-          provider,
-          account || undefined,
-          Number(chain.chainId),
-        ) as FundManager;
-        if (contract) {
-          return acc.concat([contract]);
-        }
-      } catch (error) {
-        console.error('Failed to get contract', error);
-      }
-      return acc;
-    }, [] as FundManager[]);
-  }, [account, chainId, chainList, provider]);
 }

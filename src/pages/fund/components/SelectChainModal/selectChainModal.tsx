@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react';
 import { SelectChainModalWrapper } from './selectChainModal.style';
 import ChainItem from './chainItem';
 import { ClaimContext } from '../../../../hooks/useChainList';
-import { getChainIcon } from '../../../../utils';
 import { Chain } from '../../../../types';
 import Icon from 'components/basic/Icon/Icon';
 
@@ -42,8 +41,7 @@ const SelectChainModal = ({
         <ChainItem
           data-testid={`select-chain-modal-item-${chain.pk}`}
           key={chain.chainId}
-          icon={getChainIcon(chain)}
-          title={chain.chainName}
+          chain={chain}
           selected={selectedChain?.chainId === chain.chainId}
           onClick={() => {
             setSelectedChain(chain);

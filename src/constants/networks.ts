@@ -11,8 +11,8 @@ export const RPC_URLS: { [key in SupportedChainId]: string } = {
   [SupportedChainId.GOERLI]: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
 };
 
-export const RPC_PROVIDERS: { [key in SupportedChainId]: StaticJsonRpcProvider } = {
-  [SupportedChainId.MAINNET]: new StaticJsonRpcProvider(RPC_URLS[SupportedChainId.MAINNET]),
-  [SupportedChainId.RINKEBY]: new StaticJsonRpcProvider(RPC_URLS[SupportedChainId.RINKEBY]),
-  [SupportedChainId.GOERLI]: new StaticJsonRpcProvider(RPC_URLS[SupportedChainId.GOERLI]),
-};
+export const RPC_PROVIDERS = Object.keys(RPC_URLS).reduce((acc, key) => {
+  const chainId = Number(key) as SupportedChainId;
+  acc[chainId] = new StaticJsonRpcProvider(RPC_URLS[chainId]);
+  return acc;
+}, {} as { [key in SupportedChainId]: StaticJsonRpcProvider });
