@@ -177,7 +177,7 @@ const Content: FC = () => {
               </div>
               <div className="select-box__info__amount w-full">
                 <input
-                  className="w-full text-xl bg-transparent text-white"
+                  className="fund-input w-full text-xl bg-transparent text-white"
                   type="number"
                   step="0.001"
                   placeholder="Enter Amount"
