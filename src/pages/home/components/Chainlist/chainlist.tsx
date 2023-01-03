@@ -20,16 +20,6 @@ const ChainCard = styled.div`
   margin-bottom: 1rem;
 `;
 
-const ChainName = styled.div`
-  flex: 3;
-  color: white;
-  margin-left: ${DV.sizes.baseMargin * 1.5}px;
-
-  @media only screen and (max-width: ${DV.breakpoints.tablet}) {
-    text-align: center;
-  }
-`;
-
 const Action = styled.div`
   //flex: 5;
   display: flex;
@@ -97,12 +87,12 @@ const ChainList = () => {
                     <span className="chain-logo-container w-10 h-10 flex justify-center">
                       <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
                     </span>
-                    <ChainName data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</ChainName>
+                    <p className=" text-white ml-3 text-center sm:text-left" data-testid={`chain-name-${chain.pk}`}>{chain.chainName}</p>
                     {/* <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" /> */}
                   </div>
 
                   <div
-                    className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 !w-full sm:w-auto'}
+                    className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto'}
                   >
                     <div className="w-full sm:w-auto items-center sm:items-end">
                       <AddMetamaskButton
