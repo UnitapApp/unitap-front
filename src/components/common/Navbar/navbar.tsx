@@ -88,6 +88,7 @@ const Navbar = () => {
                   iconLeftWidth={16}
                   iconLeftHeight={16}
                   mr={2}
+                  disabled
                 >
                   {connectBrightButtonLabel}
                 </BrightConnectedButton>
