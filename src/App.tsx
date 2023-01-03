@@ -26,6 +26,7 @@ import ApplicationUpdater from 'state/application/updater';
 import TransactionUpdater from 'state/transactions/updater';
 import UserUpdater from 'state/user/updater';
 import { MulticallUpdater } from 'lib/state/multicall';
+import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 
 require('typeface-jetbrains-mono');
 
@@ -51,15 +52,17 @@ function App() {
                 <BrowserRouter>
                   <BlockNumberProvider>
                     <Updaters />
-                    <Routes>
-                      <Route path={RoutePath.FAUCET} element={<Home />} />
-                      <Route path={RoutePath.FUND} element={<Fund />} />
-                      <Route path={RoutePath.LANDING} element={<Landing />} />
-                      <Route path={RoutePath.DONATE} element={<Donate />} />
-                      <Route path={RoutePath.NFT} element={<NFT />} />
-                      <Route path={RoutePath.ABOUT} element={<About />} />
-                      {/* <Route path={RoutePath.TOKEN} element={<TokenTap />} /> */}
-                    </Routes>
+                    <ScrollToTop>
+                      <Routes>
+                        <Route path={RoutePath.FAUCET} element={<Home />} />
+                        <Route path={RoutePath.FUND} element={<Fund />} />
+                        <Route path={RoutePath.LANDING} element={<Landing />} />
+                        <Route path={RoutePath.DONATE} element={<Donate />} />
+                        <Route path={RoutePath.NFT} element={<NFT />} />
+                        <Route path={RoutePath.ABOUT} element={<About />} />
+                        {/* <Route path={RoutePath.TOKEN} element={<TokenTap />} /> */}
+                      </Routes>
+                    </ScrollToTop>
                     <ConnectBrightIdModal />
                     <BrightConnectionModal />
                     <ConnectMetamaskModal />
