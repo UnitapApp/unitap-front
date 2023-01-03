@@ -1,4 +1,4 @@
-import React, { FC, useContext, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import Navbar from 'components/common/Navbar/navbar';
 import Widget from './components/widget';
 import UButton from '../../components/basic/Button/UButton';
@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
 import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
+import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
+import { getTotalEVMNetworks } from '../../utils';
 
 const Landing: FC = () => {
   const { chainList } = useContext(ClaimContext);
@@ -35,12 +37,22 @@ const Landing: FC = () => {
       link: 'https://discord.gg/unitap',
     },
   ]);
-  const [stats] = useState([
+  const [stats, setStats] = useState([
     { name: 'Unitap Users', number: '856' },
-    { name: 'EVM Networks', number: 12 },
-    { name: 'Test Networks', number: 3 },
-    { name: 'Gas Fees Claimed', number: '7,324' },
+    { name: 'EVM Networks', number: 0 },
+    { name: 'Test Networks', number: 0 },
+    { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
   ]);
+
+  useEffect(() => {
+    setStats((prev) => [
+      { name: 'Unitap Users', number: '856' },
+      { name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
+      { name: 'Test Networks', number: getTotalTestNetworks(chainList) },
+      { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
+    ]);
+  }, [chainList]);
+
   const [futureTaps] = useState([
     {
       name: 'Learn Tap',
