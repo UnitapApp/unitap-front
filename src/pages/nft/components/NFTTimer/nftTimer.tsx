@@ -12,7 +12,7 @@ const NFTTimer = ({ className }: NFTTimerProps) => {
   const [seconds, setSeconds] = useState('00');
 
   useEffect(() => {
-    const deadline = new Date("January 7, 2023 00:00:00");
+    const deadline = new Date("January 12, 2023 00:00:00");
     // calculate time difference between now and deadline
     const diff = deadline.getTime() - now.getTime();
     // time calculations for days, hours, minutes and seconds
