@@ -51,9 +51,9 @@ const NFT = () => {
             </div>
             {isPreLaunch ? (
               <div className="card md:w-5/12 p-2">
-                <NFTTimer className="mb-14" />
+                {/* <NFTTimer className="mb-14" /> */}
                 <img
-                  className={'w-52 animate-rocket m-auto relative right-3'}
+                  className={'w-52 mt-28 animate-rocket m-auto relative right-3'}
                   src={'/assets/images/nft/rocketship.png'}
                 />
                 <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
