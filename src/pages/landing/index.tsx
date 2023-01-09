@@ -36,7 +36,7 @@ const Landing: FC = () => {
     },
   ]);
   const [stats] = useState([
-    { name: 'Unitap Users', number: '23,509' },
+    { name: 'Unitap Users', number: '856' },
     { name: 'EVM Networks', number: 12 },
     { name: 'Test Networks', number: 3 },
     { name: 'Gas Fees Claimed', number: '7,324' },

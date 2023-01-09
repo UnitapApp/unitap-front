@@ -48,13 +48,13 @@ export function getSigner(library: any, account: string): any {
   return library.getSigner(account).connectUnchecked();
 }
 
-export function getContract(
+export function getContract<T extends Contract>(
   address: string,
   ABI: any,
   library: Web3Provider,
   account?: string,
   targetChainId?: SupportedChainId,
-): Contract | null {
+): T | null {
   if (!isAddress(address) || address === AddressZero) {
     throw new Error(`Invalid 'address' parameter '${address}'.`);
   }

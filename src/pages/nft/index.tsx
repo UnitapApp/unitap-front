@@ -8,7 +8,7 @@ import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
 
 const NFT = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(false);
+  const [isPreLaunch, setIsPreLaunch] = useState(true);
 
   return (
     <>
