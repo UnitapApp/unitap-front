@@ -29,7 +29,7 @@ const NFT = () => {
                 </div>
 
                 <p className="gradient-text z-10 text-2xl text-gradient-primary mb-10">A VIP pass for Unitap</p> */}
-                <p className='title font-bold text-white text-sm mb-8'>Unitap pass holders are considered the very first supporters of Unitap.</p>
+                <p className='title font-bold text-white text-sm mb-8'>Show your support with this unique pass for early adopters.</p>
                 <p className="subtitle font-semibold text-gradient-primary mb-1">More winning chances for Prize Tap</p>
                 <p className="text text-sm leading-7 font-regular mb-5">
                   The first announced benefit is for{' '}
