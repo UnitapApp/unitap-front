@@ -17,7 +17,7 @@ import useWalletActivation from 'hooks/useWalletActivation';
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
   const [transactionState, setTransactionState] = useState(TransactionState.IDLE);
-  
+
   const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
@@ -49,7 +49,7 @@ const MintNFTCard = () => {
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
-  
+
   const { tryActivation } = useWalletActivation();
 
   const { chainList } = useContext(ClaimContext);
@@ -104,14 +104,16 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
             <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
               <div className="w-full h-full overflow-hidden rounded-lg">
-                <video src='assets/videos/unitap-pass.mp4' autoPlay muted loop className="w-full object-cover"></video>
+                <video src="assets/videos/unitap-pass.mp4" autoPlay muted loop className="w-full object-cover"></video>
               </div>
             </div>
           </div>
           {transactionState === TransactionState.ACCEPTED ? (
             <>
               <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">Boooom!</p>
-              <p className="text-space-green mx-auto font-bold text-sm mb-6">{count} Unitap Pass Minted Successfully</p>
+              <p className="text-space-green mx-auto font-bold text-sm mb-6">
+                {count} Unitap Pass{count > 1 ? 'es' : ''} Minted Successfully
+              </p>
             </>
           ) : transactionState === TransactionState.PENDING ? (
             <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">Minting {count} Unitap Pass!</p>
@@ -119,7 +121,11 @@ const MintNFTCard = () => {
             <p className="text-rose-800 mx-auto font-medium text-sm mb-3">Minting Failed!</p>
           )}
           {transactionState === TransactionState.ACCEPTED || transactionState === TransactionState.FAILED ? (
-            <ClaimButton onClick={() => setTransactionState(TransactionState.IDLE)} height="48px" width="100% !important">
+            <ClaimButton
+              onClick={() => setTransactionState(TransactionState.IDLE)}
+              height="48px"
+              width="100% !important"
+            >
               <p>Done</p>
             </ClaimButton>
           ) : (
@@ -145,7 +151,13 @@ const MintNFTCard = () => {
             <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
               <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
                 <div className="w-full h-full overflow-hidden rounded-lg">
-                  <video src='assets/videos/unitap-pass.mp4' autoPlay muted loop className="w-full object-cover"></video>
+                  <video
+                    src="assets/videos/unitap-pass.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    className="w-full object-cover"
+                  ></video>
                 </div>
               </div>
             </div>
@@ -195,11 +207,11 @@ const MintNFTCard = () => {
                 </div>
               </div>
             )}
-            { !account ? 
+            {!account ? (
               <ClaimButton onClick={tryActivation} height="48px" width="100% !important">
                 <p>Connect Wallet</p>
               </ClaimButton>
-            : isRightChain ? (
+            ) : isRightChain ? (
               <ClaimButton onClick={mintPass} height="48px" width="100% !important">
                 <p>Mint Unitap Pass</p>
               </ClaimButton>

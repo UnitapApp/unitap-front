@@ -6,6 +6,9 @@ import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
 import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
+import Icon from 'components/basic/Icon/Icon';
+import { Link } from 'react-router-dom';
+import RoutePath from 'routes';
 
 const NFT = () => {
   const [isPreLaunch, setIsPreLaunch] = useState(true);
@@ -15,39 +18,34 @@ const NFT = () => {
       <Navbar />
       <div className="content-wrapper">
         <div className="m-auto flex flex-col justify-center items-center w-full">
-          <div className="flex wrap w-full">
+          {/* <div className="flex wrap w-full">
             <Header />
-          </div>
+          </div> */}
           <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
             <div className="card md:w-7/12 flex flex-col justify-between">
               <span>
-                <p className="title font-bold mb-4">Unitap Pass Benefits</p>
-                <p className="subtitle text-sm leading-7 font-light">
-                  Unitap Passes work with Prize Tap, an upcoming feature for Unitap. Unitap Pass holders will receive
-                  the following benefits:
+                <div className="header-top z-10 flex items-center h-auto">
+                  <Icon className="gas-tap mb-1 h-auto w-80" iconSrc="assets/images/nft/mint-header.png"/>
+                </div>
+
+                <p className="gradient-text z-10 text-2xl text-gradient-primary mb-10">A VIP pass for Unitap</p>
+
+                <p className="subtitle font-semibold text-gradient-primary mb-1">More winning chances for Prize Tap</p>
+                <p className="text text-sm leading-7 font-regular mb-5">
+                  The first announced benefit is for{' '}
+                  <Link className="in-text-link" to={RoutePath.ABOUT+"#prize-tap"}>
+                    Prize Tap
+                  </Link>{' '}
+                  <img className="h-4 w-auto !inline" src="assets/images/about/prize-tap-icon.svg" /> . Each Unitap Pass
+                  you hold will increase your chances of winning all future Prize Taps.
                 </p>
-                <ul className="text-sm list-disc pl-4 leading-7 font-light mb-12">
-                  <li className="">
-                    Unitap Pass holders won’t have to visit the Unitap App to claim entries. Unitap will deliver free
-                    entries to each Pass holder’s wallet address each period, with no gas or interaction needed.
-                  </li>
-                  <li className="">
-                    Unitap Pass holders will receive more entries than basic users. The more Unitap Passes someone
-                    holds, the more entries they will have automatically delivered to them: one additional entry per
-                    Unitap Pass.
-                  </li>
-                  <li className="">
-                    Unitap Passes are minted on Ethereum mainnet, but we can deliver offerings to the same address on
-                    other networks. We can also have the user sign a message (gasless) specifying their preferred
-                    delivery address on another network.
-                  </li>
-                </ul>
+                <p className="subtitle font-semibold text-gradient-primary mb-1">
+                  Benefits will grow and evolve with Unitap
+                </p>
+                <p className="text text-sm leading-7 font-regular mb-5">
+                  As Unitap adds taps and features, it will offer more benefits to Unitap Pass holders.
+                </p>
               </span>
-              <p className="text-gradient-primary text-sm font-semibold">
-                As Unitap adds taps and features,
-                <br />
-                we will offer new benefits to Unitap Pass holders.
-              </p>
             </div>
             {isPreLaunch ? (
               <div className="card md:w-5/12 p-2">
@@ -67,8 +65,8 @@ const NFT = () => {
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg">
             <>
               <p className="collapse-text">
-                10,000 Unitap Passes total will be sold for .1 Eth each using a small batch sale and a BrightID Aura
-                gated sale.
+                10,000 Unitap Passes total will be sold starting at .1 Eth each using a small batch sale followed by an
+                BrightID Aura gated sale.
               </p>
               <p className="collapse-title">Small batch sale</p>
               <p className="collapse-text">
@@ -78,8 +76,16 @@ const NFT = () => {
               </p>
               <p className="collapse-title">Aura gated sale</p>
               <p className="collapse-text">
-                The remaining Unitap Passes will be sold gated by BrightID Aura verification. Anyone with Aura
-                verification can deposit Eth to automatically purchase one Unitap Pass per day while supplies last.
+                The remaining Unitap Passes will be sold gated by{' '}
+                <span
+                  className="in-text-link"
+                  onClick={() => window.open('https://brightid.gitbook.io/aura/', '_blank')}
+                >
+                  {' '}
+                  BrightID Aura verification
+                </span>
+                . Anyone with Aura verification can deposit Eth to automatically purchase one Unitap Pass per day while
+                supplies last.
               </p>
             </>
           </Collapse>
@@ -94,10 +100,19 @@ const NFT = () => {
               <p className="collapse-title">Where will the money go?</p>
               <p className="collapse-text">
                 All money received from the sale of Unitap Passes will go to support Unitap and BrightID (a core
-                component of Unitap). Unitap has chosen to use Bright DAO for its govenance and will make proposals to
+                component of Unitap). Unitap has chosen to use Bright DAO for its governance and will make proposals to
                 receive $BRIGHT as needed to pay for its operations. Any money raised that exceeds the immediate needs
-                of the Unitap team will be used to buy $BRIGHT tokens and deposit them in Bright DAO’s community pool.
-                Bright DAO is a large community Gardens DAO with over 1400 members.
+                of the Unitap team will be used to buy $BRIGHT tokens and deposit them in Bright DAO&apos;s community
+                pool.
+                <br /> <br />
+                <span className="in-text-link" onClick={() => window.open('https://dao.brightid.org', '_blank')}>
+                  Bright DAO
+                </span>{' '}
+                is a large community{' '}
+                <span className="in-text-link" onClick={() => window.open('https://gardens.1hive.org', '_blank')}>
+                  Gardens DAO
+                </span>{' '}
+                with over 1400 members.
               </p>
             </>
           </Collapse>

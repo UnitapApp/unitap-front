@@ -110,7 +110,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className="about-section">
+            <div className="about-section" id='prize-tap'>
               <div className="about-section__heading">
                 <Icon
                   className="about-section__heading__icon"
