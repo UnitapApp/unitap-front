@@ -18,18 +18,18 @@ const NFT = () => {
       <Navbar />
       <div className="content-wrapper">
         <div className="m-auto flex flex-col justify-center items-center w-full">
-          {/* <div className="flex wrap w-full">
+          <div className="flex wrap w-full">
             <Header />
-          </div> */}
+          </div>
           <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
-            <div className="card md:w-7/12 flex flex-col justify-between">
+            <div className="card md:w-7/12 flex flex-col justify-between py-9 px-8">
               <span>
-                <div className="header-top z-10 flex items-center h-auto">
+                {/* <div className="header-top z-10 flex items-center h-auto">
                   <Icon className="gas-tap mb-1 h-auto w-80" iconSrc="assets/images/nft/mint-header.png"/>
                 </div>
 
-                <p className="gradient-text z-10 text-2xl text-gradient-primary mb-10">A VIP pass for Unitap</p>
-
+                <p className="gradient-text z-10 text-2xl text-gradient-primary mb-10">A VIP pass for Unitap</p> */}
+                <p className='title font-bold text-white text-sm mb-8'>Unitap pass holders are considered the very first supporters of Unitap.</p>
                 <p className="subtitle font-semibold text-gradient-primary mb-1">More winning chances for Prize Tap</p>
                 <p className="text text-sm leading-7 font-regular mb-5">
                   The first announced benefit is for{' '}
@@ -65,7 +65,7 @@ const NFT = () => {
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg" initState>
             <>
               <p className="collapse-text">
-                10,000 Unitap Passes total will be sold starting at .1 Eth each using a small batch sale followed by an
+                10,000 Unitap Passes total will be sold starting at 0.1 Eth each using a small batch sale followed by an
                 BrightID Aura gated sale.
               </p>
               <p className="collapse-title">Small batch sale</p>
