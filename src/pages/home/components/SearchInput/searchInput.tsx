@@ -25,7 +25,7 @@ const SearchInput = () => {
         iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
-        placeholder="Token name"
+        placeholder="Chain name, Currency, ID"
         pl={7}
         p={1.5}
         mb={0}

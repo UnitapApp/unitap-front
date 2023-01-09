@@ -15,7 +15,7 @@ const Home = () => {
     {
       name: 'Evm Networks',
       icon: 'eth.svg',
-      address: '0xdB1F064C0b188a95b7801050474Da26fc95eb01Eq',
+      address: '0xdB1F064C0b188a95b7801050474Da26fc95eb01E',
       qr: 'ETH-address.png',
       isSelected: false,
     },
