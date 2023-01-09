@@ -6,10 +6,11 @@ interface CollapseProps {
   icon: string;
   className?: string;
   children?: React.ReactNode;
+  initState?: boolean;
 }
 
-const Collapse = ({ className, title, icon, children }: CollapseProps) => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
+const Collapse = ({ className, title, icon, children, initState }: CollapseProps) => {
+  const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false);
 
   return (
     <div className={`collapse overflow-y-hidden collapse-card w-full ${className}`}>

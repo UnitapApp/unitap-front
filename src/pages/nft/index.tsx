@@ -62,7 +62,7 @@ const NFT = () => {
               </div>
             )}
           </div>
-          <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg">
+          <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg" initState>
             <>
               <p className="collapse-text">
                 10,000 Unitap Passes total will be sold starting at .1 Eth each using a small batch sale followed by an
