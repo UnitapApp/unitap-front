@@ -108,7 +108,7 @@ const TokensList = () => {
                       {/* todo migrate buttom logic*/}
                       {chain.needsFunding ? (
                         <NoCurrencyButton disabled fontSize="13px">
-                          Currently out of balance
+                          Empty
                         </NoCurrencyButton>
                       ) : chain.unclaimed !== 0 ? (
                         <ClaimButton
