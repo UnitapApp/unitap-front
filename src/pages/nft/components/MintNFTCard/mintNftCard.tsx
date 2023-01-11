@@ -11,7 +11,7 @@ import useSelectChain from 'hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { SupportedChainId } from '../../../../constants/chains';
 import { ClaimContext } from 'hooks/useChainList';
-import { TransactionState } from 'types';
+import { Chain, TransactionState } from 'types';
 import useWalletActivation from 'hooks/useWalletActivation';
 import { getTargetChainId } from 'hooks/useContract';
 
@@ -57,14 +57,35 @@ const MintNFTCard = () => {
 
   const switchNetwork = () => {
     const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString());
-    const ethereumChain = chainList.find((chain) => chain.chainId === SupportedChainId.MAINNET.toString());
-    
-    if (getTargetChainId() === SupportedChainId.MAINNET && ethereumChain) {
-      addAndSwitchToChain(ethereumChain);
+    const mainnetChain: Chain = {
+      pk: 123456789,
+      chainName: "Ethereum Mainnet",
+      nativeCurrencyName: "Ether",
+      symbol: "ETH",
+      chainId: "1",
+      logoUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+      modalUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+      explorerUrl: "https://etherscan.io",
+      rpcUrl: "https://mainnet.infura.io/v3/6b8c2c5b3f3a4f1e9e7d3e7b2ce9f2d4",
+      maxClaimAmount: 0,
+      claimed: "N/A",
+      unclaimed: "N/A",
+      decimals: 18,
+      fundManagerAddress:  "0x0000000000000000000000000000000000000000",
+      totalClaims: 0,
+      gasImageUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+      totalClaimsSinceLastMonday:  0,
+      isTestnet: false,
+      chainType: "Ethereum",
+      needsFunding:  false,
+    };
+
+    if (getTargetChainId() === SupportedChainId.MAINNET && mainnetChain) {
+      addAndSwitchToChain(mainnetChain);
     } else if (getTargetChainId() === SupportedChainId.GOERLI && goerliChain) {
       addAndSwitchToChain(goerliChain);
     }
-    
+
     return;
   };
 
