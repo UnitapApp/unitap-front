@@ -136,3 +136,12 @@ export const getChainClaimIcon = (chain: Chain) => {
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+
+export function range(start: number, end: number): number[] {
+    var ans = [];
+    for (let i = start; i < end; i++) {
+        ans.push(i);
+    }
+    return ans;
+}

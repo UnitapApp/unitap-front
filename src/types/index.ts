@@ -16,6 +16,7 @@ export type Chain = {
   decimals: number;
   fundManagerAddress: string;
   totalClaims: number;
+  gasImageUrl: string;
   totalClaimsSinceLastMonday: number;
   isTestnet: boolean;
   chainType: string;

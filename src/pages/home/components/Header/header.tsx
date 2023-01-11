@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components/';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
+import { ClaimContext } from 'hooks/useChainList';
+import { range } from 'utils';
 
 // ###### Local Styled Components
 
@@ -26,22 +28,15 @@ const Header = () => {
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
           {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            // userProfile.totalWeeklyClaimsRemaining == 2 ? (
-            //   <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
-            //     <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
-            //       You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
-            //     </p>
-            //   </div>
-            // ) : (
-            //   <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
-            //     <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
-            //     <Icon iconSrc="assets/images/gas-tap/dabe.svg" width="36px" height="auto" />
-            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-            //     <Icon iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />
-            //   </div>
-            // )
-            <></>
+            userProfile.totalWeeklyClaimsRemaining == 5 ? (
+              <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
+                <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
+                  You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
+                </p>
+              </div>
+            ) : (
+              <Dabes />
+            )
           ) : (
             <></>
           )}
@@ -50,6 +45,36 @@ const Header = () => {
           <Icon className="z-0" iconSrc={'assets/images/claim/header-spaceman.svg'} width="120px" height="auto" />
         </div>
       </div>
+    </div>
+  );
+};
+
+const Dabes = () => {
+  const { chainList } = useContext(ClaimContext);
+  const [totalRemainingClaims, setTotalRemainingClaims] = useState(0);
+
+  useEffect(() => {
+    let total = chainList?.reduce((acc, chain) => {
+      if (chain.claimed && chain.claimed !== 'N/A') {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
+
+    setTotalRemainingClaims(total);
+  }, [chainList]);
+
+  return (
+    <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+      <>
+        {chainList?.map((chain) => {
+          if (chain.claimed && chain.claimed !== 'N/A')
+            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl} width="36px" height="auto" />;
+        })}
+        {range(0, 5 - totalRemainingClaims).map((i) => {
+          return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
+        })}
+      </>
     </div>
   );
 };
