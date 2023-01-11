@@ -1,11 +1,6 @@
-import { Interface } from '@ethersproject/abi';
-import UnitapPassBatchSale_ABI from '../../abis/UnitapPassBatchSale.json';
 import { useUnitapPassBatchSaleContract } from 'hooks/useContract';
-import { useMemo } from 'react';
-import { useSingleContractWithCallData } from '../../lib/hooks/multicall';
+import { useEffect, useState } from 'react';
 import { UnitapPassBatchSale } from '../../abis/types';
-
-const unitapPassBatchSaleInterface = new Interface(UnitapPassBatchSale_ABI);
 
 export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<infer R>
   ? // TODO: handle struct return type
@@ -19,24 +14,31 @@ export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<
 export function useUnitapBatchSale() {
   const unitapPassBatchSaleContract = useUnitapPassBatchSaleContract();
 
-  const batchDetailsCall = useMemo(() => {
-    return [
-      unitapPassBatchSaleInterface.encodeFunctionData('price', []),
-      unitapPassBatchSaleInterface.encodeFunctionData('batchSize', []),
-      unitapPassBatchSaleInterface.encodeFunctionData('batchSoldCount', []),
-    ];
-  }, []);
+  const [price, setPrice] = useState<
+    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['price']> | undefined
+  >(undefined);
+  const [batchSize, setBatchSize] = useState<
+    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSize']> | undefined
+  >(undefined);
+  const [batchSoldCount, setBatchSoldCount] = useState<
+    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSoldCount']> | undefined
+  >(undefined);
 
-  const [priceResult, batchSizeResult, batchSoldCountResult] = useSingleContractWithCallData(
-    unitapPassBatchSaleContract,
-    batchDetailsCall,
-  );
-  const price: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['price']> | undefined =
-    priceResult?.result?.[0];
-  const batchSize: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSize']> | undefined =
-    batchSizeResult?.result?.[0];
-  const batchSoldCount: ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSoldCount']> | undefined =
-    batchSoldCountResult?.result?.[0];
+  useEffect(() => {
+    const f = async () => {
+      if (!unitapPassBatchSaleContract) return;
+      Promise.all([
+        unitapPassBatchSaleContract.price(),
+        unitapPassBatchSaleContract.batchSize(),
+        unitapPassBatchSaleContract.batchSoldCount(),
+      ]).then(([r1, r2, r3]) => {
+        setPrice(r1);
+        setBatchSize(r2);
+        setBatchSoldCount(r3);
+      });
+    };
+    f();
+  }, [unitapPassBatchSaleContract]);
 
   return { price, batchSize, batchSoldCount };
 }
