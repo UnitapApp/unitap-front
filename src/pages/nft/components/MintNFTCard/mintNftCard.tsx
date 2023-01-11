@@ -57,8 +57,16 @@ const MintNFTCard = () => {
 
   const switchNetwork = () => {
     const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString());
-    if (!goerliChain) return;
-    addAndSwitchToChain(goerliChain);
+    const ethereumChain = chainList.find((chain) => chain.chainId === SupportedChainId.MAINNET.toString());
+
+    if (!goerliChain || !ethereumChain) return;
+    
+    if (getTargetChainId() === SupportedChainId.MAINNET) {
+      addAndSwitchToChain(ethereumChain);
+    } else if (getTargetChainId() === SupportedChainId.GOERLI) {
+      addAndSwitchToChain(goerliChain);
+    }
+    return;
   };
 
   useEffect(() => {
