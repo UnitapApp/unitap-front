@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
@@ -12,6 +12,22 @@ import RoutePath from 'routes';
 
 const NFT = () => {
   const [isPreLaunch, setIsPreLaunch] = useState(true);
+
+  const [countClicked, setCountClicked] = useState(0);
+
+  const handleNFTClicked = () => {
+    setCountClicked(countClicked + 1);
+    if (countClicked > 10) {
+      setIsPreLaunch(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCountClicked(0);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [countClicked]);
 
   return (
     <>
@@ -29,11 +45,13 @@ const NFT = () => {
                 </div>
 
                 <p className="gradient-text z-10 text-2xl text-gradient-primary mb-10">A VIP pass for Unitap</p> */}
-                <p className='title font-bold text-white text-sm mb-8'>Show your support with this unique pass for early adopters.</p>
+                <p className="title font-bold text-white text-sm mb-8">
+                  Show your support with this unique pass for early adopters.
+                </p>
                 <p className="subtitle font-semibold text-gradient-primary mb-1">More winning chances for Prize Tap</p>
                 <p className="text text-sm leading-7 font-regular mb-5">
                   The first announced benefit is for{' '}
-                  <Link className="in-text-link" to={RoutePath.ABOUT+"#prize-tap"}>
+                  <Link className="in-text-link" to={RoutePath.ABOUT + '#prize-tap'}>
                     Prize Tap
                   </Link>{' '}
                   <img className="h-4 w-auto !inline" src="assets/images/about/prize-tap-icon.svg" /> . Each Unitap Pass
@@ -48,7 +66,7 @@ const NFT = () => {
               </span>
             </div>
             {isPreLaunch ? (
-              <div className="card md:w-5/12 p-2">
+              <div onClick={handleNFTClicked} className="card md:w-5/12 p-2">
                 {/* <NFTTimer className="mb-14" /> */}
                 <img
                   className={'w-52 mt-28 animate-rocket m-auto relative right-3'}

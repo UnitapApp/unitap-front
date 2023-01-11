@@ -1,12 +1,7 @@
-import { Interface } from '@ethersproject/abi';
-import UnitapPass_ABI from '../../abis/UnitapPass.json';
 import { useUnitapPassContract } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
-import { useMemo } from 'react';
-import { useSingleContractWithCallData } from '../../lib/hooks/multicall';
+import { useEffect, useState } from 'react';
 import { UnitapPass } from '../../abis/types';
-
-const unitapPassInterface = new Interface(UnitapPass_ABI);
 
 export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<infer R>
   ? // TODO: handle struct return type
@@ -20,15 +15,17 @@ export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<
 export function useUnitapPass() {
   const unitapPassContract = useUnitapPassContract();
   const { account } = useWeb3React();
+  const [balance, setBalance] = useState<ContractFunctionReturnType<UnitapPass['callStatic']['balanceOf']> | undefined>(
+    undefined,
+  );
 
-  const batchDetailsCall = useMemo(() => {
-    if (!account) return [];
-    return [unitapPassInterface.encodeFunctionData('balanceOf', [account])];
-  }, [account]);
-
-  const [balanceResult] = useSingleContractWithCallData(unitapPassContract, batchDetailsCall);
-  const balance: ContractFunctionReturnType<UnitapPass['callStatic']['balanceOf']> | undefined =
-    balanceResult?.result?.[0];
+  useEffect(() => {
+    const f = async () => {
+      if (!unitapPassContract || !account) return;
+      Promise.all([unitapPassContract.balanceOf(account)]).then(([r1]) => setBalance(r1));
+    };
+    f();
+  }, [unitapPassContract, account]);
 
   return { balance };
 }
