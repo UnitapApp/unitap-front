@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { UniswapInterfaceMulticall } from '../abis/types/uniswap';
 import { MULTICALL_ADDRESS, UNITAP_PASS_ADDRESS, UNITAP_PASS_BATCH_SALE_ADDRESS } from '../constants/addresses';
 import { SupportedChainId } from '../constants/chains';
+import { isProductionEnv } from 'utils/env';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -24,11 +25,13 @@ export function useContract<T extends Contract = Contract>(
   targetChainId?: SupportedChainId,
 ): T | null {
   const { provider, account, chainId } = useWeb3React();
-
+  
   return useMemo(() => {
     if (!addressOrAddressMap || !ABI || !provider || !chainId) return null;
     let address: string | undefined;
+    
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap;
+    else if (targetChainId) address = addressOrAddressMap[targetChainId]; 
     else address = addressOrAddressMap[chainId];
     if (!address) return null;
     try {
@@ -46,6 +49,10 @@ export function getProviderOrSigner(library: any, account?: string): any {
 
 export function getSigner(library: any, account: string): any {
   return library.getSigner(account).connectUnchecked();
+}
+
+function getTargetChainId() {
+  return isProductionEnv() ? SupportedChainId.MAINNET : SupportedChainId.GOERLI;
 }
 
 export function getContract<T extends Contract>(
@@ -74,9 +81,9 @@ export function useInterfaceMulticall() {
 }
 
 export function useUnitapPassContract() {
-  return useContract<UnitapPass>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true);
+  return useContract<UnitapPass>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true, getTargetChainId());
 }
 
 export function useUnitapPassBatchSaleContract() {
-  return useContract<UnitapPassBatchSale>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true);
+  return useContract<UnitapPassBatchSale>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true, getTargetChainId());
 }

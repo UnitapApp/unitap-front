@@ -27,6 +27,7 @@ export function useUnitapPass() {
   }, [account]);
 
   const [balanceResult] = useSingleContractWithCallData(unitapPassContract, batchDetailsCall);
+
   const balance: ContractFunctionReturnType<UnitapPass['callStatic']['balanceOf']> | undefined =
     balanceResult?.result?.[0];
 
