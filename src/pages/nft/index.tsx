@@ -66,7 +66,7 @@ const NFT = () => {
               </span>
             </div>
             {isPreLaunch ? (
-              <div onClick={handleNFTClicked} className="card md:w-5/12 p-2">
+              <div onClick={handleNFTClicked} className="card md:w-5/12 p-2 select-none">
                 {/* <NFTTimer className="mb-14" /> */}
                 <img
                   className={'w-52 mt-28 animate-rocket m-auto relative right-3'}
