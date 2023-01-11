@@ -13,6 +13,7 @@ import { SupportedChainId } from '../../../../constants/chains';
 import { ClaimContext } from 'hooks/useChainList';
 import { TransactionState } from 'types';
 import useWalletActivation from 'hooks/useWalletActivation';
+import { getTargetChainId } from 'hooks/useContract';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
@@ -28,7 +29,7 @@ const MintNFTCard = () => {
 
   const isRightChain = useMemo(() => {
     if (!chainId) return false;
-    return chainId === SupportedChainId.GOERLI;
+    return chainId === getTargetChainId();
   }, [chainId]);
 
   const nativeCurrency = useNativeCurrency();

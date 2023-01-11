@@ -51,7 +51,7 @@ export function getSigner(library: any, account: string): any {
   return library.getSigner(account).connectUnchecked();
 }
 
-function getTargetChainId() {
+export function getTargetChainId() {
   return isProductionEnv() ? SupportedChainId.MAINNET : SupportedChainId.GOERLI;
 }
 
