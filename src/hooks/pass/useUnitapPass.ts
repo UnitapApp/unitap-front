@@ -2,6 +2,7 @@ import { useUnitapPassContract } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 import { UnitapPassMain } from '../../abis/types';
+import useBlockNumber from 'lib/hooks/useBlockNumber';
 
 export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<infer R>
   ? // TODO: handle struct return type
@@ -19,13 +20,15 @@ export function useUnitapPass() {
     undefined,
   );
 
+  const latestBlock = useBlockNumber();
+
   useEffect(() => {
     const f = async () => {
       if (!unitapPassContract || !account) return;
       Promise.all([unitapPassContract.balanceOf(account)]).then(([r1]) => setBalance(r1));
     };
     f();
-  }, [unitapPassContract, account]);
+  }, [unitapPassContract, account, latestBlock]);
 
   return { balance };
 }

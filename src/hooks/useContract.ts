@@ -64,10 +64,6 @@ export function getContract<T extends Contract>(
 
   let providerOrSigner;
   if (targetChainId) {
-    console.log('targetChainId', targetChainId);
-    console.log('Providers[targetChainId]', Providers[targetChainId]);
-    console.log('providers', Providers);
-
     providerOrSigner = getProviderOrSigner(Providers[targetChainId], account);
   } else {
     providerOrSigner = getProviderOrSigner(library, account);

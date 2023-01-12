@@ -58,10 +58,7 @@ const Navbar = () => {
       setIsDropdownVisible(false);
     }, 500);
     setIsDropdownVisibleTimeout(timeout);
-  };
-
-  console.log(location.pathname !== RoutePath.NFT);
-  
+  };  
 
   return (
     <div className="navbar w-full fixed flex items-center top-0 z-100 bg-gray10 py-3 px-8">

@@ -48,6 +48,8 @@ const MintNFTCard = () => {
   const { callback: mintPassCallback } = useUnitapPassMultiMintCallback(count);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
+  const [openseaLink, setOpenseaLink] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
 
@@ -105,9 +107,11 @@ const MintNFTCard = () => {
         setSubmittedTxHash(tx.hash);
         setTransactionState(TransactionState.PENDING);
         tx.wait()
-          .then(() => {
+          .then((res) => {
             if (mounted.current) {
               setTransactionState(TransactionState.ACCEPTED);
+              // console.log(res);
+              // setOpenseaLink(``);
             }
           })
           .catch(() => {
@@ -139,10 +143,15 @@ const MintNFTCard = () => {
           </div>
           {transactionState === TransactionState.ACCEPTED ? (
             <>
-              <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">Boooom!</p>
               <p className="text-space-green mx-auto font-bold text-sm mb-6">
                 {count} Unitap Pass{count > 1 ? 'es' : ''} Minted Successfully
               </p>
+              {/* <p
+                onClick={() => window.open(openseaLink || '', '_blank')}
+                className="text-space-green mx-auto font-medium text-sm mb-6 hover:underline cursor-pointer"
+              >
+                Check on Opensea
+              </p> */}
             </>
           ) : transactionState === TransactionState.PENDING ? (
             <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">

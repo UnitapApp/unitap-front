@@ -1,4 +1,5 @@
 import { useUnitapPassBatchSaleContract } from 'hooks/useContract';
+import useBlockNumber from 'lib/hooks/useBlockNumber';
 import { useEffect, useState } from 'react';
 import { UnitapPassBatchSaleMain } from '../../abis/types';
 
@@ -13,6 +14,8 @@ export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<
 
 export function useUnitapBatchSale() {
   const unitapPassBatchSaleContract = useUnitapPassBatchSaleContract();
+
+  const latestBlock = useBlockNumber();
 
   const [price, setPrice] = useState<
     ContractFunctionReturnType<UnitapPassBatchSaleMain['callStatic']['price']> | undefined
@@ -38,7 +41,7 @@ export function useUnitapBatchSale() {
       });
     };
     f();
-  }, [unitapPassBatchSaleContract]);
+  }, [unitapPassBatchSaleContract, latestBlock]);
 
   return { price, batchSize, batchSoldCount };
 }
