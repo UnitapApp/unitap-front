@@ -15,16 +15,16 @@ const NFT = () => {
 
   const [countClicked, setCountClicked] = useState(0);
 
-  const deadline = useMemo(() => new Date("January 12, 2023 16:00:00 UTC"), []); 
+  const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (deadline.getTime() < Date.now()) {
         setIsPreLaunch(false);
       }
-
-      return () => clearInterval(timer);
     }, 1000);
+
+    return () => clearInterval(timer);
   }, [deadline]);
 
   const handleNFTClicked = () => {
@@ -38,6 +38,7 @@ const NFT = () => {
     const timer = setTimeout(() => {
       setCountClicked(0);
     }, 1000);
+    
     return () => clearTimeout(timer);
   }, [countClicked]);
 
