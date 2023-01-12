@@ -59,25 +59,25 @@ const MintNFTCard = () => {
     const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString());
     const mainnetChain: Chain = {
       pk: 123456789,
-      chainName: "Ethereum Mainnet",
-      nativeCurrencyName: "Ether",
-      symbol: "ETH",
-      chainId: "1",
-      logoUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-      modalUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-      explorerUrl: "https://etherscan.io",
-      rpcUrl: "https://mainnet.infura.io/v3/6b8c2c5b3f3a4f1e9e7d3e7b2ce9f2d4",
+      chainName: 'Ethereum Mainnet',
+      nativeCurrencyName: 'Ether',
+      symbol: 'ETH',
+      chainId: '1',
+      logoUrl: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+      modalUrl: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+      explorerUrl: 'https://etherscan.io',
+      rpcUrl: 'https://mainnet.infura.io/v3/6b8c2c5b3f3a4f1e9e7d3e7b2ce9f2d4',
       maxClaimAmount: 0,
-      claimed: "N/A",
-      unclaimed: "N/A",
+      claimed: 'N/A',
+      unclaimed: 'N/A',
       decimals: 18,
-      fundManagerAddress:  "0x0000000000000000000000000000000000000000",
+      fundManagerAddress: '0x0000000000000000000000000000000000000000',
       totalClaims: 0,
-      gasImageUrl: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-      totalClaimsSinceLastMonday:  0,
+      gasImageUrl: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+      totalClaimsSinceLastMonday: 0,
       isTestnet: false,
-      chainType: "Ethereum",
-      needsFunding:  false,
+      chainType: 'Ethereum',
+      needsFunding: false,
     };
 
     if (getTargetChainId() === SupportedChainId.MAINNET && mainnetChain) {
@@ -145,7 +145,9 @@ const MintNFTCard = () => {
               </p>
             </>
           ) : transactionState === TransactionState.PENDING ? (
-            <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">Minting {count} Unitap Pass!</p>
+            <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">
+              Minting {count} Unitap Pass{count > 1 ? 'es' : ''}!
+            </p>
           ) : (
             <p className="text-rose-800 mx-auto font-medium text-sm mb-3">Minting Failed!</p>
           )}
@@ -159,7 +161,7 @@ const MintNFTCard = () => {
             </ClaimButton>
           ) : (
             <ClaimButton height="48px" width="100% !important" disabled>
-              <p>...</p>
+              <p>Pending</p>
             </ClaimButton>
           )}
         </div>
