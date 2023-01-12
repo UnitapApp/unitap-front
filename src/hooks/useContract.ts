@@ -4,9 +4,9 @@ import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import MulticallJson from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
 import { useWeb3React } from '@web3-react/core';
-import { UnitapPass, UnitapPassBatchSale } from '../abis/types';
-import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSale.json';
-import UnitapPass_ABI from '../abis/UnitapPass.json';
+import { UnitapPassMain, UnitapPassBatchSaleMain } from '../abis/types';
+import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSaleMain.json';
+import UnitapPass_ABI from '../abis/UnitapPassMain.json';
 
 import { Providers } from '../constants/providers';
 import { useMemo } from 'react';
@@ -81,9 +81,9 @@ export function useInterfaceMulticall() {
 }
 
 export function useUnitapPassContract() {
-  return useContract<UnitapPass>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true, getTargetChainId());
+  return useContract<UnitapPassMain>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true, getTargetChainId());
 }
 
 export function useUnitapPassBatchSaleContract() {
-  return useContract<UnitapPassBatchSale>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true, getTargetChainId());
+  return useContract<UnitapPassBatchSaleMain>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true, getTargetChainId());
 }

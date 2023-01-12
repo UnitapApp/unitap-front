@@ -1,6 +1,6 @@
 import { useUnitapPassBatchSaleContract } from 'hooks/useContract';
 import { useEffect, useState } from 'react';
-import { UnitapPassBatchSale } from '../../abis/types';
+import { UnitapPassBatchSaleMain } from '../../abis/types';
 
 export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<infer R>
   ? // TODO: handle struct return type
@@ -15,13 +15,13 @@ export function useUnitapBatchSale() {
   const unitapPassBatchSaleContract = useUnitapPassBatchSaleContract();
 
   const [price, setPrice] = useState<
-    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['price']> | undefined
+    ContractFunctionReturnType<UnitapPassBatchSaleMain['callStatic']['price']> | undefined
   >(undefined);
   const [batchSize, setBatchSize] = useState<
-    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSize']> | undefined
+    ContractFunctionReturnType<UnitapPassBatchSaleMain['callStatic']['batchSize']> | undefined
   >(undefined);
   const [batchSoldCount, setBatchSoldCount] = useState<
-    ContractFunctionReturnType<UnitapPassBatchSale['callStatic']['batchSoldCount']> | undefined
+    ContractFunctionReturnType<UnitapPassBatchSaleMain['callStatic']['batchSoldCount']> | undefined
   >(undefined);
 
   useEffect(() => {

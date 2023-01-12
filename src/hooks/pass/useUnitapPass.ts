@@ -1,7 +1,7 @@
 import { useUnitapPassContract } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
-import { UnitapPass } from '../../abis/types';
+import { UnitapPassMain } from '../../abis/types';
 
 export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<infer R>
   ? // TODO: handle struct return type
@@ -15,7 +15,7 @@ export type ContractFunctionReturnType<T> = T extends (...args: any) => Promise<
 export function useUnitapPass() {
   const unitapPassContract = useUnitapPassContract();
   const { account } = useWeb3React();
-  const [balance, setBalance] = useState<ContractFunctionReturnType<UnitapPass['callStatic']['balanceOf']> | undefined>(
+  const [balance, setBalance] = useState<ContractFunctionReturnType<UnitapPassMain['callStatic']['balanceOf']> | undefined>(
     undefined,
   );
 
