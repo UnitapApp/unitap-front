@@ -107,7 +107,12 @@ const MintNFTCard = () => {
   }, []);
 
   let sufficientAmount = useMemo(() => {
-    return 100000000000000000 * count <= accountBalance;
+    if (getUnitapPassChainId() === SupportedChainId.MAINNET) {
+      return 100000000000000000 * count <= accountBalance;
+    } else if (getUnitapPassChainId() === SupportedChainId.GOERLI) {
+      return 1000000000000000 * count <= accountBalance;
+    }
+    return false;
   }, [count, accountBalance]);
 
   const mintPass = useCallback(async () => {
