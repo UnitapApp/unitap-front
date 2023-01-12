@@ -20,10 +20,18 @@ const MintNFTCard = () => {
   const [transactionState, setTransactionState] = useState(TransactionState.IDLE);
 
   const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
+  const [accountBalance, setAccountBalance] = useState<Number>(0);
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-  const { chainId, account } = useWeb3React();
+  const { chainId, account, provider } = useWeb3React();
+
+  useEffect(() => {
+    if (!account || !provider) return;
+    provider.getBalance(account).then((balance) => {
+      setAccountBalance(Number(balance.toString()));
+    });
+  }, [account, provider]);
 
   const addAndSwitchToChain = useSelectChain();
 
@@ -97,6 +105,10 @@ const MintNFTCard = () => {
       mounted.current = false;
     };
   }, []);
+
+  let sufficientAmount = useMemo(() => {
+    return 100000000000000000 * count <= accountBalance;
+  }, [count, accountBalance]);
 
   const mintPass = useCallback(async () => {
     if (loading) return;
@@ -253,9 +265,15 @@ const MintNFTCard = () => {
               </ClaimButton>
             ) : isRightChain ? (
               remainingCount ? (
-                <ClaimButton onClick={mintPass} height="48px" width="100% !important">
-                  <p>Mint Unitap Pass</p>
-                </ClaimButton>
+                !sufficientAmount ? (
+                  <ClaimButton height="48px" width="100% !important" disabled>
+                    <p>Insufficient ETH Amount</p>
+                  </ClaimButton>
+                ) : (
+                  <ClaimButton onClick={mintPass} height="48px" width="100% !important">
+                    <p>Mint Unitap Pass</p>
+                  </ClaimButton>
+                )
               ) : (
                 <ClaimButton height="48px" width="100% !important" disabled>
                   <p>Sold Out</p>
