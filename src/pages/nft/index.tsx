@@ -78,7 +78,7 @@ const NFT = () => {
               </span>
             </div>
             {isPreLaunch ? (
-              <div onClick={handleNFTClicked} className="card md:w-5/12 p-2">
+              <div onClick={handleNFTClicked} className="card md:w-5/12 p-2 select-none">
                 <NFTTimer deadline={deadline} className="mb-14" />
                 <img
                   className={'w-52 mt-28 animate-rocket m-auto relative right-3'}
@@ -87,7 +87,7 @@ const NFT = () => {
                 <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
               </div>
             ) : (
-              <div className="card md:w-5/12 p-0 overflow-hidden">
+              <div className="card md:w-5/12 p-0 overflow-hidden select-none">
                 <MintNFTCard />
               </div>
             )}

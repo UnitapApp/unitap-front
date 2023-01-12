@@ -60,6 +60,7 @@ export const Button = styled.button<props>`
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 
   ${({ size }) => (size === 'large' ? `padding: 1em 2.5em;` : `padding: .75em 1.25em;`)}
   &::before {
