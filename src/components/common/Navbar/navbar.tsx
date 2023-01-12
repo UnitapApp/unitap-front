@@ -152,7 +152,7 @@ const Navbar = () => {
           onMouseLeave={() => hideDropdown()}
           onClick={() => setIsDropdownVisible(!isDropdownVisible)}
         >
-          <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30"></Icon>
+          <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" />
           {isDropdownVisible && (
             <NavbarDropdown
               className="navbar__dropdown__component"

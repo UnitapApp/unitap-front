@@ -32,7 +32,7 @@ export function useContract<T extends Contract = Contract>(
     
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap;
     else if (targetChainId) address = addressOrAddressMap[targetChainId]; 
-    else address = addressOrAddressMap[chainId];
+    else address = addressOrAddressMap[chainId];    
     if (!address) return null;
     try {
       return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined, targetChainId);
@@ -68,6 +68,10 @@ export function getContract<T extends Contract>(
 
   let providerOrSigner;
   if (targetChainId) {
+    console.log('targetChainId', targetChainId);
+    console.log('Providers[targetChainId]', Providers[targetChainId]);
+    console.log('providers', Providers);
+    
     providerOrSigner = getProviderOrSigner(Providers[targetChainId], account);
   } else {
     providerOrSigner = getProviderOrSigner(library, account);
