@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 
 interface NFTTimerProps {
   className?: string;
+  deadline: Date;
 }
 
-const NFTTimer = ({ className }: NFTTimerProps) => {
+const NFTTimer = ({ className, deadline }: NFTTimerProps) => {
   const [now, setNow] = useState(new Date());
   const [days, setDays] = useState('00');
   const [hours, setHours] = useState('00');
@@ -12,7 +13,6 @@ const NFTTimer = ({ className }: NFTTimerProps) => {
   const [seconds, setSeconds] = useState('00');
 
   useEffect(() => {
-    const deadline = new Date("January 12, 2023 00:00:00");
     // calculate time difference between now and deadline
     const diff = deadline.getTime() - now.getTime();
     // time calculations for days, hours, minutes and seconds
@@ -25,7 +25,7 @@ const NFTTimer = ({ className }: NFTTimerProps) => {
     setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
     setHours(hours < 10 ? `0${hours}` : hours.toString());
     setDays(days< 10 ? `0${days}` : days.toString());
-  }, [now]);
+  }, [now, deadline]);
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
@@ -33,6 +33,10 @@ const NFTTimer = ({ className }: NFTTimerProps) => {
       clearInterval(interval);
     };
   }, []);
+
+  if (deadline.getTime() < now.getTime()) {
+    return null;
+  }
 
   return (
     <div className={`nft-timer w-full bg-gray10 border-2 border-gray40 rounded-2xl py-2 ${className}`}>

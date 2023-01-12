@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/Header';
@@ -14,6 +14,18 @@ const NFT = () => {
   const [isPreLaunch, setIsPreLaunch] = useState(true);
 
   const [countClicked, setCountClicked] = useState(0);
+
+  const deadline = useMemo(() => new Date("January 12, 2023 16:00:00 UTC"), []); 
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (deadline.getTime() < Date.now()) {
+        setIsPreLaunch(false);
+      }
+
+      return () => clearInterval(timer);
+    }, 1000);
+  }, [deadline]);
 
   const handleNFTClicked = () => {
     setCountClicked(countClicked + 1);
@@ -67,7 +79,7 @@ const NFT = () => {
             </div>
             {isPreLaunch ? (
               <div onClick={handleNFTClicked} className="card md:w-5/12 p-2">
-                {/* <NFTTimer className="mb-14" /> */}
+                <NFTTimer deadline={deadline} className="mb-14" />
                 <img
                   className={'w-52 mt-28 animate-rocket m-auto relative right-3'}
                   src={'/assets/images/nft/rocketship.png'}
