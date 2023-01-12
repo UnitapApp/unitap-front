@@ -1,9 +1,9 @@
-import { Connector } from "@web3-react/types";
-import { Connection, gnosisSafeConnection } from "connection";
-import { getConnection } from "connection/utils";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "state/hooks";
-import { updateSelectedWallet } from "state/user/reducer";
+import { Connector } from '@web3-react/types';
+import { Connection, gnosisSafeConnection, networkConnection } from 'connection';
+import { getConnection } from 'connection/utils';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'state/hooks';
+import { updateSelectedWallet } from 'state/user/reducer';
 
 async function connect(connector: Connector) {
   try {
@@ -33,7 +33,7 @@ export default function useEagerlyConnect() {
 
   useEffect(() => {
     connect(gnosisSafeConnection.connector);
-    // connect(networkConnection.connector)
+    connect(networkConnection.connector);
 
     if (selectedConnection) {
       connect(selectedConnection.connector);

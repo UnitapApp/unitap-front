@@ -4,7 +4,7 @@ import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import MulticallJson from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
 import { useWeb3React } from '@web3-react/core';
-import { UnitapPassMain, UnitapPassBatchSaleMain } from '../abis/types';
+import { UnitapPassBatchSaleMain, UnitapPassMain } from '../abis/types';
 import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSaleMain.json';
 import UnitapPass_ABI from '../abis/UnitapPassMain.json';
 
@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { UniswapInterfaceMulticall } from '../abis/types/uniswap';
 import { MULTICALL_ADDRESS, UNITAP_PASS_ADDRESS, UNITAP_PASS_BATCH_SALE_ADDRESS } from '../constants/addresses';
 import { SupportedChainId } from '../constants/chains';
-import { isProductionEnv } from 'utils/env';
+import { getUnitapPassChainId } from 'utils/env';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -25,14 +25,14 @@ export function useContract<T extends Contract = Contract>(
   targetChainId?: SupportedChainId,
 ): T | null {
   const { provider, account, chainId } = useWeb3React();
-  
+
   return useMemo(() => {
     if (!addressOrAddressMap || !ABI || !provider || !chainId) return null;
     let address: string | undefined;
-    
+
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap;
-    else if (targetChainId) address = addressOrAddressMap[targetChainId]; 
-    else address = addressOrAddressMap[chainId];    
+    else if (targetChainId) address = addressOrAddressMap[targetChainId];
+    else address = addressOrAddressMap[chainId];
     if (!address) return null;
     try {
       return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined, targetChainId);
@@ -51,10 +51,6 @@ export function getSigner(library: any, account: string): any {
   return library.getSigner(account).connectUnchecked();
 }
 
-export function getTargetChainId() {
-  return isProductionEnv() ? SupportedChainId.MAINNET : SupportedChainId.GOERLI;
-}
-
 export function getContract<T extends Contract>(
   address: string,
   ABI: any,
@@ -71,7 +67,7 @@ export function getContract<T extends Contract>(
     console.log('targetChainId', targetChainId);
     console.log('Providers[targetChainId]', Providers[targetChainId]);
     console.log('providers', Providers);
-    
+
     providerOrSigner = getProviderOrSigner(Providers[targetChainId], account);
   } else {
     providerOrSigner = getProviderOrSigner(library, account);
@@ -85,9 +81,14 @@ export function useInterfaceMulticall() {
 }
 
 export function useUnitapPassContract() {
-  return useContract<UnitapPassMain>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true, getTargetChainId());
+  return useContract<UnitapPassMain>(UNITAP_PASS_ADDRESS, UnitapPass_ABI, true, getUnitapPassChainId());
 }
 
 export function useUnitapPassBatchSaleContract() {
-  return useContract<UnitapPassBatchSaleMain>(UNITAP_PASS_BATCH_SALE_ADDRESS, UnitapPassBatchSale_ABI, true, getTargetChainId());
+  return useContract<UnitapPassBatchSaleMain>(
+    UNITAP_PASS_BATCH_SALE_ADDRESS,
+    UnitapPassBatchSale_ABI,
+    true,
+    getUnitapPassChainId(),
+  );
 }

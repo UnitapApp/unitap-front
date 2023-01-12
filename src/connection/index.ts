@@ -3,8 +3,8 @@ import { GnosisSafe } from '@web3-react/gnosis-safe';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
 import { Connector } from '@web3-react/types';
-import { SupportedChainId } from '../constants/chains';
 import { RPC_URLS } from '../constants/networks';
+import { getUnitapPassChainId } from '../utils/env';
 
 export enum ConnectionType {
   INJECTED = 'INJECTED',
@@ -23,7 +23,7 @@ function onError(error: Error) {
 }
 
 const [web3Network, web3NetworkHooks] = initializeConnector<Network>(
-  (actions) => new Network({ actions, urlMap: RPC_URLS, defaultChainId: SupportedChainId.GOERLI }),
+  (actions) => new Network({ actions, urlMap: RPC_URLS, defaultChainId: getUnitapPassChainId() }),
 );
 export const networkConnection: Connection = {
   connector: web3Network,

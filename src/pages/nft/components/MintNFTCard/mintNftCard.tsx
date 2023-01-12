@@ -13,7 +13,7 @@ import { SupportedChainId } from '../../../../constants/chains';
 import { ClaimContext } from 'hooks/useChainList';
 import { Chain, TransactionState } from 'types';
 import useWalletActivation from 'hooks/useWalletActivation';
-import { getTargetChainId } from 'hooks/useContract';
+import { getUnitapPassChainId } from '../../../../utils/env';
 
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
@@ -29,7 +29,7 @@ const MintNFTCard = () => {
 
   const isRightChain = useMemo(() => {
     if (!chainId) return false;
-    return chainId === getTargetChainId();
+    return chainId === getUnitapPassChainId();
   }, [chainId]);
 
   const nativeCurrency = useNativeCurrency();
@@ -80,9 +80,9 @@ const MintNFTCard = () => {
       needsFunding: false,
     };
 
-    if (getTargetChainId() === SupportedChainId.MAINNET && mainnetChain) {
+    if (getUnitapPassChainId() === SupportedChainId.MAINNET && mainnetChain) {
       addAndSwitchToChain(mainnetChain);
-    } else if (getTargetChainId() === SupportedChainId.GOERLI && goerliChain) {
+    } else if (getUnitapPassChainId() === SupportedChainId.GOERLI && goerliChain) {
       addAndSwitchToChain(goerliChain);
     }
 
