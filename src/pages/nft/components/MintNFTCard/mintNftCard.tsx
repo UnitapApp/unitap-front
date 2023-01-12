@@ -65,6 +65,16 @@ const MintNFTCard = () => {
 
   const { chainList } = useContext(ClaimContext);
 
+  const chainScanLink = useMemo(() => {
+    if (submittedTxHash) {
+      if (chainId === SupportedChainId.MAINNET) {
+        return `https://etherscan.io/tx/${submittedTxHash}`;
+      } else if (chainId === SupportedChainId.GOERLI) {
+        return `https://goerli.etherscan.io/tx/${submittedTxHash}`;
+      }
+    }
+  }, [chainId, submittedTxHash]);
+
   const switchNetwork = () => {
     const goerliChain = chainList.find((chain) => chain.chainId === SupportedChainId.GOERLI.toString());
     const mainnetChain: Chain = {
@@ -160,15 +170,15 @@ const MintNFTCard = () => {
           </div>
           {transactionState === TransactionState.ACCEPTED ? (
             <>
-              <p className="text-space-green mx-auto font-bold text-sm mb-6">
+              <p className="text-space-green mx-auto font-bold text-sm mb-3">
                 {count} Unitap Pass{count > 1 ? 'es' : ''} Minted Successfully
               </p>
-              {/* <p
-                onClick={() => window.open(openseaLink || '', '_blank')}
-                className="text-space-green mx-auto font-medium text-sm mb-6 hover:underline cursor-pointer"
+              <p
+                onClick={() => window.open(chainScanLink, '_blank')}
+                className="text-white mx-auto font-medium text-sm mb-6 hover:underline cursor-pointer"
               >
-                Check on Opensea
-              </p> */}
+                Check on {getUnitapPassChainId() === SupportedChainId.MAINNET ? 'Etherscan' : 'Goerli Etherscan'}
+              </p>
             </>
           ) : transactionState === TransactionState.PENDING ? (
             <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">
