@@ -205,7 +205,7 @@ const MintNFTCard = () => {
             </div>
           </div>
           <div className="mint-nft-card__actions bg-gray30 w-full flex-col lg:flex-row flex gap-2 justify-between items-center py-3 px-4">
-            {isRightChain && (
+            {isRightChain && remainingCount > 0 && (
               <div className="mint-nft-card__actions__quantity w-full lg:w-auto flex items-center">
                 <div
                   className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-l-xl ${
@@ -243,9 +243,15 @@ const MintNFTCard = () => {
                 <p>Connect Wallet</p>
               </ClaimButton>
             ) : isRightChain ? (
-              <ClaimButton onClick={mintPass} height="48px" width="100% !important">
-                <p>Mint Unitap Pass</p>
-              </ClaimButton>
+              remainingCount ? (
+                <ClaimButton onClick={mintPass} height="48px" width="100% !important">
+                  <p>Mint Unitap Pass</p>
+                </ClaimButton>
+              ) : (
+                <ClaimButton height="48px" width="100% !important" disabled>
+                  <p>Sold Out</p>
+                </ClaimButton>
+              )
             ) : (
               <ClaimButton onClick={switchNetwork} height="48px" width="100% !important">
                 <p>Switch Network</p>
