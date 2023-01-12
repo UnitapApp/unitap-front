@@ -82,7 +82,7 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
         className={`navbar-dropdown__item cursor-pointer gradient-outline-card-light flex items-center justify-between !h-auto bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 pl-4 pr-2 py-2.5 mt-12`}
       >
         <p className="navbar-dropdown__item__title text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text">
-          Mint UGP NFT
+          Unitap Pass NFT
         </p>
         <Icon iconSrc="assets/images/navbar/navbar-dropdown-mint.svg" width="auto" height="26px" />
       </div>
