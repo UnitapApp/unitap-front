@@ -3,13 +3,11 @@
  */
 export enum SupportedChainId {
   MAINNET = 1,
-  RINKEBY = 4,
   GOERLI = 5,
 }
 
 export const CHAIN_IDS_TO_NAMES = {
   [SupportedChainId.MAINNET]: 'mainnet',
-  [SupportedChainId.RINKEBY]: 'rinkeby',
   [SupportedChainId.GOERLI]: 'goerli',
 };
 

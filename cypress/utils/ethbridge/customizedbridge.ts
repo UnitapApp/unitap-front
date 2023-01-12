@@ -30,7 +30,7 @@ function sleep(ms: number) {
 }
 
 export class CustomizedBridgeContext {
-  chainId = formatChainId(String(SupportedChainId.RINKEBY));
+  chainId = formatChainId(String(SupportedChainId.GOERLI));
   supportedChainIds: string[] = [];
 
   latestBlockNumber = 1;
@@ -314,7 +314,7 @@ export class CustomizedBridge extends Eip1193Bridge {
   }
 }
 
-export const provider = new JsonRpcProvider('https://rinkeby.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4);
+export const provider = new JsonRpcProvider('https://goerli.infura.io/v3/4bf032f2d38a4ed6bb975b80d6340847', 4);
 export const signer = new Wallet(TEST_PRIVATE_KEY, provider);
 
 export function getCustomizedBridge() {
