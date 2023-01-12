@@ -9,7 +9,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { BrightIdVerificationStatus } from 'types';
 import { shortenAddress } from 'utils';
 import { DesktopNav, MobileNav } from './navbar.style';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import { ClaimContext } from 'hooks/useChainList';
 import useWalletActivation from '../../../hooks/useWalletActivation';
@@ -26,6 +26,8 @@ const Navbar = () => {
   const active = !!account;
   const { balance: unitapPassBalance } = useUnitapPass();
   const { userProfile } = useContext(UserProfileContext);
+
+  const location = useLocation();
 
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
@@ -57,6 +59,9 @@ const Navbar = () => {
     }, 500);
     setIsDropdownVisibleTimeout(timeout);
   };
+
+  console.log(location.pathname !== RoutePath.NFT);
+  
 
   return (
     <div className="navbar w-full fixed flex items-center top-0 z-100 bg-gray10 py-3 px-8">
@@ -107,21 +112,23 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <BrightPrimaryButton
-                  data-testid="brightid-show-modal"
-                  disabled={!account}
-                  fontSize="12px"
-                  fontWeight="800"
-                  minWidth="150px"
-                  mr={2}
-                  onClick={() => {
-                    if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-                      openBrightIdModal();
-                    }
-                  }}
-                >
-                  {connectBrightButtonLabel}
-                </BrightPrimaryButton>
+                {location.pathname !== RoutePath.NFT && (
+                  <BrightPrimaryButton
+                    data-testid="brightid-show-modal"
+                    disabled={!account}
+                    fontSize="12px"
+                    fontWeight="800"
+                    minWidth="150px"
+                    mr={2}
+                    onClick={() => {
+                      if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+                        openBrightIdModal();
+                      }
+                    }}
+                  >
+                    {connectBrightButtonLabel}
+                  </BrightPrimaryButton>
+                )}
                 <LightOutlinedButton
                   data-testid="wallet-connect"
                   minWidth="155px"
