@@ -108,9 +108,9 @@ const Landing: FC = () => {
             <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
             {maxCount > 0 && (
               <p className={'text-gray100'}>
-                <span className={'text-white'}>{remainingCount}</span> of{' '}
+                {/* <span className={'text-white'}>{remainingCount}</span> of{' '}
                 <span className={'text-white'}>{maxCount}</span> Passes are left in the current batch. Mint your Passes
-                now
+                now */}
               </p>
             )}
           </div>
