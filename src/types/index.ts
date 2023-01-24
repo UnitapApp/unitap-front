@@ -23,6 +23,19 @@ export type Chain = {
   needsFunding: boolean;
 };
 
+export type Prize = {
+  pk: PK;
+  image: string;
+  title: string;
+  enrolled: number; 
+  source: string;
+  twitterLink: string; 
+  discordLink: string;
+  discription: string;
+  startTime: string;
+  FinishTime: string;
+}
+
 export enum BrightIdVerificationStatus {
   PENDING = '0',
   VERIFIED = '1',

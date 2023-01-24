@@ -4,7 +4,7 @@ enum RoutePath {
   TOKEN = '/token-tap',
   DONATE = '/donate',
   FUND = '/fund',
-  PRIZE = '/prize',
+  PRIZE = '/prizetap',
   ABOUT = '/about',
   NFT = '/pass',
 }
