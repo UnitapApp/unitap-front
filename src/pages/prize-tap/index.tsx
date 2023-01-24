@@ -31,7 +31,7 @@ const PrizesList = () => {
     [
       {
         pk: 1,
-        image: 'assets/images/nft/mint-header.png',
+        image: 'assets/images/prize-tap/prize-image-1.svg',
         title: 'SPACEMAN DELIVERY #100',
         enrolled: 0,
         source: 'from SPACEMAN NFT Collection by UNITAP.APP',
@@ -43,13 +43,13 @@ const PrizesList = () => {
       },
       {
         pk: 2,
-        image: 'assets/images/nft/mint-header.png',
+        image: 'assets/images/prize-tap/prize-image-2.svg',
         title: '1.00 ETH',
         enrolled: 1398,
         source: 'by BEIGI',
         twitterLink: 'https://twitter.com/UnitapNFT',
         discordLink: 'https://discord.com/invite/UnitapNFT',
-        discription: 'The first 2000 users who are verified in Aura can claim 2 xDai.',
+        discription: 'Anyone is welcome to play to help verify those they already know. The first 2000 users who are verified in Aura can claim 2 xDai.',
         startTime: '20 Januray 2023 12:00 PM UTC',
         FinishTime: '30 March 2023 12:00 PM UTC',
       }
@@ -76,27 +76,31 @@ const PrizeCard = ({ prize }: PrizeCardProps) => {
   const started = useMemo(() => new Date(startTime) < new Date(), [startTime])
 
   return (
-    <div className='card md:w-1/2'>
-      <div className='prize-card__image'>
-        <div className='prize-card__container h-[260px]'>
-          <img src={image} alt={title} />
-        </div>
-      </div>
-      <div className='prize-card__content'>
-        <span>
-          <p className='prize-card__title'>{title}</p>
-          <p className='prize-card__enrolled-count'>{enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}</p>
-        </span>
-        <span>
-          <p className='prize-card__source'>{source}</p>
-          <div className='prize-card__links'>
-            <Icon iconSrc='assets/images/prize-tap/twitter-logo.svg' onClick={() => window.open(twitterLink, "_blank")} width='20px' height='16px' />
-            <Icon iconSrc='assets/images/prize-tap/discord-logo.svg' onClick={() => window.open(discordLink, "_blank")} width='20px' height='16px' />
+    <div className='md:w-1/2'>
+      <div className="card !p-0 overflow-hidden w-full flex flex-col h-full">
+        <div className='prize-card__image'>
+          <div className='prize-card__container h-[260px] flex w-full justify-center items-center'>
+            <img src={image} alt={title} />
           </div>
-        </span>
-        <p className='prize-card__discription'>{discription}</p>
-        <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
-        <ClaimButton> Enroll </ClaimButton>
+        </div>
+        <div className='prize-card__content z-10 relative bg-gray40 rounded-t-xl p-4 pt-3 flex flex-col h-full'>
+          <span className='flex justify-between w-full mb-3'>
+            <p className='prize-card__title text-white text-sm'>{title}</p>
+            <p className='prize-card__enrolled-count mt-1 text-gray100 text-[10px]'>{enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}</p>
+          </span>
+          <span className='flex justify-between w-full mb-4'>
+            <p className='prize-card__source text-xs text-gary90'>{source}</p>
+            <div className='prize-card__links flex gap-4'>
+              <Icon iconSrc='assets/images/prize-tap/twitter-logo.svg' onClick={() => window.open(twitterLink, "_blank")} width='20px' height='16px' hoverable />
+              <Icon iconSrc='assets/images/prize-tap/discord-logo.svg' onClick={() => window.open(discordLink, "_blank")} width='20px' height='16px' hoverable />
+            </div>
+          </span>
+          <p className='prize-card__discription text-gray100 text-xs leading-7 mb-6 grow shrink-0 basis-auto'>{discription}</p>
+          <span className='flex justify-between w-full gap-4'>
+            <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
+            <ClaimButton width="100% !important"> <p> Enroll </p> </ClaimButton>
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -113,10 +117,10 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
-  
-  let startTimeDate = useMemo(() => new Date(startTime), [startTime]) 
+
+  let startTimeDate = useMemo(() => new Date(startTime), [startTime])
   let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime])
-  
+
   let deadline = useMemo(() => startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate, [startTimeDate, FinishTimeDate, now])
 
   useEffect(() => {
@@ -131,7 +135,7 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
     setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
     setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
     setHours(hours < 10 ? `0${hours}` : hours.toString());
-    setDays(days< 10 ? `0${days}` : days.toString());
+    setDays(days < 10 ? `0${days}` : days.toString());
   }, [now, deadline]);
 
   useEffect(() => {
@@ -143,25 +147,25 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
 
 
   return (
-    <div className='prize-card__timer'>
-      <div className='prize-card__timer-item'>
-        <p className='prize-card__timer-item-value'>{days}</p>
-        <p className='prize-card__timer-item-label'>Days</p>
+    <div className='prize-card__timer flex bg-gray30 items-center border-2 border-gray40 rounded-xl gap-2 px-3 py-2'>
+      <div className='prize-card__timer-item flex flex-col justify-between items-center text-[10px]'>
+        <p className='prize-card__timer-item-value text-gray100 font-semibold'>{days}</p>
+        <p className='prize-card__timer-item-label text-gray90'>days</p>
       </div>
-      <p>:</p>
-      <div className='prize-card__timer-item'>
-        <p className='prize-card__timer-item-value'>{hours}</p>
-        <p className='prize-card__timer-item-label'>Hours</p>
+      <p className='text-sm text-gray100'>:</p>
+      <div className='prize-card__timer-item flex flex-col justify-between items-center text-[10px]'>
+        <p className='prize-card__timer-item-value text-gray100 font-semibold'>{hours}</p>
+        <p className='prize-card__timer-item-label text-gray90'>hours</p>
       </div>
-      <p>:</p>
-      <div className='prize-card__timer-item'>
-        <p className='prize-card__timer-item-value'>{minutes}</p>
-        <p className='prize-card__timer-item-label'>Minutes</p>
+      <p className='text-sm text-gray100'>:</p>
+      <div className='prize-card__timer-item flex flex-col justify-between items-center text-[10px]'>
+        <p className='prize-card__timer-item-value text-gray100 font-semibold'>{minutes}</p>
+        <p className='prize-card__timer-item-label text-gray90'>minutes</p>
       </div>
-      <p>:</p>
-      <div className='prize-card__timer-item'>
-        <p className='prize-card__timer-item-value'>{seconds}</p>
-        <p className='prize-card__timer-item-label'>Seconds</p>
+      <p className='text-sm text-gray100'>:</p>
+      <div className='prize-card__timer-item flex flex-col justify-between items-center text-[10px]'>
+        <p className='prize-card__timer-item-value text-gray100 font-semibold'>{seconds}</p>
+        <p className='prize-card__timer-item-label text-gray90'>seconds</p>
       </div>
     </div>
   )
