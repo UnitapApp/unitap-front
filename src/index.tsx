@@ -1,6 +1,8 @@
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-import "./index.sass";
+import "index.sass";
+import "./styles/main.scss";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
