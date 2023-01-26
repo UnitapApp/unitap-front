@@ -6,12 +6,11 @@ import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
 import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
-import Icon from 'components/basic/Icon/Icon';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
 
 const NFT = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(true);
+  const [isPreLaunch, setIsPreLaunch] = useState(false);
 
   const [countClicked, setCountClicked] = useState(0);
 
