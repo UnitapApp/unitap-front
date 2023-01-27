@@ -86,7 +86,7 @@ const BrightConnectionModalBody = () => {
       </CopyLink>
       <span className="notice flex mb-3">
         <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
-        <p className="text-xs text-gray90 font-light"> Submit Connection after connecting with brighID app. </p>
+        <p className="text-xs text-gray90 font-light"> Submit connection after connecting with the BrightID app. </p>
       </span>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && (
