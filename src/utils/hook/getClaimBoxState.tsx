@@ -1,4 +1,4 @@
-import { ClaimBoxState, ClaimReceiptState, Chain, ClaimReceipt, ClaimBoxStateContainer } from 'types';
+import { Chain, ClaimBoxState, ClaimBoxStateContainer, ClaimReceipt, ClaimReceiptState } from 'types';
 
 const getClaimBoxState = (
   address: string | null | undefined,
@@ -18,7 +18,7 @@ const getClaimBoxState = (
   if (!brightIdVerified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
 
   // verified
-  if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
+  if (activeClaimReceipt && activeClaimReceipt.txHash != null)
     return { status: ClaimBoxState.VERIFIED, lastFailPk: null };
 
   //pending

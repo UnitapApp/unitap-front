@@ -1,9 +1,10 @@
 import { Chain, ClaimReceipt, UserProfile } from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
+import { getUnitapBackendAddress, isProductionEnv } from '../utils/env';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? '' : process.env.REACT_APP_API_URL,
+  baseURL: isProductionEnv() ? getUnitapBackendAddress() : '',
 });
 
 export async function getChainList(address: string | undefined | null) {
