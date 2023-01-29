@@ -1,12 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const { getUnitapBackendAddress, isProductionEnv } = require('utils/env');
 
 module.exports = function (app) {
-  if (!isProductionEnv()) {
+  if (process.env.NODE_ENV === 'development') {
     app.use(
       '/api',
       createProxyMiddleware({
-        target: getUnitapBackendAddress(),
+        target: process.env.REACT_APP_API_URL,
         changeOrigin: true,
       }),
     );

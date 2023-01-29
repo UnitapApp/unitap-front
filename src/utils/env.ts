@@ -21,7 +21,3 @@ export function isProductionEnv(): boolean {
 export function getUnitapPassChainId() {
   return isProductionEnv() ? SupportedChainId.MAINNET : SupportedChainId.GOERLI;
 }
-
-export function getUnitapBackendAddress() {
-  return 'https://api.unitap.app/';
-}
