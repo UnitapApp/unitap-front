@@ -23,6 +23,19 @@ export type Chain = {
   needsFunding: boolean;
 };
 
+export type Prize = {
+  pk: PK;
+  image: string;
+  title: string;
+  enrolled: number;
+  source: string;
+  twitterLink: string;
+  discordLink: string;
+  description: string;
+  startTime: string;
+  FinishTime: string;
+};
+
 export enum BrightIdVerificationStatus {
   PENDING = '0',
   VERIFIED = '1',
@@ -99,7 +112,7 @@ export enum Network {
   TESTNET = '1',
 }
 
-export enum ChainType { 
+export enum ChainType {
   EVM = '0',
   NONEVM = '1',
 }

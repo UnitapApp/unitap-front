@@ -127,7 +127,7 @@ body
       //@apply transition-all duration-300
 
       .widget-icon
-        
+
       //animation-delay: 300ms
 
       & > .card-text
@@ -143,6 +143,7 @@ body
 
   .content-wrapper
     @apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto
+    min-height: calc(100vh - 65px)
 
 
   .gradient-outline-card-light
@@ -181,7 +182,7 @@ body
   // BUTTON COLOR
 
   .gradient-outline-button
-    @apply bg-g-primary relative z-10 before:content-[''] 
+    @apply bg-g-primary relative z-10 before:content-['']
     @apply before:block before:-z-10 before:absolute before:inset-[1px] before:bg-gray00
     //@apply relative
 
