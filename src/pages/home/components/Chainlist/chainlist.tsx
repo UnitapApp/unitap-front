@@ -66,6 +66,10 @@ const ChainList = () => {
 
   const windowSize = window.innerWidth;
 
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   return (
     <ChainListWrapper className="mb-20">
       <div>
@@ -162,7 +166,7 @@ const ChainList = () => {
                   >
                     <p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
                     <p className="chain-card__info__value font-mono text-sm text-white ml-3">
-                      {chain.totalClaimsSinceLastMonday}
+                      {numberWithCommas(chain.totalClaimsSinceLastMonday)}
                     </p>
                   </div>
                   <div
@@ -171,7 +175,9 @@ const ChainList = () => {
                     }
                   >
                     <p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
-                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">{chain.totalClaims}</p>
+                    <p className="chain-card__info__value font-mono text-sm text-white ml-3">
+                      {numberWithCommas(chain.totalClaims)}
+                    </p>
                   </div>
                 </div>
               </ChainCard>

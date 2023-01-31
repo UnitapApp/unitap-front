@@ -20,6 +20,10 @@ const Landing: FC = () => {
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
@@ -219,7 +223,9 @@ const Landing: FC = () => {
             <div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
               {stats.map((stat) => (
                 <div key={stat.name} className={'flex flex-col gap-2 items-center'}>
-                  <p className={'text-xl text-space-green font-semibold'}>{stat.number}</p>
+                  <p className={'text-xl text-space-green font-semibold'}>
+                    {numberWithCommas(typeof stat.number == 'string' ? parseFloat(stat.number) : stat.number)}
+                  </p>
                   <p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
                 </div>
               ))}

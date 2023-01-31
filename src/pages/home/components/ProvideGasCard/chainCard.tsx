@@ -26,6 +26,10 @@ const ChainCard = ({ chain }: props) => {
 
   const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
 
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   const fundManagerBalanceAmount = useMemo(() => {
     if (!fundManagerBalance) return null;
     const amount = JSBI.BigInt(fundManagerBalance.toString());
@@ -41,7 +45,7 @@ const ChainCard = ({ chain }: props) => {
       <p className="chain__info text-xs text-gray90 flex">
         balance:
         <span className="chain__info__balance text-white ml-1">
-          {fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '...'}
+          {fundManagerBalanceAmount ? numberWithCommas(parseFloat(fundManagerBalanceAmount.toSignificant(5))) : '...'}
         </span>
       </p>
     </div>
