@@ -170,7 +170,7 @@ const Landing: FC = () => {
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
               iconSize={'w-8'}
-              className={'h-full after:bg-tokentap-texture flex-1'}
+              className={'h-full after:bg-tokentap-texture flex-1 '}
               title={'Token Tap'}
               buttonTitle={'Soon...'}
               buttonClass={'secondary-button !bg-gray30'}
@@ -178,15 +178,17 @@ const Landing: FC = () => {
           </section>
 
           <section className={'flex--1'}>
-            <Widget
-              description={'Where everyone has chances to win larger prizes'}
-              className={'after:bg-prizetap-texture h-full after:w-full after:-top-8'}
-              icon={'prizetap-icon.png'}
-              iconSize={'w-8 h-7'}
-              title={'Prize Tap'}
-              buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
-            ></Widget>
+            <Link className={'flex--1'} to={RoutePath.PRIZE}>
+              <Widget
+                description={'Where everyone has chances to win larger prizes'}
+                className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
+                icon={'prizetap-icon.png'}
+                iconSize={'w-8 h-7'}
+                title={'Prize Tap'}
+                buttonTitle={'Go to Tap'}
+                buttonClass={'gradient-outline-button'}
+              ></Widget>
+            </Link>
           </section>
         </section>
 

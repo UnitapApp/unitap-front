@@ -108,7 +108,7 @@ const PrizeCard = ({ prize }: PrizeCardProps) => {
           <p className="prize-card__description text-gray100 text-xs leading-7 mb-6 grow shrink-0 basis-auto">
             {description}
           </p>
-          <span className="flex justify-between w-full gap-4">
+          <span className="flex flex-col sm:flex-row justify-between w-full gap-4">
             <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
             <ClaimButton width="100% !important">
               {' '}
@@ -164,7 +164,7 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
   }, []);
 
   return (
-    <div className="prize-card__timer flex bg-gray30 items-center border-2 border-gray40 rounded-xl gap-2 px-3 py-2">
+    <div className="prize-card__timer flex bg-gray30 items-center justify-between border-2 border-gray40 rounded-xl gap-2 px-3 py-2">
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
         <p className="prize-card__timer-item-value text-gray100 font-semibold">{days}</p>
         <p className="prize-card__timer-item-label text-gray90">days</p>
