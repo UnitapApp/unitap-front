@@ -10,7 +10,7 @@ import Footer from 'components/common/Footer/footer';
 
 const PrizeTap = () => {
   return (
-    <div className="prize-tap unitap-body">
+    <div className="prize-tap">
       <Navbar />
       <div className="content-wrapper">
         <div className="m-auto flex flex-col justify-center items-center w-full">
