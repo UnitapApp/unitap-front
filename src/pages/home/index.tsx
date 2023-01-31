@@ -9,7 +9,7 @@ import SearchInput from './components/SearchInput/searchInput';
 import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
 import ClaimModal from './components/ClaimModal/claimModal';
-import { ChainType, Network } from 'types';
+import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 
 const Home = () => {
@@ -19,12 +19,8 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className={'unitap-body'}>
-        <div
-          className={
-            'max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20'
-          }
-        >
+      <div className={'content-wrapper'}>
+        <div className={'flex flex-col justify-center items-center w-full'}>
           <Row>
             <Col xs={24} md={24} lg={24} xlg={24}>
               <Header />

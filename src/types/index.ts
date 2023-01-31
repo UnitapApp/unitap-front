@@ -27,14 +27,14 @@ export type Prize = {
   pk: PK;
   image: string;
   title: string;
-  enrolled: number; 
+  enrolled: number;
   source: string;
-  twitterLink: string; 
+  twitterLink: string;
   discordLink: string;
-  discription: string;
+  description: string;
   startTime: string;
   FinishTime: string;
-}
+};
 
 export enum BrightIdVerificationStatus {
   PENDING = '0',
@@ -112,7 +112,7 @@ export enum Network {
   TESTNET = '1',
 }
 
-export enum ChainType { 
+export enum ChainType {
   EVM = '0',
   NONEVM = '1',
 }
