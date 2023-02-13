@@ -20,7 +20,7 @@ const Collapse = ({ className, title, icon, children, initState }: CollapseProps
         }}
         className="collapse-content flex items-center cursor-pointer"
       >
-        <Icon className="mr-7 ml-3" iconSrc={icon} height="28px" width="22px" />
+        <Icon className="mr-7 md:ml-3" iconSrc={icon} height="28px" width="22px" />
         <p className="title"> {title} </p>
         <Icon
           className={`ml-auto transition-all duration-300 ${isCollapseOpen && 'rotate-180'}`}
@@ -30,7 +30,7 @@ const Collapse = ({ className, title, icon, children, initState }: CollapseProps
         />
       </div>
       <div
-        className={`overflow-y-hidden collapse__data ml-16 mr-6 ${isCollapseOpen ? 'open-collapse' : 'close-collapse'}`}
+        className={`overflow-y-hidden collapse__data ml-1 text-justify md:text-left md:ml-16 md:mr-6 ${isCollapseOpen ? 'open-collapse' : 'close-collapse'}`}
       >
         {children}
       </div>
