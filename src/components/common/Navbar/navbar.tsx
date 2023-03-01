@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const { openBrightIdModal } = useContext(ClaimContext);
   const { account, chainId } = useWeb3React();
-  const active = !!account;
+  const isUserConnected = !!account;
   const { balance: unitapPassBalance } = useUnitapPass();
   const { userProfile } = useContext(UserProfileContext);
 
@@ -34,11 +34,11 @@ const Navbar = () => {
       if (userProfile) {
         return userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
           ? 'Connected'
-          : 'Connect BrightID';
+          : 'Login with BrightID';
       }
-      return 'Loading...';
+      return 'Login with BrightID';
     }
-    return 'Connect BrightID';
+    return 'Login with BrightID';
   }, [account, userProfile]);
 
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ const Navbar = () => {
       />
       {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
       <DesktopNav>
-        {active ? (
+        {isUserConnected ? (
           <>
             <div className="up-count flex p-2 pr-3 mr-3 bg-gray40 items-center rounded-xl">
               <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="24px" />
@@ -112,15 +112,12 @@ const Navbar = () => {
                 {location.pathname !== RoutePath.NFT && (
                   <BrightPrimaryButton
                     data-testid="brightid-show-modal"
-                    disabled={!account}
                     fontSize="12px"
                     fontWeight="800"
                     minWidth="150px"
                     mr={2}
                     onClick={() => {
-                      if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
-                        openBrightIdModal();
-                      }
+                      openBrightIdModal();
                     }}
                   >
                     {connectBrightButtonLabel}
@@ -203,7 +200,7 @@ const Navbar = () => {
               {connectBrightButtonLabel}
             </BrightPrimaryButton>
           )}
-          {active ? (
+          {isUserConnected ? (
             <LightOutlinedButton>{shortenAddress(account)}</LightOutlinedButton>
           ) : (
             <GradientOutlinedButton onClick={tryActivation}>Connect Wallet</GradientOutlinedButton>
