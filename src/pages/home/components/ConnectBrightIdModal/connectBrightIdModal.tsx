@@ -40,7 +40,7 @@ const ConnectBrightIdModalContent = () => {
         className="bright-logo !w-4/12 z-10 mb-5"
         iconSrc="assets/images/modal/bright-id-logo.svg"
       />
-      <p className="text-sm font-bold text-white mb-2">Connect Your BrightID</p>
+      <p className="text-sm font-bold text-white mb-2">Login with BrightID</p>
       <p className="text-xs font-medium text-gray100 mb-5 text-center px-4 leading-6">
         BrightID is a social identity network that allows users to prove that they are only using one account.
       </p>

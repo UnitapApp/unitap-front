@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import {
   BrightConnectionModalWrapper,
@@ -8,6 +8,7 @@ import {
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
+import { QRCode } from 'react-qrcode-logo';
 
 import { BrightIdConnectionModalState, BrightIdVerificationStatus } from 'types';
 
@@ -16,6 +17,7 @@ import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import useGenerateKeys from 'hooks/useGenerateKeys';
 
 const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
@@ -23,6 +25,17 @@ const BrightConnectionModalBody = () => {
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const [tried, setTried] = useState(false);
   const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
+
+  const [keys, isLoading, error, signPrivateKey] = useGenerateKeys();
+  const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (keys) {
+      signPrivateKey()
+        .then((res) => setSignedPrivateKey(res))
+        .catch((err) => console.log(err))
+    }
+  }, [keys, signPrivateKey]);
 
   const copyVerificationUrl = async () => {
     try {
@@ -64,12 +77,18 @@ const BrightConnectionModalBody = () => {
       data-testid="brightid-modal"
     >
       <p className="scan-qr-text text-sm text-white mb-3">Scan QR Code</p>
-      <img
-        data-testid="brightid-qr"
-        className="qr-code !w-4/12 z-10 mb-4"
-        src={`http://api.qrserver.com/v1/create-qr-code/?data=${verificationQr}`}
-        alt="qr-code"
-      />
+      {signedPrivateKey &&
+        <span className='qr-code z-10 mb-4 rounded-md overflow-hidden'>
+          <QRCode
+            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${signedPrivateKey}`}
+            data-testid="brightid-qr"
+            ecLevel="L"
+            qrStyle='dots'
+            quietZone={1}
+            size={170}
+            eyeRadius={5}
+          />
+        </span>}
       <p className="text-xs text-white mb-4">or</p>
       <CopyLink
         onClick={copyVerificationUrl}
@@ -82,11 +101,11 @@ const BrightConnectionModalBody = () => {
           height="19px"
           className="mr-3"
         />
-        <p className="text-space-green font-medium cursor-pointer hover:underline">Copy Link</p>
+        <p className="text-space-green font-medium cursor-pointer hover:underline">Visit Link</p>
       </CopyLink>
       <span className="notice flex mb-3">
         <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
-        <p className="text-xs text-gray90 font-light"> Submit Connection after connecting with brighID app. </p>
+        <p className="text-xs text-gray90 font-light"> Submit Verification after verifing with brighID app. </p>
       </span>
       {loading && <Text data-testid={`loading`}>Loading...</Text>}
       {refreshUserProfile && (
@@ -98,7 +117,7 @@ const BrightConnectionModalBody = () => {
           {tried ? (
             <p className="font-semibold">Scan or Use Link and Try Again</p>
           ) : (
-            <p className="font-semibold">Submit Connection</p>
+            <p className="font-semibold">Verify Connection</p>
           )}
         </ClaimButton>
       )}
@@ -122,7 +141,7 @@ const BrightConnectionModal = () => {
   return (
     <Modal
       className="bright-modal"
-      title="Connect your BrightID"
+      title="Login with Your BrightID"
       size="small"
       isOpen={brightIdConnectionModalStatus !== BrightIdConnectionModalState.CLOSED}
       closeModalHandler={closeBrightIdConnectionModal}
