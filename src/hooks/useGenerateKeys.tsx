@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 interface Keys {
   privateKey: string;
   publicKey: string;
+  address: string;
 }
 
 const useGenerateKeys = (): [Keys | null, boolean, Error | null, () => Promise<string>] => {
@@ -14,9 +15,10 @@ const useGenerateKeys = (): [Keys | null, boolean, Error | null, () => Promise<s
   useEffect(() => {
     const storedPrivateKey = localStorage.getItem('privateKey');
     const storedPublicKey = localStorage.getItem('publicKey');
+    const storedAddress = localStorage.getItem('address');
 
-    if (storedPrivateKey && storedPublicKey) {
-      setKeys({ privateKey: storedPrivateKey, publicKey: storedPublicKey });
+    if (storedPrivateKey && storedPublicKey && storedAddress) {
+      setKeys({ privateKey: storedPrivateKey, publicKey: storedPublicKey, address: storedAddress });
       return;
     }
 
@@ -30,13 +32,15 @@ const useGenerateKeys = (): [Keys | null, boolean, Error | null, () => Promise<s
         // Derive the public key from the private key
         const wallet = new ethers.Wallet(privateKey);
         const publicKey = wallet.publicKey;
+        const address = wallet.address;
 
         // Store the keys in localStorage
         localStorage.setItem('privateKey', privateKey);
         localStorage.setItem('publicKey', publicKey);
+        localStorage.setItem('address', address);
 
         // Update the state with the keys
-        setKeys({ privateKey, publicKey });
+        setKeys({ privateKey, publicKey, address });
         setIsLoading(false);
       } catch (error: any) {
         setError(error);
@@ -56,8 +60,8 @@ const useGenerateKeys = (): [Keys | null, boolean, Error | null, () => Promise<s
 
     const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/your-infura-project-id');
     const wallet = new ethers.Wallet(keys.privateKey, provider);
-
-    return await wallet.signMessage(keys.publicKey);
+    
+    return await wallet.signMessage(keys.address);
   };
 
   return [keys, isLoading, error, signPrivateKey];
