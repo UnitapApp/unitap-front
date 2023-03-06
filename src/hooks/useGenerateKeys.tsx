@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Keys {
   privateKey: string;
@@ -53,16 +53,16 @@ const useGenerateKeys = (): [Keys | null, boolean, Error | null, () => Promise<s
     
   }, []);
 
-  const signPrivateKey = async (): Promise<string> => {
-    if (!keys) {
+  const signPrivateKey = useCallback(async () => {
+    if (!keys || !keys.address || !keys.privateKey) {
       throw new Error('Private key not found');
     }
-
-    const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/your-infura-project-id');
-    const wallet = new ethers.Wallet(keys.privateKey, provider);
     
+    const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/709c5809e1864f82ab6175f39d1aa0ba');
+    const wallet = new ethers.Wallet(keys.privateKey, provider);
+
     return await wallet.signMessage(keys.address);
-  };
+  }, [keys]);
 
   return [keys, isLoading, error, signPrivateKey];
 };

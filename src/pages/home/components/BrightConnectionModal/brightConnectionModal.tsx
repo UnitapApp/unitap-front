@@ -50,7 +50,7 @@ const BrightConnectionModalBody = () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
     console.log(keys, signedPrivateKey);
     
-    const refreshedUserProfile = await refreshUserProfile(signedPrivateKey);
+    const refreshedUserProfile = await refreshUserProfile(keys.address, signedPrivateKey);
     console.log(refreshedUserProfile);
     
     // if (!refreshUserProfile || loading) {
@@ -86,9 +86,9 @@ const BrightConnectionModalBody = () => {
       {signedPrivateKey &&
         <span className='qr-code z-10 mb-4 rounded-md overflow-hidden'>
           <QRCode
-            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${signedPrivateKey}`}
+            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address}/`}
             data-testid="brightid-qr"
-            ecLevel="L"
+            ecLevel='L'
             qrStyle='dots'
             quietZone={1}
             size={170}

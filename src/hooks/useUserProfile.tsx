@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
-  refreshUserProfile: ((signature: string) => Promise<UserProfile>) | null;
+  refreshUserProfile: ((address: string, signature: string) => Promise<UserProfile>) | null;
   loading: boolean;
 }>({ userProfile: null, refreshUserProfile: null, loading: false });
 
@@ -14,12 +14,12 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const { account } = useWeb3React();
   const [loading, setLoading] = useState(false);
 
-  const refreshUserProfile = async (signature: string) => {
-    if (!account) return Promise.reject('No account available');
-
+  const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
     try {
-      const refreshedUserProfile: UserProfile = await getUserProfile(account, signature);
+      console.log(account);
+      
+      const refreshedUserProfile: UserProfile = await getUserProfile(address, signature);
       setUserProfile(refreshedUserProfile);
       setLoading(false);
       return refreshedUserProfile;

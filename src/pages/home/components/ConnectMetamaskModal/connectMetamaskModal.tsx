@@ -20,11 +20,11 @@ const ConnectMetamaskModalContent = () => {
   const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
 
   const refreshConnectionButtonAction = useCallback(async () => {
-    if (!refreshUserProfile || loading || !signedPrivateKey) {
+    if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) {
       return;
     }
     try {
-      const refreshedUserProfile = await refreshUserProfile(signedPrivateKey);
+      const refreshedUserProfile = await refreshUserProfile(keys?.address, signedPrivateKey);
       if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
         setTried(true);
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
@@ -38,7 +38,7 @@ const ConnectMetamaskModalContent = () => {
       alert('Error while connecting to BrightID sever!');
       setTried(true);
     }
-  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal, signedPrivateKey]);
+  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal, keys?.address, signedPrivateKey]);
 
   if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
