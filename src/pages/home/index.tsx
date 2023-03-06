@@ -11,6 +11,7 @@ import { Col } from 'components/basic/Col/col';
 import ClaimModal from './components/ClaimModal/claimModal';
 import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
+import { ChainType } from 'types';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);
@@ -32,7 +33,7 @@ const Home = () => {
             </Col>
             <Col className={'mb-1 lg:mb-0'} xs={0} md={0} lg={0.5} xlg={1.5}></Col>
             <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
-              {/* <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
+              <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${
                     selectedChainType === ChainType.EVM ? `text-white` : `text-gray80`
@@ -53,7 +54,7 @@ const Home = () => {
                 >
                   nonEVM
                 </div>
-              </div> */}
+              </div>
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${

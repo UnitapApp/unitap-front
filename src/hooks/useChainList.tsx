@@ -102,10 +102,10 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   const updateChainList = useCallback(async () => {
     try {
-      const newChainList = await getChainList(userProfile ? address : null);
+      const newChainList = await getChainList();
       setChainList(newChainList);
     } catch (e) {}
-  }, [address, userProfile]);
+  }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (address) {

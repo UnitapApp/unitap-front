@@ -6,9 +6,8 @@ const axiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '' : process.env.REACT_APP_API_URL,
 });
 
-export async function getChainList(address: string | undefined | null) {
-  const url = address ? `/api/v1/chain/list/` : '/api/v1/chain/list/';
-  const response = await axiosInstance.get<Chain[]>(url);
+export async function getChainList() {
+  const response = await axiosInstance.get<Chain[]>('/api/v1/chain/list/');
   return response.data;
 }
 
