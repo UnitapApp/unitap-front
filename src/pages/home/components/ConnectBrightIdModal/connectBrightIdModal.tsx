@@ -26,7 +26,7 @@ const ConnectBrightIdModalContent = () => {
     openBrightIdConnectionModal();
   };
 
-  if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+  if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 

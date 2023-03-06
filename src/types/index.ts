@@ -42,12 +42,14 @@ export enum BrightIdVerificationStatus {
 }
 
 export type UserProfile = {
-  pk: PK;
-  contextId: string;
-  address: string;
-  verificationUrl: string;
-  verificationStatus: BrightIdVerificationStatus;
-  totalWeeklyClaimsRemaining: number;
+  profile: {
+    initial_context_id: string;
+    is_aura_verified: boolean;
+    is_meet_verified: boolean;
+    pk: PK;
+    wallets: [];
+  },
+  token: string;
 };
 
 export enum ClaimReceiptState {

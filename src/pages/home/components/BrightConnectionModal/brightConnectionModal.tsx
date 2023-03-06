@@ -21,7 +21,7 @@ import useGenerateKeys from 'hooks/useGenerateKeys';
 
 const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
-  const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
+  // const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
   const [tried, setTried] = useState(false);
   const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
@@ -37,14 +37,14 @@ const BrightConnectionModalBody = () => {
     }
   }, [keys, signPrivateKey]);
 
-  const copyVerificationUrl = async () => {
-    try {
-      await copyToClipboard(verificationUrl);
-      alert('Copied');
-    } catch (e) {
-      alert('Could not copy the text');
-    }
-  };
+  // const copyVerificationUrl = async () => {
+  //   try {
+  //     await copyToClipboard(verificationUrl);
+  //     alert('Copied');
+  //   } catch (e) {
+  //     alert('Could not copy the text');
+  //   }
+  // };
 
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
@@ -58,7 +58,7 @@ const BrightConnectionModalBody = () => {
     // }
     // try {
     //   const refreshedUserProfile = await refreshUserProfile();
-    //   if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
+    //   if (!refreshedUserProfile.profile.is_meet_verified) {
     //     setTried(true);
     //     alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
     //   } else {
@@ -73,7 +73,7 @@ const BrightConnectionModalBody = () => {
     // }
   }, [refreshUserProfile, loading, signedPrivateKey, keys]);
 
-  if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+  if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
@@ -96,7 +96,7 @@ const BrightConnectionModalBody = () => {
           />
         </span>}
       <p className="text-xs text-white mb-4">or</p>
-      <CopyLink
+      {/* <CopyLink
         onClick={copyVerificationUrl}
         data-testid="brightid-copy-link"
         className="flex text-space-green mb-10 z-10"
@@ -108,7 +108,7 @@ const BrightConnectionModalBody = () => {
           className="mr-3"
         />
         <p className="text-space-green font-medium cursor-pointer hover:underline">Visit Link</p>
-      </CopyLink>
+      </CopyLink> */}
       <span className="notice flex mb-3">
         <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
         <p className="text-xs text-gray90 font-light"> Submit Verification after verifing with brighID app. </p>

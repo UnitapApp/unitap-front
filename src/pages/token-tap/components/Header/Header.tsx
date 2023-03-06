@@ -28,7 +28,8 @@ const Header = () => {
       </div>
       <div className="header-right h-full flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.totalWeeklyClaimsRemaining !== 2 ? (
+          {/* {userProfile?.totalWeeklyClaimsRemaining !== 2 ? ( */}
+          {2 !== 2 ? (
             <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
               <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
                 You can claim <span className="claimed-left text-space-green">5</span> tokens in this round

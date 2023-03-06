@@ -32,7 +32,7 @@ const Navbar = () => {
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
       if (userProfile) {
-        return userProfile.verificationStatus === BrightIdVerificationStatus.VERIFIED
+        return userProfile.profile.is_meet_verified
           ? 'Connected'
           : 'Login with BrightID';
       }
@@ -81,7 +81,7 @@ const Navbar = () => {
                 {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
               </p>
             </div>
-            {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+            {userProfile?.profile.is_meet_verified ? (
               <>
                 <BrightConnectedButton
                   className="has-icon"
@@ -172,7 +172,7 @@ const Navbar = () => {
           <span className="line line3"></span>
         </div>
         <div className="menu-items">
-          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
+          {userProfile?.profile.is_meet_verified ? (
             <BrightConnectedButton
               iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
               fontSize="12px"
@@ -192,7 +192,7 @@ const Navbar = () => {
               fontWeight="800"
               minWidth="150px"
               onClick={() => {
-                if (userProfile && userProfile.verificationStatus === BrightIdVerificationStatus.PENDING) {
+                if (userProfile && userProfile.profile.is_meet_verified) {
                   openBrightIdModal();
                 }
               }}

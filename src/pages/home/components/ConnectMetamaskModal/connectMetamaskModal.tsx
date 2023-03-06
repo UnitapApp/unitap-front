@@ -25,7 +25,7 @@ const ConnectMetamaskModalContent = () => {
     }
     try {
       const refreshedUserProfile = await refreshUserProfile(keys?.address, signedPrivateKey);
-      if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
+      if (!refreshedUserProfile?.profile.is_meet_verified) {
         setTried(true);
         alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
       } else {
@@ -40,7 +40,7 @@ const ConnectMetamaskModalContent = () => {
     }
   }, [refreshUserProfile, loading, activeChain, closeBrightIdModal, keys?.address, signedPrivateKey]);
 
-  if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+  if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 

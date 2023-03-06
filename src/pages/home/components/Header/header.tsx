@@ -27,8 +27,9 @@ const Header = () => {
       </div>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            userProfile.totalWeeklyClaimsRemaining == 5 ? (
+          {userProfile?.profile.is_meet_verified ? (
+            // userProfile.totalWeeklyClaimsRemaining == 5 ? (
+            5 == 5 ? (
               <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
                 <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
                   You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round

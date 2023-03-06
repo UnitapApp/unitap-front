@@ -96,7 +96,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const { fastRefresh } = useContext(RefreshContext);
 
   const brightIdVerified = useMemo(
-    () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
+    () => userProfile?.profile.is_meet_verified || false,
     [userProfile],
   );
 
