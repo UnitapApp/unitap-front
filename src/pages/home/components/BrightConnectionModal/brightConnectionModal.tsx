@@ -47,25 +47,31 @@ const BrightConnectionModalBody = () => {
   };
 
   const refreshConnectionButtonAction = useCallback(async () => {
-    if (!refreshUserProfile || loading) {
-      return;
-    }
-    try {
-      const refreshedUserProfile = await refreshUserProfile();
-      if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
-        setTried(true);
-        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-      } else {
-        setTried(false);
-        if (!!activeChain) {
-          closeBrightIdModal();
-        }
-      }
-    } catch (ex) {
-      alert('Error while connecting to BrightID sever!');
-      setTried(true);
-    }
-  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal]);
+    if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
+    console.log(keys, signedPrivateKey);
+    
+    const refreshedUserProfile = await refreshUserProfile(signedPrivateKey);
+    console.log(refreshedUserProfile);
+    
+    // if (!refreshUserProfile || loading) {
+    //   return;
+    // }
+    // try {
+    //   const refreshedUserProfile = await refreshUserProfile();
+    //   if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
+    //     setTried(true);
+    //     alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
+    //   } else {
+    //     setTried(false);
+    //     if (!!activeChain) {
+    //       closeBrightIdModal();
+    //     }
+    //   }
+    // } catch (ex) {
+    //   alert('Error while connecting to BrightID sever!');
+    //   setTried(true);
+    // }
+  }, [refreshUserProfile, loading, signedPrivateKey, keys]);
 
   if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
     return <BrightStatusModal success={true}></BrightStatusModal>;

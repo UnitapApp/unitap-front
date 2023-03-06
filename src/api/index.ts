@@ -12,8 +12,8 @@ export async function getChainList(address: string | undefined | null) {
   return response.data;
 }
 
-export async function getUserProfile(address: string) {
-  const response = await axiosInstance.get<UserProfile>(`/api/v1/user/${address}/`);
+export async function getUserProfile(address: string, signature: string) {
+  const response = await axiosInstance.post<UserProfile>(`/api/test/user/login/`, { username: address, password: signature});
   return response.data;
 }
 
