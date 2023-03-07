@@ -7,12 +7,14 @@ export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
   refreshUserProfile: ((address: string, signature: string) => Promise<UserProfile>) | null;
   loading: boolean;
-}>({ userProfile: null, refreshUserProfile: null, loading: false });
+  savedWalletAddress: string | null;
+}>({ userProfile: null, refreshUserProfile: null, loading: false, savedWalletAddress: null });
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { account } = useWeb3React();
   const [loading, setLoading] = useState(false);
+  const [savedWalletAddress, setSavedWalletAddress] = useState(null);
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
@@ -45,7 +47,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   // }, [address]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>
+    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, savedWalletAddress }}>
       {children}
     </UserProfileContext.Provider>
   );

@@ -204,8 +204,36 @@ body
     button
       @apply text-space-green
 
+  .btn
+
+    &--primary 
+      @apply bg-g-primary text-gray00
+
+    &--bright
+      @apply bg-orange text-gray00
+    
+    &--address
+      @apply bg-gray00 text-white
+
+      &::before
+        @apply w-1.5 h-[7px] rounded-3xl bg-error inline-block -ml-4 mr-4 mb-[1px]
+        content: ''        
+      
+      &--active
+        @apply before:bg-space-green
+      
 
   // BUTTON SIZE
+  .btn
+    @apply rounded-lg hover:cursor-pointer
+
+    &--sm
+      @apply rounded-md text-xs font-bold px-3 py-2
+
+    &--lg
+      @apply rounded-xl
+
+
   .btn-default
     button
       @apply text-sm

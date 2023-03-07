@@ -24,10 +24,7 @@ const Navbar = () => {
   const { openBrightIdModal } = useContext(ClaimContext);
   const { account, chainId } = useWeb3React();
   const isUserConnected = !!account;
-  const { balance: unitapPassBalance } = useUnitapPass();
   const { userProfile } = useContext(UserProfileContext);
-
-  const location = useLocation();
 
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
@@ -43,23 +40,6 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [isDropdownVisibleTimeout, setIsDropdownVisibleTimeout] = useState<NodeJS.Timeout | null>(null);
-
-  const showDropdown = () => {
-    if (isDropdownVisibleTimeout) {
-      clearTimeout(isDropdownVisibleTimeout);
-    }
-    setIsDropdownVisible(true);
-  };
-
-  const hideDropdown = () => {
-    let timeout = setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 500);
-    setIsDropdownVisibleTimeout(timeout);
-  };  
-
   return (
     <div className="navbar w-full fixed flex items-center top-0 z-100 bg-gray10 py-3 px-8">
       <Icon
@@ -71,97 +51,11 @@ const Navbar = () => {
         onClick={() => navigate(RoutePath.LANDING)}
       />
       {process.env.REACT_APP_IS_CYPRESS === 'true' && <span data-testid="chain-id">{chainId}</span>}
+
       <DesktopNav>
-        {isUserConnected ? (
-          <>
-            <div className="up-count flex p-2 pr-3 mr-3 bg-gray40 items-center rounded-xl">
-              <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="24px" />
-              <p className="text-white text-xs font-bold">
-                {unitapPassBalance?.toNumber() || 0} PASS
-                {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
-              </p>
-            </div>
-            {userProfile?.profile.is_meet_verified ? (
-              <>
-                <BrightConnectedButton
-                  className="has-icon"
-                  data-testid="brightid-connected"
-                  iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
-                  fontSize="12px"
-                  fontWeight="500"
-                  minWidth="130px"
-                  iconLeftWidth={16}
-                  iconLeftHeight={16}
-                  mr={2}
-                  disabled
-                >
-                  {connectBrightButtonLabel}
-                </BrightConnectedButton>
-                <LightOutlinedButton
-                  data-testid="wallet-connect"
-                  minWidth="155px"
-                  fontSize="12px"
-                  fontWeight="400"
-                  mr={2}
-                >
-                  {shortenAddress(account)}
-                </LightOutlinedButton>
-              </>
-            ) : (
-              <>
-                {location.pathname !== RoutePath.NFT && (
-                  <BrightPrimaryButton
-                    data-testid="brightid-show-modal"
-                    fontSize="12px"
-                    fontWeight="800"
-                    minWidth="150px"
-                    mr={2}
-                    onClick={() => {
-                      openBrightIdModal();
-                    }}
-                  >
-                    {connectBrightButtonLabel}
-                  </BrightPrimaryButton>
-                )}
-                <LightOutlinedButton
-                  data-testid="wallet-connect"
-                  minWidth="155px"
-                  fontSize="12px"
-                  fontWeight="400"
-                  mr={2}
-                >
-                  {shortenAddress(account)}
-                </LightOutlinedButton>
-              </>
-            )}
-          </>
-        ) : (
-          <GradientOutlinedButton
-            data-testid="wallet-connect"
-            minWidth="155px"
-            fontWeight="500"
-            onClick={tryActivation}
-            fontSize="12px"
-            mr={2}
-          >
-            Connect Wallet
-          </GradientOutlinedButton>
-        )}
-        <span
-          className="navbar__dropdown cursor-pointer"
-          onMouseEnter={() => showDropdown()}
-          onMouseLeave={() => hideDropdown()}
-          onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-        >
-          <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="30" height="30" />
-          {isDropdownVisible && (
-            <NavbarDropdown
-              className="navbar__dropdown__component"
-              onMouseEnter={() => showDropdown()}
-              onMouseLeave={() => hideDropdown()}
-            />
-          )}
-        </span>
+        <RenderUnipassCount />
+        <RenderNavbarConnectionStatus />
+        <RenderNavbarDropdown />
       </DesktopNav>
 
       <MobileNav>
@@ -210,5 +104,125 @@ const Navbar = () => {
     </div>
   );
 };
+
+const RenderUnipassCount = () => {
+  const { balance: unitapPassBalance } = useUnitapPass();
+
+  return (
+    <div className="up-count flex p-2 pr-3 mr-3 h-8 bg-gray40 items-center rounded-lg">
+      <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="23px" />
+      <p className="text-white text-xs font-bold">
+        {unitapPassBalance?.toNumber() || 0} PASS
+        {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
+      </p>
+    </div>
+  )
+}
+
+const RenderNavbarDropdown = () => {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isDropdownVisibleTimeout, setIsDropdownVisibleTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const showDropdown = () => {
+    if (isDropdownVisibleTimeout) {
+      clearTimeout(isDropdownVisibleTimeout);
+    }
+    setIsDropdownVisible(true);
+  };
+
+  const hideDropdown = () => {
+    let timeout = setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 500);
+    setIsDropdownVisibleTimeout(timeout);
+  };
+
+  return (
+    <span
+      className="navbar__dropdown cursor-pointer"
+      onMouseEnter={() => showDropdown()}
+      onMouseLeave={() => hideDropdown()}
+      onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+    >
+      <Icon iconSrc="assets/images/Navbar/navbar_right_icon.svg" width="31px" height="31px" />
+      {isDropdownVisible && (
+        <NavbarDropdown
+          className="navbar__dropdown__component"
+          onMouseEnter={() => showDropdown()}
+          onMouseLeave={() => hideDropdown()}
+        />
+      )}
+    </span>
+  )
+}
+
+
+const RenderNavbarConnectionStatus = () => {
+  const { account } = useWeb3React();
+  const isWalletConnected = !!account;
+
+  const { userProfile } = useContext(UserProfileContext);
+  const isBrightIdConnected = !!userProfile;
+
+  const { savedWalletAddress } = useContext(UserProfileContext);
+  const hasSavedWalletAddress = !!savedWalletAddress;
+
+  return (
+    <div className='navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3'>
+      <Icon iconSrc='./assets/images/navbar/bright-icon.svg' width="16px" height="16px" className='ml-3' />
+
+      {!isBrightIdConnected ? (
+        <RenderNavbarLoginBrightIdButton />
+      ) : (
+        !isWalletConnected ? (
+          !hasSavedWalletAddress ? (
+            <RenderNavbarConnectWalletButton />
+          ) : (
+            <RenderNavbarWalletAddress active={false} />
+          )
+        ) : (
+          <RenderNavbarWalletAddress active={true} />
+        )
+      )}
+    </div>
+  )
+}
+
+const RenderNavbarLoginBrightIdButton = () => {
+  const { openBrightIdModal } = useContext(ClaimContext);
+
+  return (
+    <>
+      <p className='navbar-connection-status__login-status-title text-gray100 font-medium text-xs text-center mr-1'>Login</p>
+      <button className='btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline' onClick={() => openBrightIdModal()}>Connect BrightID</button>
+    </>
+  )
+}
+
+const RenderNavbarConnectWalletButton = () => {
+  const { tryActivation } = useWalletActivation();
+
+  return (
+    <>
+      <p className='navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1'>Connected</p>
+      <button className='btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline' onClick={tryActivation}>Connect Wallet</button>
+    </>
+  )
+}
+
+const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
+  const { account } = useWeb3React();
+
+  return (
+    <>
+      <p className='navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1'>Connected</p>
+      <button className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}>{shortenAddress(account)}</button>
+    </>
+  )
+}
+
+
+
+
 
 export default Navbar;
