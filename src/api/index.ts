@@ -34,3 +34,12 @@ export async function getActiveClaimHistory(address: string) {
   const response = await axiosInstance.get<ClaimReceipt[]>(url, {});
   return response.data;
 }
+
+export async function getUserProfileWithTokenAPI(token: string) {
+  const response = await axiosInstance.get<UserProfile>(`/api/test/user/info/`, {
+    headers: {
+    'Authorization': `Token ${token}`,
+    }
+  });
+  return response.data;
+}

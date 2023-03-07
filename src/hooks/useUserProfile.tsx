@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { createUserProfile, getUserProfile } from "api";
+import { getUserProfile, getUserProfileWithTokenAPI } from "api";
 import { UserProfile } from "types";
-import { useWeb3React } from "@web3-react/core";
+import useToken from "./useToken";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
@@ -12,17 +12,20 @@ export const UserProfileContext = createContext<{
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const { account } = useWeb3React();
   const [loading, setLoading] = useState(false);
   const [savedWalletAddress, setSavedWalletAddress] = useState(null);
+  const [userToken, setToken] = useToken();
+
+  const setNewUserProfile = useCallback((newUserProfile: UserProfile) => {
+    setUserProfile(newUserProfile);
+    setToken(newUserProfile.token);
+  }, [setToken]);
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
     try {
-      console.log(account);
-      
       const refreshedUserProfile: UserProfile = await getUserProfile(address, signature);
-      setUserProfile(refreshedUserProfile);
+      setNewUserProfile(refreshedUserProfile)
       setLoading(false);
       return refreshedUserProfile;
     } catch (ex) {
@@ -31,20 +34,17 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
     }
   };
 
-  // useEffect(() => {
-  //   const fun = async () => {
-  //     if (address) {
-  //       let newUserProfile: UserProfile | null = null;
-  //       try {
-  //         newUserProfile = await getUserProfile(address, signature);
-  //       } catch (ex) {
-  //         newUserProfile = await createUserProfile(address, signature);
-  //       }
-  //       setUserProfile(newUserProfile);
-  //     }
-  //   };
-  //   fun();
-  // }, [address]);
+  useEffect(() => {
+    const getUserProfileWithToken = async () => {
+      if (!userToken) return;
+      const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken);
+      setNewUserProfile(userProfileWithToken);
+    }
+
+    if (userToken && !userProfile) {
+      getUserProfileWithToken();
+    }
+  }, [userToken, userProfile, setNewUserProfile])
 
   return (
     <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, savedWalletAddress }}>
