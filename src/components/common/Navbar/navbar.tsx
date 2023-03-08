@@ -164,8 +164,8 @@ const RenderNavbarConnectionStatus = () => {
   const { userProfile } = useContext(UserProfileContext);
   const isBrightIdConnected = !!userProfile;
 
-  const { savedWalletAddress } = useContext(UserProfileContext);
-  const hasSavedWalletAddress = !!savedWalletAddress;
+  const { lastUsedWalletAddress } = useContext(UserProfileContext);
+  const hasLastUsedWalletAddress = !!lastUsedWalletAddress;
 
   return (
     <div className='navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3'>
@@ -175,7 +175,7 @@ const RenderNavbarConnectionStatus = () => {
         <RenderNavbarLoginBrightIdButton />
       ) : (
         !isWalletConnected ? (
-          !hasSavedWalletAddress ? (
+          !hasLastUsedWalletAddress ? (
             <RenderNavbarConnectWalletButton />
           ) : (
             <RenderNavbarWalletAddress active={false} />
@@ -211,12 +211,13 @@ const RenderNavbarConnectWalletButton = () => {
 }
 
 const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
-  const { account } = useWeb3React();
+  const { tryActivation } = useWalletActivation();
+  const { lastUsedWalletAddress } = useContext(UserProfileContext);
 
   return (
     <>
       <p className='navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1'>Connected</p>
-      <button className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}>{shortenAddress(account)}</button>
+      <button className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`} onClick={tryActivation}>{shortenAddress(lastUsedWalletAddress)}</button>
     </>
   )
 }
