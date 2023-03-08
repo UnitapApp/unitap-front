@@ -165,7 +165,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
             className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
           >
             <p className="chain-card__info__title text-sm text-gray90">Balance:</p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">{fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '...'} {chain.symbol}</p>
+            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">{fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '0.00'} {chain.symbol}</p>
             {/* <LightOutlinedButton className='donate-gas !p-1 !px-2 !text-xs !font-medium ml-4'>Provide gas</LightOutlinedButton> */}
           </div>
           <div
