@@ -92,6 +92,11 @@ export enum BrightIdModalState {
   CONNECTED_AND_VERIFIED = '4',
 }
 
+export enum ClaimNonEVMModalState {
+  CLOSED = '0',
+  OPENED = '1',
+}
+
 export enum TransactionState {
   IDLE = '0',
   PENDING = '1',
@@ -115,6 +120,6 @@ export enum Network {
 }
 
 export enum ChainType {
-  EVM = '0',
-  NONEVM = '1',
+  EVM = 'EVM',
+  NONEVM = 'NONEVM',
 }

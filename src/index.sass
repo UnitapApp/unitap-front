@@ -3,8 +3,7 @@
   font-family: 'Noto Sans', sans-serif
 
 .font-mono
-  font-family: NotoSansMono !important
-
+  font-family: NotoSansMono!important
 code
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace
 
@@ -171,9 +170,9 @@ body
     //color: #FFF
     //background: #000
     //background-clip: padding-box
-    ///* !importanté */
+    ///*!important */
     //border: solid 5px transparent
-    ///* !importanté */
+    ///*!important */
     //border-radius: 1em
     //box-sizing: border-box
     //
@@ -183,9 +182,9 @@ body
     //  inset: 0
     //  z-index: -1
     //  margin: -5px
-    //  /* !importanté */
+    //  /*!important */
     //  border-radius: inherit
-    //  /* !importanté */
+    //  /*!important */
     //  background: linear-gradient(to right, red, orange)
 
 
@@ -209,6 +208,25 @@ body
     &--primary 
       @apply bg-g-primary text-gray00
 
+    &--primary-light
+      @apply bg-g-primary relative z-10 text-white
+      @apply rounded-lg #{!important}
+
+      &::before
+        @apply content-[''] block -z-10 absolute inset-0 bg-gray10 bg-opacity-80 m-0.5 rounded-[7px]
+    
+    &--primary-outlined 
+      @apply bg-g-primary relative z-10 
+      @apply rounded-xl #{!important}
+      
+      & p
+        @apply bg-g-primary bg-clip-text
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+
+      &::before
+        @apply content-[''] block -z-10 absolute inset-0 bg-gray10 m-0.5 rounded-[11px]
+
     &--bright
       @apply bg-orange text-gray00
     
@@ -225,7 +243,8 @@ body
 
   // BUTTON SIZE
   .btn
-    @apply rounded-lg hover:cursor-pointer
+    @apply rounded-lg text-base font-semibold px-4 py-3 
+    @apply hover:cursor-pointer
 
     &--sm
       @apply rounded-md text-xs font-bold px-3 py-2
@@ -240,11 +259,9 @@ body
 
   .btn-large
     @apply py-2.5 px-4 border-[3px]
-    border-radius: 0.75rem !important
-
+    border-radius: 0.75rem!important
     &:before
-      border-radius: 0.75rem !important
-
+      border-radius: 0.75rem!important
     button
       @apply font-medium
 

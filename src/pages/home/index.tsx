@@ -12,6 +12,7 @@ import ClaimModal from './components/ClaimModal/claimModal';
 import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { ChainType } from 'types';
+import ClaimNonEVMModal from './components/ClaimNonEVMModal/claimNonEVMModal';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);
@@ -85,6 +86,7 @@ const Home = () => {
         </div>
       </div>
       <ClaimModal />
+      <ClaimNonEVMModal />
       <Footer />
     </>
   );

@@ -8,6 +8,7 @@ import {
   ChainType,
   ClaimBoxState,
   ClaimBoxStateContainer,
+  ClaimNonEVMModalState,
   ClaimReceipt,
   HaveBrightIdAccountModalState,
   Network,
@@ -31,11 +32,15 @@ export const ClaimContext = createContext<{
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
   activeChain: Chain | null;
+  activeNonEVMChain: Chain | null;
   claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
   retryClaim: () => void;
   openBrightIdModal: () => void;
   closeBrightIdModal: () => void;
+  openClaimNonEVMModal: () => void;
+  closeClaimNonEVMModal: () => void;
   brightidModalStatus: BrightIdModalState;
+  claimNonEVMModalStatus: ClaimNonEVMModalState;
   openHaveBrightIdAccountModal: () => void;
   closeHaveBrightIdAccountModal: () => void;
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState;
@@ -56,11 +61,15 @@ export const ClaimContext = createContext<{
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
   activeChain: null,
+  activeNonEVMChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
   retryClaim: () => {},
   openBrightIdModal: () => {},
   closeBrightIdModal: () => {},
+  openClaimNonEVMModal: () => {},
+  closeClaimNonEVMModal: () => {},
   brightidModalStatus: BrightIdModalState.CLOSED,
+  claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
   openHaveBrightIdAccountModal: () => {},
   closeHaveBrightIdAccountModal: () => {},
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
@@ -84,10 +93,14 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     lastFailPk: null,
   });
   const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
+  const [claimNonEVMModalStatus, setClaimNonEVMModalStatus] = useState<ClaimNonEVMModalState>(ClaimNonEVMModalState.CLOSED);
   const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(HaveBrightIdAccountModalState.CLOSED);
   const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(BrightIdConnectionModalState.CLOSED);
 
-  const [activeChain, setActiveChain] = useState<Chain | null>(null);
+  const [activeChain,
+     setActiveChain]
+   = useState<Chain | null>(null);
+  const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
 
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
@@ -124,17 +137,27 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, [fastRefresh, updateActiveClaimHistory, updateChainList]);
 
   useEffect(() => {
-    if (activeChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain));
+    if (activeChain)
+     {
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain)
+      );
     }
-  }, [activeChain, setActiveClaimReceipt, activeClaimHistory]);
+  }, [activeChain,
+     setActiveClaimReceipt, activeClaimHistory]);
 
   const openClaimModal = useCallback((chain: Chain) => {
-    setActiveChain(chain);
+    
+    if (chain.chainType === ChainType.EVM) {
+      setActiveChain(chain);
+    } else if (chain.chainType === ChainType.NONEVM) {
+      setActiveNonEVMChain(chain);
+      setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
+    }
   }, []);
 
   const closeClaimModal = useCallback(() => {
-    setActiveChain(null);
+    setActiveChain(
+      null);
   }, []);
 
   const retryClaim = useCallback(() => {
@@ -144,9 +167,11 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(address, userProfile, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
+        getClaimBoxState(address, userProfile, activeChain,
+           activeClaimReceipt, claimBoxStatus, claimRequests),
       ),
-    [address, userProfile, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
+    [address, userProfile, activeClaimReceipt, activeChain,
+       claimRequests, activeClaimHistory],
   );
 
   const claim = useCallback(
@@ -191,6 +216,14 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeBrightIdModal = () => {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
+  
+  const openClaimNonEVMModal = () => {
+    setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
+  };
+  const closeClaimNonEVMModal = () => {
+    setActiveNonEVMChain(null);
+    setClaimNonEVMModalStatus(ClaimNonEVMModalState.CLOSED);
+  };
 
   const openHaveBrightIdAccountModal = () => {
     setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.OPENED);
@@ -219,11 +252,15 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         openClaimModal,
         closeClaimModal,
         activeChain,
+        activeNonEVMChain,
         claimBoxStatus,
         retryClaim,
         openBrightIdModal,
         closeBrightIdModal,
+        openClaimNonEVMModal,
+        closeClaimNonEVMModal,
         brightidModalStatus,
+        claimNonEVMModalStatus,
         openHaveBrightIdAccountModal,
         closeHaveBrightIdAccountModal,
         haveBrightIdAccountModalStatus,

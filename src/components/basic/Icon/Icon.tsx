@@ -14,11 +14,12 @@ interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   mt?: number;
   hoverable?: boolean;
   iconSrc: string;
+  alt?: string;
 }
 
 const Icon = (props: IconProps) => (
   <IconWrapper {...props}>
-    <img src={props.iconSrc} alt="" />
+    <img src={props.iconSrc} alt={props.alt} />
   </IconWrapper>
 );
 
