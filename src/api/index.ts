@@ -38,8 +38,17 @@ export async function getActiveClaimHistory(address: string) {
 export async function getUserProfileWithTokenAPI(token: string) {
   const response = await axiosInstance.get<UserProfile>(`/api/test/user/info/`, {
     headers: {
-    'Authorization': `Token ${token}`,
+      'Authorization': `Token ${token}`,
     }
   });
+  return response.data;
+}
+
+export async function getWeeklyChainClaimLimitAPI(token: string) {
+  const response = await axiosInstance.get<number>('/api/v1/settings/', {
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
   return response.data;
 }

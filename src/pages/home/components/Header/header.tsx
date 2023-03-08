@@ -16,7 +16,7 @@ const Spaceship = styled.img`
 `;
 
 const Header = () => {
-  const { userProfile } = useContext(UserProfileContext);
+  const { userProfile, weeklyChainClaimLimit } = useContext(UserProfileContext);
 
   return (
     <div className="header h-[152px] bg-gray20 rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6">
@@ -28,8 +28,7 @@ const Header = () => {
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
           {userProfile?.profile.is_meet_verified ? (
-            // userProfile.totalWeeklyClaimsRemaining == 5 ? (
-            5 == 5 ? (
+            weeklyChainClaimLimit === 5 ? (
               <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
                 <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
                   You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
