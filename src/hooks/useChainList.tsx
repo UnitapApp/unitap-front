@@ -110,13 +110,13 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
-    if (address) {
+    if (address && userToken) {
       try {
-        const newClaimHistory = await getActiveClaimHistory(address);
+        const newClaimHistory = await getActiveClaimHistory(userToken, address);
         setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }
-  }, [address]);
+  }, [address, userToken]);
 
   useEffect(() => {
     updateChainList();

@@ -30,11 +30,14 @@ export async function claimMax(token: string, chainPk: number) {
   return response.data;
 }
 
-export async function getActiveClaimHistory(address: string) {
+export async function getActiveClaimHistory(token: string, address: string) {
   const date = new Date();
   const lastMonday = getLastMonday(date).toISOString();
-  const url = `/api/v1/user/${address}/claims?datetime__gte=${lastMonday}`;
-  const response = await axiosInstance.get<ClaimReceipt[]>(url, {});
+  const response = await axiosInstance.get<ClaimReceipt[]>('/api/v1/user/claims/', {
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  });
   return response.data;
 }
 
