@@ -19,6 +19,7 @@ import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import removeRequest from 'utils/hook/claimRequests';
 import { useWeb3React } from '@web3-react/core';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
+import useToken from './useToken';
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -91,7 +92,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
 
-  const { account: address, account } = useWeb3React();
+  const { account: address } = useWeb3React();
+  const [ userToken, setToken ] = useToken();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
@@ -142,20 +144,20 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(address, brightIdVerified, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
+        getClaimBoxState(address, userProfile, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
       ),
-    [address, brightIdVerified, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
+    [address, userProfile, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
   );
 
   const claim = useCallback(
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
-      if (!brightIdVerified || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
         return;
       }
       setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
       try {
-        await claimMax(account!, claimChainPk);
+        await claimMax(userToken, claimChainPk);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
@@ -163,7 +165,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [account, brightIdVerified, claimRequests, updateActiveClaimHistory],
+    [userToken, claimRequests, updateActiveClaimHistory],
   );
   
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);

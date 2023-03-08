@@ -1,8 +1,8 @@
-import { Chain, ClaimBoxState, ClaimBoxStateContainer, ClaimReceipt, ClaimReceiptState } from 'types';
+import { Chain, ClaimBoxState, ClaimBoxStateContainer, ClaimReceipt, ClaimReceiptState, UserProfile } from 'types';
 
 const getClaimBoxState = (
   address: string | null | undefined,
-  brightIdVerified: boolean,
+  userProfile: UserProfile | null,
   activeChain: Chain | null,
   activeClaimReceipt: ClaimReceipt | null,
   claimBoxStatus: ClaimBoxStateContainer,
@@ -15,7 +15,7 @@ const getClaimBoxState = (
   if (!address) return { status: ClaimBoxState.WALLET_NOT_CONNECTED, lastFailPk: null };
 
   //wallet not conneced
-  if (!brightIdVerified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
+  if (!userProfile) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
 
   // verified
   if (activeClaimReceipt && activeClaimReceipt.txHash != null)

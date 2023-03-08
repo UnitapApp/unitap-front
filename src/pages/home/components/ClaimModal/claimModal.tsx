@@ -22,10 +22,6 @@ import useWalletActivation from "../../../../hooks/useWalletActivation";
 import { useWeb3React } from "@web3-react/core";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
-  // const formatBalance = useCallback((amount: number) => {
-  //   const fw = fromWei(amount);
-  //   return Number(fw) < 0.000001 ? '< 0.000001' : fw;
-  // }, []);
   const { account } = useWeb3React();
   const active = !!account;
 
@@ -57,7 +53,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     }; // ... and to false on unmount
   }, []);
 
-  function getWalletNotConnectedBody() {
+  function renderWalletNotConnectedBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
@@ -69,14 +65,14 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         </Text>
         <WalletAddress fontSize="12">Not Connected</WalletAddress>
         <PrimaryButton onClick={tryActivation} width="100%" fontSize="20px"
-                       data-testid={`chain-claim-action-${chain.pk}`}>
+          data-testid={`chain-claim-action-${chain.pk}`}>
           Connect Wallet
         </PrimaryButton>
       </>
     );
   }
 
-  function getBrightNotConnectedBody() {
+  function renderBrightNotConnectedBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
@@ -99,7 +95,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function getInitialBody() {
+  function renderInitialBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
@@ -122,7 +118,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function getRequestBody() {
+  function renderRequestBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-request-${chain.pk}`}>
@@ -140,7 +136,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function getPendingBody() {
+  function renderPendingBody() {
     return (
       <>
         <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: "200px" }}></div>
@@ -161,7 +157,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function getSuccessBody() {
+  function renderSuccessBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
@@ -188,7 +184,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function getFailedBody() {
+  function renderFailedBody() {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
@@ -216,25 +212,25 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
   function getClaimBody() {
     if (claimBoxStatus.status === ClaimBoxState.WALLET_NOT_CONNECTED) {
-      return getWalletNotConnectedBody();
+      return renderWalletNotConnectedBody();
     } else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_VERIFIED) {
-      return getBrightNotConnectedBody();
+      return renderBrightNotConnectedBody();
     } else if (claimBoxStatus.status === ClaimBoxState.INITIAL) {
-      return getInitialBody();
+      return renderInitialBody();
     } else if (claimBoxStatus.status === ClaimBoxState.REQUEST) {
-      return getRequestBody();
+      return renderRequestBody();
     } else if (claimBoxStatus.status === ClaimBoxState.PENDING) {
-      return getPendingBody();
+      return renderPendingBody();
     } else if (claimBoxStatus.status === ClaimBoxState.VERIFIED) {
-      return getSuccessBody();
+      return renderSuccessBody();
     } else {
-      return getFailedBody();
+      return renderFailedBody();
     }
   }
 
   return (
-    <div 
-      className="claim-modal-wrapper flex flex-col items-center justify-center pt-5" 
+    <div
+      className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
       data-testid={`chain-claim-modal-${chain.pk}`}>
       <Text fontSize="14" className="scan-qr-text">
         Claim {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol}
@@ -247,7 +243,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 const ClaimModal = () => {
   const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ClaimContext);
   const { brightidModalStatus } = useContext(ClaimContext);
-  
+
   const isOpen = useMemo(() => {
     return (
       !!activeChain &&
@@ -255,14 +251,12 @@ const ClaimModal = () => {
       brightidModalStatus === BrightIdModalState.CLOSED
     );
   }, [activeChain, brightidModalStatus, claimBoxStatus.status]);
-  
+
   return (
     <>
-      {isOpen && (
-        <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" size="small" closeModalHandler={closeClaimModal} isOpen={true}>
-          <ClaimModalBody chain={activeChain!} />
-        </Modal>
-      )}
+      <Modal spaceman={Spaceman.BOTTOM_BIG} title="claim gas fee" size="small" closeModalHandler={closeClaimModal} isOpen={isOpen}>
+        <ClaimModalBody chain={activeChain!} />
+      </Modal>
     </>
   );
 };

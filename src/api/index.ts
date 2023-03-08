@@ -21,9 +21,12 @@ export async function createUserProfile(address: string) {
   return response.data;
 }
 
-export async function claimMax(address: string, chainPk: number) {
-  const url = `/api/v1/chain/${chainPk}/claim-max/${address}/`;
-  const response = await axiosInstance.post<ClaimReceipt>(url, {});
+export async function claimMax(token: string, chainPk: number) {
+  const response = await axiosInstance.post<ClaimReceipt>(`/api/v1/chain/${chainPk}/claim-max/`, null, {
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  });
   return response.data;
 }
 
