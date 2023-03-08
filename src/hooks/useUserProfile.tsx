@@ -38,8 +38,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     const getUserProfileWithToken = async () => {
-      if (!userToken) return;
-      const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken);
+      const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken!);
       setNewUserProfile(userProfileWithToken);
     }
 
@@ -50,8 +49,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     const getWeeklyChainClaimLimit = async () => {
-      if (!userToken) return;
-      const newWeeklyChainClaimLimit: number = await getWeeklyChainClaimLimitAPI(userToken);
+      const newWeeklyChainClaimLimit: number = await getWeeklyChainClaimLimitAPI(userToken!);
       setWeeklyChainClaimLimit(newWeeklyChainClaimLimit)
     }
 

@@ -247,6 +247,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 const ClaimModal = () => {
   const { closeClaimModal, activeChain, claimBoxStatus } = useContext(ClaimContext);
   const { brightidModalStatus } = useContext(ClaimContext);
+  
   const isOpen = useMemo(() => {
     return (
       !!activeChain &&
@@ -254,6 +255,7 @@ const ClaimModal = () => {
       brightidModalStatus === BrightIdModalState.CLOSED
     );
   }, [activeChain, brightidModalStatus, claimBoxStatus.status]);
+  
   return (
     <>
       {isOpen && (
