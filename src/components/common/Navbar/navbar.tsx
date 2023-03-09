@@ -107,14 +107,22 @@ const Navbar = () => {
 
 const RenderUnipassCount = () => {
   const { balance: unitapPassBalance } = useUnitapPass();
+  const { account } = useWeb3React();
 
   return (
     <div className="up-count flex p-2 pr-3 mr-3 h-8 bg-gray40 items-center rounded-lg">
-      <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="23px" />
-      <p className="text-white text-xs font-bold">
-        {unitapPassBalance?.toNumber() || 0} PASS
-        {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
-      </p>
+      {account ?
+        <>
+          <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="23px" />
+          <p className="text-white text-xs font-bold">
+            {unitapPassBalance?.toNumber() || 0} PASS
+            {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
+          </p>
+        </> :
+        <>
+          <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon-disable.svg" width="auto" height="23px" />
+          <p className="text-gray100 text-xs font-bold pl-2">-</p>
+        </>}
     </div>
   )
 }
