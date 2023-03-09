@@ -227,6 +227,9 @@ body
       &::before
         @apply content-[''] block -z-10 absolute inset-0 bg-gray10 m-0.5 rounded-[11px]
 
+    &--disabled
+      @apply bg-gray70 hover:cursor-not-allowed border-gray90 text-gray90 border-2 rounded-xl #{!important}
+
     &--bright
       @apply bg-orange text-gray00
     

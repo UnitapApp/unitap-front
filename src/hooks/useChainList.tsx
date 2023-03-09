@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getActiveClaimHistory, getChainList } from 'api';
+import { claimMax, getActiveClaimHistory, getChainList, claimMaxNonEVMAPI } from 'api';
 import {
   BrightIdConnectionModalState,
   BrightIdModalState,
@@ -28,6 +28,7 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claim: (chainPK: number) => void;
+  claimNonEVM: (chainPK: number, address: string) => void;
   activeClaimReceipt: ClaimReceipt | null;
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
@@ -57,6 +58,7 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
   claim: (chainPK: number) => {},
+  claimNonEVM: (chainPK: number, address: string) => {},
   activeClaimReceipt: null,
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
@@ -192,6 +194,26 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     },
     [userToken, claimRequests, updateActiveClaimHistory],
   );
+
+  const claimNonEVM = useCallback(
+    async (claimChainPk: number, address: string) => {
+      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+        return;
+      }
+      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      try {
+        await claimMaxNonEVMAPI(userToken, claimChainPk, address);
+        await updateActiveClaimHistory();
+        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
+      } catch (ex) {
+        await updateActiveClaimHistory();
+        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
+      }
+    },
+    [userToken, claimRequests, updateActiveClaimHistory],
+  );
+
+
   
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
   const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
@@ -248,6 +270,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         chainListSearchSimpleResult,
         changeSearchPhrase,
         claim,
+        claimNonEVM,
         activeClaimReceipt,
         openClaimModal,
         closeClaimModal,

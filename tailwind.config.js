@@ -32,6 +32,7 @@ module.exports = {
         gray40: '#1E1E29',
         gray50: '#21212C',
         gray60: '#24242F',
+        gray70: '#303043',
         gray80: '#4C4C5C',
         gray90: '#67677B',
         gray100: '#B5B5C6',

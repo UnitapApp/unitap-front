@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Modal from 'components/common/Modal/modal';
 import Icon from 'components/basic/Icon/Icon';
@@ -9,6 +9,14 @@ import { formatWeiBalance } from 'utils/numbers';
 
 const ClaimNonEVMModalContent = () => {
   const { activeNonEVMChain } = useContext(ClaimContext);
+  const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState<string>('');
+  const { claimNonEVM } = useContext(ClaimContext);
+
+  const handleClaimNonEVMClicked = () => {
+    if (activeNonEVMChain) {
+      claimNonEVM(activeNonEVMChain.pk, nonEVMWalletAddress);
+    }
+  }
 
   return (
     <div
@@ -24,11 +32,22 @@ const ClaimNonEVMModalContent = () => {
       />
 
       <div className='address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center'>
-        <input className='address-input__input w-full placeholder:text-gray80 text-xs mr-2 bg-transparent text-white' type='text' placeholder='Your Non-EVM Wallet Address...' />
-        <button className='address-input__paste-button btn btn--sm btn--primary-light font-semibold tracking-wide'>PASTE</button>
+        <input
+          className='address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white'
+          type='text'
+          placeholder='Your Non-EVM Wallet Address...'
+          value={nonEVMWalletAddress}
+          onChange={(e) => setNonEVMWalletAddress(e.target.value)}
+        />
+        <button
+          className='address-input__paste-button btn btn--sm btn--primary-light font-semibold tracking-wide'
+          onClick={() => navigator.clipboard.readText().then((text) => setNonEVMWalletAddress(text))}
+        >
+          PASTE
+        </button>
       </div>
 
-      <button className='btn btn--primary-outlined w-full'><p> Claim {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} </p></button>
+      <button className={`btn ${!nonEVMWalletAddress ? 'btn--disabled' : 'btn--primary-outlined'} w-full`} onClick={() => handleClaimNonEVMClicked()}><p> Claim {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} </p></button>
     </div>
   );
 };
