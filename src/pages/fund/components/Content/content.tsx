@@ -153,7 +153,8 @@ const Content: FC = () => {
           className="absolute -left-64 -top-16 scale-150 z-10"
         />
         <span className="z-100">
-          <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+          <Icon className='mb-2' iconSrc='./assets/images/fund/provide-gas-fee-battery.svg' width="146px" height='auto'/>
+          <p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
           <p className="text-gray100 text-xs mb-3 z-1">99% of contributions will be distributed via the tap.</p>
           <p className="text-gray100 text-xs z-1">1% of contributions will fund Unitap development.</p>
           <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">

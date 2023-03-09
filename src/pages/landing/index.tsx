@@ -134,7 +134,7 @@ const Landing: FC = () => {
         <section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
           <Link className={'flex--1'} to={RoutePath.FAUCET}>
             <Widget
-              description={'Claim gas fees for any reason and make  transactions easily'}
+              description={'Claim gas fees for any reason and make transactions easily'}
               icon={'gastap-icon.svg'}
               iconSize={'w-7'}
               className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
