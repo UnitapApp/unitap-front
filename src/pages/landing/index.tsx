@@ -38,7 +38,7 @@ const Landing: FC = () => {
     },
   ]);
   const [stats, setStats] = useState([
-    { name: 'Unitap Users', number: '856' },
+    { name: 'Unitap Users', number: '+4000' },
     { name: 'EVM Networks', number: 0 },
     { name: 'Test Networks', number: 0 },
     { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
@@ -46,7 +46,7 @@ const Landing: FC = () => {
 
   useEffect(() => {
     setStats((prev) => [
-      { name: 'Unitap Users', number: '856' },
+      { name: 'Unitap Users', number: '+4000' },
       { name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
       { name: 'Test Networks', number: getTotalTestNetworks(chainList) },
       { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
