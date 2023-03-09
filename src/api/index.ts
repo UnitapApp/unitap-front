@@ -47,7 +47,8 @@ export async function getActiveClaimHistory(token: string, address: string) {
       'Authorization': `Token ${token}`,
     }
   });
-  return response.data;
+  
+  return response.data.filter((claim) => claim.datetime >= lastMonday);
 }
 
 export async function getUserProfileWithTokenAPI(token: string) {

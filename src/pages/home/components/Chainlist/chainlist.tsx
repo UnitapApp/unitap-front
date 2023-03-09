@@ -8,7 +8,7 @@ import { getChainIcon } from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
-import { Chain } from 'types';
+import { Chain, ClaimReceipt } from 'types';
 import { BigNumber } from 'ethers';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
@@ -91,6 +91,8 @@ const ChainCard = ({ chain }: ChainCardProps) => {
     return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
   }, [nativeCurrency, fundManagerBalance]);
 
+  const { activeClaimHistory } = useContext(ClaimContext);
+
   return (
     <div key={chain.chainId}>
       <div className='chain-card flex flex-col items-center justify-center w-full mb-4'>
@@ -131,7 +133,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                 <NoCurrencyButton disabled fontSize="13px">
                   Empty
                 </NoCurrencyButton>
-              ) : chain.unclaimed !== 0 ? (
+              ) : !activeClaimHistory.find((claim: ClaimReceipt) => claim.pk.toString() === chain.chainId) ? (
                 <ClaimButton
                   data-testid={`chain-show-claim-${chain.pk}`}
                   mlAuto

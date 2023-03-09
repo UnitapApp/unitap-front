@@ -4,15 +4,15 @@ const getActiveClaimReciept = (activeClaimHistory: ClaimReceipt[], activeChain: 
   if (!activeChain) return null;
   const verified = activeClaimHistory.filter(
     (claimReceipt: ClaimReceipt) =>
-      claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain === activeChain.pk,
+      claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.pk.toString() === activeChain.chainId,
   );
   const rejected = activeClaimHistory.filter(
     (claimReceipt: ClaimReceipt) =>
-      claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.chain === activeChain.pk,
+      claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.pk.toString() === activeChain.chainId,
   );
   const pending = activeClaimHistory.filter(
     (claimReceipt: ClaimReceipt) =>
-      claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain === activeChain.pk,
+      claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.pk.toString() === activeChain.chainId,
   );
 
   if (verified.length > 0) return verified[0];

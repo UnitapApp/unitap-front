@@ -3,7 +3,6 @@ import { claimMax, getActiveClaimHistory, getChainList, claimMaxNonEVMAPI } from
 import {
   BrightIdConnectionModalState,
   BrightIdModalState,
-  BrightIdVerificationStatus,
   Chain,
   ChainType,
   ClaimBoxState,
@@ -30,6 +29,7 @@ export const ClaimContext = createContext<{
   claim: (chainPK: number) => void;
   claimNonEVM: (chainPK: number, address: string) => void;
   activeClaimReceipt: ClaimReceipt | null;
+  activeClaimHistory: ClaimReceipt[];
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
   activeChain: Chain | null;
@@ -60,6 +60,7 @@ export const ClaimContext = createContext<{
   claim: (chainPK: number) => {},
   claimNonEVM: (chainPK: number, address: string) => {},
   activeClaimReceipt: null,
+  activeClaimHistory: [],
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
   activeChain: null,
@@ -212,8 +213,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     },
     [userToken, claimRequests, updateActiveClaimHistory],
   );
-
-
   
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
   const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
@@ -272,6 +271,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         claim,
         claimNonEVM,
         activeClaimReceipt,
+        activeClaimHistory,
         openClaimModal,
         closeClaimModal,
         activeChain,

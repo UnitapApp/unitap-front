@@ -7,7 +7,7 @@ const getClaimBoxState = (
   activeClaimReceipt: ClaimReceipt | null,
   claimBoxStatus: ClaimBoxStateContainer,
   claimRequests: number[],
-) => {
+) => {  
   //closed claim box
   if (!activeChain) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
 
