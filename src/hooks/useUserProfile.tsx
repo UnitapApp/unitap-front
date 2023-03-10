@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI } from "api";
+import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI, setWalletAPI } from "api";
 import { UserProfile } from "types";
 import useToken from "./useToken";
 import { useWeb3React } from "@web3-react/core";
@@ -80,11 +80,13 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, []);
 
   useEffect(() => {
-    if (account) {
+    if (account && userToken) {
+      const response = setWalletAPI(userToken, account, "EVM");
+      console.log(response);
       localStorage.setItem("walletAddress", account);
       setlastUsedWalletAddress(account);
     }
-  }, [account]);
+  }, [account, userToken]);
 
   return (
     <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, lastUsedWalletAddress, weeklyChainClaimLimit, remainingClaims }}>

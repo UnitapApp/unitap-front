@@ -86,7 +86,7 @@ const BrightConnectionModalBody = () => {
       {signedPrivateKey &&
         <span className='qr-code z-10 mb-4 rounded-md overflow-hidden'>
           <QRCode
-            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address}/`}
+            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`}
             data-testid="brightid-qr"
             ecLevel='L'
             qrStyle='dots'
