@@ -5,7 +5,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton, WhiteOutlinedButton } from 'components/basic/Button/button';
 
-import { BrightIdModalState, BrightIdVerificationStatus } from 'types';
+import { BrightIdModalState } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { ClaimContext } from 'hooks/useChainList';

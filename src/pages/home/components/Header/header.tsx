@@ -30,7 +30,8 @@ const Header = () => {
             weeklyChainClaimLimit === remainingClaims ? (
               <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
                 <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
-                  You can claim <span className="claimed-left text-space-green">{remainingClaims}</span> gas fees in this round
+                  You can claim <span className="claimed-left text-space-green">{remainingClaims}</span> gas fees in
+                  this round
                 </p>
               </div>
             ) : (
@@ -51,14 +52,15 @@ const Header = () => {
 const Dabes = () => {
   const { chainList, activeClaimHistory } = useContext(ClaimContext);
   const { remainingClaims } = useContext(UserProfileContext);
-  
 
   return (
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
         {chainList?.map((chain) => {
-          if (activeClaimHistory.find((claim) => claim.pk.toString() === chain.chainId))
+          if (activeClaimHistory.find((claim) => claim.pk.toString() === chain.chainId)) {
             return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl || chain.logoUrl} width="36px" height="40px" />;
+          }
+          return null;
         })}
         {range(0, remainingClaims!).map((i) => {
           return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;

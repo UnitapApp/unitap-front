@@ -10,7 +10,7 @@ type NavbarDropdownProps = {
 };
 
 const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdownProps) => {
-  const [navItems, setNavItems] = React.useState([
+  const [navItems] = React.useState([
     {
       name: 'Home',
       link: RoutePath.LANDING,

@@ -22,7 +22,10 @@ const MintNFTCard = () => {
   const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
   const [accountBalance, setAccountBalance] = useState<Number>(0);
 
-  const remainingCount = useMemo(() => (batchSize ? batchSize - (batchSoldCount || 0) : undefined), [batchSize, batchSoldCount]);
+  const remainingCount = useMemo(
+    () => (batchSize ? batchSize - (batchSoldCount || 0) : undefined),
+    [batchSize, batchSoldCount],
+  );
 
   const { chainId, account, provider } = useWeb3React();
 
@@ -56,7 +59,6 @@ const MintNFTCard = () => {
   const { callback: mintPassCallback } = useUnitapPassMultiMintCallback(count);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
-  const [openseaLink, setOpenseaLink] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
@@ -164,7 +166,14 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
             <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
               <div className="w-full h-full overflow-hidden rounded-lg">
-                <video src="assets/videos/unitap-pass.mp4" autoPlay muted loop className="w-full object-cover" poster="assets/images/nft/nft-poster.jpg"></video>
+                <video
+                  src="assets/videos/unitap-pass.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  className="w-full object-cover"
+                  poster="assets/images/nft/nft-poster.jpg"
+                ></video>
               </div>
             </div>
           </div>
@@ -206,8 +215,8 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft p-4 h-full flex flex-col justify-between">
             <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between">
               <p className="text-gray100">
-                <span className="text-white"> {remainingCount === undefined ? "..." : remainingCount} </span> of
-                <span className="text-white"> {batchSize === undefined ? "..." : batchSize} </span>
+                <span className="text-white"> {remainingCount === undefined ? '...' : remainingCount} </span> of
+                <span className="text-white"> {batchSize === undefined ? '...' : batchSize} </span>
                 Left in current batch
               </p>
               <p className="text-gray100">
@@ -236,7 +245,9 @@ const MintNFTCard = () => {
                     {count} x {priceAmount?.toSignificant(5) || '0'} ETH ={' '}
                   </p>
                 )}
-                <span className="text-white">{totalPriceAmount === undefined ? "..." : totalPriceAmount?.toSignificant(5) || '0'} ETH</span>
+                <span className="text-white">
+                  {totalPriceAmount === undefined ? '...' : totalPriceAmount?.toSignificant(5) || '0'} ETH
+                </span>
               </p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
-import { ClaimButton, ClaimedButton, LightOutlinedButton, NoCurrencyButton, PrimaryOutlinedButton, SecondaryButton } from 'components/basic/Button/button';
+import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
 import { getChainIcon } from '../../../../utils';
@@ -45,7 +45,9 @@ const ChainList = () => {
             Loading...
           </div>
         )}
-        {chainListSearchResult.map((chain) => <ChainCard chain={chain} key={chain.pk} />)}
+        {chainListSearchResult.map((chain) => (
+          <ChainCard chain={chain} key={chain.pk} />
+        ))}
         {chainListSearchResult.length === 0 && chainList.length && (
           <Icon
             iconSrc={
@@ -60,8 +62,8 @@ const ChainList = () => {
 };
 
 type ChainCardProps = {
-  chain: Chain
-}
+  chain: Chain;
+};
 
 const ChainCard = ({ chain }: ChainCardProps) => {
   const { openClaimModal } = useContext(ClaimContext);
@@ -95,7 +97,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 
   return (
     <div key={chain.chainId}>
-      <div className='chain-card flex flex-col items-center justify-center w-full mb-4'>
+      <div className="chain-card flex flex-col items-center justify-center w-full mb-4">
         <div
           className={
             'pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
@@ -127,7 +129,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
               </AddMetamaskButton>
             </div>
 
-            <div className='action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end'>
+            <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {/* todo migrate buttom logic*/}
               {chain.needsFunding ? (
                 <NoCurrencyButton disabled fontSize="13px">
@@ -163,26 +165,20 @@ const ChainCard = ({ chain }: ChainCardProps) => {
             'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl p-4 justify-between'
           }
         >
-          <div
-            className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}
-          >
+          <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}>
             <p className="chain-card__info__title text-sm text-gray90">Balance:</p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">{fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '0.00'} {chain.symbol}</p>
+            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
+              {fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '0.00'} {chain.symbol}
+            </p>
             {/* <LightOutlinedButton className='donate-gas !p-1 !px-2 !text-xs !font-medium ml-4'>Provide gas</LightOutlinedButton> */}
           </div>
-          <div
-            className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}
-          >
+          <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}>
             <p className="chain-card__info__title text-sm text-gray90">This Round Claims:</p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
               {numberWithCommas(chain.totalClaimsSinceLastMonday)}
             </p>
           </div>
-          <div
-            className={
-              'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end'
-            }
-          >
+          <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end'}>
             <p className="chain-card__info__title text-sm text-gray90">Total Claims:</p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
               {numberWithCommas(chain.totalClaims)}
@@ -191,7 +187,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ChainList;

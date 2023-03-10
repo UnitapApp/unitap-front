@@ -6,10 +6,9 @@ import {
   LightOutlinedButton,
 } from 'components/basic/Button/button';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import { BrightIdVerificationStatus } from 'types';
 import { shortenAddress } from 'utils';
 import { DesktopNav, MobileNav } from './navbar.style';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import { ClaimContext } from 'hooks/useChainList';
 import useWalletActivation from '../../../hooks/useWalletActivation';
@@ -29,9 +28,7 @@ const Navbar = () => {
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
       if (userProfile) {
-        return userProfile.profile.is_meet_verified
-          ? 'Connected'
-          : 'Login with BrightID';
+        return userProfile.profile.is_meet_verified ? 'Connected' : 'Login with BrightID';
       }
       return 'Login with BrightID';
     }
@@ -111,21 +108,23 @@ const RenderUnipassCount = () => {
 
   return (
     <div className="up-count flex p-2 pr-3 mr-3 h-8 bg-gray40 items-center rounded-lg">
-      {account ?
+      {account ? (
         <>
           <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon.svg" width="auto" height="23px" />
           <p className="text-white text-xs font-bold">
             {unitapPassBalance?.toNumber() || 0} PASS
             {unitapPassBalance?.toNumber() ? (unitapPassBalance?.toNumber() > 1 ? 'ES' : '') : ''}
           </p>
-        </> :
+        </>
+      ) : (
         <>
           <Icon className="mr-5" iconSrc="assets/images/navbar/up-icon-disable.svg" width="auto" height="23px" />
           <p className="text-gray100 text-xs font-bold pl-2">-</p>
-        </>}
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
 const RenderNavbarDropdown = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -161,9 +160,8 @@ const RenderNavbarDropdown = () => {
         />
       )}
     </span>
-  )
-}
-
+  );
+};
 
 const RenderNavbarConnectionStatus = () => {
   const { account } = useWeb3React();
@@ -176,47 +174,56 @@ const RenderNavbarConnectionStatus = () => {
   const hasLastUsedWalletAddress = !!lastUsedWalletAddress;
 
   return (
-    <div className='navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3'>
-      <Icon iconSrc='./assets/images/navbar/bright-icon.svg' width="16px" height="16px" className='ml-3' />
+    <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3">
+      <Icon iconSrc="./assets/images/navbar/bright-icon.svg" width="16px" height="16px" className="ml-3" />
 
       {!isBrightIdConnected ? (
         <RenderNavbarLoginBrightIdButton />
-      ) : (
-        !isWalletConnected ? (
-          !hasLastUsedWalletAddress ? (
-            <RenderNavbarConnectWalletButton />
-          ) : (
-            <RenderNavbarWalletAddress active={false} />
-          )
+      ) : !isWalletConnected ? (
+        !hasLastUsedWalletAddress ? (
+          <RenderNavbarConnectWalletButton />
         ) : (
-          <RenderNavbarWalletAddress active={true} />
+          <RenderNavbarWalletAddress active={false} />
         )
+      ) : (
+        <RenderNavbarWalletAddress active={true} />
       )}
     </div>
-  )
-}
+  );
+};
 
 const RenderNavbarLoginBrightIdButton = () => {
   const { openBrightIdModal } = useContext(ClaimContext);
 
   return (
     <>
-      <p className='navbar-connection-status__login-status-title text-gray100 font-medium text-xs text-center mr-1'>Login</p>
-      <button className='btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline' onClick={() => openBrightIdModal()}>Connect BrightID</button>
+      <p className="navbar-connection-status__login-status-title text-gray100 font-medium text-xs text-center mr-1">
+        Login
+      </p>
+      <button
+        className="btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline"
+        onClick={() => openBrightIdModal()}
+      >
+        Connect BrightID
+      </button>
     </>
-  )
-}
+  );
+};
 
 const RenderNavbarConnectWalletButton = () => {
   const { tryActivation } = useWalletActivation();
 
   return (
     <>
-      <p className='navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1'>Connected</p>
-      <button className='btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline' onClick={tryActivation}>Connect Wallet</button>
+      <p className="navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1">
+        Connected
+      </p>
+      <button className="btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline" onClick={tryActivation}>
+        Connect Wallet
+      </button>
     </>
-  )
-}
+  );
+};
 
 const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
   const { tryActivation } = useWalletActivation();
@@ -224,14 +231,17 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
 
   return (
     <>
-      <p className='navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1'>Connected</p>
-      <button className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`} onClick={tryActivation}>{shortenAddress(lastUsedWalletAddress)}</button>
+      <p className="navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1">
+        Connected
+      </p>
+      <button
+        className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}
+        onClick={tryActivation}
+      >
+        {shortenAddress(lastUsedWalletAddress)}
+      </button>
     </>
-  )
-}
-
-
-
-
+  );
+};
 
 export default Navbar;

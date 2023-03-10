@@ -37,7 +37,7 @@ const Home = () => {
   });
 
   function selectNetwork(index: number) {
-    networks.map((net) => {
+    networks.forEach((net) => {
       net.isSelected = false;
     });
     setSelectedNetwork(networks[index]);

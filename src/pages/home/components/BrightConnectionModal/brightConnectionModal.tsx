@@ -1,18 +1,13 @@
 import * as React from 'react';
-import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import {
-  BrightConnectionModalWrapper,
-  CopyLink,
-} from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
+import { BrightConnectionModalWrapper } from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
 import { QRCode } from 'react-qrcode-logo';
 
-import { BrightIdConnectionModalState, BrightIdVerificationStatus } from 'types';
-
-import { copyToClipboard, getVerificationQr } from 'utils';
+import { BrightIdConnectionModalState } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { ClaimContext } from 'hooks/useChainList';
@@ -22,18 +17,16 @@ import useGenerateKeys from 'hooks/useGenerateKeys';
 const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   // const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
-  const verificationQr = userProfile ? getVerificationQr(userProfile) : '';
-  const [tried, setTried] = useState(false);
-  const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
+  const [tried] = useState(false);
 
-  const [keys, isLoading, error, signPrivateKey] = useGenerateKeys();
+  const { keys, signPrivateKey } = useGenerateKeys();
   const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (keys) {
       signPrivateKey()
         .then((res) => setSignedPrivateKey(res))
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     }
   }, [keys, signPrivateKey]);
 
@@ -49,10 +42,10 @@ const BrightConnectionModalBody = () => {
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
     console.log(keys, signedPrivateKey);
-    
+
     const refreshedUserProfile = await refreshUserProfile(keys.address, signedPrivateKey);
     console.log(refreshedUserProfile);
-    
+
     // if (!refreshUserProfile || loading) {
     //   return;
     // }
@@ -83,18 +76,19 @@ const BrightConnectionModalBody = () => {
       data-testid="brightid-modal"
     >
       <p className="scan-qr-text text-sm text-white mb-3">Scan QR Code</p>
-      {signedPrivateKey &&
-        <span className='qr-code z-10 mb-4 rounded-md overflow-hidden'>
+      {signedPrivateKey && (
+        <span className="qr-code z-10 mb-4 rounded-md overflow-hidden">
           <QRCode
             value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`}
             data-testid="brightid-qr"
-            ecLevel='L'
-            qrStyle='dots'
+            ecLevel="L"
+            qrStyle="dots"
             quietZone={1}
             size={170}
             eyeRadius={5}
           />
-        </span>}
+        </span>
+      )}
       <p className="text-xs text-white mb-4">or</p>
       {/* <CopyLink
         onClick={copyVerificationUrl}

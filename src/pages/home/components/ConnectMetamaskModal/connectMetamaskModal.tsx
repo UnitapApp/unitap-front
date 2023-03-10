@@ -4,8 +4,6 @@ import { Text } from 'components/basic/Text/text.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
-
-import { BrightIdVerificationStatus } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { ClaimContext } from 'hooks/useChainList';
@@ -16,8 +14,8 @@ const ConnectMetamaskModalContent = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const [tried, setTried] = useState(false);
   const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
-  const [keys, isLoading, error, signPrivateKey] = useGenerateKeys();
-  const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
+  const { keys } = useGenerateKeys();
+  const [signedPrivateKey] = useState<string | null>(null);
 
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) {

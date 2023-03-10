@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useToken = (): [string | null, (token: string) => void] => {
   const [userToken, setUserToken] = useState<string | null>(null);
@@ -13,7 +13,7 @@ const useToken = (): [string | null, (token: string) => void] => {
     localStorage.setItem('userToken', token);
   };
 
-  return [userToken, setToken]
-}
+  return [userToken, setToken];
+};
 
 export default useToken;

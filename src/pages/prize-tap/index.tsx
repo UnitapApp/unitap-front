@@ -26,7 +26,7 @@ const PrizeTap = () => {
 };
 
 const PrizesList = () => {
-  const [prizes, setPrizes] = useState([
+  const [prizes] = useState([
     {
       pk: 1,
       image: 'assets/images/prize-tap/prize-image-1.svg',
