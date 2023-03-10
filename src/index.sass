@@ -6,36 +6,31 @@
 code
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace
 
-
 /* Chrome, Safari, Edge, Opera */
 .fund-input::-webkit-outer-spin-button,
 .fund-input::-webkit-inner-spin-button
   -webkit-appearance: none
   margin: 0
 
-
 /* Firefox */
 .fund-input
   -moz-appearance: textfield
-
 
 @tailwind base
 @tailwind components
 @tailwind utilities
 
-
 body
   margin: 0
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
+   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+   sans-serif; */
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   @apply bg-gray10
 
 @mixin btn
   @apply ease-out duration-300
-
 
 #home-nft
   .btn-large
@@ -56,14 +51,12 @@ body
       @apply transition duration-300 transform-gpu
       @apply scale-125
 
-
 @layer base
 
   // TYPOGRAPHY
 
   h1
     @apply text-3xl font-semibold items-center
-
 
   h2
     @apply text-2xl font-semibold
@@ -76,7 +69,7 @@ body
 
   .text-gradient-primary
     @apply bg-g-primary bg-clip-text
-    -webkit-text-fill-color: transparent
+      -webkit-text-fill-color: transparent
 
   // FLEX SIZES
 
@@ -91,7 +84,6 @@ body
 
   .flex-4
     flex: 4
-
 
 @layer components
 
@@ -109,11 +101,11 @@ body
 
   .open-collapse
     @apply transition-all duration-500 ease-in-out mb-6 mt-5 max-h-[400px]
-    opacity: 1
+      opacity: 1
 
   .close-collapse
     @apply transition-all duration-500 ease-in-out p-0 m-0 max-h-[4px]
-    opacity: 0
+      opacity: 0
 
   .uni-card
     @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20 overflow-hidden
@@ -131,15 +123,12 @@ body
       & > .card-text
         @apply -translate-y-1 transition duration-300
 
-
   .in-text-link
     @apply underline cursor-pointer hover:text-white transition-all
-
 
   .gradient-outline-card-light
     @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-xl overflow-hidden
     @apply before:block before:-z-10 before:absolute before:inset-[2px] before:rounded-lg before:bg-gray00
-
 
   .gradient-outline-card
     @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-2xl overflow-hidden
@@ -149,9 +138,6 @@ body
     @apply overflow-y-auto overflow-x-hidden
 
   // rest in style/main.scss file
-
-
-
 
   .gradient-outline-card
     @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-2xl overflow-hidden
@@ -186,16 +172,15 @@ body
     //  /*!important */
     //  background: linear-gradient(to right, red, orange)
 
-
     button
       @apply bg-g-primary bg-clip-text
-      -webkit-text-fill-color: transparent
+        -webkit-text-fill-color: transparent
 
   .secondary-button
     @apply border-2 border-gray50 bg-gray00
     button
       @apply bg-g-primary bg-clip-text
-      -webkit-text-fill-color: transparent
+        -webkit-text-fill-color: transparent
 
   .green-text-button
     @apply border-2 border-gray50 bg-gray00
@@ -204,24 +189,24 @@ body
 
   .btn
 
-    &--primary 
+    &--primary
       @apply bg-g-primary text-gray00
 
     &--primary-light
       @apply bg-g-primary relative z-10 text-white
-      border-radius: 8px !important
+        border-radius: 8px !important
 
       &::before
         @apply content-[''] block -z-10 absolute inset-0 bg-gray10 bg-opacity-80 m-0.5 rounded-[7px]
-    
-    &--primary-outlined 
-      @apply bg-g-primary relative z-10 
-      border-radius: 12px !important
-      
+
+    &--primary-outlined
+      @apply bg-g-primary relative z-10
+        border-radius: 12px !important
+
       & p
         @apply bg-g-primary bg-clip-text
-        -webkit-background-clip: text
-        -webkit-text-fill-color: transparent
+          -webkit-background-clip: text
+          -webkit-text-fill-color: transparent
 
       &::before
         @apply content-[''] block -z-10 absolute inset-0 bg-gray10 m-0.5 rounded-[11px]
@@ -231,21 +216,20 @@ body
 
     &--bright
       @apply bg-orange text-gray00
-    
+
     &--address
       @apply bg-gray00 text-white
 
       &::before
         @apply w-1.5 h-[7px] rounded-3xl bg-error inline-block -ml-4 mr-4 mb-[1px]
-        content: ''        
-      
+          content: ''
+
       &--active
         @apply before:bg-space-green
-      
 
   // BUTTON SIZE
   .btn
-    @apply rounded-lg text-base font-semibold px-4 py-3 
+    @apply rounded-lg text-base font-semibold px-4 py-3
     @apply hover:cursor-pointer
 
     &--sm
@@ -254,14 +238,13 @@ body
     &--lg
       @apply rounded-xl
 
-
   .btn-default
     button
       @apply text-sm
 
   .btn-large
     @apply py-2.5 px-4 border-[3px]
-    border-radius: 0.75rem!important
+      border-radius: 0.75rem!important
     &:before
       border-radius: 0.75rem!important
     button
@@ -272,12 +255,10 @@ body
     button
       @apply text-xs font-semibold
 
-
   // STATUS
 
   .status-red
     @apply bg-red-100 text-red-500
-
 
   // todo needs refactor
   .navbar-dropdown__item
@@ -290,18 +271,15 @@ body
       &__title
         @apply text-white text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text
 
-
 //@layer utilities
 //  .primary-shadow-xl
 //    filter: drop-shadow(0px 8px 18px rgba(81, 88, 246, 0.15))
-
-
 
 // NORMAL CLASSES
 
 .content-wrapper
   @apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto
-  min-height: calc(100vh - 65px)
+    min-height: calc(100vh - 65px)
 
 .countdown-container
   div
@@ -313,7 +291,6 @@ body
 
     &:last-child
       @apply text-label text-sm font-medium
-
 
 .about-section
   @apply mb-6
