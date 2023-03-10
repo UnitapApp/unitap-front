@@ -57,32 +57,32 @@ export const ClaimContext = createContext<{
   chainListSearchResult: [],
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
-  claim: (chainPK: number) => {},
-  claimNonEVM: (chainPK: number, address: string) => {},
+  claim: (chainPK: number) => { },
+  claimNonEVM: (chainPK: number, address: string) => { },
   activeClaimReceipt: null,
   activeClaimHistory: [],
-  closeClaimModal: () => {},
-  openClaimModal: (chain: Chain) => {},
+  closeClaimModal: () => { },
+  openClaimModal: (chain: Chain) => { },
   activeChain: null,
   activeNonEVMChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
-  retryClaim: () => {},
-  openBrightIdModal: () => {},
-  closeBrightIdModal: () => {},
-  openClaimNonEVMModal: () => {},
-  closeClaimNonEVMModal: () => {},
+  retryClaim: () => { },
+  openBrightIdModal: () => { },
+  closeBrightIdModal: () => { },
+  openClaimNonEVMModal: () => { },
+  closeClaimNonEVMModal: () => { },
   brightidModalStatus: BrightIdModalState.CLOSED,
   claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
-  openHaveBrightIdAccountModal: () => {},
-  closeHaveBrightIdAccountModal: () => {},
+  openHaveBrightIdAccountModal: () => { },
+  closeHaveBrightIdAccountModal: () => { },
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
-  openBrightIdConnectionModal: () => {},
-  closeBrightIdConnectionModal: () => {},
+  openBrightIdConnectionModal: () => { },
+  closeBrightIdConnectionModal: () => { },
   brightIdConnectionModalStatus: BrightIdConnectionModalState.CLOSED,
   selectedNetwork: Network.MAINNET,
   selectedChainType: ChainType.EVM,
-  setSelectedNetwork: (network: Network) => {},
-  setSelectedChainType: (chainType: ChainType) => {},
+  setSelectedNetwork: (network: Network) => { },
+  setSelectedChainType: (chainType: ChainType) => { },
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -101,15 +101,15 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(BrightIdConnectionModalState.CLOSED);
 
   const [activeChain,
-     setActiveChain]
-   = useState<Chain | null>(null);
+    setActiveChain]
+    = useState<Chain | null>(null);
   const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
 
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
 
   const { account: address } = useWeb3React();
-  const [ userToken, setToken ] = useToken();
+  const [userToken, setToken] = useToken();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
@@ -122,7 +122,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     try {
       const newChainList = await getChainList();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
@@ -130,7 +130,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
       try {
         const newClaimHistory = await getActiveClaimHistory(userToken, address);
         setActiveClaimHistory(newClaimHistory);
-      } catch (e) {}
+      } catch (e) { }
     }
   }, [address, userToken]);
 
@@ -140,16 +140,18 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, [fastRefresh, updateActiveClaimHistory, updateChainList]);
 
   useEffect(() => {
-    if (activeChain)
-     {
+    if (activeChain) {
       setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain)
       );
+    } else if (activeNonEVMChain) {
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain)
+      );
     }
-  }, [activeChain,
-     setActiveClaimReceipt, activeClaimHistory]);
+  }, [activeChain, activeNonEVMChain,
+    setActiveClaimReceipt, activeClaimHistory]);
 
   const openClaimModal = useCallback((chain: Chain) => {
-    
+
     if (chain.chainType === ChainType.EVM) {
       setActiveChain(chain);
     } else if (chain.chainType === ChainType.NONEVM) {
@@ -171,10 +173,10 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
         getClaimBoxState(address, userProfile, activeChain,
-           activeClaimReceipt, claimBoxStatus, claimRequests),
+          activeClaimReceipt, claimBoxStatus, claimRequests),
       ),
     [address, userProfile, activeClaimReceipt, activeChain,
-       claimRequests, activeClaimHistory],
+      claimRequests, activeClaimHistory],
   );
 
   const claim = useCallback(
@@ -213,7 +215,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     },
     [userToken, claimRequests, updateActiveClaimHistory],
   );
-  
+
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
   const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
 
@@ -221,7 +223,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
     [searchPhrase, chainList, selectedNetwork, selectedChainType],
   );
-  
+
   const chainListSearchSimpleResult = useMemo(
     () => searchChainListSimple(searchPhrase, chainList),
     [searchPhrase, chainList],
@@ -237,7 +239,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeBrightIdModal = () => {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
-  
+
   const openClaimNonEVMModal = () => {
     setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
   };
@@ -252,7 +254,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeHaveBrightIdAccountModal = () => {
     setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.CLOSED);
   };
-  
+
   const openBrightIdConnectionModal = () => {
     setBrightIdConnectionModalStatus(BrightIdConnectionModalState.OPENED);
   };
