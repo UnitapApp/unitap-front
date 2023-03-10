@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI } from "api";
+import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI } from "api";
 import { UserProfile } from "types";
 import useToken from "./useToken";
 import { useWeb3React } from "@web3-react/core";
@@ -10,7 +10,8 @@ export const UserProfileContext = createContext<{
   loading: boolean;
   lastUsedWalletAddress: string | null;
   weeklyChainClaimLimit: number | null;
-}>({ userProfile: null, refreshUserProfile: null, loading: false, lastUsedWalletAddress: null, weeklyChainClaimLimit: null });
+  remainingClaims: number | null;
+}>({ userProfile: null, refreshUserProfile: null, loading: false, lastUsedWalletAddress: null, weeklyChainClaimLimit: null, remainingClaims: null });
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -18,6 +19,8 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [lastUsedWalletAddress, setlastUsedWalletAddress] = useState<string | null>(null);
   const [userToken, setToken] = useToken();
   const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
+  const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
+
   const { account } = useWeb3React();
 
   const setNewUserProfile = useCallback((newUserProfile: UserProfile) => {
@@ -55,10 +58,17 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
       setWeeklyChainClaimLimit(newWeeklyChainClaimLimit)
     }
 
+    const getRemainingClaims = async () => {
+      const newRemainingClaims = await getRemainingClaimsAPI(userToken!);
+      setRemainingClaims(newRemainingClaims.totalWeeklyClaimsRemaining)
+    }
+
     if (userToken && userProfile) {
       getWeeklyChainClaimLimit()
+      getRemainingClaims()
     } else {
       setWeeklyChainClaimLimit(null)
+      setRemainingClaims(null)
     }
   }, [userProfile, userToken])
 
@@ -77,7 +87,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, [account]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, lastUsedWalletAddress, weeklyChainClaimLimit }}>
+    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, lastUsedWalletAddress, weeklyChainClaimLimit, remainingClaims }}>
       {children}
     </UserProfileContext.Provider>
   );

@@ -68,3 +68,13 @@ export async function getWeeklyChainClaimLimitAPI(token: string) {
   })
   return response.data;
 }
+
+export async function getRemainingClaimsAPI(token: string) {
+  const response = await axiosInstance.get('/api/v1/user/remainig-claims/', {
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
+  return response.data;
+}
+
