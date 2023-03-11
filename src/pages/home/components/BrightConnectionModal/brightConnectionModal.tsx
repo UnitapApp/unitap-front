@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { BrightConnectionModalWrapper } from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
+import { BrightConnectionModalWrapper, CopyLink } from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
@@ -39,14 +39,10 @@ const BrightConnectionModalBody = () => {
     }
   }, [keys, keys?.address])
 
-  // const copyVerificationUrl = async () => {
-  //   try {
-  //     await copyToClipboard(verificationUrl);
-  //     alert('Copied');
-  //   } catch (e) {
-  //     alert('Could not copy the text');
-  //   }
-  // };
+  const openVerificationUrl = async () => {
+    if (!keys?.address) return;
+    window.open(`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`, '_blank');
+  };
 
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
@@ -83,7 +79,7 @@ const BrightConnectionModalBody = () => {
       data-testid="brightid-modal"
     >
       <p className="scan-qr-text text-sm text-white mb-3">Scan QR Code</p>
-      {signedPrivateKey && (
+      {keys?.address && (
         <span className="qr-code z-10 mb-4 rounded-md overflow-hidden">
           <QRCode
             value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`}
@@ -97,19 +93,19 @@ const BrightConnectionModalBody = () => {
         </span>
       )}
       <p className="text-xs text-white mb-4">or</p>
-      {/* <CopyLink
-        onClick={copyVerificationUrl}
+      <CopyLink
+        onClick={() => openVerificationUrl()}
         data-testid="brightid-copy-link"
         className="flex text-space-green mb-10 z-10"
       >
-        <Icon
+        {/* <Icon
           iconSrc={process.env.PUBLIC_URL + '/assets/images/copy-link.png'}
           width="16px"
           height="19px"
           className="mr-3"
-        />
+        /> */}
         <p className="text-space-green font-medium cursor-pointer hover:underline">Visit Link</p>
-      </CopyLink> */}
+      </CopyLink>
       <span className="notice flex mb-3">
         <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
         <p className="text-xs text-gray90 font-light"> Submit Verification after verifing with brighID app. </p>

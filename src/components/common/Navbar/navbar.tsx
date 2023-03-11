@@ -78,15 +78,10 @@ const Navbar = () => {
             <BrightPrimaryButton
               data-testid="brightid-show-modal"
               mb={2}
-              disabled={!account}
               fontSize="12px"
               fontWeight="800"
               minWidth="150px"
-              onClick={() => {
-                if (userProfile && userProfile.profile.is_meet_verified) {
-                  openBrightIdModal();
-                }
-              }}
+              onClick={() => openBrightIdModal()}
             >
               {connectBrightButtonLabel}
             </BrightPrimaryButton>
