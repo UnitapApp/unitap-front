@@ -144,7 +144,8 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                 >
                   <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
                 </ClaimButton>
-              ) : (
+              ) : 
+                activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk)?.status === '1' ? (
                 <ClaimedButton
                   data-testid={`chain-claimed-${chain.pk}`}
                   mlAuto
@@ -156,6 +157,15 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                 >
                   <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
                 </ClaimedButton>
+              ) : (
+                <ClaimButton
+                  data-testid={`chain-show-claim-${chain.pk}`}
+                  mlAuto
+                  onClick={() => openClaimModal(chain)}
+                  className="text-sm m-auto"
+                >
+                  <p>Pending ...</p>
+                </ClaimButton>
               )}
             </div>
           </div>

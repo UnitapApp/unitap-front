@@ -30,20 +30,20 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
   const mounted = useRef(false);
 
-  const [lottieLoaded, setLottieLoaded] = useState(false);
   useEffect(() => {
     if (claimBoxStatus.status === ClaimBoxState.PENDING) {
-      if (!lottieLoaded) {
-        lottie.loadAnimation({
-          container: document.querySelector('#animation') as HTMLInputElement,
-          animationData: animation,
-          loop: true,
-          autoplay: true,
-        });
-        setLottieLoaded(true);
+      const animationElement = document.querySelector('#animation');
+      if (animationElement) {
+        animationElement.innerHTML = '';
       }
+      lottie.loadAnimation({
+        container: document.querySelector('#animation') as HTMLInputElement,
+        animationData: animation,
+        loop: true,
+        autoplay: true,
+      });
     }
-  }, [claimBoxStatus, lottieLoaded]);
+  }, [claimBoxStatus]);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
