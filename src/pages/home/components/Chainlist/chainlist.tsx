@@ -135,7 +135,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                 <NoCurrencyButton disabled fontSize="13px">
                   Empty
                 </NoCurrencyButton>
-              ) : !activeClaimHistory.find((claim: ClaimReceipt) => claim.pk.toString() === chain.chainId) ? (
+              ) : !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk) ? (
                 <ClaimButton
                   data-testid={`chain-show-claim-${chain.pk}`}
                   mlAuto

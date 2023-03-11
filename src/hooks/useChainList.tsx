@@ -125,13 +125,13 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
-    if (address && userToken) {
+    if (userToken) {
       try {
-        const newClaimHistory = await getActiveClaimHistory(userToken, address);
+        const newClaimHistory = await getActiveClaimHistory(userToken);
         setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }
-  }, [address, userToken]);
+  }, [userToken]);
 
   useEffect(() => {
     updateChainList();
@@ -140,9 +140,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     if (activeChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain));
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain, 'EVM'));
     } else if (activeNonEVMChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain));
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain, 'NONEVM'));
     }
   }, [activeChain, activeNonEVMChain, setActiveClaimReceipt, activeClaimHistory]);
 

@@ -7,18 +7,22 @@ import { ClaimBoxState, ClaimNonEVMModalState } from 'types';
 
 import { formatWeiBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
-import { SecondaryButton } from 'components/basic/Button/button';
-import { getTxUrl } from 'utils';
+import { ClaimBoxRequestButton, SecondaryButton } from 'components/basic/Button/button';
+import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
+import { DropIconWrapper } from '../ClaimModal/claimModal.style';
+import WalletAddress from '../ClaimModal/walletAddress';
 
 const ClaimNonEVMModalContent = () => {
   const { activeNonEVMChain } = useContext(ClaimContext);
   const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState<string>('');
   const { activeClaimReceipt } = useContext(ClaimContext);
+  const [loading, setLoading] = useState(false);
 
   const { claimNonEVM } = useContext(ClaimContext);
 
   const handleClaimNonEVMClicked = () => {
     if (activeNonEVMChain) {
+      setLoading(true);
       claimNonEVM(activeNonEVMChain.pk, nonEVMWalletAddress);
     }
   }
@@ -43,13 +47,31 @@ const ClaimNonEVMModalContent = () => {
         </div>
 
         <button
-          className={`btn ${!nonEVMWalletAddress ? 'btn--disabled' : 'btn--primary-outlined'} w-full`}
+          className={`btn ${!nonEVMWalletAddress || loading ? 'btn--disabled' : 'btn--primary-outlined'} w-full`}
           onClick={() => handleClaimNonEVMClicked()}
         >
-          <p> Claim {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} </p>
+          {loading ?
+            <p> Claiming {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} </p>
+            :
+            <p> Claim {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} </p>
+          }
         </button>
       </>
     )
+  }
+
+  function renderRequestBody() {
+    return (
+      <>
+        <Text width="100%" fontSize="14">
+          Wallet Address
+        </Text>
+        <WalletAddress fontSize="12">{shortenAddress(nonEVMWalletAddress)}</WalletAddress>
+        <ClaimBoxRequestButton width="100%" fontSize="20px" data-testid={`chain-claim-action-${activeNonEVMChain!.pk}`}>
+          Pending ...
+        </ClaimBoxRequestButton>
+      </>
+    );
   }
 
   function renderSuccessBody() {
@@ -76,10 +98,11 @@ const ClaimNonEVMModalContent = () => {
 
   function getClaimBoxState() {
     if (activeClaimReceipt) {
+      if (loading) setLoading(false);
       if (activeClaimReceipt.status === "1") {
         return ClaimBoxState.VERIFIED;
-      } else {
-        return ClaimBoxState.INITIAL;
+      } else if (activeClaimReceipt.status === "0") {
+        return ClaimBoxState.REQUEST;
       }
     } else {
       return ClaimBoxState.INITIAL;
@@ -91,6 +114,8 @@ const ClaimNonEVMModalContent = () => {
       return renderInitialBody();
     } else if (getClaimBoxState() === ClaimBoxState.VERIFIED) {
       return renderSuccessBody();
+    } else if (getClaimBoxState() === ClaimBoxState.REQUEST) {
+      return renderRequestBody();
     }
   }
 
@@ -101,8 +126,8 @@ const ClaimNonEVMModalContent = () => {
     >
       <Icon
         data-testid="chain-logo"
-        className="chain-logo z-10 mt-20 mb-14"
-        iconSrc={activeNonEVMChain!.gasImageUrl || activeNonEVMChain!.logoUrl}
+        className="chain-logo z-10 mt-14 mb-10"
+        iconSrc={getChainClaimIcon(activeNonEVMChain!) || activeNonEVMChain!.logoUrl}
         width="auto"
         height="110px"
       />
