@@ -50,10 +50,8 @@ const BrightConnectionModalBody = () => {
 
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
-    console.log(keys, signedPrivateKey);
 
     const refreshedUserProfile = await refreshUserProfile(keys.address, signedPrivateKey);
-    console.log(refreshedUserProfile);
 
     // if (!refreshUserProfile || loading) {
     //   return;

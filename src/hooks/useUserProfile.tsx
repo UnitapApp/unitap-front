@@ -8,15 +8,13 @@ export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
   refreshUserProfile: ((address: string, signature: string) => Promise<UserProfile>) | null;
   loading: boolean;
-  lastUsedWalletAddress: string | null;
   weeklyChainClaimLimit: number | null;
   remainingClaims: number | null;
-}>({ userProfile: null, refreshUserProfile: null, loading: false, lastUsedWalletAddress: null, weeklyChainClaimLimit: null, remainingClaims: null });
+}>({ userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null });
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
-  const [lastUsedWalletAddress, setlastUsedWalletAddress] = useState<string | null>(null);
   const [userToken, setToken] = useToken();
   const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
   const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
@@ -73,23 +71,13 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, [userProfile, userToken])
 
   useEffect(() => {
-    const storedWalletAddress = localStorage.getItem("walletAddress");
-    if (storedWalletAddress) {
-      setlastUsedWalletAddress(storedWalletAddress);
-    }
-  }, []);
-
-  useEffect(() => {
     if (account && userToken) {
-      const response = setWalletAPI(userToken, account, "EVM");
-      console.log(response);
-      localStorage.setItem("walletAddress", account);
-      setlastUsedWalletAddress(account);
+      setWalletAPI(userToken, account, "EVM");
     }
   }, [account, userToken]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, lastUsedWalletAddress, weeklyChainClaimLimit, remainingClaims }}>
+    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims }}>
       {children}
     </UserProfileContext.Provider>
   );

@@ -169,9 +169,7 @@ const RenderNavbarConnectionStatus = () => {
 
   const { userProfile } = useContext(UserProfileContext);
   const isBrightIdConnected = !!userProfile;
-
-  const { lastUsedWalletAddress } = useContext(UserProfileContext);
-  const hasLastUsedWalletAddress = !!lastUsedWalletAddress;
+  const hasEVMWallet = !!userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
 
   return (
     <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3">
@@ -180,7 +178,7 @@ const RenderNavbarConnectionStatus = () => {
       {!isBrightIdConnected ? (
         <RenderNavbarLoginBrightIdButton />
       ) : !isWalletConnected ? (
-        !hasLastUsedWalletAddress ? (
+        !hasEVMWallet ? (
           <RenderNavbarConnectWalletButton />
         ) : (
           <RenderNavbarWalletAddress active={false} />
@@ -227,7 +225,8 @@ const RenderNavbarConnectWalletButton = () => {
 
 const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
   const { tryActivation } = useWalletActivation();
-  const { lastUsedWalletAddress } = useContext(UserProfileContext);
+  const { userProfile } = useContext(UserProfileContext);
+  const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
 
   return (
     <>
@@ -238,7 +237,7 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
         className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}
         onClick={tryActivation}
       >
-        {shortenAddress(lastUsedWalletAddress)}
+        {shortenAddress(EVMWallet!.address)}
       </button>
     </>
   );

@@ -41,13 +41,19 @@ export enum BrightIdVerificationStatus {
   VERIFIED = '1',
 }
 
+type UserWallet = {
+  walletType: string;
+  pk: number;
+  address: string;
+}
+
 export type UserProfile = {
   profile: {
     initial_context_id: string;
     is_aura_verified: boolean;
     is_meet_verified: boolean;
     pk: PK;
-    wallets: [];
+    wallets: UserWallet[];
   },
   token: string;
 };
