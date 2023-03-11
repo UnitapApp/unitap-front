@@ -86,3 +86,8 @@ export async function setWalletAPI(token: string, wallet: string, walletType: st
   })
   return response.data;
 }
+
+export async function sponsorAPI(address: string) {
+  const response = await axiosInstance.post('/api/test/user/sponsor/', {address: address})
+  return response.data;
+}
