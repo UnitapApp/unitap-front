@@ -272,13 +272,13 @@ body {
       @apply rounded-xl;
     }
 
-    &--default {
+    &-default {
       button {
         @apply text-sm;
       }
     }
 
-    &--large {
+    &-large {
       @apply py-2.5 px-4 border-[3px] #{!important};
       border-radius: 0.75rem !important;
 
@@ -291,7 +291,7 @@ body {
       }
     }
 
-    &--small {
+    &-small {
       @apply px-3 py-2;
 
       button {

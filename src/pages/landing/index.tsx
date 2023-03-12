@@ -140,7 +140,7 @@ const Landing: FC = () => {
               className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
               title={'Gas Tap'}
               buttonTitle={'Go to Tap'}
-              buttonClass={'gradient-outline-button'}
+              buttonClass={'gradient-outline-button text-gray100'}
             >
               {sortedChainList.length > 0 && (
                 <>
@@ -177,7 +177,7 @@ const Landing: FC = () => {
               className={'h-full after:bg-tokentap-texture flex-1 '}
               title={'Token Tap'}
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
             ></Widget>
           </section>
 
@@ -190,7 +190,7 @@ const Landing: FC = () => {
                 iconSize={'w-8 h-7'}
                 title={'Prize Tap'}
                 buttonTitle={'Go to Tap'}
-                buttonClass={'gradient-outline-button'}
+                buttonClass={'gradient-outline-button text-gray100'}
               ></Widget>
             </Link>
           </section>
@@ -207,7 +207,7 @@ const Landing: FC = () => {
               title={tap.name}
               unClickable
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
             ></Widget>
           ))}
         </section>
