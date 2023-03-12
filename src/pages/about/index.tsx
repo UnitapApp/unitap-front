@@ -110,7 +110,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className="about-section" id='prize-tap'>
+            <div className="about-section" id="prize-tap">
               <div className="about-section__heading">
                 <Icon
                   className="about-section__heading__icon"
@@ -122,9 +122,9 @@ const About = () => {
               </div>
               <p className="about-section__text">
                 Token and NFT launchpads can be sybil attacked. KYC platforms keep out legitimate users and fail to keep
-                out attackers. Unitap will offer a public goods launchpad called Launch Tap.In Launch Tap, creators have
-                the option to gate the sale with BrightID. Also, instead of paying a large fee to launch pad platforms,
-                in Launch Tap, every unique human will benefit from each launch through Prize Tap.
+                out attackers. Unitap will offer a public goods launchpad called Launch Tap. In Launch Tap, creators
+                have the option to gate the sale with BrightID. Also, instead of paying a large fee to launch pad
+                platforms, in Launch Tap, every unique human will benefit from each launch through Prize Tap.
               </p>
             </div>
 
@@ -139,7 +139,7 @@ const About = () => {
                 <p className="about-section__heading__title">Prize Tap</p>
               </div>
               <p className="about-section__text">
-                Unitap offers the ability for users to access raffles for valuable items.Instead of each user receiving
+                Unitap offers the ability for users to access raffles for valuable items. Instead of each user receiving
                 a tiny amount of a token, they can instead join a raffle where, if selected, they could win a much
                 larger prize. A main source of prizes will be Launch Tap: 1% of each launch will be distributed to
                 verified unique humans via Prize Tap. This will provide buzz around the launch and give Unitap users a

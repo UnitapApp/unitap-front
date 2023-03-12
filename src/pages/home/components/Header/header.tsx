@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import { BrightIdVerificationStatus } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { range } from 'utils';
 
@@ -16,7 +15,7 @@ const Spaceship = styled.img`
 `;
 
 const Header = () => {
-  const { userProfile } = useContext(UserProfileContext);
+  const { userProfile, weeklyChainClaimLimit, remainingClaims } = useContext(UserProfileContext);
 
   return (
     <div className="header h-[152px] bg-gray20 rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6">
@@ -27,11 +26,12 @@ const Header = () => {
       </div>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            userProfile.totalWeeklyClaimsRemaining == 5 ? (
+          {userProfile?.profile.is_meet_verified && weeklyChainClaimLimit && remainingClaims ? (
+            weeklyChainClaimLimit === remainingClaims ? (
               <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
                 <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
-                  You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
+                  You can claim <span className="claimed-left text-space-green">{remainingClaims}</span> gas fees in
+                  this round
                 </p>
               </div>
             ) : (
@@ -50,28 +50,19 @@ const Header = () => {
 };
 
 const Dabes = () => {
-  const { chainList } = useContext(ClaimContext);
-  const [totalRemainingClaims, setTotalRemainingClaims] = useState(0);
-
-  useEffect(() => {
-    let total = chainList?.reduce((acc, chain) => {
-      if (chain.claimed && chain.claimed !== 'N/A') {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-
-    setTotalRemainingClaims(total);
-  }, [chainList]);
+  const { chainList, activeClaimHistory } = useContext(ClaimContext);
+  const { remainingClaims } = useContext(UserProfileContext);
 
   return (
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
         {chainList?.map((chain) => {
-          if (chain.claimed && chain.claimed !== 'N/A')
-            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl} width="36px" height="auto" />;
+          if (activeClaimHistory.find((claim) => claim.pk.toString() === chain.chainId)) {
+            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl || chain.logoUrl} width="36px" height="40px" />;
+          }
+          return null;
         })}
-        {range(0, 5 - totalRemainingClaims).map((i) => {
+        {range(0, remainingClaims!).map((i) => {
           return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
         })}
       </>

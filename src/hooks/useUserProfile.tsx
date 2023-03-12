@@ -1,50 +1,83 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { createUserProfile, getUserProfile } from "api";
+import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI, setWalletAPI } from "api";
 import { UserProfile } from "types";
+import useToken from "./useToken";
 import { useWeb3React } from "@web3-react/core";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
-  refreshUserProfile: (() => Promise<UserProfile>) | null;
+  refreshUserProfile: ((address: string, signature: string) => Promise<UserProfile>) | null;
   loading: boolean;
-}>({ userProfile: null, refreshUserProfile: null, loading: false });
+  weeklyChainClaimLimit: number | null;
+  remainingClaims: number | null;
+}>({ userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null });
 
 export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const { account: address } = useWeb3React();
-
   const [loading, setLoading] = useState(false);
+  const [userToken, setToken] = useToken();
+  const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
+  const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
 
-  const refreshUserProfile = useCallback(async () => {
+  const { account } = useWeb3React();
+
+  const setNewUserProfile = useCallback((newUserProfile: UserProfile) => {
+    setUserProfile(newUserProfile);
+    setToken(newUserProfile.token);
+  }, [setToken]);
+
+  const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
     try {
-      const refreshedUserProfile: UserProfile = await getUserProfile(userProfile!.address);
-      setUserProfile(refreshedUserProfile);
+      const refreshedUserProfile: UserProfile = await getUserProfile(address, signature);
+      setNewUserProfile(refreshedUserProfile)
       setLoading(false);
       return refreshedUserProfile;
     } catch (ex) {
       setLoading(false);
       throw ex;
     }
-  }, [userProfile, setUserProfile]);
+  };
 
   useEffect(() => {
-    const fun = async () => {
-      if (address) {
-        let newUserProfile: UserProfile | null = null;
-        try {
-          newUserProfile = await getUserProfile(address);
-        } catch (ex) {
-          newUserProfile = await createUserProfile(address);
-        }
-        setUserProfile(newUserProfile);
-      }
-    };
-    fun();
-  }, [address]);
+    const getUserProfileWithToken = async () => {
+      const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken!);
+      setNewUserProfile(userProfileWithToken);
+    }
+
+    if (userToken && !userProfile) {
+      getUserProfileWithToken();
+    }
+  }, [userToken, userProfile, setNewUserProfile])
+
+  useEffect(() => {
+    const getWeeklyChainClaimLimit = async () => {
+      const newWeeklyChainClaimLimit: number = await getWeeklyChainClaimLimitAPI(userToken!);
+      setWeeklyChainClaimLimit(newWeeklyChainClaimLimit)
+    }
+
+    const getRemainingClaims = async () => {
+      const newRemainingClaims = await getRemainingClaimsAPI(userToken!);
+      setRemainingClaims(newRemainingClaims.totalWeeklyClaimsRemaining)
+    }
+
+    if (userToken && userProfile) {
+      getWeeklyChainClaimLimit()
+      getRemainingClaims()
+    } else {
+      setWeeklyChainClaimLimit(null)
+      setRemainingClaims(null)
+    }
+  }, [userProfile, userToken])
+
+  useEffect(() => {
+    if (account && userToken) {
+      setWalletAPI(userToken, account, "EVM");
+    }
+  }, [account, userToken]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading }}>
+    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims }}>
       {children}
     </UserProfileContext.Provider>
   );

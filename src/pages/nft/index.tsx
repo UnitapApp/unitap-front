@@ -6,12 +6,11 @@ import Footer from 'components/common/Footer/footer';
 import Collapse from './components/Collapse/Collapse';
 import NFTTimer from './components/NFTTimer/nftTimer';
 import MintNFTCard from './components/MintNFTCard/mintNftCard';
-import Icon from 'components/basic/Icon/Icon';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
 
 const NFT = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(true);
+  const [isPreLaunch, setIsPreLaunch] = useState(false);
 
   const [countClicked, setCountClicked] = useState(0);
 
@@ -38,7 +37,7 @@ const NFT = () => {
     const timer = setTimeout(() => {
       setCountClicked(0);
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, [countClicked]);
 
@@ -95,12 +94,12 @@ const NFT = () => {
           </div>
           <Collapse className="mb-4" title="Unitap Pass Sale" icon="assets/images/nft/nft-pass-sale-icon.svg" initState>
             <>
-              <p className="collapse-text">
+              <p className="collapse-text mb-8">
                 10,000 Unitap Passes total will be sold starting at 0.1 Eth each using a small batch sale followed by a
                 BrightID Aura gated sale.
               </p>
               <p className="collapse-title">Small batch sale</p>
-              <p className="collapse-text">
+              <p className="collapse-text mb-8">
                 A maximum of 2,000 Unitap Passes will be sold in small batches, with a starting batch size of 100.
                 Anyone can buy Passes up to the number left in the current batch. When a batch sells out, Unitap will
                 decide whether to start a new batch or to transition to the Aura gated sale.

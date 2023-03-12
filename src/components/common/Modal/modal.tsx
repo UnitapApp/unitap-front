@@ -34,7 +34,7 @@ const Modal = ({ spaceman, title, titleLeft, children, isOpen, closeModalHandler
             >
               <Icon iconSrc="assets/images/modal/exit.svg" />
             </span>
-            <ModalChildrenWrapper className="bg-gray20" size={size}>
+            <ModalChildrenWrapper className="bg-gray20 max-h-[70vh] !rounded-none styled-scroll" size={size}>
               {children}
             </ModalChildrenWrapper>
           </ModalContent>

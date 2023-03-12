@@ -1,13 +1,13 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, getActiveClaimHistory, getChainList } from 'api';
+import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
 import {
   BrightIdConnectionModalState,
   BrightIdModalState,
-  BrightIdVerificationStatus,
   Chain,
   ChainType,
   ClaimBoxState,
   ClaimBoxStateContainer,
+  ClaimNonEVMModalState,
   ClaimReceipt,
   HaveBrightIdAccountModalState,
   Network,
@@ -19,6 +19,7 @@ import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import removeRequest from 'utils/hook/claimRequests';
 import { useWeb3React } from '@web3-react/core';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
+import useToken from './useToken';
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -26,15 +27,21 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claim: (chainPK: number) => void;
+  claimNonEVM: (chainPK: number, address: string) => void;
   activeClaimReceipt: ClaimReceipt | null;
+  activeClaimHistory: ClaimReceipt[];
   closeClaimModal: () => void;
   openClaimModal: (chain: Chain) => void;
   activeChain: Chain | null;
+  activeNonEVMChain: Chain | null;
   claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
   retryClaim: () => void;
   openBrightIdModal: () => void;
   closeBrightIdModal: () => void;
+  openClaimNonEVMModal: () => void;
+  closeClaimNonEVMModal: () => void;
   brightidModalStatus: BrightIdModalState;
+  claimNonEVMModalStatus: ClaimNonEVMModalState;
   openHaveBrightIdAccountModal: () => void;
   closeHaveBrightIdAccountModal: () => void;
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState;
@@ -51,15 +58,21 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
   claim: (chainPK: number) => {},
+  claimNonEVM: (chainPK: number, address: string) => {},
   activeClaimReceipt: null,
+  activeClaimHistory: [],
   closeClaimModal: () => {},
   openClaimModal: (chain: Chain) => {},
   activeChain: null,
+  activeNonEVMChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
   retryClaim: () => {},
   openBrightIdModal: () => {},
   closeBrightIdModal: () => {},
+  openClaimNonEVMModal: () => {},
+  closeClaimNonEVMModal: () => {},
   brightidModalStatus: BrightIdModalState.CLOSED,
+  claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
   openHaveBrightIdAccountModal: () => {},
   closeHaveBrightIdAccountModal: () => {},
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
@@ -83,38 +96,42 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     lastFailPk: null,
   });
   const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
-  const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(HaveBrightIdAccountModalState.CLOSED);
-  const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(BrightIdConnectionModalState.CLOSED);
+  const [claimNonEVMModalStatus, setClaimNonEVMModalStatus] = useState<ClaimNonEVMModalState>(
+    ClaimNonEVMModalState.CLOSED,
+  );
+  const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(
+    HaveBrightIdAccountModalState.CLOSED,
+  );
+  const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(
+    BrightIdConnectionModalState.CLOSED,
+  );
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
+  const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
 
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
 
-  const { account: address, account } = useWeb3React();
+  const { account: address } = useWeb3React();
+  const [userToken] = useToken();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
-  const brightIdVerified = useMemo(
-    () => userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED,
-    [userProfile],
-  );
-
   const updateChainList = useCallback(async () => {
     try {
-      const newChainList = await getChainList(userProfile ? address : null);
+      const newChainList = await getChainList();
       setChainList(newChainList);
     } catch (e) {}
-  }, [address, userProfile]);
+  }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
-    if (address) {
+    if (userToken) {
       try {
-        const newClaimHistory = await getActiveClaimHistory(address);
+        const newClaimHistory = await getActiveClaimHistory(userToken);
         setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }
-  }, [address]);
+  }, [userToken]);
 
   useEffect(() => {
     updateChainList();
@@ -123,12 +140,19 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     if (activeChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain));
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain, 'EVM'));
+    } else if (activeNonEVMChain) {
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain, 'NONEVM'));
     }
-  }, [activeChain, setActiveClaimReceipt, activeClaimHistory]);
+  }, [activeChain, activeNonEVMChain, setActiveClaimReceipt, activeClaimHistory]);
 
   const openClaimModal = useCallback((chain: Chain) => {
-    setActiveChain(chain);
+    if (chain.chainType === ChainType.EVM) {
+      setActiveChain(chain);
+    } else if (chain.chainType === ChainType.NONEVM) {
+      setActiveNonEVMChain(chain);
+      setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
+    }
   }, []);
 
   const closeClaimModal = useCallback(() => {
@@ -142,20 +166,20 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(
     () =>
       setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(address, brightIdVerified, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
+        getClaimBoxState(address, userProfile, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
       ),
-    [address, brightIdVerified, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
+    [address, userProfile, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
   );
 
   const claim = useCallback(
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
-      if (!brightIdVerified || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
         return;
       }
       setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
       try {
-        await claimMax(account!, claimChainPk);
+        await claimMax(userToken, claimChainPk);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
@@ -163,9 +187,27 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [account, brightIdVerified, claimRequests, updateActiveClaimHistory],
+    [userToken, claimRequests, updateActiveClaimHistory],
   );
-  
+
+  const claimNonEVM = useCallback(
+    async (claimChainPk: number, address: string) => {
+      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+        return;
+      }
+      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      try {
+        await claimMaxNonEVMAPI(userToken, claimChainPk, address);
+        await updateActiveClaimHistory();
+        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
+      } catch (ex) {
+        await updateActiveClaimHistory();
+        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
+      }
+    },
+    [userToken, claimRequests, updateActiveClaimHistory],
+  );
+
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
   const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
 
@@ -173,7 +215,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
     [searchPhrase, chainList, selectedNetwork, selectedChainType],
   );
-  
+
   const chainListSearchSimpleResult = useMemo(
     () => searchChainListSimple(searchPhrase, chainList),
     [searchPhrase, chainList],
@@ -190,20 +232,27 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     setBrightidModalStatus(BrightIdModalState.CLOSED);
   };
 
+  const openClaimNonEVMModal = () => {
+    setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
+  };
+  const closeClaimNonEVMModal = () => {
+    setActiveNonEVMChain(null);
+    setClaimNonEVMModalStatus(ClaimNonEVMModalState.CLOSED);
+  };
+
   const openHaveBrightIdAccountModal = () => {
     setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.OPENED);
   };
   const closeHaveBrightIdAccountModal = () => {
     setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.CLOSED);
   };
-  
+
   const openBrightIdConnectionModal = () => {
     setBrightIdConnectionModalStatus(BrightIdConnectionModalState.OPENED);
   };
   const closeBrightIdConnectionModal = () => {
     setBrightIdConnectionModalStatus(BrightIdConnectionModalState.CLOSED);
   };
-
 
   return (
     <ClaimContext.Provider
@@ -213,15 +262,21 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         chainListSearchSimpleResult,
         changeSearchPhrase,
         claim,
+        claimNonEVM,
         activeClaimReceipt,
+        activeClaimHistory,
         openClaimModal,
         closeClaimModal,
         activeChain,
+        activeNonEVMChain,
         claimBoxStatus,
         retryClaim,
         openBrightIdModal,
         closeBrightIdModal,
+        openClaimNonEVMModal,
+        closeClaimNonEVMModal,
         brightidModalStatus,
+        claimNonEVMModalStatus,
         openHaveBrightIdAccountModal,
         closeHaveBrightIdAccountModal,
         haveBrightIdAccountModalStatus,

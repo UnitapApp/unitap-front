@@ -140,22 +140,23 @@ const Content: FC = () => {
 
   return (
     <div className="content-wrapper flex justify-center">
+      <Modal titleLeft="Select Chain" isOpen={modalState} size="medium" closeModalHandler={closeModalHandler}>
+        <SelectChainModal
+          closeModalHandler={closeModalHandler}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
+        ></SelectChainModal>
+      </Modal>
       <ContentCard className="bg-gray20 rounded-xl py-6 px-4 z-0">
         <img
           src="./assets/images/fund/provide-gas-fee-planet.svg"
           className="absolute -left-64 -top-16 scale-150 z-10"
         />
         <span className="z-100">
-          <p className="mt-[185px] text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+          <Icon className='mb-2' iconSrc='./assets/images/fund/provide-gas-fee-battery.svg' width="146px" height='auto'/>
+          <p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
           <p className="text-gray100 text-xs mb-3 z-1">99% of contributions will be distributed via the tap.</p>
           <p className="text-gray100 text-xs z-1">1% of contributions will fund Unitap development.</p>
-          <Modal titleLeft="Select Chain" isOpen={modalState} size="medium" closeModalHandler={closeModalHandler}>
-            <SelectChainModal
-              closeModalHandler={closeModalHandler}
-              selectedChain={selectedChain}
-              setSelectedChain={setSelectedChain}
-            ></SelectChainModal>
-          </Modal>
           <div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
             <div
               className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60"

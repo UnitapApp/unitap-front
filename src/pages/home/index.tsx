@@ -9,8 +9,10 @@ import SearchInput from './components/SearchInput/searchInput';
 import { Row } from 'components/basic/Row/row';
 import { Col } from 'components/basic/Col/col';
 import ClaimModal from './components/ClaimModal/claimModal';
-import { ChainType, Network } from 'types';
+import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
+import { ChainType } from 'types';
+import ClaimNonEVMModal from './components/ClaimNonEVMModal/claimNonEVMModal';
 
 const Home = () => {
   const { selectedNetwork, setSelectedNetwork } = useContext(ClaimContext);
@@ -19,12 +21,8 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className={'unitap-body'}>
-        <div
-          className={
-            'max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20'
-          }
-        >
+      <div className={'content-wrapper'}>
+        <div className={'flex flex-col justify-center items-center w-full'}>
           <Row>
             <Col xs={24} md={24} lg={24} xlg={24}>
               <Header />
@@ -36,7 +34,7 @@ const Home = () => {
             </Col>
             <Col className={'mb-1 lg:mb-0'} xs={0} md={0} lg={0.5} xlg={1.5}></Col>
             <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
-              {/* <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
+              <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl">
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${
                     selectedChainType === ChainType.EVM ? `text-white` : `text-gray80`
@@ -57,7 +55,7 @@ const Home = () => {
                 >
                   nonEVM
                 </div>
-              </div> */}
+              </div>
               <div className="switch flex items-center border-2 border-gray30 bg-gray40 rounded-xl ml-3">
                 <div
                   className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer ${
@@ -88,6 +86,7 @@ const Home = () => {
         </div>
       </div>
       <ClaimModal />
+      <ClaimNonEVMModal />
       <Footer />
     </>
   );

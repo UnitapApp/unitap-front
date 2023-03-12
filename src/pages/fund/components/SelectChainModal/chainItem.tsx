@@ -39,7 +39,7 @@ const ChainItem = (props: ChainItemProps) => {
 
   return (
     <div
-      className="bg-gray30 rounded-xl border-2 transition-all duration-50 border-gray50 hover:bg-gray40 hover:border-gray80 flex px-4 py-3.5 pl-3 items-center mt-3 cursor-pointer"
+      className="bg-gray30 rounded-xl border-2 transition-all duration-50 border-gray50 hover:bg-gray40 hover:border-gray80 flex px-4 py-3.5 pl-3 items-center mb-3 cursor-pointer last:mb-0"
       onClick={onClick}
       data-testid={props['data-testid']}
     >

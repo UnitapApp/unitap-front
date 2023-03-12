@@ -13,6 +13,8 @@ const FooterWrapper = styled.div`
   height: 65px;
   padding: ${DV.sizes.basePadding * 2}px;
   background: ${DV.colors.black3};
+  //bottom: 0;
+  //position: absolute;
 `;
 
 const PbyBright = styled(Icon)`

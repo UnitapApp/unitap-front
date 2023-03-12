@@ -7,7 +7,6 @@ import Landing from 'pages/landing';
 import Donate from 'pages/donate';
 import NFT from 'pages/nft';
 import About from 'pages/about';
-import TokenTap from 'pages/token-tap';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import { RefreshContextProvider } from './context/RefreshContext';
@@ -27,6 +26,7 @@ import TransactionUpdater from 'state/transactions/updater';
 import UserUpdater from 'state/user/updater';
 import { MulticallUpdater } from 'lib/state/multicall';
 import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
+import PrizeTap from 'pages/prize-tap';
 
 require('typeface-jetbrains-mono');
 
@@ -60,6 +60,7 @@ function App() {
                         <Route path={RoutePath.DONATE} element={<Donate />} />
                         <Route path={RoutePath.NFT} element={<NFT />} />
                         <Route path={RoutePath.ABOUT} element={<About />} />
+                        <Route path={RoutePath.PRIZE} element={<PrizeTap />} />
                         {/* <Route path={RoutePath.TOKEN} element={<TokenTap />} /> */}
                       </Routes>
                     </ScrollToTop>

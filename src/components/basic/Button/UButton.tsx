@@ -18,10 +18,6 @@ export type UButtonProps = PropsWithChildren<UButtonPropsInterface>;
 const UButton = (props: UButtonProps) => {
   const { className, buttonClassName, children, size, onClick, icon, unClickable } = props;
 
-  function buttonSize(size: string) {
-    return `btn-${size}`;
-  }
-
   return (
     <div
       onClick={onClick}

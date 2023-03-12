@@ -10,7 +10,7 @@ type NavbarDropdownProps = {
 };
 
 const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdownProps) => {
-  const [navItems, setNavItems] = React.useState([
+  const [navItems] = React.useState([
     {
       name: 'Home',
       link: RoutePath.LANDING,
@@ -37,9 +37,9 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
     },
     {
       name: 'Prize Tap',
-      link: null,
-      icon: 'assets/images/navbar/navbar-dropdown-soon.svg',
-      iconWidth: '33px',
+      link: RoutePath.PRIZE,
+      icon: 'assets/images/navbar/pr.svg',
+      iconWidth: '28px',
       iconHeight: 'auto',
       route: RoutePath.PRIZE,
     },
@@ -50,7 +50,7 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
 
   return (
     <div
-      className={`navbar-dropdown absolute z-10 top-[70px] right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
+      className={`navbar-dropdown absolute z-10 top-14 right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ''
       }`}
       onMouseEnter={() => onMouseEnter()}
@@ -62,7 +62,9 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
             key={item.name}
             onClick={() => (item.link ? navigate(item.link) : null)}
             className={`navbar-dropdown__item cursor-pointer border-gray40 transition-all duration-75 border-2 ${
-              location.pathname === item.route ? 'navbar-dropdown__item--active border-gray100' : item.link && 'hover:bg-gray20'
+              location.pathname === item.route
+                ? 'navbar-dropdown__item--active border-gray100'
+                : item.link && 'hover:bg-gray20'
             } ${!item.link && 'cursor-default'}`}
           >
             <p

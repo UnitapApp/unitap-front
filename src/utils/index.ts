@@ -63,7 +63,8 @@ export function getTxUrl(chain: Chain, txHash: string) {
 }
 
 export function getVerificationQr(userProfile: UserProfile) {
-  return userProfile.verificationUrl.replace("https://app.brightid.org/", "brightid://");
+  // return userProfile.verificationUrl.replace("https://app.brightid.org/", "brightid://");
+  return '';
 }
 
 export async function copyToClipboard(textToCopy: string) {

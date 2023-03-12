@@ -23,18 +23,39 @@ export type Chain = {
   needsFunding: boolean;
 };
 
+export type Prize = {
+  pk: PK;
+  image: string;
+  title: string;
+  enrolled: number;
+  source: string;
+  twitterLink: string;
+  discordLink: string;
+  description: string;
+  startTime: string;
+  FinishTime: string;
+};
+
 export enum BrightIdVerificationStatus {
   PENDING = '0',
   VERIFIED = '1',
 }
 
-export type UserProfile = {
-  pk: PK;
-  contextId: string;
+type UserWallet = {
+  walletType: string;
+  pk: number;
   address: string;
-  verificationUrl: string;
-  verificationStatus: BrightIdVerificationStatus;
-  totalWeeklyClaimsRemaining: number;
+}
+
+export type UserProfile = {
+  profile: {
+    initial_context_id: string;
+    is_aura_verified: boolean;
+    is_meet_verified: boolean;
+    pk: PK;
+    wallets: UserWallet[];
+  },
+  token: string;
 };
 
 export enum ClaimReceiptState {
@@ -77,6 +98,11 @@ export enum BrightIdModalState {
   CONNECTED_AND_VERIFIED = '4',
 }
 
+export enum ClaimNonEVMModalState {
+  CLOSED = '0',
+  OPENED = '1',
+}
+
 export enum TransactionState {
   IDLE = '0',
   PENDING = '1',
@@ -99,7 +125,7 @@ export enum Network {
   TESTNET = '1',
 }
 
-export enum ChainType { 
-  EVM = '0',
-  NONEVM = '1',
+export enum ChainType {
+  EVM = 'EVM',
+  NONEVM = 'NONEVM',
 }

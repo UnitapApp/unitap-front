@@ -39,7 +39,7 @@ describe("Submit Fund", () => {
     setupGetChainListServerGeneral();
     cy.route({
       method: "GET",
-      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      url: `/api/v1/chain/list/`,
       response: chainListAuthenticatedClaimedFirst,
       delay: CYPRESS_FAST_INTERVAL
     });

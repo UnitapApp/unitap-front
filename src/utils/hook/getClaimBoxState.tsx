@@ -1,13 +1,13 @@
-import { ClaimBoxState, ClaimReceiptState, Chain, ClaimReceipt, ClaimBoxStateContainer } from 'types';
+import { Chain, ClaimBoxState, ClaimBoxStateContainer, ClaimReceipt, ClaimReceiptState, UserProfile } from 'types';
 
 const getClaimBoxState = (
   address: string | null | undefined,
-  brightIdVerified: boolean,
+  userProfile: UserProfile | null,
   activeChain: Chain | null,
   activeClaimReceipt: ClaimReceipt | null,
   claimBoxStatus: ClaimBoxStateContainer,
   claimRequests: number[],
-) => {
+) => {  
   //closed claim box
   if (!activeChain) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
 
@@ -15,10 +15,10 @@ const getClaimBoxState = (
   if (!address) return { status: ClaimBoxState.WALLET_NOT_CONNECTED, lastFailPk: null };
 
   //wallet not conneced
-  if (!brightIdVerified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
+  if (!userProfile) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
 
   // verified
-  if (activeClaimReceipt && activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
+  if (activeClaimReceipt && activeClaimReceipt.txHash != null)
     return { status: ClaimBoxState.VERIFIED, lastFailPk: null };
 
   //pending

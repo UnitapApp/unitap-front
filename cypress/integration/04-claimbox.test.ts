@@ -29,7 +29,7 @@ describe("Claim", () => {
     cy.intercept(
       {
         method: "GET",
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`
+        url: `/api/v1/chain/list/`
       },
       {
         body: chainListAuthenticatedClaimedFirst
@@ -75,7 +75,7 @@ describe("Claim", () => {
     cy.intercept(
       {
         method: "GET",
-        url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`
+        url: `/api/v1/chain/list/`
       },
       {
         body: chainListAuthenticatedClaimed
@@ -88,7 +88,7 @@ describe("Claim", () => {
     cy.intercept(
       {
         method: "GET",
-        url: `/api/v1/chain/list/**`
+        url: `/api/v1/chain/list/`
       },
       {
         body: chainListAuthenticatedClaimed,
