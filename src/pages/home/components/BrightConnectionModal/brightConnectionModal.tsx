@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
-import { BrightConnectionModalWrapper, CopyLink } from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
+import {
+  BrightConnectionModalWrapper,
+  CopyLink,
+} from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
@@ -23,8 +26,6 @@ const BrightConnectionModalBody = () => {
   const { keys, signPrivateKey } = useGenerateKeys();
   const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
 
-
-
   useEffect(() => {
     if (keys) {
       signPrivateKey()
@@ -37,11 +38,14 @@ const BrightConnectionModalBody = () => {
     if (keys && keys.address) {
       sponsorAPI(keys.address);
     }
-  }, [keys, keys?.address])
+  }, [keys, keys?.address]);
 
   const openVerificationUrl = async () => {
     if (!keys?.address) return;
-    window.open(`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`, '_blank');
+    window.open(
+      `brightid://link-verification/http:%2f%2fnode.brightid.org/unitap/${keys?.address.toLowerCase()}/`,
+      '_blank',
+    );
   };
 
   const refreshConnectionButtonAction = useCallback(async () => {
@@ -82,7 +86,7 @@ const BrightConnectionModalBody = () => {
       {keys?.address && (
         <span className="qr-code z-10 mb-4 rounded-md overflow-hidden">
           <QRCode
-            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitapTest/${keys?.address.toLowerCase()}/`}
+            value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitap/${keys?.address.toLowerCase()}/`}
             data-testid="brightid-qr"
             ecLevel="L"
             qrStyle="dots"
