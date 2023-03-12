@@ -182,6 +182,18 @@ const Landing: FC = () => {
           </section>
 
           <section className={'flex--1'}>
+            <Widget
+              description={'Where everyone has chances to win larger prizes'}
+              className={'after:bg-prizetap-texture h-full after:w-full after:-top-8'}
+              icon={'prizetap-icon.png'}
+              iconSize={'w-8 h-7'}
+              title={'Prize Tap'}
+              buttonTitle={'Soon...'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
+            ></Widget>
+          </section>
+
+          {/* <section className={'flex--1'}>
             <Link className={'flex--1'} to={RoutePath.PRIZE}>
               <Widget
                 description={'Where everyone has chances to win larger prizes'}
@@ -193,7 +205,7 @@ const Landing: FC = () => {
                 buttonClass={'gradient-outline-button text-gray100'}
               ></Widget>
             </Link>
-          </section>
+          </section> */}
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
@@ -224,7 +236,8 @@ const Landing: FC = () => {
               {stats.map((stat) => (
                 <div key={stat.name} className={'flex flex-col gap-2 items-center'}>
                   <p className={'text-xl text-space-green font-semibold'}>
-                    {numberWithCommas(typeof stat.number == 'string' ? parseFloat(stat.number) : stat.number)}
+                    {/* {numberWithCommas(typeof stat.number == 'string' ? parseFloat(stat.number) : stat.number)} */}
+                    {stat.number}
                   </p>
                   <p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
                 </div>
