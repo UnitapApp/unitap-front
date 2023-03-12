@@ -2,114 +2,114 @@
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: 800;
-	src: url('../public/assets/font/JetBrainsMono-ExtraBold.ttf') format('truetype');
+	src: URL('../public/assets/font/JetBrainsMono-ExtraBold.ttf') format('truetype');
 }
 @font-face {
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: bold;
-  src: url('../public/assets/font/JetBrainsMono-Bold.ttf') format('truetype');
+  src: URL('../public/assets/font/JetBrainsMono-Bold.ttf') format('truetype');
 }
 @font-face {
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: 500;
-  src: url('../public/assets/font/JetBrainsMono-Medium.ttf') format('truetype');
+  src: URL('../public/assets/font/JetBrainsMono-Medium.ttf') format('truetype');
 }
 @font-face {
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: 300;
-  src: url('../public/assets/font/JetBrainsMono-Light.ttf') format('truetype');
+  src: URL('../public/assets/font/JetBrainsMono-Light.ttf') format('truetype');
 }
 @font-face {
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: 200;
-  src: url('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
+  src: URL('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
 }
 @font-face {
 	font-family: JetBrainsMono;
 	font-style: normal;
 	font-weight: normal;
-  src: url('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
+  src: URL('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
 @font-face {
 	font-family: NotoSans;
 	font-style: normal;
 	font-weight: normal;
-  src: url('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');
 }
 @font-face {
 	font-family: NotoSans;
 	font-style: medium;
 	font-weight: 500;
-  src: url('../public/assets/font/NotoSans/NotoSans-Medium.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-Medium.ttf') format('truetype');
 }
 @font-face {
 	font-family: NotoSans;
 	font-style: semi-bold;
 	font-weight: 600;
-  src: url('../public/assets/font/NotoSans/NotoSans-SemiBold.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-SemiBold.ttf') format('truetype');
 }
 @font-face {
 	font-family: NotoSans;
 	font-style: bold;
 	font-weight: 700;
-  src: url('../public/assets/font/NotoSans/NotoSans-Bold.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-Bold.ttf') format('truetype');
 }
 @font-face {
   font-family: NotoSans;
   font-style: extra-bold;
   font-weight: 800;
-  src: url('../public/assets/font/NotoSans/NotoSans-ExtraBold.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-ExtraBold.ttf') format('truetype');
 }
 @font-face {
   font-family: NotoSans;
   font-style: black;
   font-weight: 900;
-  src: url('../public/assets/font/NotoSans/NotoSans-Black.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSans/NotoSans-Black.ttf') format('truetype');
 }
 @font-face {
 	font-family: NotoSansMono;
 	font-style: normal;
 	font-weight: normal;
-  src: url('../public/assets/font/NotoSansMono/NotoSansMono-Regular.ttf') format('truetype');
+  src: URL('../public/assets/font/NotoSansMono/NotoSansMono-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: bold;
-    src: url('../public/assets/font/JetBrainsMono-Bold.ttf') format('truetype');
+    src: URL('../public/assets/font/JetBrainsMono-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: 500;
-    src: url('../public/assets/font/JetBrainsMono-Medium.ttf') format('truetype');
+    src: URL('../public/assets/font/JetBrainsMono-Medium.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: 300;
-    src: url('../public/assets/font/JetBrainsMono-Light.ttf') format('truetype');
+    src: URL('../public/assets/font/JetBrainsMono-Light.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: 200;
-    src: url('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
+    src: URL('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: normal;
-    src: url('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
+    src: URL('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
 
 
@@ -117,42 +117,42 @@
 /*    font-family: NotoSans;*/
 /*    font-style: normal;*/
 /*    font-weight: normal;*/
-/*    src: url('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSans/NotoSans-Regular.ttf') format('truetype');*/
 /*}*/
 
 /*@font-face {*/
 /*    font-family: NotoSans;*/
 /*    font-style: normal;*/
 /*    font-weight: 500;*/
-/*    src: url('../public/assets/font/NotoSans/NotoSans-SemiBold.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSans/NotoSans-SemiBold.ttf') format('truetype');*/
 /*}*/
 
 /*@font-face {*/
 /*    font-family: NotoSans;*/
 /*    font-style: normal;*/
 /*    font-weight: bold;*/
-/*    src: url('../public/assets/font/NotoSans/NotoSans-Bold.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSans/NotoSans-Bold.ttf') format('truetype');*/
 /*}*/
 
 /*@font-face {*/
 /*    font-family: NotoSans;*/
 /*    font-style: normal;*/
 /*    font-weight: 700;*/
-/*    src: url('../public/assets/font/NotoSans/NotoSans-ExtraBold.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSans/NotoSans-ExtraBold.ttf') format('truetype');*/
 /*}*/
 
 /*@font-face {*/
 /*    font-family: NotoSans;*/
 /*    font-style: normal;*/
 /*    font-weight: 800;*/
-/*    src: url('../public/assets/font/NotoSans/NotoSans-Black.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSans/NotoSans-Black.ttf') format('truetype');*/
 /*}*/
 
 /*@font-face {*/
 /*    font-family: NotoSansMono;*/
 /*    font-style: normal;*/
 /*    font-weight: normal;*/
-/*    src: url('../public/assets/font/NotoSansMono/NotoSansMono-Regular.ttf') format('truetype');*/
+/*    src: URL('../public/assets/font/NotoSansMono/NotoSansMono-Regular.ttf') format('truetype');*/
 /*}*/
 
 * {

@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-import "index.sass";
+import "./index.scss";
 import "./styles/main.scss";
 
 import App from "./App";
