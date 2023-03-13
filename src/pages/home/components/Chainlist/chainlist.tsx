@@ -115,7 +115,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 
           <div className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto'}>
             <div className="w-full sm:w-auto items-center sm:items-end">
-              <AddMetamaskButton
+              {chain.chainType === "EVM" && <AddMetamaskButton
                 disabled={!active}
                 data-testid={`chain-switch-${chain.pk}`}
                 onClick={() => addAndSwitchToChain(chain)}
@@ -126,7 +126,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                   alt="metamask logo"
                 />
                 Add
-              </AddMetamaskButton>
+              </AddMetamaskButton>}
             </div>
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
@@ -176,20 +176,20 @@ const ChainCard = ({ chain }: ChainCardProps) => {
           }
         >
           <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}>
-            <p className="chain-card__info__title text-sm text-gray90">Balance:</p>
+            <p className="chain-card__info__title text-sm text-gray90">Currency</p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
-              {fundManagerBalanceAmount ? fundManagerBalanceAmount.toSignificant(5) : '0.00'} {chain.symbol}
+              {chain.symbol}
             </p>
             {/* <LightOutlinedButton className='donate-gas !p-1 !px-2 !text-xs !font-medium ml-4'>Provide gas</LightOutlinedButton> */}
           </div>
           <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}>
-            <p className="chain-card__info__title text-sm text-gray90">This Round Claims:</p>
+            <p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
               {numberWithCommas(chain.totalClaimsSinceLastMonday)}
             </p>
           </div>
           <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end'}>
-            <p className="chain-card__info__title text-sm text-gray90">Total Claims:</p>
+            <p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
               {numberWithCommas(chain.totalClaims)}
             </p>
