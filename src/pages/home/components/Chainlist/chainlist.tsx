@@ -145,7 +145,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                   <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
                 </ClaimButton>
               ) : 
-                activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk)?.status === '1' ? (
+                activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk)?.txHash !== null ? (
                 <ClaimedButton
                   data-testid={`chain-claimed-${chain.pk}`}
                   mlAuto
