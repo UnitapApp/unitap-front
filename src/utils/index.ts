@@ -131,7 +131,7 @@ export const getTotalEVMNetworks = (chains: Chain[]) => {
 };
 
 export const getChainClaimIcon = (chain: Chain) => {
-  return chain.modalUrl;
+  return chain.gasImageUrl;
 };
 
 export function sleep(ms: number) {

@@ -56,8 +56,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -79,8 +78,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -102,8 +100,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -125,8 +122,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-request-${chain.pk}`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
         <Text width="100%" fontSize="14">
           Wallet Address
@@ -164,13 +160,15 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="30px" className="state-logo" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
+
         </DropIconWrapper>
-        <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
-        </Text>
+        <span className='flex justify-center items-center font-medium mb-3'>
+          <Text className='!mb-0' width="100%" fontSize="14" color="space_green" textAlign="center">
+            {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
+          </Text>
+          <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height='auto' className='ml-2' />
+        </span>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
         </Text>
@@ -191,13 +189,14 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
-          <img src={getChainClaimIcon(chain)} alt="" />
-          <Icon iconSrc="assets/images/modal/failed-state-x.svg" width="30px" className="state-logo" />
-          <Icon iconSrc={'assets/images/modal/drop-icon.svg'} width="52px" mb={4} mt={1} height="auto" />
+          <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
-        <Text width="100%" fontSize="14" color="warningRed" textAlign="center">
-          Claim Failed!
-        </Text>
+        <span className='flex justify-center items-center font-medium mb-3'>
+          <Text className='!mb-0' width="100%" fontSize="14" color="warningRed" textAlign="center">
+            Claim Failed!
+          </Text>
+          <Icon iconSrc="assets/images/modal/failed-state-x.svg" width="22px" height='auto' className='ml-2' />
+        </span>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           An error occurred while processing your request
         </Text>
@@ -236,9 +235,6 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
       data-testid={`chain-claim-modal-${chain.pk}`}
     >
-      <Text fontSize="14" className="scan-qr-text">
-        Claim {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol}
-      </Text>
       {getClaimBody()}
     </div>
   );
@@ -256,10 +252,12 @@ const ClaimModal = () => {
     );
   }, [activeChain, brightidModalStatus, claimBoxStatus.status]);
 
+  if (!activeChain) return null;
+
   return (
     <>
-      <Modal title="claim gas fee" size="small" closeModalHandler={closeClaimModal} isOpen={isOpen}>
-        <ClaimModalBody chain={activeChain!} />
+      <Modal title={`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${activeChain.symbol}`} size="small" closeModalHandler={closeClaimModal} isOpen={isOpen}>
+        <ClaimModalBody chain={activeChain} />
       </Modal>
     </>
   );
