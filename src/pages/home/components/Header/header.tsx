@@ -26,7 +26,7 @@ const Header = () => {
       </div>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.profile && weeklyChainClaimLimit && remainingClaims ? (
+          {userProfile?.profile && weeklyChainClaimLimit  ? (
             weeklyChainClaimLimit === remainingClaims ? (
               <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
                 <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
@@ -59,7 +59,7 @@ const Dabes = () => {
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
         {chainList?.map((chain) => {
-          if (activeClaimHistory.find((claim) => claim.chain === chain.pk && claim.status !== '2')) {
+          if (activeClaimHistory.find((claim) => claim.chain === chain.pk && claim.status !== '0' && claim.status !== '2')) {
             return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl || chain.logoUrl} width="36px" height="40px" />;
           }
           return null;

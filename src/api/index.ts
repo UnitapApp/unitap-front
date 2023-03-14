@@ -83,7 +83,7 @@ export async function getRemainingClaimsAPI(token: string) {
 }
 
 export async function setWalletAPI(token: string, wallet: string, walletType: string) {
-  const response = await axiosInstance.post('/api/test/user/set-wallet/', { wallet_type: walletType, address: wallet }, {
+  const response = await axiosInstance.post('/api/test/user/set-wallet/', { walletType: walletType, address: wallet }, {
     headers: {
       'Authorization': `Token ${token}`,
     }
