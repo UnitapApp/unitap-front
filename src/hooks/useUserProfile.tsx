@@ -1,8 +1,10 @@
-import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from "react";
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI, setWalletAPI } from "api";
 import { UserProfile } from "types";
 import useToken from "./useToken";
 import { useWeb3React } from "@web3-react/core";
+import { ClaimContext } from "./useChainList";
+import { RefreshContext } from "context/RefreshContext";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
@@ -18,6 +20,8 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   const [userToken, setToken] = useToken();
   const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
   const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
+  
+  const { fastRefresh } = useContext(RefreshContext);
 
   const { account } = useWeb3React();
 
@@ -51,7 +55,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, [userToken, userProfile, setNewUserProfile])
 
   useEffect(() => {
-    const getWeeklyChainClaimLimit = async () => {
+      const getWeeklyChainClaimLimit = async () => {
       const newWeeklyChainClaimLimit: number = await getWeeklyChainClaimLimitAPI(userToken!);
       setWeeklyChainClaimLimit(newWeeklyChainClaimLimit)
     }
@@ -68,7 +72,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
       setWeeklyChainClaimLimit(null)
       setRemainingClaims(null)
     }
-  }, [userProfile, userToken])
+  }, [userProfile, userToken, fastRefresh])
 
   useEffect(() => {
     if (account && userToken) {

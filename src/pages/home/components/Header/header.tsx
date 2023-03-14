@@ -51,18 +51,20 @@ const Header = () => {
 
 const Dabes = () => {
   const { chainList, activeClaimHistory } = useContext(ClaimContext);
-  const { remainingClaims } = useContext(UserProfileContext);
+  const { weeklyChainClaimLimit } = useContext(UserProfileContext);
+
+  if (!weeklyChainClaimLimit) return <></>;
 
   return (
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
         {chainList?.map((chain) => {
-          if (activeClaimHistory.find((claim) => claim.pk.toString() === chain.chainId)) {
-            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl} width="36px" height="40px" />;
+          if (activeClaimHistory.find((claim) => claim.chain === chain.pk)) {
+            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl || chain.logoUrl} width="36px" height="40px" />;
           }
           return null;
         })}
-        {range(0, remainingClaims!).map((i) => {
+        {range(0, weeklyChainClaimLimit - activeClaimHistory.length).map((i) => {
           return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
         })}
       </>
