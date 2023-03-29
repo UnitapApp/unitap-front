@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 const useToken = (): [string | null, (token: string) => void] => {
   const [userToken, setUserToken] = useState<string | null>(null);
-
+    
   useEffect(() => {
     const storedUserToken = localStorage.getItem('userToken');
     if (storedUserToken) setUserToken(storedUserToken);

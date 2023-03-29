@@ -164,8 +164,9 @@ const RenderNavbarConnectionStatus = () => {
 
   const { userProfile } = useContext(UserProfileContext);
   const isBrightIdConnected = !!userProfile;
-  const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
 
+  const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
+  
   return (
     <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3">
       <Icon iconSrc="./assets/images/navbar/bright-icon.svg" width="16px" height="16px" className="ml-3" />
@@ -222,8 +223,11 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
   const { tryActivation } = useWalletActivation();
   const { userProfile } = useContext(UserProfileContext);
   const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
+  const { account } = useWeb3React();
   
-  if (!EVMWallet) return null;
+  let address = account ? account : EVMWallet?.address;
+
+  if (!address) return null;
 
   return (
     <>
@@ -234,7 +238,7 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
         className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}
         onClick={tryActivation}
       >
-        {shortenAddress(EVMWallet.address)}
+        {shortenAddress(address)}
       </button>
     </>
   );

@@ -3,7 +3,6 @@ import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getW
 import { UserProfile } from "types";
 import useToken from "./useToken";
 import { useWeb3React } from "@web3-react/core";
-import { ClaimContext } from "./useChainList";
 import { RefreshContext } from "context/RefreshContext";
 
 export const UserProfileContext = createContext<{
