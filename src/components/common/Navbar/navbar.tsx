@@ -168,8 +168,8 @@ const RenderNavbarConnectionStatus = () => {
   const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
   
   return (
-    <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 w-[262px] pr-0.5 mr-3">
-      <Icon iconSrc="./assets/images/navbar/bright-icon.svg" width="16px" height="16px" className="ml-3" />
+    <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 pr-0.5 mr-3">
+      <Icon iconSrc="./assets/images/navbar/bright-icon.svg" width="16px" height="16px" className={`mx-3 ${!isBrightIdConnected && 'opacity-50'}`} />
 
       {!isBrightIdConnected ? (
         <RenderNavbarLoginBrightIdButton />
@@ -191,9 +191,6 @@ const RenderNavbarLoginBrightIdButton = () => {
 
   return (
     <>
-      <p className="navbar-connection-status__login-status-title text-gray100 font-medium text-xs text-center mr-1">
-        Login
-      </p>
       <button
         className="btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline"
         onClick={() => openBrightIdModal()}
@@ -209,9 +206,6 @@ const RenderNavbarConnectWalletButton = () => {
 
   return (
     <>
-      <p className="navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1">
-        Connected
-      </p>
       <button className="btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline" onClick={tryActivation}>
         Connect Wallet
       </button>
@@ -231,9 +225,6 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
 
   return (
     <>
-      <p className="navbar-connection-status__login-status-title text-orange font-medium text-xs text-center mr-1">
-        Connected
-      </p>
       <button
         className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}
         onClick={tryActivation}
