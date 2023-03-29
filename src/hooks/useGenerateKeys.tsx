@@ -60,7 +60,7 @@ const useGenerateKeys = (): {
     if (!keys || !keys.address || !keys.privateKey) {
       throw new Error('Private key not found');
     }
-
+    
     const provider = new ethers.providers.JsonRpcProvider(
       'https://mainnet.infura.io/v3/709c5809e1864f82ab6175f39d1aa0ba',
     );

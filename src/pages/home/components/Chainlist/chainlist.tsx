@@ -10,10 +10,10 @@ import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ClaimReceipt } from 'types';
 import { BigNumber } from 'ethers';
-import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
-import JSBI from 'jsbi';
-import { CurrencyAmount } from '@uniswap/sdk-core';
+// import { StaticJsonRpcProvider } from '@ethersproject/providers';
+// import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
+// import JSBI from 'jsbi';
+// import { CurrencyAmount } from '@uniswap/sdk-core';
 
 const AddMetamaskButton = styled(SecondaryButton)`
   display: flex;
@@ -76,22 +76,22 @@ const ChainCard = ({ chain }: ChainCardProps) => {
   const { account } = useWeb3React();
   const active = !!account;
 
-  const { provider } = useWeb3React();
+  // const { provider } = useWeb3React();
   const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
 
-  useEffect(() => {
-    new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
-      setFundManagerBalance(balance);
-    });
-  }, [chain, provider]);
+  // useEffect(() => {
+  //   new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
+  //     setFundManagerBalance(balance);
+  //   });
+  // }, [chain, provider]);
 
-  const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
+  // const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
 
-  const fundManagerBalanceAmount = useMemo(() => {
-    if (!fundManagerBalance) return null;
-    const amount = JSBI.BigInt(fundManagerBalance.toString());
-    return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
-  }, [nativeCurrency, fundManagerBalance]);
+  // const fundManagerBalanceAmount = useMemo(() => {
+  //   if (!fundManagerBalance) return null;
+  //   const amount = JSBI.BigInt(fundManagerBalance.toString());
+  //   return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
+  // }, [nativeCurrency, fundManagerBalance]);
 
   const { activeClaimHistory } = useContext(ClaimContext);
 
