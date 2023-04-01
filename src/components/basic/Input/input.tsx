@@ -57,7 +57,7 @@ const InputWrapper = styled.div<InputProps>`
   margin-bottom: ${({ mb }) => (mb !== undefined ? `${mb * DV.sizes.baseMargin}px` : '1rem')};
   position: relative;
   height: auto;
-  font-family: NotoSansMono;
+  color: ${DV.colors.gray80};
 
   .input-icon {
     position: absolute;

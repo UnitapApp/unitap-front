@@ -20,7 +20,7 @@ const SearchInput = () => {
         data-testid="search-box"
         icon="search.png"
         width="100%"
-        fontSize="14px"
+        fontSize="12px"
         iconWidth="20px"
         iconHeight="20px"
         value={searchPhraseInput}
@@ -31,11 +31,6 @@ const SearchInput = () => {
         mb={0}
         backgroundColor="black1"
       ></Input>
-      <Icon
-        iconSrc="assets/images/claim/slash-icon.svg"
-        hoverable
-        className="icon-right absolute right-4 top-[10px] z-10"
-      ></Icon>
     </div>
   );
 };
