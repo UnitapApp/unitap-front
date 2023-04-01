@@ -4,10 +4,7 @@ import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import {
-  ClaimBoxRequestButton,
-  PrimaryButton,
-  SecondaryButton,
-  SecondaryGreenColorButton,
+  ClaimBoxRequestButton, ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton,
 } from 'components/basic/Button/button';
 import { BrightIdModalState, Chain, ClaimBoxState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
@@ -19,6 +16,7 @@ import animation from 'assets/animations/GasFee-delivery2.json';
 import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
+import {UserProfileContext} from "../../../../hooks/useUserProfile";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const { account } = useWeb3React();
@@ -58,18 +56,20 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
           <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
-        <Text width="100%" fontSize="14">
-          Wallet Address
-        </Text>
-        <WalletAddress fontSize="12">Not Connected</WalletAddress>
-        <PrimaryButton
+
+        <p className="text-white text-sm mb-5 mt-11">
+          Connect your wallet to claim your tokens
+        </p>
+
+        <ClaimButton
           onClick={tryActivation}
           width="100%"
-          fontSize="20px"
+          fontSize="16px"
+          className="!w-full"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Connect Wallet
-        </PrimaryButton>
+          <p>Connect Wallet</p>
+        </ClaimButton>
       </>
     );
   }
@@ -80,23 +80,60 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
           <Icon className="chain-logo z-10 mt-14 mb-10" width="auto" height="110px" iconSrc={getChainClaimIcon(chain)} alt="" />
         </DropIconWrapper>
-        <Text width="100%" fontSize="14">
-          Wallet Address
-        </Text>
-        <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <PrimaryButton
+        <p className="text-white text-sm mb-5 mt-11">
+          You need to connect your BrightID to claim your tokens
+        </p>
+
+        <ClaimButton
           onClick={openBrightIdModal}
           width="100%"
-          fontSize="20px"
+          className='!w-full'
+          fontSize="16px"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Connect BrightID
-        </PrimaryButton>
+          <p>Connect BrightID</p>
+        </ClaimButton>
       </>
     );
   }
 
+  function renderBrightNotVerifiedBody() {
+    return (
+      <>
+        <div
+          className="bright-connection-modal flex flex-col items-center justify-center pt-2"
+          data-testid="brightid-modal"
+        >
+          <Icon
+            data-testid="brightid-logo"
+            className="bright-logo !w-4/12 z-10 mb-5"
+            iconSrc="assets/images/modal/bright-id-logo-checked.svg"
+          />
+          <p className="text-sm font-bold text-error mb-2">You are not verified on BrightID</p>
+          <p className="text-xs font-medium text-gray100 mb-12 text-center px-4 leading-6">
+            BrightID is a social identity network that allows users to prove that they are only using one account.
+          </p>
+
+          <span className="w-full relative">
+            <LightOutlinedButtonNew className="!w-full" onClick={() => window.open('https://meet.brightid.org/', '_blank')}>
+              Verify on BrightID <Icon className='cursor-pointer arrow-icon mt-0.5 ml-1.5 w-2' iconSrc="assets/images/arrow-icon.svg" />
+            </LightOutlinedButtonNew>
+            <Icon iconSrc="assets/images/modal/bright-id-check.svg" className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"/>
+          </span>
+
+          {/* eslint-disable-next-line no-restricted-globals */}
+          <p className="text-white mt-4 text-xs hover:underline cursor-pointer" onClick={() => location.reload()}>If you verified your BrightID click here.</p>
+        </div>
+      </>
+    );
+  }
+
+  const { activeChain } = useContext(ClaimContext);
+
   function renderInitialBody() {
+    if (!activeChain) {
+      return null;
+    }
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
@@ -106,14 +143,15 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <PrimaryButton
+        <ClaimButton
           onClick={() => claim(chain.pk)}
           width="100%"
-          fontSize="20px"
+          fontSize="16px"
+          className="!w-full"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Claim
-        </PrimaryButton>
+          <p>{`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${activeChain.symbol}`}</p>
+        </ClaimButton>
       </>
     );
   }
@@ -128,7 +166,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           Wallet Address
         </Text>
         <WalletAddress fontSize="12">{active ? shortenAddress(account) : ''}</WalletAddress>
-        <ClaimBoxRequestButton width="100%" fontSize="20px" data-testid={`chain-claim-action-${chain.pk}`}>
+        <ClaimBoxRequestButton width="100%" fontSize="16px" data-testid={`chain-claim-action-${chain.pk}`}>
           Pending ...
         </ClaimBoxRequestButton>
       </>
@@ -172,15 +210,16 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
         </Text>
-        <SecondaryButton
+        <ClaimButton
           onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
           width={'100%'}
-          fontSize="20px"
+          fontSize="16px"
+          className="!w-full"
           data-testid={`chain-claim-action-${chain.pk}`}
           color="space_green"
         >
-          View on Explorer
-        </SecondaryButton>
+          <p>View on Explorer</p>
+        </ClaimButton>
       </>
     );
   }
@@ -200,14 +239,15 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           An error occurred while processing your request
         </Text>
-        <SecondaryButton
-          fontSize="20px"
+        <ClaimButton
+          fontSize="16px"
           onClick={retryClaim}
           width={'100%'}
+          className="!w-full"
           data-testid={`chain-claim-action-${chain.pk}`}
         >
-          Try Again
-        </SecondaryButton>
+          <p>Try Again</p>
+        </ClaimButton>
       </>
     );
   }
@@ -215,8 +255,10 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   function getClaimBody() {
     if (claimBoxStatus.status === ClaimBoxState.WALLET_NOT_CONNECTED) {
       return renderWalletNotConnectedBody();
-    } else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_VERIFIED) {
+    } else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_CONNECTED) {
       return renderBrightNotConnectedBody();
+    } else if (claimBoxStatus.status === ClaimBoxState.BRIGHTID_NOT_VERIFIED) {
+      return renderBrightNotVerifiedBody();
     } else if (claimBoxStatus.status === ClaimBoxState.INITIAL) {
       return renderInitialBody();
     } else if (claimBoxStatus.status === ClaimBoxState.REQUEST) {

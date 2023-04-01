@@ -148,6 +148,13 @@ export const LightOutlinedButton = styled(Button)`
   border-radius: ${DV.sizes.baseRadius}px;
 `;
 
+export const LightOutlinedButtonNew = styled(Button)`
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: ${DV.sizes.baseRadius * 1.5}px;
+`;
+
 export const WhiteOutlinedButton = styled(Button)`
   color: white;
   border: 2px solid #ffffff;

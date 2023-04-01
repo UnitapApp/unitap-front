@@ -57,6 +57,7 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
     })
   };
 
+
   useEffect(() => {
     const getUserProfileWithToken = async () => {
       const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken!);

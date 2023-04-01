@@ -11,11 +11,14 @@ const getClaimBoxState = (
   //closed claim box
   if (!activeChain) return { status: ClaimBoxState.CLOSED, lastFailPk: null };
 
-  //wallet not conneced
-  if (!address) return { status: ClaimBoxState.WALLET_NOT_CONNECTED, lastFailPk: null };
+  //user not logged in
+  if (!userProfile) return { status: ClaimBoxState.BRIGHTID_NOT_CONNECTED, lastFailPk: null };
+
+  //user not verified
+  if (!userProfile.profile.is_meet_verified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
 
   //wallet not conneced
-  if (!userProfile) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
+  if (!address) return { status: ClaimBoxState.WALLET_NOT_CONNECTED, lastFailPk: null };
 
   // verified
   if (activeClaimReceipt && activeClaimReceipt.txHash != null)
