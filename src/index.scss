@@ -384,3 +384,24 @@ body {
     @apply text-white font-medium text-sm leading-7 mb-4 pl-12;
   }
 }
+
+.claim-stat__not-claimed__text {
+  @apply bg-no-repeat bg-cover bg-center;
+  background-image: url("../public/assets/images/gas-tap/connect-bright-id-to-see-claims-bg.svg");
+}
+
+@keyframes dabe-waiting {
+  0% {
+    opacity: 100%;
+  }
+  30% {
+    opacity: 40%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.animated-dabe {
+  animation: dabe-waiting 1.5s infinite;
+}

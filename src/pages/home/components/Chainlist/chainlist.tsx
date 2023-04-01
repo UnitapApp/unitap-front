@@ -38,7 +38,7 @@ const ChainList = () => {
   const windowSize = window.innerWidth;
 
   return (
-    <div className="chain-list-wrapper py-2 w-full mb-20">
+    <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
       <div>
         {!chainList.length && (
           <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
@@ -100,7 +100,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
       <div className="chain-card flex flex-col items-center justify-center w-full mb-4">
         <div
           className={
-            'pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
+            'pt-4 pr-6 pb-4 pl-3 bg-gray20 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
           }
         >
           <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
@@ -172,7 +172,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
         </div>
         <div
           className={
-            'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl p-4 justify-between'
+            'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between'
           }
         >
           <div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}>

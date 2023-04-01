@@ -52,7 +52,7 @@ export async function getActiveClaimHistory(token: string) {
     }
   });
   
-  return response.data.filter((claim) => claim.datetime >= lastMonday);
+  return response.data.filter((claim) => claim.datetime >= lastMonday && claim.status !== '2');
 }
 
 export async function getUserProfileWithTokenAPI(token: string) {
