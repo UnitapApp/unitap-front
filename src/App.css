@@ -111,6 +111,12 @@
     font-weight: normal;
     src: URL('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
+@font-face {
+    font-family: DigitalNumbers;
+    font-style: normal;
+    font-weight: normal;
+    src: URL('../public/assets/font/DigitalNumbers/DigitalNumbers-Regular.ttf') format('truetype');
+}
 
 
 /*@font-face {*/

@@ -335,14 +335,14 @@ body {
   }
 }
 
-@import url('https://fonts.cdnfonts.com/css/digital-numbers');
+
 
 .timer {
   &__background-number {
-    font-family: 'Digital Numbers'
+    font-family: DigitalNumbers;
   }
   &__number {
-    font-family: 'Digital Numbers'
+    font-family: DigitalNumbers;
   }
 }
 
