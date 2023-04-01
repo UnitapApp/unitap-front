@@ -1,30 +1,34 @@
 import * as React from 'react';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { Text } from 'components/basic/Text/text.style';
-import {
-  BrightConnectionModalWrapper,
-  CopyLink,
-} from 'pages/home/components/BrightConnectionModal/brightConnectionModal.style';
-import { UserProfileContext } from 'hooks/useUserProfile';
+import {useCallback, useContext, useEffect, useState} from 'react';
+import {Text} from 'components/basic/Text/text.style';
+import {UserProfileContext} from 'hooks/useUserProfile';
 
-import { ClaimButton } from 'components/basic/Button/button';
-import { QRCode } from 'react-qrcode-logo';
+import {ClaimButton} from 'components/basic/Button/button';
+import {QRCode} from 'react-qrcode-logo';
 
-import { BrightIdConnectionModalState } from 'types';
+import {APIError, APIErrorsSource, BrightIdConnectionModalState} from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
+import {ClaimContext} from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
 import useGenerateKeys from 'hooks/useGenerateKeys';
-import { sponsorAPI } from 'api';
+import {sponsorAPI} from 'api';
+import {ErrorsContext} from "../../../../context/ErrorsProvider";
 
 const BrightConnectionModalBody = () => {
-  const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
+  const {userProfile, refreshUserProfile, loading} = useContext(UserProfileContext);
   // const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const [tried] = useState(false);
+  const {errors, getError, deleteError} = useContext(ErrorsContext);
 
-  const { keys, signPrivateKey } = useGenerateKeys();
+  const {keys, signPrivateKey} = useGenerateKeys();
   const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
+
+  const [brightIdConnectionError, setBrightIdConnectionError] = useState<APIError | null>(null);
+
+  useEffect(() => {
+    setBrightIdConnectionError(getError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR));
+  }, [errors, getError]);
 
   useEffect(() => {
     if (keys) {
@@ -50,35 +54,17 @@ const BrightConnectionModalBody = () => {
 
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
+    deleteError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR);
+    refreshUserProfile(keys.address, signedPrivateKey);
 
-    const refreshedUserProfile = await refreshUserProfile(keys.address, signedPrivateKey);
-
-    // if (!refreshUserProfile || loading) {
-    //   return;
-    // }
-    // try {
-    //   const refreshedUserProfile = await refreshUserProfile();
-    //   if (!refreshedUserProfile.profile.is_meet_verified) {
-    //     setTried(true);
-    //     alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-    //   } else {
-    //     setTried(false);
-    //     if (!!activeChain) {
-    //       closeBrightIdModal();
-    //     }
-    //   }
-    // } catch (ex) {
-    //   alert('Error while connecting to BrightID sever!');
-    //   setTried(true);
-    // }
-  }, [refreshUserProfile, loading, signedPrivateKey, keys]);
+  }, [refreshUserProfile, loading, signedPrivateKey, keys, deleteError]);
 
   if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
   return (
-    <BrightConnectionModalWrapper
+    <div
       className="bright-connection-modal flex flex-col items-center justify-center pt-4"
       data-testid="brightid-modal"
     >
@@ -97,10 +83,10 @@ const BrightConnectionModalBody = () => {
         </span>
       )}
       <p className="text-xs text-white mb-4">or</p>
-      <CopyLink
+      <div
         onClick={() => openVerificationUrl()}
         data-testid="brightid-copy-link"
-        className="flex text-space-green mb-10 z-10"
+        className="flex text-space-green mb-5 z-10"
       >
         {/* <Icon
           iconSrc={process.env.PUBLIC_URL + '/assets/images/copy-link.png'}
@@ -109,22 +95,27 @@ const BrightConnectionModalBody = () => {
           className="mr-3"
         /> */}
         <p className="text-space-green font-medium cursor-pointer hover:underline">Visit Link</p>
-      </CopyLink>
+      </div>
+
+      {brightIdConnectionError && (
+        <span className="notice flex mb-3">
+          <p className="text-xs text-error font-light text-center"> {brightIdConnectionError.message} </p>
+        </span>
+      )}
       <span className="notice flex mb-3">
-        <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
+        <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg"/>
         <p className="text-xs text-gray90 font-light"> Submit Verification after verifing with brighID app. </p>
-      </span>
-      {loading && <Text data-testid={`loading`}>Loading...</Text>}
+       </span>
       {refreshUserProfile && (
         <ClaimButton
           data-testid={`bright-id-connection-refresh-button${tried ? '-try-again' : ''}`}
           onClick={refreshConnectionButtonAction}
           className="!w-full mb-4"
         >
-          {tried ? (
+          {brightIdConnectionError ? (
             <p className="font-semibold">Scan or Use Link and Try Again</p>
           ) : (
-            <p className="font-semibold">Verify Connection</p>
+            <p className="font-semibold">{loading ? 'Loading...' : 'Verify Connection'}</p>
           )}
         </ClaimButton>
       )}
@@ -139,12 +130,12 @@ const BrightConnectionModalBody = () => {
           Get Verified on BrightID
         </p>
       </span>
-    </BrightConnectionModalWrapper>
+    </div>
   );
 };
 
 const BrightConnectionModal = () => {
-  const { brightIdConnectionModalStatus, closeBrightIdConnectionModal } = useContext(ClaimContext);
+  const {brightIdConnectionModalStatus, closeBrightIdConnectionModal} = useContext(ClaimContext);
   return (
     <Modal
       className="bright-modal"
@@ -152,8 +143,9 @@ const BrightConnectionModal = () => {
       size="small"
       isOpen={brightIdConnectionModalStatus !== BrightIdConnectionModalState.CLOSED}
       closeModalHandler={closeBrightIdConnectionModal}
+      errorSource={APIErrorsSource.BRIGHTID_CONNECTION_ERROR}
     >
-      <BrightConnectionModalBody />
+      <BrightConnectionModalBody/>
     </Modal>
   );
 };

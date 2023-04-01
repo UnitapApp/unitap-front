@@ -21,22 +21,9 @@ const ConnectMetamaskModalContent = () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) {
       return;
     }
-    try {
-      const refreshedUserProfile = await refreshUserProfile(keys?.address, signedPrivateKey);
-      if (!refreshedUserProfile?.profile.is_meet_verified) {
-        setTried(true);
-        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-      } else {
-        setTried(false);
-        if (!!activeChain) {
-          closeBrightIdModal();
-        }
-      }
-    } catch (ex) {
-      alert('Error while connecting to BrightID sever!');
-      setTried(true);
-    }
-  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal, keys?.address, signedPrivateKey]);
+    
+    refreshUserProfile(keys?.address, signedPrivateKey);
+  }, [refreshUserProfile, loading, keys?.address, signedPrivateKey]);
 
   if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;

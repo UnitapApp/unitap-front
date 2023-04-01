@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ModalChildrenWrapper, ModalContent, ModalWrapper } from 'components/common/Modal/modal.style';
 import { Spaceman } from 'constants/spaceman';
 import Icon from 'components/basic/Icon/Icon';
+import {APIErrorsSource} from "../../../types";
+import {ErrorsContext} from "../../../context/ErrorsProvider";
 
 type props = {
   title?: string;
@@ -12,15 +14,19 @@ type props = {
   children: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   closeModalHandler: () => void;
+  errorSource?: APIErrorsSource;
 };
 
-const Modal = ({ spaceman, title, titleLeft, children, isOpen, closeModalHandler, className, size }: props) => {
+const Modal = ({ spaceman, title, titleLeft, children, isOpen, closeModalHandler, className, size, errorSource }: props) => {
+
+  const {getError} = React.useContext(ErrorsContext);
+
   return (
     <>
       {isOpen && (
         <ModalWrapper className={className} onClick={(_e) => closeModalHandler()} data-testid="modal-wrapper">
           <ModalContent
-            className={`bg-gray20 rounded-2xl border-2 border-gray40`}
+            className={`bg-gray20 rounded-2xl border-2 border-gray40 ${errorSource && getError(errorSource) ? '!border-error ' : ''}`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
             size={size}

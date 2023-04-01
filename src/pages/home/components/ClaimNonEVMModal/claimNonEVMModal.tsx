@@ -9,7 +9,6 @@ import { formatWeiBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimBoxRequestButton, SecondaryButton } from 'components/basic/Button/button';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
-import { DropIconWrapper } from '../ClaimModal/claimModal.style';
 import WalletAddress from '../ClaimModal/walletAddress';
 
 const ClaimNonEVMModalContent = () => {

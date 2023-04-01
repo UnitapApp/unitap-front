@@ -1,28 +1,37 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
-import { getRemainingClaimsAPI, getUserProfile, getUserProfileWithTokenAPI, getWeeklyChainClaimLimitAPI, setWalletAPI } from "api";
-import { UserProfile } from "types";
+import React, {createContext, PropsWithChildren, useCallback, useContext, useEffect, useState} from "react";
+import {
+  getRemainingClaimsAPI,
+  getUserProfile,
+  getUserProfileWithTokenAPI,
+  getWeeklyChainClaimLimitAPI,
+  setWalletAPI
+} from "api";
+import {APIErrorsSource, UserProfile} from "types";
 import useToken from "./useToken";
-import { useWeb3React } from "@web3-react/core";
-import { RefreshContext } from "context/RefreshContext";
+import {useWeb3React} from "@web3-react/core";
+import {RefreshContext} from "context/RefreshContext";
+import {AxiosError} from "axios";
+import {ErrorsContext} from "../context/ErrorsProvider";
 
 export const UserProfileContext = createContext<{
   userProfile: UserProfile | null;
-  refreshUserProfile: ((address: string, signature: string) => Promise<UserProfile>) | null;
+  refreshUserProfile: ((address: string, signature: string) => Promise<void>) | null;
   loading: boolean;
   weeklyChainClaimLimit: number | null;
   remainingClaims: number | null;
-}>({ userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null });
+}>({userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null});
 
-export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
+export function UserProfileProvider({children}: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useToken();
   const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
   const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
-  
-  const { fastRefresh } = useContext(RefreshContext);
+  const {addError} = useContext(ErrorsContext);
 
-  const { account } = useWeb3React();
+  const {fastRefresh} = useContext(RefreshContext);
+
+  const {account} = useWeb3React();
 
   const setNewUserProfile = useCallback((newUserProfile: UserProfile) => {
     setUserProfile(newUserProfile);
@@ -31,15 +40,21 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
-    try {
-      const refreshedUserProfile: UserProfile = await getUserProfile(address, signature);
+    getUserProfile(address, signature).then((refreshedUserProfile: UserProfile) => {
       setNewUserProfile(refreshedUserProfile)
       setLoading(false);
       return refreshedUserProfile;
-    } catch (ex) {
+    }).catch((ex: AxiosError) => {
       setLoading(false);
+      if (ex.response?.status === 403 || ex.response?.status === 409) {
+        addError({
+          source: APIErrorsSource.BRIGHTID_CONNECTION_ERROR,
+          message: ex.response.data.message,
+          statusCode: ex.response.status
+        });
+      }
       throw ex;
-    }
+    })
   };
 
   useEffect(() => {
@@ -54,7 +69,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, [userToken, userProfile, setNewUserProfile])
 
   useEffect(() => {
-      const getWeeklyChainClaimLimit = async () => {
+    const getWeeklyChainClaimLimit = async () => {
       const newWeeklyChainClaimLimit: number = await getWeeklyChainClaimLimitAPI(userToken!);
       setWeeklyChainClaimLimit(newWeeklyChainClaimLimit)
     }
@@ -80,7 +95,8 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
   }, [account, userToken]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims }}>
+    <UserProfileContext.Provider
+      value={{userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims}}>
       {children}
     </UserProfileContext.Provider>
   );
