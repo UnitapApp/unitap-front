@@ -123,35 +123,16 @@ const RenderUnipassCount = () => {
 
 const RenderNavbarDropdown = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [isDropdownVisibleTimeout, setIsDropdownVisibleTimeout] = useState<NodeJS.Timeout | null>(null);
-
-  const showDropdown = () => {
-    if (isDropdownVisibleTimeout) {
-      clearTimeout(isDropdownVisibleTimeout);
-    }
-    setIsDropdownVisible(true);
-  };
-
-  const hideDropdown = () => {
-    let timeout = setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 500);
-    setIsDropdownVisibleTimeout(timeout);
-  };
 
   return (
     <span
       className="navbar__dropdown cursor-pointer"
-      onMouseEnter={() => showDropdown()}
-      onMouseLeave={() => hideDropdown()}
       onClick={() => setIsDropdownVisible(!isDropdownVisible)}
     >
       <Icon iconSrc="assets/images/navbar/navbar-dropdown-icon.svg" width="31px" height="31px" />
       {isDropdownVisible && (
         <NavbarDropdown
           className="navbar__dropdown__component"
-          onMouseEnter={() => showDropdown()}
-          onMouseLeave={() => hideDropdown()}
         />
       )}
     </span>

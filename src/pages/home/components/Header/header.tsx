@@ -6,24 +6,16 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { ClaimContext } from 'hooks/useChainList';
 import { range } from 'utils';
 
-// ###### Local Styled Components
-
-const Spaceship = styled.img`
-  position: absolute;
-  left: 0;
-  transform: translate(-35%, -37%) scale(1);
-`;
 
 const Header = () => {
   const { userProfile, weeklyChainClaimLimit, remainingClaims } = useContext(UserProfileContext);
 
   return (
-    <div className="header h-[152px] bg-gray20 rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6">
-      <Spaceship className="z-0" src="assets/images/gas-tap/header-spaceship.svg" />
+    <div className="header gas-tap__header h-[202px] rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6 border-4 border-gray20">
       <div className="header-left z-10 flex flex-col justify-end items-start h-[100%]">
-        <Icon className="gas-tap h-12 w-[140px] mb-1" iconSrc="assets/images/gas-tap/gas-tap-text-logo.png" />
-        <Timer />
+        <Icon className="gas-tap h-12 w-[140px]" iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg" />
       </div>
+      <Timer />
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
           {userProfile?.profile && weeklyChainClaimLimit  ? (
@@ -41,13 +33,11 @@ const Header = () => {
             <></>
           )}
         </div>
-        <div className="spaceman absolute bottom-2 right-0">
-          <Icon className="z-0" iconSrc={'assets/images/claim/header-spaceman.svg'} width="120px" height="auto" />
-        </div>
       </div>
     </div>
   );
 };
+
 
 const Dabes = () => {
   const { chainList, activeClaimHistory } = useContext(ClaimContext);

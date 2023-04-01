@@ -5,11 +5,9 @@ import RoutePath from 'routes';
 
 type NavbarDropdownProps = {
   className: string;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
 };
 
-const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdownProps) => {
+const NavbarDropdown = ({ className }: NavbarDropdownProps) => {
   const [navItems] = React.useState([
     {
       name: 'Home',
@@ -53,8 +51,6 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
       className={`navbar-dropdown absolute z-10 top-14 right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ''
       }`}
-      onMouseEnter={() => onMouseEnter()}
-      onMouseLeave={() => onMouseLeave()}
     >
       {navItems.map((item) => {
         return (

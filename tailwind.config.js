@@ -62,7 +62,7 @@ module.exports = {
         3: '3px',
       },
       backgroundImage: {
-        primaryGradient: 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)',
+        primaryGradient: 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)',
         'home-header-texture': "url('../public/assets/images/landing/home-header-texture.png')",
         'what-is-unitap-header': "url('../public/assets/images/about/what-is-unitap-header.png')",
         'gastap-texture': "url('../public/assets/images/landing/gastap-texture.png')",
@@ -76,7 +76,7 @@ module.exports = {
         'donate-texture-s': "url('../public/assets/images/donate/donate-texture.svg')",
         'donate-texture-p': "url('../public/assets/images/donate/donate-texture.png')",
         'stats-texture': "url('../public/assets/images/landing/stats-texture.png')",
-        'g-primary': 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)',
+        'g-primary': 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)',
       },
       dropShadow: {
         'primary-xl': '0px 8px 18px rgba(81, 88, 246, 0.15)',

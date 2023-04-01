@@ -75,7 +75,6 @@ body {
 @layer base {
 
   // TYPOGRAPHY
-
   h1 {
     @apply text-3xl font-semibold items-center;
   }
@@ -98,7 +97,6 @@ body {
   }
 
   // FLEX SIZES
-
   .flex--1 {
     flex: 1;
   }
@@ -152,7 +150,7 @@ body {
       @apply transition duration-300;
     }
 
-    &:hover>.card-text {
+    &:hover > .card-text {
       @apply -translate-y-1 transition duration-300;
     }
   }
@@ -181,7 +179,6 @@ body {
   }
 
   // BUTTON COLOR
-
   .gradient-outline-button {
     @apply bg-g-primary relative z-10 before:content-[''];
     @apply before:block before:-z-10 before:absolute before:inset-[1px] before:bg-gray00;
@@ -328,6 +325,26 @@ body {
 //    filter: drop-shadow(0px 8px 18px rgba(81, 88, 246, 0.15))
 
 // NORMAL CLASSES
+
+.gas-tap {
+  &__header {
+    @apply bg-no-repeat bg-cover bg-center;
+    background-image:linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.15901) 33.85%, rgba(27, 27, 41, 0) 63.02%, rgba(77, 52, 81, 0.6) 100%),
+    url("../public/assets/images/gas-tap/header-wave.svg"),
+    linear-gradient(#1B1B26, #1B1B26);
+  }
+}
+
+@import url('https://fonts.cdnfonts.com/css/digital-numbers');
+
+.timer {
+  &__background-number {
+    font-family: 'Digital Numbers'
+  }
+  &__number {
+    font-family: 'Digital Numbers'
+  }
+}
 
 .content-wrapper {
   @apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto;
