@@ -248,9 +248,9 @@ export const NoCurrencyButton = styled(Button)`
 export const ClaimedButton = styled(Button)`
   width: 220px;
   text-align: left;
-
+  
   ::before {
-    background: #1b1b26;
+    //background-image: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%);
   }
 
   &::after {

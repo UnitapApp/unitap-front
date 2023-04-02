@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/';
-import { DV } from 'components/basic/designVariables';
-import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
-import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
-import { getChainIcon } from '../../../../utils';
+import {DV} from 'components/basic/designVariables';
+import {ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton} from 'components/basic/Button/button';
+import {ClaimContext} from 'hooks/useChainList';
+import {formatWeiBalance} from 'utils/numbers';
+import {getChainIcon} from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
 import useSelectChain from '../../../../hooks/useSelectChain';
-import { useWeb3React } from '@web3-react/core';
-import { Chain, ClaimReceipt } from 'types';
-import { BigNumber } from 'ethers';
+import {useWeb3React} from '@web3-react/core';
+import {Chain, ClaimReceipt} from 'types';
+import {BigNumber} from 'ethers';
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
 // import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
 // import JSBI from 'jsbi';
@@ -33,7 +33,7 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainList = () => {
-  const { chainList, chainListSearchResult } = useContext(ClaimContext);
+  const {chainList, chainListSearchResult} = useContext(ClaimContext);
 
   const windowSize = window.innerWidth;
 
@@ -41,12 +41,12 @@ const ChainList = () => {
     <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
       <div>
         {!chainList.length && (
-          <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
+          <div style={{color: 'white', textAlign: 'center'}} data-testid="chain-list-loading">
             Loading...
           </div>
         )}
         {chainListSearchResult.map((chain) => (
-          <ChainCard chain={chain} key={chain.pk} />
+          <ChainCard chain={chain} key={chain.pk}/>
         ))}
         {chainListSearchResult.length === 0 && chainList.length && (
           <Icon
@@ -65,15 +65,15 @@ type ChainCardProps = {
   chain: Chain;
 };
 
-const ChainCard = ({ chain }: ChainCardProps) => {
-  const { openClaimModal } = useContext(ClaimContext);
+const ChainCard = ({chain}: ChainCardProps) => {
+  const {openClaimModal} = useContext(ClaimContext);
 
   function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   const addAndSwitchToChain = useSelectChain();
-  const { account } = useWeb3React();
+  const {account} = useWeb3React();
   const active = !!account;
 
   // const { provider } = useWeb3React();
@@ -93,7 +93,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
   //   return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
   // }, [nativeCurrency, fundManagerBalance]);
 
-  const { activeClaimHistory } = useContext(ClaimContext);
+  const {activeClaimHistory} = useContext(ClaimContext);
 
   return (
     <div key={chain.chainId}>
@@ -105,7 +105,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
         >
           <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
             <span className="chain-logo-container w-10 h-10 flex justify-center">
-              <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
+              <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo"/>
             </span>
             <p className=" text-white ml-3 text-center sm:text-left" data-testid={`chain-name-${chain.pk}`}>
               {chain.chainName}
@@ -136,37 +136,37 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                   Empty
                 </NoCurrencyButton>
               ) : !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk) ? (
-                <ClaimButton
-                  data-testid={`chain-show-claim-${chain.pk}`}
-                  mlAuto
-                  onClick={() => openClaimModal(chain)}
-                  className="text-sm m-auto"
-                >
-                  <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
-                </ClaimButton>
-              ) : 
+                  <ClaimButton
+                      data-testid={`chain-show-claim-${chain.pk}`}
+                      mlAuto
+                      onClick={() => openClaimModal(chain)}
+                      className="text-sm m-auto"
+                    >
+                      <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+                    </ClaimButton>
+                ) :
                 activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk)?.txHash !== null ? (
-                <ClaimedButton
-                  data-testid={`chain-claimed-${chain.pk}`}
-                  mlAuto
-                  icon="../assets/images/claim/claimedIcon.svg"
-                  iconWidth={24}
-                  iconHeight={20}
-                  onClick={() => openClaimModal(chain)}
-                  className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
-                >
-                  <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
-                </ClaimedButton>
-              ) : (
-                <ClaimButton
-                  data-testid={`chain-show-claim-${chain.pk}`}
-                  mlAuto
-                  onClick={() => openClaimModal(chain)}
-                  className="text-sm m-auto"
-                >
-                  <p>Pending ...</p>
-                </ClaimButton>
-              )}
+                  <ClaimedButton
+                    data-testid={`chain-claimed-${chain.pk}`}
+                    mlAuto
+                    icon="../assets/images/claim/claimedIcon.svg"
+                    iconWidth={24}
+                    iconHeight={20}
+                    onClick={() => openClaimModal(chain)}
+                    className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+                  >
+                    <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
+                  </ClaimedButton>
+                ) : (
+                  <ClaimButton
+                    data-testid={`chain-show-claim-${chain.pk}`}
+                    mlAuto
+                    onClick={() => openClaimModal(chain)}
+                    className="text-sm m-auto"
+                  >
+                    <p>Pending ...</p>
+                  </ClaimButton>
+                )}
             </div>
           </div>
         </div>

@@ -49,9 +49,9 @@ type UserWallet = {
 
 export type UserProfile = {
   profile: {
+    isMeetVerified: string;
+    isAuraVerified: string;
     initial_context_id: string;
-    is_aura_verified: boolean;
-    is_meet_verified: boolean;
     pk: PK;
     wallets: UserWallet[];
   },
