@@ -169,14 +169,15 @@ const RenderNavbarConnectionStatus = () => {
 
 const RenderNavbarLoginBrightIdButton = () => {
   const { openBrightIdModal } = useContext(ClaimContext);
+  const { userProfileLoading } = useContext(UserProfileContext);
 
   return (
     <>
       <button
         className="btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline"
-        onClick={() => openBrightIdModal()}
+        onClick={() => !userProfileLoading && openBrightIdModal()}
       >
-        Connect BrightID
+        {userProfileLoading ? 'Connecting...' :'Connect BrightID'}
       </button>
     </>
   );

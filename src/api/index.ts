@@ -56,7 +56,7 @@ export async function getActiveClaimHistory(token: string) {
 }
 
 export async function getUserProfileWithTokenAPI(token: string) {
-  const response = await axiosInstance.get<UserProfile>(`/api/test/user/info/`, {
+  const response = await axiosInstance.get<UserProfile>(`/api/auth/user/info/`, {
     headers: {
       'Authorization': `Token ${token}`,
     }
@@ -83,7 +83,7 @@ export async function getRemainingClaimsAPI(token: string) {
 }
 
 export async function setWalletAPI(token: string, wallet: string, walletType: string) {
-  const response = await axiosInstance.post('/api/test/user/set-wallet/', { walletType: walletType, address: wallet }, {
+  const response = await axiosInstance.post('/api/auth/user/set-wallet/', { walletType: walletType, address: wallet }, {
     headers: {
       'Authorization': `Token ${token}`,
     }
@@ -92,6 +92,6 @@ export async function setWalletAPI(token: string, wallet: string, walletType: st
 }
 
 export async function sponsorAPI(address: string) {
-  const response = await axiosInstance.post('/api/test/user/sponsor/', {address: address})
+  const response = await axiosInstance.post('/api/auth/user/sponsor/', {address: address})
   return response.data;
 }

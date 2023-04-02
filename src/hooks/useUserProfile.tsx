@@ -19,7 +19,8 @@ export const UserProfileContext = createContext<{
   loading: boolean;
   weeklyChainClaimLimit: number | null;
   remainingClaims: number | null;
-}>({userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null});
+  userProfileLoading: boolean;
+}>({userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null, userProfileLoading: false});
 
 export function UserProfileProvider({children}: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -28,6 +29,7 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
   const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
   const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
   const {addError} = useContext(ErrorsContext);
+  const [userProfileLoading, setUserProfileLoading] = useState(false);
 
   const {fastRefresh} = useContext(RefreshContext);
 
@@ -35,13 +37,13 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
 
   const setNewUserProfile = useCallback((newUserProfile: UserProfile) => {
     setUserProfile(newUserProfile);
-    setToken(newUserProfile.token);
-  }, [setToken]);
+  }, []);
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
     getUserProfile(address, signature).then((refreshedUserProfile: UserProfile) => {
       setNewUserProfile(refreshedUserProfile)
+      setToken(refreshedUserProfile.token);
       setLoading(false);
       return refreshedUserProfile;
     }).catch((ex: AxiosError) => {
@@ -60,8 +62,15 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
 
   useEffect(() => {
     const getUserProfileWithToken = async () => {
-      const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken!);
-      setNewUserProfile(userProfileWithToken);
+      setUserProfileLoading(true);
+      try {
+        const userProfileWithToken: UserProfile = await getUserProfileWithTokenAPI(userToken!);
+        setNewUserProfile(userProfileWithToken);
+        setUserProfileLoading(false);
+      } catch (ex) {
+        setUserProfileLoading(false);
+        throw ex;
+      }
     }
 
     if (userToken && !userProfile) {
@@ -97,7 +106,7 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
 
   return (
     <UserProfileContext.Provider
-      value={{userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims}}>
+      value={{userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims, userProfileLoading}}>
       {children}
     </UserProfileContext.Provider>
   );
