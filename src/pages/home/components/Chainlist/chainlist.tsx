@@ -131,32 +131,32 @@ const ChainCard = ({chain}: ChainCardProps) => {
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {/* todo migrate buttom logic*/}
-              {chain.needsFunding ? (
-                <NoCurrencyButton disabled fontSize="13px">
-                  Empty
-                </NoCurrencyButton>
-              ) : !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk) ? (
-                  <ClaimButton
-                      data-testid={`chain-show-claim-${chain.pk}`}
-                      mlAuto
-                      onClick={() => openClaimModal(chain)}
-                      className="text-sm m-auto"
-                    >
-                      <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
-                    </ClaimButton>
+              {activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.txHash) ? (
+                <ClaimedButton
+                  data-testid={`chain-claimed-${chain.pk}`}
+                  mlAuto
+                  icon="../assets/images/claim/claimedIcon.svg"
+                  iconWidth={24}
+                  iconHeight={20}
+                  onClick={() => openClaimModal(chain)}
+                  className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+                >
+                  <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
+                </ClaimedButton>
+                ) : chain.needsFunding ? (
+                  <NoCurrencyButton disabled fontSize="13px">
+                    Empty
+                  </NoCurrencyButton>
                 ) :
-                activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk)?.txHash !== null ? (
-                  <ClaimedButton
-                    data-testid={`chain-claimed-${chain.pk}`}
+                !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk) ? (
+                  <ClaimButton
+                    data-testid={`chain-show-claim-${chain.pk}`}
                     mlAuto
-                    icon="../assets/images/claim/claimedIcon.svg"
-                    iconWidth={24}
-                    iconHeight={20}
                     onClick={() => openClaimModal(chain)}
-                    className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+                    className="text-sm m-auto"
                   >
-                    <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
-                  </ClaimedButton>
+                    <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+                  </ClaimButton>
                 ) : (
                   <ClaimButton
                     data-testid={`chain-show-claim-${chain.pk}`}
