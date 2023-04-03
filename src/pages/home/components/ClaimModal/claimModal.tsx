@@ -16,7 +16,6 @@ import animation from 'assets/animations/GasFee-delivery2.json';
 import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
-import {UserProfileContext} from "../../../../hooks/useUserProfile";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const { account } = useWeb3React();

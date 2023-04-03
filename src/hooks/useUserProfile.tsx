@@ -20,7 +20,9 @@ export const UserProfileContext = createContext<{
   weeklyChainClaimLimit: number | null;
   remainingClaims: number | null;
   userProfileLoading: boolean;
-}>({userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null, userProfileLoading: false});
+  nonEVMWalletAddress: string;
+  setNonEVMWalletAddress: (address: string) => void;
+}>({userProfile: null, refreshUserProfile: null, loading: false, weeklyChainClaimLimit: null, remainingClaims: null, userProfileLoading: false, nonEVMWalletAddress: '', setNonEVMWalletAddress: () => {}});
 
 export function UserProfileProvider({children}: PropsWithChildren<{}>) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -30,6 +32,7 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
   const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
   const {addError} = useContext(ErrorsContext);
   const [userProfileLoading, setUserProfileLoading] = useState(false);
+  const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState('');
 
   const {fastRefresh} = useContext(RefreshContext);
 
@@ -58,7 +61,6 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
       throw ex;
     })
   };
-
 
   useEffect(() => {
     const getUserProfileWithToken = async () => {
@@ -106,7 +108,7 @@ export function UserProfileProvider({children}: PropsWithChildren<{}>) {
 
   return (
     <UserProfileContext.Provider
-      value={{userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims, userProfileLoading}}>
+      value={{userProfile, refreshUserProfile, loading, weeklyChainClaimLimit, remainingClaims, userProfileLoading, nonEVMWalletAddress, setNonEVMWalletAddress}}>
       {children}
     </UserProfileContext.Provider>
   );

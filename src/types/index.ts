@@ -49,8 +49,8 @@ type UserWallet = {
 
 export type UserProfile = {
   profile: {
-    isMeetVerified: string;
-    isAuraVerified: string;
+    is_meet_verified: string;
+    is_aura_verified: string;
     initial_context_id: string;
     pk: PK;
     wallets: UserWallet[];
@@ -59,9 +59,9 @@ export type UserProfile = {
 };
 
 export enum ClaimReceiptState {
-  PENDING = '0',
-  VERIFIED = '1',
-  REJECTED = '2',
+  PENDING = 'Pending',
+  VERIFIED = 'Verified',
+  REJECTED = 'Rejected',
 }
 
 export enum ClaimBoxState {

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components/';
+import React, {useContext} from 'react';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
-import { UserProfileContext } from 'hooks/useUserProfile';
-import { ClaimContext } from 'hooks/useChainList';
-import { range } from 'utils';
+import {UserProfileContext} from 'hooks/useUserProfile';
+import {ClaimContext} from 'hooks/useChainList';
+import {range} from 'utils';
+import {ClaimReceiptState} from "../../../../types";
 
 
 const Header = () => {
@@ -38,18 +38,18 @@ const Dabes = () => {
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
         {chainList?.map((chain) => {
-          let claim = activeClaimHistory.find((claim) => claim.chain === chain.pk);
+          let claim = activeClaimHistory.filter(claim => claim.status !== ClaimReceiptState.REJECTED).find((claim) => claim.chain === chain.pk);
           if (claim) {
             return <Icon
               onClick={() => openClaimModal(chain)}
               key={chain.chainId}
               iconSrc={chain.gasImageUrl || chain.logoUrl}
-              className={`cursor-pointer transition ${claim.status === '0' && "animated-dabe"}`}
+              className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && "animated-dabe"}`}
               width="36px" height="40px" />;
           }
           return null;
         })}
-        {range(0, 5 - activeClaimHistory.length).map((i) => {
+        {range(0, 5 - activeClaimHistory.filter(claim => claim.status !== ClaimReceiptState.REJECTED).length).map((i) => {
           return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
         })}
       </>

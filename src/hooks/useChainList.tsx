@@ -52,6 +52,7 @@ export const ClaimContext = createContext<{
   selectedChainType: ChainType;
   setSelectedNetwork: (network: Network) => void;
   setSelectedChainType: (chainType: ChainType) => void;
+  claimNonEVMLoading: boolean;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -83,6 +84,7 @@ export const ClaimContext = createContext<{
   selectedChainType: ChainType.EVM,
   setSelectedNetwork: (network: Network) => {},
   setSelectedChainType: (chainType: ChainType) => {},
+  claimNonEVMLoading: false,
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -111,6 +113,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
+  const [claimNonEVMLoading, setClaimNonEVMLoading] = useState(false);
 
   const { account: address } = useWeb3React();
   const [userToken] = useToken();
@@ -196,11 +199,14 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         return;
       }
       setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      setClaimNonEVMLoading(true);
       try {
         await claimMaxNonEVMAPI(userToken, claimChainPk, address);
+        setClaimNonEVMLoading(false);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
+        setClaimNonEVMLoading(false);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
@@ -287,6 +293,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setSelectedNetwork,
         selectedChainType,
         setSelectedChainType,
+        claimNonEVMLoading,
       }}
     >
       {children}

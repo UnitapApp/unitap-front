@@ -59,7 +59,7 @@ const BrightConnectionModalBody = () => {
 
   }, [refreshUserProfile, loading, signedPrivateKey, keys, deleteError]);
 
-  if (userProfile?.profile.isMeetVerified) {
+  if (userProfile?.profile.is_meet_verified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components/';
 import {DV} from 'components/basic/designVariables';
 import {ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton} from 'components/basic/Button/button';
@@ -8,7 +8,7 @@ import {getChainIcon} from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import {useWeb3React} from '@web3-react/core';
-import {Chain, ClaimReceipt} from 'types';
+import {Chain, ClaimReceipt, ClaimReceiptState} from 'types';
 import {BigNumber} from 'ethers';
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
 // import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
@@ -131,7 +131,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {/* todo migrate buttom logic*/}
-              {activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.txHash) ? (
+              {activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.status === ClaimReceiptState.VERIFIED) ? (
                 <ClaimedButton
                   data-testid={`chain-claimed-${chain.pk}`}
                   mlAuto
@@ -148,7 +148,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
                     Empty
                   </NoCurrencyButton>
                 ) :
-                !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk) ? (
+                !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.status !== ClaimReceiptState.REJECTED) ? (
                   <ClaimButton
                     data-testid={`chain-show-claim-${chain.pk}`}
                     mlAuto
