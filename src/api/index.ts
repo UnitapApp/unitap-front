@@ -12,7 +12,7 @@ export async function getChainList() {
 }
 
 export async function getUserProfile(address: string, signature: string) {
-  const response = await axiosInstance.post<UserProfile>(`/api/test/user/login/`, { username: address, password: signature});
+  const response = await axiosInstance.post<UserProfile>(`/api/auth/user/login/`, { username: address, password: signature});
   return response.data;
 }
 
