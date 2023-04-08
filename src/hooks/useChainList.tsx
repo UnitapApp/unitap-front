@@ -53,6 +53,7 @@ export const ClaimContext = createContext<{
   setSelectedNetwork: (network: Network) => void;
   setSelectedChainType: (chainType: ChainType) => void;
   claimNonEVMLoading: boolean;
+  searchPhrase: string;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -85,6 +86,7 @@ export const ClaimContext = createContext<{
   setSelectedNetwork: (network: Network) => {},
   setSelectedChainType: (chainType: ChainType) => {},
   claimNonEVMLoading: false,
+  searchPhrase: '',
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -294,6 +296,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         selectedChainType,
         setSelectedChainType,
         claimNonEVMLoading,
+        searchPhrase,
       }}
     >
       {children}

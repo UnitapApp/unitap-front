@@ -55,8 +55,9 @@ export const searchChainList = (
   selectedNetwork: Network,
   selectedChainType: ChainType,
 ) => {
-  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
-  searchChainListResult = getNetworkFilterResult(selectedNetwork, searchChainListResult);
+  if (searchPhrase !== '') return getSearchQueryResult(searchPhrase, chainList);
+
+  let searchChainListResult = getNetworkFilterResult(selectedNetwork, chainList);
   searchChainListResult = getChainTypeFilterResult(selectedChainType, searchChainListResult);
   return searchChainListResult;
 };
