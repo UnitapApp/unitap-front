@@ -1,7 +1,13 @@
 import React, {useContext, useState} from 'react';
 import styled from 'styled-components/';
 import {DV} from 'components/basic/designVariables';
-import {ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton} from 'components/basic/Button/button';
+import {
+  ClaimButton,
+  ClaimedButton,
+  EmptyWithRefillButton,
+  NoCurrencyButton,
+  SecondaryButton
+} from 'components/basic/Button/button';
 import {ClaimContext} from 'hooks/useChainList';
 import {formatWeiBalance} from 'utils/numbers';
 import {getChainIcon} from '../../../../utils';
@@ -144,9 +150,13 @@ const ChainCard = ({chain}: ChainCardProps) => {
                   <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
                 </ClaimedButton>
                 ) : chain.needsFunding ? (
-                  <NoCurrencyButton disabled fontSize="13px">
-                    Empty
-                  </NoCurrencyButton>
+                  <div className='btn btn--claim btn--sm btn--out-of-balance'>
+                    Out of balance
+
+                    <button className='btn btn--sm btn--refill'>
+                      Refill
+                    </button>
+                  </div>
                 ) :
                 !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.status !== ClaimReceiptState.REJECTED) ? (
                   <ClaimButton

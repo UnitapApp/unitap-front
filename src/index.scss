@@ -236,6 +236,23 @@ body {
       }
     }
 
+    &--claim {
+      @apply w-[220px];
+    }
+
+    &--out-of-balance {
+      @apply text-gray90 bg-gray60 border-2 border-gray90 flex justify-between items-center font-semibold;
+      padding: 5px 5px 5px 16px !important;
+      border-radius: 12px !important;
+      cursor: default !important;
+    }
+
+    &--refill {
+      @apply bg-gray50 text-white border border-white font-medium;
+      padding: 7px 20px !important;
+      border-radius: 7px !important;
+    }
+
     &--disabled {
       @apply bg-gray70 hover:cursor-not-allowed border-gray90 text-gray90 border-2 rounded-xl #{!important};
     }
@@ -329,18 +346,18 @@ body {
 .gas-tap {
   &__header {
     @apply bg-no-repeat bg-cover bg-center;
-    background-image:linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.15901) 33.85%, rgba(27, 27, 41, 0) 63.02%, rgba(77, 52, 81, 0.6) 100%),
+    background-image: linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.15901) 33.85%, rgba(27, 27, 41, 0) 63.02%, rgba(77, 52, 81, 0.6) 100%),
     url("../public/assets/images/gas-tap/header-wave.svg"),
     linear-gradient(#1B1B26, #1B1B26);
   }
 }
 
 
-
 .timer {
   &__background-number {
     font-family: DigitalNumbers;
   }
+
   &__number {
     font-family: DigitalNumbers;
   }

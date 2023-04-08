@@ -260,4 +260,46 @@ export const ClaimedButton = styled(Button)`
   }
 `;
 
+export const EmptyWithRefillButton = styled(Button)`
+  background: ${DV.colors.gray90};
+  color: ${DV.colors.gray70};
+  width: 220px;
+  text-align: left;
+  position: relative;
+    
+  &::after {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    path {
+      fill: ${DV.colors.gray70};
+      
+      &:hover {
+        fill: ${DV.colors.gray70};
+      }
+      
+      &:active {
+        fill: ${DV.colors.gray70};
+      }
+    }
+    
+    &:hover {
+      path {
+        fill: ${DV.colors.gray70};
+      }
+    }
+  }
+  
+  &:hover {
+    background: ${DV.colors.gray90};
+    color: ${DV.colors.gray70};
+  }
+`;
+
 export const LandingClaimIconButton = styled(PrimaryOutlinedButton)``;
