@@ -152,7 +152,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const openClaimModal = useCallback((chain: Chain) => {
     if (chain.chainType === ChainType.EVM) {
       setActiveChain(chain);
-    } else if (chain.chainType === ChainType.NONEVM) {
+    } else if (chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
       setActiveNonEVMChain(chain);
       setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
     }

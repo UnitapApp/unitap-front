@@ -129,6 +129,8 @@ export enum Network {
 export enum ChainType {
   EVM = 'EVM',
   NONEVM = 'NONEVM',
+  SOLANA = 'Solana',
+  LIGHTNING = 'Lightning',
 }
 
 export enum APIErrorsSource {
