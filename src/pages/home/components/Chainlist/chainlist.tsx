@@ -14,8 +14,10 @@ import {getChainIcon} from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import {useWeb3React} from '@web3-react/core';
-import {Chain, ClaimReceipt, ClaimReceiptState} from 'types';
+import {Chain, ClaimReceipt, ClaimReceiptState, PK} from 'types';
 import {BigNumber} from 'ethers';
+import {useNavigate} from "react-router-dom";
+import RoutePath from "../../../../routes";
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
 // import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
 // import JSBI from 'jsbi';
@@ -81,6 +83,12 @@ const ChainCard = ({chain}: ChainCardProps) => {
   const addAndSwitchToChain = useSelectChain();
   const {account} = useWeb3React();
   const active = !!account;
+
+  const navigate = useNavigate();
+
+  const handleRefillButtonClicked = (chainId: PK) => {
+    navigate(RoutePath.FUND+`?chainId=${chainId}`);
+  }
 
   // const { provider } = useWeb3React();
   const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
@@ -153,7 +161,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
                   <div className='btn btn--claim btn--sm btn--out-of-balance'>
                     Out of balance
 
-                    <button className='btn btn--sm btn--refill'>
+                    <button onClick={() => handleRefillButtonClicked(chain.pk)} className='btn btn--sm btn--refill'>
                       Refill
                     </button>
                   </div>

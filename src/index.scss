@@ -248,7 +248,7 @@ body {
     }
 
     &--refill {
-      @apply bg-gray50 text-white border border-white font-medium;
+      @apply bg-gray50 text-white border border-white font-medium hover:bg-gray70 transition;
       padding: 7px 20px !important;
       border-radius: 7px !important;
     }
