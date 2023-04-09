@@ -100,6 +100,7 @@ const MintNFTCard = () => {
       isTestnet: false,
       chainType: 'Ethereum',
       needsFunding: false,
+      blockScanAddress: 'https://etherscan.io/address/',
     };
 
     if (getUnitapPassChainId() === SupportedChainId.MAINNET && mainnetChain) {

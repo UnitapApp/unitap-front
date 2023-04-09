@@ -117,14 +117,14 @@ const ChainCard = ({chain}: ChainCardProps) => {
             'pt-4 pr-6 pb-4 pl-3 bg-gray20 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
           }
         >
-          <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
+          <div onClick={() => window.open(chain.blockScanAddress, '_blank')} className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
             <span className="chain-logo-container w-10 h-10 flex justify-center">
               <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo"/>
             </span>
             <p className=" text-white ml-3 text-center sm:text-left" data-testid={`chain-name-${chain.pk}`}>
               {chain.chainName}
             </p>
-            {/* <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" /> */}
+             <img className="arrow-icon mt-1 ml-1.5 w-2 h-2" src="assets/images/arrow-icon.svg" alt="arrow" />
           </div>
 
           <div className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto'}>

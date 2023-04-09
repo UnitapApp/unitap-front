@@ -21,6 +21,7 @@ export type Chain = {
   isTestnet: boolean;
   chainType: string;
   needsFunding: boolean;
+  blockScanAddress: string;
 };
 
 export type Prize = {
