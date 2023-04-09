@@ -137,14 +137,14 @@ const ChainCard = ({chain}: ChainCardProps) => {
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {/* todo migrate buttom logic*/}
-              {activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.status === ClaimReceiptState.VERIFIED) ? (
+              {activeClaimHistory.find((claim: ClaimReceipt) => claim.chain.pk === chain.pk && claim.status === ClaimReceiptState.VERIFIED) ? (
                 <ClaimedButton
                   data-testid={`chain-claimed-${chain.pk}`}
                   mlAuto
                   icon="../assets/images/claim/claimedIcon.svg"
                   iconWidth={24}
                   iconHeight={20}
-                  onClick={() => openClaimModal(chain)}
+                  onClick={() => openClaimModal(chain.pk)}
                   className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
                 >
                   <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
@@ -158,11 +158,11 @@ const ChainCard = ({chain}: ChainCardProps) => {
                     </button>
                   </div>
                 ) :
-                !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain === chain.pk && claim.status !== ClaimReceiptState.REJECTED) ? (
+                !activeClaimHistory.find((claim: ClaimReceipt) => claim.chain.pk === chain.pk && claim.status !== ClaimReceiptState.REJECTED) ? (
                   <ClaimButton
                     data-testid={`chain-show-claim-${chain.pk}`}
                     mlAuto
-                    onClick={() => openClaimModal(chain)}
+                    onClick={() => openClaimModal(chain.pk)}
                     className="text-sm m-auto"
                   >
                     <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
@@ -171,7 +171,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
                   <ClaimButton
                     data-testid={`chain-show-claim-${chain.pk}`}
                     mlAuto
-                    onClick={() => openClaimModal(chain)}
+                    onClick={() => openClaimModal(chain.pk)}
                     className="text-sm m-auto"
                   >
                     <p>Pending ...</p>

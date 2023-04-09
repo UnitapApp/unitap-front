@@ -8,20 +8,21 @@ import {ClaimReceiptState} from "../../../../types";
 
 
 const Header = () => {
-  const { userProfile } = useContext(UserProfileContext);
+  const {userProfile} = useContext(UserProfileContext);
 
   return (
-    <div className="header gas-tap__header h-[202px] rounded-2xl flex justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
+    <div
+      className="header gas-tap__header h-[202px] rounded-2xl flex justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
       <div className="header-left z-10 flex flex-col justify-end items-start h-[100%]">
-        <Icon className="gas-tap h-12 w-[140px]" iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg" />
+        <Icon className="gas-tap h-12 w-[140px]" iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg"/>
       </div>
-      <Timer />
+      <Timer/>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
           {userProfile?.profile ? (
-            <Dabes />
+            <Dabes/>
           ) : (
-            <RenderConnectBrightID />
+            <RenderConnectBrightID/>
           )}
         </div>
       </div>
@@ -31,26 +32,24 @@ const Header = () => {
 
 
 const Dabes = () => {
-  const { chainList, activeClaimHistory } = useContext(ClaimContext);
-  const { openClaimModal } = useContext(ClaimContext);
+  const {activeClaimHistory} = useContext(ClaimContext);
+  const {openClaimModal} = useContext(ClaimContext);
 
   return (
-    <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+    <div
+      className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
-        {chainList?.map((chain) => {
-          let claim = activeClaimHistory.filter(claim => claim.status !== ClaimReceiptState.REJECTED).find((claim) => claim.chain === chain.pk);
-          if (claim) {
-            return <Icon
-              onClick={() => openClaimModal(chain)}
-              key={chain.chainId}
-              iconSrc={chain.gasImageUrl || chain.logoUrl}
-              className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && "animated-dabe"}`}
-              width="36px" height="40px" />;
-          }
-          return null;
+        {activeClaimHistory.filter(claim => claim.status !== ClaimReceiptState.REJECTED).map((claim) => {
+          return <Icon
+            onClick={() => openClaimModal(claim.chain.pk)}
+            key={claim.chain.chainId}
+            iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
+            className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && "animated-dabe"}`}
+            width="36px" height="40px"/>;
+
         })}
         {range(0, 5 - activeClaimHistory.filter(claim => claim.status !== ClaimReceiptState.REJECTED).length).map((i) => {
-          return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
+          return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto"/>;
         })}
       </>
     </div>

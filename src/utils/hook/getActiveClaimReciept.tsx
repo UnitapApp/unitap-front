@@ -5,15 +5,15 @@ const getActiveClaimReciept = (activeClaimHistory: ClaimReceipt[], activeChain: 
   if (chainType === 'EVM') {
     const verified = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain.pk === activeChain.pk,
     );
     const rejected = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.chain.pk === activeChain.pk,
     );
     const pending = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain.pk === activeChain.pk,
     );
 
     if (verified.length > 0) return verified[0];
@@ -23,15 +23,15 @@ const getActiveClaimReciept = (activeClaimHistory: ClaimReceipt[], activeChain: 
   } else if (chainType === 'NONEVM') {
     const verified = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.VERIFIED && claimReceipt.chain.pk === activeChain.pk,
     );
     const rejected = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.REJECTED && claimReceipt.chain.pk === activeChain.pk,
     );
     const pending = activeClaimHistory.filter(
       (claimReceipt: ClaimReceipt) =>
-        claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain === activeChain.pk,
+        claimReceipt.status === ClaimReceiptState.PENDING && claimReceipt.chain.pk === activeChain.pk,
     );
 
     if (verified.length > 0) return verified[0];

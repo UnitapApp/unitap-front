@@ -10,7 +10,7 @@ import {
   ClaimNonEVMModalState,
   ClaimReceipt,
   HaveBrightIdAccountModalState,
-  Network,
+  Network, PK,
 } from 'types';
 import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
@@ -31,7 +31,7 @@ export const ClaimContext = createContext<{
   activeClaimReceipt: ClaimReceipt | null;
   activeClaimHistory: ClaimReceipt[];
   closeClaimModal: () => void;
-  openClaimModal: (chain: Chain) => void;
+  openClaimModal: (chainPk: PK) => void;
   activeChain: Chain | null;
   activeNonEVMChain: Chain | null;
   claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
@@ -64,7 +64,7 @@ export const ClaimContext = createContext<{
   activeClaimReceipt: null,
   activeClaimHistory: [],
   closeClaimModal: () => {},
-  openClaimModal: (chain: Chain) => {},
+  openClaimModal: (chainPk: PK) => {},
   activeChain: null,
   activeNonEVMChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
@@ -151,14 +151,16 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     }
   }, [activeChain, activeNonEVMChain, setActiveClaimReceipt, activeClaimHistory]);
 
-  const openClaimModal = useCallback((chain: Chain) => {
+  const openClaimModal = useCallback((chainPk: PK) => {
+    let chain = chainList.find((chan) => chan.pk === chainPk);
+    if (!chain) return;
     if (chain.chainType === ChainType.EVM) {
       setActiveChain(chain);
     } else if (chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
       setActiveNonEVMChain(chain);
       setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
     }
-  }, []);
+  }, [chainList]);
 
   const closeClaimModal = useCallback(() => {
     setActiveChain(null);

@@ -79,7 +79,7 @@ export enum ClaimBoxState {
 export type ClaimReceipt = {
   pk: PK;
   txHash: string | null;
-  chain: PK;
+  chain: Chain;
   datetime: string;
   // amount: BigInt;
   amount: number;
