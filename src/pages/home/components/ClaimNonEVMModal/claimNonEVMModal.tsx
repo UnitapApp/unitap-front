@@ -242,7 +242,12 @@ const ClaimNonEVMModalContent = () => {
           className="!w-full"
           data-testid={`chain-claim-action-${activeNonEVMChain.pk}`}
         >
-          <p>Try Again</p>
+          {
+            claimNonEVMLoading ?
+              <p> Claiming... </p>
+              :
+              <p>Try Again</p>
+          }
         </ClaimButton>
       </>
     );

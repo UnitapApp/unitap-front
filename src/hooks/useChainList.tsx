@@ -14,7 +14,6 @@ import {
 } from 'types';
 import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
-import getClaimBoxState from 'utils/hook/getClaimBoxState';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import removeRequest from 'utils/hook/claimRequests';
 import { useWeb3React } from '@web3-react/core';
@@ -53,6 +52,7 @@ export const ClaimContext = createContext<{
   setSelectedNetwork: (network: Network) => void;
   setSelectedChainType: (chainType: ChainType) => void;
   claimNonEVMLoading: boolean;
+  claimLoading: boolean;
   searchPhrase: string;
 }>({
   chainList: [],
@@ -86,6 +86,7 @@ export const ClaimContext = createContext<{
   setSelectedNetwork: (network: Network) => {},
   setSelectedChainType: (chainType: ChainType) => {},
   claimNonEVMLoading: false,
+  claimLoading: false,
   searchPhrase: '',
 });
 
@@ -116,8 +117,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   // list of chian.pk of requesting claims
   const [claimRequests, setClaimRequests] = useState<number[]>([]);
   const [claimNonEVMLoading, setClaimNonEVMLoading] = useState(false);
+  const [claimLoading, setClaimLoading] = useState(false);
 
-  const { account: address } = useWeb3React();
   const [userToken] = useToken();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
@@ -170,43 +171,43 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     if (activeClaimReceipt) setClaimBoxStatus({ status: ClaimBoxState.INITIAL, lastFailPk: activeClaimReceipt.pk });
   }, [activeClaimReceipt]);
 
-  useEffect(
-    () =>
-      setClaimBoxStatus((claimBoxStatus) =>
-        getClaimBoxState(address, userProfile, activeChain, activeClaimReceipt, claimBoxStatus, claimRequests),
-      ),
-    [address, userProfile, activeClaimReceipt, activeChain, claimRequests, activeClaimHistory],
-  );
 
   const claim = useCallback(
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
-      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
         return;
       }
       setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      setClaimLoading(true);
       try {
         await claimMax(userToken, claimChainPk);
+        setTimeout(() => {
+          setClaimLoading(false);
+        }, 1000);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
+        setClaimLoading(false);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory],
+    [userToken, claimRequests, updateActiveClaimHistory, claimLoading],
   );
 
   const claimNonEVM = useCallback(
     async (claimChainPk: number, address: string) => {
-      if (!userToken || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimNonEVMLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
         return;
       }
       setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
       setClaimNonEVMLoading(true);
       try {
         await claimMaxNonEVMAPI(userToken, claimChainPk, address);
-        setClaimNonEVMLoading(false);
+        setTimeout(() => {
+          setClaimNonEVMLoading(false);
+        } , 1000);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
@@ -215,7 +216,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory],
+    [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading],
   );
 
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
@@ -298,6 +299,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         selectedChainType,
         setSelectedChainType,
         claimNonEVMLoading,
+        claimLoading,
         searchPhrase,
       }}
     >
