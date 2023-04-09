@@ -8,7 +8,7 @@ import {ClaimNonEVMModalState, ClaimReceiptState} from 'types';
 import {formatWeiBalance} from 'utils/numbers';
 import {Text} from 'components/basic/Text/text.style';
 import {
-  ClaimButton,
+  ClaimButton, ClaimedButton,
   LightOutlinedButtonNew,
   SecondaryButton, SecondaryGreenColorButton
 } from 'components/basic/Button/button';
@@ -187,15 +187,14 @@ const ClaimNonEVMModalContent = () => {
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           we successfully transferred {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} to your wallet
         </Text>
-        <SecondaryButton
+        <ClaimButton
+          fontSize="16px"
+          className="!w-full"
           onClick={() => window.open(getTxUrl(activeNonEVMChain!, activeClaimReceipt!.txHash!), "_blank")}
-          width={"100%"}
-          fontSize="20px"
           data-testid={`chain-claim-action-${activeNonEVMChain!.pk}`}
-          color="space_green"
         >
-          View on Explorer
-        </SecondaryButton>
+          <p>View on Explorer</p>
+        </ClaimButton>
       </>
     )
   }
@@ -252,7 +251,7 @@ const ClaimNonEVMModalContent = () => {
   const getClaimNonEVMModalBody = () => {
     if (!userProfile?.profile) return renderBrightNotConnectedBody();
 
-    if (!userProfile.profile.is_meet_verified) return renderBrightNotVerifiedBody();
+    if (!userProfile.profile.isMeetVerified) return renderBrightNotVerifiedBody();
 
     if (!activeClaimReceipt) return renderInitialBody();
 

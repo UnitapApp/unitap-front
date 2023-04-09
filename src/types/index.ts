@@ -50,7 +50,7 @@ type UserWallet = {
 
 export type UserProfile = {
   profile: {
-    is_meet_verified: string;
+    isMeetVerified: string;
     is_aura_verified: string;
     initial_context_id: string;
     pk: PK;

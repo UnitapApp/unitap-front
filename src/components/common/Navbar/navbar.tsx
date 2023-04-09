@@ -28,7 +28,7 @@ const Navbar = () => {
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
       if (userProfile) {
-        return userProfile.profile.is_meet_verified ? 'Connected' : 'Login with BrightID';
+        return userProfile.profile.isMeetVerified ? 'Connected' : 'Login with BrightID';
       }
       return 'Login with BrightID';
     }
@@ -63,7 +63,7 @@ const Navbar = () => {
           <span className="line line3"></span>
         </div>
         <div className="menu-items">
-          {userProfile?.profile.is_meet_verified ? (
+          {userProfile?.profile.isMeetVerified ? (
             <BrightConnectedButton
               iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
               fontSize="12px"

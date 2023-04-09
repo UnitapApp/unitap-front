@@ -15,7 +15,7 @@ const getClaimBoxState = (
   if (!userProfile) return { status: ClaimBoxState.BRIGHTID_NOT_CONNECTED, lastFailPk: null };
 
   //user not verified
-  if (!userProfile.profile.is_meet_verified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
+  if (!userProfile.profile.isMeetVerified) return { status: ClaimBoxState.BRIGHTID_NOT_VERIFIED, lastFailPk: null };
 
   //wallet not conneced
   if (!address) return { status: ClaimBoxState.WALLET_NOT_CONNECTED, lastFailPk: null };
