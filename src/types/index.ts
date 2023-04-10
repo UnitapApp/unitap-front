@@ -49,14 +49,12 @@ type UserWallet = {
 }
 
 export type UserProfile = {
-  profile: {
-    isMeetVerified: string;
-    is_aura_verified: string;
-    initial_context_id: string;
-    pk: PK;
-    wallets: UserWallet[];
-  },
+  isMeetVerified: string;
+  isAuraVerified: string;
+  initial_context_id: string;
   token: string;
+  pk: PK;
+  wallets: UserWallet[];
 };
 
 export enum ClaimReceiptState {

@@ -254,9 +254,9 @@ const ClaimNonEVMModalContent = () => {
   }
 
   const getClaimNonEVMModalBody = () => {
-    if (!userProfile?.profile) return renderBrightNotConnectedBody();
+    if (!userProfile) return renderBrightNotConnectedBody();
 
-    if (!userProfile.profile.isMeetVerified) return renderBrightNotVerifiedBody();
+    if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
 
     if (!activeClaimReceipt) return renderInitialBody();
 

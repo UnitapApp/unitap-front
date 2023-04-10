@@ -26,7 +26,7 @@ const ConnectBrightIdModalContent = () => {
     openBrightIdConnectionModal();
   };
 
-  if (userProfile?.profile.isMeetVerified) {
+  if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 

@@ -258,9 +258,9 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
   }
 
   const getClaimModalBody = () => {
-    if (!userProfile?.profile) return renderBrightNotConnectedBody();
+    if (!userProfile) return renderBrightNotConnectedBody();
 
-    if (!userProfile.profile.isMeetVerified) return renderBrightNotVerifiedBody();
+    if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
 
     if (!walletConnected) return renderWalletNotConnectedBody();
 

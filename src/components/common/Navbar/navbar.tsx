@@ -28,7 +28,7 @@ const Navbar = () => {
   const connectBrightButtonLabel = useMemo(() => {
     if (account) {
       if (userProfile) {
-        return userProfile.profile.isMeetVerified ? 'Connected' : 'Login with BrightID';
+        return userProfile.isMeetVerified ? 'Connected' : 'Login with BrightID';
       }
       return 'Login with BrightID';
     }
@@ -63,7 +63,7 @@ const Navbar = () => {
           <span className="line line3"></span>
         </div>
         <div className="menu-items">
-          {userProfile?.profile.isMeetVerified ? (
+          {userProfile?.isMeetVerified ? (
             <BrightConnectedButton
               iconLeft="assets/images/navbar/navbar_bright_logo_v1.3.svg"
               fontSize="12px"
@@ -146,7 +146,7 @@ const RenderNavbarConnectionStatus = () => {
   const { userProfile } = useContext(UserProfileContext);
   const isBrightIdConnected = !!userProfile;
 
-  const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
+  const EVMWallet = userProfile?.wallets.find((wallet) => wallet.walletType === "EVM");
   
   return (
     <div className="navbar-connection-status flex rounded-lg h-8 items-center justify-between bg-gray40 pr-0.5 mr-3">
@@ -198,7 +198,7 @@ const RenderNavbarConnectWalletButton = () => {
 const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
   const { tryActivation } = useWalletActivation();
   const { userProfile } = useContext(UserProfileContext);
-  const EVMWallet = userProfile?.profile.wallets.find((wallet) => wallet.walletType === "EVM");
+  const EVMWallet = userProfile?.wallets.find((wallet) => wallet.walletType === "EVM");
   const { account } = useWeb3React();
   
   let address = account ? account : EVMWallet?.address;

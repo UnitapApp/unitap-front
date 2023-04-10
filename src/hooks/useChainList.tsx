@@ -131,7 +131,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
-    if (userToken && userProfile?.profile) {
+    if (userToken && userProfile) {
       try {
         const newClaimHistory = await getActiveClaimHistory(userToken);
         setActiveClaimHistory(newClaimHistory);

@@ -19,7 +19,7 @@ const Header = () => {
       <Timer/>
       <div className="header-right h-[100%] flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.profile ? (
+          {userProfile ? (
             <Dabes/>
           ) : (
             <RenderConnectBrightID/>

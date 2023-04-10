@@ -25,7 +25,7 @@ const ConnectMetamaskModalContent = () => {
     refreshUserProfile(keys?.address, signedPrivateKey);
   }, [refreshUserProfile, loading, keys?.address, signedPrivateKey]);
 
-  if (userProfile?.profile.isMeetVerified) {
+  if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
