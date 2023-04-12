@@ -10,12 +10,12 @@ const Header = () => {
   const { userProfile } = useContext(UserProfileContext);
 
   return (
-    <div className="header gas-tap__header h-[202px] rounded-2xl flex-col sm:flex-row justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
-      <div className="header-left z-10 flex flex-col sm:justify-end items-start sm:h-full">
+    <div className="header gas-tap__header h-[202px] rounded-2xl flex flex-col  md:flex-row lg:items-end  md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
+      <div className="header-left z-10 flex flex-col items-start">
         <Icon className="gas-tap h-12 w-[140px]" iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg" />
       </div>
       <Timer />
-      <div className="header-right h-[100%] flex flex-col mt-2 sm:mt-0لهف  sm:justify-end">
+      <div className="header-right  flex mt-2 justify-center md:justify-start">
         <div className="claim-stat z-10">{userProfile ? <Dabes /> : <RenderConnectBrightID />}</div>
       </div>
     </div>
