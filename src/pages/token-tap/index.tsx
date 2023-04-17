@@ -15,7 +15,7 @@ const TokenTap = () => {
     <>
       <Navbar />
       <div className="content-wrapper">
-        <div className="max-w-screen-xl m-auto flex flex-col justify-center items-center w-full py-4 px-6 lg:py-9 lg:px-20">
+        <div className="m-auto flex flex-col justify-center items-center w-full">
           <div className="row flex wrap w-full">
             <Header />
           </div>

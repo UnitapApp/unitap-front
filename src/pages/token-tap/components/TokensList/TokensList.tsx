@@ -88,7 +88,7 @@ const TokensList = () => {
                     </span>
                   </div>
 
-                  <div className={'flex items-center justify-end flex-col md:flex-row gap-2 !w-full sm:w-auto'}>
+                  <div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
                     <div className="w-full sm:w-auto items-center sm:items-end">
                       <AddMetamaskButton
                         disabled={!active}
