@@ -25,6 +25,7 @@ const NotificationsProvider = ({children}: PropsWithChildren<{}>) => {
         hideProgressBar: true,
         position: "bottom-right",
         transition: Slide,
+        theme: "dark"
       })
     }
   }, [notifications]);

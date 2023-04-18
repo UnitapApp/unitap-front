@@ -80,9 +80,9 @@ export type ClaimReceipt = {
   txHash: string | null;
   chain: Chain;
   datetime: string;
-  // amount: BigInt;
   amount: number;
   status: ClaimReceiptState;
+  lastUpdated: string;
 };
 
 export type ClaimBoxStateContainer = {

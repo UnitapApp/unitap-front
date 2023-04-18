@@ -1,5 +1,5 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from "api";
 import {
   BrightIdConnectionModalState,
   BrightIdModalState,
@@ -9,16 +9,18 @@ import {
   ClaimBoxStateContainer,
   ClaimNonEVMModalState,
   ClaimReceipt,
+  ClaimReceiptState,
   HaveBrightIdAccountModalState,
-  Network, PK,
-} from 'types';
-import { UserProfileContext } from './useUserProfile';
-import { RefreshContext } from 'context/RefreshContext';
-import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
-import removeRequest from 'utils/hook/claimRequests';
-import { useWeb3React } from '@web3-react/core';
-import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
-import useToken from './useToken';
+  Network,
+  PK
+} from "types";
+import { UserProfileContext } from "./useUserProfile";
+import { RefreshContext } from "context/RefreshContext";
+import getActiveClaimReciept from "utils/hook/getActiveClaimReciept";
+import removeRequest from "utils/hook/claimRequests";
+import { searchChainList, searchChainListSimple } from "utils/hook/searchChainList";
+import useToken from "./useToken";
+import { NotificationsContext } from "../context/NotificationsProvider";
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -264,6 +266,31 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const closeBrightIdConnectionModal = () => {
     setBrightIdConnectionModalStatus(BrightIdConnectionModalState.CLOSED);
   };
+
+  const {addNotification} = useContext(NotificationsContext);
+
+  useEffect(() => {
+    activeClaimHistory.map((claim) => {
+      if (new Date(claim.lastUpdated).getTime() < new Date().getTime() - 5000) {
+        if (claim.status === ClaimReceiptState.PENDING) {
+          addNotification({
+            type: 'info',
+            message: 'Claim Successfully Submitted',
+          });
+        } else if (claim.status === ClaimReceiptState.VERIFIED) {
+          addNotification({
+            type: 'success',
+            message: 'Successfully Claimed ' + claim.chain.symbol + ' Gas Fee',
+          });
+        } else if (claim.status === ClaimReceiptState.REJECTED) {
+          addNotification({
+            type: 'error',
+            message: 'Failed to Claim ' + claim.chain.symbol + ' Gas Fee',
+          });
+        }
+      }
+    });
+  }, [activeClaimHistory, addNotification]);
 
   return (
     <ClaimContext.Provider
