@@ -1,11 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 
-import { ClaimContext } from 'hooks/useChainList';
-import Icon from 'components/basic/Icon/Icon';
-import Input from 'components/basic/Input/input';
+import { ClaimContext } from "hooks/useChainList";
+import Input from "components/basic/Input/input";
 
-const SearchInput = () => {
-  const [searchPhraseInput, setSearchPhraseInput] = useState<string>('');
+type SearchInputProps = {
+  className?: string;
+}
+
+const SearchInput = ({ className = "" }: SearchInputProps) => {
+  const [searchPhraseInput, setSearchPhraseInput] = useState<string>("");
   const { changeSearchPhrase } = useContext(ClaimContext);
 
   const searchPhraseChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +18,7 @@ const SearchInput = () => {
   };
 
   return (
-    <div className="search-input relative border-gray30 border-2 bg-gray40 rounded-xl">
+    <div className={`search-input relative border-gray30 border-2 bg-gray40 rounded-xl ${className}`}>
       <Input
         data-testid="search-box"
         icon="search.png"
