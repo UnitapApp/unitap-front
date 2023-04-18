@@ -14,7 +14,7 @@ import {getChainIcon} from '../../../../utils';
 import Icon from 'components/basic/Icon/Icon';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import {useWeb3React} from '@web3-react/core';
-import {Chain, ClaimReceipt, ClaimReceiptState, PK} from 'types';
+import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from "types";
 import {BigNumber} from 'ethers';
 import {useNavigate} from "react-router-dom";
 import RoutePath from "../../../../routes";
@@ -157,7 +157,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
                 >
                   <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
                 </ClaimedButton>
-                ) : chain.needsFunding ? (
+                ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
                   <div className='btn btn--claim btn--sm btn--out-of-balance'>
                     Out of balance
 
