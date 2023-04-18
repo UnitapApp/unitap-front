@@ -271,7 +271,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     activeClaimHistory.map((claim) => {
-      if (new Date(claim.lastUpdated).getTime() < new Date().getTime() - 5000) {
+      if (new Date(claim.lastUpdated).getTime() > new Date().getTime() - 5000) {
         if (claim.status === ClaimReceiptState.PENDING) {
           addNotification({
             type: 'info',

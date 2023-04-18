@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import {Notification} from "../types";
+import { Notification } from "../types";
 import { Slide, toast } from "react-toastify";
 
 const NotificationsContext = React.createContext<{
@@ -7,32 +7,39 @@ const NotificationsContext = React.createContext<{
   addNotification: (notification: Notification) => void,
 }>({
   notifications: [],
-  addNotification: (notification: Notification) => {},
+  addNotification: (notification: Notification) => {
+  }
 });
 
-const NotificationsProvider = ({children}: PropsWithChildren<{}>) => {
+const NotificationsProvider = ({ children }: PropsWithChildren<{}>) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [showedNotifications, setShowedNotifications] = useState<Notification[]>([]);
 
   const addNotification = (notification: Notification) => {
     setNotifications([...notifications, notification]);
-  }
+  };
 
   useEffect(() => {
     if (notifications.length > 0) {
-      toast(notifications[notifications.length - 1].message, {
-        type: notifications[notifications.length - 1].type,
-        autoClose: 5000,
-        hideProgressBar: true,
-        position: "bottom-right",
-        transition: Slide,
-        theme: "dark"
-      })
+      let notification = notifications[notifications.length - 1];
+
+      if (!showedNotifications.find(n => n.message === notification.message)) {
+        toast(notifications[notifications.length - 1].message, {
+          type: notifications[notifications.length - 1].type,
+          autoClose: 5000,
+          hideProgressBar: true,
+          position: "bottom-right",
+          transition: Slide,
+          theme: "dark"
+        });
+        setShowedNotifications([...showedNotifications, notification])
+      }
     }
-  }, [notifications]);
+  }, [notifications, showedNotifications]);
 
   return (
-    <NotificationsContext.Provider value={{notifications, addNotification}}>{children}</NotificationsContext.Provider>
+    <NotificationsContext.Provider value={{ notifications, addNotification }}>{children}</NotificationsContext.Provider>
   );
 };
 
-export {NotificationsContext, NotificationsProvider};
+export { NotificationsContext, NotificationsProvider };
