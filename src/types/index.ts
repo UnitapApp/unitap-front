@@ -144,3 +144,8 @@ export type APIError = {
   source: APIErrorsSource;
   statusCode: number;
 }
+
+export type Notification = {
+  message: string;
+  type: "success" | "error" | "info" | "warning";
+}
