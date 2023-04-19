@@ -61,56 +61,71 @@ export const ClaimContext = createContext<{
   chainListSearchResult: [],
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
-  claim: (chainPK: number) => {},
-  claimNonEVM: (chainPK: number, address: string) => {},
+  claim: (chainPK: number) => {
+  },
+  claimNonEVM: (chainPK: number, address: string) => {
+  },
   activeClaimReceipt: null,
   activeClaimHistory: [],
-  closeClaimModal: () => {},
-  openClaimModal: (chainPk: PK) => {},
+  closeClaimModal: () => {
+  },
+  openClaimModal: (chainPk: PK) => {
+  },
   activeChain: null,
   activeNonEVMChain: null,
   claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
-  retryClaim: () => {},
-  openBrightIdModal: () => {},
-  closeBrightIdModal: () => {},
-  openClaimNonEVMModal: () => {},
-  closeClaimNonEVMModal: () => {},
+  retryClaim: () => {
+  },
+  openBrightIdModal: () => {
+  },
+  closeBrightIdModal: () => {
+  },
+  openClaimNonEVMModal: () => {
+  },
+  closeClaimNonEVMModal: () => {
+  },
   brightidModalStatus: BrightIdModalState.CLOSED,
   claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
-  openHaveBrightIdAccountModal: () => {},
-  closeHaveBrightIdAccountModal: () => {},
+  openHaveBrightIdAccountModal: () => {
+  },
+  closeHaveBrightIdAccountModal: () => {
+  },
   haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
-  openBrightIdConnectionModal: () => {},
-  closeBrightIdConnectionModal: () => {},
+  openBrightIdConnectionModal: () => {
+  },
+  closeBrightIdConnectionModal: () => {
+  },
   brightIdConnectionModalStatus: BrightIdConnectionModalState.CLOSED,
   selectedNetwork: Network.MAINNET,
   selectedChainType: ChainType.EVM,
-  setSelectedNetwork: (network: Network) => {},
-  setSelectedChainType: (chainType: ChainType) => {},
+  setSelectedNetwork: (network: Network) => {
+  },
+  setSelectedChainType: (chainType: ChainType) => {
+  },
   claimNonEVMLoading: false,
   claimLoading: false,
-  searchPhrase: '',
+  searchPhrase: ""
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [chainList, setChainList] = useState<Chain[]>([]);
-  const [searchPhrase, setSearchPhrase] = useState<string>('');
+  const [searchPhrase, setSearchPhrase] = useState<string>("");
 
   const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>([]);
   const [activeClaimReceipt, setActiveClaimReceipt] = useState<ClaimReceipt | null>(null);
   const [claimBoxStatus, setClaimBoxStatus] = useState<ClaimBoxStateContainer>({
     status: ClaimBoxState.CLOSED,
-    lastFailPk: null,
+    lastFailPk: null
   });
   const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
   const [claimNonEVMModalStatus, setClaimNonEVMModalStatus] = useState<ClaimNonEVMModalState>(
-    ClaimNonEVMModalState.CLOSED,
+    ClaimNonEVMModalState.CLOSED
   );
   const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(
-    HaveBrightIdAccountModalState.CLOSED,
+    HaveBrightIdAccountModalState.CLOSED
   );
   const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(
-    BrightIdConnectionModalState.CLOSED,
+    BrightIdConnectionModalState.CLOSED
   );
 
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
@@ -129,7 +144,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     try {
       const newChainList = await getChainList();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) {
+    }
   }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
@@ -137,7 +153,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
       try {
         const newClaimHistory = await getActiveClaimHistory(userToken);
         setActiveClaimHistory(newClaimHistory);
-      } catch (e) {}
+      } catch (e) {
+      }
     }
   }, [userToken, userProfile]);
 
@@ -148,9 +165,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     if (activeChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain, 'EVM'));
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeChain, "EVM"));
     } else if (activeNonEVMChain) {
-      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain, 'NONEVM'));
+      setActiveClaimReceipt(getActiveClaimReciept(activeClaimHistory, activeNonEVMChain, "NONEVM"));
     }
   }, [activeChain, activeNonEVMChain, setActiveClaimReceipt, activeClaimHistory]);
 
@@ -195,7 +212,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimLoading],
+    [userToken, claimRequests, updateActiveClaimHistory, claimLoading]
   );
 
   const claimNonEVM = useCallback(
@@ -209,7 +226,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         await claimMaxNonEVMAPI(userToken, claimChainPk, address);
         setTimeout(() => {
           setClaimNonEVMLoading(false);
-        } , 1000);
+        }, 1000);
         await updateActiveClaimHistory();
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
@@ -218,7 +235,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading],
+    [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading]
   );
 
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
@@ -226,12 +243,12 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   const chainListSearchResult = useMemo(
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
-    [searchPhrase, chainList, selectedNetwork, selectedChainType],
+    [searchPhrase, chainList, selectedNetwork, selectedChainType]
   );
 
   const chainListSearchSimpleResult = useMemo(
     () => searchChainListSimple(searchPhrase, chainList),
-    [searchPhrase, chainList],
+    [searchPhrase, chainList]
   );
 
   const changeSearchPhrase = (newSearchPhrase: string) => {
@@ -267,25 +284,47 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     setBrightIdConnectionModalStatus(BrightIdConnectionModalState.CLOSED);
   };
 
-  const {addNotification} = useContext(NotificationsContext);
+  const { addNotification } = useContext(NotificationsContext);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    if (!flag) {
+      addNotification({
+        type: "success",
+        message: "Claim Gas Fee",
+        id: null
+      });
+      setTimeout(() => {
+        addNotification({
+          type: "error",
+          message: "Claim Gas Fee",
+          id: null
+        });
+      }, 1000);
+    }
+    setFlag(true);
+  }, [flag, addNotification]);
 
   useEffect(() => {
     activeClaimHistory.map((claim) => {
       if (new Date(claim.lastUpdated).getTime() > new Date().getTime() - 5000) {
         if (claim.status === ClaimReceiptState.PENDING) {
           addNotification({
-            type: 'info',
-            message: 'Claim Successfully Submitted',
+            type: "info",
+            message: "Claim Successfully Submitted",
+            id: null
           });
         } else if (claim.status === ClaimReceiptState.VERIFIED) {
           addNotification({
-            type: 'success',
-            message: 'Successfully Claimed ' + claim.chain.symbol + ' Gas Fee',
+            type: "success",
+            message: "Successfully Claimed " + claim.chain.symbol + " Gas Fee",
+            id: null
           });
         } else if (claim.status === ClaimReceiptState.REJECTED) {
           addNotification({
-            type: 'error',
-            message: 'Failed to Claim ' + claim.chain.symbol + ' Gas Fee',
+            type: "error",
+            message: "Failed to Claim " + claim.chain.symbol + " Gas Fee",
+            id: null
           });
         }
       }
@@ -327,7 +366,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         setSelectedChainType,
         claimNonEVMLoading,
         claimLoading,
-        searchPhrase,
+        searchPhrase
       }}
     >
       {children}
