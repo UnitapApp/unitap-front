@@ -48,7 +48,7 @@ const TokensList = () => {
         </div>
       )}
       {chainListSearchResult.map((token) => {
-        return <TokenCard token={token} key={token.pk} />
+        return <TokenCard token={token} key={token.pk} />;
       })}
       {chainListSearchResult.length === 0 && chainList.length && (
         <Icon
@@ -94,12 +94,12 @@ const TokenCard = ({ token }: { token: Chain }) => {
             </div>
 
             <div className={"flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto"}>
-              <div className="w-full sm:w-auto items-center sm:items-end">
+              <div className="w-full mb-2 md:mb-0 md:w-auto md:mr-4 items-center md:items-end">
                 <AddMetamaskButton
                   disabled={!active}
                   data-testid={`chain-switch-${token.pk}`}
                   onClick={() => addAndSwitchToChain(token)}
-                  className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
+                  className="font-medium hover:cursor-pointer mx-auto text-sm !w-[220px] md:!w-auto"
                 >
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -152,7 +152,7 @@ const TokenCard = ({ token }: { token: Chain }) => {
             "bg-gray30 w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between"
           }
         >
-          <div className="flex gap-x-2 items-center text-sm">
+          <div className="flex gap-x-2 items-center text-xs sm:text-sm">
             <p className="text-gray100">
               <span className="text-white">1,137 </span> of <span className="text-white"> 2,000 </span> are left
               to claim on Gnosis chain
@@ -184,7 +184,7 @@ const FinalVersionCard = () => {
   return (
     <div className="token-tap__final-version-container w-full h-60 bg-gray20 rounded-xl relative">
       <div
-        className="token_tap__final-version-card flex px-3.5 py-3 w-max gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
+        className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
         <p className="token-tap__final-version-card__text text-gradient-primary text-xs font-semibold">The Final
           version that contains more tokens will be Launched on May 2023.</p>
         <p
