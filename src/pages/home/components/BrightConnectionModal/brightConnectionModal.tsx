@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {Text} from 'components/basic/Text/text.style';
 import {UserProfileContext} from 'hooks/useUserProfile';
 
 import {ClaimButton} from 'components/basic/Button/button';
@@ -17,7 +16,6 @@ import {ErrorsContext} from "../../../../context/ErrorsProvider";
 
 const BrightConnectionModalBody = () => {
   const {userProfile, refreshUserProfile, loading} = useContext(UserProfileContext);
-  // const verificationUrl = useMemo(() => userProfile?.verificationUrl || '', [userProfile]);
   const [tried] = useState(false);
   const {errors, getError, deleteError} = useContext(ErrorsContext);
 
@@ -61,6 +59,8 @@ const BrightConnectionModalBody = () => {
 
   if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
+  } else if (userProfile?.isMeetVerified === false) {
+    return <BrightStatusModal success={false}></BrightStatusModal>;
   }
 
   return (
