@@ -27,10 +27,10 @@ const NavbarDropdown = ({ className }: NavbarDropdownProps) => {
     },
     {
       name: 'Token Tap',
-      link: null,
-      icon: 'assets/images/navbar/navbar-dropdown-soon.svg',
-      iconWidth: '33px',
-      iconHeight: 'auto',
+      link: RoutePath.TOKEN,
+      icon: 'assets/images/navbar/navbar-dropdown-token-tap.svg',
+      iconWidth: 'auto',
+      iconHeight: '28px',
       route: RoutePath.TOKEN,
     },
     {
