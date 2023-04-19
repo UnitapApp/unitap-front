@@ -4,14 +4,11 @@ import { DV } from "components/basic/designVariables";
 import {
   ClaimButton,
   ClaimedButton,
-  EmptyWithRefillButton,
-  NoCurrencyButton,
   SecondaryButton
 } from "components/basic/Button/button";
 import { ClaimContext } from "hooks/useChainList";
 import { formatWeiBalance } from "utils/numbers";
 import { getChainIcon } from "../../../../utils";
-import Icon from "components/basic/Icon/Icon";
 import useSelectChain from "../../../../hooks/useSelectChain";
 import { useWeb3React } from "@web3-react/core";
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from "types";
@@ -42,8 +39,6 @@ const AddMetamaskButton = styled(SecondaryButton)`
 
 const ChainList = () => {
   const { chainList, chainListSearchResult } = useContext(ClaimContext);
-
-  const windowSize = window.innerWidth;
 
   return (
     <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
