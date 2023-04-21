@@ -27,6 +27,7 @@ export type Chain = {
 export type Prize = {
   pk: PK;
   image: string;
+  background: string;
   title: string;
   enrolled: number;
   source: string;
