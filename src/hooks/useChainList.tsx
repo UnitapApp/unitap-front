@@ -306,13 +306,13 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   }, [flag, addNotification]);
 
   useEffect(() => {
-    activeClaimHistory.map((claim) => {
-      if (new Date(claim.lastUpdated).getTime() > new Date().getTime() - 5000) {
+    activeClaimHistory.map(claim => {
+      if (new Date(claim.lastUpdated).getTime() > (new Date().getTime() - 5000)) {
         if (claim.status === ClaimReceiptState.PENDING) {
           addNotification({
             type: "info",
             message: "Claim Successfully Submitted",
-            id: null
+            id: null,
           });
         } else if (claim.status === ClaimReceiptState.VERIFIED) {
           addNotification({

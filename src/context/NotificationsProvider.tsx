@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Notification } from "../types";
 import { Slide, toast } from "react-toastify";
 
-import uuid from 'react-uuid';
+import uuid from "react-uuid";
 
 const NotificationsContext = React.createContext<{
   notifications: Notification[],
@@ -17,10 +17,12 @@ const NotificationsProvider = ({ children }: PropsWithChildren<{}>) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showedNotifications, setShowedNotifications] = useState<Notification[]>([]);
 
-  const addNotification = (notification: Notification) => {
+  const addNotification = useCallback((notification: Notification) => {
     notification.id = uuid();
-    setNotifications([...notifications, notification]);
-  };
+    setNotifications(
+      (notifications: Notification[]) => [...notifications, notification]
+    );
+  }, []);
 
   useEffect(() => {
     if (notifications.length > 0) {
@@ -35,9 +37,9 @@ const NotificationsProvider = ({ children }: PropsWithChildren<{}>) => {
           theme: "dark",
           closeOnClick: false,
           pauseOnHover: false,
-          autoClose: 5000000,
+          autoClose: 5000000
         });
-        setShowedNotifications([...showedNotifications, notification])
+        setShowedNotifications([...showedNotifications, notification]);
       }
     }
   }, [notifications, showedNotifications]);
