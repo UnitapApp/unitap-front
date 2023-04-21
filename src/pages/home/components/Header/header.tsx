@@ -64,3 +64,4 @@ const RenderConnectBrightID = () => {
 };
 
 export default Header;
+export {Dabes}

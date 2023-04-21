@@ -148,6 +148,14 @@ export const LightOutlinedButton = styled(Button)`
   border-radius: ${DV.sizes.baseRadius}px;
 `;
 
+export const LightOutlinedButtonDisabled = styled(Button)`
+  background: transparent;
+  color: gray;
+  border: 3px solid ${DV.colors.gray90};
+  border-radius: ${DV.sizes.baseRadius}px;
+`;
+
+
 export const LightOutlinedButtonNew = styled(Button)`
   background: transparent;
   color: white;

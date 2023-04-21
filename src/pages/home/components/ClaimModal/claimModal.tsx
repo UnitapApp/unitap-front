@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {useContext, useEffect, useMemo, useRef} from 'react';
+import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {Text} from 'components/basic/Text/text.style';
 import {DropIconWrapper} from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import {
-  ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton,
+    ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton,LightOutlinedButtonDisabled
 } from 'components/basic/Button/button';
 import {BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState} from 'types';
-import {getChainClaimIcon, getTxUrl, shortenAddress} from 'utils';
+import {diffToNextMonday, getChainClaimIcon, getTxUrl, shortenAddress} from 'utils';
 import {ClaimContext} from 'hooks/useChainList';
 import {formatWeiBalance} from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
@@ -17,8 +17,13 @@ import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import {useWeb3React} from '@web3-react/core';
 import {UserProfileContext} from "../../../../hooks/useUserProfile";
+import {Dabes} from "../Header/header";
 
-const ClaimModalBody = ({chain}: { chain: Chain }) => {
+const ClaimModalBody = ({chain, isFull = false}: { chain: Chain, isFull: boolean }) => {
+    const [now, setNow] = useState(new Date());
+
+    const diff = diffToNextMonday(now);
+
   const {account} = useWeb3React();
   const walletConnected = !!account;
 
@@ -53,6 +58,13 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
       mounted.current = false;
     }; // ... and to false on unmount
   }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => setNow(new Date()), 1000);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
   function renderWalletNotConnectedBody() {
     return (
@@ -224,6 +236,28 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
     );
   }
 
+    function renderActiveClaimIsFullBody() {
+        return (
+            <>
+                <div className='pt-24 pb-20'>
+                    <Dabes></Dabes>
+                    <span className='flex justify-center items-center font-medium mt-6'>
+                <Text width="100%" fontSize="16" color="second_gray_light" textAlign="center">
+                    Your Box is full for this round!
+                </Text>
+                </span>
+                </div>
+                <LightOutlinedButtonDisabled
+                    width={'100%'}
+                    fontSize="16px"
+                    className="!w-full"
+                >
+                    Next Round In : {diff.days}d : {diff.hours}h : {diff.minutes}m : {diff.seconds}s
+                </LightOutlinedButtonDisabled>
+            </>
+        );
+    }
+
   function renderFailedBody() {
     return (
       <>
@@ -264,6 +298,8 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
 
     if (!walletConnected) return renderWalletNotConnectedBody();
 
+    if (isFull) return renderActiveClaimIsFullBody();
+
     if (!activeClaimReceipt) return renderInitialBody();
 
     if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
@@ -284,6 +320,7 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
 };
 
 const ClaimModal = () => {
+  const {activeClaimHistory} = useContext(ClaimContext)
   const {closeClaimModal, activeChain} = useContext(ClaimContext);
   const {brightidModalStatus} = useContext(ClaimContext);
 
@@ -300,7 +337,7 @@ const ClaimModal = () => {
     <>
       <Modal title={`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${activeChain.symbol}`} size="small"
              closeModalHandler={closeClaimModal} isOpen={isOpen}>
-        <ClaimModalBody chain={activeChain}/>
+        <ClaimModalBody chain={activeChain} isFull={activeClaimHistory.length >= 5}/>
       </Modal>
     </>
   );
