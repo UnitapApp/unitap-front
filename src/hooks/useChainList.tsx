@@ -16,9 +16,7 @@ import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import removeRequest from 'utils/hook/claimRequests';
-import { useWeb3React } from '@web3-react/core';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
-import useToken from './useToken';
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -119,8 +117,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [claimNonEVMLoading, setClaimNonEVMLoading] = useState(false);
   const [claimLoading, setClaimLoading] = useState(false);
 
-  const [userToken] = useToken();
-  const { userProfile } = useContext(UserProfileContext);
+  const { userProfile, userToken } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
 
   const updateChainList = useCallback(async () => {

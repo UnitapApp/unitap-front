@@ -53,7 +53,7 @@ const BrightConnectionModalBody = () => {
   const refreshConnectionButtonAction = useCallback(async () => {
     if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) return;
     deleteError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR);
-    refreshUserProfile(keys.address, signedPrivateKey);
+    await refreshUserProfile(keys.address, signedPrivateKey);
 
   }, [refreshUserProfile, loading, signedPrivateKey, keys, deleteError]);
 
