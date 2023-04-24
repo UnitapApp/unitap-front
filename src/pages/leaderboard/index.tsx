@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Navbar from 'components/common/Navbar/navbar';
 
-const LeaderBoard = () => {
+const Leaderboard = () => {
   return (
     <>
       <Navbar />
@@ -10,4 +10,4 @@ const LeaderBoard = () => {
   );
 };
 
-export default LeaderBoard;
+export default Leaderboard;

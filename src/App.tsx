@@ -7,7 +7,7 @@ import Landing from 'pages/landing';
 import Donate from 'pages/donate';
 import NFT from 'pages/nft';
 import About from 'pages/about';
-import LeaderBoard from 'pages/leaderBoard';
+import Leaderboard from 'pages/leaderboard';
 import TokenTap from 'pages/token-tap';
 import { UserProfileProvider } from './hooks/useUserProfile';
 import RoutePath from 'routes';
@@ -66,7 +66,7 @@ function App() {
                           <Route path={RoutePath.ABOUT} element={<About />} />
                           <Route path={RoutePath.PRIZE} element={<PrizeTap />} />
                           <Route path={RoutePath.TOKEN} element={<TokenTap />} />
-                          <Route path={RoutePath.LEADERBOARD} element={<LeaderBoard />} />
+                          <Route path={RoutePath.LEADERBOARD} element={<Leaderboard />} />
                         </Routes>
                       </ScrollToTop>
                       <ConnectBrightIdModal />
