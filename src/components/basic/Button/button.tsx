@@ -148,6 +148,13 @@ export const LightOutlinedButton = styled(Button)`
   border-radius: ${DV.sizes.baseRadius}px;
 `;
 
+export const LightOutlinedButtonNew = styled(Button)`
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: ${DV.sizes.baseRadius * 1.5}px;
+`;
+
 export const WhiteOutlinedButton = styled(Button)`
   color: white;
   border: 2px solid #ffffff;
@@ -241,15 +248,57 @@ export const NoCurrencyButton = styled(Button)`
 export const ClaimedButton = styled(Button)`
   width: 220px;
   text-align: left;
-
+  
   ::before {
-    background: #1b1b26;
+    //background-image: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%);
   }
 
   &::after {
     position: absolute;
     top: 10px;
     right: 20px;
+  }
+`;
+
+export const EmptyWithRefillButton = styled(Button)`
+  background: ${DV.colors.gray90};
+  color: ${DV.colors.gray70};
+  width: 220px;
+  text-align: left;
+  position: relative;
+    
+  &::after {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    path {
+      fill: ${DV.colors.gray70};
+      
+      &:hover {
+        fill: ${DV.colors.gray70};
+      }
+      
+      &:active {
+        fill: ${DV.colors.gray70};
+      }
+    }
+    
+    &:hover {
+      path {
+        fill: ${DV.colors.gray70};
+      }
+    }
+  }
+  
+  &:hover {
+    background: ${DV.colors.gray90};
+    color: ${DV.colors.gray70};
   }
 `;
 

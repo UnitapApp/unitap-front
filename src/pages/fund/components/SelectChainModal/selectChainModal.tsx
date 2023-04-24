@@ -24,7 +24,7 @@ const SelectChainModal = ({
   };
 
   return (
-    <SelectChainModalWrapper className="relative bg-gray20 pt-4">
+    <SelectChainModalWrapper className="relative bg-gray20 pt-4 h-auto">
       <input
         className="bg-gray10 border-2 !border-gray30 rounded-lg p-4 py-3.5 pl-[52px] mb-2 w-full text-white z-1"
         value={searchPhraseInput}
@@ -37,18 +37,20 @@ const SelectChainModal = ({
         width="20px"
         height="20px"
       />
-      {chainListSearchSimpleResult.map((chain) => (
-        <ChainItem
-          data-testid={`select-chain-modal-item-${chain.pk}`}
-          key={chain.chainId}
-          chain={chain}
-          selected={selectedChain?.chainId === chain.chainId}
-          onClick={() => {
-            setSelectedChain(chain);
-            closeModalHandler();
-          }}
-        />
-      ))}
+      <div className='chainlist-container max-h-[50vh] styled-scroll pr-1'>
+        {chainListSearchSimpleResult.map((chain) => (
+          <ChainItem
+            data-testid={`select-chain-modal-item-${chain.pk}`}
+            key={chain.chainId}
+            chain={chain}
+            selected={selectedChain?.chainId === chain.chainId}
+            onClick={() => {
+              setSelectedChain(chain);
+              closeModalHandler();
+            }}
+          />
+        ))}
+      </div>
     </SelectChainModalWrapper>
   );
 };

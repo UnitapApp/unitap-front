@@ -20,6 +20,10 @@ const Landing: FC = () => {
   const maxCount = useMemo(() => batchSize || 0, [batchSize]);
   const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
@@ -38,7 +42,7 @@ const Landing: FC = () => {
     },
   ]);
   const [stats, setStats] = useState([
-    { name: 'Unitap Users', number: '856' },
+    { name: 'Unitap Users', number: '+4000' },
     { name: 'EVM Networks', number: 0 },
     { name: 'Test Networks', number: 0 },
     { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
@@ -46,7 +50,7 @@ const Landing: FC = () => {
 
   useEffect(() => {
     setStats((prev) => [
-      { name: 'Unitap Users', number: '856' },
+      { name: 'Unitap Users', number: '+4000' },
       { name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
       { name: 'Test Networks', number: getTotalTestNetworks(chainList) },
       { name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
@@ -130,13 +134,13 @@ const Landing: FC = () => {
         <section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
           <Link className={'flex--1'} to={RoutePath.FAUCET}>
             <Widget
-              description={'Claim gas fees for any reason and make  transactions easily'}
+              description={'Claim gas fees for any reason and make transactions easily'}
               icon={'gastap-icon.svg'}
               iconSize={'w-7'}
               className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
               title={'Gas Tap'}
               buttonTitle={'Go to Tap'}
-              buttonClass={'gradient-outline-button'}
+              buttonClass={'gradient-outline-button text-gray100'}
             >
               {sortedChainList.length > 0 && (
                 <>
@@ -170,10 +174,10 @@ const Landing: FC = () => {
               description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
               icon={'tokentap-icon.svg'}
               iconSize={'w-8'}
-              className={'h-full after:bg-tokentap-texture flex-1'}
+              className={'h-full after:bg-tokentap-texture flex-1 '}
               title={'Token Tap'}
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
             ></Widget>
           </section>
 
@@ -185,9 +189,23 @@ const Landing: FC = () => {
               iconSize={'w-8 h-7'}
               title={'Prize Tap'}
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
             ></Widget>
           </section>
+
+          {/* <section className={'flex--1'}>
+            <Link className={'flex--1'} to={RoutePath.PRIZE}>
+              <Widget
+                description={'Where everyone has chances to win larger prizes'}
+                className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
+                icon={'prizetap-icon.png'}
+                iconSize={'w-8 h-7'}
+                title={'Prize Tap'}
+                buttonTitle={'Go to Tap'}
+                buttonClass={'gradient-outline-button text-gray100'}
+              ></Widget>
+            </Link>
+          </section> */}
         </section>
 
         <section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
@@ -201,7 +219,7 @@ const Landing: FC = () => {
               title={tap.name}
               unClickable
               buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30'}
+              buttonClass={'secondary-button !bg-gray30 text-gray100'}
             ></Widget>
           ))}
         </section>
@@ -217,7 +235,10 @@ const Landing: FC = () => {
             <div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
               {stats.map((stat) => (
                 <div key={stat.name} className={'flex flex-col gap-2 items-center'}>
-                  <p className={'text-xl text-space-green font-semibold'}>{stat.number}</p>
+                  <p className={'text-xl text-space-green font-semibold'}>
+                    {/* {numberWithCommas(typeof stat.number == 'string' ? parseFloat(stat.number) : stat.number)} */}
+                    {stat.number}
+                  </p>
                   <p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
                 </div>
               ))}

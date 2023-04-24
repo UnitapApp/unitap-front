@@ -114,7 +114,7 @@ const TokensList = () => {
                         <ClaimButton
                           data-testid={`chain-show-claim-${chain.pk}`}
                           mlAuto
-                          onClick={() => openClaimModal(chain)}
+                          onClick={() => openClaimModal(chain.pk)}
                           className="text-sm m-auto"
                         >
                           <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
@@ -126,7 +126,7 @@ const TokensList = () => {
                           icon="../assets/images/claim/claimedIcon.svg"
                           iconWidth={24}
                           iconHeight={20}
-                          onClick={() => openClaimModal(chain)}
+                          onClick={() => openClaimModal(chain.pk)}
                           className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
                         >
                           <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>

@@ -21,6 +21,20 @@ export type Chain = {
   isTestnet: boolean;
   chainType: string;
   needsFunding: boolean;
+  blockScanAddress: string;
+};
+
+export type Prize = {
+  pk: PK;
+  image: string;
+  title: string;
+  enrolled: number;
+  source: string;
+  twitterLink: string;
+  discordLink: string;
+  description: string;
+  startTime: string;
+  FinishTime: string;
 };
 
 export enum BrightIdVerificationStatus {
@@ -28,25 +42,32 @@ export enum BrightIdVerificationStatus {
   VERIFIED = '1',
 }
 
-export type UserProfile = {
-  pk: PK;
-  contextId: string;
+type UserWallet = {
+  walletType: string;
+  pk: number;
   address: string;
-  verificationUrl: string;
-  verificationStatus: BrightIdVerificationStatus;
-  totalWeeklyClaimsRemaining: number;
+}
+
+export type UserProfile = {
+  isMeetVerified: string;
+  isAuraVerified: string;
+  initial_context_id: string;
+  token: string;
+  pk: PK;
+  wallets: UserWallet[];
 };
 
 export enum ClaimReceiptState {
-  PENDING = '0',
-  VERIFIED = '1',
-  REJECTED = '2',
+  PENDING = 'Pending',
+  VERIFIED = 'Verified',
+  REJECTED = 'Rejected',
 }
 
 export enum ClaimBoxState {
   CLOSED = '-5',
   WALLET_NOT_CONNECTED = '-4',
   BRIGHTID_NOT_VERIFIED = '-3',
+  BRIGHTID_NOT_CONNECTED = '-6',
   INITIAL = '-2',
   REQUEST = '-1',
   PENDING = '0',
@@ -57,7 +78,7 @@ export enum ClaimBoxState {
 export type ClaimReceipt = {
   pk: PK;
   txHash: string | null;
-  chain: PK;
+  chain: Chain;
   datetime: string;
   // amount: BigInt;
   amount: number;
@@ -75,6 +96,11 @@ export enum BrightIdModalState {
   NOT_CONNECTED = '2',
   CONNECTED_NOT_VERIFIED = '3',
   CONNECTED_AND_VERIFIED = '4',
+}
+
+export enum ClaimNonEVMModalState {
+  CLOSED = '0',
+  OPENED = '1',
 }
 
 export enum TransactionState {
@@ -99,7 +125,20 @@ export enum Network {
   TESTNET = '1',
 }
 
-export enum ChainType { 
-  EVM = '0',
-  NONEVM = '1',
+export enum ChainType {
+  EVM = 'EVM',
+  NONEVM = 'NONEVM',
+  SOLANA = 'Solana',
+  LIGHTNING = 'Lightning',
+}
+
+export enum APIErrorsSource {
+  TEST = 'TEST',
+  BRIGHTID_CONNECTION_ERROR = 'BRIGHTID_CONNECTION_ERROR',
+}
+
+export type APIError = {
+  message: string;
+  source: APIErrorsSource;
+  statusCode: number;
 }

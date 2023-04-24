@@ -3,6 +3,7 @@ import { DV } from 'components/basic/designVariables';
 
 export const ContentCard = styled.div`
   width: min(90%, 430px);
+  height: fit-content;
   margin: ${DV.sizes.baseMargin * 4}px auto ${DV.sizes.baseMargin * 8}px;
   box-sizing: border-box;
   display: flex;

@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components/';
 import Icon from 'components/basic/Icon/Icon';
-import { UserProfileContext } from 'hooks/useUserProfile';
 
 const Spaceship = styled.img`
   position: absolute;
@@ -10,8 +9,7 @@ const Spaceship = styled.img`
 `;
 
 const Header = () => {
-  const { userProfile } = useContext(UserProfileContext);
-
+  const notClaimed = false; // I don't know what is this, just the most relative word that came to my mind after reading the code
   return (
     <div className="header w-full bg-gray20 rounded-2xl flex flex-col md:flex-row justify-between overflow-hidden relative p-4 mb-6">
       <Spaceship className="z-0" src="assets/images/token-tap/header-spaceship.svg" />
@@ -28,7 +26,8 @@ const Header = () => {
       </div>
       <div className="header-right h-full flex flex-col justify-end">
         <div className="claim-stat z-10">
-          {userProfile?.totalWeeklyClaimsRemaining !== 2 ? (
+          {/* {userProfile?.totalWeeklyClaimsRemaining !== 2 ? ( */}
+          {notClaimed ? (
             <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
               <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
                 You can claim <span className="claimed-left text-space-green">5</span> tokens in this round

@@ -4,40 +4,28 @@ import { Text } from 'components/basic/Text/text.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
 import { ClaimButton } from 'components/basic/Button/button';
-
-import { BrightIdVerificationStatus } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
 import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import useGenerateKeys from 'hooks/useGenerateKeys';
 
 const ConnectMetamaskModalContent = () => {
   const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
   const [tried, setTried] = useState(false);
   const { activeChain, closeBrightIdModal } = useContext(ClaimContext);
+  const { keys } = useGenerateKeys();
+  const [signedPrivateKey] = useState<string | null>(null);
 
   const refreshConnectionButtonAction = useCallback(async () => {
-    if (!refreshUserProfile || loading) {
+    if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey) {
       return;
     }
-    try {
-      const refreshedUserProfile = await refreshUserProfile();
-      if (refreshedUserProfile.verificationStatus !== BrightIdVerificationStatus.VERIFIED) {
-        setTried(true);
-        alert('Not Connected to Bright-ID!\nPlease Scan The QR Code or Use Copy Link Option.');
-      } else {
-        setTried(false);
-        if (!!activeChain) {
-          closeBrightIdModal();
-        }
-      }
-    } catch (ex) {
-      alert('Error while connecting to BrightID sever!');
-      setTried(true);
-    }
-  }, [refreshUserProfile, loading, activeChain, closeBrightIdModal]);
+    
+    refreshUserProfile(keys?.address, signedPrivateKey);
+  }, [refreshUserProfile, loading, keys?.address, signedPrivateKey]);
 
-  if (userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED) {
+  if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 

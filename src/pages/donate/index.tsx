@@ -37,7 +37,7 @@ const Home = () => {
   });
 
   function selectNetwork(index: number) {
-    networks.map((net) => {
+    networks.forEach((net) => {
       net.isSelected = false;
     });
     setSelectedNetwork(networks[index]);
@@ -57,7 +57,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className={'unitap-body flex justify-center items-center px-4 py-8'}>
+      <div className={'content-wrapper flex justify-center items-center px-4 py-8'}>
         <div className={'uni-card mt-9 sm:mt-0 after:bg-donate-texture-p  after:w-60 after:top-0 after:h-56 px-4 py-6'}>
           <div className={'h-72 flex flex-col justify-end items-center mb-12'}>
             {selectedNetwork.name && <p className={'text-white font-semibold text-lg z-10 relative'}>Unitap Wallet</p>}

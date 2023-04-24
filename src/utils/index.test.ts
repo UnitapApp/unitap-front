@@ -25,6 +25,7 @@ describe('utils', () => {
       isTestnet: false,
       chainType: 'EVM',
       needsFunding: false,
+      blockScanAddress: 'https://blockscout.com/xdai/mainnet/address/',
     },
     {
       pk: 2,
@@ -47,6 +48,7 @@ describe('utils', () => {
       isTestnet: true,
       chainType: 'Non-EVM',
       needsFunding: true,
+      blockScanAddress: 'https://blockscout.com/xdai/mainnet/address/',
     },
   ];
   const txHash = '0xbc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a';

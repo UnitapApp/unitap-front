@@ -34,9 +34,9 @@ const getNetworkFilterResult = (selectedNetwork: Network, chainList: Chain[]) =>
 
 const getChainTypeFilterResult = (selectedChainType: ChainType, chainList: Chain[]) => {
   if (selectedChainType === ChainType.EVM) {
-    chainList = chainList.filter((chain) => chain.chainType === 'EVM');
+    chainList = chainList.filter((chain) => chain.chainType === ChainType.EVM);
   } else if (selectedChainType === ChainType.NONEVM) {
-    chainList = chainList.filter((chain) => chain.chainType === 'NONEVM');
+    chainList = chainList.filter((chain) => chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING);
   }
   return chainList;
 };
@@ -55,8 +55,9 @@ export const searchChainList = (
   selectedNetwork: Network,
   selectedChainType: ChainType,
 ) => {
-  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
-  searchChainListResult = getNetworkFilterResult(selectedNetwork, searchChainListResult);
+  if (searchPhrase !== '') return getSearchQueryResult(searchPhrase, chainList);
+
+  let searchChainListResult = getNetworkFilterResult(selectedNetwork, chainList);
   searchChainListResult = getChainTypeFilterResult(selectedChainType, searchChainListResult);
   return searchChainListResult;
 };

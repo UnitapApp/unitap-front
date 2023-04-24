@@ -3,7 +3,6 @@ import { FAST_INTERVAL, MEDIUM_INTERVAL, SLOW_INTERVAL } from '../constants/inte
 
 const RefreshContext = React.createContext({ slowRefresh: 0, mediumRefresh: 0, fastRefresh: 0 });
 
-// This context maintain 2 counters that can be used as a dependencies on other hooks to force a periodic refresh
 const RefreshContextProvider = ({ children }: PropsWithChildren<{}>) => {
   const [slowRefresh, setSlowRefresh] = useState(0);
   const [fastRefresh, setFastRefresh] = useState(0);

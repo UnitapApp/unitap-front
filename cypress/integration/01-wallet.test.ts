@@ -62,7 +62,7 @@ describe("Wallet", () => {
     setupGetChainListServerGeneral();
     cy.route({
       method: "GET",
-      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      url: `/api/v1/chain/list/`,
       response: chainList
     });
   };
@@ -71,7 +71,7 @@ describe("Wallet", () => {
     setupGetChainListServerGeneral();
     cy.route({
       method: "GET",
-      url: `/api/v1/chain/list/${TEST_ADDRESS_NEVER_USE}`,
+      url: `/api/v1/chain/list/`,
       response: chainListAuthenticatedClaimedFirst
     });
   };

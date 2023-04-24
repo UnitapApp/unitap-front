@@ -21,8 +21,11 @@ const MintNFTCard = () => {
 
   const { price, batchSoldCount, batchSize } = useUnitapBatchSale();
   const [accountBalance, setAccountBalance] = useState<Number>(0);
-  const maxCount = useMemo(() => batchSize || 0, [batchSize]);
-  const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
+
+  const remainingCount = useMemo(
+    () => (batchSize ? batchSize - (batchSoldCount || 0) : undefined),
+    [batchSize, batchSoldCount],
+  );
 
   const { chainId, account, provider } = useWeb3React();
 
@@ -43,20 +46,19 @@ const MintNFTCard = () => {
   const nativeCurrency = useNativeCurrency();
 
   const priceAmount = useMemo(() => {
-    if (!price) return null;
+    if (!price) return undefined;
     const amount = JSBI.BigInt(price.toString());
     return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
   }, [nativeCurrency, price]);
 
   const totalPriceAmount = useMemo(() => {
-    if (!priceAmount) return null;
+    if (!priceAmount) return undefined;
     return priceAmount.multiply(count);
   }, [count, priceAmount]);
 
   const { callback: mintPassCallback } = useUnitapPassMultiMintCallback(count);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [submittedTxHash, setSubmittedTxHash] = useState<string | null>(null);
-  const [openseaLink, setOpenseaLink] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const mounted = useRef(false);
@@ -98,6 +100,7 @@ const MintNFTCard = () => {
       isTestnet: false,
       chainType: 'Ethereum',
       needsFunding: false,
+      blockScanAddress: 'https://etherscan.io/address/',
     };
 
     if (getUnitapPassChainId() === SupportedChainId.MAINNET && mainnetChain) {
@@ -164,7 +167,14 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
             <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
               <div className="w-full h-full overflow-hidden rounded-lg">
-                <video src="assets/videos/unitap-pass.mp4" autoPlay muted loop className="w-full object-cover"></video>
+                <video
+                  src="assets/videos/unitap-pass.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  className="w-full object-cover"
+                  poster="assets/images/nft/nft-poster.jpg"
+                ></video>
               </div>
             </div>
           </div>
@@ -206,8 +216,8 @@ const MintNFTCard = () => {
           <div className="mint-nft-card__nft p-4 h-full flex flex-col justify-between">
             <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between">
               <p className="text-gray100">
-                <span className="text-white"> {remainingCount} </span> of
-                <span className="text-white"> {maxCount} </span>
+                <span className="text-white"> {remainingCount === undefined ? '...' : remainingCount} </span> of
+                <span className="text-white"> {batchSize === undefined ? '...' : batchSize} </span>
                 Left in current batch
               </p>
               <p className="text-gray100">
@@ -236,12 +246,14 @@ const MintNFTCard = () => {
                     {count} x {priceAmount?.toSignificant(5) || '0'} ETH ={' '}
                   </p>
                 )}
-                <span className="text-white">{totalPriceAmount?.toSignificant(5) || '0'} ETH</span>
+                <span className="text-white">
+                  {totalPriceAmount === undefined ? '...' : totalPriceAmount?.toSignificant(5) || '0'} ETH
+                </span>
               </p>
             </div>
           </div>
           <div className="mint-nft-card__actions bg-gray30 w-full flex-col lg:flex-row flex gap-2 justify-between items-center py-3 px-4">
-            {isRightChain && remainingCount > 0 && (
+            {isRightChain && remainingCount && remainingCount > 0 && (
               <div className="mint-nft-card__actions__quantity w-full lg:w-auto flex items-center">
                 <div
                   className={`text-white border-2 border-gray60 flex-1 h-12 min-w-[48px] flex justify-center py-3 items-center rounded-l-xl ${

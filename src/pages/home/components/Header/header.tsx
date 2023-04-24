@@ -1,80 +1,64 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components/';
+import React, { useContext } from 'react';
 import Icon from 'components/basic/Icon/Icon';
 import Timer from '../Timer/timer';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import { BrightIdVerificationStatus } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { range } from 'utils';
-
-// ###### Local Styled Components
-
-const Spaceship = styled.img`
-  position: absolute;
-  left: 0;
-  transform: translate(-35%, -37%) scale(1);
-`;
+import { ClaimReceiptState } from '../../../../types';
 
 const Header = () => {
   const { userProfile } = useContext(UserProfileContext);
 
   return (
-    <div className="header h-[152px] bg-gray20 rounded-2xl flex justify-between overflow-hidden relative p-4 mb-6">
-      <Spaceship className="z-0" src="assets/images/gas-tap/header-spaceship.svg" />
-      <div className="header-left z-10 flex flex-col justify-end items-start h-[100%]">
-        <Icon className="gas-tap h-12 w-[140px] mb-1" iconSrc="assets/images/gas-tap/gas-tap-text-logo.png" />
-        <Timer />
+    <div className="header gas-tap__header h-[202px] rounded-2xl flex flex-col  md:flex-row lg:items-end  md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
+      <div className="header-left z-10 flex flex-col items-start">
+        <Icon className="gas-tap h-12 w-[140px]" iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg" />
       </div>
-      <div className="header-right h-[100%] flex flex-col justify-end">
-        <div className="claim-stat z-10">
-          {userProfile?.verificationStatus === BrightIdVerificationStatus.VERIFIED ? (
-            userProfile.totalWeeklyClaimsRemaining == 5 ? (
-              <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
-                <p className="claim-stat__not-claimed__text px-6 py-4 text-white text-xs">
-                  You can claim <span className="claimed-left text-space-green">5</span> gas fees in this round
-                </p>
-              </div>
-            ) : (
-              <Dabes />
-            )
-          ) : (
-            <></>
-          )}
-        </div>
-        <div className="spaceman absolute bottom-2 right-0">
-          <Icon className="z-0" iconSrc={'assets/images/claim/header-spaceman.svg'} width="120px" height="auto" />
-        </div>
+      <Timer />
+      <div className="header-right  flex mt-2 justify-center md:justify-start">
+        <div className="claim-stat z-10">{userProfile ? <Dabes /> : <RenderConnectBrightID />}</div>
       </div>
     </div>
   );
 };
 
 const Dabes = () => {
-  const { chainList } = useContext(ClaimContext);
-  const [totalRemainingClaims, setTotalRemainingClaims] = useState(0);
-
-  useEffect(() => {
-    let total = chainList?.reduce((acc, chain) => {
-      if (chain.claimed && chain.claimed !== 'N/A') {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-
-    setTotalRemainingClaims(total);
-  }, [chainList]);
+  const { activeClaimHistory } = useContext(ClaimContext);
+  const { openClaimModal } = useContext(ClaimContext);
 
   return (
     <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
       <>
-        {chainList?.map((chain) => {
-          if (chain.claimed && chain.claimed !== 'N/A')
-            return <Icon key={chain.chainId} iconSrc={chain.gasImageUrl} width="36px" height="auto" />;
-        })}
-        {range(0, 5 - totalRemainingClaims).map((i) => {
-          return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
-        })}
+        {activeClaimHistory
+          .filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
+          .map((claim) => {
+            return (
+              <Icon
+                onClick={() => openClaimModal(claim.chain.pk)}
+                key={claim.chain.chainId}
+                iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
+                className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
+                width="36px"
+                height="40px"
+              />
+            );
+          })}
+        {range(0, 5 - activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length).map(
+          (i) => {
+            return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
+          },
+        )}
       </>
+    </div>
+  );
+};
+
+const RenderConnectBrightID = () => {
+  return (
+    <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
+      <p className="claim-stat__not-claimed__text px-4 py-3.5 text-gray80 text-xs font-bold">
+        Connect BrightID to See Your Claims
+      </p>
     </div>
   );
 };

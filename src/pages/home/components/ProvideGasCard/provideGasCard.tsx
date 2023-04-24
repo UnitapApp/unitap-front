@@ -3,7 +3,6 @@ import { LightOutlinedButton } from 'components/basic/Button/button';
 import RoutePath from '../../../../routes';
 import { Link } from 'react-router-dom';
 import { ClaimContext } from 'hooks/useChainList';
-import Icon from 'components/basic/Icon/Icon';
 import ChainCard from './chainCard';
 
 const ProvideGasCard = () => {

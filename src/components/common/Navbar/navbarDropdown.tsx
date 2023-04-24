@@ -5,12 +5,10 @@ import RoutePath from 'routes';
 
 type NavbarDropdownProps = {
   className: string;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
 };
 
-const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdownProps) => {
-  const [navItems, setNavItems] = React.useState([
+const NavbarDropdown = ({ className }: NavbarDropdownProps) => {
+  const [navItems] = React.useState([
     {
       name: 'Home',
       link: RoutePath.LANDING,
@@ -50,11 +48,9 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
 
   return (
     <div
-      className={`navbar-dropdown absolute z-10 top-[70px] right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
+      className={`navbar-dropdown absolute z-10 top-14 right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ''
       }`}
-      onMouseEnter={() => onMouseEnter()}
-      onMouseLeave={() => onMouseLeave()}
     >
       {navItems.map((item) => {
         return (
@@ -62,7 +58,9 @@ const NavbarDropdown = ({ className, onMouseEnter, onMouseLeave }: NavbarDropdow
             key={item.name}
             onClick={() => (item.link ? navigate(item.link) : null)}
             className={`navbar-dropdown__item cursor-pointer border-gray40 transition-all duration-75 border-2 ${
-              location.pathname === item.route ? 'navbar-dropdown__item--active border-gray100' : item.link && 'hover:bg-gray20'
+              location.pathname === item.route
+                ? 'navbar-dropdown__item--active border-gray100'
+                : item.link && 'hover:bg-gray20'
             } ${!item.link && 'cursor-default'}`}
           >
             <p

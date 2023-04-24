@@ -7,12 +7,12 @@ const BrightStatusModal = ({ success }: { success: true }) => {
   function successState() {
     return (
       <>
-        <Icon iconSrc="./assets/images/modal/bright-icon.svg" mb={3}></Icon>
+        <Icon iconSrc="./assets/images/modal/bright-icon.svg" mb={2}></Icon>
         <Icon iconSrc="./assets/images/modal/bright-success-icon.svg" mb={2} ml={-1.5}></Icon>
-        <Text color="space_green" mb={3} data-testid="brightid-connect-success">
+        <Text color="space_green" mb={1} data-testid="brightid-connect-success">
           BrightID Connected
         </Text>
-        <Text color="second_gray_light" fontSize="14" textAlign="center" lineHeight="1.5rem">
+        <Text color="second_gray_light" fontSize="14" textAlign="center" lineHeight="1.5rem" mb={0}>
           Your BrightID and Metamask Wallet connected Successfully
         </Text>
       </>
