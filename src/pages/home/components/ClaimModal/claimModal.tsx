@@ -194,6 +194,10 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
   }
 
   function renderSuccessBody() {
+    const twitterMessage = encodeURIComponent(`I've just claimed ${chain.maxClaimAmount} ${chain.symbol} on ${chain.chainName} from Unitap 🔥\n` +
+      "\n" +
+      "Claim your gas fee at @unitap_app");
+
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
@@ -218,7 +222,7 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
                 </Text>
 
                 <TwitterButton
-                    onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
+                    onClick={() => window.open("https://twitter.com/intent/tweet?text=" + twitterMessage, '_blank')}
                     width={'100%'}
                     fontSize="16px"
                     className="!w-full relative"
