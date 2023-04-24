@@ -180,7 +180,7 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
           Claim transaction submitted
         </Text>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          The claim transaction will be compeleted soon
+          The claim transaction will be completed soon
         </Text>
         <SecondaryGreenColorButton
           onClick={closeClaimModal}

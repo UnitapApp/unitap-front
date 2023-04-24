@@ -104,8 +104,8 @@ const BrightConnectionModalBody = () => {
       )}
       <span className="notice flex mb-3">
         <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg"/>
-        <p className="text-xs text-gray90 font-light"> Submit Verification after verifing with brighID app. </p>
-       </span>
+        <p className="text-xs text-gray90 font-light"> Submit connection after connecting with the BrightID app. </p>
+      </span>
       {refreshUserProfile && (
         <ClaimButton
           data-testid={`bright-id-connection-refresh-button${tried ? '-try-again' : ''}`}
