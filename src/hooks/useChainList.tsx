@@ -139,6 +139,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [userToken] = useToken();
   const { userProfile } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
+  const { notifications } = useContext(NotificationsContext);
 
   const updateChainList = useCallback(async () => {
     try {
@@ -308,28 +309,30 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   useEffect(() => {
     activeClaimHistory.map(claim => {
       if (new Date(claim.lastUpdated).getTime() > (new Date().getTime() - 5000)) {
-        if (claim.status === ClaimReceiptState.PENDING) {
-          addNotification({
-            type: "info",
-            message: "Claim Successfully Submitted",
-            id: null,
-          });
-        } else if (claim.status === ClaimReceiptState.VERIFIED) {
-          addNotification({
-            type: "success",
-            message: "Successfully Claimed " + claim.chain.symbol + " Gas Fee",
-            id: null
-          });
-        } else if (claim.status === ClaimReceiptState.REJECTED) {
-          addNotification({
-            type: "error",
-            message: "Failed to Claim " + claim.chain.symbol + " Gas Fee",
-            id: null
-          });
+        if (!notifications.find(notif => notif.id === claim.chain.symbol + claim.status + claim.lastUpdated)) {
+          if (claim.status === ClaimReceiptState.PENDING) {
+            addNotification({
+              type: "info",
+              message: "Claim Successfully Submitted",
+              id: claim.chain.symbol + claim.status
+            });
+          } else if (claim.status === ClaimReceiptState.VERIFIED) {
+            addNotification({
+              type: "success",
+              message: "Successfully Claimed " + claim.chain.symbol + " Gas Fee",
+              id: claim.chain.symbol + claim.status
+            });
+          } else if (claim.status === ClaimReceiptState.REJECTED) {
+            addNotification({
+              type: "error",
+              message: "Failed to Claim " + claim.chain.symbol + " Gas Fee",
+              id: claim.chain.symbol + claim.status
+            });
+          }
         }
       }
     });
-  }, [activeClaimHistory, addNotification]);
+  }, [activeClaimHistory, addNotification, notifications]);
 
   return (
     <ClaimContext.Provider

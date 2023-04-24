@@ -18,7 +18,7 @@ const NotificationsProvider = ({ children }: PropsWithChildren<{}>) => {
   const [showedNotifications, setShowedNotifications] = useState<Notification[]>([]);
 
   const addNotification = useCallback((notification: Notification) => {
-    notification.id = uuid();
+    if (!notification.id) notification.id = uuid();
     setNotifications(
       (notifications: Notification[]) => [...notifications, notification]
     );
@@ -37,7 +37,7 @@ const NotificationsProvider = ({ children }: PropsWithChildren<{}>) => {
           theme: "dark",
           closeOnClick: false,
           pauseOnHover: false,
-          autoClose: 5000000
+          autoClose: 5000,
         });
         setShowedNotifications([...showedNotifications, notification]);
       }
