@@ -15,7 +15,6 @@ import {
 import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
-import removeRequest from 'utils/hook/claimRequests';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
 
 export const ClaimContext = createContext<{
@@ -112,8 +111,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
   const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
 
-  // list of chian.pk of requesting claims
-  const [claimRequests, setClaimRequests] = useState<number[]>([]);
   const [claimNonEVMLoading, setClaimNonEVMLoading] = useState(false);
   const [claimLoading, setClaimLoading] = useState(false);
 
@@ -172,10 +169,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const claim = useCallback(
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
-      if (!userToken || claimLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimLoading) {
         return;
       }
-      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
       setClaimLoading(true);
       try {
         await claimMax(userToken, claimChainPk);
@@ -183,22 +179,19 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
           setClaimLoading(false);
         }, 1000);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
         setClaimLoading(false);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimLoading],
+    [userToken, updateActiveClaimHistory, claimLoading],
   );
 
   const claimNonEVM = useCallback(
     async (claimChainPk: number, address: string) => {
-      if (!userToken || claimNonEVMLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
+      if (!userToken || claimNonEVMLoading) {
         return;
       }
-      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
       setClaimNonEVMLoading(true);
       try {
         await claimMaxNonEVMAPI(userToken, claimChainPk, address);
@@ -206,14 +199,12 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
           setClaimNonEVMLoading(false);
         } , 1000);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
         setClaimNonEVMLoading(false);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading],
+    [userToken, updateActiveClaimHistory, claimNonEVMLoading],
   );
 
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.ALL);
