@@ -219,8 +219,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading],
   );
 
-  const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
-  const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
+  const [selectedNetwork, setSelectedNetwork] = React.useState(Network.ALL);
+  const [selectedChainType, setSelectedChainType] = React.useState(ChainType.ALL);
 
   const chainListSearchResult = useMemo(
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
