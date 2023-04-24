@@ -51,6 +51,8 @@ export const ClaimContext = createContext<{
   claimNonEVMLoading: boolean;
   claimLoading: boolean;
   searchPhrase: string;
+  isHighGasFeeModalOpen: boolean;
+  changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -85,6 +87,8 @@ export const ClaimContext = createContext<{
   claimNonEVMLoading: false,
   claimLoading: false,
   searchPhrase: '',
+  isHighGasFeeModalOpen: false,
+  changeIsHighGasFeeModalOpen: (isOpen: boolean) => {},
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -116,6 +120,11 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 
   const { userProfile, userToken } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
+
+  const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false);
+  const changeIsHighGasFeeModalOpen = useCallback((isOpen: boolean) => {
+    setIsHighGasFeeModalOpen(isOpen);
+  }, []);
 
   const updateChainList = useCallback(async () => {
     try {
@@ -289,6 +298,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         claimNonEVMLoading,
         claimLoading,
         searchPhrase,
+        isHighGasFeeModalOpen,
+        changeIsHighGasFeeModalOpen,
       }}
     >
       {children}
