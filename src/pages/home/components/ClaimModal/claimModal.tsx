@@ -4,7 +4,7 @@ import {Text} from 'components/basic/Text/text.style';
 import {DropIconWrapper} from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import {
-    ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton, TwitterButton,
+    ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton, PrimaryOutlinedButton,
 } from 'components/basic/Button/button';
 import {BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState} from 'types';
 import {getChainClaimIcon, getTxUrl, shortenAddress} from 'utils';
@@ -211,31 +211,31 @@ const ClaimModalBody = ({chain}: { chain: Chain }) => {
           </Text>
           <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height='auto' className='ml-2'/>
         </span>
-                <Text width="100%" fontSize="14" color="second_gray_light" mb={1} textAlign="center">
-                    we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
-                </Text>
-                <Text width="100%" fontSize="14" className="underline cursor-pointer" onClick={() => {
-                    window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank');
-                }} color="second_gray_light" mb={3} textAlign="center">
-                    View on
-                    Explorer
-                </Text>
+        <Text width="100%" fontSize="14" color="second_gray_light" mb={1} textAlign="center">
+          we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
+        </Text>
+        <Text width="100%" fontSize="14" className="underline cursor-pointer" onClick={() => {
+          window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank');
+        }} color="second_gray_light" mb={3} textAlign="center">
+          View on
+          Explorer
+        </Text>
 
-                <TwitterButton
-                    onClick={() => window.open("https://twitter.com/intent/tweet?text=" + twitterMessage, '_blank')}
-                    width={'100%'}
-                    fontSize="16px"
-                    className="!w-full relative"
-                    data-testid={`chain-claim-action-${chain.pk}`}
-                    color="space_green"
-                >
-                    Share On Twitter
-                    <Icon iconSrc="assets/images/modal/twitter.svg"
-                          className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"/>
-                </TwitterButton>
-            </>
-        );
-    }
+        <PrimaryOutlinedButton
+          onClick={() => window.open("https://twitter.com/intent/tweet?text=" + twitterMessage, '_blank')}
+          width={'100%'}
+          fontSize="16px"
+          className="!w-full relative twitter-btn"
+          data-testid={`chain-claim-action-${chain.pk}`}
+          color="space_green"
+        >
+          Share On Twitter
+          <Icon iconSrc="assets/images/modal/twitter.svg"
+                className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"/>
+        </PrimaryOutlinedButton>
+      </>
+    );
+  }
 
   function renderFailedBody() {
     return (

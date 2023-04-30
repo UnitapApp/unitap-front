@@ -239,21 +239,6 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
   }
 `;
 
-export const TwitterButton = styled(PrimaryOutlinedButton)`
-  width: 220px;
-  font-weight: 600;
-  background: ${({disabled}) => (disabled ? '#C0AFC7' : 'radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #03A9F4 0%, #DFFFF5 42.19%, #03E6F4 100%)')} !important;
- 
-
-  p {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  ::before {
-    background: #030317 !important;
-  }
-`;
 
 export const NoCurrencyButton = styled(Button)`
   background: ${DV.colors.gray90};
