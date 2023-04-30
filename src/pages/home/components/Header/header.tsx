@@ -5,6 +5,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { ClaimContext } from 'hooks/useChainList';
 import { range } from 'utils';
 import { ClaimReceiptState } from '../../../../types';
+import Dabes from "../Dabes/Dabes";
 
 const Header = () => {
   const { userProfile } = useContext(UserProfileContext);
@@ -22,37 +23,6 @@ const Header = () => {
   );
 };
 
-const Dabes = () => {
-  const { activeClaimHistory } = useContext(ClaimContext);
-  const { openClaimModal } = useContext(ClaimContext);
-
-  return (
-    <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
-      <>
-        {activeClaimHistory
-          .filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
-          .map((claim) => {
-            return (
-              <Icon
-                onClick={() => openClaimModal(claim.chain.pk)}
-                key={claim.chain.chainId}
-                iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
-                className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
-                width="36px"
-                height="40px"
-              />
-            );
-          })}
-        {range(0, 5 - activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length).map(
-          (i) => {
-            return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
-          },
-        )}
-      </>
-    </div>
-  );
-};
-
 const RenderConnectBrightID = () => {
   return (
     <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
@@ -64,4 +34,3 @@ const RenderConnectBrightID = () => {
 };
 
 export default Header;
-export {Dabes}
