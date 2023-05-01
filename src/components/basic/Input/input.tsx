@@ -14,6 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   styleType?: string;
   fontSize?: string;
   pl?: number;
+  pr?: number;
   p?: number;
   testid?: string;
   mb?: number;
@@ -23,6 +24,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const RawInput = styled.input<InputProps>`
   padding: ${({ p }) => (p ? DV.sizes.basePadding * p : DV.sizes.basePadding * 1.5)}px;
   padding-left: ${({ pl }) => (pl ? DV.sizes.basePadding * pl : DV.sizes.basePadding * 1.5)}px;
+  padding-right: ${({ pr }) => (pr ? DV.sizes.basePadding * pr : DV.sizes.basePadding * 1.5)}px;
   width: ${({ width }) => width || 'auto'};
   width: 100%;
   color: white;

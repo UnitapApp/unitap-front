@@ -37,6 +37,17 @@ export type Prize = {
   FinishTime: string;
 };
 
+export type User = {
+  pk: PK;
+  image: string;
+  userName: string;
+  level: number;
+  walletAddress: string;
+  totalGas:string;
+  twitterLink?: string;
+  instagramLink?: string;
+};
+
 export enum BrightIdVerificationStatus {
   PENDING = '0',
   VERIFIED = '1',
@@ -144,3 +155,7 @@ export type APIError = {
   source: APIErrorsSource;
   statusCode: number;
 }
+
+export type UsersCardProps = {
+  user: User;
+};
