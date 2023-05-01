@@ -192,7 +192,7 @@ const ClaimModalBody = ({ chain, isFull = false }: {chain: Chain, isFull: boolea
         <Text width="100%" fontSize="14" color="space_green" textAlign="center">
           Claim transaction submitted
         </Text>
-        <Text width="100%" fontSize="14" color="second_gray_light" mb={ 3 } textAlign="center">
+        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
           The claim transaction will be compeleted soon
         </Text>
         <SecondaryGreenColorButton
@@ -293,22 +293,21 @@ const ClaimModalBody = ({ chain, isFull = false }: {chain: Chain, isFull: boolea
   }
 
   const getClaimModalBody = () => {
-    return renderActiveClaimIsFullBody()
-    // if (!userProfile) return renderBrightNotConnectedBody();
-    //
-    // if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
-    //
-    // if (!walletConnected) return renderWalletNotConnectedBody();
-    //
-    // if (isFull && !activeClaimReceipt) return renderActiveClaimIsFullBody();
-    //
-    // if (!activeClaimReceipt) return renderInitialBody();
-    //
-    // if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
-    //
-    // if (activeClaimReceipt.status === ClaimReceiptState.PENDING) return renderPendingBody();
-    //
-    // if (activeClaimReceipt.status === ClaimReceiptState.REJECTED) return renderFailedBody();
+    if (!userProfile) return renderBrightNotConnectedBody();
+
+    if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
+
+    if (!walletConnected) return renderWalletNotConnectedBody();
+
+    if (isFull && !activeClaimReceipt) return renderActiveClaimIsFullBody();
+
+    if (!activeClaimReceipt) return renderInitialBody();
+
+    if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
+
+    if (activeClaimReceipt.status === ClaimReceiptState.PENDING) return renderPendingBody();
+
+    if (activeClaimReceipt.status === ClaimReceiptState.REJECTED) return renderFailedBody();
   }
 
   return (
