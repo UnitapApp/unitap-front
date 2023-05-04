@@ -28,7 +28,7 @@ const ClaimNonEVMModalContent = () => {
 
   const handleClaimNonEVMClicked = () => {
     if (activeNonEVMChain) {
-      claimNonEVM(activeNonEVMChain.pk, nonEVMWalletAddress);
+      claimNonEVM(activeNonEVMChain, nonEVMWalletAddress);
     }
   }
 

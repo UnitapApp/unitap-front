@@ -30,12 +30,8 @@ export async function claimMax(token: string, chainPk: number) {
   return response.data;
 }
 
-export async function claimMaxNonEVMAPI(token: string, chainPk: number, account: string) {
-  let newAccount = account;
-  if (account.slice(0, 2) !== '0x' || account.slice(0, 2) !== '0X' && (account.slice(0, 3) === 'xdc' || account.slice(0, 3) === 'XDC')) {
-    newAccount = '0x' + account.slice(3, account.length)
-  }
-  const response = await axiosInstance.post<ClaimReceipt>(`/api/v1/chain/${chainPk}/claim-max/`, { address: newAccount }, {
+export async function claimMaxNonEVMAPI(token: string, chainPk: number, address: string) {
+  const response = await axiosInstance.post<ClaimReceipt>(`/api/v1/chain/${chainPk}/claim-max/`, { address: address }, {
     headers: {
       'Authorization': `Token ${token}`,
     }

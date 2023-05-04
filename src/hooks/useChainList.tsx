@@ -16,6 +16,7 @@ import { UserProfileContext } from './useUserProfile';
 import { RefreshContext } from 'context/RefreshContext';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
+import getCorrectAddress from "../utils/walletAddress";
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -23,7 +24,7 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claim: (chainPK: number) => void;
-  claimNonEVM: (chainPK: number, address: string) => void;
+  claimNonEVM: (chain: Chain, address: string) => void;
   activeClaimReceipt: ClaimReceipt | null;
   activeClaimHistory: ClaimReceipt[];
   closeClaimModal: () => void;
@@ -59,7 +60,7 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
   claim: (chainPK: number) => {},
-  claimNonEVM: (chainPK: number, address: string) => {},
+  claimNonEVM: (chain: Chain, address: string) => {},
   activeClaimReceipt: null,
   activeClaimHistory: [],
   closeClaimModal: () => {},
@@ -197,13 +198,14 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   );
 
   const claimNonEVM = useCallback(
-    async (claimChainPk: number, address: string) => {
+    async (chain: Chain, address: string) => {
       if (!userToken || claimNonEVMLoading) {
         return;
       }
       setClaimNonEVMLoading(true);
       try {
-        await claimMaxNonEVMAPI(userToken, claimChainPk, address);
+        let correctAddress = getCorrectAddress(chain, address)
+        await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
         setTimeout(() => {
           setClaimNonEVMLoading(false);
         } , 1000);
