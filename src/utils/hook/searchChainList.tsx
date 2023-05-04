@@ -36,7 +36,7 @@ const getChainTypeFilterResult = (selectedChainType: ChainType, chainList: Chain
   if (selectedChainType === ChainType.EVM) {
     chainList = chainList.filter((chain) => chain.chainType === ChainType.EVM);
   } else if (selectedChainType === ChainType.NONEVM) {
-    chainList = chainList.filter((chain) => chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING);
+    chainList = chainList.filter((chain) => chain.chainType === ChainType.NONEVMXDC || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING);
   }
   return chainList;
 };

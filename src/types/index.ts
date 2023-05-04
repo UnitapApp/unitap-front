@@ -129,6 +129,7 @@ export enum Network {
 export enum ChainType {
   EVM = 'EVM',
   NONEVM = 'NONEVM',
+  NONEVMXDC = 'NONEVMXDC',
   SOLANA = 'Solana',
   LIGHTNING = 'Lightning',
   ALL = 'ALL',

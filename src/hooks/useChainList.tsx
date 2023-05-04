@@ -161,7 +161,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     if (!chain) return;
     if (chain.chainType === ChainType.EVM) {
       setActiveChain(chain);
-    } else if (chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
+    } else if (chain.chainType === ChainType.NONEVMXDC || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
       setActiveNonEVMChain(chain);
       setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
     }
