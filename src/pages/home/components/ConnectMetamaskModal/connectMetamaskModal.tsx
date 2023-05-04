@@ -27,6 +27,8 @@ const ConnectMetamaskModalContent = () => {
 
   if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
+  } else if (userProfile?.isMeetVerified === false) {
+    return <BrightStatusModal success={false}></BrightStatusModal>;
   }
 
   return (

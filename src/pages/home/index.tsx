@@ -38,7 +38,17 @@ const Home = () => {
               <div className="flex mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
                 <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-xl">
                   <div
-                    className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
+                      selectedChainType === ChainType.ALL ? `text-white bg-gray50` : `text-gray80`
+                    }`}
+                    onClick={() => {
+                      setSelectedChainType(ChainType.ALL);
+                    }}
+                  >
+                    ALL
+                  </div>
+                  <div
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
                       selectedChainType === ChainType.EVM ? `text-white bg-gray50` : `text-gray80`
                     }`}
                     onClick={() => {
@@ -48,7 +58,7 @@ const Home = () => {
                     EVM
                   </div>
                   <div
-                    className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer rounded-r-[11px] ${
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer rounded-r-[11px] ${
                       selectedChainType === ChainType.NONEVM ? `text-white bg-gray50` : `text-gray80`
                     }`}
                     onClick={() => {
@@ -60,7 +70,17 @@ const Home = () => {
                 </div>
                 <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-xl ml-3">
                   <div
-                    className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
+                      selectedNetwork === Network.ALL ? `text-white bg-gray50` : `text-gray80`
+                    }`}
+                    onClick={() => {
+                      setSelectedNetwork(Network.ALL);
+                    }}
+                  >
+                    ALL
+                  </div>
+                  <div
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
                       selectedNetwork === Network.MAINNET ? `text-white bg-gray50` : `text-gray80`
                     }`}
                     onClick={() => {
@@ -70,7 +90,7 @@ const Home = () => {
                     Mainnets
                   </div>
                   <div
-                    className={`switch__option w-[20vw] md:w-20 p-3 text-center text-xs border-l-2 border-l-gray30 rounded-r-[11px] cursor-pointer ${
+                    className={`switch__option w-[20vw] md:w-[72px] px-1 py-3 text-center text-xs border-l-2 border-l-gray30 rounded-r-[11px] cursor-pointer ${
                       selectedNetwork === Network.TESTNET ? `text-white bg-gray50` : `text-gray80`
                     }`}
                     onClick={() => {

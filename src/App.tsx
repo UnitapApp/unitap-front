@@ -7,6 +7,7 @@ import Landing from 'pages/landing';
 import Donate from 'pages/donate';
 import NFT from 'pages/nft';
 import About from 'pages/about';
+import TokenTap from 'pages/token-tap';
 import {UserProfileProvider} from './hooks/useUserProfile';
 import RoutePath from 'routes';
 import {RefreshContextProvider} from './context/RefreshContext';
@@ -28,6 +29,7 @@ import {MulticallUpdater} from 'lib/state/multicall';
 import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
 import {ErrorsProvider} from "./context/ErrorsProvider";
+import HighGasFeeModal from "./pages/home/components/HighGasFeeModal/highGasFeeModal";
 
 require('typeface-jetbrains-mono');
 
@@ -63,13 +65,14 @@ function App() {
                           <Route path={RoutePath.NFT} element={<NFT/>}/>
                           <Route path={RoutePath.ABOUT} element={<About/>}/>
                           <Route path={RoutePath.PRIZE} element={<PrizeTap/>}/>
-                          {/* <Route path={RoutePath.TOKEN} element={<TokenTap />} /> */}
+                          <Route path={RoutePath.TOKEN} element={<TokenTap/>}/>
                         </Routes>
                       </ScrollToTop>
                       <ConnectBrightIdModal/>
                       <BrightConnectionModal/>
                       <ConnectMetamaskModal/>
                       <CreateBrightIdAccountModal/>
+                      <HighGasFeeModal/>
                     </BlockNumberProvider>
                   </BrowserRouter>
                 </ClaimProvider>

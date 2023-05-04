@@ -49,8 +49,8 @@ type UserWallet = {
 }
 
 export type UserProfile = {
-  isMeetVerified: string;
-  isAuraVerified: string;
+  isMeetVerified: boolean;
+  isAuraVerified: boolean;
   initial_context_id: string;
   token: string;
   pk: PK;
@@ -123,13 +123,16 @@ export enum BrightIdConnectionModalState {
 export enum Network {
   MAINNET = '0',
   TESTNET = '1',
+  ALL = '2',
 }
 
 export enum ChainType {
   EVM = 'EVM',
   NONEVM = 'NONEVM',
+  NONEVMXDC = 'NONEVMXDC',
   SOLANA = 'Solana',
   LIGHTNING = 'Lightning',
+  ALL = 'ALL',
 }
 
 export enum APIErrorsSource {

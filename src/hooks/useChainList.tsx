@@ -17,9 +17,8 @@ import {
 import {UserProfileContext} from './useUserProfile';
 import {RefreshContext} from 'context/RefreshContext';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
-import removeRequest from 'utils/hook/claimRequests';
-import {searchChainList, searchChainListSimple} from 'utils/hook/searchChainList';
-import useToken from './useToken';
+import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
+import getCorrectAddress from "../utils/walletAddress";
 
 export const ClaimContext = createContext<{
   chainList: Chain[];
@@ -27,7 +26,7 @@ export const ClaimContext = createContext<{
   chainListSearchSimpleResult: Chain[];
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   claim: (chainPK: number) => void;
-  claimNonEVM: (chainPK: number, address: string) => void;
+  claimNonEVM: (chain: Chain, address: string) => void;
   activeClaimReceipt: ClaimReceipt | null;
   activeClaimHistory: ClaimReceipt[];
   closeClaimModal: () => void;
@@ -55,13 +54,15 @@ export const ClaimContext = createContext<{
   claimNonEVMLoading: boolean;
   claimLoading: boolean;
   searchPhrase: string;
+  isHighGasFeeModalOpen: boolean;
+  changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
   chainListSearchSimpleResult: [],
   changeSearchPhrase: null,
   claim: (chainPK: number) => {},
-  claimNonEVM: (chainPK: number, address: string) => {},
+  claimNonEVM: (chain: Chain, address: string) => {},
   activeClaimReceipt: null,
   activeClaimHistory: [],
   closeClaimModal: () => {},
@@ -89,6 +90,8 @@ export const ClaimContext = createContext<{
   claimNonEVMLoading: false,
   claimLoading: false,
   searchPhrase: '',
+  isHighGasFeeModalOpen: false,
+  changeIsHighGasFeeModalOpen: (isOpen: boolean) => {},
 });
 
 export function ClaimProvider({ children }: PropsWithChildren<{}>) {
@@ -115,14 +118,16 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
   const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
 
-  // list of chian.pk of requesting claims
-  const [claimRequests, setClaimRequests] = useState<number[]>([]);
   const [claimNonEVMLoading, setClaimNonEVMLoading] = useState(false);
   const [claimLoading, setClaimLoading] = useState(false);
 
-  const [userToken] = useToken();
-  const { userProfile } = useContext(UserProfileContext);
+  const { userProfile, userToken } = useContext(UserProfileContext);
   const { fastRefresh } = useContext(RefreshContext);
+
+  const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false);
+  const changeIsHighGasFeeModalOpen = useCallback((isOpen: boolean) => {
+    setIsHighGasFeeModalOpen(isOpen);
+  }, []);
 
   const updateChainList = useCallback(async () => {
     try {
@@ -158,7 +163,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     if (!chain) return;
     if (chain.chainType === ChainType.EVM) {
       setActiveChain(chain);
-    } else if (chain.chainType === ChainType.NONEVM || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
+    } else if (chain.chainType === ChainType.NONEVMXDC || chain.chainType === ChainType.SOLANA || chain.chainType === ChainType.LIGHTNING) {
       setActiveNonEVMChain(chain);
       setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
     }
@@ -177,10 +182,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
       if (activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length >= 5) return;
-      if (!userToken || claimLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
-        return;
-      }
-      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      if (!userToken || claimLoading) return;
+
       setClaimLoading(true);
       try {
         await claimMax(userToken, claimChainPk);
@@ -188,42 +191,37 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
           setClaimLoading(false);
         }, 1000);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
         setClaimLoading(false);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimLoading, activeClaimHistory],
+    [userToken, updateActiveClaimHistory, claimLoading, activeClaimHistory],
   );
 
   const claimNonEVM = useCallback(
-    async (claimChainPk: number, address: string) => {
+    async (chain: Chain, address: string) => {
       if (activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length >= 5) return;
-      if (!userToken || claimNonEVMLoading || claimRequests.filter((chainPk) => chainPk === claimChainPk).length > 0) {
-        return;
-      }
-      setClaimRequests((claimRequests) => [...claimRequests, claimChainPk]);
+      if (!userToken || claimNonEVMLoading) return;
+
       setClaimNonEVMLoading(true);
       try {
-        await claimMaxNonEVMAPI(userToken, claimChainPk, address);
+        let correctAddress = getCorrectAddress(chain, address)
+        await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
         setTimeout(() => {
           setClaimNonEVMLoading(false);
         } , 1000);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       } catch (ex) {
         setClaimNonEVMLoading(false);
         await updateActiveClaimHistory();
-        setClaimRequests((claimRequests) => removeRequest(claimRequests, claimChainPk));
       }
     },
-    [userToken, claimRequests, updateActiveClaimHistory, claimNonEVMLoading, activeClaimHistory],
+    [userToken, updateActiveClaimHistory, claimNonEVMLoading, activeClaimHistory],
   );
 
-  const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);
-  const [selectedChainType, setSelectedChainType] = React.useState(ChainType.EVM);
+  const [selectedNetwork, setSelectedNetwork] = React.useState(Network.ALL);
+  const [selectedChainType, setSelectedChainType] = React.useState(ChainType.ALL);
 
   const chainListSearchResult = useMemo(
     () => searchChainList(searchPhrase, chainList, selectedNetwork, selectedChainType),
@@ -304,6 +302,8 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         claimNonEVMLoading,
         claimLoading,
         searchPhrase,
+        isHighGasFeeModalOpen,
+        changeIsHighGasFeeModalOpen,
       }}
     >
       {children}
