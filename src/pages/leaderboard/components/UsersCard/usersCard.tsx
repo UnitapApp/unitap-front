@@ -6,14 +6,14 @@ const UsersCard = ({ user }: UsersCardProps) => {
   const { pk, image, userName, level, walletAddress, totalGas, twitterLink, instagramLink } = user;
   return (
     <div className="pt-4">
-      <div className="test bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row">
+      <div className="user-card__wrap bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row">
         <div className="flex flex-col md:flex-row xl:flex-row rounded-2xl overflow-hidden">
-          <div className="text-[12px] text-white font-bold flex items-center justify-center px-2 bg-gray50 test1 test3 w-full md:w-[40px] h-[40px] md:h-[auto]">
+          <div className="text-[12px] text-white font-bold flex items-center justify-center px-2 bg-gray50 user-card__id w-full md:w-[40px] h-[40px] md:h-[auto]">
             <div>#{pk}</div>
           </div>
           <Icon iconSrc={image} width="46px" height="52px" className="p-2 px-4" />
           <div className="flex flex-col gap-3 p-2 mr-10 text-[12px] items-center  mr-0">
-            <div className="text-white font-bold test2">{userName}</div>
+            <div className="text-white font-bold user-card__name">{userName}</div>
             <div className="text-gray100">Level {level}</div>
           </div>
           <div className="flex flex-col gap-3 p-2 mr-10 text-[12px] items-center mr-0">
