@@ -21,7 +21,7 @@ export const formatBalance = (amount: number) => {
   return amount < 0.000001 ? '< 0.000001' : amount;
 };
 
-export const formatWeiBalance = (amount: number) => {
-  const fw = fromWei(amount);
+export const formatWeiBalance = (amount: number, decimals=18) => {
+  const fw = fromWei(amount, decimals);
   return formatBalance(Number(fw));
 };

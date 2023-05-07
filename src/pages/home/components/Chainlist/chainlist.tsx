@@ -193,7 +193,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                     onClick={() => openClaimModal(chain.pk)}
                     className="text-sm m-auto"
                   >
-                    <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+                    <p>{`Claim ${formatWeiBalance(chain.maxClaimAmount, chain.decimals)} ${chain.symbol}`}</p>
                   </ClaimButton>
                 ) : (
                   <ClaimButton
