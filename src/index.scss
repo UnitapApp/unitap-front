@@ -464,15 +464,20 @@ body {
   }
 }
 
-.users-card > div:first-child .user-card__id  {
+.user-card__id__1  {
   @apply text-black bg-[url('../public/assets/images/leaderboard/gold.svg')] bg-no-repeat bg-cover;
 }
 
-.users-card > div:nth-child(2) .user-card__id  {
+.user-card__id__2  {
   @apply text-black bg-[url('../public/assets/images/leaderboard/silver.svg')] bg-no-repeat bg-cover;
 }
 
-.users-card > div:nth-child(3) .user-card__id
+.user-card__id__3
  {
   @apply text-black bg-[url('../public/assets/images/leaderboard/bronze.svg')] bg-no-repeat bg-cover;
+}
+
+.user__id {
+  @apply text-[12px] font-bold flex ;
+  @apply items-center justify-center px-2 bg-gray50 w-full;
 }
