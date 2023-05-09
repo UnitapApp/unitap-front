@@ -177,7 +177,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
                 >
                   <p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
                 </ClaimedButton>
-              ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
+              ) : chain.needsFunding && chain.chainType ? (
                   <div className="btn btn--claim btn--sm btn--out-of-balance">
                     Out of balance
 
