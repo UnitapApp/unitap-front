@@ -8,6 +8,18 @@ import UsersList from './components/UsersList/usersList';
 import { users } from 'constants/usersList';
 
 const Leaderboard = () => {
+  const [records, setRecords] = useState({
+    start: users.length == 0 ? 0 : 1,
+    end: users.length >= 10 ? 10 : users.length,
+  });
+
+  let displayUser = users.slice(records.start - 1, records.end);
+
+  const handlePagination = (start: number, end: number) => {
+    if (start > users.length || start < 1) return;
+    setRecords({ ...records, start: start, end: end >= users.length ? users.length : end });
+  };
+
   return (
     <>
       <Navbar />
@@ -21,8 +33,8 @@ const Leaderboard = () => {
               <SearchInput />
               <Dropdown />
             </div>
-            <UsersList users={users} />
-            <Pagination />
+            <UsersList users={displayUser} />
+            <Pagination records={records} onClick={(start, end) => handlePagination(start, end)} />
           </div>
         </div>
       </div>

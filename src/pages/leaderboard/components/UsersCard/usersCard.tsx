@@ -3,19 +3,19 @@ import { UsersCardProps } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 
 const UsersCard = ({ user }: UsersCardProps) => {
-  const { pk, image, userName, level, walletAddress, totalGas, twitterLink, instagramLink } = user;
+  const { id, image, userName, level, walletAddress, totalGas, twitterLink, instagramLink } = user;
   return (
     <div className="pt-4">
       <div className="bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row">
         <div className="flex flex-col  md:flex-row xl:flex-row rounded-2xl overflow-hidden ">
           <div
             className={
-              pk <= 3
-                ? `user__id user-card__id__${pk} text-black md:w-[40px] h-[40px] md:h-[auto]`
+              id <= 3
+                ? `user__id user-card__id__${id} text-black md:w-[40px] h-[40px] md:h-[auto]`
                 : `user__id text-white md:w-[40px] h-[40px] md:h-[auto]`
             }
           >
-            <div>#{pk}</div>
+            <div>#{id}</div>
           </div>
           <Icon iconSrc={image} width="46px" height="52px" className="p-2 px-4" />
           <div className="flex flex-col gap-3 p-2 text-[12px] md:mr-3 lg:mr-10 items-center md:items-start">
