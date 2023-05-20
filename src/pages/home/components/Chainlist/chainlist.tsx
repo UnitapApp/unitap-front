@@ -152,7 +152,7 @@ const ChainCard = ({chain}: ChainCardProps) => {
             <img className="arrow-icon mt-1 ml-1.5 mr-3 w-2 h-2 cursor-pointer" src="assets/images/arrow-icon.svg"
                  alt="arrow" onClick={() => window.open(chain.blockScanAddress, "_blank")}/>
             <Tag title={chain.chainType === ChainType.EVM ? "EVM" : "NONEVM"}/>
-            <Tag title={chain.isTestnet ? "Testnet" : "Meinnet"}/>
+            <Tag title={chain.isTestnet ? "Testnet" : "Mainnet"}/>
           </div>
 
           <div className={"flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"}>
