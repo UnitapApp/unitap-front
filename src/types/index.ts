@@ -27,8 +27,8 @@ export type Chain = {
 export type Token = {
   "id": PK,
   "name": string,
-  "distributer": string,
-  "distributerUrl": string,
+  "distributor": string,
+  "distributorUrl": string,
   "discordUrl": string,
   "twitterUrl": string,
   "imageUrl": string,
