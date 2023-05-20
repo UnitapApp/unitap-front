@@ -1,19 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from "react";
 import styled from "styled-components/";
-import { DV } from "components/basic/designVariables";
+import {DV} from "components/basic/designVariables";
 import {
   ClaimButton,
   ClaimedButton,
   SecondaryButton
 } from "components/basic/Button/button";
-import { ClaimContext } from "hooks/useChainList";
-import { formatWeiBalance } from "utils/numbers";
-import { getChainIcon } from "../../../../utils";
+import {ClaimContext} from "hooks/useChainList";
+import {formatWeiBalance} from "utils/numbers";
+import {getChainIcon} from "../../../../utils";
 import useSelectChain from "../../../../hooks/useSelectChain";
-import { useWeb3React } from "@web3-react/core";
-import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from "types";
-import { BigNumber } from "ethers";
-import { useNavigate } from "react-router-dom";
+import {useWeb3React} from "@web3-react/core";
+import {Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK} from "types";
+import {BigNumber} from "ethers";
+import {useNavigate} from "react-router-dom";
 import RoutePath from "../../../../routes";
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
 // import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
@@ -38,20 +38,20 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainList = () => {
-  const { chainList, chainListSearchResult } = useContext(ClaimContext);
+  const {chainList, chainListSearchResult} = useContext(ClaimContext);
 
   return (
     <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
       <div>
         {!chainList.length && (
-          <div style={{ color: "white", textAlign: "center" }} data-testid="chain-list-loading">
+          <div style={{color: "white", textAlign: "center"}} data-testid="chain-list-loading">
             Loading...
           </div>
         )}
         {chainListSearchResult.map((chain) => (
-          <ChainCard chain={chain} key={chain.pk} />
+          <ChainCard chain={chain} key={chain.pk}/>
         ))}
-        {chainListSearchResult.length === 0 && chainList.length && <EmptyChainListCard />}
+        {chainListSearchResult.length === 0 && chainList.length && <EmptyChainListCard/>}
       </div>
     </div>
   );
@@ -60,17 +60,20 @@ const ChainList = () => {
 const EmptyChainListCard = () => {
   return (
     <div className="empty-chain-list-card flex flex-col rounded-xl w-full overflow-hidden">
-      <div className="empty-chain-list-card__top flex gap-4 flex-col sm:flex-row justify-between bg-gray20 pl-3 pr-6 py-4">
+      <div
+        className="empty-chain-list-card__top flex gap-4 flex-col sm:flex-row justify-between bg-gray20 pl-3 pr-6 py-4">
         <span className="empty-chain-list-card__info flex w-full items-center justify-center sm:justify-start gap-3">
           <span className="empty-chain-list-card__info__logo w-11 h-11 bg-gray30 rounded-full"></span>
           <p className="empty-chain-list-card__info__name text-white">Chain Not Found</p>
         </span>
-        <span className="empty-chain-list-card__actions flex flex-col w-full items-center sm:justify-end sm:flex-row gap-2 sm:gap-4">
+        <span
+          className="empty-chain-list-card__actions flex flex-col w-full items-center sm:justify-end sm:flex-row gap-2 sm:gap-4">
           <span className="empty-chain-list-card__actions__action w-24 h-11 bg-gray30 rounded-lg"></span>
           <span className="empty-chain-list-card__actions__action w-56 h-11 bg-gray30 rounded-lg"></span>
         </span>
       </div>
-      <div className="empty-chain-list-card__bottom flex flex-col sm:flex-row justify-between items-center py-2.5 px-9 bg-gray30">
+      <div
+        className="empty-chain-list-card__bottom flex flex-col sm:flex-row justify-between items-center py-2.5 px-9 bg-gray30">
         <span className="flex justify-between w-full sm:justify-start">
           <p className="chain-card__info__title text-sm text-gray90">Currency</p>
           <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">404</p>
@@ -92,15 +95,15 @@ type ChainCardProps = {
   chain: Chain;
 };
 
-const ChainCard = ({ chain }: ChainCardProps) => {
-  const { openClaimModal } = useContext(ClaimContext);
+const ChainCard = ({chain}: ChainCardProps) => {
+  const {openClaimModal} = useContext(ClaimContext);
 
   function numberWithCommas(x: number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const addAndSwitchToChain = useSelectChain();
-  const { account } = useWeb3React();
+  const {account} = useWeb3React();
   const active = !!account;
 
   const navigate = useNavigate();
@@ -126,7 +129,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
   //   return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
   // }, [nativeCurrency, fundManagerBalance]);
 
-  const { activeClaimHistory } = useContext(ClaimContext);
+  const {activeClaimHistory} = useContext(ClaimContext);
 
   return (
     <div key={chain.chainId}>
@@ -136,15 +139,20 @@ const ChainCard = ({ chain }: ChainCardProps) => {
             "pt-4 pr-6 pb-4 pl-3 bg-gray20 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl "
           }
         >
-          <div onClick={() => window.open(chain.blockScanAddress, "_blank")}
-               className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
-            <span className="chain-logo-container w-10 h-10 flex justify-center">
-              <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo" />
+          <div className="items-center flex mb-6 sm:mb-0">
+            <span className="chain-logo-container w-10 h-10 flex justify-center cursor-pointer"
+                  onClick={() => window.open(chain.blockScanAddress, "_blank")}>
+              <img className="chain-logo w-auto h-[100%]" src={getChainIcon(chain)} alt="polygon logo"/>
             </span>
-            <p className=" text-white ml-3 text-center sm:text-left" data-testid={`chain-name-${chain.pk}`}>
+            <p className=" text-white ml-3 text-center sm:text-left cursor-pointer"
+               onClick={() => window.open(chain.blockScanAddress, "_blank")}
+               data-testid={`chain-name-${chain.pk}`}>
               {chain.chainName}
             </p>
-            <img className="arrow-icon mt-1 ml-1.5 w-2 h-2" src="assets/images/arrow-icon.svg" alt="arrow" />
+            <img className="arrow-icon mt-1 ml-1.5 mr-3 w-2 h-2 cursor-pointer" src="assets/images/arrow-icon.svg"
+                 alt="arrow" onClick={() => window.open(chain.blockScanAddress, "_blank")}/>
+            <Tag title={chain.chainType === ChainType.EVM ? "EVM" : "NONEVM"}/>
+            <Tag title={chain.isTestnet ? "Testnet" : "Meinnet"}/>
           </div>
 
           <div className={"flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"}>
@@ -234,6 +242,14 @@ const ChainCard = ({ chain }: ChainCardProps) => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const Tag = ({title}: { title: string }) => {
+  return (
+    <div className="tag px-1.5 py-[3px] min-w-[50px] bg-gray50 rounded-md text-center mx-1">
+      <p className="text-gray90 text-[10px] font-semibold">{title}</p>
     </div>
   );
 };
