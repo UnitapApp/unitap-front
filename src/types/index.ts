@@ -24,6 +24,52 @@ export type Chain = {
   blockScanAddress: string;
 };
 
+export type Token = {
+  "id": PK,
+  "name": string,
+  "distributer": string,
+  "distributerUrl": string,
+  "discordUrl": string,
+  "twitterUrl": string,
+  "imageUrl": string,
+  "token": string,
+  "tokenAddress": string,
+  "amount": number,
+  "createdAt": string,
+  "deadline": string,
+  "maxNumberOfClaims": number,
+  "notes": string,
+  "isExpired": boolean,
+  "isMaxedOut": boolean,
+  "isClaimable": boolean,
+  "chain": {
+    "pk": PK,
+    "chainName": string,
+    "chainId": string,
+    "fundManagerAddress": string,
+    "nativeCurrencyName": string,
+    "symbol": string,
+    "decimals": number,
+    "explorerUrl": string,
+    "rpcUrl": string,
+    "logoUrl": string,
+    "modalUrl": string,
+    "gasImageUrl": string,
+    "maxClaimAmount": number,
+    "isTestnet": boolean,
+    "chainType": string,
+    "blockScanAddress": string
+  },
+  "permissions": [
+    {
+      "id": PK,
+      "name": string,
+      "description": string,
+      "resourcetype": string,
+    }
+  ],
+}
+
 export type Prize = {
   pk: PK;
   image: string;

@@ -21,6 +21,7 @@ import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/b
 import ConnectMetamaskModal from 'pages/home/components/ConnectMetamaskModal/connectMetamaskModal';
 import CreateBrightIdAccountModal from 'pages/home/components/CreateBrightIdAccountModal/createBrightIdAccountModal';
 import {BlockNumberProvider} from 'lib/hooks/useBlockNumber';
+import TokenTapProvider from 'hooks/token-tap/tokenTapContext';
 
 import ApplicationUpdater from 'state/application/updater';
 import TransactionUpdater from 'state/transactions/updater';
@@ -52,27 +53,29 @@ function App() {
             <ErrorsProvider>
               <UserProfileProvider>
                 <ClaimProvider>
-                  <BrowserRouter>
-                    <BlockNumberProvider>
-                      <Updaters/>
-                      <ScrollToTop>
-                        <Routes>
-                          <Route path={RoutePath.FAUCET} element={<Home/>}/>
-                          <Route path={RoutePath.FUND} element={<Fund/>}/>
-                          <Route path={RoutePath.LANDING} element={<Landing/>}/>
-                          <Route path={RoutePath.DONATE} element={<Donate/>}/>
-                          <Route path={RoutePath.NFT} element={<NFT/>}/>
-                          <Route path={RoutePath.ABOUT} element={<About/>}/>
-                          <Route path={RoutePath.PRIZE} element={<PrizeTap/>}/>
-                          <Route path={RoutePath.TOKEN} element={<TokenTap/>}/>
-                        </Routes>
-                      </ScrollToTop>
-                      <ConnectBrightIdModal/>
-                      <BrightConnectionModal/>
-                      <ConnectMetamaskModal/>
-                      <CreateBrightIdAccountModal/>
-                    </BlockNumberProvider>
-                  </BrowserRouter>
+                  <TokenTapProvider>
+                    <BrowserRouter>
+                      <BlockNumberProvider>
+                        <Updaters/>
+                        <ScrollToTop>
+                          <Routes>
+                            <Route path={RoutePath.FAUCET} element={<Home/>}/>
+                            <Route path={RoutePath.FUND} element={<Fund/>}/>
+                            <Route path={RoutePath.LANDING} element={<Landing/>}/>
+                            <Route path={RoutePath.DONATE} element={<Donate/>}/>
+                            <Route path={RoutePath.NFT} element={<NFT/>}/>
+                            <Route path={RoutePath.ABOUT} element={<About/>}/>
+                            <Route path={RoutePath.PRIZE} element={<PrizeTap/>}/>
+                            <Route path={RoutePath.TOKEN} element={<TokenTap/>}/>
+                          </Routes>
+                        </ScrollToTop>
+                        <ConnectBrightIdModal/>
+                        <BrightConnectionModal/>
+                        <ConnectMetamaskModal/>
+                        <CreateBrightIdAccountModal/>
+                      </BlockNumberProvider>
+                    </BrowserRouter>
+                  </TokenTapProvider>
                 </ClaimProvider>
               </UserProfileProvider>
             </ErrorsProvider>

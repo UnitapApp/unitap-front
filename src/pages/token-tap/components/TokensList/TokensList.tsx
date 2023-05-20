@@ -9,6 +9,7 @@ import { useWeb3React } from "@web3-react/core";
 import useSelectChain from "hooks/useSelectChain";
 import { getChainIcon } from "utils";
 import { Chain } from "../../../../types";
+import {TokenTapContext} from "../../../../hooks/token-tap/tokenTapContext";
 
 const Action = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const AddMetamaskButton = styled(SecondaryButton)`
 
 const TokensList = () => {
   const { chainList, chainListSearchResult } = useContext(ClaimContext);
+  const { tokensList } = useContext(TokenTapContext);
 
   const windowSize = window.innerWidth;
 
