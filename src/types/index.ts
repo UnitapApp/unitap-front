@@ -42,24 +42,7 @@ export type Token = {
   "isExpired": boolean,
   "isMaxedOut": boolean,
   "isClaimable": boolean,
-  "chain": {
-    "pk": PK,
-    "chainName": string,
-    "chainId": string,
-    "fundManagerAddress": string,
-    "nativeCurrencyName": string,
-    "symbol": string,
-    "decimals": number,
-    "explorerUrl": string,
-    "rpcUrl": string,
-    "logoUrl": string,
-    "modalUrl": string,
-    "gasImageUrl": string,
-    "maxClaimAmount": number,
-    "isTestnet": boolean,
-    "chainType": string,
-    "blockScanAddress": string
-  },
+  "chain": Chain,
   "permissions": [
     {
       "id": PK,

@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import styled from "styled-components/";
-import { DV } from "components/basic/designVariables";
-import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from "components/basic/Button/button";
-import { ClaimContext } from "hooks/useChainList";
-import { formatWeiBalance } from "utils/numbers";
+import {DV} from "components/basic/designVariables";
+import {ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton} from "components/basic/Button/button";
+import {ClaimContext} from "hooks/useChainList";
+import {formatWeiBalance} from "utils/numbers";
 import Icon from "components/basic/Icon/Icon";
-import { useWeb3React } from "@web3-react/core";
+import {useWeb3React} from "@web3-react/core";
 import useSelectChain from "hooks/useSelectChain";
-import { getChainIcon } from "utils";
-import { Chain } from "../../../../types";
+import {getChainIcon} from "utils";
+import {Token} from "../../../../types";
 import {TokenTapContext} from "../../../../hooks/token-tap/tokenTapContext";
 
 const Action = styled.div`
@@ -37,22 +37,21 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const TokensList = () => {
-  const { chainList, chainListSearchResult } = useContext(ClaimContext);
-  const { tokensList } = useContext(TokenTapContext);
-
+  const {chainList, chainListSearchResult} = useContext(ClaimContext);
+  const {tokensList, tokensListLoading} = useContext(TokenTapContext);
   const windowSize = window.innerWidth;
 
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
-      {chainList.length === 0 && (
-        <div style={{ color: "white", textAlign: "center" }} data-testid="chain-list-loading">
+      {tokensListLoading && tokensList.length === 0 && (
+        <div style={{color: "white", textAlign: "center"}} data-testid="chain-list-loading">
           Loading...
         </div>
       )}
-      {chainListSearchResult.map((token) => {
-        return <TokenCard token={token} key={token.pk} />;
+      {tokensList.map((token) => {
+        return <TokenCard token={token} key={token.id}/>;
       })}
-      {chainListSearchResult.length === 0 && chainList.length && (
+      {tokensList.length === 0 && chainList.length && (
         <Icon
           className="mb-4"
           iconSrc={
@@ -61,35 +60,37 @@ const TokensList = () => {
           width="100%"
         />
       )}
-      <FinalVersionCard />
+      {!tokensListLoading && (
+        <FinalVersionCard/>
+      )}
     </div>
   );
 };
 
-const TokenCard = ({ token }: { token: Chain }) => {
-  const { openClaimModal } = useContext(ClaimContext);
+const TokenCard = ({token}: { token: Token }) => {
+  const {openClaimModal} = useContext(ClaimContext);
 
   const addAndSwitchToChain = useSelectChain();
-  const { account } = useWeb3React();
+  const {account} = useWeb3React();
   const active = !!account;
 
   return (
-    <div key={token.chainId}>
+    <div key={token.id}>
       <div className="token-card flex flex-col items-center justify-center w-full mb-4">
-        <span className="flex flex-col">
+        <span className="flex flex-col w-full">
           <div
             className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl">
             <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
               <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
-                <img className="chain-logo w-auto h-full" src={getChainIcon(token)} alt="chain logo" />
+                <img className="chain-logo w-auto h-full" src={getChainIcon(token.chain)} alt="chain logo"/>
               </span>
               <span className="w-max">
                 <p
                   className="text-white text-center md:text-left flex mb-2"
-                  data-testid={`chain-name-${token.pk}`}
+                  data-testid={`chain-name-${token.id}`}
                 >
-                  {token.chainName}
-                  <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
+                  {token.name}
+                  <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow"/>
                 </p>
                 <p className="text-xs text-white font-medium">Decentralized verification system</p>
               </span>
@@ -99,8 +100,8 @@ const TokenCard = ({ token }: { token: Chain }) => {
               <div className="w-full mb-2 md:mb-0 md:w-auto md:mr-4 items-center md:items-end">
                 <AddMetamaskButton
                   disabled={!active}
-                  data-testid={`chain-switch-${token.pk}`}
-                  onClick={() => addAndSwitchToChain(token)}
+                  data-testid={`chain-switch-${token.id}`}
+                  onClick={() => addAndSwitchToChain(token.chain)}
                   className="font-medium hover:cursor-pointer mx-auto text-sm !w-[220px] md:!w-auto"
                 >
                   <img
@@ -113,27 +114,27 @@ const TokenCard = ({ token }: { token: Chain }) => {
 
               <Action className={"w-full sm:w-auto items-center sm:items-end "}>
                 {/* todo migrate buttom logic*/}
-                {token.needsFunding ? (
+                {token.isMaxedOut ? (
                   <NoCurrencyButton disabled fontSize="13px">
                     Empty
                   </NoCurrencyButton>
-                ) : token.unclaimed !== 0 ? (
+                ) : token.amount !== 0 ? (
                   <ClaimButton
-                    data-testid={`chain-show-claim-${token.pk}`}
+                    data-testid={`chain-show-claim-${token.id}`}
                     mlAuto
-                    onClick={() => openClaimModal(token.pk)}
+                    onClick={() => openClaimModal(token.id)}
                     className="text-sm m-auto"
                   >
-                    <p>{`Claim ${formatWeiBalance(token.maxClaimAmount)} ${token.symbol}`}</p>
+                    <p>{`Claim ${formatWeiBalance(token.chain.maxClaimAmount)} ${token.chain.symbol}`}</p>
                   </ClaimButton>
                 ) : (
                   <ClaimedButton
-                    data-testid={`chain-claimed-${token.pk}`}
+                    data-testid={`chain-claimed-${token.id}`}
                     mlAuto
                     icon="../assets/images/claim/claimedIcon.svg"
                     iconWidth={24}
                     iconHeight={20}
-                    onClick={() => openClaimModal(token.pk)}
+                    onClick={() => openClaimModal(token.id)}
                     className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
                   >
                     <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
@@ -143,10 +144,7 @@ const TokenCard = ({ token }: { token: Chain }) => {
             </div>
           </div>
           <p className="text-xs text-gray100 pl-6 md:pl-16 pt-4 pr-6 text-justify pb-10 bg-gray40">
-            Anyone is welcome to play to help verify those they already know. The first 2000 users who are
-            verified in Aura can claim 2 xDai. You do not need to play to become verified by Aura; You just need
-            to know one person who is playing Aura. To meet other Aura players and discuss strategy, join the Aura
-            discord.
+            {token.notes}
           </p>
         </span>
         <div
@@ -159,7 +157,7 @@ const TokenCard = ({ token }: { token: Chain }) => {
               <span className="text-white">1,137 </span> of <span className="text-white"> 2,000 </span> are left
               to claim on Gnosis chain
             </p>
-            <Icon iconSrc={getChainIcon(token)} width="auto" height="16px" />
+            <Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px"/>
           </div>
 
           <div className="flex gap-x-6 items-center">

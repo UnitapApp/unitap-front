@@ -1,4 +1,4 @@
-import { Chain, ClaimReceipt, UserProfile } from 'types';
+import { Chain, ClaimReceipt, UserProfile, Token } from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -93,5 +93,10 @@ export async function setWalletAPI(token: string, wallet: string, walletType: st
 
 export async function sponsorAPI(address: string) {
   const response = await axiosInstance.post('/api/auth/user/sponsor/', {address: address})
+  return response.data;
+}
+
+export async function getTokensListAPI() {
+  const response = await axiosInstance.get<Token[]>('/api/tokentap/token-distribution-list/')
   return response.data;
 }
