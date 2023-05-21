@@ -58,6 +58,13 @@ export type ClaimedToken = {
 	userProfile: number;
 	createdAt: string;
   tokenDistribution: Token;
+  payload: {
+    user: string;
+    amount: number;
+    nonce: number;
+    signature: string;
+    token: string;
+  }
 }
 
 export type Prize = {

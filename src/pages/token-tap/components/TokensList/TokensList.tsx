@@ -37,7 +37,6 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const TokensList = () => {
-  const {chainList, chainListSearchResult} = useContext(ClaimContext);
   const {tokensList, tokensListLoading} = useContext(TokenTapContext);
   const windowSize = window.innerWidth;
 
@@ -51,7 +50,7 @@ const TokensList = () => {
       {tokensList.map((token) => {
         return <TokenCard token={token} key={token.id}/>;
       })}
-      {tokensList.length === 0 && chainList.length && (
+      {tokensList.length === 0 && tokensList.length && (
         <Icon
           className="mb-4"
           iconSrc={
@@ -68,7 +67,7 @@ const TokensList = () => {
 };
 
 const TokenCard = ({token}: { token: Token }) => {
-  const {openClaimModal} = useContext(ClaimContext);
+  const {setSelectedTokenForClaim, claimedTokensList} = useContext(TokenTapContext);
 
   const addAndSwitchToChain = useSelectChain();
   const {account} = useWeb3React();
@@ -122,7 +121,7 @@ const TokenCard = ({token}: { token: Token }) => {
                   <ClaimButton
                     data-testid={`chain-show-claim-${token.id}`}
                     mlAuto
-                    onClick={() => openClaimModal(token.id)}
+                    onClick={() => setSelectedTokenForClaim(token)}
                     className="text-sm m-auto"
                   >
                     <p>{`Claim ${formatWeiBalance(token.chain.maxClaimAmount)} ${token.chain.symbol}`}</p>
@@ -134,7 +133,7 @@ const TokenCard = ({token}: { token: Token }) => {
                     icon="../assets/images/claim/claimedIcon.svg"
                     iconWidth={24}
                     iconHeight={20}
-                    onClick={() => openClaimModal(token.id)}
+                    onClick={() => setSelectedTokenForClaim(token)}
                     className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
                   >
                     <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>

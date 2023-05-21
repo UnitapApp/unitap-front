@@ -109,3 +109,12 @@ export async function getClaimedTokensListAPI(token: string) {
   })
   return response.data;
 }
+
+export async function claimTokenAPI(token: string, tokenId: number) {
+  const response = await axiosInstance.post<ClaimReceipt>(`/api/tokentap/token-distribution/${tokenId}/claim/`, {},{
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
+  return response.data;
+}
