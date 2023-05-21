@@ -5,7 +5,7 @@ export function useTokenTap() {
   const context = useContext(TokenTapContext);
 
   if (!context) {
-    throw new Error('useMyContext must be used within a MyContextProvider');
+    throw new Error('useTokenTap must be used within a TokenTapProvider');
   }
 
   return context;

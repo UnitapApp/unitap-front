@@ -53,6 +53,13 @@ export type Token = {
   ],
 }
 
+export type ClaimedToken = {
+  id: PK;
+	userProfile: number;
+	createdAt: string;
+  tokenDistribution: Token;
+}
+
 export type Prize = {
   pk: PK;
   image: string;

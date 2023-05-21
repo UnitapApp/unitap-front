@@ -1,4 +1,4 @@
-import { Chain, ClaimReceipt, UserProfile, Token } from 'types';
+import {Chain, ClaimReceipt, UserProfile, Token, ClaimedToken} from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -98,5 +98,14 @@ export async function sponsorAPI(address: string) {
 
 export async function getTokensListAPI() {
   const response = await axiosInstance.get<Token[]>('/api/tokentap/token-distribution-list/')
+  return response.data;
+}
+
+export async function getClaimedTokensListAPI(token: string) {
+  const response = await axiosInstance.get<ClaimedToken[]>('/api/tokentap/claims-list/', {
+    headers: {
+      'Authorization': `Token ${token}`,
+    }
+  })
   return response.data;
 }
