@@ -117,7 +117,7 @@ body {
 
 @layer components {
   .card {
-    @apply rounded-3xl py-7 px-6 bg-gray20 text-white;
+    @apply rounded-2xl py-7 px-6 bg-gray20 text-white;
   }
 
   .collapse-card {

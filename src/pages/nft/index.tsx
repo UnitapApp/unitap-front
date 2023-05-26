@@ -50,7 +50,7 @@ const NFT = () => {
             <Header />
           </div>
           <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
-            <div className="card md:w-7/12 flex flex-col justify-between py-9 px-8">
+            <div className="card md:w-[55%] flex flex-col justify-between py-9 px-8">
               <span>
                 {/* <div className="header-top z-10 flex items-center h-auto">
                   <Icon className="gas-tap mb-1 h-auto w-80" iconSrc="assets/images/nft/mint-header.png"/>
@@ -87,7 +87,7 @@ const NFT = () => {
                 <img className={'w-44 m-auto'} src={'/assets/images/nft/rocket-base.png'} />
               </div>
             ) : (
-              <div className="card md:w-5/12 p-0 overflow-hidden select-none">
+              <div className="card md:w-[45%] p-0 overflow-hidden select-none">
                 <MintNFTCard />
               </div>
             )}

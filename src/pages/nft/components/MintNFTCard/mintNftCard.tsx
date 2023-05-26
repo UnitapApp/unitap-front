@@ -213,20 +213,20 @@ const MintNFTCard = () => {
         </div>
       ) : (
         <>
-          <div className="mint-nft-card__nft p-4 h-full flex flex-col justify-between">
-            <div className="mint-nft-card__nft__info text-xs font-medium flex w-full justify-between">
+          <div className="mint-nft-card__nft p-2 h-full flex flex-col justify-between">
+            <div className="mint-nft-card__nft__info text-xs font-medium flex items-center w-full justify-between">
+              <p className="text-gray100 bg-gray10 px-3 py-2 rounded-lg text-xs flex gap-1">
+                Network:
+                <span className="text-white flex"> ETH <img className={"w-2.5 h-auto ml-2"} src={"assets/images/nft/eth-icon.svg"} alt={''}/> </span>
+              </p>
               <p className="text-gray100">
                 <span className="text-white"> {remainingCount === undefined ? '...' : remainingCount} </span> of
                 <span className="text-white"> {batchSize === undefined ? '...' : batchSize} </span>
                 Left in current batch
               </p>
-              <p className="text-gray100">
-                Network:
-                <span className="text-white"> ETH</span>
-              </p>
             </div>
-            <div className="mint-nft-card__nft__image w-full my-6 flex justify-center">
-              <div className="mint-nft-card__nft__image__wrapper w-full h-auto">
+            <div className="mint-nft-card__nft__image w-full my-5 flex justify-center">
+              <div className="mint-nft-card__nft__image__wrapper w-[312px] h-auto">
                 <div className="w-full h-full overflow-hidden rounded-lg">
                   <video
                     src="assets/videos/unitap-pass.mp4"
