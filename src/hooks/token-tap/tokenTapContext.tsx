@@ -50,7 +50,7 @@ const TokenTapProvider = ({children}: { children: ReactNode }) => {
 
 	useEffect(() => {
 		getTokensList();
-	}, [getTokensList])
+	}, [getTokensList, fastRefresh])
 
 	const getClaimedTokensList = useCallback(async () => {
 		if (!userToken) return;
@@ -66,17 +66,21 @@ const TokenTapProvider = ({children}: { children: ReactNode }) => {
 		getClaimedTokensList();
 	}, [getClaimedTokensList, fastRefresh])
 
+	const claimTokenWithMetamask = useCallback(async (claimTokenResponse: ClaimedToken) => {
+
+	}, [])
+
 	const claimToken = useCallback(async (token: Token) => {
 		if (!userToken) return;
 		setClaimTokenLoading(true)
 		try {
-			await claimTokenAPI(userToken, token.id)
-			// Todo: metamask transaction
+			const response = await claimTokenAPI(userToken, token.id)
+			claimTokenWithMetamask(response)
 			setClaimTokenLoading(false)
 		} catch (e) {
 			setClaimTokenLoading(false)
 		}
-	}, [userToken])
+	}, [userToken, claimTokenWithMetamask])
 
 	const handleClaimToken = useCallback(async () => {
 		if (!selectedTokenForClaim) return;

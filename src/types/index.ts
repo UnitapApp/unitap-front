@@ -55,8 +55,8 @@ export type Token = {
 
 export type ClaimedToken = {
   id: PK;
-	userProfile: number;
-	createdAt: string;
+  userProfile: number;
+  createdAt: string;
   tokenDistribution: Token;
   payload: {
     user: string;

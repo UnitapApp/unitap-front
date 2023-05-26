@@ -111,7 +111,7 @@ export async function getClaimedTokensListAPI(token: string) {
 }
 
 export async function claimTokenAPI(token: string, tokenId: number) {
-  const response = await axiosInstance.post<ClaimReceipt>(`/api/tokentap/token-distribution/${tokenId}/claim/`, {},{
+  const response = await axiosInstance.post<ClaimedToken>(`/api/tokentap/token-distribution/${tokenId}/claim/`, {},{
     headers: {
       'Authorization': `Token ${token}`,
     }
