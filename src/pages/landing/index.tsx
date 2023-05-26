@@ -28,17 +28,17 @@ const Landing: FC = () => {
   const [socialLinks] = useState([
     {
       img: 'twitter-icon.svg',
-      localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
+      localClass: 'hover:bg-cyan sm:rounded-l-2xl',
       link: 'http://twitter.com/unitap_app',
     },
     {
       img: 'github-icon.svg',
-      localClass: 'hover:bg-blue-200',
+      localClass: 'hover:bg-dark-purple',
       link: 'https://github.com/UnitapApp',
     },
     {
       img: 'discord-icon.svg',
-      localClass: 'hover:bg-purple-200',
+      localClass: 'hover:bg-purple',
       link: 'https://discord.gg/unitap',
     },
   ]);
@@ -264,7 +264,7 @@ const Landing: FC = () => {
               <div
                 onClick={() => window.open(social.link, '_blank')}
                 key={social.link}
-                className={`${social.localClass} flex home-footer-social-link cursor-pointer justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
+                className={`${social.localClass} flex home-footer-social-link cursor-pointer justify-center items-center px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
               >
                 <img className={''} src={`/assets/images/landing/${social.img}`} />
               </div>
