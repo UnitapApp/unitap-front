@@ -56,6 +56,7 @@ module.exports = {
         'dark-space-green': '#274641',
         'disabled-bg': '#C0C0C0',
         'disabled-text': '#939393',
+        'text-secondary': '#997EA4',
       },
 
       borderWidth: {

@@ -9,6 +9,7 @@ import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
 import { getTotalEVMNetworks } from '../../utils';
+import {PrimaryOutlinedButton} from "../../components/basic/Button/button";
 
 const Landing: FC = () => {
   const { chainList } = useContext(ClaimContext);
@@ -111,23 +112,26 @@ const Landing: FC = () => {
           onClick={() => navigate(RoutePath.NFT)}
         >
           <div className={'flex gap-4 flex-col items-start card-text justify-center'}>
-            <h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
+            <span className="flex gap-3">
+              <h3 className={'font-bold text-xl text-white'}>Mint Unitap Pass NFT</h3>
+              <img className='w-5 h-auto' src={'/assets/images/landing/mint-logo.svg'} alt={''} />
+            </span>
             {maxCount > 0 && (
               <p className={'text-gray100'}>
                 {deadline < new Date() && (
-                  <>
+                  <span className='text-text-secondary text-sm'>
                     <span className={'text-white'}>{remainingCount}</span> of{' '}
                     <span className={'text-white'}>{maxCount}</span> Passes are left in the current batch. Mint your
                     Passes now
-                  </>
+                  </span>
                 )}
               </p>
             )}
           </div>
           <div>
-            <UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
-              Go to Mint Page
-            </UButton>
+            <PrimaryOutlinedButton className={'go-to-mint-button'} icon={'/assets/images/landing/arrow-right.svg'} iconHeight={10} iconWidth={10}>
+              <p className={'text-gradient-primary'} >Go to Mint Page</p>
+            </PrimaryOutlinedButton>
           </div>
         </section>
 

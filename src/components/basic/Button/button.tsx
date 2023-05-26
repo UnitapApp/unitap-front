@@ -84,8 +84,8 @@ export const Button = styled.button<props>`
     position: relative;
     top: 2px;
     background-size: ${({ iconWidth, iconHeight }) => `${iconWidth}px ${iconHeight}px` || '0 0'};
-    width: ${({ iconWidth }) => `${iconWidth}px` || 'auto'};
-    height: ${({ iconHeight }) => `${iconHeight}px` || 'auto'};
+    width: ${({ iconWidth }) => `${iconWidth}px` || '10px'};
+    height: ${({ iconHeight }) => `${iconHeight}px` || '10px'};
     margin-left: ${({ iconMarginLeft }) => (iconMarginLeft ? iconMarginLeft : '12')}px;
   }
 
@@ -248,7 +248,7 @@ export const NoCurrencyButton = styled(Button)`
 export const ClaimedButton = styled(Button)`
   width: 220px;
   text-align: left;
-  
+
   ::before {
     //background-image: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%);
   }
@@ -266,36 +266,36 @@ export const EmptyWithRefillButton = styled(Button)`
   width: 220px;
   text-align: left;
   position: relative;
-    
+
   &::after {
     position: absolute;
     top: 10px;
     right: 20px;
-    
+
     svg {
       width: 20px;
       height: 20px;
     }
-    
+
     path {
       fill: ${DV.colors.gray70};
-      
+
       &:hover {
         fill: ${DV.colors.gray70};
       }
-      
+
       &:active {
         fill: ${DV.colors.gray70};
       }
     }
-    
+
     &:hover {
       path {
         fill: ${DV.colors.gray70};
       }
     }
   }
-  
+
   &:hover {
     background: ${DV.colors.gray90};
     color: ${DV.colors.gray70};
