@@ -4,6 +4,8 @@ import {ClaimedToken, Token} from "../../types";
 import {RefreshContext} from "../../context/RefreshContext";
 import useToken from "../useToken";
 import {useWeb3React} from "@web3-react/core";
+import {useEVMTokenTapContract} from "../useContract";
+import {BigNumber, ethers} from "ethers";
 
 export const TokenTapContext = createContext<{
   tokensList: Token[];
@@ -38,6 +40,7 @@ const TokenTapProvider = ({children}: { children: ReactNode }) => {
   const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
 
   const {provider} = useWeb3React()
+  const EVMTokenTapContract = useEVMTokenTapContract()
 
   const getTokensList = useCallback(async () => {
     setTokensListLoading(true);
@@ -70,13 +73,15 @@ const TokenTapProvider = ({children}: { children: ReactNode }) => {
   }, [getClaimedTokensList, fastRefresh])
 
   const claimTokenWithMetamask = useCallback(async (claimTokenResponse: ClaimedToken) => {
-    if (!userToken || !provider) return;
+    if (!userToken || !provider || !EVMTokenTapContract) return;
     try {
-
+      const {user, token, signature, amount, nonce} = claimTokenResponse.payload
+      const response = await EVMTokenTapContract.claimToken(user, token, amount/10**18, nonce, signature)
+      console.log(response)
     } catch (e) {
       console.log(e)
     }
-  }, [userToken, provider])
+  }, [userToken, provider, EVMTokenTapContract])
 
   const claimToken = useCallback(async (token: Token) => {
     if (!userToken) return;

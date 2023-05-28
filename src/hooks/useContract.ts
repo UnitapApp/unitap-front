@@ -96,7 +96,7 @@ export function useUnitapPassBatchSaleContract() {
   );
 }
 
-export function useTokenTapContract() {
+export function useEVMTokenTapContract() {
   return useContract<UnitapEVMTokenTap>(
     UNITAP_TOKEN_TAP_ADDRESS,
     UnitapEVMTokenTap_ABI,
