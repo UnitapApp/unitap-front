@@ -3,104 +3,115 @@ import {getTokensListAPI, getClaimedTokensListAPI, claimTokenAPI} from "../../ap
 import {ClaimedToken, Token} from "../../types";
 import {RefreshContext} from "../../context/RefreshContext";
 import useToken from "../useToken";
+import {useWeb3React} from "@web3-react/core";
 
 export const TokenTapContext = createContext<{
-	tokensList: Token[];
-	tokensListLoading: boolean;
-	claimedTokensList: ClaimedToken[];
-	handleClaimToken: () => void;
-	selectedTokenForClaim: Token | null;
-	setSelectedTokenForClaim: (token: Token | null) => void;
-	claimTokenLoading: boolean;
+  tokensList: Token[];
+  tokensListLoading: boolean;
+  claimedTokensList: ClaimedToken[];
+  handleClaimToken: () => void;
+  selectedTokenForClaim: Token | null;
+  setSelectedTokenForClaim: (token: Token | null) => void;
+  claimTokenLoading: boolean;
 }>({
-	tokensList: [],
-	tokensListLoading: false,
-	claimedTokensList: [],
-	handleClaimToken: () => {
-	},
-	selectedTokenForClaim: null,
-	setSelectedTokenForClaim: () => {
-	},
-	claimTokenLoading: false,
+  tokensList: [],
+  tokensListLoading: false,
+  claimedTokensList: [],
+  handleClaimToken: () => {
+  },
+  selectedTokenForClaim: null,
+  setSelectedTokenForClaim: () => {
+  },
+  claimTokenLoading: false,
 });
 
 const TokenTapProvider = ({children}: { children: ReactNode }) => {
-	const {fastRefresh} = useContext(RefreshContext);
-	const [userToken] = useToken();
+  const {fastRefresh} = useContext(RefreshContext);
+  const [userToken] = useToken();
 
-	const [tokensList, setTokensList] = useState<Token[]>([]);
-	const [tokensListLoading, setTokensListLoading] = useState<boolean>(false);
+  const [tokensList, setTokensList] = useState<Token[]>([]);
+  const [tokensListLoading, setTokensListLoading] = useState<boolean>(false);
 
-	const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>([]);
+  const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>([]);
 
-	const [selectedTokenForClaim, setSelectedTokenForClaim] = useState<Token | null>(null);
-	const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
+  const [selectedTokenForClaim, setSelectedTokenForClaim] = useState<Token | null>(null);
+  const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
 
-	const getTokensList = useCallback(async () => {
-		setTokensListLoading(true);
-		try {
-			const response = await getTokensListAPI()
-			setTokensListLoading(false);
-			setTokensList(response);
-		} catch (e) {
-			setTokensListLoading(false);
-			console.log(e)
-		}
-	}, [])
+  const {provider} = useWeb3React()
 
-	useEffect(() => {
-		getTokensList();
-	}, [getTokensList, fastRefresh])
+  const getTokensList = useCallback(async () => {
+    setTokensListLoading(true);
+    try {
+      const response = await getTokensListAPI()
+      setTokensListLoading(false);
+      setTokensList(response);
+    } catch (e) {
+      setTokensListLoading(false);
+      console.log(e)
+    }
+  }, [])
 
-	const getClaimedTokensList = useCallback(async () => {
-		if (!userToken) return;
-		try {
-			const response = await getClaimedTokensListAPI(userToken)
-			setClaimedTokensList(response);
-		} catch (e) {
-			console.log(e)
-		}
-	}, [userToken])
+  useEffect(() => {
+    getTokensList();
+  }, [getTokensList, fastRefresh])
 
-	useEffect(() => {
-		getClaimedTokensList();
-	}, [getClaimedTokensList, fastRefresh])
+  const getClaimedTokensList = useCallback(async () => {
+    if (!userToken) return;
+    try {
+      const response = await getClaimedTokensListAPI(userToken)
+      setClaimedTokensList(response);
+    } catch (e) {
+      console.log(e)
+    }
+  }, [userToken])
 
-	const claimTokenWithMetamask = useCallback(async (claimTokenResponse: ClaimedToken) => {
+  useEffect(() => {
+    getClaimedTokensList();
+  }, [getClaimedTokensList, fastRefresh])
 
-	}, [])
+  const claimTokenWithMetamask = useCallback(async (claimTokenResponse: ClaimedToken) => {
+    if (!userToken || !provider) return;
+    try {
 
-	const claimToken = useCallback(async (token: Token) => {
-		if (!userToken) return;
-		setClaimTokenLoading(true)
-		try {
-			const response = await claimTokenAPI(userToken, token.id)
-			claimTokenWithMetamask(response)
-			setClaimTokenLoading(false)
-		} catch (e) {
-			setClaimTokenLoading(false)
-		}
-	}, [userToken, claimTokenWithMetamask])
+    } catch (e) {
+      console.log(e)
+    }
+  }, [userToken, provider])
 
-	const handleClaimToken = useCallback(async () => {
-		if (!selectedTokenForClaim) return;
-		if (!!claimedTokensList.find(claimedToken => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)) return;
-		claimToken(selectedTokenForClaim)
-	}, [claimToken, claimedTokensList, selectedTokenForClaim])
+  const claimToken = useCallback(async (token: Token) => {
+    if (!userToken) return;
+    setClaimTokenLoading(true)
+    try {
+      const response = await claimTokenAPI(userToken, token.id)
+      claimTokenWithMetamask(response)
+      setClaimTokenLoading(false)
+    } catch (e) {
+      setClaimTokenLoading(false)
+    }
+  }, [userToken, claimTokenWithMetamask])
 
-	return (
-		<TokenTapContext.Provider value={{
-			tokensList,
-			tokensListLoading,
-			claimedTokensList,
-			handleClaimToken,
-			selectedTokenForClaim,
-			setSelectedTokenForClaim,
-			claimTokenLoading
-		}}>
-			{children}
-		</TokenTapContext.Provider>
-	);
+  const handleClaimToken = useCallback(async () => {
+    if (!selectedTokenForClaim) return;
+    if (!!claimedTokensList.find(claimedToken => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)) {
+      claimTokenWithMetamask(claimedTokensList.find(claimedToken => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)!)
+    } else {
+      claimToken(selectedTokenForClaim)
+    }
+  }, [claimToken, claimedTokensList, selectedTokenForClaim, claimTokenWithMetamask])
+
+  return (
+    <TokenTapContext.Provider value={{
+      tokensList,
+      tokensListLoading,
+      claimedTokensList,
+      handleClaimToken,
+      selectedTokenForClaim,
+      setSelectedTokenForClaim,
+      claimTokenLoading
+    }}>
+      {children}
+    </TokenTapContext.Provider>
+  );
 };
 
 export default TokenTapProvider;

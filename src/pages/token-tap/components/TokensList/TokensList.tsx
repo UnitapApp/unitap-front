@@ -59,9 +59,7 @@ const TokensList = () => {
           width="100%"
         />
       )}
-      {!tokensListLoading && (
-        <FinalVersionCard/>
-      )}
+      <FinalVersionCard/>
     </div>
   );
 };

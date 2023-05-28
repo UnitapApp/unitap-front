@@ -67,6 +67,23 @@ export type ClaimedToken = {
   }
 }
 
+export type ClaimTokenResponse = {
+  detail: string;
+  signature: {
+    createdAt: string;
+    id: PK;
+    payload: {
+      user: string;
+      amount: number;
+      nonce: number;
+      signature: string;
+      token: string;
+    }
+    tokenDistribution: Token;
+    userProfile: number;
+  }
+}
+
 export type Prize = {
   pk: PK;
   image: string;
