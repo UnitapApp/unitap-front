@@ -76,7 +76,7 @@ const TokenTapProvider = ({children}: { children: ReactNode }) => {
     if (!userToken || !provider || !EVMTokenTapContract) return;
     try {
       const {user, token, signature, amount, nonce} = claimTokenResponse.payload
-      const response = await EVMTokenTapContract.claimToken(user, token, amount/10**18, nonce, signature)
+      const response = await EVMTokenTapContract.claimToken(user, token, ethers.utils.parseEther(amount.toString()), nonce, signature)
       console.log(response)
     } catch (e) {
       console.log(e)
