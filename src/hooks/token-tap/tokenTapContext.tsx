@@ -1,12 +1,13 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { claimTokenAPI, getClaimedTokensListAPI, getTokensListAPI } from '../../api';
-import { ClaimedToken, Token } from '../../types';
+import {ClaimedToken, Token, TokenClaimPayload} from '../../types';
 import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenTapClaimTokenCallback } from './useTokenTapClaimTokenCallback';
+import {ethers} from "ethers";
 
 export const TokenTapContext = createContext<{
   tokensList: Token[];
@@ -41,6 +42,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
   const { provider } = useWeb3React();
   const EVMTokenTapContract = useEVMTokenTapContract();
 
+  const [claimTokenPayload, setClaimTokenPayload] = useState<TokenClaimPayload | null>(null);
+
   const getTokensList = useCallback(async () => {
     setTokensListLoading(true);
     try {
@@ -71,19 +74,18 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
     getClaimedTokensList();
   }, [getClaimedTokensList, fastRefresh]);
 
-  const { callback } = useTokenTapClaimTokenCallback(
-    '0x2BA839C06Df087a5a2c9d133769ad5E7e339744F',
-    '0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e',
-    BigNumber.from(10).pow(18),
-    801796867,
-    '0xe00c241cdb20700ea60f6ea0fa4899c653f8c4ba17bf07a933d765bc50f7012c2b83f8e5757980b7e3f3035b0e186051d5c8d9b5769c237b362c50c58f9346651c',
-  );
+  const { callback } = useTokenTapClaimTokenCallback(claimTokenPayload?.user, claimTokenPayload?.token, claimTokenPayload?.amount, claimTokenPayload?.nonce, claimTokenPayload?.signature);
+
 
   const claimTokenWithMetamask = useCallback(
     async (claimTokenResponse: ClaimedToken) => {
       if (!userToken || !provider || !EVMTokenTapContract) return;
+      setClaimTokenPayload(claimTokenResponse.payload)
       try {
         const response = await callback?.();
+        if (response) {
+          console.log(response)
+        }
       } catch (e) {
         console.log(e);
       }
@@ -108,9 +110,9 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
   const handleClaimToken = useCallback(async () => {
     if (!selectedTokenForClaim) return;
-    if (!!claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)) {
+    if (!!claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id && claimedToken.id > 15)) {
       claimTokenWithMetamask(
-        claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)!,
+        claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id && claimedToken.id > 15)!,
       );
     } else {
       claimToken(selectedTokenForClaim);

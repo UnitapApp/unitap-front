@@ -58,13 +58,15 @@ export type ClaimedToken = {
   userProfile: number;
   createdAt: string;
   tokenDistribution: Token;
-  payload: {
-    user: string;
-    amount: number;
-    nonce: number;
-    signature: string;
-    token: string;
-  }
+  payload: TokenClaimPayload;
+}
+
+export type TokenClaimPayload = {
+  user: string;
+  amount: number;
+  nonce: number;
+  signature: string;
+  token: string;
 }
 
 export type ClaimTokenResponse = {
@@ -72,13 +74,7 @@ export type ClaimTokenResponse = {
   signature: {
     createdAt: string;
     id: PK;
-    payload: {
-      user: string;
-      amount: number;
-      nonce: number;
-      signature: string;
-      token: string;
-    }
+    payload: TokenClaimPayload;
     tokenDistribution: Token;
     userProfile: number;
   }
