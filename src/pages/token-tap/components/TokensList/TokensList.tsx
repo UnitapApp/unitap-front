@@ -1,15 +1,15 @@
-import React, {useContext} from "react";
-import styled from "styled-components/";
-import {DV} from "components/basic/designVariables";
-import {ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton} from "components/basic/Button/button";
-import {ClaimContext} from "hooks/useChainList";
-import {formatWeiBalance} from "utils/numbers";
-import Icon from "components/basic/Icon/Icon";
-import {useWeb3React} from "@web3-react/core";
-import useSelectChain from "hooks/useSelectChain";
-import {getChainIcon} from "utils";
-import {Token} from "../../../../types";
-import {TokenTapContext} from "../../../../hooks/token-tap/tokenTapContext";
+import React, { useContext } from 'react';
+import styled from 'styled-components/';
+import { DV } from 'components/basic/designVariables';
+import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
+import { ClaimContext } from 'hooks/useChainList';
+import { formatWeiBalance } from 'utils/numbers';
+import Icon from 'components/basic/Icon/Icon';
+import { useWeb3React } from '@web3-react/core';
+import useSelectChain from 'hooks/useSelectChain';
+import { getChainIcon } from 'utils';
+import { Token } from '../../../../types';
+import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 
 const Action = styled.div`
   display: flex;
@@ -37,63 +37,59 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const TokensList = () => {
-  const {tokensList, tokensListLoading} = useContext(TokenTapContext);
+  const { tokensList, tokensListLoading } = useContext(TokenTapContext);
   const windowSize = window.innerWidth;
 
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
       {tokensListLoading && tokensList.length === 0 && (
-        <div style={{color: "white", textAlign: "center"}} data-testid="chain-list-loading">
+        <div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
           Loading...
         </div>
       )}
       {tokensList.map((token) => {
-        return <TokenCard token={token} key={token.id}/>;
+        return <TokenCard token={token} key={token.id} />;
       })}
       {tokensList.length === 0 && tokensList.length && (
         <Icon
           className="mb-4"
           iconSrc={
-            windowSize > 992 ? "assets/images/claim/empty-list.svg" : "assets/images/claim/empty-list-mobile.svg"
+            windowSize > 992 ? 'assets/images/claim/empty-list.svg' : 'assets/images/claim/empty-list-mobile.svg'
           }
           width="100%"
         />
       )}
-      <FinalVersionCard/>
+      <FinalVersionCard />
     </div>
   );
 };
 
-const TokenCard = ({token}: { token: Token }) => {
-  const {setSelectedTokenForClaim, claimedTokensList} = useContext(TokenTapContext);
+const TokenCard = ({ token }: { token: Token }) => {
+  const { setSelectedTokenForClaim, claimToken } = useContext(TokenTapContext);
 
   const addAndSwitchToChain = useSelectChain();
-  const {account} = useWeb3React();
+  const { account } = useWeb3React();
   const active = !!account;
 
   return (
     <div key={token.id}>
       <div className="token-card flex flex-col items-center justify-center w-full mb-4">
         <span className="flex flex-col w-full">
-          <div
-            className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl">
+          <div className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl">
             <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
               <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
-                <img className="chain-logo w-auto h-full" src={getChainIcon(token.chain)} alt="chain logo"/>
+                <img className="chain-logo w-auto h-full" src={getChainIcon(token.chain)} alt="chain logo" />
               </span>
               <span className="w-max">
-                <p
-                  className="text-white text-center md:text-left flex mb-2"
-                  data-testid={`chain-name-${token.id}`}
-                >
+                <p className="text-white text-center md:text-left flex mb-2" data-testid={`chain-name-${token.id}`}>
                   {token.name}
-                  <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow"/>
+                  <img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
                 </p>
                 <p className="text-xs text-white font-medium">Decentralized verification system</p>
               </span>
             </div>
 
-            <div className={"flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto"}>
+            <div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
               <div className="w-full mb-2 md:mb-0 md:w-auto md:mr-4 items-center md:items-end">
                 <AddMetamaskButton
                   disabled={!active}
@@ -109,7 +105,7 @@ const TokenCard = ({token}: { token: Token }) => {
                 </AddMetamaskButton>
               </div>
 
-              <Action className={"w-full sm:w-auto items-center sm:items-end "}>
+              <Action className={'w-full sm:w-auto items-center sm:items-end '}>
                 {/* todo migrate buttom logic*/}
                 {token.isMaxedOut ? (
                   <NoCurrencyButton disabled fontSize="13px">
@@ -119,7 +115,10 @@ const TokenCard = ({token}: { token: Token }) => {
                   <ClaimButton
                     data-testid={`chain-show-claim-${token.id}`}
                     mlAuto
-                    onClick={() => setSelectedTokenForClaim(token)}
+                    onClick={() => {
+                      claimToken(token);
+                      setSelectedTokenForClaim(token);
+                    }}
                     className="text-sm m-auto"
                   >
                     <p>{`Claim ${formatWeiBalance(token.chain.maxClaimAmount)} ${token.chain.symbol}`}</p>
@@ -131,7 +130,10 @@ const TokenCard = ({token}: { token: Token }) => {
                     icon="../assets/images/claim/claimedIcon.svg"
                     iconWidth={24}
                     iconHeight={20}
-                    onClick={() => setSelectedTokenForClaim(token)}
+                    onClick={() => {
+                      claimToken(token);
+                      setSelectedTokenForClaim(token);
+                    }}
                     className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
                   >
                     <p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
@@ -140,21 +142,19 @@ const TokenCard = ({token}: { token: Token }) => {
               </Action>
             </div>
           </div>
-          <p className="text-xs text-gray100 pl-6 md:pl-16 pt-4 pr-6 text-justify pb-10 bg-gray40">
-            {token.notes}
-          </p>
+          <p className="text-xs text-gray100 pl-6 md:pl-16 pt-4 pr-6 text-justify pb-10 bg-gray40">{token.notes}</p>
         </span>
         <div
           className={
-            "bg-gray30 w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between"
+            'bg-gray30 w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between'
           }
         >
           <div className="flex gap-x-2 items-center text-xs sm:text-sm">
             <p className="text-gray100">
-              <span className="text-white">1,137 </span> of <span className="text-white"> 2,000 </span> are left
-              to claim on Gnosis chain
+              <span className="text-white">1,137 </span> of <span className="text-white"> 2,000 </span> are left to
+              claim on Gnosis chain
             </p>
-            <Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px"/>
+            <Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
           </div>
 
           <div className="flex gap-x-6 items-center">
@@ -180,13 +180,13 @@ const TokenCard = ({token}: { token: Token }) => {
 const FinalVersionCard = () => {
   return (
     <div className="token-tap__final-version-container w-full h-60 bg-gray20 rounded-xl relative">
-      <div
-        className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
-        <p className="token-tap__final-version-card__text text-gradient-primary text-xs font-semibold">The Final
-          version that contains more tokens will be Launched on May 2023.</p>
-        <p
-          className="token-tap__final-version-card__read-more text-gray100 underline text-xs font-semibold cursor-pointer">Read
-          More</p>
+      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
+        <p className="token-tap__final-version-card__text text-gradient-primary text-xs font-semibold">
+          The Final version that contains more tokens will be Launched on May 2023.
+        </p>
+        <p className="token-tap__final-version-card__read-more text-gray100 underline text-xs font-semibold cursor-pointer">
+          Read More
+        </p>
       </div>
     </div>
   );

@@ -191,7 +191,7 @@ export enum ChainType {
 }
 
 export enum PermissionType {
-  BRIGHTID = 'BrightId',
+  BRIGHTID = 'BrightID Meet Verification',
   AURA = 'Aura',
 }
 

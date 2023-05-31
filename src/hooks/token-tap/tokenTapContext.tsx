@@ -18,6 +18,7 @@ export const TokenTapContext = createContext<{
   setSelectedTokenForClaim: (token: Token | null) => void;
   claimTokenLoading: boolean;
   closeClaimModal: () => void;
+  claimToken: (token: Token) => void;
 }>({
   tokensList: [],
   tokensListLoading: false,
@@ -27,6 +28,7 @@ export const TokenTapContext = createContext<{
   setSelectedTokenForClaim: () => {},
   claimTokenLoading: false,
   closeClaimModal: () => {},
+  claimToken: () => {},
 });
 
 const TokenTapProvider = ({ children }: { children: ReactNode }) => {
@@ -105,14 +107,13 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
       if (!userToken) return;
       setClaimTokenLoading(true);
       try {
-        const response = await claimTokenAPI(userToken, token.id);
-        claimTokenWithMetamask(response);
+        await claimTokenAPI(userToken, token.id);
         setClaimTokenLoading(false);
       } catch (e) {
         setClaimTokenLoading(false);
       }
     },
-    [userToken, claimTokenWithMetamask],
+    [userToken],
   );
 
   const closeClaimModal = useCallback(() => {
@@ -121,20 +122,11 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
   const handleClaimToken = useCallback(async () => {
     if (!selectedTokenForClaim) return;
-    if (
-      !!claimedTokensList.find(
-        (claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id && claimedToken.id > 15,
-      )
-    ) {
-      claimTokenWithMetamask(
-        claimedTokensList.find(
-          (claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id && claimedToken.id > 15,
-        )!,
-      );
-    } else {
-      claimToken(selectedTokenForClaim);
-    }
-  }, [claimToken, claimedTokensList, selectedTokenForClaim, claimTokenWithMetamask]);
+
+    claimTokenWithMetamask(
+      claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)!,
+    );
+  }, [claimedTokensList, selectedTokenForClaim, claimTokenWithMetamask]);
 
   return (
     <TokenTapContext.Provider
@@ -147,6 +139,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
         setSelectedTokenForClaim,
         claimTokenLoading,
         closeClaimModal,
+        claimToken,
       }}
     >
       {children}

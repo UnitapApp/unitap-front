@@ -210,23 +210,25 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
       return null;
     }
 
-    const relatedClaimedTokenRecipt = claimedTokensList.find((token) => token.id === selectedTokenForClaim.id);
+    const relatedClaimedTokenRecipt = claimedTokensList.find(
+      (token) => token.tokenDistribution.id === selectedTokenForClaim.id,
+    );
 
     return (
       <>
-        <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
+        <DropIconWrapper data-testid={`chain-claim-initial-${selectedTokenForClaim!.chain.pk}`}>
           <Icon
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(chain)}
+            iconSrc={getChainClaimIcon(selectedTokenForClaim!.chain)}
             alt=""
           />
         </DropIconWrapper>
         {claimTokenLoading ? (
-          <p className="text-white text-sm my-4 ">Preparing your claim signature...</p>
+          <p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
         ) : relatedClaimedTokenRecipt ? (
-          <p className="text-white text-sm my-4 ">
+          <p className="text-white text-sm my-4 text-center px-3 mb-6">
             Your claim signature is ready. If you have not claimed your tokens yet, you can claim them now.
           </p>
         ) : (
@@ -241,13 +243,13 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           width="100%"
           fontSize="16px"
           className="!w-full"
-          data-testid={`chain-claim-action-${chain.pk}`}
+          data-testid={`chain-claim-action-${selectedTokenForClaim!.chain.pk}`}
         >
           {claimTokenLoading ? (
             <p>Claiming...</p>
           ) : (
-            <p>{`Claim ${formatWeiBalance(selectedTokenForClaim.chain.maxClaimAmount)} ${
-              selectedTokenForClaim.chain.symbol
+            <p>{`Claim ${formatWeiBalance(selectedTokenForClaim!.chain.maxClaimAmount)} ${
+              selectedTokenForClaim!.chain.symbol
             }`}</p>
           )}
         </ClaimButton>
@@ -293,27 +295,34 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
       closeClaimModal();
       return null;
     }
+    console.log('1');
 
     if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
       return renderFinishedBody();
     }
+    console.log('2');
 
     if (!userProfile) return renderBrightNotConnectedBody();
+    console.log('3');
 
     selectedTokenForClaim?.permissions.forEach((permission) => {
+      console.log('4');
       if (permission.name === PermissionType.BRIGHTID) {
         if (!userProfile.isMeetVerified) return renderVerifyPermission(permission);
       } else if (permission.name === PermissionType.AURA) {
         if (!userProfile.isAuraVerified) return renderVerifyPermission(permission);
       }
     });
+    console.log('5');
 
     if (!walletConnected) return renderWalletNotConnectedBody();
+    console.log('6');
 
     if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
       return renderWrongNetworkBody(selectedTokenForClaim.chain);
 
-    renderInitialBody();
+    console.log('7');
+    return renderInitialBody();
   };
 
   return (
@@ -328,15 +337,14 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 const ClaimTokenModal = () => {
   const { selectedTokenForClaim, setSelectedTokenForClaim } = useContext(TokenTapContext);
-  const { brightidModalStatus } = useContext(ClaimContext);
 
   const closeClaimTokenModal = useCallback(() => {
     setSelectedTokenForClaim(null);
   }, [setSelectedTokenForClaim]);
 
   const isOpen = useMemo(() => {
-    return !!selectedTokenForClaim && brightidModalStatus === BrightIdModalState.CLOSED;
-  }, [selectedTokenForClaim, brightidModalStatus]);
+    return !!selectedTokenForClaim;
+  }, [selectedTokenForClaim]);
 
   if (!selectedTokenForClaim) return null;
 
