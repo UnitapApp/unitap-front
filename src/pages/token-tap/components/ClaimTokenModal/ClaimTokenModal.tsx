@@ -16,9 +16,10 @@ import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
+import { switchChain } from '../../../../utils/switchChain';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
-  const { account } = useWeb3React();
+  const { account, chainId, connector } = useWeb3React();
   const walletConnected = !!account;
 
   const { tryActivation } = useWalletActivation();
@@ -66,7 +67,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           />
         </DropIconWrapper>
 
-        <p className="text-white text-sm mb-5 mt-11">Connect your wallet to claim your tokens</p>
+        <p className="text-sm font-medium text-white mt-2 mb-12 text-center px-4 leading-6">
+          Connect your wallet to claim your tokens
+        </p>
 
         <ClaimButton
           onClick={tryActivation}
@@ -187,6 +190,35 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             {getPermissionCheckButtonText(permission)}
           </p>
         </div>
+      </>
+    );
+  }
+
+  function renderWrongNetworkBody(chain: Chain) {
+    return (
+      <>
+        <DropIconWrapper data-testid={`chain-claim-wrong-network`}>
+          <Icon
+            className="chain-logo z-10 mt-14 mb-10"
+            width="auto"
+            height="110px"
+            iconSrc={getChainClaimIcon(chain)}
+            alt=""
+          />
+        </DropIconWrapper>
+        <p className="text-sm font-medium text-white mt-2 mb-12 text-center px-4 leading-6">
+          You need to switch to the <strong>{chain.chainName}</strong> network to claim your tokens
+        </p>
+
+        <ClaimButton
+          onClick={() => switchChain(connector, chain)}
+          width="100%"
+          className="!w-full"
+          fontSize="16px"
+          data-testid={`chain-claim-action-${chain.pk}`}
+        >
+          <p>Switch Network</p>
+        </ClaimButton>
       </>
     );
   }
@@ -320,9 +352,14 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   }
 
   const getClaimTokenModalBody = () => {
+    if (!selectedTokenForClaim) {
+      closeClaimModal();
+      return null;
+    }
+
     if (!userProfile) return renderBrightNotConnectedBody();
 
-    selectedTokenForClaim?.permissions?.forEach((permission) => {
+    selectedTokenForClaim?.permissions.forEach((permission) => {
       if (permission.name === PermissionType.BRIGHTID) {
         if (!userProfile.isMeetVerified) return renderVerifyPermission(permission);
       } else if (permission.name === PermissionType.AURA) {
@@ -331,6 +368,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     });
 
     if (!walletConnected) return renderWalletNotConnectedBody();
+
+    if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
+      return renderWrongNetworkBody(selectedTokenForClaim.chain);
 
     if (!activeClaimReceipt) return renderInitialBody();
 
