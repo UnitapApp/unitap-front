@@ -25,33 +25,33 @@ export type Chain = {
 };
 
 export type Token = {
-  "id": PK,
-  "name": string,
-  "distributor": string,
-  "distributorUrl": string,
-  "discordUrl": string,
-  "twitterUrl": string,
-  "imageUrl": string,
-  "token": string,
-  "tokenAddress": string,
-  "amount": number,
-  "createdAt": string,
-  "deadline": string,
-  "maxNumberOfClaims": number,
-  "notes": string,
-  "isExpired": boolean,
-  "isMaxedOut": boolean,
-  "isClaimable": boolean,
-  "chain": Chain,
-  "permissions": [
-    {
-      "id": PK,
-      "name": string,
-      "description": string,
-      "resourcetype": string,
-    }
-  ],
-}
+  id: PK;
+  name: string;
+  distributor: string;
+  distributorUrl: string;
+  discordUrl: string;
+  twitterUrl: string;
+  imageUrl: string;
+  token: string;
+  tokenAddress: string;
+  amount: number;
+  createdAt: string;
+  deadline: string;
+  maxNumberOfClaims: number;
+  notes: string;
+  isExpired: boolean;
+  isMaxedOut: boolean;
+  isClaimable: boolean;
+  chain: Chain;
+  permissions: Permission[];
+};
+
+export type Permission = {
+  id: PK;
+  name: PermissionType;
+  description: string;
+  resourcetype: string;
+};
 
 export type ClaimedToken = {
   id: PK;
@@ -59,7 +59,7 @@ export type ClaimedToken = {
   createdAt: string;
   tokenDistribution: Token;
   payload: TokenClaimPayload;
-}
+};
 
 export type TokenClaimPayload = {
   user: string;
@@ -67,7 +67,7 @@ export type TokenClaimPayload = {
   nonce: number;
   signature: string;
   token: string;
-}
+};
 
 export type ClaimTokenResponse = {
   detail: string;
@@ -77,8 +77,8 @@ export type ClaimTokenResponse = {
     payload: TokenClaimPayload;
     tokenDistribution: Token;
     userProfile: number;
-  }
-}
+  };
+};
 
 export type Prize = {
   pk: PK;
@@ -102,7 +102,7 @@ type UserWallet = {
   walletType: string;
   pk: number;
   address: string;
-}
+};
 
 export type UserProfile = {
   isMeetVerified: string;
@@ -190,6 +190,11 @@ export enum ChainType {
   ALL = 'ALL',
 }
 
+export enum PermissionType {
+  BRIGHTID = 'BrightId',
+  AURA = 'Aura',
+}
+
 export enum APIErrorsSource {
   TEST = 'TEST',
   BRIGHTID_CONNECTION_ERROR = 'BRIGHTID_CONNECTION_ERROR',
@@ -199,4 +204,4 @@ export type APIError = {
   message: string;
   source: APIErrorsSource;
   statusCode: number;
-}
+};
