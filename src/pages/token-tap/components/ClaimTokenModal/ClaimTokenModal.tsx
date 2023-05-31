@@ -3,14 +3,12 @@ import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
-import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
+import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
+import { BrightIdModalState, Chain, Permission, PermissionType } from 'types';
+import { getChainClaimIcon, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
-import lottie from 'lottie-web';
-import animation from 'assets/animations/GasFee-delivery2.json';
 import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
@@ -23,29 +21,13 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const walletConnected = !!account;
 
   const { tryActivation } = useWalletActivation();
-  const { selectedTokenForClaim, handleClaimToken, claimedTokensList, claimTokenLoading } = useContext(TokenTapContext);
-  const { closeClaimModal, activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
-
-  const { claimLoading } = useContext(ClaimContext);
+  const { selectedTokenForClaim, handleClaimToken, claimedTokensList, claimTokenLoading, closeClaimModal } =
+    useContext(TokenTapContext);
+  const { openBrightIdModal } = useContext(ClaimContext);
 
   const mounted = useRef(false);
 
   const { userProfile } = useContext(UserProfileContext);
-
-  useEffect(() => {
-    if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
-      const animationElement = document.querySelector('#animation');
-      if (animationElement) {
-        animationElement.innerHTML = '';
-      }
-      lottie.loadAnimation({
-        container: document.querySelector('#animation') as HTMLInputElement,
-        animationData: animation,
-        loop: true,
-        autoplay: true,
-      });
-    }
-  }, [activeClaimReceipt?.status]);
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -227,6 +209,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     if (!selectedTokenForClaim) {
       return null;
     }
+
+    const relatedClaimedTokenRecipt = claimedTokensList.find((token) => token.id === selectedTokenForClaim.id);
+
     return (
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
@@ -238,6 +223,15 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             alt=""
           />
         </DropIconWrapper>
+        {claimTokenLoading ? (
+          <p className="text-white text-sm my-4 ">Preparing your claim signature...</p>
+        ) : relatedClaimedTokenRecipt ? (
+          <p className="text-white text-sm my-4 ">
+            Your claim signature is ready. If you have not claimed your tokens yet, you can claim them now.
+          </p>
+        ) : (
+          ''
+        )}
         <Text width="100%" fontSize="14">
           Wallet Address
         </Text>
@@ -261,31 +255,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     );
   }
 
-  function renderPendingBody() {
+  function renderFinishedBody() {
     return (
       <>
-        <div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
-        <Text width="100%" fontSize="14" color="space_green" textAlign="center">
-          Claim transaction submitted
-        </Text>
-        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          The claim transaction will be compeleted soon
-        </Text>
-        <SecondaryGreenColorButton
-          onClick={closeClaimModal}
-          width={'100%'}
-          data-testid={`chain-claim-action-${chain.pk}`}
-        >
-          Close
-        </SecondaryGreenColorButton>
-      </>
-    );
-  }
-
-  function renderSuccessBody() {
-    return (
-      <>
-        <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
+        <DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
           <Icon
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
@@ -294,58 +267,22 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             alt=""
           />
         </DropIconWrapper>
-        <span className="flex justify-center items-center font-medium mb-3">
-          <Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
-            {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
-          </Text>
-          <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
-        </span>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
+          {selectedTokenForClaim?.isMaxedOut
+            ? "Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
+            : selectedTokenForClaim?.isExpired
+            ? "Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."
+            : ''}
         </Text>
         <ClaimButton
-          onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
+          onClick={closeClaimModal}
           width={'100%'}
           fontSize="16px"
           className="!w-full"
           data-testid={`chain-claim-action-${chain.pk}`}
           color="space_green"
         >
-          <p>View on Explorer</p>
-        </ClaimButton>
-      </>
-    );
-  }
-
-  function renderFailedBody() {
-    return (
-      <>
-        <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
-          <Icon
-            className="chain-logo z-10 mt-14 mb-10"
-            width="auto"
-            height="110px"
-            iconSrc={getChainClaimIcon(chain)}
-            alt=""
-          />
-        </DropIconWrapper>
-        <span className="flex justify-center items-center font-medium mb-3">
-          <Text className="!mb-0" width="100%" fontSize="14" color="warningRed" textAlign="center">
-            Claim Failed!
-          </Text>
-          <Icon iconSrc="assets/images/modal/failed-state-x.svg" width="22px" height="auto" className="ml-2" />
-        </span>
-        <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          An error occurred while processing your request
-        </Text>
-        <ClaimButton
-          fontSize="16px"
-          onClick={() => handleClaimToken()}
-          width={'100%'}
-          className="!w-full"
-          data-testid={`chain-claim-action-${chain.pk}`}
-        >
-          {claimLoading ? <p>Claiming...</p> : <p>Try Again</p>}
+          <p>Close</p>
         </ClaimButton>
       </>
     );
@@ -355,6 +292,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     if (!selectedTokenForClaim) {
       closeClaimModal();
       return null;
+    }
+
+    if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
+      return renderFinishedBody();
     }
 
     if (!userProfile) return renderBrightNotConnectedBody();
@@ -372,13 +313,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
       return renderWrongNetworkBody(selectedTokenForClaim.chain);
 
-    if (!activeClaimReceipt) return renderInitialBody();
-
-    if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
-
-    if (activeClaimReceipt.status === ClaimReceiptState.PENDING) return renderPendingBody();
-
-    if (activeClaimReceipt.status === ClaimReceiptState.REJECTED) return renderFailedBody();
+    renderInitialBody();
   };
 
   return (
