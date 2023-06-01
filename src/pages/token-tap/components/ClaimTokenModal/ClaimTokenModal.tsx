@@ -21,8 +21,15 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const walletConnected = !!account;
 
   const { tryActivation } = useWalletActivation();
-  const { selectedTokenForClaim, handleClaimToken, claimedTokensList, claimTokenLoading, closeClaimModal } =
-    useContext(TokenTapContext);
+  const {
+    selectedTokenForClaim,
+    handleClaimToken,
+    claimedTokensList,
+    claimTokenLoading,
+    closeClaimModal,
+    claimTokenWithMetamaskResponse,
+    claimTokenSignatureLoading,
+  } = useContext(TokenTapContext);
   const { openBrightIdModal } = useContext(ClaimContext);
 
   const mounted = useRef(false);
@@ -225,8 +232,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             alt=""
           />
         </DropIconWrapper>
-        {claimTokenLoading ? (
+        {claimTokenSignatureLoading ? (
           <p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
+        ) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
+          <p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
         ) : relatedClaimedTokenRecipt ? (
           <p className="text-white text-sm my-4 text-center px-3 mb-6">
             Your claim signature is ready. If you have not claimed your tokens yet, you can claim them now.
@@ -247,6 +256,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
         >
           {claimTokenLoading ? (
             <p>Claiming...</p>
+          ) : claimTokenSignatureLoading ? (
+            <p>Preparing...</p>
+          ) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
+            <p>Retry</p>
           ) : (
             <p>{`Claim ${formatWeiBalance(selectedTokenForClaim!.chain.maxClaimAmount)} ${
               selectedTokenForClaim!.chain.symbol
@@ -270,11 +283,23 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           />
         </DropIconWrapper>
         <Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-          {selectedTokenForClaim?.isMaxedOut
-            ? "Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
-            : selectedTokenForClaim?.isExpired
-            ? "Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."
-            : ''}
+          {selectedTokenForClaim?.isMaxedOut ? (
+            "Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
+          ) : selectedTokenForClaim?.isExpired ? (
+            "Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."
+          ) : claimTokenWithMetamaskResponse?.success ? (
+            <p className="text-space-green text-sm my-4 text-center px-3 mb-6">
+              Your tokens have been claimed successfully. <br />{' '}
+              <span
+                onClick={() => window.open('https://gnosisscan.io/tx/' + claimTokenWithMetamaskResponse?.txHash)}
+                className="text-white text-md hover:cursor-pointer hover:underline break-words break-all"
+              >
+                {claimTokenWithMetamaskResponse?.txHash}
+              </span>
+            </p>
+          ) : (
+            ''
+          )}
         </Text>
         <ClaimButton
           onClick={closeClaimModal}
@@ -295,33 +320,28 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
       closeClaimModal();
       return null;
     }
-    console.log('1');
 
     if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
       return renderFinishedBody();
     }
-    console.log('2');
 
     if (!userProfile) return renderBrightNotConnectedBody();
-    console.log('3');
 
     selectedTokenForClaim?.permissions.forEach((permission) => {
-      console.log('4');
       if (permission.name === PermissionType.BRIGHTID) {
         if (!userProfile.isMeetVerified) return renderVerifyPermission(permission);
       } else if (permission.name === PermissionType.AURA) {
         if (!userProfile.isAuraVerified) return renderVerifyPermission(permission);
       }
     });
-    console.log('5');
 
     if (!walletConnected) return renderWalletNotConnectedBody();
-    console.log('6');
+
+    if (claimTokenWithMetamaskResponse?.state === 'Done') return renderFinishedBody();
 
     if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
       return renderWrongNetworkBody(selectedTokenForClaim.chain);
 
-    console.log('7');
     return renderInitialBody();
   };
 
