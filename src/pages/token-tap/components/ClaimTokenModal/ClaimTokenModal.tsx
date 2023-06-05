@@ -51,7 +51,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(chain)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -81,7 +81,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(chain)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -158,7 +158,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           <Icon
             data-testid="brightid-logo"
             className="bright-logo !w-4/12 z-10 mb-5"
-            iconSrc={getPermissionIcon(permission)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
           />
           <p className="text-sm font-bold text-error mb-2">{getPermissionTitle(permission)}</p>
           <p className="text-xs font-medium text-gray100 mb-12 text-center px-4 leading-6">{permission.description}</p>
@@ -191,7 +191,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(chain)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -228,7 +228,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(selectedTokenForClaim!.chain)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -261,9 +261,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           ) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
             <p>Retry</p>
           ) : (
-            <p>{`Claim ${formatWeiBalance(selectedTokenForClaim!.chain.maxClaimAmount)} ${
-              selectedTokenForClaim!.chain.symbol
-            }`}</p>
+            <p>{`Claim ${formatWeiBalance(selectedTokenForClaim.amount)} ${selectedTokenForClaim.token}`}</p>
           )}
         </ClaimButton>
       </>
@@ -278,7 +276,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={getChainClaimIcon(chain)}
+            iconSrc={selectedTokenForClaim!.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -370,9 +368,7 @@ const ClaimTokenModal = () => {
 
   return (
     <Modal
-      title={`Claim ${formatWeiBalance(selectedTokenForClaim.chain.maxClaimAmount)} ${
-        selectedTokenForClaim.chain.symbol
-      }`}
+      title={`Claim ${formatWeiBalance(selectedTokenForClaim.amount)} ${selectedTokenForClaim.token}`}
       size="small"
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
