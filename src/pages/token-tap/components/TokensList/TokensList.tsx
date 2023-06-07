@@ -9,6 +9,7 @@ import useSelectChain from 'hooks/useSelectChain';
 import { getChainIcon } from 'utils';
 import { Token } from '../../../../types';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
+import MarkDown from '../markdown';
 
 const Action = styled.div`
   display: flex;
@@ -139,7 +140,7 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
               </Action>
             </div>
           </div>
-          <p className="text-xs text-gray100 pl-6 md:pl-16 pt-4 pr-6 text-justify pb-10 bg-gray40">{token.notes}</p>
+          <MarkDown content={token.notes} />
         </span>
         <div
           className={
