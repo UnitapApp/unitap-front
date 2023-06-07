@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
-import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
+import { formatWeiBalance, numberWithCommas } from 'utils/numbers';
 import Icon from 'components/basic/Icon/Icon';
 import { useWeb3React } from '@web3-react/core';
 import useSelectChain from 'hooks/useSelectChain';
@@ -40,6 +39,8 @@ const TokensList = () => {
   const { tokensList, tokensListLoading } = useContext(TokenTapContext);
   const windowSize = window.innerWidth;
 
+  console.log(tokensList);
+
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
       {tokensListLoading && tokensList.length === 0 && (
@@ -64,19 +65,23 @@ const TokensList = () => {
   );
 };
 
-const TokenCard = ({ token }: { token: Token }) => {
+const TokenCard: FC<{ token: Token }> = ({ token }) => {
   const { openClaimModal } = useContext(TokenTapContext);
 
   const addAndSwitchToChain = useSelectChain();
   const { account } = useWeb3React();
   const active = !!account;
 
+  const onTokenClicked = () => {
+    window.open(token.distributorUrl);
+  };
+
   return (
     <div key={token.id}>
       <div className="token-card flex flex-col items-center justify-center w-full mb-4">
         <span className="flex flex-col w-full">
           <div className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl">
-            <div className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
+            <div onClick={onTokenClicked} className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
               <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
                 <img className="chain-logo w-auto h-full" src={token.imageUrl} alt="chain logo" />
               </span>
@@ -145,25 +150,30 @@ const TokenCard = ({ token }: { token: Token }) => {
         >
           <div className="flex gap-x-2 items-center text-xs sm:text-sm">
             <p className="text-gray100">
-              <span className="text-white">1,137 </span> of <span className="text-white"> 2,000 </span> are left to
-              claim on Gnosis chain
+              <span className="text-white">{numberWithCommas(token.maxNumberOfClaims - token.numberOfClaims)} </span> of{' '}
+              <span className="text-white"> {numberWithCommas(token.maxNumberOfClaims)} </span> are left to claim on
+              Gnosis chain
             </p>
             <Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
           </div>
 
           <div className="flex gap-x-6 items-center">
-            <Icon
-              className="cursor-pointer"
-              iconSrc="assets/images/token-tap/twitter-icon.svg"
-              width="auto"
-              height="20px"
-            />
-            <Icon
-              className="cursor-pointer"
-              iconSrc="assets/images/token-tap/discord-icon.svg"
-              width="auto"
-              height="20px"
-            />
+            <a target="_blank" rel="noreferrer" href={token.twitterUrl}>
+              <Icon
+                className="cursor-pointer"
+                iconSrc="assets/images/token-tap/twitter-icon.svg"
+                width="auto"
+                height="20px"
+              />
+            </a>
+            <a target="_blank" rel="noreferrer" href={token.discordUrl}>
+              <Icon
+                className="cursor-pointer"
+                iconSrc="assets/images/token-tap/discord-icon.svg"
+                width="auto"
+                height="20px"
+              />
+            </a>
           </div>
         </div>
       </div>
