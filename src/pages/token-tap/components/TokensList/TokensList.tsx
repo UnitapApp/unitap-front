@@ -39,8 +39,6 @@ const TokensList = () => {
   const { tokensList, tokensListLoading } = useContext(TokenTapContext);
   const windowSize = window.innerWidth;
 
-  console.log(tokensList);
-
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
       {tokensListLoading && tokensList.length === 0 && (
