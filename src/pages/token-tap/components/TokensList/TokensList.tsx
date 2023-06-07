@@ -150,7 +150,7 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
             <p className="text-gray100">
               <span className="text-white">{numberWithCommas(token.maxNumberOfClaims - token.numberOfClaims)} </span> of{' '}
               <span className="text-white"> {numberWithCommas(token.maxNumberOfClaims)} </span> are left to claim on
-              Gnosis chain
+              {' ' + token.chain.chainName}
             </p>
             <Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
           </div>
