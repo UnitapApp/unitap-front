@@ -7,6 +7,7 @@ import Header from './components/Header/header';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
 import Footer from 'components/common/Footer/footer';
+import { CoverPrizeCard } from 'components/basic/CoverPrizeCard/coverPrizeCard';
 
 const PrizeTap = () => {
   return (
@@ -38,6 +39,7 @@ const PrizesList = () => {
       description: 'Anyone is welcome to play to help verify those they already know.',
       startTime: '20 March 2023 12:00 PM UTC',
       FinishTime: '30 March 2023 12:00 PM UTC',
+      cover: '../assets/images/prize-tap/nft-cover.svg',
     },
     {
       pk: 2,
@@ -51,11 +53,12 @@ const PrizesList = () => {
         'Anyone is welcome to play to help verify those they already know. The first 2000 users who are verified in Aura can claim 2 xDai.',
       startTime: '20 Januray 2023 12:00 PM UTC',
       FinishTime: '30 March 2023 12:00 PM UTC',
+      cover: '../assets/images/prize-tap/cover.svg',
     },
   ]);
 
   return (
-    <div className="flex flex-col-reverse md:flex-row wrap w-full gap-4 mb-4">
+    <div className="grid md:flex-row wrap w-full mb-4">
       {prizes.map((prize) => (
         <PrizeCard key={prize.pk} prize={prize} />
       ))}
@@ -68,18 +71,17 @@ type PrizeCardProps = {
 };
 
 const PrizeCard = ({ prize }: PrizeCardProps) => {
-  const { image, title, enrolled, source, twitterLink, discordLink, description, startTime, FinishTime } = prize;
+  const { image, title, enrolled, source, twitterLink, discordLink, description, startTime, FinishTime, cover } = prize;
   const started = useMemo(() => new Date(startTime) < new Date(), [startTime]);
-
   return (
-    <div className="md:w-1/2">
-      <div className="card !p-0 overflow-hidden w-full flex flex-col h-full">
+    <CoverPrizeCard src={prize.cover}>
+      <div className="flex flex-col lg:flex-row h-full items-center justify-center gap-4">
         <div className="prize-card__image">
-          <div className="prize-card__container h-[260px] flex w-full justify-center items-center">
+          <div className="prize-card__container border-2 border-gray40 h-[212px] w-[212px] flex w-full bg-gray30 justify-center items-center p-5 rounded-xl">
             <img src={image} alt={title} />
           </div>
         </div>
-        <div className="prize-card__content z-10 relative bg-gray40 rounded-t-xl p-4 pt-3 flex flex-col h-full">
+        <div className="card prize-card__content z-10 relative bg-gray30 border-2 border-gray40 ; rounded-xl p-4 pt-3 flex flex-col w-full h-full">
           <span className="flex justify-between w-full mb-3">
             <p className="prize-card__title text-white text-sm">{title}</p>
             <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
@@ -108,16 +110,27 @@ const PrizeCard = ({ prize }: PrizeCardProps) => {
           <p className="prize-card__description text-gray100 text-xs leading-7 mb-6 grow shrink-0 basis-auto">
             {description}
           </p>
-          <span className="flex flex-col sm:flex-row justify-between w-full gap-4">
-            <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
-            <ClaimButton width="100% !important">
+          <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
+            <div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+              <p className="text-gray100 text-[10px]">moshakhas kardane barande barande in</p>
+              <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
+            </div>
+            <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
               {' '}
-              <p> Enroll </p>{' '}
+              <div className="relative w-full">
+                <p> Enroll</p>{' '}
+                <Icon
+                  className="absolute right-0 top-0"
+                  iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                  width="27px"
+                  height="24px"
+                />
+              </div>
             </ClaimButton>
           </span>
         </div>
       </div>
-    </div>
+    </CoverPrizeCard>
   );
 };
 
@@ -164,25 +177,25 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
   }, []);
 
   return (
-    <div className="prize-card__timer flex bg-gray30 items-center justify-between border-2 border-gray40 rounded-xl gap-2 px-3 py-2">
+    <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 px-3 py-2">
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
-        <p className="prize-card__timer-item-value text-gray100 font-semibold">{days}</p>
-        <p className="prize-card__timer-item-label text-gray90">days</p>
+        <p className="prize-card__timer-item-value text-white font-semibold">{days}</p>
+        <p className="prize-card__timer-item-label text-gray90">d</p>
       </div>
-      <p className="text-sm text-gray100">:</p>
+      <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
-        <p className="prize-card__timer-item-value text-gray100 font-semibold">{hours}</p>
-        <p className="prize-card__timer-item-label text-gray90">hours</p>
+        <p className="prize-card__timer-item-value text-white font-semibold">{hours}</p>
+        <p className="prize-card__timer-item-label text-gray90">h</p>
       </div>
-      <p className="text-sm text-gray100">:</p>
+      <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
-        <p className="prize-card__timer-item-value text-gray100 font-semibold">{minutes}</p>
-        <p className="prize-card__timer-item-label text-gray90">minutes</p>
+        <p className="prize-card__timer-item-value text-white font-semibold">{minutes}</p>
+        <p className="prize-card__timer-item-label text-gray90">m</p>
       </div>
-      <p className="text-sm text-gray100">:</p>
+      <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
-        <p className="prize-card__timer-item-value text-gray100 font-semibold">{seconds}</p>
-        <p className="prize-card__timer-item-label text-gray90">seconds</p>
+        <p className="prize-card__timer-item-value text-white font-semibold">{seconds}</p>
+        <p className="prize-card__timer-item-label text-gray90">s</p>
       </div>
     </div>
   );

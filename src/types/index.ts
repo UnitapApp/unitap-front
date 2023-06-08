@@ -35,6 +35,7 @@ export type Prize = {
   description: string;
   startTime: string;
   FinishTime: string;
+  cover: string
 };
 
 export enum BrightIdVerificationStatus {
