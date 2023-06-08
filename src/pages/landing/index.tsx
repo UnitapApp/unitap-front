@@ -15,7 +15,7 @@ import NotAvailableTap from './components/notAvailableTap';
 const Landing: FC = () => {
 	const { chainList } = useContext(ClaimContext);
 
-	const { weeklyChainClaimLimit } = useContext(UserProfileContext);
+	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
 
@@ -136,7 +136,7 @@ const Landing: FC = () => {
 				</section>
 
 				<section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
-					<Link className={'flex--1'} to={RoutePath.FAUCET}>
+					<Link className={`flex--1 ${isGasTapAvailable ? '' : 'pointer-events-none'}`} to={RoutePath.FAUCET}>
 						<Widget
 							description={'Claim gas fees for any reason and make transactions easily'}
 							icon={'gastap-icon.svg'}
@@ -147,7 +147,7 @@ const Landing: FC = () => {
 							buttonClass={'gradient-outline-button text-gray100'}
 						>
 							<div className="relative">
-								<div className="blur-md">
+								<div className={isGasTapAvailable ? '' : 'blur-md'}>
 									{sortedChainList.length > 0 && (
 										<>
 											<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
@@ -173,7 +173,7 @@ const Landing: FC = () => {
 										</>
 									)}
 								</div>
-								<NotAvailableTap />
+								{isGasTapAvailable || <NotAvailableTap />}
 							</div>
 						</Widget>
 					</Link>
