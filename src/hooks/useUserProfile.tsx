@@ -108,11 +108,11 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 			setRemainingClaims(newRemainingClaims.totalWeeklyClaimsRemaining);
 		};
 
+		getWeeklyChainClaimLimit();
 		if (userToken && userProfile) {
-			getWeeklyChainClaimLimit();
 			getRemainingClaims();
 		} else {
-			setWeeklyChainClaimLimit(null);
+			// setWeeklyChainClaimLimit(null);
 			setRemainingClaims(null);
 		}
 	}, [userProfile, userToken, fastRefresh]);
