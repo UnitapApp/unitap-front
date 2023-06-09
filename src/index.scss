@@ -1,3 +1,4 @@
+
 *:not(i) {
   font-family: 'Noto Sans', sans-serif;
 }
@@ -417,4 +418,15 @@ body {
 
 .animated-dabe {
   animation: dabe-waiting 1.5s infinite;
+}
+
+
+.prize-card-bg-1 {
+  @apply bg-no-repeat p-4 pl-6 pr-0;
+  background-image: url("../public/assets/images/prize-tap/nft-cover.svg");
+}
+
+.prize-card-bg-2 {
+  @apply bg-no-repeat p-4 pl-6 pr-0;
+  background-image: url("../public/assets/images/prize-tap/cover.svg");
 }

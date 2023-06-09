@@ -7,19 +7,14 @@ import Header from './components/Header/header';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
 import Footer from 'components/common/Footer/footer';
-import { CoverPrizeCard } from 'components/basic/CoverPrizeCard/coverPrizeCard';
 
 const PrizeTap = () => {
   return (
     <div className="prize-tap">
       <Navbar />
       <div className="content-wrapper">
-        <div className="m-auto flex flex-col justify-center items-center w-full">
-          <div className="flex wrap w-full">
-            <Header />
-          </div>
-          <PrizesList />
-        </div>
+        <Header />
+        <PrizesList />
       </div>
       <Footer />
     </div>
@@ -30,7 +25,8 @@ const PrizesList = () => {
   const [prizes] = useState([
     {
       pk: 1,
-      image: 'assets/images/prize-tap/prize-image-1.svg',
+      image: 'assets/images/prize-tap/prize-image-1-2.svg',
+      background: 'assets/images/prize-tap/prize-background-1.svg',
       title: 'SPACEMAN DELIVERY #100',
       enrolled: 0,
       source: 'from SPACEMAN NFT Collection by UNITAP.APP',
@@ -39,11 +35,11 @@ const PrizesList = () => {
       description: 'Anyone is welcome to play to help verify those they already know.',
       startTime: '20 March 2023 12:00 PM UTC',
       FinishTime: '30 March 2023 12:00 PM UTC',
-      cover: '../assets/images/prize-tap/nft-cover.svg',
     },
     {
       pk: 2,
       image: 'assets/images/prize-tap/prize-image-2.svg',
+      background: 'assets/images/prize-tap/prize-background-2.svg',
       title: '1.00 ETH',
       enrolled: 1398,
       source: 'by BEIGI',
@@ -53,12 +49,11 @@ const PrizesList = () => {
         'Anyone is welcome to play to help verify those they already know. The first 2000 users who are verified in Aura can claim 2 xDai.',
       startTime: '20 Januray 2023 12:00 PM UTC',
       FinishTime: '30 March 2023 12:00 PM UTC',
-      cover: '../assets/images/prize-tap/cover.svg',
     },
   ]);
 
   return (
-    <div className="grid md:flex-row wrap w-full mb-4">
+    <div className="grid md:flex-row wrap w-full mb-4 gap-4">
       {prizes.map((prize) => (
         <PrizeCard key={prize.pk} prize={prize} />
       ))}
@@ -66,15 +61,11 @@ const PrizesList = () => {
   );
 };
 
-type PrizeCardProps = {
-  prize: Prize;
-};
-
-const PrizeCard = ({ prize }: PrizeCardProps) => {
-  const { image, title, enrolled, source, twitterLink, discordLink, description, startTime, FinishTime, cover } = prize;
+const PrizeCard = ({ prize }: { prize: Prize }) => {
+  const { pk, image, title, enrolled, source, twitterLink, discordLink, description, startTime, FinishTime } = prize;
   const started = useMemo(() => new Date(startTime) < new Date(), [startTime]);
   return (
-    <CoverPrizeCard src={prize.cover}>
+    <div className={pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'}>
       <div className="flex flex-col lg:flex-row h-full items-center justify-center gap-4">
         <div className="prize-card__image">
           <div className="prize-card__container border-2 border-gray40 h-[212px] w-[212px] flex w-full bg-gray30 justify-center items-center p-5 rounded-xl">
@@ -89,7 +80,7 @@ const PrizeCard = ({ prize }: PrizeCardProps) => {
             </p>
           </span>
           <span className="flex justify-between w-full mb-4">
-            <p className="prize-card__source text-xs text-gary90">{source}</p>
+            <p className="prize-card__source text-xs text-gray90">{source}</p>
             <div className="prize-card__links flex gap-4">
               <Icon
                 iconSrc="assets/images/prize-tap/twitter-logo.svg"
@@ -130,7 +121,7 @@ const PrizeCard = ({ prize }: PrizeCardProps) => {
           </span>
         </div>
       </div>
-    </CoverPrizeCard>
+    </div>
   );
 };
 

@@ -27,6 +27,7 @@ export type Chain = {
 export type Prize = {
   pk: PK;
   image: string;
+  background: string;
   title: string;
   enrolled: number;
   source: string;
@@ -35,7 +36,6 @@ export type Prize = {
   description: string;
   startTime: string;
   FinishTime: string;
-  cover: string
 };
 
 export enum BrightIdVerificationStatus {
@@ -124,6 +124,7 @@ export enum BrightIdConnectionModalState {
 export enum Network {
   MAINNET = '0',
   TESTNET = '1',
+  ALL = '2',
 }
 
 export enum ChainType {
@@ -131,6 +132,7 @@ export enum ChainType {
   NONEVM = 'NONEVM',
   SOLANA = 'Solana',
   LIGHTNING = 'Lightning',
+  ALL = 'ALL',
 }
 
 export enum APIErrorsSource {
