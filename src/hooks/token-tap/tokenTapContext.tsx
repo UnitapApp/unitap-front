@@ -5,9 +5,7 @@ import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useTokenTapClaimTokenCallback } from './useTokenTapClaimTokenCallback';
-import { ethers } from 'ethers';
 
 export const TokenTapContext = createContext<{
   tokensList: Token[];
@@ -94,45 +92,41 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
     claimTokenPayload?.signature,
   );
 
-  const claimTokenWithMetamask = useCallback(
-    async (claimTokenResponse: ClaimedToken) => {
-      if (!userToken || !provider || !EVMTokenTapContract) return;
-      setClaimTokenPayload(claimTokenResponse.payload);
-      try {
-        setClaimTokenLoading(true);
-        const response = await callback?.();
-        if (response) {
-          response
-            .wait()
-            .then((res) => {
-              setClaimTokenWithMetamaskResponse({
-                success: true,
-                state: 'Done',
-                txHash: res.transactionHash,
-                message: 'Token claimed successfully.',
-              });
-              setClaimTokenLoading(false);
-            })
-            .catch(() => {
-              setClaimTokenWithMetamaskResponse({
-                success: false,
-                state: 'Retry',
-                message: 'Something went wrong. Please try again. You may have already claimed this token!',
-              });
-              setClaimTokenLoading(false);
+  const claimTokenWithMetamask = useCallback(async () => {
+    if (!userToken || !provider || !EVMTokenTapContract) return;
+    try {
+      setClaimTokenLoading(true);
+      const response = await callback?.();
+      if (response) {
+        response
+          .wait()
+          .then((res) => {
+            setClaimTokenWithMetamaskResponse({
+              success: true,
+              state: 'Done',
+              txHash: res.transactionHash,
+              message: 'Token claimed successfully.',
             });
-        }
-      } catch (e: any) {
-        setClaimTokenWithMetamaskResponse({
-          success: false,
-          state: 'Retry',
-          message: 'Something went wrong. Please try again. You may have already claimed this token!',
-        });
-        setClaimTokenLoading(false);
+            setClaimTokenLoading(false);
+          })
+          .catch(() => {
+            setClaimTokenWithMetamaskResponse({
+              success: false,
+              state: 'Retry',
+              message: 'Something went wrong. Please try again. You may have already claimed this token!',
+            });
+            setClaimTokenLoading(false);
+          });
       }
-    },
-    [userToken, provider, EVMTokenTapContract, callback],
-  );
+    } catch (e: any) {
+      setClaimTokenWithMetamaskResponse({
+        success: false,
+        state: 'Retry',
+        message: 'Something went wrong. Please try again. You may have already claimed this token!',
+      });
+      setClaimTokenLoading(false);
+    }
+  }, [userToken, provider, EVMTokenTapContract, callback]);
 
   const claimToken = useCallback(
     async (token: Token) => {
@@ -162,12 +156,20 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
     setSelectedTokenForClaim(null);
   }, []);
 
+  useEffect(() => {
+    if (!selectedTokenForClaim) return;
+    let relatedClaimedToken = claimedTokensList.find(
+      (claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id,
+    );
+    if (relatedClaimedToken) {
+      setClaimTokenPayload(relatedClaimedToken.payload);
+    }
+  }, [claimedTokensList, selectedTokenForClaim]);
+
   const handleClaimToken = useCallback(async () => {
     if (!selectedTokenForClaim || claimTokenLoading) return;
-    claimTokenWithMetamask(
-      claimedTokensList.find((claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id)!,
-    );
-  }, [claimedTokensList, selectedTokenForClaim, claimTokenWithMetamask, claimTokenLoading]);
+    claimTokenWithMetamask();
+  }, [selectedTokenForClaim, claimTokenLoading, claimTokenWithMetamask]);
 
   return (
     <TokenTapContext.Provider

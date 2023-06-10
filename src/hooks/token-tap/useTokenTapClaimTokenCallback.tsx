@@ -3,9 +3,9 @@ import { useWeb3React } from '@web3-react/core';
 import { CallbackState, UseCallbackReturns } from '../pass/utils';
 import useTokenTapTransaction from './useTokenTapTransaction';
 import { MintTransactionInfo, TransactionType } from 'state/transactions/types';
-import {BigNumberish, BytesLike, ethers} from 'ethers';
+import { BigNumberish, BytesLike, ethers } from 'ethers';
 import { useEVMTokenTapContract } from '../useContract';
-import {BigNumber} from "@ethersproject/bignumber";
+import { BigNumber } from '@ethersproject/bignumber';
 
 export function useTokenTapClaimTokenCallback(
   user: string | undefined,
@@ -16,7 +16,6 @@ export function useTokenTapClaimTokenCallback(
 ): UseCallbackReturns {
   const { account, chainId, provider } = useWeb3React();
   const evmTokenTapContract = useEVMTokenTapContract();
-
   const calls = useMemo(() => {
     if (!evmTokenTapContract || !account || !user || !token || !amount || !nonce || !signature) {
       return [];
@@ -25,7 +24,13 @@ export function useTokenTapClaimTokenCallback(
       {
         address: evmTokenTapContract.address,
         calldata:
-          evmTokenTapContract.interface.encodeFunctionData('claimToken', [user, token, BigNumber.from(10).pow(18), nonce, signature]) ?? '',
+          evmTokenTapContract.interface.encodeFunctionData('claimToken', [
+            user,
+            token,
+            BigNumber.from(10).pow(18),
+            nonce,
+            signature,
+          ]) ?? '',
         value: '0x0',
       },
     ];
@@ -35,7 +40,6 @@ export function useTokenTapClaimTokenCallback(
   const info: MintTransactionInfo = {
     type: TransactionType.MINT,
   };
-
   const { callback } = useTokenTapTransaction(account, chainId, provider, calls, info);
 
   return useMemo(() => {
