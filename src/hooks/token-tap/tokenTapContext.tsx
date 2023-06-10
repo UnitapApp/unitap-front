@@ -133,13 +133,14 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
       if (!userToken) return;
       setClaimTokenSignatureLoading(true);
       try {
-        await claimTokenAPI(userToken, token.id);
+        const response = await claimTokenAPI(userToken, token.id);
+        setClaimedTokensList([...claimedTokensList, response]);
         setClaimTokenSignatureLoading(false);
       } catch (e) {
         setClaimTokenSignatureLoading(false);
       }
     },
-    [userToken],
+    [userToken, claimedTokensList],
   );
 
   const openClaimModal = useCallback(
