@@ -113,7 +113,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
             setClaimTokenWithMetamaskResponse({
               success: false,
               state: 'Retry',
-              message: 'Something went wrong. Please try again. You may have already claimed this token!',
+              message: 'Something went wrong. Please try again!',
             });
             setClaimTokenLoading(false);
           });
@@ -122,7 +122,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
       setClaimTokenWithMetamaskResponse({
         success: false,
         state: 'Retry',
-        message: 'Something went wrong. Please try again. You may have already claimed this token!',
+        message: 'Something went wrong. Please try again!',
       });
       setClaimTokenLoading(false);
     }
