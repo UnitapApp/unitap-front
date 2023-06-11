@@ -97,7 +97,7 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
             </p>
           </span>
           <span className="flex justify-between w-full mb-4">
-            <p className="prize-card__source text-xs text-gray90">{creator}</p>
+            <p className="prize-card__source text-xs text-gray90">by {creator}</p>
             <div className="prize-card__links flex gap-4">
               <Icon
                 iconSrc="assets/images/prize-tap/twitter-logo.svg"
