@@ -26,16 +26,16 @@ export type Chain = {
 
 export type Prize = {
   pk: PK;
-  image: string;
+  imageUrl: string;
   background: string;
-  title: string;
+  creator: string;
   enrolled: number;
   source: string;
-  twitterLink: string;
-  discordLink: string;
+  twitterUrl: string;
+  discordUrl: string;
   description: string;
-  startTime: string;
-  FinishTime: string;
+  createdAt: string;
+  deadline: string;
 };
 
 export enum BrightIdVerificationStatus {

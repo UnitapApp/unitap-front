@@ -7,6 +7,7 @@ import Header from './components/Header/header';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
 import Footer from 'components/common/Footer/footer';
+import axios from 'axios';
 
 const PrizeTap = () => {
   return (
@@ -22,35 +23,48 @@ const PrizeTap = () => {
 };
 
 const PrizesList = () => {
-  const [prizes] = useState([
-    {
-      pk: 1,
-      image: 'assets/images/prize-tap/prize-image-1-2.svg',
-      background: 'assets/images/prize-tap/prize-background-1.svg',
-      title: 'SPACEMAN DELIVERY #100',
-      enrolled: 0,
-      source: 'from SPACEMAN NFT Collection by UNITAP.APP',
-      twitterLink: 'https://twitter.com/UnitapNFT',
-      discordLink: 'https://discord.com/invite/UnitapNFT',
-      description: 'Anyone is welcome to play to help verify those they already know.',
-      startTime: '20 March 2023 12:00 PM UTC',
-      FinishTime: '30 March 2023 12:00 PM UTC',
-    },
-    {
-      pk: 2,
-      image: 'assets/images/prize-tap/prize-image-2.svg',
-      background: 'assets/images/prize-tap/prize-background-2.svg',
-      title: '1.00 ETH',
-      enrolled: 1398,
-      source: 'by BEIGI',
-      twitterLink: 'https://twitter.com/UnitapNFT',
-      discordLink: 'https://discord.com/invite/UnitapNFT',
-      description:
-        'Anyone is welcome to play to help verify those they already know. The first 2000 users who are verified in Aura can claim 2 xDai.',
-      startTime: '20 Januray 2023 12:00 PM UTC',
-      FinishTime: '30 March 2023 12:00 PM UTC',
-    },
-  ]);
+  const [prizes, setPrizes] = useState<Prize[]>([]);
+  useEffect(() => {
+    const controller = new AbortController();
+    axios
+      .get<Prize[]>('https://stage.unitap.app/api/prizetap/raffle-list/', { signal: controller.signal })
+      .then((res) => setPrizes(res.data))
+      .catch((err) => {
+        if (err.message == 'canceled') return;
+        console.log(err);
+      });
+
+    return () => controller.abort();
+  }, []);
+  // const [prizes] = useState([
+  //   {
+  //     pk: 1,
+  //     image: 'assets/images/prize-tap/prize-image-1-2.svg',
+  //     background: 'assets/images/prize-tap/prize-background-1.svg',
+  //     title: 'SPACEMAN DELIVERY #100',
+  //     enrolled: 0,
+  //     source: 'from SPACEMAN NFT Collection by UNITAP.APP',
+  //     twitterLink: 'https://twitter.com/UnitapNFT',
+  //     discordLink: 'https://discord.com/invite/UnitapNFT',
+  //     description: 'Anyone is welcome to play to help verify those they already know.',
+  //     startTime: '20 March 2023 12:00 PM UTC',
+  //     FinishTime: '30 March 2023 12:00 PM UTC',
+  //   },
+  //   {
+  //     pk: 2,
+  //     image: 'assets/images/prize-tap/prize-image-2.svg',
+  //     background: 'assets/images/prize-tap/prize-background-2.svg',
+  //     title: '1.00 ETH',
+  //     enrolled: 1398,
+  //     source: 'by BEIGI',
+  //     twitterLink: 'https://twitter.com/UnitapNFT',
+  //     discordLink: 'https://discord.com/invite/UnitapNFT',
+  //     description:
+  //       'Anyone is welcome to play to help verify those they already know. The first 2000 users who are verified in Aura can claim 2 xDai.',
+  //     startTime: '20 Januray 2023 12:00 PM UTC',
+  //     FinishTime: '30 March 2023 12:00 PM UTC',
+  //   },
+  // ]);
 
   return (
     <div className="grid md:flex-row wrap w-full mb-4 gap-4">
@@ -62,19 +76,19 @@ const PrizesList = () => {
 };
 
 const PrizeCard = ({ prize }: { prize: Prize }) => {
-  const { pk, image, title, enrolled, source, twitterLink, discordLink, description, startTime, FinishTime } = prize;
-  const started = useMemo(() => new Date(startTime) < new Date(), [startTime]);
+  const { pk, imageUrl, creator, enrolled, source, twitterUrl, discordUrl, description, createdAt, deadline } = prize;
+  const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
   return (
     <div className={pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'}>
       <div className="flex flex-col lg:flex-row h-full items-center justify-center gap-4">
         <div className="prize-card__image">
           <div className="prize-card__container border-2 border-gray40 h-[212px] w-[212px] flex w-full bg-gray30 justify-center items-center p-5 rounded-xl">
-            <img src={image} alt={title} />
+            <img src={imageUrl} alt={creator} />
           </div>
         </div>
         <div className="card prize-card__content z-10 relative bg-gray30 border-2 border-gray40 ; rounded-xl p-4 pt-3 flex flex-col w-full h-full">
           <span className="flex justify-between w-full mb-3">
-            <p className="prize-card__title text-white text-sm">{title}</p>
+            <p className="prize-card__title text-white text-sm">{creator}</p>
             <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
               {enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}
             </p>
@@ -84,14 +98,14 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
             <div className="prize-card__links flex gap-4">
               <Icon
                 iconSrc="assets/images/prize-tap/twitter-logo.svg"
-                onClick={() => window.open(twitterLink, '_blank')}
+                onClick={() => window.open(twitterUrl, '_blank')}
                 width="20px"
                 height="16px"
                 hoverable
               />
               <Icon
                 iconSrc="assets/images/prize-tap/discord-logo.svg"
-                onClick={() => window.open(discordLink, '_blank')}
+                onClick={() => window.open(discordUrl, '_blank')}
                 width="20px"
                 height="16px"
                 hoverable
@@ -104,7 +118,7 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
           <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
             <div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
               <p className="text-gray100 text-[10px]">moshakhas kardane barande barande in</p>
-              <PrizeCardTimer startTime={startTime} FinishTime={FinishTime} />
+              <PrizeCardTimer startTime={createdAt} FinishTime={deadline} />
             </div>
             <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
               {' '}
