@@ -28,7 +28,10 @@ const PrizesList = () => {
     const controller = new AbortController();
     axios
       .get<Prize[]>('https://stage.unitap.app/api/prizetap/raffle-list/', { signal: controller.signal })
-      .then((res) => setPrizes(res.data))
+      .then((res) => {
+        setPrizes(res.data);
+        console.log(res.data);
+      })
       .catch((err) => {
         if (err.message == 'canceled') return;
         console.log(err);
@@ -76,25 +79,25 @@ const PrizesList = () => {
 };
 
 const PrizeCard = ({ prize }: { prize: Prize }) => {
-  const { pk, imageUrl, creator, enrolled, source, twitterUrl, discordUrl, description, createdAt, deadline } = prize;
+  const { pk, imageUrl, creator, enrolled, twitterUrl, discordUrl, description, createdAt, deadline, name } = prize;
   const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
   return (
     <div className={pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'}>
       <div className="flex flex-col lg:flex-row h-full items-center justify-center gap-4">
         <div className="prize-card__image">
           <div className="prize-card__container border-2 border-gray40 h-[212px] w-[212px] flex w-full bg-gray30 justify-center items-center p-5 rounded-xl">
-            <img src={imageUrl} alt={creator} />
+            <img src={imageUrl} alt={name} />
           </div>
         </div>
         <div className="card prize-card__content z-10 relative bg-gray30 border-2 border-gray40 ; rounded-xl p-4 pt-3 flex flex-col w-full h-full">
           <span className="flex justify-between w-full mb-3">
-            <p className="prize-card__title text-white text-sm">{creator}</p>
+            <p className="prize-card__title text-white text-sm">{name}</p>
             <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
               {enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}
             </p>
           </span>
           <span className="flex justify-between w-full mb-4">
-            <p className="prize-card__source text-xs text-gray90">{source}</p>
+            <p className="prize-card__source text-xs text-gray90">{creator}</p>
             <div className="prize-card__links flex gap-4">
               <Icon
                 iconSrc="assets/images/prize-tap/twitter-logo.svg"

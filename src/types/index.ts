@@ -30,12 +30,12 @@ export type Prize = {
   background: string;
   creator: string;
   enrolled: number;
-  source: string;
   twitterUrl: string;
   discordUrl: string;
   description: string;
   createdAt: string;
   deadline: string;
+  name: string
 };
 
 export enum BrightIdVerificationStatus {
