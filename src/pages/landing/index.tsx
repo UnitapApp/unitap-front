@@ -9,11 +9,13 @@ import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
 import { getTotalEVMNetworks } from '../../utils';
+import { TokenTapContext } from '../../hooks/token-tap/tokenTapContext';
 
 const Landing: FC = () => {
   const { chainList } = useContext(ClaimContext);
 
   const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
+  const { tokensList } = useContext(TokenTapContext);
 
   const { batchSoldCount, batchSize } = useUnitapBatchSale();
 
@@ -170,15 +172,35 @@ const Landing: FC = () => {
           </Link>
 
           <section className={'flex--1'}>
-            <Widget
-              description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
-              icon={'tokentap-icon.svg'}
-              iconSize={'w-8'}
-              className={'h-full after:bg-tokentap-texture flex-1 '}
-              title={'Token Tap'}
-              buttonTitle={'Soon...'}
-              buttonClass={'secondary-button !bg-gray30 text-gray100'}
-            ></Widget>
+            <Link className={'flex--1'} to={RoutePath.TOKEN}>
+              <Widget
+                description={'Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens'}
+                icon={'tokentap-icon.svg'}
+                iconSize={'w-8'}
+                className={'h-full after:bg-tokentap-texture hover:bg-gray00 cursor-pointer flex-1 '}
+                title={'Token Tap'}
+                buttonTitle={'Go to Tap'}
+                buttonClass={'gradient-outline-button text-gray100'}
+              >
+                {tokensList.length > 0 && (
+                  <div
+                    className={
+                      'flex flex-col text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-start justify-between mb-2'
+                    }
+                  >
+                    <span className="token-logo-container w-6 h-6 mb-3">
+                      <img
+                        src={tokensList[0].imageUrl}
+                        alt={tokensList[0].name}
+                        className="token-logo w-auto h-[100%]"
+                      />
+                    </span>
+                    <p className="text-xs mb-2">{tokensList[0].name}</p>
+                    <p className="text-xs text-gray100 leading-6">{tokensList[0].distributor}</p>
+                  </div>
+                )}
+              </Widget>
+            </Link>
           </section>
 
           <section className={'flex--1'}>

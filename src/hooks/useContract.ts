@@ -1,19 +1,26 @@
-import { isAddress } from '@ethersproject/address';
-import { AddressZero } from '@ethersproject/constants';
-import { Contract } from '@ethersproject/contracts';
-import { Web3Provider } from '@ethersproject/providers';
-import MulticallJson from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
-import { useWeb3React } from '@web3-react/core';
-import { UnitapPassBatchSaleMain, UnitapPassMain } from '../abis/types';
+import {isAddress} from '@ethersproject/address';
+import {AddressZero} from '@ethersproject/constants';
+import {Contract} from '@ethersproject/contracts';
+import {Web3Provider} from '@ethersproject/providers';
+import MulticallJson
+  from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
+import {useWeb3React} from '@web3-react/core';
+import {UnitapPassBatchSaleMain, UnitapPassMain, UnitapEVMTokenTap} from '../abis/types';
 import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSaleMain.json';
 import UnitapPass_ABI from '../abis/UnitapPassMain.json';
+import UnitapEVMTokenTap_ABI from '../abis/UnitapEVMTokenTap.json';
 
-import { Providers } from '../constants/providers';
-import { useMemo } from 'react';
-import { UniswapInterfaceMulticall } from '../abis/types/uniswap';
-import { MULTICALL_ADDRESS, UNITAP_PASS_ADDRESS, UNITAP_PASS_BATCH_SALE_ADDRESS } from '../constants/addresses';
-import { SupportedChainId } from '../constants/chains';
-import { getUnitapPassChainId } from 'utils/env';
+import {Providers} from '../constants/providers';
+import {useMemo} from 'react';
+import {UniswapInterfaceMulticall} from '../abis/types/uniswap';
+import {
+  MULTICALL_ADDRESS,
+  UNITAP_PASS_ADDRESS,
+  UNITAP_PASS_BATCH_SALE_ADDRESS,
+  UNITAP_TOKEN_TAP_ADDRESS
+} from '../constants/addresses';
+import {SupportedChainId} from '../constants/chains';
+import {getUnitapPassChainId} from 'utils/env';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -87,4 +94,13 @@ export function useUnitapPassBatchSaleContract() {
     true,
     getUnitapPassChainId(),
   );
+}
+
+export function useEVMTokenTapContract() {
+  return useContract<UnitapEVMTokenTap>(
+    UNITAP_TOKEN_TAP_ADDRESS,
+    UnitapEVMTokenTap_ABI,
+    true,
+    SupportedChainId.GNOSIS,
+  )
 }
