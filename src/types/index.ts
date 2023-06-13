@@ -29,6 +29,7 @@ export type Prize = {
   imageUrl: string;
   background: string;
   creator: string;
+  creatorUrl: string;
   enrolled: number;
   twitterUrl: string;
   discordUrl: string;

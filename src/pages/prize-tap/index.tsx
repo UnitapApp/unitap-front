@@ -79,7 +79,19 @@ const PrizesList = () => {
 };
 
 const PrizeCard = ({ prize }: { prize: Prize }) => {
-  const { pk, imageUrl, creator, enrolled, twitterUrl, discordUrl, description, createdAt, deadline, name } = prize;
+  const {
+    pk,
+    imageUrl,
+    creator,
+    creatorUrl,
+    enrolled,
+    twitterUrl,
+    discordUrl,
+    description,
+    createdAt,
+    deadline,
+    name,
+  } = prize;
   const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
   return (
     <div className={pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'}>
@@ -97,7 +109,12 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
             </p>
           </span>
           <span className="flex justify-between w-full mb-4">
-            <p className="prize-card__source text-xs text-gray90">by {creator}</p>
+            <p className="prize-card__source text-xs text-gray90">
+              by{' '}
+              <span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
+                {creator}
+              </span>
+            </p>
             <div className="prize-card__links flex gap-4">
               <Icon
                 iconSrc="assets/images/prize-tap/twitter-logo.svg"
