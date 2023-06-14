@@ -19,7 +19,7 @@ const UsersCard = ({ user }: UsersCardProps) => {
           </div>
           <Icon iconSrc={image} width="46px" height="52px" className="p-2 px-4" />
           <div className="flex flex-col gap-3 p-2 text-[12px] md:mr-3 lg:mr-10 items-center md:items-start">
-            <div className="text-white font-bold">{userName}</div>
+            <div className="text-white font-bold min-w-[100px] text-center md:text-left">{userName}</div>
             <div className="text-gray100">Level {level}</div>
           </div>
           <div className="flex flex-col gap-3 p-2 text-[12px]  md:mr-3 lg:mr-10 items-center md:items-start">

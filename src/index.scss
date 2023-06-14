@@ -435,7 +435,7 @@ body {
 }
 
 
-.user-card__wrap:hover {
+.user-card__wrap {
   @apply bg-g-primary relative z-10 before:content-[''];
   @apply before:block before:rounded-[15px] before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)] rounded-[15px];
   @apply rounded-[15px] text-white;
