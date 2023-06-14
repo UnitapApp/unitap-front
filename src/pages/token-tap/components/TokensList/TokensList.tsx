@@ -183,14 +183,7 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
 const FinalVersionCard = () => {
   return (
     <div className="token-tap__final-version-container w-full h-60 bg-gray20 rounded-xl relative">
-      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
-        <p className="token-tap__final-version-card__text text-gradient-primary text-xs font-semibold">
-          The Final version that contains more tokens will be Launched on May 2023.
-        </p>
-        <p className="token-tap__final-version-card__read-more text-gray100 underline text-xs font-semibold cursor-pointer">
-          Read More
-        </p>
-      </div>
+      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2"></div>
     </div>
   );
 };
