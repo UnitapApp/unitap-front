@@ -18,12 +18,12 @@ type props = {
 export const IconWrapper = styled.span<props>`
   display: flex;
   justify-content: center;
-  
+
   margin-right: ${({ mr, mrAuto }) => (mr ? `${mr * DV.sizes.baseMargin}px` : mrAuto ? 'auto' : '')};
   margin-bottom: ${({ mb }) => (mb ? `${mb * DV.sizes.baseMargin}px` : '')};
   margin-left: ${({ ml }) => (ml ? `${ml * DV.sizes.baseMargin}px` : '')};
   margin-top: ${({ mt }) => (mt ? `${mt * DV.sizes.baseMargin}px` : '')};
-  
+
   & > img {
     width: ${({ width }) => width};
     height: ${({ height, width }) => height || width};
@@ -39,7 +39,7 @@ export const IconWrapper = styled.span<props>`
         smMb ? `${smMb * DV.sizes.baseMargin}px` : mb ? `${mb * DV.sizes.baseMargin}px` : ''};
     }
   }
-  
+
   @media only screen and (max-width: ${DV.breakpoints.mobile}) {
     & > img {
       width: ${({ xsWidth }) => xsWidth};

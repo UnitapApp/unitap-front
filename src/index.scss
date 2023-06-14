@@ -440,9 +440,6 @@ body {
   @apply before:block before:rounded-[15px] before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)] rounded-[15px];
   @apply rounded-[15px] text-white;
 
-  div:first-child .user-card__id,
-  div:nth-child(3) .user-card__id,
-  div:nth-child(2) .user-card__id,
   .user-card__id
    {
     @apply before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)] relative z-10 before:content-[''] text-white before:rounded-tl-[15px] before:rounded-bl-[15px] before:inset-[2px];
@@ -453,14 +450,22 @@ body {
     @apply bg-clip-text;
     background: linear-gradient(
       91.35deg,
-      #4bf2a2 -4.66%,
-      #a89fe7 56.06%,
-      #e1c4f4 73.07%,
-      #dd40cd 111.44%
+      #4bf2a2 -2.66%,
+      #a89fe7 15.06%,
+      #e1c4f4 .07%,
+      #dd40cd 60.44%,
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-fill-color: transparent;
+  }
+
+  .user-card_title_color {
+    @apply text-gray100
+  }
+
+  .user-card_level_color {
+    @apply text-white
   }
 }
 

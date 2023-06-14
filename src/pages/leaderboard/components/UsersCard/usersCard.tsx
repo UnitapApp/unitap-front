@@ -2,28 +2,36 @@ import React from 'react';
 import { UsersCardProps } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 
-const UsersCard = ({ user }: UsersCardProps) => {
+const UsersCard = ({ user, currentUser }: UsersCardProps) => {
   const { id, image, userName, level, walletAddress, totalGas, twitterLink, instagramLink } = user;
   return (
     <div className="pt-4">
-      <div className="bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row">
+      <div
+        className={
+          currentUser.userName == user.userName
+            ? 'bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row user-card__wrap'
+            : 'bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row'
+        }
+      >
         <div className="flex flex-col  md:flex-row xl:flex-row rounded-2xl overflow-hidden ">
           <div
             className={
               id <= 3
                 ? `user__id user-card__id__${id} text-black md:w-[40px] h-[40px] md:h-[auto]`
-                : `user__id text-white md:w-[40px] h-[40px] md:h-[auto]`
+                : `user__id text-white md:w-[40px] h-[40px] md:h-[auto] user-card__id`
             }
           >
             <div>#{id}</div>
           </div>
           <Icon iconSrc={image} width="46px" height="52px" className="p-2 px-4" />
           <div className="flex flex-col gap-3 p-2 text-[12px] md:mr-3 lg:mr-10 items-center md:items-start">
-            <div className="text-white font-bold min-w-[100px] text-center md:text-left">{userName}</div>
-            <div className="text-gray100">Level {level}</div>
+            <div className="text-white font-bold min-w-[100px] text-center md:text-left user-card__name">
+              {userName}
+            </div>
+            <div className="text-gray100 user-card_level_color">Level {level}</div>
           </div>
           <div className="flex flex-col gap-3 p-2 text-[12px]  md:mr-3 lg:mr-10 items-center md:items-start">
-            <div className="text-gray80">Wallet Address</div>
+            <div className="text-gray80 user-card_title_color">Wallet Address</div>
             <div className="text-white flex gap-2 xl:justify-between">
               <div>{walletAddress}</div>
               <div>
@@ -32,11 +40,11 @@ const UsersCard = ({ user }: UsersCardProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 p-2  md:mr-3 lg:mr-10 items-center md:items-start">
-            <div className="text-gray80 text-[12px]">Total Gas Provided</div>
-            <div className="text-white text-[14px]">${totalGas}</div>
+            <div className="text-gray80 text-[12px] user-card_title_color">Total Gas Provided</div>
+            <div className="text-white text-[14px] user-card_title_color">${totalGas}</div>
           </div>
           <div className="flex flex-col gap-2 p-2 items-center mr-0">
-            <div className="text-gray80 text-[12px]">Interacted Chains</div>
+            <div className="text-gray80 text-[12px] user-card_title_color">Interacted Chains</div>
             <div className="flex xl:justify-between items-center gap-3">
               <Icon iconSrc="assets/images/leaderboard/ic_arbitrum.svg" width="24px" height="24px" hoverable />
               <Icon iconSrc="assets/images/leaderboard/chain1.svg" width="24px" height="24px" hoverable />

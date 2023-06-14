@@ -13,6 +13,7 @@ const Leaderboard = () => {
     end: users.length >= 10 ? 10 : users.length,
   });
 
+  let currentUser = users.filter((user) => user.userName === '@This is a test')[0];
   let displayUser = users.slice(records.start - 1, records.end);
 
   const handlePagination = (start: number, end: number) => {
@@ -33,7 +34,7 @@ const Leaderboard = () => {
               <SearchInput />
               <Dropdown />
             </div>
-            <UsersList users={displayUser} />
+            <UsersList users={displayUser} currentUser={currentUser} />
             <Pagination records={records} onClick={(start, end) => handlePagination(start, end)} />
           </div>
         </div>

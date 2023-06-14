@@ -161,4 +161,5 @@ export type User = {
 
 export type UsersCardProps = {
   user: User;
+  currentUser: User
 };
