@@ -67,7 +67,6 @@ const TokensList = () => {
 const TokenCard: FC<{ token: Token }> = ({ token }) => {
   const { openClaimModal } = useContext(TokenTapContext);
 
-  const addAndSwitchToChain = useSelectChain();
   const { account } = useWeb3React();
   const active = !!account;
 
@@ -94,21 +93,6 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
             </div>
 
             <div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
-              <div className="w-full mb-2 md:mb-0 md:w-auto md:mr-4 items-center md:items-end">
-                <AddMetamaskButton
-                  disabled={!active}
-                  data-testid={`chain-switch-${token.id}`}
-                  onClick={() => addAndSwitchToChain(token.chain)}
-                  className="font-medium hover:cursor-pointer mx-auto text-sm !w-[220px] md:!w-auto"
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                    alt="metamask logo"
-                  />
-                  Add
-                </AddMetamaskButton>
-              </div>
-
               <Action className={'w-full sm:w-auto items-center sm:items-end '}>
                 {/* todo migrate buttom logic*/}
                 {token.isMaxedOut ? (
