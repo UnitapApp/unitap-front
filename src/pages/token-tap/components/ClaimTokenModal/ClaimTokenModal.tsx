@@ -7,7 +7,6 @@ import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/but
 import { BrightIdModalState, Chain, Permission, PermissionType } from 'types';
 import { getChainClaimIcon, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
@@ -261,7 +260,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
           ) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
             <p>Retry</p>
           ) : (
-            <p>{`Claim ${formatWeiBalance(selectedTokenForClaim.amount)} ${selectedTokenForClaim.token}`}</p>
+            <p>{`Claim ${selectedTokenForClaim.amount} ${selectedTokenForClaim.token}`}</p>
           )}
         </ClaimButton>
       </>
@@ -368,7 +367,7 @@ const ClaimTokenModal = () => {
 
   return (
     <Modal
-      title={`Claim ${formatWeiBalance(selectedTokenForClaim.amount)} ${selectedTokenForClaim.token}`}
+      title={`Claim ${selectedTokenForClaim.amount} ${selectedTokenForClaim.token}`}
       size="small"
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}

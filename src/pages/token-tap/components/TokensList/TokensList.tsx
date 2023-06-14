@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
-import { formatWeiBalance, numberWithCommas } from 'utils/numbers';
+import { numberWithCommas } from 'utils/numbers';
 import Icon from 'components/basic/Icon/Icon';
 import { useWeb3React } from '@web3-react/core';
 import useSelectChain from 'hooks/useSelectChain';
@@ -122,7 +122,7 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
                     onClick={() => openClaimModal(token)}
                     className="text-sm m-auto"
                   >
-                    <p>{`Claim ${formatWeiBalance(token.amount)} ${token.token}`}</p>
+                    <p>{`Claim ${token.amount} ${token.token}`}</p>
                   </ClaimButton>
                 ) : (
                   <ClaimedButton
