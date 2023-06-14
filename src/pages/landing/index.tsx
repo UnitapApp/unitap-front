@@ -186,12 +186,12 @@ const Landing: FC = () => {
                   tokensList.slice(0, 3).map((token, key) => (
                     <div
                       key={key}
-                      className={'flex flex-col text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-start mb-2'}
+                      className={'flex text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-center mb-2'}
                     >
                       <span className="token-logo-container w-6 h-6">
                         <img src={token.imageUrl} alt={token.name} className="token-logo w-auto h-[100%]" />
                       </span>
-                      <p className="text-xs mt-3">{token.name}</p>
+                      <p className="text-xs ml-4">{token.name}</p>
                     </div>
                   ))}
               </Widget>
