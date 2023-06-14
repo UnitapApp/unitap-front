@@ -20,6 +20,7 @@ import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
+import ClaimNotAvailable from '../ClaimNotRemaining';
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();
@@ -32,7 +33,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 	const mounted = useRef(false);
 
-	const { userProfile } = useContext(UserProfileContext);
+	const { userProfile, remainingClaims } = useContext(UserProfileContext);
 
 	useEffect(() => {
 		if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
@@ -310,7 +311,11 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!walletConnected) return renderWalletNotConnectedBody();
 
-		if (!activeClaimReceipt) return renderInitialBody();
+		if (!activeClaimReceipt) {
+			if (remainingClaims && remainingClaims > 0) return renderInitialBody();
+
+			return <ClaimNotAvailable />;
+		}
 
 		if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
 

@@ -18,6 +18,7 @@ import { getChainClaimIcon, getTxUrl } from 'utils';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import lottie from 'lottie-web';
 import animation from '../../../../assets/animations/GasFee-delivery2.json';
+import ClaimNotAvailable from '../ClaimNotRemaining';
 
 const lightingChainId = '286621';
 
@@ -26,7 +27,7 @@ const ClaimNonEVMModalContent = () => {
 
 	const { activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
 
-	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress } = useContext(UserProfileContext);
+	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress, remainingClaims } = useContext(UserProfileContext);
 
 	const { claimNonEVM, closeClaimNonEVMModal, claimNonEVMLoading } = useContext(ClaimContext);
 
@@ -311,7 +312,11 @@ const ClaimNonEVMModalContent = () => {
 
 		if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
 
-		if (!activeClaimReceipt) return renderInitialBody();
+		if (!activeClaimReceipt) {
+			if (remainingClaims && remainingClaims > 0) return renderInitialBody();
+
+			return <ClaimNotAvailable />;
+		}
 
 		if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
 
