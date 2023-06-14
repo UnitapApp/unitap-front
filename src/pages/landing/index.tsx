@@ -182,23 +182,18 @@ const Landing: FC = () => {
                 buttonTitle={'Go to Tap'}
                 buttonClass={'gradient-outline-button text-gray100'}
               >
-                {tokensList.length > 0 && (
-                  <div
-                    className={
-                      'flex flex-col text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-start justify-between mb-2'
-                    }
-                  >
-                    <span className="token-logo-container w-6 h-6 mb-3">
-                      <img
-                        src={tokensList[0].imageUrl}
-                        alt={tokensList[0].name}
-                        className="token-logo w-auto h-[100%]"
-                      />
-                    </span>
-                    <p className="text-xs mb-2">{tokensList[0].name}</p>
-                    <p className="text-xs text-gray100 leading-6">{tokensList[0].distributor}</p>
-                  </div>
-                )}
+                {tokensList.length > 0 &&
+                  tokensList.slice(0, 3).map((token, key) => (
+                    <div
+                      key={key}
+                      className={'flex flex-col text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-start mb-2'}
+                    >
+                      <span className="token-logo-container w-6 h-6">
+                        <img src={token.imageUrl} alt={token.name} className="token-logo w-auto h-[100%]" />
+                      </span>
+                      <p className="text-xs mt-3">{token.name}</p>
+                    </div>
+                  ))}
               </Widget>
             </Link>
           </section>
