@@ -198,6 +198,15 @@ const ClaimNonEVMModalContent = () => {
 	}
 
 	function renderSuccessBody() {
+		const handleClick = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I claimed ${formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} on ${
+					activeNonEVMChain!.chainName
+				} on Unitap, Claim yours at`,
+			)}&url=${encodeURIComponent('unitap.app')}`;
+			window.open(twitterUrl, '_blank');
+		};
+
 		return (
 			<>
 				<Icon
@@ -214,14 +223,32 @@ const ClaimNonEVMModalContent = () => {
 					we successfully transferred {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol}{' '}
 					to your wallet
 				</Text>
-				<ClaimButton
-					fontSize="16px"
-					className="!w-full"
+				<Text
+					width="100%"
+					fontSize="14"
+					color="second_gray_light"
+					className="underline cursor-pointer"
+					mb={3}
+					textAlign="center"
 					onClick={() => window.open(getTxUrl(activeNonEVMChain!, activeClaimReceipt!.txHash!), '_blank')}
-					data-testid={`chain-claim-action-${activeNonEVMChain!.pk}`}
 				>
-					<p>View on Explorer</p>
-				</ClaimButton>
+					view on explorer
+				</Text>
+
+				<div className="relative w-full">
+					<button
+						onClick={handleClick}
+						className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+					>
+						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+					</button>
+					<Icon
+						iconSrc="assets/images/gas-tap/twitter-share.svg"
+						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+						width="auto"
+						height="26px"
+					/>
+				</div>
 			</>
 		);
 	}
