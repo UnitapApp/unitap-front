@@ -68,7 +68,14 @@ const ChainList = () => {
 						Loading...
 					</div>
 				)}
-				{chainListMemo.map((chain) => (
+				{!!chainListMemo.length && (
+					<ChainCard
+						isHighlighted={chainListMemo[0].chainName.toLowerCase() === highlightedChain.toLowerCase()}
+						chain={chainListMemo[0]}
+					/>
+				)}
+
+				{chainListMemo.slice(1).map((chain) => (
 					<ChainCard chain={chain} key={chain.pk} />
 				))}
 				{chainListSearchResult.length === 0 && chainList.length && <EmptyChainListCard />}
@@ -110,9 +117,10 @@ const EmptyChainListCard = () => {
 
 type ChainCardProps = {
 	chain: Chain;
+	isHighlighted?: boolean;
 };
 
-const ChainCard = ({ chain }: ChainCardProps) => {
+const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { openClaimModal } = useContext(ClaimContext);
 
 	const addAndSwitchToChain = useSelectChain();
@@ -148,9 +156,9 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 		<div key={chain.chainId}>
 			<div className="chain-card flex flex-col items-center justify-center w-full mb-4">
 				<div
-					className={
-						'pt-4 pr-6 pb-4 pl-3 bg-gray20 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
-					}
+					className={`pt-4 pr-6 pb-4 pl-3 w-full ${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray20'
+					} flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl`}
 				>
 					<div
 						onClick={() => window.open(chain.blockScanAddress, '_blank')}
@@ -231,22 +239,34 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 					</div>
 				</div>
 				<div
-					className={
-						'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between'
-					}
+					className={`${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray30'
+					} w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between`}
 				>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">Currency</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">{chain.symbol}</p>
 						{/* <LightOutlinedButton className='donate-gas !p-1 !px-2 !text-xs !font-medium ml-4'>Provide gas</LightOutlinedButton> */}
 					</div>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
 							{numberWithCommas(chain.totalClaimsSinceLastMonday)}
 						</p>
 					</div>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
 							{numberWithCommas(chain.totalClaims)}
