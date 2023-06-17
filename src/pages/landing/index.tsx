@@ -24,10 +24,6 @@ const Landing: FC = () => {
 	const maxCount = useMemo(() => batchSize || 0, [batchSize]);
 	const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-	function numberWithCommas(x: number) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
-
 	const [socialLinks] = useState([
 		{
 			img: 'twitter-icon.svg',

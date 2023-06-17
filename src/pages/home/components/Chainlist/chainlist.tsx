@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
@@ -8,7 +8,6 @@ import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from 'types';
-import { BigNumber } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 import RoutePath from '../../../../routes';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -114,7 +113,6 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 	};
 
 	// const { provider } = useWeb3React();
-	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
 
 	// useEffect(() => {
 	//   new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
