@@ -7,13 +7,7 @@ import { ClaimNonEVMModalState, ClaimReceiptState } from 'types';
 
 import { formatWeiBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
-import {
-	ClaimButton,
-	ClaimedButton,
-	LightOutlinedButtonNew,
-	SecondaryButton,
-	SecondaryGreenColorButton,
-} from 'components/basic/Button/button';
+import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { getChainClaimIcon, getTxUrl } from 'utils';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import lottie from 'lottie-web';

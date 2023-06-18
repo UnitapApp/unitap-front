@@ -10,6 +10,8 @@ import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
 import { getTotalEVMNetworks } from '../../utils';
 import { TokenTapContext } from '../../hooks/token-tap/tokenTapContext';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import NotAvailableTap from './components/notAvailableTap';
 
 const Landing: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -22,9 +24,7 @@ const Landing: FC = () => {
 	const maxCount = useMemo(() => batchSize || 0, [batchSize]);
 	const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
 
-	function numberWithCommas(x: number) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
+	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const [socialLinks] = useState([
 		{
@@ -134,7 +134,7 @@ const Landing: FC = () => {
 				</section>
 
 				<section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
-					<Link className={'flex--1'} to={RoutePath.FAUCET}>
+					<Link className={`flex--1 ${isGasTapAvailable ? '' : 'pointer-events-none'}`} to={RoutePath.FAUCET}>
 						<Widget
 							description={'Claim gas fees for any reason and make transactions easily'}
 							icon={'gastap-icon.svg'}
@@ -144,30 +144,35 @@ const Landing: FC = () => {
 							buttonTitle={'Go to Tap'}
 							buttonClass={'gradient-outline-button text-gray100'}
 						>
-							{sortedChainList.length > 0 && (
-								<>
-									<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
-									<ul className={'text-white'}>
-										{sortedChainList.slice(0, 3).map((token, index) => (
-											<li
-												key={token.chainId}
-												className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
-											>
-												<div className={'flex gap-2 items-center'}>
-													<p>#{index + 1}</p>
-													<span className="token-logo-container w-6 h-6 flex items-center justify-center">
-														<img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
-													</span>
-													<p>{token.chainName}</p>
-												</div>
-												<p>
-													{token.totalClaimsSinceLastMonday} <span>claims</span>
-												</p>
-											</li>
-										))}
-									</ul>
-								</>
-							)}
+							<div className="relative">
+								<div className={isGasTapAvailable ? '' : 'blur-md'}>
+									{sortedChainList.length > 0 && (
+										<>
+											<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
+											<ul className={'text-white'}>
+												{sortedChainList.slice(0, 3).map((token, index) => (
+													<li
+														key={token.chainId}
+														className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
+													>
+														<div className={'flex gap-2 items-center'}>
+															<p>#{index + 1}</p>
+															<span className="token-logo-container w-6 h-6 flex items-center justify-center">
+																<img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
+															</span>
+															<p>{token.chainName}</p>
+														</div>
+														<p>
+															{token.totalClaimsSinceLastMonday} <span>claims</span>
+														</p>
+													</li>
+												))}
+											</ul>
+										</>
+									)}
+								</div>
+								{isGasTapAvailable || <NotAvailableTap />}
+							</div>
 						</Widget>
 					</Link>
 
@@ -282,7 +287,7 @@ const Landing: FC = () => {
 							<div
 								onClick={() => window.open(social.link, '_blank')}
 								key={social.link}
-								className={`${social.localClass} flex home-footer-social-link cursor-pointer justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
+								className={`${social.localClass} flex home-footer-social-link justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
 							>
 								<img className={''} src={`/assets/images/landing/${social.img}`} />
 							</div>

@@ -1,4 +1,4 @@
-import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse } from 'types';
+import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse, Settings } from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -68,7 +68,7 @@ export async function getUserProfileWithTokenAPI(token: string) {
 }
 
 export async function getWeeklyChainClaimLimitAPI(token: string) {
-	const response = await axiosInstance.get('/api/v1/settings/', {
+	const response = await axiosInstance.get<Settings>('/api/v1/settings/', {
 		headers: {},
 	});
 	return response.data.weeklyChainClaimLimit;
