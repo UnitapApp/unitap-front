@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance } from 'utils/numbers';
+import { formatWeiBalance, numberWithCommas } from 'utils/numbers';
 import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from 'types';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from '../../../../routes';
 import { UserProfileContext } from 'hooks/useUserProfile';
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
@@ -37,6 +37,29 @@ const ChainList = () => {
 	const { chainList, chainListSearchResult } = useContext(ClaimContext);
 
 	const { isGasTapAvailable } = useContext(UserProfileContext);
+	const [highlightedChain, setHighlightedChain] = useState('');
+
+	const location = useLocation();
+
+	const chainListMemo = useMemo(
+		() =>
+			chainListSearchResult.sort((a, b) => {
+				const lowerHighlightChainName = highlightedChain.toLowerCase();
+
+				if (a.chainName.toLowerCase() === lowerHighlightChainName) return -1;
+				if (b.chainName.toLowerCase() === lowerHighlightChainName) return 1;
+
+				return 0;
+			}),
+		[chainListSearchResult, highlightedChain],
+	);
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(location.search);
+		const highlightedChain = urlParams.get('highlightedChain');
+
+		setHighlightedChain(highlightedChain || '');
+	}, [location.search, setHighlightedChain]);
 
 	return (
 		<div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
@@ -48,7 +71,18 @@ const ChainList = () => {
 				)}
 
 				{!chainList.length || isGasTapAvailable ? (
-					chainListSearchResult.map((chain) => <ChainCard chain={chain} key={chain.pk} />)
+					<>
+						{!!chainListMemo.length && (
+							<ChainCard
+								isHighlighted={chainListMemo[0].chainName.toLowerCase() === highlightedChain.toLowerCase()}
+								chain={chainListMemo[0]}
+							/>
+						)}
+
+						{chainListMemo.slice(1).map((chain) => (
+							<ChainCard chain={chain} key={chain.pk} />
+						))}
+					</>
 				) : (
 					<div className="text-white text-center mt-20" data-testid="chain-list-loading">
 						Gas Tap is not available right now
@@ -93,14 +127,11 @@ const EmptyChainListCard = () => {
 
 type ChainCardProps = {
 	chain: Chain;
+	isHighlighted?: boolean;
 };
 
-const ChainCard = ({ chain }: ChainCardProps) => {
+const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { openClaimModal } = useContext(ClaimContext);
-
-	function numberWithCommas(x: number) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
 
 	const addAndSwitchToChain = useSelectChain();
 	const { account } = useWeb3React();
@@ -113,6 +144,7 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 	};
 
 	// const { provider } = useWeb3React();
+	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
 
 	// useEffect(() => {
 	//   new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
@@ -134,9 +166,9 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 		<div key={chain.chainId}>
 			<div className="chain-card flex flex-col items-center justify-center w-full mb-4">
 				<div
-					className={
-						'pt-4 pr-6 pb-4 pl-3 bg-gray20 w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl '
-					}
+					className={`pt-4 pr-6 pb-4 pl-3 w-full ${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray20'
+					} flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl`}
 				>
 					<div
 						onClick={() => window.open(chain.blockScanAddress, '_blank')}
@@ -217,22 +249,34 @@ const ChainCard = ({ chain }: ChainCardProps) => {
 					</div>
 				</div>
 				<div
-					className={
-						'bg-gray30 w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between'
-					}
+					className={`${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray30'
+					} w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between`}
 				>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">Currency</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">{chain.symbol}</p>
 						{/* <LightOutlinedButton className='donate-gas !p-1 !px-2 !text-xs !font-medium ml-4'>Provide gas</LightOutlinedButton> */}
 					</div>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
 							{numberWithCommas(chain.totalClaimsSinceLastMonday)}
 						</p>
 					</div>
-					<div className={'bg-gray30 w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end'}>
+					<div
+						className={`${
+							isHighlighted ? 'bg-transparent' : 'bg-gray30'
+						} w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+					>
 						<p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
 							{numberWithCommas(chain.totalClaims)}

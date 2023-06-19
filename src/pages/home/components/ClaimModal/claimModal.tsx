@@ -3,8 +3,13 @@ import { useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, ClaimReceiptState } from 'types';
+import {
+	ClaimButton,
+	LightOutlinedButton,
+	LightOutlinedButtonNew,
+	SecondaryGreenColorButton,
+} from 'components/basic/Button/button';
+import { BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
@@ -15,6 +20,7 @@ import Modal from 'components/common/Modal/modal';
 import useWalletActivation from '../../../../hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
+import ClaimNotAvailable from '../ClaimNotRemaining';
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();
@@ -27,7 +33,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 	const mounted = useRef(false);
 
-	const { userProfile } = useContext(UserProfileContext);
+	const { userProfile, remainingClaims } = useContext(UserProfileContext);
 
 	useEffect(() => {
 		if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
@@ -206,6 +212,13 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	}
 
 	function renderSuccessBody() {
+		const handleClick = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I claimed ${formatWeiBalance(chain.maxClaimAmount)} on ${chain.chainName} on Unitap, Claim yours at`,
+			)}&url=${encodeURIComponent('unitap.app')}`;
+			window.open(twitterUrl, '_blank');
+		};
+
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
@@ -223,19 +236,36 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 					</Text>
 					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
 				</span>
-				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+				<Text width="100%" fontSize="14" color="second_gray_light" mb={1} textAlign="center">
 					we successfully transferred {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} to your wallet
 				</Text>
-				<ClaimButton
+
+				<Text
+					width="100%"
+					fontSize="14"
+					color="second_gray_light"
+					className="underline cursor-pointer"
+					mb={3}
+					textAlign="center"
 					onClick={() => window.open(getTxUrl(chain, activeClaimReceipt!.txHash!), '_blank')}
-					width={'100%'}
-					fontSize="16px"
-					className="!w-full"
-					data-testid={`chain-claim-action-${chain.pk}`}
-					color="space_green"
 				>
-					<p>View on Explorer</p>
-				</ClaimButton>
+					view on explorer
+				</Text>
+
+				<div className="relative w-full">
+					<button
+						onClick={handleClick}
+						className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+					>
+						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+					</button>
+					<Icon
+						iconSrc="assets/images/gas-tap/twitter-share.svg"
+						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+						width="auto"
+						height="26px"
+					/>
+				</div>
 			</>
 		);
 	}
@@ -281,7 +311,11 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!walletConnected) return renderWalletNotConnectedBody();
 
-		if (!activeClaimReceipt) return renderInitialBody();
+		if (!activeClaimReceipt) {
+			if (remainingClaims && remainingClaims > 0) return renderInitialBody();
+
+			return <ClaimNotAvailable />;
+		}
 
 		if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED) return renderSuccessBody();
 
