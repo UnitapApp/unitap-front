@@ -67,9 +67,14 @@ const TokensList = () => {
 const TokenCard: FC<{ token: Token }> = ({ token }) => {
 	const { openClaimModal } = useContext(TokenTapContext);
 
+<<<<<<< HEAD
+  const { account } = useWeb3React();
+  const active = !!account;
+=======
 	const addAndSwitchToChain = useSelectChain();
 	const { account } = useWeb3React();
 	const active = !!account;
+>>>>>>> 91b602e2862c6fd9a9080cf1821a348cb1c8ebeb
 
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
@@ -93,68 +98,6 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
 							</span>
 						</div>
 
-						<div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
-							<div className="w-full mb-2 md:mb-0 md:w-auto md:mr-4 items-center md:items-end">
-								<AddMetamaskButton
-									disabled={!active}
-									data-testid={`chain-switch-${token.id}`}
-									onClick={() => addAndSwitchToChain(token.chain)}
-									className="font-medium hover:cursor-pointer mx-auto text-sm !w-[220px] md:!w-auto"
-								>
-									<img
-										src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-										alt="metamask logo"
-									/>
-									Add
-								</AddMetamaskButton>
-							</div>
-
-							<Action className={'w-full sm:w-auto items-center sm:items-end '}>
-								{/* todo migrate buttom logic*/}
-								{token.isMaxedOut ? (
-									<NoCurrencyButton disabled fontSize="13px">
-										Empty
-									</NoCurrencyButton>
-								) : token.amount !== 0 ? (
-									<ClaimButton
-										data-testid={`chain-show-claim-${token.id}`}
-										mlAuto
-										onClick={() => openClaimModal(token)}
-										className="text-sm m-auto"
-									>
-										<p>{`Claim ${formatWeiBalance(token.amount)} ${token.token}`}</p>
-									</ClaimButton>
-								) : (
-									<ClaimedButton
-										data-testid={`chain-claimed-${token.id}`}
-										mlAuto
-										icon="../assets/images/claim/claimedIcon.svg"
-										iconWidth={24}
-										iconHeight={20}
-										onClick={() => openClaimModal(token)}
-										className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
-									>
-										<p className="text-space-green flex-[2] font-medium text-sm">Claimed!</p>
-									</ClaimedButton>
-								)}
-							</Action>
-						</div>
-					</div>
-					<Markdown content={token.notes} />
-				</span>
-				<div
-					className={
-						'bg-gray30 w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between'
-					}
-				>
-					<div className="flex gap-x-2 items-center text-xs sm:text-sm">
-						<p className="text-gray100">
-							<span className="text-white">{numberWithCommas(token.maxNumberOfClaims - token.numberOfClaims)} </span> of{' '}
-							<span className="text-white"> {numberWithCommas(token.maxNumberOfClaims)} </span> are left to claim on
-							{' ' + token.chain.chainName}
-						</p>
-						<Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
-					</div>
             <div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
               <Action className={'w-full sm:w-auto items-center sm:items-end '}>
                 {/* todo migrate buttom logic*/}
@@ -228,18 +171,11 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
 };
 
 const FinalVersionCard = () => {
-	return (
-		<div className="token-tap__final-version-container w-full h-60 bg-gray20 rounded-xl relative">
-			<div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2">
-				<p className="token-tap__final-version-card__text text-gradient-primary text-xs font-semibold">
-					The Final version that contains more tokens will be Launched on May 2023.
-				</p>
-				<p className="token-tap__final-version-card__read-more text-gray100 underline text-xs font-semibold cursor-pointer">
-					Read More
-				</p>
-			</div>
-		</div>
-	);
+  return (
+    <div className="token-tap__final-version-container w-full h-60 bg-gray20 rounded-xl relative">
+      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2"></div>
+    </div>
+  );
 };
 
 export default TokensList;
