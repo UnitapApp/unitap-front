@@ -11,6 +11,8 @@ import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from 'types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from '../../../../routes';
 import { UserProfileContext } from 'hooks/useUserProfile';
+import { BigNumber } from '@ethersproject/bignumber';
+
 // import { StaticJsonRpcProvider } from '@ethersproject/providers';
 // import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
 // import JSBI from 'jsbi';

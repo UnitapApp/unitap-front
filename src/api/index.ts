@@ -71,7 +71,7 @@ export async function getWeeklyChainClaimLimitAPI(token: string) {
 	const response = await axiosInstance.get<Settings>('/api/v1/settings/', {
 		headers: {},
 	});
-	return response.data.weeklyChainClaimLimit;
+	return response.data;
 }
 
 export async function getRemainingClaimsAPI(token: string) {
