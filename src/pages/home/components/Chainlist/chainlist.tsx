@@ -72,7 +72,7 @@ const ChainList = () => {
 					</div>
 				)}
 
-				{!chainList.length || isGasTapAvailable ? (
+				{!chainList.length || !isGasTapAvailable ? (
 					<>
 						{!!chainListMemo.length && (
 							<ChainCard
@@ -166,7 +166,11 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 
 	return (
 		<div key={chain.chainId}>
-			<div className="chain-card flex flex-col items-center justify-center w-full mb-4">
+			<div
+				className={`chain-card ${
+					isHighlighted ? 'before:!inset-[1.5px] p-0 gradient-outline-card mb-20' : 'mb-4'
+				} rounded-xl flex flex-col items-center justify-center w-full`}
+			>
 				<div
 					className={`pt-4 pr-6 pb-4 pl-3 w-full ${
 						isHighlighted ? 'bg-g-primary-low' : 'bg-gray20'
