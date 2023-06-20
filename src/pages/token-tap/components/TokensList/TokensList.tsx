@@ -1,4 +1,4 @@
-import React, { Fragment, FC, useContext } from 'react';
+import React, { Fragment, FC, useContext, useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
@@ -10,6 +10,7 @@ import { getChainIcon } from 'utils';
 import { Token } from '../../../../types';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
+import { useLocation } from 'react-router-dom';
 
 const Action = styled.div`
 	display: flex;
@@ -37,8 +38,31 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const TokensList = () => {
-	const { tokensList, tokensListLoading } = useContext(TokenTapContext);
+	const { tokensList, tokensListLoading, tokenListSearchResult } = useContext(TokenTapContext);
 	const windowSize = window.innerWidth;
+	const [highlightedToken, setHighlightedToken] = useState('');
+
+	const location = useLocation();
+
+	const tokenListMemo = useMemo(
+		() =>
+			tokenListSearchResult.sort((a, b) => {
+				const lowerHighlightChainName = highlightedToken.toLowerCase();
+
+				if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+				if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
+
+				return 0;
+			}),
+		[tokenListSearchResult, highlightedToken],
+	);
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(location.search);
+		const highlightedChain = urlParams.get('highlightedToken');
+
+		setHighlightedToken(highlightedChain || '');
+	}, [location.search, setHighlightedToken]);
 
 	return (
 		<div className="tokens-list-wrapper py-6 mb-20 w-full">
@@ -47,10 +71,18 @@ const TokensList = () => {
 					Loading...
 				</div>
 			)}
-			{tokensList.map((token) => {
-				return <TokenCard token={token} key={token.id} />;
-			})}
-			{tokensList.length === 0 && tokensList.length && (
+			{!!tokenListMemo.length && (
+				<TokenCard
+					isHighlighted={tokenListMemo[0].name.toLowerCase() === highlightedToken.toLowerCase()}
+					token={tokenListMemo[0]}
+				/>
+			)}
+
+			{tokenListMemo.slice(1).map((token) => (
+				<TokenCard token={token} key={token.id} />
+			))}
+
+			{tokenListSearchResult.length === 0 && !!tokensList.length && (
 				<Icon
 					className="mb-4"
 					iconSrc={
@@ -64,12 +96,10 @@ const TokensList = () => {
 	);
 };
 
-const TokenCard: FC<{ token: Token }> = ({ token }) => {
+const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
 	const { openClaimModal } = useContext(TokenTapContext);
 
-	const addAndSwitchToChain = useSelectChain();
 	const { account } = useWeb3React();
-	const active = !!account;
 
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
@@ -77,9 +107,17 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
 
 	return (
 		<div key={token.id}>
-			<div className="token-card flex flex-col items-center justify-center w-full mb-4">
+			<div
+				className={`token-card flex ${
+					isHighlighted ? 'before:!inset-[3px] p-0 gradient-outline-card mb-20' : 'mb-4'
+				} flex-col items-center justify-center w-full mb-4`}
+			>
 				<span className="flex flex-col w-full">
-					<div className="pt-4 pr-6 pb-4 pl-3 bg-gray40 w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl">
+					<div
+						className={`pt-4 pr-6 pb-4 pl-3 ${
+							isHighlighted ? 'bg-g-primary-low' : 'bg-gray40'
+						} w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl`}
+					>
 						<div onClick={onTokenClicked} className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
 							<span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
 								<img className="chain-logo w-auto h-full" src={token.imageUrl} alt="chain logo" />
@@ -125,12 +163,12 @@ const TokenCard: FC<{ token: Token }> = ({ token }) => {
 							</Action>
 						</div>
 					</div>
-					<Markdown content={token.notes} />
+					<Markdown isHighlighted={isHighlighted} content={token.notes} />
 				</span>
 				<div
-					className={
-						'bg-gray30 w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between'
-					}
+					className={`${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray30'
+					} w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between`}
 				>
 					<div className="flex gap-x-2 items-center text-xs sm:text-sm">
 						<p className="text-gray100">
