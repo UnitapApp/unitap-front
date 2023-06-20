@@ -140,7 +140,7 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
               <p className="text-gray100 text-[10px]">moshakhas kardane barande barande in</p>
               <PrizeCardTimer startTime={createdAt} FinishTime={deadline} />
             </div>
-            <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
+            <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full prize-tap-enroll">
               {' '}
               <div className="relative w-full">
                 <p> Enroll</p>{' '}
@@ -182,6 +182,9 @@ const PrizeCardTimer = ({ startTime, FinishTime }: PrizeCardTimerProps) => {
   useEffect(() => {
     // calculate time difference between now and deadline
     const diff = deadline.getTime() - now.getTime();
+    if (diff <= 0) {
+      return;
+    }
     // time calculations for days, hours, minutes and seconds
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

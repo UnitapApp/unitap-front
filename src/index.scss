@@ -430,3 +430,9 @@ body {
   @apply bg-no-repeat p-4 pl-6 pr-0;
   background-image: url("../public/assets/images/prize-tap/cover.svg");
 }
+
+
+.prize-tap-header-bg {
+  background-image: url("../public/assets/images/prize-tap/header-bg.svg");
+  @apply bg-no-repeat bg-cover bg-center;
+}
