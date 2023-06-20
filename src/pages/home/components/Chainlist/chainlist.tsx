@@ -3,7 +3,7 @@ import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
 import { ClaimContext } from 'hooks/useChainList';
-import { formatWeiBalance, numberWithCommas } from 'utils/numbers';
+import { formatChainBalance, numberWithCommas } from 'utils/numbers';
 import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
@@ -239,7 +239,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 									onClick={() => openClaimModal(chain.pk)}
 									className="text-sm m-auto"
 								>
-									<p>{`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}</p>
+									<p>{`Claim ${formatChainBalance(chain.maxClaimAmount, chain.symbol)} ${chain.symbol}`}</p>
 								</ClaimButton>
 							) : (
 								<ClaimButton
