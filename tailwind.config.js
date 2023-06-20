@@ -58,6 +58,7 @@ module.exports = {
 				'dark-space-green': '#274641',
 				'disabled-bg': '#C0C0C0',
 				'disabled-text': '#939393',
+				'secondary-text': '#997EA4',
 			},
 
 			borderWidth: {
@@ -70,6 +71,7 @@ module.exports = {
 				'gastap-texture': "url('../public/assets/images/landing/gastap-texture.png')",
 				'tokentap-texture': "url('../public/assets/images/landing/tokentap-texture.png')",
 				'prizetap-texture': "url('../public/assets/images/landing/prizetap-texture.png')",
+				'learntap-texture': "url('../public/assets/images/landing/prize-tap-bg.svg')",
 				'launchtap-texture': "url('../public/assets/images/landing/launchtap-texture.png')",
 				'staketap-texture': "url('../public/assets/images/landing/staketap-texture.png')",
 				'what-is-unitap': "url('../public/assets/images/landing/what-is-unitap.png')",

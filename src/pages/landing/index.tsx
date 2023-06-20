@@ -64,13 +64,13 @@ const Landing: FC = () => {
 			name: 'Learn Tap',
 			icon: 'learntap-icon.png',
 			description: 'Where users can learn to use web 3 technologies',
-			class: '',
+			class: 'after:bg-learntap-texture after:inset-0',
 			iconSize: 'w-6',
 		},
 		{
 			name: 'Stake Tap',
 			icon: 'staketap-icon.png',
-			description: 'A public good staking platform where users can earn rewards by staking their assets',
+			description: 'Stake, Earn and simultaneously Donate to public good',
 			class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
 			iconSize: 'w-7 h-8',
 		},
@@ -136,13 +136,13 @@ const Landing: FC = () => {
 				<section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
 					<Link className={`flex--1 ${isGasTapAvailable ? '' : 'pointer-events-none'}`} to={RoutePath.FAUCET}>
 						<Widget
-							description={'Claim gas fees for any reason and make transactions easily'}
+							description={'Enjoy surfing Web3 without the worry of gas fees'}
 							icon={'gastap-icon.svg'}
 							iconSize={'w-7'}
 							className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
 							title={'Gas Tap'}
 							buttonTitle={'Go to Tap'}
-							buttonClass={'gradient-outline-button text-gray100'}
+							buttonClass={'gradient-outline-button before:inset-[2px] text-gray100'}
 						>
 							<div className="relative">
 								<div className={isGasTapAvailable ? '' : 'blur-md'}>
@@ -184,8 +184,8 @@ const Landing: FC = () => {
 								iconSize={'w-8'}
 								className={'h-full after:bg-tokentap-texture hover:bg-gray00 cursor-pointer flex-1 '}
 								title={'Token Tap'}
-								buttonTitle={'Go to Tap'}
-								buttonClass={'gradient-outline-button text-gray100'}
+								buttonTitle={'Beta'}
+								buttonClass={'green-text-button text-gray100'}
 							>
 								{tokensList.length > 0 &&
 									tokensList.slice(0, 3).map((token, key) => (
@@ -205,13 +205,13 @@ const Landing: FC = () => {
 
 					<section className={'flex--1'}>
 						<Widget
-							description={'Where everyone has chances to win larger prizes'}
-							className={'after:bg-prizetap-texture h-full after:w-full after:-top-8'}
+							description={'Give it a shot and try your chance at winning valuable prizes'}
+							className={'after:bg-prizetap-texture h-full after:w-full after:-top-4'}
 							icon={'prizetap-icon.png'}
 							iconSize={'w-8 h-7'}
 							title={'Prize Tap'}
 							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gray100'}
+							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
 						></Widget>
 					</section>
 
@@ -241,7 +241,7 @@ const Landing: FC = () => {
 							title={tap.name}
 							unClickable
 							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gray100'}
+							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
 						></Widget>
 					))}
 				</section>

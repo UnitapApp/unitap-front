@@ -61,7 +61,7 @@ const Widget = (props: WidgetProps) => {
 						</div>
 					)}
 				</header>
-				{description && <p className={'text-gray100 text-xs font-normal py-4'}>{description}</p>}
+				{description && <p className={'text-secondary-text text-xs leading-loose font-normal py-4'}>{description}</p>}
 			</section>
 			<main className={'relative z-10'}>{children}</main>
 		</div>
