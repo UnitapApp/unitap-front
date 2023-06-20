@@ -72,7 +72,7 @@ const ChainList = () => {
 					</div>
 				)}
 
-				{!chainList.length || !isGasTapAvailable ? (
+				{!chainList.length || isGasTapAvailable ? (
 					<>
 						{!!chainListMemo.length && (
 							<ChainCard
