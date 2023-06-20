@@ -5,7 +5,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
 import { ClaimNonEVMModalState, ClaimReceiptState } from 'types';
 
-import { formatWeiBalance } from 'utils/numbers';
+import { formatChainBalance, formatWeiBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { getChainClaimIcon, getTxUrl } from 'utils';
@@ -152,12 +152,14 @@ const ClaimNonEVMModalContent = () => {
 					{claimNonEVMLoading ? (
 						<p>
 							{' '}
-							Claiming {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol}{' '}
+							Claiming {formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)}{' '}
+							{activeNonEVMChain!.symbol}{' '}
 						</p>
 					) : (
 						<p>
 							{' '}
-							Claim {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol}{' '}
+							Claim {formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)}{' '}
+							{activeNonEVMChain!.symbol}{' '}
 						</p>
 					)}
 				</button>
@@ -195,7 +197,7 @@ const ClaimNonEVMModalContent = () => {
 	function renderSuccessBody() {
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I claimed ${formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} on ${
+				`I claimed ${formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)} on ${
 					activeNonEVMChain!.chainName
 				} on Unitap, Claim yours at`,
 			)}&url=${encodeURIComponent('unitap.app')}`;
@@ -337,7 +339,9 @@ const ClaimNonEVMModal = () => {
 
 	return (
 		<Modal
-			title={`Claim ${formatWeiBalance(activeNonEVMChain.maxClaimAmount)} ${activeNonEVMChain.symbol}`}
+			title={`Claim ${formatChainBalance(activeNonEVMChain.maxClaimAmount, activeNonEVMChain.symbol)} ${
+				activeNonEVMChain.symbol
+			}`}
 			size="small"
 			isOpen={claimNonEVMModalStatus !== ClaimNonEVMModalState.CLOSED}
 			closeModalHandler={closeClaimNonEVMModal}
