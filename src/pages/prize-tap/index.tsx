@@ -8,6 +8,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
 import Footer from 'components/common/Footer/footer';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const PrizeTap = () => {
   return (
@@ -69,16 +70,47 @@ const PrizesList = () => {
   //   },
   // ]);
 
+  const [highlightedPrize, setHighlightedPrize] = useState('');
+
+  const location = useLocation();
+
+  const prizesSortListMemo = useMemo(
+    () =>
+      prizes.sort((a, b) => {
+        const lowerHighlightChainName = highlightedPrize.toLowerCase();
+
+        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
+
+        return 0;
+      }),
+    [prizes, highlightedPrize],
+  );
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const highlightedPrize = urlParams.get('icebox');
+
+    setHighlightedPrize(highlightedPrize || '');
+  }, [location.search, setHighlightedPrize]);
+
   return (
     <div className="grid md:flex-row wrap w-full mb-4 gap-4">
-      {prizes.map((prize) => (
+      {!!prizesSortListMemo.length && (
+        <PrizeCard
+          prize={prizesSortListMemo[0]}
+          isHighlighted={highlightedPrize.toLocaleLowerCase() === prizes[0].name.toLocaleLowerCase()}
+        />
+      )}
+
+      {prizesSortListMemo.slice(1).map((prize) => (
         <PrizeCard key={prize.pk} prize={prize} />
       ))}
     </div>
   );
 };
 
-const PrizeCard = ({ prize }: { prize: Prize }) => {
+const PrizeCard = ({ prize, isHighlighted }: { prize: Prize; isHighlighted?: boolean }) => {
   const {
     pk,
     imageUrl,
@@ -95,110 +127,84 @@ const PrizeCard = ({ prize }: { prize: Prize }) => {
   } = prize;
   const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
   return (
-    <div className={pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'}>
+    <div className={`${pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
       <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
-        <div className="prize-card__image">
-          <div className="relative prize-card__container border-2 border-gray40 h-[202px] w-[202px] flex w-full bg-gray30 justify-center items-center p-5 mb-5 lg:mb-0 rounded-xl">
-            <img src={imageUrl} alt={name} />
-            <div className="text-gray100 text-[10px] p-2 flex gap-1 justify-center absolute bottom-[-18px] border-2 border-gray70 bg-gray30 items-center rounded-[6px]">
-              <Icon
-                iconSrc={chain.logoUrl}
-                onClick={() => window.open(twitterUrl, '_blank')}
-                width="20px"
-                height="16px"
-                hoverable
-              />
-              <p>{chain.chainName}</p>
+        <div className="prize-card__image relative">
+          <div className={isHighlighted ? 'before:!inset-[2px] p-[2px] gradient-outline-card' : ''}>
+            <div
+              className={`prize-card__container h-[212px] w-[212px] flex ${
+                isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
+              } justify-center items-center p-5 rounded-xl`}
+            >
+              <img src={imageUrl} alt={name} />
             </div>
           </div>
+          <div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50  border-2 border-gray70 min-w-[130px] justify-center">
+            <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
+            <p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
+          </div>
         </div>
-        <div className="card prize-card__content z-10 relative bg-gray30 border-2 border-gray40 ; rounded-xl p-4 pt-3 flex flex-col w-full ">
-          <span className="flex justify-between w-full mb-3">
-            <p className="prize-card__title text-white text-sm">{name}</p>
-            {/* <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
-              {enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}
-            </p> */}
-            <div className="prize-card__links flex gap-4">
-              <Icon
-                iconSrc="assets/images/prize-tap/twitter-logo.svg"
-                onClick={() => window.open(twitterUrl, '_blank')}
-                width="20px"
-                height="16px"
-                hoverable
-              />
-              <Icon
-                iconSrc="assets/images/prize-tap/discord-logo.svg"
-                onClick={() => window.open(discordUrl, '_blank')}
-                width="20px"
-                height="16px"
-                hoverable
-              />
-            </div>
-          </span>
-          <span className="flex justify-between w-full mb-4">
-            <p className="prize-card__source text-xs text-gray90">
-              by{' '}
-              <span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
-                {creator}
-              </span>
-            </p>
-          </span>
-          <p className="prize-card__description text-gray100 text-xs leading-7 mb-6 grow shrink-0 basis-auto">
-            {description}
-          </p>
-          <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-            <div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
-              <div>
-                <p className="text-white text-[10px]">Winner in:</p>
-                <p className="text-gray100 text-[10px] mt-1">1,398 / 1,400 people enrolled</p>
-              </div>
-              <PrizeCardTimer startTime={createdAt} FinishTime={deadline} />
-            </div>
-            <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
-              {' '}
-              <div className="relative w-full">
-                <p> Enroll</p>{' '}
+        <div className={isHighlighted ? 'before:!inset-[3px] p-[2px] gradient-outline-card w-full' : 'w-full'}>
+          <div
+            className={`card prize-card__content z-10 relative h-full md:h-[212px] ${
+              isHighlighted ? 'bg-g-primary-low' : 'bg-gray30 border-2 border-gray40'
+            } rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
+          >
+            <span className="flex justify-between w-full mb-3">
+              <p className="prize-card__title text-white text-sm">{name}</p>
+              {/* <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
+                {enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}
+              </p> */}
+              <div className="prize-card__links flex gap-4">
                 <Icon
-                  className="absolute right-0 top-0"
-                  iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-                  width="27px"
-                  height="24px"
+                  iconSrc="assets/images/prize-tap/twitter-logo.svg"
+                  onClick={() => window.open(twitterUrl, '_blank')}
+                  width="20px"
+                  height="16px"
+                  hoverable
+                />
+                <Icon
+                  iconSrc="assets/images/prize-tap/discord-logo.svg"
+                  onClick={() => window.open(discordUrl, '_blank')}
+                  width="20px"
+                  height="16px"
+                  hoverable
                 />
               </div>
-            </ClaimButton>
-          </span>
-
-          <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 mt-3 ">
-            <div className="overflow-hidden relative flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl min-h-[48px] winner-box-bg">
-              <p className="text-[10px]">Congratulations to @MZMN for being the winner!</p>
-              <Icon
-                style={{ opacity: '.3' }}
-                className="absolute right-0"
-                iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-                width="187px"
-                height="187px"
-              />
-            </div>
-          </span>
-
-          <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 mt-3 ">
-            <div className="overflow-hidden relative flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl min-h-[48px] winner-box-bg">
-              <p className="text-[10px]">Congratulations @MZMN ! claim your prize now.</p>
-              <Icon
-                style={{ opacity: '.3' }}
-                className="absolute right-0"
-                iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-                width="187px"
-                height="187px"
-              />
-            </div>
-            <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
-              {' '}
-              <div className="relative w-full">
-                <p> Claim Prize</p>{' '}
+            </span>
+            <span className="flex justify-between w-full mb-4">
+              <p className="prize-card__source text-xs text-gray90">
+                by{' '}
+                <span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
+                  {creator}
+                </span>
+              </p>
+            </span>
+            <p className="prize-card__description text-gray100 text-xs leading-7 mb-6 grow shrink-0 basis-auto">
+              {description}
+            </p>
+            <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
+              <div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+                <div className="flex flex-col gap-1">
+                  <p className="text-[10px] text-white">Winner in:</p>
+                  <p className="text-[10px] text-gray100">1,398 / 1,400 people enrolled</p>
+                </div>
+                <PrizeCardTimer startTime={createdAt} FinishTime={deadline} />
               </div>
-            </ClaimButton>
-          </span>
+              <ClaimButton className="min-w-[552px] md:!w-[352px] !w-full">
+                {' '}
+                <div className="relative w-full">
+                  <p> Enroll</p>{' '}
+                  <Icon
+                    className="absolute right-0 top-0"
+                    iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                    width="27px"
+                    height="24px"
+                  />
+                </div>
+              </ClaimButton>
+            </span>
+          </div>
         </div>
       </div>
     </div>
