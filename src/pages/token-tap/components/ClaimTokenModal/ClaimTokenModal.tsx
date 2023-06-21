@@ -238,12 +238,12 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
 				) : relatedClaimedTokenRecipt ? (
 					<div className="text-left text-white">
-						<p className="text-lg mb-4 text-center leading-loose">Your claim is ready.</p>
-						<p className="text-sm mb-4">If you have not already claimed your tokens, you can claim them now.</p>
-						<p className="text-sm mb-4">
+						<p className="text-lg mb-2 text-center leading-loose">Your claim is ready.</p>
+						<p className="text-xs mb-2">If you have not already claimed your tokens, you can claim them now.</p>
+						<p className="text-xs mb-2">
 							You will need to sign a wallet transaction and pay a small gas fee to claim tokens.
 						</p>
-						<p className="text-sm mb-6">
+						<p className="text-xs mb-6">
 							If you do not have sufficient gas, please visit{' '}
 							<Link className="text-blue-500" to="/gas-tap">
 								Gas Tap
