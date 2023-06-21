@@ -7,6 +7,7 @@ import TokensList from './components/TokensList/TokensList';
 import SearchInput from './components/SearchInput/searchInput';
 import ClaimTokenModal from './components/ClaimTokenModal/ClaimTokenModal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
+import ClaimNonEVMModal from 'pages/home/components/ClaimNonEVMModal/claimNonEVMModal';
 
 const TokenTap = () => {
 	return (
@@ -19,6 +20,7 @@ const TokenTap = () => {
 			</div>
 			<Footer />
 
+			<ClaimNonEVMModal />
 			<ClaimTokenModal />
 			<BrightConnectionModal />
 		</>

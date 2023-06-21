@@ -7,10 +7,11 @@ import Icon from 'components/basic/Icon/Icon';
 import { useWeb3React } from '@web3-react/core';
 import useSelectChain from 'hooks/useSelectChain';
 import { getChainIcon } from 'utils';
-import { Token } from '../../../../types';
+import { ChainType, ClaimReceipt, ClaimReceiptState, Token } from 'types';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
+import { ClaimContext } from 'hooks/useChainList';
 
 const Action = styled.div`
 	display: flex;
@@ -96,6 +97,127 @@ const TokensList = () => {
 	);
 };
 
+const BtcTokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
+	const { openClaimModal: openGasClaimModal, activeClaimHistory } = useContext(ClaimContext);
+
+	const { account } = useWeb3React();
+
+	const onTokenClicked = () => {
+		window.open(token.distributorUrl);
+	};
+
+	const chain = token.chain;
+
+	return (
+		<div key={token.id}>
+			<div
+				className={`token-card flex ${
+					isHighlighted ? 'before:!inset-[3px] p-0 gradient-outline-card mb-20' : 'mb-4'
+				} flex-col items-center justify-center w-full mb-4`}
+			>
+				<span className="flex flex-col w-full">
+					<div
+						className={`pt-4 pr-6 pb-4 pl-3 ${
+							isHighlighted ? 'bg-g-primary-low' : 'bg-gray40'
+						} w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl`}
+					>
+						<div onClick={onTokenClicked} className="hover:cursor-pointer items-center flex mb-6 sm:mb-0">
+							<span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
+								<img className="chain-logo w-auto h-full" src={token.imageUrl} alt="chain logo" />
+							</span>
+							<span className="w-max">
+								<p className="text-white text-center md:text-left flex mb-2" data-testid={`chain-name-${token.id}`}>
+									{token.name}
+									<img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
+								</p>
+								<p className="text-xs text-white font-medium">{token.distributor}</p>
+							</span>
+						</div>
+
+						<div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
+							<Action className={'w-full sm:w-auto items-center sm:items-end '}>
+								{activeClaimHistory.find(
+									(claim: ClaimReceipt) => claim.chain.pk === chain.pk && claim.status === ClaimReceiptState.VERIFIED,
+								) ? (
+									<ClaimedButton
+										data-testid={`chain-claimed-${chain.pk}`}
+										mlAuto
+										icon="../assets/images/claim/claimedIcon.svg"
+										iconWidth={24}
+										iconHeight={20}
+										onClick={() => openGasClaimModal(chain.pk)}
+										className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+									>
+										<p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
+									</ClaimedButton>
+								) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
+									<NoCurrencyButton disabled fontSize="13px">
+										Empty
+									</NoCurrencyButton>
+								) : !activeClaimHistory.find(
+										(claim: ClaimReceipt) => claim.chain.pk === chain.pk && claim.status !== ClaimReceiptState.REJECTED,
+								  ) ? (
+									<ClaimButton
+										data-testid={`chain-show-claim-${chain.pk}`}
+										mlAuto
+										onClick={() => openGasClaimModal(chain.pk)}
+										className="text-sm m-auto"
+									>
+										<p>{`Claim ${token.amount} ${token.token}`}</p>
+									</ClaimButton>
+								) : (
+									<ClaimButton
+										data-testid={`chain-show-claim-${chain.pk}`}
+										mlAuto
+										onClick={() => openGasClaimModal(chain.pk)}
+										className="text-sm m-auto"
+									>
+										<p>Pending ...</p>
+									</ClaimButton>
+								)}
+							</Action>
+						</div>
+					</div>
+					<Markdown isHighlighted={isHighlighted} content={token.notes} />
+				</span>
+				<div
+					className={`${
+						isHighlighted ? 'bg-g-primary-low' : 'bg-gray30'
+					} w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between`}
+				>
+					<div className="flex gap-x-2 items-center text-xs sm:text-sm">
+						<p className="text-gray100">
+							<span className="text-white">{numberWithCommas(token.maxNumberOfClaims - token.numberOfClaims)} </span> of{' '}
+							<span className="text-white"> {numberWithCommas(token.maxNumberOfClaims)} </span> are left to claim on
+							{' ' + token.chain.chainName}
+						</p>
+						<Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
+					</div>
+
+					<div className="flex gap-x-6 items-center">
+						<a target="_blank" rel="noreferrer" href={token.twitterUrl}>
+							<Icon
+								className="cursor-pointer"
+								iconSrc="assets/images/token-tap/twitter-icon.svg"
+								width="auto"
+								height="20px"
+							/>
+						</a>
+						<a target="_blank" rel="noreferrer" href={token.discordUrl}>
+							<Icon
+								className="cursor-pointer"
+								iconSrc="assets/images/token-tap/discord-icon.svg"
+								width="auto"
+								height="20px"
+							/>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
 	const { openClaimModal } = useContext(TokenTapContext);
 
@@ -104,6 +226,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
 	};
+
+	if (token.chain.nativeCurrencyName === 'BTC') {
+		return <BtcTokenCard token={token} isHighlighted={isHighlighted} />;
+	}
 
 	return (
 		<div key={token.id}>
