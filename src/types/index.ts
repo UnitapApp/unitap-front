@@ -24,6 +24,12 @@ export type Chain = {
   blockScanAddress: string;
 };
 
+export type PrizeChain = {
+  chainId: string;
+  chainName: string;
+  logoUrl:string
+}
+
 export type Prize = {
   pk: PK;
   imageUrl: string;
@@ -36,8 +42,11 @@ export type Prize = {
   description: string;
   createdAt: string;
   deadline: string;
-  name: string
-};
+  name: string;
+  chainName: string;
+  chainLogoUrl: string;
+  chain: PrizeChain;
+}
 
 export enum BrightIdVerificationStatus {
   PENDING = '0',
