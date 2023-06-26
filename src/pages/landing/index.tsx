@@ -10,9 +10,13 @@ import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
 import { getTotalEVMNetworks } from '../../utils';
 import { PrimaryOutlinedButton } from '../../components/basic/Button/button';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import NotAvailableTap from './components/notAvailableTap';
 
 const Landing: FC = () => {
 	const { chainList } = useContext(ClaimContext);
+
+	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
 
@@ -20,10 +24,6 @@ const Landing: FC = () => {
 
 	const maxCount = useMemo(() => batchSize || 0, [batchSize]);
 	const remainingCount = useMemo(() => (maxCount ? maxCount - (batchSoldCount || 0) : 0), [maxCount, batchSoldCount]);
-
-	function numberWithCommas(x: number) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
 
 	const [socialLinks] = useState([
 		{
@@ -141,42 +141,45 @@ const Landing: FC = () => {
 				</section>
 
 				<section id="home-taps" className={'flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between'}>
-					<Link className={'flex--1'} to={RoutePath.FAUCET}>
+					<Link className={`flex--1 ${isGasTapAvailable ? '' : 'pointer-events-none'}`} to={RoutePath.FAUCET}>
 						<Widget
-							description={
-								'Claim gas fees for any reason and make transactions Enjoy surfing Web3 without the worry of gas fees'
-							}
+							description={'Enjoy surfing Web3 without the worry of gas fees'}
 							icon={'gastap-icon.svg'}
 							iconSize={'w-7'}
 							className={'after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full'}
 							title={'Gas Tap'}
 							buttonTitle={'Go to Tap'}
-							buttonClass={'gradient-outline-button text-gray100'}
+							buttonClass={'gradient-outline-button before:inset-[2px] text-gray100'}
 						>
-							{sortedChainList.length > 0 && (
-								<>
-									<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
-									<ul className={'text-white'}>
-										{sortedChainList.slice(0, 3).map((token, index) => (
-											<li
-												key={token.chainId}
-												className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
-											>
-												<div className={'flex gap-2 items-center'}>
-													<p>#{index + 1}</p>
-													<span className="token-logo-container w-6 h-6 flex items-center justify-center">
-														<img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
-													</span>
-													<p>{token.chainName}</p>
-												</div>
-												<p>
-													{token.totalClaimsSinceLastMonday} <span>claims</span>
-												</p>
-											</li>
-										))}
-									</ul>
-								</>
-							)}
+							<div className="relative">
+								<div className={isGasTapAvailable ? '' : 'blur-md'}>
+									{sortedChainList.length > 0 && (
+										<>
+											<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
+											<ul className={'text-white'}>
+												{sortedChainList.slice(0, 3).map((token, index) => (
+													<li
+														key={token.chainId}
+														className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
+													>
+														<div className={'flex gap-2 items-center'}>
+															<p>#{index + 1}</p>
+															<span className="token-logo-container w-6 h-6 flex items-center justify-center">
+																<img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
+															</span>
+															<p>{token.chainName}</p>
+														</div>
+														<p>
+															{token.totalClaimsSinceLastMonday} <span>claims</span>
+														</p>
+													</li>
+												))}
+											</ul>
+										</>
+									)}
+								</div>
+								{isGasTapAvailable || <NotAvailableTap />}
+							</div>
 						</Widget>
 					</Link>
 
