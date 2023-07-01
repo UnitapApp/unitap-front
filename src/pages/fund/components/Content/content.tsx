@@ -14,6 +14,7 @@ import useWalletActivation from '../../../../hooks/useWalletActivation';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
+import { formatWeiBalance, fromWei } from 'utils/numbers';
 
 const Content: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -22,6 +23,7 @@ const Content: FC = () => {
 	const { tryActivation } = useWalletActivation();
 
 	const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
+	const [balance, setBalance] = useState<string | number>('');
 
 	const location = useLocation();
 
@@ -151,6 +153,17 @@ const Content: FC = () => {
 		return !isRightChain ? 'Switch Network' : 'Submit Contribution';
 	}, [active, isRightChain, loading]);
 
+	useEffect(() => {
+		if (!isRightChain || !account) {
+			setBalance('');
+			return;
+		}
+
+		provider?.getBalance(account).then((res) => {
+			setBalance(fromWei(res.toString()).slice(0, 6));
+		});
+	}, [isRightChain, account, provider]);
+
 	return (
 		<div className="content-wrapper flex justify-center">
 			<Modal titleLeft="Select Chain" isOpen={modalState} size="medium" closeModalHandler={closeModalHandler}>
@@ -173,6 +186,10 @@ const Content: FC = () => {
 						height="auto"
 					/>
 					<p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+
+					<p className="text-gray100 text-xs mb-3 z-1">
+						{!!balance && balance + ' ' + selectedChain?.symbol + ' is available in your wallet'}
+					</p>
 
 					<div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
 						<div
