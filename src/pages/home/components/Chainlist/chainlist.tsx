@@ -58,7 +58,7 @@ const ChainList = () => {
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
-		const highlightedChain = urlParams.get('highlightedChain');
+		const highlightedChain = urlParams.get('hc');
 
 		setHighlightedChain(highlightedChain || '');
 	}, [location.search, setHighlightedChain]);

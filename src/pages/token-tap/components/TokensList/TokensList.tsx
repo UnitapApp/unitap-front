@@ -59,7 +59,7 @@ const TokensList = () => {
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
-		const highlightedChain = urlParams.get('highlightedToken');
+		const highlightedChain = urlParams.get('hc');
 
 		setHighlightedToken(highlightedChain || '');
 	}, [location.search, setHighlightedToken]);

@@ -21,9 +21,9 @@ const SearchInput = ({ className = '' }: SearchInputProps) => {
 		const urlParams = new URLSearchParams();
 
 		if (phrase) {
-			urlParams.set('tokenQuery', phrase);
+			urlParams.set('q', phrase);
 		} else {
-			urlParams.delete('tokenQuery');
+			urlParams.delete('q');
 		}
 
 		const newURL = `${location.pathname}?${urlParams.toString()}`;
@@ -42,7 +42,7 @@ const SearchInput = ({ className = '' }: SearchInputProps) => {
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
-		const queryParam = urlParams.get('tokenQuery');
+		const queryParam = urlParams.get('q');
 		if (queryParam) {
 			setSearchPhraseInput(queryParam);
 			changeSearchPhrase!(queryParam);
