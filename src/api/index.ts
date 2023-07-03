@@ -33,19 +33,6 @@ export async function claimMax(token: string, chainPk: number) {
 	return response.data;
 }
 
-export async function claimLightingAPI(token: string, chainPk: number, address: string) {
-	const response = await axiosInstance.post<ClaimReceipt>(
-		`/api/v1/chain/${chainPk}/claim-max/`,
-		{ lightningInvoice: address },
-		{
-			headers: {
-				Authorization: `Token ${token}`,
-			},
-		},
-	);
-	return response.data;
-}
-
 export async function claimMaxNonEVMAPI(token: string, chainPk: number, address: string) {
 	const response = await axiosInstance.post<ClaimReceipt>(
 		`/api/v1/chain/${chainPk}/claim-max/`,
@@ -128,10 +115,10 @@ export async function getClaimedTokensListAPI(token: string) {
 	return response.data;
 }
 
-export async function claimTokenAPI(token: string, tokenId: number) {
+export async function claimTokenAPI(token: string, tokenId: number, body?: any) {
 	const response = await axiosInstance.post<ClaimTokenResponse>(
 		`/api/tokentap/token-distribution/${tokenId}/claim/`,
-		{},
+		body ?? {},
 		{
 			headers: {
 				Authorization: `Token ${token}`,

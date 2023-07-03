@@ -18,12 +18,14 @@ export const TokenTapContext = createContext<{
 	claimTokenLoading: boolean;
 	openClaimModal: (token: Token) => void;
 	closeClaimModal: () => void;
-	claimToken: (token: Token) => void;
+	claimToken: (token: Token, body?: any) => void;
+	claimError: string | null;
 	claimTokenWithMetamaskResponse: any | null;
 	searchPhrase: string;
 	changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
 	tokenListSearchResult: Token[];
 }>({
+	claimError: null,
 	tokensList: [],
 	tokensListLoading: false,
 	claimTokenSignatureLoading: false,
@@ -46,6 +48,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const [userToken] = useToken();
 
 	const [tokensList, setTokensList] = useState<Token[]>([]);
+	const [claimError, setClaimError] = useState<string | null>(null);
+
 	const [tokensListLoading, setTokensListLoading] = useState<boolean>(false);
 	const [claimTokenSignatureLoading, setClaimTokenSignatureLoading] = useState<boolean>(false);
 	const [searchPhrase, setSearchPhrase] = useState<string>('');
@@ -141,27 +145,28 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	}, [userToken, provider, EVMTokenTapContract, callback]);
 
 	const claimToken = useCallback(
-		async (token: Token) => {
+		async (token: Token, body?: any) => {
 			if (!userToken) return;
+			setClaimError(null);
 			setClaimTokenSignatureLoading(true);
 			try {
-				const response = await claimTokenAPI(userToken, token.id);
+				const response = await claimTokenAPI(userToken, token.id, body);
 				setClaimedTokensList([...claimedTokensList, response]);
 				setClaimTokenSignatureLoading(false);
-			} catch (e) {
+			} catch (e: any) {
+				setClaimError(e.response?.data.message);
 				setClaimTokenSignatureLoading(false);
 			}
 		},
-		[userToken, claimedTokensList],
+		[userToken, claimedTokensList, setClaimError],
 	);
 
 	const openClaimModal = useCallback(
 		(token: Token) => {
 			setClaimTokenWithMetamaskResponse(null);
-			claimToken(token);
 			setSelectedTokenForClaim(token);
 		},
-		[claimToken, setSelectedTokenForClaim, setClaimTokenWithMetamaskResponse],
+		[setSelectedTokenForClaim, setClaimTokenWithMetamaskResponse],
 	);
 
 	const closeClaimModal = useCallback(() => {
@@ -187,6 +192,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	return (
 		<TokenTapContext.Provider
 			value={{
+				claimError,
 				tokensList,
 				tokenListSearchResult,
 				tokensListLoading,

@@ -5,7 +5,7 @@ import Navbar from 'components/common/Navbar/navbar';
 import Footer from 'components/common/Footer/footer';
 import TokensList from './components/TokensList/TokensList';
 import SearchInput from './components/SearchInput/searchInput';
-import ClaimTokenModal from './components/ClaimTokenModal/ClaimTokenModal';
+import ClaimTokenModal from './components/ClaimTokenModal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
 import ClaimNonEVMModal from 'pages/home/components/ClaimNonEVMModal/claimNonEVMModal';
 

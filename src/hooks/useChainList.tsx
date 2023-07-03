@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimLightingAPI, claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
+import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
 import {
 	BrightIdConnectionModalState,
 	BrightIdModalState,
@@ -212,11 +212,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 			setClaimNonEVMLoading(true);
 			try {
 				let correctAddress = getCorrectAddress(chain, address);
-				if (chain.symbol === 'BTC') {
-					await claimLightingAPI(userToken, chain.pk, correctAddress);
-				} else {
-					await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
-				}
+				await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
 				setTimeout(() => {
 					setClaimNonEVMLoading(false);
 				}, 1000);

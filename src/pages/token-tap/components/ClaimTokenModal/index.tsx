@@ -15,6 +15,7 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import { switchChain } from '../../../../utils/switchChain';
 import { Link } from 'react-router-dom';
+import ClaimLightningContent from './ClaimLightningContent';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -384,7 +385,11 @@ const ClaimTokenModal = () => {
 			closeModalHandler={closeClaimTokenModal}
 			isOpen={isOpen}
 		>
-			<ClaimTokenModalBody chain={selectedTokenForClaim.chain} />
+			{selectedTokenForClaim.chain.chainName === 'Lightning' ? (
+				<ClaimLightningContent chain={selectedTokenForClaim.chain} />
+			) : (
+				<ClaimTokenModalBody chain={selectedTokenForClaim.chain} />
+			)}
 		</Modal>
 	);
 };
