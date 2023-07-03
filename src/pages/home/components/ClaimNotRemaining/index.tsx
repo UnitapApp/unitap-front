@@ -45,7 +45,7 @@ const ClaimNotAvailable = () => {
 						);
 					})}
 			</div>
-			<div className="mt-7 text-center text-gray">Your Box is full for this round!</div>
+			<div className="mt-7 text-center text-gray">You have reached your claim limit for this round.</div>
 
 			<button className="w-full mt-20 py-3 border-2 cursor-not-allowed text-gray100 font-normal bg-gray10 border-gray50 rounded-xl">
 				Next Round in:
