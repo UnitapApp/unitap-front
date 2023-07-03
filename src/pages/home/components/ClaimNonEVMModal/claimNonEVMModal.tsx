@@ -123,6 +123,10 @@ const ClaimNonEVMModalContent = () => {
 					width="auto"
 					height="110px"
 				/>
+				<div className="mt-3 text-gray100 text-sm leading-5">
+					You have to create an invoice with the amount of 100 satoshi and paste it here. you can use any Lightning
+					wallet to do this. (Wallet of Satoshi, etc).
+				</div>
 				<div className="address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center">
 					<input
 						className="address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white"
