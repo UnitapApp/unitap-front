@@ -15,6 +15,7 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import { switchChain } from '../../../../utils/switchChain';
 import { Link } from 'react-router-dom';
+import ClaimLightningContent from './ClaimLightningContent';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -236,7 +237,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
 				) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
-				) : relatedClaimedTokenRecipt ? (
+				) : (
 					<div className="text-left text-white">
 						<p className="text-lg mb-2 text-center leading-loose">Your claim is ready.</p>
 						<p className="text-xs mb-2">If you have not already claimed your tokens, you can claim them now.</p>
@@ -251,8 +252,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 							.
 						</p>
 					</div>
-				) : (
-					''
 				)}
 				<Text width="100%" fontSize="14">
 					Wallet Address
@@ -384,7 +383,11 @@ const ClaimTokenModal = () => {
 			closeModalHandler={closeClaimTokenModal}
 			isOpen={isOpen}
 		>
-			<ClaimTokenModalBody chain={selectedTokenForClaim.chain} />
+			{selectedTokenForClaim.chain.chainName === 'Lightning' ? (
+				<ClaimLightningContent chain={selectedTokenForClaim.chain} />
+			) : (
+				<ClaimTokenModalBody chain={selectedTokenForClaim.chain} />
+			)}
 		</Modal>
 	);
 };

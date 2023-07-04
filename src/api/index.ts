@@ -113,10 +113,10 @@ export async function getClaimedTokensListAPI(token: string) {
 	return response.data;
 }
 
-export async function claimTokenAPI(token: string, tokenId: number) {
+export async function claimTokenAPI(token: string, tokenId: number, body?: any) {
 	const response = await axiosInstance.post<ClaimTokenResponse>(
 		`/api/tokentap/token-distribution/${tokenId}/claim/`,
-		{},
+		body ?? {},
 		{
 			headers: {
 				Authorization: `Token ${token}`,
@@ -124,4 +124,17 @@ export async function claimTokenAPI(token: string, tokenId: number) {
 		},
 	);
 	return response.data.signature;
+}
+
+export async function updateClaimFinished(token: string, claimId: number, txHash: string) {
+	const response = await axiosInstance.post<any>(
+		`/tokentap/claims-list/${claimId}/update/`,
+		{ txHash },
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+	return response.data;
 }

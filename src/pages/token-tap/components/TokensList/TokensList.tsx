@@ -1,13 +1,11 @@
-import React, { Fragment, FC, useContext, useState, useMemo, useEffect } from 'react';
+import React, { FC, useContext, useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, NoCurrencyButton, SecondaryButton } from 'components/basic/Button/button';
 import { numberWithCommas } from 'utils/numbers';
 import Icon from 'components/basic/Icon/Icon';
-import { useWeb3React } from '@web3-react/core';
-import useSelectChain from 'hooks/useSelectChain';
 import { getChainIcon } from 'utils';
-import { Token } from '../../../../types';
+import { Token } from 'types';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
@@ -97,13 +95,16 @@ const TokensList = () => {
 };
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
-	const { openClaimModal } = useContext(TokenTapContext);
-
-	const { account } = useWeb3React();
+	const { openClaimModal, claimedTokensList } = useContext(TokenTapContext);
 
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
 	};
+
+	const collectedToken = useMemo(
+		() => claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
+		[claimedTokensList, token],
+	);
 
 	return (
 		<div key={token.id}>
@@ -138,6 +139,29 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									<NoCurrencyButton disabled fontSize="13px">
 										Empty
 									</NoCurrencyButton>
+								) : collectedToken ? (
+									collectedToken.status === 'Pending' ? (
+										<ClaimButton
+											data-testid={`chain-pending-claim-${token.id}`}
+											mlAuto
+											onClick={() => openClaimModal(token)}
+											className="text-sm m-auto"
+										>
+											<p>{`Pending...`}</p>
+										</ClaimButton>
+									) : (
+										<ClaimedButton
+											data-testid={`chain-claimed-${token.id}`}
+											mlAuto
+											icon="../assets/images/landing/tokentap-icon.png"
+											iconWidth={24}
+											iconHeight={20}
+											onClick={() => openClaimModal(token)}
+											className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+										>
+											<p className="text-gradient-primary flex-[2] font-semibold text-sm">Claimed!</p>
+										</ClaimedButton>
+									)
 								) : token.amount !== 0 ? (
 									<ClaimButton
 										data-testid={`chain-show-claim-${token.id}`}
