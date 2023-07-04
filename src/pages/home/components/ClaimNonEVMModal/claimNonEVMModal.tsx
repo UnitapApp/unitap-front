@@ -197,10 +197,11 @@ const ClaimNonEVMModalContent = () => {
 	function renderSuccessBody() {
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I claimed ${formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)} on ${
+				`I've just claimed ${formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)} ${
 					activeNonEVMChain!.chainName
-				} on Unitap, Claim yours at`,
-			)}&url=${encodeURIComponent('unitap.app')}`;
+				} from @Unitap_app 🔥\n Claim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/gas-tap?hc=' + activeNonEVMChain!.chainName)}`;
+
 			window.open(twitterUrl, '_blank');
 		};
 

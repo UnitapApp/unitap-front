@@ -40,6 +40,7 @@ module.exports = {
 				error: '#EA5365',
 				cyan: '#165369',
 				purple: '#362469',
+				twitter: '#B5FAF5',
 				'dark-purple': '#39275E',
 				'light-gray': '#EBECEF',
 				'light-gray-2': '#EDF2F3',
@@ -81,6 +82,7 @@ module.exports = {
 				'donate-texture-s': "url('../public/assets/images/donate/donate-texture.svg')",
 				'donate-texture-p': "url('../public/assets/images/donate/donate-texture.png')",
 				'stats-texture': "url('../public/assets/images/landing/stats-texture.png')",
+				'g-twitter': 'linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)',
 				'g-primary': 'linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)',
 				'g-primary-low':
 					'linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)',
