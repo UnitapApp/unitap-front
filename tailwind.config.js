@@ -38,6 +38,7 @@ module.exports = {
 				gray100: '#B5B5C6',
 				orange: '#F5841F',
 				error: '#EA5365',
+				code: '#292938',
 				cyan: '#165369',
 				purple: '#362469',
 				twitter: '#B5FAF5',
