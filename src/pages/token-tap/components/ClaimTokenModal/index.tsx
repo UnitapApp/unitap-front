@@ -237,7 +237,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
 				) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
-				) : relatedClaimedTokenRecipt ? (
+				) : (
 					<div className="text-left text-white">
 						<p className="text-lg mb-4 text-center leading-loose">Your claim is ready.</p>
 						<p className="text-sm mb-4">If you have not already claimed your tokens, you can claim them now.</p>
@@ -252,8 +252,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 							.
 						</p>
 					</div>
-				) : (
-					''
 				)}
 				<Text width="100%" fontSize="14">
 					Wallet Address

@@ -108,10 +108,28 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		claimTokenPayload?.signature,
 	);
 
+	const claimToken = useCallback(
+		async (token: Token, body?: any) => {
+			if (!userToken) return;
+			setClaimError(null);
+			setClaimTokenSignatureLoading(true);
+			try {
+				const response = await claimTokenAPI(userToken, token.id, body);
+				setClaimedTokensList([...claimedTokensList, response]);
+				setClaimTokenSignatureLoading(false);
+			} catch (e: any) {
+				setClaimError(e.response?.data.message);
+				setClaimTokenSignatureLoading(false);
+			}
+		},
+		[userToken, claimedTokensList, setClaimError],
+	);
+
 	const claimTokenWithMetamask = useCallback(async () => {
 		if (!userToken || !provider || !EVMTokenTapContract) return;
 		try {
 			setClaimTokenLoading(true);
+			await claimToken(selectedTokenForClaim!);
 			const response = await callback?.();
 			if (response) {
 				response
@@ -142,24 +160,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			});
 			setClaimTokenLoading(false);
 		}
-	}, [userToken, provider, EVMTokenTapContract, callback]);
-
-	const claimToken = useCallback(
-		async (token: Token, body?: any) => {
-			if (!userToken) return;
-			setClaimError(null);
-			setClaimTokenSignatureLoading(true);
-			try {
-				const response = await claimTokenAPI(userToken, token.id, body);
-				setClaimedTokensList([...claimedTokensList, response]);
-				setClaimTokenSignatureLoading(false);
-			} catch (e: any) {
-				setClaimError(e.response?.data.message);
-				setClaimTokenSignatureLoading(false);
-			}
-		},
-		[userToken, claimedTokensList, setClaimError],
-	);
+	}, [userToken, provider, EVMTokenTapContract, selectedTokenForClaim, claimToken, callback]);
 
 	const openClaimModal = useCallback(
 		(token: Token) => {

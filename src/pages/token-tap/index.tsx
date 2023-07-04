@@ -20,7 +20,6 @@ const TokenTap = () => {
 			</div>
 			<Footer />
 
-			<ClaimNonEVMModal />
 			<ClaimTokenModal />
 			<BrightConnectionModal />
 		</>
