@@ -469,17 +469,40 @@ body {
 }
 
 @keyframes lightToggle {
-  0% {
-    opacity: 10%;
-  }
-  50% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 100%;
-  }
+	0% {
+		opacity: 10%;
+	}
+	50% {
+		opacity: 100%;
+	}
+	100% {
+		opacity: 100%;
+	}
 }
 
 .light-toggle {
-  animation: lightToggle 2s infinite steps(1);
+	animation: lightToggle 2s infinite steps(1);
+}
+.go-to-mint-button {
+	&:after {
+		@apply transition-all duration-300;
+		transform: translateX(0%);
+	}
+
+	&:before {
+		@apply bg-gray30 #{!important};
+		background-image: none !important;
+	}
+
+	&:hover {
+		&:before {
+			@apply bg-gray10 #{!important};
+			background-image: none;
+		}
+
+		&:after {
+			@apply transition-all duration-300;
+			transform: translateX(30%);
+		}
+	}
 }

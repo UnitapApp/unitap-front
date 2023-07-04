@@ -1,5 +1,5 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
+import React, {createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList} from 'api';
 import {
   BrightIdConnectionModalState,
   BrightIdModalState,
@@ -9,11 +9,13 @@ import {
   ClaimBoxStateContainer,
   ClaimNonEVMModalState,
   ClaimReceipt,
+  ClaimReceiptState,
   HaveBrightIdAccountModalState,
-  Network, PK,
+  Network,
+  PK,
 } from 'types';
-import { UserProfileContext } from './useUserProfile';
-import { RefreshContext } from 'context/RefreshContext';
+import {UserProfileContext} from './useUserProfile';
+import {RefreshContext} from 'context/RefreshContext';
 import getActiveClaimReciept from 'utils/hook/getActiveClaimReciept';
 import { searchChainList, searchChainListSimple } from 'utils/hook/searchChainList';
 import getCorrectAddress from "../utils/walletAddress";
@@ -179,9 +181,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
   const claim = useCallback(
     //TODO: tell user about failing to communicate with server
     async (claimChainPk: number) => {
-      if (!userToken || claimLoading) {
-        return;
-      }
+      if (activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length >= 5) return;
+      if (!userToken || claimLoading) return;
+
       setClaimLoading(true);
       try {
         await claimMax(userToken, claimChainPk);
@@ -194,14 +196,14 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         await updateActiveClaimHistory();
       }
     },
-    [userToken, updateActiveClaimHistory, claimLoading],
+    [userToken, updateActiveClaimHistory, claimLoading, activeClaimHistory],
   );
 
   const claimNonEVM = useCallback(
     async (chain: Chain, address: string) => {
-      if (!userToken || claimNonEVMLoading) {
-        return;
-      }
+      if (activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length >= 5) return;
+      if (!userToken || claimNonEVMLoading) return;
+
       setClaimNonEVMLoading(true);
       try {
         let correctAddress = getCorrectAddress(chain, address)
@@ -215,7 +217,7 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
         await updateActiveClaimHistory();
       }
     },
-    [userToken, updateActiveClaimHistory, claimNonEVMLoading],
+    [userToken, updateActiveClaimHistory, claimNonEVMLoading, activeClaimHistory],
   );
 
   const [selectedNetwork, setSelectedNetwork] = React.useState(Network.MAINNET);

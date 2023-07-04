@@ -38,8 +38,10 @@ module.exports = {
 				gray100: '#B5B5C6',
 				orange: '#F5841F',
 				error: '#EA5365',
-				code: '#292938',
+				cyan: '#165369',
+				purple: '#362469',
 				twitter: '#B5FAF5',
+				'dark-purple': '#39275E',
 				'light-gray': '#EBECEF',
 				'light-gray-2': '#EDF2F3',
 				'dark-gray': '#757575',
@@ -58,7 +60,7 @@ module.exports = {
 				'dark-space-green': '#274641',
 				'disabled-bg': '#C0C0C0',
 				'disabled-text': '#939393',
-				'secondary-text': '#997EA4',
+				'text-secondary': '#997EA4',
 			},
 
 			borderWidth: {

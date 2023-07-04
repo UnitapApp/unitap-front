@@ -12,7 +12,7 @@ import {
 import { BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
-import { formatChainBalance, formatWeiBalance } from 'utils/numbers';
+import { formatWeiBalance } from 'utils/numbers';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
@@ -262,7 +262,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
 					</button>
 					<Icon
-						iconSrc="assets/images/gas-tap/twitter-share.svg"
+						iconSrc="/assets/images/gas-tap/twitter-share.svg"
 						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
 						width="auto"
 						height="26px"

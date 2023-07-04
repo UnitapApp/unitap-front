@@ -40,7 +40,7 @@ const SearchInput = ({ className = '' }: SearchInputProps) => {
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
-		const queryParam = urlParams.get('q');
+		const queryParam = urlParams.get('query') ?? urlParams.get('q');
 		if (queryParam) {
 			setSearchPhraseInput(queryParam);
 			changeSearchPhrase!(queryParam);
