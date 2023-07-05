@@ -9,6 +9,7 @@ import { Token } from 'types';
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
 
 const Action = styled.div`
 	display: flex;
@@ -32,6 +33,11 @@ const AddMetamaskButton = styled(SecondaryButton)`
 		width: 20px;
 		height: 20px;
 		transform: scale(1.4);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 `;
 
@@ -97,8 +103,33 @@ const TokensList = () => {
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
 	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
 
+	const { account } = useWeb3React();
+
+	const active = !!account;
+
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
+	};
+
+	const addToken = () => {
+		if (!window.ethereum) return;
+
+		(window.ethereum as any).request({
+			method: 'wallet_watchAsset',
+			params: {
+				type: 'ERC20',
+				options: [
+					{
+						chainId: token.chain.chainId,
+						address: token.tokenAddress,
+						name: token.name,
+						symbol: token.chain.symbol,
+						decimals: 18,
+						logoURI: token.imageUrl,
+					},
+				],
+			},
+		});
 	};
 
 	const collectedToken = useMemo(
@@ -133,6 +164,19 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						</div>
 
 						<div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
+							<div className="w-full sm:w-auto items-center sm:items-end">
+								<AddMetamaskButton
+									disabled={!active}
+									onClick={addToken}
+									className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
+								>
+									<img
+										src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
+										alt="metamask logo"
+									/>
+									Add
+								</AddMetamaskButton>
+							</div>
 							<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 								{/* todo migrate buttom logic*/}
 								{token.isMaxedOut ? (
@@ -140,7 +184,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										Empty
 									</NoCurrencyButton>
 								) : collectedToken ? (
-									(collectedToken.status === 'Pending' && claimTokenSignatureLoading) ||
+									claimTokenSignatureLoading ||
 									(token.chain.chainName === 'Lightning' && collectedToken.status === 'Pending') ? (
 										<ClaimButton
 											data-testid={`chain-pending-claim-${token.id}`}
@@ -149,6 +193,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 											className="text-sm m-auto"
 										>
 											<p>{`Pending...`}</p>
+										</ClaimButton>
+									) : collectedToken!.status === 'Pending' ? (
+										<ClaimButton
+											data-testid={`chain-show-claim-${token.id}`}
+											mlAuto
+											onClick={() => openClaimModal(token)}
+											className="text-sm m-auto"
+										>
+											<p>{`Claim ${token.amount} ${token.token}`}</p>
 										</ClaimButton>
 									) : (
 										<ClaimedButton

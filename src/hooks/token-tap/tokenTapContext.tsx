@@ -132,6 +132,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const claimTokenWithMetamask = useCallback(async () => {
 		if (!userToken || !provider || !EVMTokenTapContract) return;
 
+		const id = claimId.current!;
+
 		try {
 			setClaimTokenLoading(true);
 
@@ -146,7 +148,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 							txHash: res.transactionHash,
 							message: 'Token claimed successfully.',
 						});
-						updateClaimFinished(userToken, claimId.current!, res.transactionHash);
+						updateClaimFinished(userToken, id, res.transactionHash);
 						setClaimTokenLoading(false);
 					})
 					.catch(() => {
@@ -171,10 +173,10 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const openClaimModal = useCallback(
 		(token: Token) => {
 			setClaimTokenWithMetamaskResponse(null);
-			if (token.chain.chainName !== 'Lightning') claimToken(selectedTokenForClaim!);
+			if (token.chain.chainName !== 'Lightning') claimToken(token);
 			setSelectedTokenForClaim(token);
 		},
-		[setSelectedTokenForClaim, claimToken, selectedTokenForClaim, setClaimTokenWithMetamaskResponse],
+		[setSelectedTokenForClaim, claimToken, setClaimTokenWithMetamaskResponse],
 	);
 
 	const closeClaimModal = useCallback(() => {

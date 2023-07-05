@@ -223,7 +223,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						</p>
 						<p className="text-xs mb-6">
 							If you do not have sufficient gas, please visit{' '}
-							<Link className="text-blue-500" to="/gas-tap">
+							<Link className="text-blue-500" to={'/gas-tap?hc=' + selectedTokenForClaim!.chain.chainName}>
 								Gas Tap
 							</Link>
 							.
