@@ -95,7 +95,7 @@ const TokensList = () => {
 };
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
-	const { openClaimModal, claimedTokensList } = useContext(TokenTapContext);
+	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
 
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
@@ -140,7 +140,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										Empty
 									</NoCurrencyButton>
 								) : collectedToken ? (
-									collectedToken.status === 'Pending' ? (
+									(collectedToken.status === 'Pending' && claimTokenSignatureLoading) ||
+									(token.chain.chainName === 'Lightning' && collectedToken.status === 'Pending') ? (
 										<ClaimButton
 											data-testid={`chain-pending-claim-${token.id}`}
 											mlAuto

@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { claimTokenAPI, getClaimedTokensListAPI, getTokensListAPI } from '../../api';
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { claimTokenAPI, getClaimedTokensListAPI, getTokensListAPI, updateClaimFinished } from '../../api';
 import { ClaimedToken, Token, TokenClaimPayload } from '../../types';
 import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
@@ -70,6 +70,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		return tokensList.filter((token) => token.name.toLowerCase().includes(searchPhraseLowerCase));
 	}, [searchPhrase, tokensList]);
 
+	const claimId = useRef<null | number>(null);
+
 	const getTokensList = useCallback(async () => {
 		setTokensListLoading(true);
 		try {
@@ -117,6 +119,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 				const response = await claimTokenAPI(userToken, token.id, body);
 				setClaimedTokensList([...claimedTokensList, response]);
 				setClaimTokenSignatureLoading(false);
+
+				return response;
 			} catch (e: any) {
 				setClaimError(e.response?.data.message);
 				setClaimTokenSignatureLoading(false);
@@ -127,9 +131,10 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const claimTokenWithMetamask = useCallback(async () => {
 		if (!userToken || !provider || !EVMTokenTapContract) return;
+
 		try {
 			setClaimTokenLoading(true);
-			await claimToken(selectedTokenForClaim!);
+
 			const response = await callback?.();
 			if (response) {
 				response
@@ -141,6 +146,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 							txHash: res.transactionHash,
 							message: 'Token claimed successfully.',
 						});
+						updateClaimFinished(userToken, claimId.current!, res.transactionHash);
 						setClaimTokenLoading(false);
 					})
 					.catch(() => {
@@ -160,7 +166,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			});
 			setClaimTokenLoading(false);
 		}
-	}, [userToken, provider, EVMTokenTapContract, selectedTokenForClaim, claimToken, callback]);
+	}, [userToken, provider, EVMTokenTapContract, callback]);
 
 	const openClaimModal = useCallback(
 		(token: Token) => {
@@ -176,19 +182,24 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!selectedTokenForClaim) return;
+		if (!selectedTokenForClaim) {
+			claimId.current = null;
+			return;
+		}
 		let relatedClaimedToken = claimedTokensList.find(
 			(claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id,
 		);
 		if (relatedClaimedToken) {
+			claimId.current = relatedClaimedToken.id;
 			setClaimTokenPayload(relatedClaimedToken.payload);
 		}
 	}, [claimedTokensList, selectedTokenForClaim]);
 
 	const handleClaimToken = useCallback(async () => {
 		if (!selectedTokenForClaim || claimTokenLoading) return;
+		await claimToken(selectedTokenForClaim!);
 		claimTokenWithMetamask();
-	}, [selectedTokenForClaim, claimTokenLoading, claimTokenWithMetamask]);
+	}, [selectedTokenForClaim, claimTokenLoading, claimToken, claimTokenWithMetamask]);
 
 	return (
 		<TokenTapContext.Provider

@@ -128,7 +128,7 @@ export async function claimTokenAPI(token: string, tokenId: number, body?: any) 
 
 export async function updateClaimFinished(token: string, claimId: number, txHash: string) {
 	const response = await axiosInstance.post<any>(
-		`/tokentap/claims-list/${claimId}/update/`,
+		`/api/tokentap/claims-list/${claimId}/update/`,
 		{ txHash },
 		{
 			headers: {
