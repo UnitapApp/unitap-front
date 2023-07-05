@@ -35,6 +35,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 	const { userProfile } = useContext(UserProfileContext);
 
+	const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim!.id);
+
 	function renderWalletNotConnectedBody() {
 		return (
 			<>
@@ -289,7 +291,11 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					className="underline cursor-pointer"
 					mb={3}
 					textAlign="center"
-					onClick={() => window.open('https://gnosisscan.io/tx/' + claimTokenWithMetamaskResponse?.txHash)}
+					onClick={() =>
+						window.open(
+							'https://gnosisscan.io/tx/' + (collectedToken?.txHash ?? claimTokenWithMetamaskResponse?.txHash),
+						)
+					}
 				>
 					view on explorer
 				</Text>
@@ -348,8 +354,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			closeClaimModal();
 			return null;
 		}
-
-		const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim.id);
 
 		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
 			return renderMaxedOutBody();
