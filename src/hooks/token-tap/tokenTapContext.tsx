@@ -174,7 +174,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			if (selectedTokenForClaim!.chain.chainName !== 'Lightning') claimToken(selectedTokenForClaim!);
 			setSelectedTokenForClaim(token);
 		},
-		[setSelectedTokenForClaim, setClaimTokenWithMetamaskResponse],
+		[setSelectedTokenForClaim, claimToken, selectedTokenForClaim, setClaimTokenWithMetamaskResponse],
 	);
 
 	const closeClaimModal = useCallback(() => {
@@ -199,7 +199,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const handleClaimToken = useCallback(async () => {
 		if (!selectedTokenForClaim || claimTokenLoading) return;
 		claimTokenWithMetamask();
-	}, [selectedTokenForClaim, claimTokenLoading, claimToken, claimTokenWithMetamask]);
+	}, [selectedTokenForClaim, claimTokenLoading, claimTokenWithMetamask]);
 
 	return (
 		<TokenTapContext.Provider
