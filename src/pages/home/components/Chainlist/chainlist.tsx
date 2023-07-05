@@ -142,7 +142,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const navigate = useNavigate();
 
 	const handleRefillButtonClicked = (chainId: PK) => {
-		navigate(RoutePath.FUND + `?chainId=${chainId}`);
+		navigate(RoutePath.FUND + `?chain=${chainId}`);
 	};
 
 	// const { provider } = useWeb3React();
