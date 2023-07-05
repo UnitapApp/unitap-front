@@ -103,7 +103,7 @@ const TokensList = () => {
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
 	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
 
-	const { account } = useWeb3React();
+	const { account, provider } = useWeb3React();
 
 	const active = !!account;
 
@@ -111,25 +111,46 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 		window.open(token.distributorUrl);
 	};
 
-	const addToken = () => {
+	const addToken = async () => {
 		if (!window.ethereum) return;
 
-		(window.ethereum as any).request({
-			method: 'wallet_watchAsset',
-			params: {
-				type: 'ERC20',
-				options: [
-					{
-						chainId: token.chain.chainId,
-						address: token.tokenAddress,
-						name: token.name,
-						symbol: token.chain.symbol,
-						decimals: 18,
-						logoURI: token.imageUrl,
-					},
-				],
-			},
+		console.log({
+			chainId: token.chain.chainId,
+			address: token.tokenAddress,
+			name: token.name,
+			symbol: token.chain.symbol,
+			decimals: 18,
+			logoURI: token.imageUrl,
 		});
+
+		const tokenAddress = '0xd00981105e61274c8a5cd5a88fe7e037d935b513';
+		const tokenSymbol = 'TUT';
+		const tokenDecimals = 18;
+		const tokenImage = 'http://placekitten.com/200/300';
+
+		try {
+			// wasAdded is a boolean. Like any RPC method, an error may be thrown.
+			const wasAdded = await (window.ethereum as any).request({
+				method: 'wallet_watchAsset',
+				params: {
+					type: 'ERC20', // Initially only supports ERC20, but eventually more!
+					options: {
+						address: tokenAddress, // The address that the token is at.
+						symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+						decimals: tokenDecimals, // The number of decimals in the token
+						image: tokenImage, // A string url of the token logo
+					},
+				},
+			});
+
+			if (wasAdded) {
+				console.log('Thanks for your interest!');
+			} else {
+				console.log('Your loss!');
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const collectedToken = useMemo(

@@ -56,6 +56,7 @@ export type Permission = {
 
 export type ClaimedToken = {
 	id: PK;
+	txHash?: string;
 	userProfile: number;
 	createdAt: string;
 	status: string;
