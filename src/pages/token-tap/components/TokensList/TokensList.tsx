@@ -164,7 +164,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						</div>
 
 						<div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
-							<div className="w-full sm:w-auto items-center sm:items-end">
+							{/* <div className="w-full sm:w-auto items-center sm:items-end">
 								<AddMetamaskButton
 									disabled={!active}
 									onClick={addToken}
@@ -176,7 +176,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									/>
 									Add
 								</AddMetamaskButton>
-							</div>
+							</div> */}
 							<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 								{/* todo migrate buttom logic*/}
 								{token.isMaxedOut ? (
