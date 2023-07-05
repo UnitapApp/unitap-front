@@ -4,8 +4,8 @@ import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, Permission, PermissionType } from 'types';
-import { getChainClaimIcon, shortenAddress } from 'utils';
+import { Chain, Permission, PermissionType } from 'types';
+import { shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
@@ -33,16 +33,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	} = useContext(TokenTapContext);
 	const { openBrightIdModal } = useContext(ClaimContext);
 
-	const mounted = useRef(false);
-
 	const { userProfile } = useContext(UserProfileContext);
-
-	useEffect(() => {
-		mounted.current = true; // Will set it to true on mount ...
-		return () => {
-			mounted.current = false;
-		}; // ... and to false on unmount
-	}, []);
 
 	function renderWalletNotConnectedBody() {
 		return (
@@ -102,16 +93,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	}
 
 	function renderVerifyPermission(permission: Permission) {
-		function getPermissionIcon(permission: Permission) {
-			if (permission.name === PermissionType.BRIGHTID) {
-				return 'assets/images/modal/bright-id-logo-checked.svg';
-			} else if (permission.name === PermissionType.AURA) {
-				return 'assets/images/modal/aura-logo.svg';
-			}
-
-			return '';
-		}
-
 		function getPermissionTitle(permission: Permission) {
 			if (permission.name === PermissionType.BRIGHTID) {
 				return 'You are not verified on BrightID';
@@ -218,10 +199,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
-		const relatedClaimedTokenRecipt = claimedTokensList.find(
-			(token) => token.tokenDistribution.id === selectedTokenForClaim.id,
-		);
-
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-initial-${selectedTokenForClaim!.chain.pk}`}>
@@ -278,7 +255,64 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		);
 	}
 
-	function renderFinishedBody() {
+	function renderSuccessBody() {
+		const handleClick = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I've just claimed ${selectedTokenForClaim?.amount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedTokenForClaim?.token)}`;
+			window.open(twitterUrl, '_blank');
+		};
+
+		return (
+			<>
+				<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
+					<Icon
+						className="chain-logo z-10 mt-14 mb-10"
+						width="auto"
+						height="110px"
+						iconSrc={selectedTokenForClaim!.imageUrl}
+						alt=""
+					/>
+				</DropIconWrapper>
+
+				<span className="flex justify-center items-center font-medium mb-3">
+					<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
+						{selectedTokenForClaim?.amount} {selectedTokenForClaim?.token} Claimed
+					</Text>
+					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
+				</span>
+
+				<Text
+					width="100%"
+					fontSize="14"
+					color="second_gray_light"
+					className="underline cursor-pointer"
+					mb={3}
+					textAlign="center"
+					onClick={() => window.open('https://gnosisscan.io/tx/' + claimTokenWithMetamaskResponse?.txHash)}
+				>
+					view on explorer
+				</Text>
+
+				<div className="relative w-full">
+					<button
+						onClick={handleClick}
+						className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+					>
+						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+					</button>
+					<Icon
+						iconSrc="/assets/images/gas-tap/twitter-share.svg"
+						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+						width="auto"
+						height="26px"
+					/>
+				</div>
+			</>
+		);
+	}
+
+	function renderMaxedOutBody() {
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
@@ -291,23 +325,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					/>
 				</DropIconWrapper>
 				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-					{selectedTokenForClaim?.isMaxedOut ? (
-						"Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
-					) : selectedTokenForClaim?.isExpired ? (
-						"Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."
-					) : claimTokenWithMetamaskResponse?.success ? (
-						<p className="text-space-green text-sm my-4 text-center px-3 mb-6">
-							Your tokens have been claimed successfully. <br />{' '}
-							<span
-								onClick={() => window.open('https://gnosisscan.io/tx/' + claimTokenWithMetamaskResponse?.txHash)}
-								className="text-white text-md hover:cursor-pointer hover:underline break-words break-all"
-							>
-								{claimTokenWithMetamaskResponse?.txHash}
-							</span>
-						</p>
-					) : (
-						''
-					)}
+					{selectedTokenForClaim?.isMaxedOut
+						? "Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
+						: "Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."}
 				</Text>
 				<ClaimButton
 					onClick={closeClaimModal}
@@ -330,7 +350,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		}
 
 		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
-			return renderFinishedBody();
+			return renderMaxedOutBody();
 		}
 
 		if (!userProfile) return renderBrightNotConnectedBody();
@@ -345,7 +365,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!walletConnected) return renderWalletNotConnectedBody();
 
-		if (claimTokenWithMetamaskResponse?.state === 'Done') return renderFinishedBody();
+		if (claimTokenWithMetamaskResponse?.state === 'Done') return renderSuccessBody();
 
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);

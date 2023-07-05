@@ -144,31 +144,60 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	}
 
 	function renderSuccessBody() {
-		const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id);
+		const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id)!;
 
-		if (!token) return;
+		const handleClick = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I've just claimed ${selectedTokenForClaim?.amount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedTokenForClaim?.token)}`;
+			window.open(twitterUrl, '_blank');
+		};
 
 		return (
 			<>
-				<Icon
-					data-testid="chain-logo"
-					className="chain-logo z-10 mt-14 mb-10"
-					iconSrc={selectedTokenForClaim!.imageUrl}
-					width="auto"
-					height="110px"
-				/>
-				<Text width="100%" fontSize="14" color="space_green" textAlign="center">
-					{token.payload.amount + ' '} {selectedTokenForClaim!.token}Claimed
+				<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
+					<Icon
+						className="chain-logo z-10 mt-14 mb-10"
+						width="auto"
+						height="110px"
+						iconSrc={selectedTokenForClaim!.imageUrl}
+						alt=""
+					/>
+				</DropIconWrapper>
+
+				<span className="flex justify-center items-center font-medium mb-3">
+					<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
+						{selectedTokenForClaim?.amount} {selectedTokenForClaim?.token} Claimed
+					</Text>
+					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
+				</span>
+
+				<Text
+					width="100%"
+					fontSize="14"
+					color="second_gray_light"
+					className="underline cursor-pointer"
+					mb={3}
+					textAlign="center"
+					onClick={() => window.open('https://gnosisscan.io/tx/' + token.payload.token)}
+				>
+					view on explorer
 				</Text>
-				<p className="text-space-green text-sm my-4 text-center px-3 mb-6">
-					Your tokens have been claimed successfully. <br />{' '}
-					<span
-						onClick={() => window.open('https://gnosisscan.io/tx/' + token.payload.token)}
-						className="text-white mt-10 text-md hover:cursor-pointer hover:underline break-words break-all"
+
+				<div className="relative w-full">
+					<button
+						onClick={handleClick}
+						className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
 					>
-						{token.payload.token}
-					</span>
-				</p>
+						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+					</button>
+					<Icon
+						iconSrc="/assets/images/gas-tap/twitter-share.svg"
+						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+						width="auto"
+						height="26px"
+					/>
+				</div>
 			</>
 		);
 	}
