@@ -349,6 +349,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
+		const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim.id);
+
 		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
 			return renderMaxedOutBody();
 		}
@@ -365,7 +367,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!walletConnected) return renderWalletNotConnectedBody();
 
-		if (claimTokenWithMetamaskResponse?.state === 'Done') return renderSuccessBody();
+		if (claimTokenWithMetamaskResponse?.state === 'Done' || collectedToken?.status === 'Verified')
+			return renderSuccessBody();
 
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);
