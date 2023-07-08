@@ -7,7 +7,7 @@ import { formatChainBalance, numberWithCommas } from 'utils/numbers';
 import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
-import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, PK } from 'types';
+import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, Network, PK } from 'types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath from '../../../../routes';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -36,9 +36,10 @@ const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainList = () => {
-	const { chainList, chainListSearchResult } = useContext(ClaimContext);
+	const { chainList, chainListSearchResult, setSelectedNetwork } = useContext(ClaimContext);
 
 	const { isGasTapAvailable } = useContext(UserProfileContext);
+
 	const [highlightedChain, setHighlightedChain] = useState('');
 
 	const location = useLocation();
@@ -60,8 +61,12 @@ const ChainList = () => {
 		const urlParams = new URLSearchParams(location.search);
 		const highlightedChain = urlParams.get('highlightedChain') ?? urlParams.get('hc');
 
+		if (highlightedChain) {
+			setSelectedNetwork(Network.ALL);
+		}
+
 		setHighlightedChain(highlightedChain || '');
-	}, [location.search, setHighlightedChain]);
+	}, [location.search, setHighlightedChain, setSelectedNetwork]);
 
 	return (
 		<div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
