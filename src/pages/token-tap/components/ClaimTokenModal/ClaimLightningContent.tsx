@@ -382,7 +382,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 			}
 		}
 
-		if (token?.status === 'Done') return renderSuccessBody();
+		if (token?.status === 'Verified') return renderSuccessBody();
 		if (token?.status === 'Pending') return renderPendingBody();
 
 		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
