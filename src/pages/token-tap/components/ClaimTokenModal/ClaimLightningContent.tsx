@@ -186,7 +186,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
 				</span>
 
-				<Text
+				{/* <Text
 					width="100%"
 					fontSize="14"
 					color="second_gray_light"
@@ -196,7 +196,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 					onClick={() => window.open('https://gnosisscan.io/tx/' + token.payload.token)}
 				>
 					view on explorer
-				</Text>
+				</Text> */}
 
 				<div className="relative w-full">
 					<button
