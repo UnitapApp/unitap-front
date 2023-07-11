@@ -133,6 +133,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 		[claimedTokensList, token],
 	);
 
+	const calculateClaimAmount =
+		token.chain.chainName === 'Lightning' ? token.amount : token.amount / 10 ** token.chain.decimals;
+
 	return (
 		<div key={token.id}>
 			<div
@@ -199,7 +202,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 											onClick={() => openClaimModal(token)}
 											className="text-sm m-auto"
 										>
-											<p>{`Claim ${token.amount} ${token.token}`}</p>
+											<p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
 										</ClaimButton>
 									) : (
 										<ClaimedButton
@@ -221,7 +224,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
-										<p>{`Claim ${token.amount} ${token.token}`}</p>
+										<p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
 									</ClaimButton>
 								) : (
 									<ClaimedButton

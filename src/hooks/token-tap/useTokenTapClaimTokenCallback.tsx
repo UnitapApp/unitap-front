@@ -37,7 +37,7 @@ export function useTokenTapClaimTokenCallback(
 					evmTokenTapContract.interface.encodeFunctionData('claimToken', [
 						user,
 						token,
-						BigNumber.from(amount),
+						BigNumber.from(amount.toString()),
 						nonce,
 						signature,
 					]) ?? '',

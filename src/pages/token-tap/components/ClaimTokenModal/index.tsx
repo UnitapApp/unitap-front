@@ -201,6 +201,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
+		const calculateClaimAmount = selectedTokenForClaim.amount / 10 ** selectedTokenForClaim.chain.decimals;
+
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-initial-${selectedTokenForClaim!.chain.pk}`}>
@@ -250,7 +252,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
 						<p>Retry</p>
 					) : (
-						<p>{`Claim ${selectedTokenForClaim.amount} ${selectedTokenForClaim.token}`}</p>
+						<p>{`Claim ${calculateClaimAmount} ${selectedTokenForClaim.token}`}</p>
 					)}
 				</ClaimButton>
 			</>
@@ -258,9 +260,11 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	}
 
 	function renderSuccessBody() {
+		const calculateClaimAmount = selectedTokenForClaim!.amount / 10 ** selectedTokenForClaim!.chain.decimals;
+
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${selectedTokenForClaim?.amount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
+				`I've just claimed ${calculateClaimAmount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedTokenForClaim?.token)}`;
 			window.open(twitterUrl, '_blank');
 		};
@@ -279,7 +283,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 				<span className="flex justify-center items-center font-medium mb-3">
 					<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
-						{selectedTokenForClaim?.amount} {selectedTokenForClaim?.token} Claimed
+						{calculateClaimAmount} {selectedTokenForClaim?.token} Claimed
 					</Text>
 					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
 				</span>
@@ -405,7 +409,9 @@ const ClaimTokenModal = () => {
 
 	return (
 		<Modal
-			title={`Claim ${selectedTokenForClaim.amount} ${selectedTokenForClaim.token}`}
+			title={`Claim ${selectedTokenForClaim.amount / 10 ** selectedTokenForClaim.chain.decimals} ${
+				selectedTokenForClaim.token
+			}`}
 			size="small"
 			closeModalHandler={closeClaimTokenModal}
 			isOpen={isOpen}
