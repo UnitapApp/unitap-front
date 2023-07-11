@@ -26,21 +26,27 @@ interface FailedCall extends CallEstimate {
 	error: Error;
 }
 
-export default function useTokenTapTransaction(
-	account: string | null | undefined,
-	chainId: number | undefined,
-	provider: JsonRpcProvider | undefined,
-	calls: Call[],
-	info: TransactionInfo,
-): { callback: null | (() => Promise<TransactionResponse>) } {
+export default function useTokenTapTransaction(): {
+	callback: (
+		account: string | null | undefined,
+		chainId: number | undefined,
+		provider: JsonRpcProvider | undefined,
+		calls: Call[],
+		info: TransactionInfo,
+	) => Promise<TransactionResponse | null>;
+} {
 	const addTransaction = useTransactionAdder();
 	return useMemo(() => {
-		if (!provider || !account || !chainId) {
-			return { callback: null };
-		}
-
 		return {
-			callback: async function onDibs(): Promise<TransactionResponse> {
+			callback: async function onDibs(
+				account: string | null | undefined,
+				chainId: number | undefined,
+				provider: JsonRpcProvider | undefined,
+				calls: Call[],
+				info: TransactionInfo,
+			): Promise<TransactionResponse | null> {
+				if (!provider || !account || !chainId) return null;
+
 				const estimatedCalls: CallEstimate[] = await Promise.all(
 					calls.map((call) => {
 						const { address, calldata, value } = call;
@@ -128,5 +134,5 @@ export default function useTokenTapTransaction(
 					});
 			},
 		};
-	}, [provider, account, chainId, calls, addTransaction, info]);
+	}, [addTransaction]);
 }

@@ -6,6 +6,7 @@ import { MintTransactionInfo, TransactionType } from 'state/transactions/types';
 import { BigNumberish, BytesLike, ethers } from 'ethers';
 import { useEVMTokenTapContract } from '../useContract';
 import { BigNumber } from '@ethersproject/bignumber';
+import { TransactionResponse } from '@ethersproject/providers';
 
 export function useTokenTapClaimTokenCallback(
 	user: string | undefined,
@@ -13,7 +14,7 @@ export function useTokenTapClaimTokenCallback(
 	amount: BigNumberish | undefined,
 	nonce: BigNumberish | undefined,
 	signature: BytesLike | undefined,
-): UseCallbackReturns {
+): UseCallbackReturns & { callback?: () => Promise<TransactionResponse> } {
 	const { account, chainId, provider } = useWeb3React();
 	const evmTokenTapContract = useEVMTokenTapContract();
 	const calls = useMemo(() => {
