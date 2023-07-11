@@ -10,7 +10,6 @@ import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import { metaMaskTokenConfigs } from 'constants/tokens';
 
 const Action = styled.div`
 	display: flex;
@@ -120,7 +119,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 				method: 'wallet_watchAsset',
 				params: {
 					type: 'ERC20',
-					options: metaMaskTokenConfigs[token.name],
+					options: {
+						address: token.chain.tokentapContractAddress,
+						symbol: token.chain.symbol,
+						name: token.name,
+						decimals: token.chain.decimals,
+						image: token.imageUrl,
+					},
 				},
 			});
 		} catch (error) {
