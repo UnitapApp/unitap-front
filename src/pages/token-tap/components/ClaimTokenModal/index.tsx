@@ -407,11 +407,13 @@ const ClaimTokenModal = () => {
 
 	if (!selectedTokenForClaim) return null;
 
+	const tokenAmount =
+		selectedTokenForClaim.chain.chainName === 'Lightning'
+			? selectedTokenForClaim.amount
+			: selectedTokenForClaim.amount / 10 ** selectedTokenForClaim.chain.decimals;
 	return (
 		<Modal
-			title={`Claim ${selectedTokenForClaim.amount / 10 ** selectedTokenForClaim.chain.decimals} ${
-				selectedTokenForClaim.token
-			}`}
+			title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
 			size="small"
 			closeModalHandler={closeClaimTokenModal}
 			isOpen={isOpen}
