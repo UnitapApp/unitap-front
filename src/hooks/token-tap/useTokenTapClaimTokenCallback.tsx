@@ -13,6 +13,7 @@ export function useTokenTapClaimTokenCallback(
 	amount: BigNumberish | undefined,
 	nonce: BigNumberish | undefined,
 	signature: BytesLike | undefined,
+	address?: string,
 ): UseCallbackReturns {
 	const { account, chainId, provider } = useWeb3React();
 	const evmTokenTapContract = useEVMTokenTapContract();
@@ -25,14 +26,15 @@ export function useTokenTapClaimTokenCallback(
 			!amount ||
 			!nonce ||
 			!signature ||
-			!signature.toString().startsWith('0x')
+			!signature.toString().startsWith('0x') ||
+			!address
 		) {
 			return [];
 		}
 
 		const data = [
 			{
-				address: evmTokenTapContract.address,
+				address,
 				calldata:
 					evmTokenTapContract.interface.encodeFunctionData('claimToken', [
 						user,
@@ -45,7 +47,7 @@ export function useTokenTapClaimTokenCallback(
 			},
 		];
 		return data;
-	}, [account, amount, evmTokenTapContract, nonce, signature, token, user]);
+	}, [account, amount, evmTokenTapContract, nonce, signature, token, user, address]);
 
 	const info: MintTransactionInfo = {
 		type: TransactionType.MINT,

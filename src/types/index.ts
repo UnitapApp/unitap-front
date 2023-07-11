@@ -22,6 +22,7 @@ export type Chain = {
 	chainType: string;
 	needsFunding: boolean;
 	blockScanAddress: string;
+	tokentapContractAddress?: string;
 };
 
 export type Token = {

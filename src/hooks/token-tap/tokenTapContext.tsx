@@ -108,6 +108,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		claimTokenPayload?.amount,
 		claimTokenPayload?.nonce,
 		claimTokenPayload?.signature,
+		selectedTokenForClaim?.chain.tokentapContractAddress,
 	);
 
 	const claimToken = useCallback(
