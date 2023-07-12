@@ -14,7 +14,7 @@ import useWalletActivation from '../../../../hooks/useWalletActivation';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
-import { formatWeiBalance, fromWei } from 'utils/numbers';
+import { fromWei } from 'utils/numbers';
 
 const Content: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -187,11 +187,7 @@ const Content: FC = () => {
 					/>
 					<p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
 
-					<p className="text-gray100 text-xs mb-3 z-1">
-						{!!balance && balance + ' ' + selectedChain?.symbol + ' is available in your wallet'}
-					</p>
-
-					<div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
+					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
 						<div
 							className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60"
 							onClick={() => setModalState(true)}
@@ -224,6 +220,16 @@ const Content: FC = () => {
 							</div>
 						</div>
 					</div>
+					<p className="text-gray100 text-right text-xs mb-3 z-1">
+						{!!balance && (
+							<>
+								<span>Available: </span>
+								<button onClick={() => setFundAmount(balance.toString())} className="text-blue-500">
+									{balance + ' ' + selectedChain?.symbol}{' '}
+								</button>
+							</>
+						)}
+					</p>
 					<ClaimButton
 						width="100% !important"
 						height="3.5rem"
