@@ -3,9 +3,12 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <div className="header w-full h-[152px] bg-gray20 rounded-2xl flex justify-between items-end overflow-hidden p-4 mb-4">
+    <div className="header prize-tap-header-bg w-full h-[194px] bg-gray20 rounded-2xl flex justify-between items-end overflow-hidden p-4 mb-6">
       <div className="header__left items-center h-auto">
-        <img className="gas-tap h-auto w-40 mb-3" src="assets/images/prize-tap/header-typography.png" />
+        <span className="header__left__type-logo flex mb-3 gap-3">
+          <img className="h-12 w-auto" src="assets/images/prize-tap/header-typography.png" />
+          {/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
+        </span>
         <p className="z-10 text-sm text-gray100">Aura verification needed</p>
       </div>
       <div className="header__right">

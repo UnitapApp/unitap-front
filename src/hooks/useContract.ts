@@ -5,7 +5,7 @@ import {Web3Provider} from '@ethersproject/providers';
 import MulticallJson
   from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
 import {useWeb3React} from '@web3-react/core';
-import {UnitapPassBatchSaleMain, UnitapPassMain, UnitapEVMTokenTap} from '../abis/types';
+import {UnitapPassBatchSaleMain, UnitapPassMain, UnitapEVMTokenTap,  UnitapPrizeTap, UnitapPrizeTap721} from '../abis/types';
 import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSaleMain.json';
 import UnitapPass_ABI from '../abis/UnitapPassMain.json';
 import UnitapEVMTokenTap_ABI from '../abis/UnitapEVMTokenTap.json';
@@ -21,6 +21,8 @@ import {
 } from '../constants/addresses';
 import {SupportedChainId} from '../constants/chains';
 import {getUnitapPassChainId} from 'utils/env';
+import PrizeTap_ABI from '../abis/UnitapPrizeTap.json';
+import PrizeTap_721_ABI from '../abis/UnitapPrizeTap.json';
 
 const { abi: MulticallABI } = MulticallJson;
 
@@ -103,4 +105,13 @@ export function useEVMTokenTapContract() {
     true,
     SupportedChainId.GNOSIS,
   )
+}
+
+
+export function useUnitapPrizeContract(contractAddress : string | undefined, isPrizeNft: boolean | undefined) {
+  return useContract<UnitapPrizeTap>(
+    contractAddress,
+    !isPrizeNft ? PrizeTap_ABI : PrizeTap_721_ABI ,
+    true,
+  );
 }

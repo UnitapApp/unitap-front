@@ -1,4 +1,4 @@
-import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse, Settings } from 'types';
+import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse, Settings ,Prize, EnrollmentSignature } from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -138,3 +138,63 @@ export async function updateClaimFinished(token: string, claimId: number, txHash
 	);
 	return response.data;
 }
+
+export async function getRafflesListAPI(token: string | null) {
+	if(token) {
+		const response = await axiosInstance.get<Prize[]>('/api/prizetap/raffle-list/', {
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		});
+		return response.data;
+	}
+	const response = await axiosInstance.get<Prize[]>('/api/prizetap/raffle-list/');
+	return response.data;
+}
+
+export async function updateEnrolledFinished(token: string, raffleID: string | undefined , txHash: string) {
+	const response = await axiosInstance.post<any>(
+		`api/prizetap/set-enrollment-tx/${raffleID}`,
+		{ txHash },
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+	return response.data;
+}
+
+
+export async function updateClaimPrizeFinished(token: string, raffleID: string | undefined , txHash: string) {
+	const response = await axiosInstance.post<any>(
+		`api/prizetap/set-claiming-prize-tx/${raffleID}`,
+		{ txHash },
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+	return response.data;
+}
+
+export async function getEnrollmentApi(token: string, raffleID: string) {
+  const response = await axiosInstance.post<EnrollmentSignature>(`/api/prizetap/raffle-enrollment/${raffleID}/`, null, {
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  })
+  return response.data;
+}
+
+
+export async function getClaimPrizeApi(token: string, raffleID: string) {
+  const response = await axiosInstance.post<EnrollmentSignature>(`/api/prizetap/claim-prize/${raffleID}/`, null, {
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  })
+  return response.data;
+}
+

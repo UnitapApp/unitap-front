@@ -85,18 +85,7 @@ export type ClaimTokenResponse = {
 	};
 };
 
-export type Prize = {
-	pk: PK;
-	image: string;
-	title: string;
-	enrolled: number;
-	source: string;
-	twitterLink: string;
-	discordLink: string;
-	description: string;
-	startTime: string;
-	FinishTime: string;
-};
+
 
 export enum BrightIdVerificationStatus {
 	PENDING = '0',
@@ -217,3 +206,64 @@ export type APIError = {
 	source: APIErrorsSource;
 	statusCode: number;
 };
+
+export type Prize = {
+  id: PK;
+  pk: PK;
+  imageUrl: string;
+  background: string;
+  creator: string;
+  creatorUrl: string;
+  contract: string;
+  isPrizeNft: boolean;
+  enrolled: number;
+  twitterUrl: string;
+  discordUrl: string;
+  description: string;
+  createdAt: string;
+  deadline: string;
+  name: string;
+  chainName: string;
+  chainLogoUrl: string;
+  chain: Chain;
+  raffleId: string;
+  winner: string;
+  isClaimable: boolean
+  isExpired: boolean;
+	isMaxedOut: boolean;
+  permissions: Permission[];
+  userEntry: UserEntryInRaffle
+	numberOfEntries: number;
+	maxNumberOfEntries: number;
+	prize:number;
+}
+
+export type EnrollPayload = {
+	raffleId: number;
+	nonce: number;
+	signature: string;
+	method: string;
+};
+
+export type EnrollmentSignature = {
+  detail: string;
+	signature: {
+    claimingPrizeTx: string | null;
+    createdAt: string;
+    nonce: number;
+    pk: number;
+    signature: string;
+    txHash: string | null;
+    userProfile: number;
+  }
+}
+
+export type UserEntryInRaffle = {
+  claimingPrizeTx: null | string;
+  createdAt: string;
+  nonce: number;
+  pk: number;
+  signature: string;
+  txHash: string | null;
+  userProfile: number;
+}

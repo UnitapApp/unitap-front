@@ -234,6 +234,10 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 		-webkit-text-fill-color: transparent;
 	}
 
+	div p {
+		color: red;
+	}
+
 	::before {
 		background: #030317 !important;
 	}
@@ -299,6 +303,41 @@ export const EmptyWithRefillButton = styled(Button)`
 	&:hover {
 		background: ${DV.colors.gray90};
 		color: ${DV.colors.gray70};
+	}
+`;
+
+export const ClaimPrizeButton = styled(PrimaryButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.dark};
+		-webkit-background-clip: text;
+	}
+`;
+
+export const EnrolledButton = styled(PrimaryOutlinedButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.primary};
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+`;
+
+export const ClaimAndEnrollButton = styled(PrimaryOutlinedButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.primary_2};
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	::before {
+		background: #030317 !important;
 	}
 `;
 
