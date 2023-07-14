@@ -10,6 +10,7 @@ import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
+import TokenDeadlineTimer from '../Timer';
 
 const Action = styled.div`
 	display: flex;
@@ -252,7 +253,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 				<div
 					className={`${
 						isHighlighted ? 'bg-g-primary-low' : 'bg-gray30'
-					} w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between`}
+					} w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between relative`}
 				>
 					<div className="flex gap-x-2 items-center text-xs sm:text-sm">
 						<p className="text-gray100">
@@ -262,6 +263,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						</p>
 						<Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
 					</div>
+
+					{/* <TokenDeadlineTimer deadline={token.deadline} /> */}
 
 					<div className="flex gap-x-6 items-center">
 						<a target="_blank" rel="noreferrer" href={token.twitterUrl}>
