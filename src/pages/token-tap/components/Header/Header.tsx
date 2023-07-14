@@ -13,7 +13,7 @@ const Header = () => {
 				<span className="flex items-center mb-2">
 					<Icon className="gas-tap h-12 w-auto mb-1" iconSrc="assets/images/token-tap/token-tap-typo-logo.svg" />
 					<div className="bg-gray10 px-3 py-2 border font-bold border-gray50 text-white text-xs rounded-lg">
-						<p className="text-gradient-primary opacity-10 light-toggle">Beta</p>
+						<p className="text-gradient-primary">Beta</p>
 					</div>
 				</span>
 				<p className="text-xs text-gray100">
