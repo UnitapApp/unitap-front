@@ -43,11 +43,11 @@ const TokenCoins = () => {
 	return (
 		<div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
 			<>
-				{claimedTokensList.map((claim) => {
+				{claimedTokensList.map((claim, key) => {
 					return (
 						<Icon
 							onClick={() => openClaimModal(claim.tokenDistribution)}
-							key={claim.tokenDistribution.chain.chainId}
+							key={key}
 							iconSrc={claim.tokenDistribution.imageUrl || claim.tokenDistribution.chain.logoUrl}
 							className={`cursor-pointer rounded-full transition ${claim.status === 'Pending' && 'animated-dabe'}`}
 							width="36px"
