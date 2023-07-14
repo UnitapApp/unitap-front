@@ -197,6 +197,9 @@ const Landing: FC = () => {
 												<img src={token.imageUrl} alt={token.name} className="token-logo w-auto h-[100%]" />
 											</span>
 											<p className="text-xs ml-4">{token.name}</p>
+											<p className="ml-auto">
+												{token.maxNumberOfClaims - token.numberOfClaims} <span>claims</span>
+											</p>
 										</div>
 									))}
 							</Widget>
