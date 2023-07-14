@@ -120,9 +120,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 				params: {
 					type: 'ERC20',
 					options: {
-						address: token.chain.tokentapContractAddress,
-						symbol: token.chain.symbol,
 						name: token.name,
+						address: token.tokenAddress,
+						symbol: token.token,
 						decimals: token.chain.decimals,
 						image: token.imageUrl,
 					},

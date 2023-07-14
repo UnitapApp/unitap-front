@@ -297,7 +297,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					textAlign="center"
 					onClick={() =>
 						window.open(
-							'https://gnosisscan.io/tx/' + (collectedToken?.txHash ?? claimTokenWithMetamaskResponse?.txHash),
+							selectedTokenForClaim!.chain.explorerUrl +
+								'tx/' +
+								(collectedToken?.txHash ?? claimTokenWithMetamaskResponse?.txHash),
 						)
 					}
 				>
