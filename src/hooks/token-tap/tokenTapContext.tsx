@@ -152,7 +152,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 						updateClaimFinished(userToken, id, res.transactionHash);
 						setClaimTokenLoading(false);
 					})
-					.catch(() => {
+					.catch((e) => {
 						setClaimTokenWithMetamaskResponse({
 							success: false,
 							state: 'Retry',
@@ -187,7 +187,6 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		if (!selectedTokenForClaim) {
-			claimId.current = null;
 			return;
 		}
 		let relatedClaimedToken = claimedTokensList.find(

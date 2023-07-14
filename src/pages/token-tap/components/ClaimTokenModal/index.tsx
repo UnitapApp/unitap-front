@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
+import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import { shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
@@ -16,6 +16,8 @@ import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import { switchChain } from '../../../../utils/switchChain';
 import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
+import lottie from 'lottie-web';
+import animation from 'assets/animations/GasFee-delivery2.json';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -36,6 +38,21 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { userProfile } = useContext(UserProfileContext);
 
 	const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim!.id);
+
+	useEffect(() => {
+		if (claimTokenLoading) {
+			const animationElement = document.querySelector('#animation');
+			if (animationElement) {
+				animationElement.innerHTML = '';
+			}
+			lottie.loadAnimation({
+				container: document.querySelector('#animation') as HTMLInputElement,
+				animationData: animation,
+				loop: true,
+				autoplay: true,
+			});
+		}
+	}, [claimTokenLoading]);
 
 	function renderWalletNotConnectedBody() {
 		return (
@@ -385,6 +402,25 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		);
 	}
 
+	function renderPendingBody() {
+		if (!selectedTokenForClaim) return null;
+
+		return (
+			<>
+				<div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
+				<Text width="100%" fontSize="14" color="space_green" textAlign="center">
+					Claim transaction submitted
+				</Text>
+				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+					The claim transaction will be completed soon
+				</Text>
+				<SecondaryGreenColorButton onClick={closeClaimModal} width={'100%'}>
+					Close
+				</SecondaryGreenColorButton>
+			</>
+		);
+	}
+
 	const getClaimTokenModalBody = () => {
 		if (!selectedTokenForClaim) {
 			closeClaimModal();
@@ -412,6 +448,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);
+
+		if (claimTokenLoading) return renderPendingBody();
 
 		if (claimedTokensList.length >= 3) return claimMaxedOutBody();
 
