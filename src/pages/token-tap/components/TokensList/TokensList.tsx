@@ -11,6 +11,7 @@ import Markdown from '../Markdown';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import TokenDeadlineTimer from '../Timer';
+import Tooltip from 'components/basic/Tooltip';
 
 const Action = styled.div`
 	display: flex;
@@ -105,8 +106,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
 
 	const { account } = useWeb3React();
-
 	const active = !!account;
+
+	const [showAllPermissions, setShowAllPermissions] = useState(false);
 
 	const onTokenClicked = () => {
 		window.open(token.distributorUrl);
@@ -249,6 +251,34 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						</div>
 					</div>
 					<Markdown isHighlighted={isHighlighted} content={token.notes} />
+					<div
+						className={`${
+							isHighlighted ? 'bg-g-primary-low' : 'bg-gray40'
+						} p-3 flex items-center flex-wrap text-xs gap-2 text-white`}
+					>
+						{(showAllPermissions ? token.permissions : token.permissions.slice(0, 6)).map((permission, key) => (
+							<Tooltip
+								className="border-gray70 z-10 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg"
+								key={key}
+								text={permission.description}
+							>
+								{permission.name}
+							</Tooltip>
+						))}
+
+						{token.permissions.length > 6 && (
+							<button
+								onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
+								className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+							>
+								<span>{showAllPermissions ? 'Show less' : 'Show more'}</span>
+								<img
+									src="/assets/images/token-tap/angle-down.svg"
+									className={`ml-2 ${showAllPermissions ? 'rotate-180' : ''} transition-transform`}
+								/>
+							</button>
+						)}
+					</div>
 				</span>
 				<div
 					className={`${
