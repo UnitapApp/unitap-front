@@ -192,6 +192,10 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 							{chain.chainName}
 						</p>
 						<img className="arrow-icon mt-1 ml-1.5 w-2 h-2" src="assets/images/arrow-icon.svg" alt="arrow" />
+						<p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">{chain.chainType}</p>
+						<p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
+							{chain.isTestnet ? 'Testnet' : 'Mainnet'}
+						</p>
 					</div>
 
 					<div className={'flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto'}>
