@@ -5,7 +5,8 @@ import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
-import { useTokenTapClaimTokenCallback } from './useTokenTapClaimTokenCallback';
+import { claimTokenCallback } from './tokenTapClaimToken';
+import { useTransactionAdder } from 'state/transactions/hooks';
 
 export const TokenTapContext = createContext<{
 	tokensList: Token[];
@@ -53,13 +54,14 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const [tokensListLoading, setTokensListLoading] = useState<boolean>(false);
 	const [claimTokenSignatureLoading, setClaimTokenSignatureLoading] = useState<boolean>(false);
 	const [searchPhrase, setSearchPhrase] = useState<string>('');
+	const addTransaction = useTransactionAdder();
 
 	const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>([]);
 
 	const [selectedTokenForClaim, setSelectedTokenForClaim] = useState<Token | null>(null);
 	const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
 
-	const { provider } = useWeb3React();
+	const { provider, account, chainId } = useWeb3React();
 	const EVMTokenTapContract = useEVMTokenTapContract();
 
 	const [claimTokenPayload, setClaimTokenPayload] = useState<TokenClaimPayload | null>(null);
@@ -102,14 +104,6 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		getClaimedTokensList();
 	}, [getClaimedTokensList, fastRefresh]);
 
-	const { callback } = useTokenTapClaimTokenCallback(
-		claimTokenPayload?.user,
-		claimTokenPayload?.token,
-		claimTokenPayload?.amount,
-		claimTokenPayload?.nonce,
-		claimTokenPayload?.signature,
-	);
-
 	const claimToken = useCallback(
 		async (token: Token, body?: any) => {
 			if (!userToken) return;
@@ -136,9 +130,26 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 		try {
 			setClaimTokenLoading(true);
-			const res = await claimToken(selectedTokenForClaim!);
+			let res = (await claimToken(selectedTokenForClaim!))?.payload;
 
-			const response = await callback?.();
+			if (!res) res = claimTokenPayload!;
+
+			if (!res || !account || !chainId) {
+				return;
+			}
+
+			const response = await claimTokenCallback(
+				res.user,
+				res.token,
+				res.amount,
+				res.nonce,
+				res.signature,
+				EVMTokenTapContract,
+				account,
+				chainId,
+				provider,
+				addTransaction,
+			);
 			if (response) {
 				response
 					.wait()
@@ -169,7 +180,17 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			});
 			setClaimTokenLoading(false);
 		}
-	}, [userToken, provider, selectedTokenForClaim, claimToken, EVMTokenTapContract, callback]);
+	}, [
+		userToken,
+		provider,
+		selectedTokenForClaim,
+		claimToken,
+		EVMTokenTapContract,
+		account,
+		addTransaction,
+		claimTokenPayload,
+		chainId,
+	]);
 
 	const openClaimModal = useCallback(
 		(token: Token) => {
