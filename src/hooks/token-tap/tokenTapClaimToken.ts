@@ -119,7 +119,6 @@ export const claimTokenCallback = async (
 			from: account,
 			to: address,
 			data: calldata,
-			// let the wallet try if we can't estimate the gas
 			...('gasEstimate' in bestCallOption ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
 			...(value && !isZero(value) ? { value } : {}),
 		})
