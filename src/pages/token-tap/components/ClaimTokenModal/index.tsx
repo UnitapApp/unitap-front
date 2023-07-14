@@ -264,8 +264,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${calculateClaimAmount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedTokenForClaim?.token)}`;
+				`I've just claimed ${calculateClaimAmount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\nClaim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + encodeURIComponent(selectedTokenForClaim!.token))}`;
 			window.open(twitterUrl, '_blank');
 		};
 
