@@ -198,7 +198,7 @@ const Landing: FC = () => {
 											</span>
 											<p className="text-xs ml-4">{token.name}</p>
 											<p className="ml-auto">
-												{token.maxNumberOfClaims - token.numberOfClaims} <span>claims</span>
+												{token.maxNumberOfClaims - token.numberOfClaims} <span>left</span>
 											</p>
 										</div>
 									))}
