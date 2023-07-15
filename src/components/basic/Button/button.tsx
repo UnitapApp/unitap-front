@@ -228,7 +228,7 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 	width: 220px;
 	font-weight: 600;
 
-	p {
+	&:not(:disabled) p {
 		background: ${DV.bgGradient.primary};
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
@@ -236,6 +236,22 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 
 	::before {
 		background: #030317 !important;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+
+		background: ${DV.colors.gray90};
+
+		p {
+			-webkit-background-clip: none !important;
+			-webkit-text-fill-color: none !important;
+			color: ${DV.colors.gray10};
+		}
+
+		::before {
+			background: none !important;
+		}
 	}
 `;
 

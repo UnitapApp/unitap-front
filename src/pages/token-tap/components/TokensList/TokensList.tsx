@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import TokenDeadlineTimer from '../Timer';
 import Tooltip from 'components/basic/Tooltip';
+import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 
 const Action = styled.div`
 	display: flex;
@@ -106,6 +107,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
 
 	const { account } = useWeb3React();
+	const isPermissionVerified = usePermissionResolver();
+
 	const active = !!account;
 
 	const [showAllPermissions, setShowAllPermissions] = useState(false);
@@ -143,6 +146,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 
 	const calculateClaimAmount =
 		token.chain.chainName === 'Lightning' ? token.amount : token.amount / 10 ** token.chain.decimals;
+
+	const permissionVerificationsList = token.permissions.map((permission) => isPermissionVerified(permission));
+
+	const needsVerification = permissionVerificationsList.includes(false);
 
 	return (
 		<div key={token.id}>
@@ -207,10 +214,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										<ClaimButton
 											data-testid={`chain-show-claim-${token.id}`}
 											mlAuto
+											disabled={needsVerification}
 											onClick={() => openClaimModal(token)}
 											className="text-sm m-auto"
 										>
-											<p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+											<p>
+												{needsVerification ? 'Complete Verifications' : `Claim ${calculateClaimAmount} ${token.token}`}
+											</p>
 										</ClaimButton>
 									) : (
 										<ClaimedButton
@@ -229,10 +239,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									<ClaimButton
 										data-testid={`chain-show-claim-${token.id}`}
 										mlAuto
+										disabled={permissionVerificationsList.includes(false)}
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
-										<p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+										<p>
+											{needsVerification ? 'Complete Verifications' : `Claim ${calculateClaimAmount} ${token.token}`}
+										</p>{' '}
 									</ClaimButton>
 								) : (
 									<ClaimedButton
@@ -258,11 +271,23 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 					>
 						{(showAllPermissions ? token.permissions : token.permissions.slice(0, 6)).map((permission, key) => (
 							<Tooltip
-								className="border-gray70 z-10 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg"
+								className={
+									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
+									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
+								}
 								key={key}
 								text={permission.description}
 							>
-								{permission.name}
+								<div className="flex items-center gap-3">
+									<img
+										src={
+											permissionVerificationsList[key]
+												? '/assets/images/token-tap/check.svg'
+												: '/assets/images/token-tap/not-verified.svg'
+										}
+									/>
+									{permission.name}
+								</div>
 							</Tooltip>
 						))}
 

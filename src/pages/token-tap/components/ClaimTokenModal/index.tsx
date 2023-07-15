@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
+import Tooltip from 'components/basic/Tooltip';
+import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -231,9 +233,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						alt=""
 					/>
 				</DropIconWrapper>
-				{claimTokenSignatureLoading ? (
-					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
-				) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
+				{claimTokenWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
 				) : (
 					<div className="text-left text-white">
@@ -251,10 +251,12 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						</p>
 					</div>
 				)}
+
 				<Text width="100%" fontSize="14">
 					Wallet Address
 				</Text>
 				<WalletAddress fontSize="12">{walletConnected ? shortenAddress(account) : ''}</WalletAddress>
+
 				<ClaimButton
 					onClick={() => handleClaimToken()}
 					width="100%"
