@@ -7,6 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
 import { claimTokenCallback } from './tokenTapClaimToken';
 import { useTransactionAdder } from 'state/transactions/hooks';
+import { UserProfileContext } from 'hooks/useUserProfile';
 
 export const TokenTapContext = createContext<{
 	tokensList: Token[];
@@ -46,7 +47,6 @@ export const TokenTapContext = createContext<{
 
 const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const { fastRefresh } = useContext(RefreshContext);
-	const [userToken] = useToken();
 
 	const [tokensList, setTokensList] = useState<Token[]>([]);
 	const [claimError, setClaimError] = useState<string | null>(null);
@@ -63,6 +63,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const { provider, account, chainId } = useWeb3React();
 	const EVMTokenTapContract = useEVMTokenTapContract();
+
+	const { userToken } = useContext(UserProfileContext);
 
 	const [claimTokenWithMetamaskResponse, setClaimTokenWithMetamaskResponse] = useState<any | null>(null);
 
