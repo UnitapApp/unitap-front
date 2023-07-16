@@ -125,7 +125,6 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			if (!userToken || !provider || !EVMTokenTapContract) return;
 
 			try {
-				setClaimTokenLoading(true);
 				const res = await claimToken(selectedTokenForClaim!);
 
 				const txPayload = res?.payload ?? claimTokenPayload;
@@ -148,6 +147,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 					provider,
 					addTransaction,
 				);
+
+				setClaimTokenLoading(true);
 
 				if (response) {
 					response

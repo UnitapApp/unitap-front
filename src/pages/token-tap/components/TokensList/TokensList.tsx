@@ -104,7 +104,8 @@ const TokensList = () => {
 };
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
-	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading } = useContext(TokenTapContext);
+	const { openClaimModal, claimedTokensList, claimTokenSignatureLoading, claimTokenLoading } =
+		useContext(TokenTapContext);
 
 	const { account } = useWeb3React();
 	const isPermissionVerified = usePermissionResolver();
@@ -200,7 +201,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										Empty
 									</NoCurrencyButton>
 								) : collectedToken ? (
-									claimTokenSignatureLoading ||
+									claimTokenLoading ||
 									(token.chain.chainName === 'Lightning' && collectedToken.status === 'Pending') ? (
 										<ClaimButton
 											data-testid={`chain-pending-claim-${token.id}`}
@@ -214,7 +215,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										<ClaimButton
 											data-testid={`chain-show-claim-${token.id}`}
 											mlAuto
-											disabled={needsVerification}
+											// disabled={needsVerification}
 											onClick={() => openClaimModal(token)}
 											className="text-sm m-auto"
 										>
@@ -239,7 +240,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									<ClaimButton
 										data-testid={`chain-show-claim-${token.id}`}
 										mlAuto
-										disabled={permissionVerificationsList.includes(false)}
+										// disabled={needsVerification}
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
