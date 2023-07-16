@@ -5,7 +5,8 @@ import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
-import { useTokenTapClaimTokenCallback } from './useTokenTapClaimTokenCallback';
+import { claimTokenCallback } from './tokenTapClaimToken';
+import { useTransactionAdder } from 'state/transactions/hooks';
 
 export const TokenTapContext = createContext<{
 	tokensList: Token[];
@@ -53,24 +54,22 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 	const [tokensListLoading, setTokensListLoading] = useState<boolean>(false);
 	const [claimTokenSignatureLoading, setClaimTokenSignatureLoading] = useState<boolean>(false);
 	const [searchPhrase, setSearchPhrase] = useState<string>('');
+	const addTransaction = useTransactionAdder();
 
 	const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>([]);
 
 	const [selectedTokenForClaim, setSelectedTokenForClaim] = useState<Token | null>(null);
 	const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
 
-	const { provider } = useWeb3React();
+	const { provider, account, chainId } = useWeb3React();
 	const EVMTokenTapContract = useEVMTokenTapContract();
 
-	const [claimTokenPayload, setClaimTokenPayload] = useState<TokenClaimPayload | null>(null);
 	const [claimTokenWithMetamaskResponse, setClaimTokenWithMetamaskResponse] = useState<any | null>(null);
 
 	const tokenListSearchResult = useMemo(() => {
 		const searchPhraseLowerCase = searchPhrase.toLowerCase();
 		return tokensList.filter((token) => token.name.toLowerCase().includes(searchPhraseLowerCase));
 	}, [searchPhrase, tokensList]);
-
-	const claimId = useRef<null | number>(null);
 
 	const getTokensList = useCallback(async () => {
 		setTokensListLoading(true);
@@ -102,15 +101,6 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		getClaimedTokensList();
 	}, [getClaimedTokensList, fastRefresh]);
 
-	const { callback } = useTokenTapClaimTokenCallback(
-		claimTokenPayload?.user,
-		claimTokenPayload?.token,
-		claimTokenPayload?.amount,
-		claimTokenPayload?.nonce,
-		claimTokenPayload?.signature,
-		selectedTokenForClaim?.chain.tokentapContractAddress,
-	);
-
 	const claimToken = useCallback(
 		async (token: Token, body?: any) => {
 			if (!userToken) return;
@@ -123,61 +113,82 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 				return response;
 			} catch (e: any) {
-				setClaimError(e.response?.data.message);
+				// setClaimError(e.response?.data.message);
 				setClaimTokenSignatureLoading(false);
 			}
 		},
 		[userToken, claimedTokensList, setClaimError],
 	);
 
-	const claimTokenWithMetamask = useCallback(async () => {
-		if (!userToken || !provider || !EVMTokenTapContract) return;
+	const claimTokenWithMetamask = useCallback(
+		async (claimTokenPayload?: TokenClaimPayload, claimId?: number) => {
+			if (!userToken || !provider || !EVMTokenTapContract) return;
 
-		const id = claimId.current!;
+			try {
+				setClaimTokenLoading(true);
+				const res = await claimToken(selectedTokenForClaim!);
 
-		try {
-			setClaimTokenLoading(true);
+				const txPayload = res?.payload ?? claimTokenPayload;
 
-			const response = await callback?.();
-			if (response) {
-				response
-					.wait()
-					.then((res) => {
-						setClaimTokenWithMetamaskResponse({
-							success: true,
-							state: 'Done',
-							txHash: res.transactionHash,
-							message: 'Token claimed successfully.',
+				if (!txPayload || !account || !chainId) {
+					return;
+				}
+
+				if (!claimId) claimId = res!.id;
+
+				const response = await claimTokenCallback(
+					txPayload.user,
+					txPayload.token,
+					txPayload.amount,
+					txPayload.nonce,
+					txPayload.signature,
+					EVMTokenTapContract,
+					account,
+					chainId,
+					provider,
+					addTransaction,
+				);
+
+				if (response) {
+					response
+						.wait()
+						.then(async (res) => {
+							setClaimTokenWithMetamaskResponse({
+								success: true,
+								state: 'Done',
+								txHash: res.transactionHash,
+								message: 'Token claimed successfully.',
+							});
+							await updateClaimFinished(userToken, claimId!, res.transactionHash);
+							setClaimTokenLoading(false);
+						})
+						.catch(() => {
+							setClaimTokenWithMetamaskResponse({
+								success: false,
+								state: 'Retry',
+								message: 'Something went wrong. Please try again!',
+							});
+							setClaimTokenLoading(false);
 						});
-						updateClaimFinished(userToken, id, res.transactionHash);
-						setClaimTokenLoading(false);
-					})
-					.catch((e) => {
-						setClaimTokenWithMetamaskResponse({
-							success: false,
-							state: 'Retry',
-							message: 'Something went wrong. Please try again!',
-						});
-						setClaimTokenLoading(false);
-					});
+				}
+			} catch (e: any) {
+				setClaimTokenWithMetamaskResponse({
+					success: false,
+					state: 'Retry',
+					message: 'Something went wrong. Please try again!',
+				});
+				setClaimTokenLoading(false);
 			}
-		} catch (e: any) {
-			setClaimTokenWithMetamaskResponse({
-				success: false,
-				state: 'Retry',
-				message: 'Something went wrong. Please try again!',
-			});
-			setClaimTokenLoading(false);
-		}
-	}, [userToken, provider, EVMTokenTapContract, callback]);
+		},
+		[userToken, provider, selectedTokenForClaim, claimToken, EVMTokenTapContract, account, addTransaction, chainId],
+	);
 
 	const openClaimModal = useCallback(
 		(token: Token) => {
 			setClaimTokenWithMetamaskResponse(null);
-			if (token.chain.chainName !== 'Lightning') claimToken(token);
 			setSelectedTokenForClaim(token);
 		},
-		[setSelectedTokenForClaim, claimToken, setClaimTokenWithMetamaskResponse],
+		[setSelectedTokenForClaim, setClaimTokenWithMetamaskResponse],
 	);
 
 	const closeClaimModal = useCallback(() => {
@@ -185,23 +196,15 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		setSelectedTokenForClaim(null);
 	}, []);
 
-	useEffect(() => {
-		if (!selectedTokenForClaim) {
-			return;
-		}
-		let relatedClaimedToken = claimedTokensList.find(
-			(claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id,
-		);
-		if (relatedClaimedToken) {
-			claimId.current = relatedClaimedToken.id;
-			setClaimTokenPayload(relatedClaimedToken.payload);
-		}
-	}, [claimedTokensList, selectedTokenForClaim]);
-
 	const handleClaimToken = useCallback(async () => {
 		if (!selectedTokenForClaim || claimTokenLoading) return;
-		claimTokenWithMetamask();
-	}, [selectedTokenForClaim, claimTokenLoading, claimTokenWithMetamask]);
+
+		const relatedClaimedToken = claimedTokensList.find(
+			(claimedToken) => claimedToken.tokenDistribution.id === selectedTokenForClaim.id,
+		);
+
+		claimTokenWithMetamask(relatedClaimedToken?.payload, relatedClaimedToken?.id);
+	}, [selectedTokenForClaim, claimedTokensList, claimTokenLoading, claimTokenWithMetamask]);
 
 	return (
 		<TokenTapContext.Provider
