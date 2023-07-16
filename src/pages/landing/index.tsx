@@ -12,6 +12,8 @@ import { getTotalEVMNetworks } from '../../utils';
 import { TokenTapContext } from '../../hooks/token-tap/tokenTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import NotAvailableTap from './components/notAvailableTap';
+import Icon from 'components/basic/Icon/Icon';
+import { ClaimButton } from 'components/basic/Button/button';
 
 const Landing: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -113,7 +115,10 @@ const Landing: FC = () => {
 					onClick={() => navigate(RoutePath.NFT)}
 				>
 					<div className={'flex gap-4 flex-col items-start card-text justify-center'}>
-						<h3 className={'font-bold text-2xl text-gradient-primary'}>Mint Unitap Pass NFT</h3>
+						<div className="flex items-center">
+							<h3 className={'font-bold text-2xl text-white'}>Mint Unitap Pass NFT</h3>
+							<Icon iconSrc="/assets/images/landing/unitap-pass.svg" className="ml-4" />
+						</div>
 						{maxCount > 0 && (
 							<p className={'text-gray100'}>
 								{deadline < new Date() && (
@@ -127,9 +132,10 @@ const Landing: FC = () => {
 						)}
 					</div>
 					<div>
-						<UButton size={'btn-large'} className={'secondary-button'} icon={'/assets/images/landing/arrow-right.svg'}>
-							Go to Mint Page
-						</UButton>
+						<ClaimButton className="before:!inset-[1px]">
+							<p>Go to Mint Page</p>
+							<Icon className="ml-5" iconSrc="/assets/images/landing/arrow-right.svg" />
+						</ClaimButton>
 					</div>
 				</section>
 
