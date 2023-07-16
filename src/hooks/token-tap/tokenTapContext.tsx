@@ -99,7 +99,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		getClaimedTokensList();
-	}, [getClaimedTokensList, fastRefresh]);
+	}, [getClaimedTokensList, fastRefresh, userToken]);
 
 	const claimToken = useCallback(
 		async (token: Token, body?: any) => {
