@@ -5,7 +5,7 @@ import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.sty
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
 import { Chain, Permission, PermissionType } from 'types';
-import { shortenAddress } from 'utils';
+import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
@@ -29,8 +29,6 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		closeEnrollModal,
 		claimOrEnrollWithMetamaskResponse,
 		claimOrEnrollSignatureLoading,
-		isEnrolled,
-		isClaimed,
 	} = useContext(PrizeTapContext);
 
 	const { openBrightIdModal } = useContext(ClaimContext);
@@ -279,7 +277,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					/>
 				</DropIconWrapper>
 				{claimOrEnrollSignatureLoading ? (
-					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your Enroll signature...</p>
+					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your Claim prize signature...</p>
 				) : claimOrEnrollWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimOrEnrollWithMetamaskResponse?.message}</p>
 				) : (
@@ -324,65 +322,125 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	}
 
 	function renderSuccessBody() {
-		const calculateClaimAmount = selectedRaffleForEnroll!.prize / 10 ** selectedRaffleForEnroll!.chain.decimals;
+		const calculateClaimAmount = selectedRaffleForEnroll!.prizeAmount / 10 ** selectedRaffleForEnroll!.chain.decimals;
 
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${calculateClaimAmount} ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
+				`I've just claimed from @Unitap_app 🔥\n Claim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
 		};
 
 		return (
 			<>
-				<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
-					test
-					{/* <Icon
-						className="chain-logo z-10 mt-14 mb-10"
-						width="auto"
-						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
-						alt=""
-					/> */}
-				</DropIconWrapper>
-				<span className="flex justify-center items-center font-medium mb-3">
-					<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
-						{selectedRaffleForEnroll?.name} Claimed
-					</Text>
-					<Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" />
-				</span>
+				{method == 'Claim' ? (
+					<div>
+						<div className="test">
+							{!selectedRaffleForEnroll!.isPrizeNft ? (
+								<p data-heading={calculateClaimAmount + ' ' + selectedRaffleForEnroll!.prizeSymbol}>
+									{calculateClaimAmount} {selectedRaffleForEnroll!.prizeSymbol}
+								</p>
+							) : (
+								<p data-heading={selectedRaffleForEnroll!.prizeName}> {selectedRaffleForEnroll!.prizeName} </p>
+							)}
+						</div>
 
-				<span className="flex justify-center items-center font-medium mb-3">
-					<Text className="!mb-8" color="gray90" width="100%" fontSize="14" textAlign="center">
-						Congratulations, @mzmn on your grand prize win!
-					</Text>
-				</span>
+						<span className="flex justify-center items-center font-medium mb-3">
+							{!selectedRaffleForEnroll!.isPrizeNft ? (
+								<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
+									{calculateClaimAmount} {selectedRaffleForEnroll!.prizeSymbol} Claimed
+								</Text>
+							) : (
+								<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
+									{selectedRaffleForEnroll!.prizeName} Claimed
+								</Text>
+							)}
+							{/* <Icon iconSrc="assets/images/modal/successful-state-check.svg" width="22px" height="auto" className="ml-2" /> */}
+						</span>
 
-				{/* <Text
-					width="100%"
-					fontSize="14"
-					color="second_gray_light"
-					className="underline cursor-pointer"
-					mb={3}
-					textAlign="center"
-					onClick={() => window.open('https://gnosisscan.io/tx/' + claimOrEnrollWithMetamaskResponse?.txHash)}
-				>
-					view on explorer
-				</Text> */}
-				<div className="relative w-full">
-					<button
-						onClick={handleClick}
-						className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
-					>
-						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
-					</button>
-					<Icon
-						iconSrc="/assets/images/gas-tap/twitter-share.svg"
-						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
-						width="auto"
-						height="26px"
-					/>
-				</div>
+						<span className="flex justify-center items-center font-medium mb-3">
+							<Text className="!mb-8" color="gray100" width="100%" fontSize="14" textAlign="center">
+								Congratulations, @{userProfile?.userName} on your grand prize win!
+							</Text>
+						</span>
+
+						<Text
+							width="100%"
+							fontSize="14"
+							color="second_gray_light"
+							className="underline cursor-pointer"
+							mb={3}
+							textAlign="center"
+							onClick={() => window.open(getTxUrl(chain, claimOrEnrollWithMetamaskResponse!.txHash!), '_blank')}
+						>
+							view on explorer
+						</Text>
+						<div className="relative w-full">
+							<button
+								onClick={handleClick}
+								className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+							>
+								<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+							</button>
+							<Icon
+								iconSrc="/assets/images/gas-tap/twitter-share.svg"
+								className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+								width="auto"
+								height="26px"
+							/>
+						</div>
+					</div>
+				) : (
+					<>
+						{/* <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
+							<Icon
+								className="chain-logo z-10 mt-14 mb-10"
+								width="auto"
+								height="110px"
+								iconSrc={getChainClaimIcon(chain)}
+								alt=""
+							/>
+						</DropIconWrapper> */}
+						<span className="flex justify-center items-center font-medium mb-3">
+							<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
+								successfully enrolled in {selectedRaffleForEnroll?.name} raffle
+							</Text>
+							<Icon
+								iconSrc="assets/images/modal/successful-state-check.svg"
+								width="22px"
+								height="auto"
+								className="ml-2"
+							/>
+						</span>
+
+						<Text
+							width="100%"
+							fontSize="14"
+							color="second_gray_light"
+							className="underline cursor-pointer"
+							mb={3}
+							textAlign="center"
+							onClick={() => window.open(getTxUrl(chain, claimOrEnrollWithMetamaskResponse!.txHash!), '_blank')}
+						>
+							view on explorer
+						</Text>
+
+						<div className="relative w-full">
+							<button
+								onClick={handleClick}
+								className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+							>
+								<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+							</button>
+							<Icon
+								iconSrc="/assets/images/gas-tap/twitter-share.svg"
+								className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+								width="auto"
+								height="26px"
+							/>
+						</div>
+					</>
+				)}
 			</>
 		);
 	}
@@ -400,9 +458,9 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					/>
 				</DropIconWrapper>
 				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-					{selectedRaffleForEnroll?.name
-						? "Unfortunately, there are no more tokens to claim. Make sure you're following us on Twitter to be notified when more tokens are available."
-						: "Unfortunately, you missed the deadline to claim your tokens. Make sure you're following us on Twitter to be notified when more tokens are available."}
+					{selectedRaffleForEnroll?.isExpired
+						? 'Unfortunately, The raffle has ended.'
+						: 'Unfortunately, The capacity to participate in the raffle has been completed.'}
 				</Text>
 				<ClaimButton
 					onClick={closeEnrollModal}
@@ -424,19 +482,23 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
-		if (walletConnected) return renderSuccessBody();
-
+		// if (walletConnected) return renderSuccessBody();
 		// if (isEnrolled) {
 		// 	closeEnrollModal();
 		// 	return null;
 		// }
 
-		// if (isClaimed) {
-		// 	closeEnrollModal();
-		// 	return null;
-		// }
+		if (method == 'Enroll' && !selectedRaffleForEnroll?.winnerEntry && selectedRaffleForEnroll?.userEntry?.txHash) {
+			closeEnrollModal();
+			return null;
+		}
 
-		if (selectedRaffleForEnroll.isExpired) {
+		if (
+			(selectedRaffleForEnroll.isExpired &&
+				!selectedRaffleForEnroll?.userEntry?.txHash &&
+				!selectedRaffleForEnroll?.winnerEntry) ||
+			selectedRaffleForEnroll?.maxNumberOfEntries == selectedRaffleForEnroll?.numberOfEntries
+		) {
 			return renderMaxedOutBody();
 		}
 

@@ -105,6 +105,7 @@ export type UserProfile = {
 	token: string;
 	pk: PK;
 	wallets: UserWallet[];
+	userName: string;
 };
 
 export type Settings = {
@@ -211,6 +212,7 @@ export type Prize = {
   id: PK;
   pk: PK;
   imageUrl: string;
+	tokenUri: string | undefined;
   background: string;
   creator: string;
   creatorUrl: string;
@@ -235,7 +237,21 @@ export type Prize = {
   userEntry: UserEntryInRaffle
 	numberOfEntries: number;
 	maxNumberOfEntries: number;
-	prize:number;
+	prizeAmount:number;
+	prizeName: string;
+	prizeSymbol: string;
+	winnerEntry: winnerEntry
+}
+
+export type winnerEntry = {
+	claimingPrizeTx: string;
+	createdAt: string; 
+	multiplier: number;
+	nonce: number;
+	pk: number;
+	signature: string;
+	txHash: string;
+	userProfile: 21
 }
 
 export type EnrollPayload = {
@@ -253,9 +269,22 @@ export type EnrollmentSignature = {
     nonce: number;
     pk: number;
     signature: string;
+		multiplier: number;
     txHash: string | null;
     userProfile: number;
   }
+}
+
+export type ClaimPrizeSignature = {
+	detail: string;
+	claimingPrizeTx: string | null;
+	createdAt: string;
+	nonce: number;
+	pk: number;
+	signature: string;
+	multiplier: number;
+	txHash: string | null;
+	userProfile: number;
 }
 
 export type UserEntryInRaffle = {
@@ -266,4 +295,5 @@ export type UserEntryInRaffle = {
   signature: string;
   txHash: string | null;
   userProfile: number;
+	multiplier: number;
 }

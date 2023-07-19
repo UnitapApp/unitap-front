@@ -8,6 +8,7 @@ import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
+import { getTxUrl } from 'utils';
 
 const Action = styled.div`
 	display: flex;
@@ -20,7 +21,6 @@ const Action = styled.div`
 const RafflesList = () => {
 	const location = useLocation();
 	const { rafflesList, rafflesListLoading } = useContext(PrizeTapContext);
-
 	const [highlightedPrize, setHighlightedPrize] = useState('');
 
 	const prizesSortListMemo = useMemo(
@@ -72,6 +72,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const {
 		pk,
 		imageUrl,
+		tokenUri,
 		creator,
 		creatorUrl,
 		twitterUrl,
@@ -86,24 +87,30 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		numberOfEntries,
 		maxNumberOfEntries,
 		isPrizeNft,
+		userEntry,
+		winnerEntry,
 	} = raffle;
-	const { openEnrollModal, isEnrolled, isClaimed } = useContext(PrizeTapContext);
+	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const { account } = useWeb3React();
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
+	let tokenImgLink: string | undefined = tokenUri
+		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
+		: undefined;
+
 	return (
-		<div className={`${pk % 2 != 0 ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
-			<div className="flex flex-col lg:flex-row items-center justify-center gap-4">
-				<div className="prize-card__image relative">
+		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
+			<div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
+				<div className="prize-card__image relative mb-3 lg:mb-0">
 					<div className={isHighlighted ? 'before:!inset-[2px] p-[2px] gradient-outline-card' : ''}>
 						<div
 							className={`prize-card__container h-[212px] w-[212px] flex ${
 								isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 							} justify-center items-center p-5 rounded-xl`}
 						>
-							<img src={imageUrl} alt={name} />
+							<img src={imageUrl ? imageUrl : tokenImgLink} alt={name} />
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50  border-2 border-gray70 min-w-[130px] justify-center">
@@ -156,9 +163,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							{description}
 						</p>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
-							{isExpired && !winner && !isEnrolled ? (
+							{isExpired && !winnerEntry && !userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -171,6 +178,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
+										// onClick={() => openEnrollModal(raffle, 'Enroll')}
 										disabled={true}
 										className="min-w-[552px] md:!w-[352px] !w-full"
 										height="48px"
@@ -180,7 +188,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="relative w-full">
 											<p> Enroll</p>{' '}
 											<Icon
-												className="absolute right-0 top-0"
+												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 												width="27px"
 												height="24px"
@@ -188,9 +196,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										</div>
 									</ClaimAndEnrollButton>
 								</span>
-							) : !winner && !isEnrolled ? (
+							) : !winnerEntry && !userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -212,7 +220,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="relative w-full">
 											<p> Enroll</p>{' '}
 											<Icon
-												className="absolute right-0 top-0"
+												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 												width="27px"
 												height="24px"
@@ -220,9 +228,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										</div>
 									</ClaimAndEnrollButton>
 								</span>
-							) : !winner && isEnrolled ? (
+							) : !winnerEntry && userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -244,7 +252,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="relative w-full">
 											<p> Enrolled</p>{' '}
 											<Icon
-												className="absolute right-0 top-0"
+												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 												width="27px"
 												height="24px"
@@ -252,9 +260,23 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										</div>
 									</EnrolledButton>
 								</span>
-							) : winner && Number(winner) !== userProfile?.pk && !isClaimed ? (
-								<span className="winner overflow-hidden winner-box-bg flex h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
-									<p className="text-[10px] text-white pl-5">Congratulations to @MZMN for being the winner!</p>
+							) : winnerEntry && winnerEntry?.userProfile !== userProfile?.pk ? (
+								<span className="winner overflow-hidden font-medium md:leading-[normal] leading-[15px] winner-box-bg flex h-[70px] md:h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
+									<p className="text-[10px] text-white pl-5 md:flex">
+										Congratulations to <span className="mx-0 md:mx-1"> {'@' + userProfile?.userName} </span> for being
+										the winner !
+										{winnerEntry!.claimingPrizeTx && (
+											<span className="flex md:ml-2">
+												View on Explorer
+												<Icon
+													className="ml-2"
+													iconSrc="assets/images/prize-tap/ic_link_white.svg"
+													onClick={() => window.open(getTxUrl(chain, winnerEntry!.claimingPrizeTx), '_blank')}
+													hoverable={true}
+												/>
+											</span>
+										)}
+									</p>
 									<Icon
 										className="opacity-[.3] mt-[-10px]"
 										iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
@@ -262,10 +284,12 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										height="167px"
 									/>
 								</span>
-							) : winner && Number(winner) == userProfile?.pk && !isClaimed ? (
+							) : winnerEntry && winnerEntry?.userProfile == userProfile?.pk && !userEntry?.claimingPrizeTx ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-										<p className="text-[10px] text-white">Congratulations @MZMN ! claim your prize now.</p>
+										<p className="text-[10px] text-white">
+											Congratulations @{userProfile?.userName} ! claim your prize now.
+										</p>
 										<Icon
 											className="opacity-[.3] mt-[-10px] mr-[-20px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
@@ -289,7 +313,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							) : (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-										<p className="text-[10px] text-white">Congratulations to @MZMN!</p>
+										<p className="text-[10px] text-white">Congratulations @{userProfile?.userName}!</p>
 										<Icon
 											className="opacity-[.3] mt-[-10px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
@@ -364,7 +388,7 @@ const RaffleCardTimer = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
 	}, []);
 
 	return (
-		<div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 px-3 py-2">
+		<div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
 			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
 				<p className="prize-card__timer-item-value text-white font-semibold">{days}</p>
 				<p className="prize-card__timer-item-label text-gray90">d</p>

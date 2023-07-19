@@ -11,6 +11,7 @@ import { RefreshContext } from '../../context/RefreshContext';
 import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useUnitapPrizeCallback } from './useUnitapPrizeCallback';
+import { UserProfileContext } from 'hooks/useUserProfile';
 
 export const PrizeTapContext = createContext<{
 	rafflesList: Prize[];
@@ -27,8 +28,6 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: any | null;
 	method: string | null;
 	setMethod: (method: string | null) => void;
-	isEnrolled: boolean;
-	isClaimed: boolean;
 }>({
 	claimError: null,
 	rafflesList: [],
@@ -44,14 +43,13 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: null,
 	method: null,
 	setMethod: () => {},
-	isEnrolled: false,
-	isClaimed: false,
 });
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const { fastRefresh } = useContext(RefreshContext);
-	const [userToken] = useToken();
-
+	// const [userToken] = useToken();
+	const { userProfile } = useContext(UserProfileContext);
+	// console.log(userProfile);
 	const [rafflesList, setRafflesList] = useState<Prize[]>([]);
 	const [claimError, setClaimError] = useState<string | null>(null);
 
@@ -67,53 +65,56 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const [method, setMethod] = useState<string | null>(null);
 
-	const [isEnrolled, setIsEnrolled] = useState<boolean>(false);
-	const [isClaimed, setIsClaimed] = useState<boolean>(false);
-
-	const getRafflesList = useCallback(async () => {
+	const getRafflesListWithOutToken = useCallback(async () => {
 		setRafflesListLoading(true);
-		if (userToken) {
-			try {
-				const response = await getRafflesListAPI(userToken);
-				setRafflesListLoading(false);
-				setRafflesList(response);
-				console.log(response);
-			} catch (e: any) {
-				setRafflesListLoading(false);
-				setClaimError(e.response?.data.message);
-				console.log(e);
-			}
-		} else {
-			try {
-				const response = await getRafflesListAPI(null);
-				setRafflesListLoading(false);
-				setRafflesList(response);
-			} catch (e: any) {
-				setRafflesListLoading(false);
-				setClaimError(e.response?.data.message);
-				console.log(e);
-			}
+		try {
+			const response = await getRafflesListAPI(undefined);
+			setRafflesListLoading(false);
+			setRafflesList(response);
+			console.log(response, 'no user token');
+		} catch (e: any) {
+			setRafflesListLoading(false);
+			setClaimError(e.response?.data.message);
+			console.log(e);
 		}
-	}, [userToken]);
+	}, []);
+
+	const getRafflesListWithToken = useCallback(async () => {
+		setRafflesListLoading(true);
+		try {
+			const response = await getRafflesListAPI(userProfile?.token);
+			setRafflesListLoading(false);
+			setRafflesList(response);
+			console.log(response, 'with token');
+		} catch (e: any) {
+			setRafflesListLoading(false);
+			setClaimError(e.response?.data.message);
+			console.log(e);
+		}
+	}, [userProfile]);
 
 	useEffect(() => {
-		getRafflesList();
-	}, [getRafflesList, fastRefresh]);
+		if (userProfile) {
+			getRafflesListWithToken();
+		} else {
+			getRafflesListWithOutToken();
+		}
+	}, [getRafflesListWithToken, getRafflesListWithOutToken, fastRefresh, userProfile]);
 
 	const { callback } = useUnitapPrizeCallback(
 		selectedRaffleForEnroll?.raffleId,
 		enrollOrClaimPayload?.nonce,
 		enrollOrClaimPayload?.signature,
+		enrollOrClaimPayload?.multiplier,
 		method,
 		selectedRaffleForEnroll?.contract,
 		selectedRaffleForEnroll?.isPrizeNft,
 	);
 
 	const claimOrEnrollWithMetamask = useCallback(async () => {
-		if (!userToken || !provider || !useUnitapPrizeCallback) return;
-
-		const id = selectedRaffleForEnroll?.raffleId;
-
+		if (!userProfile || !provider || !useUnitapPrizeCallback) return;
+		const id = selectedRaffleForEnroll?.userEntry?.pk;
+		const setClaimHashId = selectedRaffleForEnroll?.pk;
 		try {
 			setClaimOrEnrollLoading(true);
 
@@ -129,8 +130,8 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 							message: method == 'Claim' ? 'Claimed successfully.' : 'Enrolled successfully',
 						});
 						method == 'Enroll'
-							? updateEnrolledFinished(userToken, id, res.transactionHash)
-							: updateClaimPrizeFinished(userToken, id, res.transactionHash);
+							? updateEnrolledFinished(userProfile.token, id, res.transactionHash)
+							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash);
 						setClaimOrEnrollLoading(false);
 					})
 					.catch(() => {
@@ -143,6 +144,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 					});
 			}
 		} catch (e: any) {
+			console.log(e);
 			setClaimOrEnrollWithMetamaskResponse({
 				success: false,
 				state: 'Retry',
@@ -150,19 +152,13 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			});
 			setClaimOrEnrollLoading(false);
 		}
-	}, [userToken, provider, callback, method, selectedRaffleForEnroll]);
+	}, [userProfile, provider, callback, method, selectedRaffleForEnroll]);
 
 	const openEnrollModal = useCallback(
 		(raffle: Prize, method: string | null) => {
 			setClaimOrEnrollWithMetamaskResponse(null);
 			setMethod(method);
 			setSelectedRaffleForEnroll(raffle);
-			if (raffle.userEntry.txHash) {
-				setIsEnrolled(true);
-			}
-			if (raffle.userEntry.claimingPrizeTx) {
-				setIsClaimed(true);
-			}
 		},
 		[setSelectedRaffleForEnroll, setClaimOrEnrollWithMetamaskResponse],
 	);
@@ -173,21 +169,21 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!selectedRaffleForEnroll || !userToken) {
+		if (!selectedRaffleForEnroll || !userProfile) {
 			return;
 		}
-
 		const getSignature = async () => {
 			setClaimOrEnrollSignatureLoading(true);
 			let response;
 			if (method == 'Enroll') {
+				if (selectedRaffleForEnroll.isExpired) return;
 				if (selectedRaffleForEnroll.userEntry) {
 					setEnrollOrClaimPayload(selectedRaffleForEnroll.userEntry);
 					setClaimOrEnrollSignatureLoading(false);
 				} else {
 					try {
-						response = await getEnrollmentApi(userToken, selectedRaffleForEnroll.raffleId);
-						console.log(response);
+						response = await getEnrollmentApi(userProfile.token, selectedRaffleForEnroll.pk);
+						selectedRaffleForEnroll.userEntry = response.signature;
 						setEnrollOrClaimPayload(response.signature);
 						setClaimOrEnrollSignatureLoading(false);
 					} catch (e: any) {
@@ -197,10 +193,10 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				}
 			} else {
 				try {
-					response = await getClaimPrizeApi(userToken, selectedRaffleForEnroll.raffleId);
-					console.log(response);
-					response.signature.nonce = 1;
-					setEnrollOrClaimPayload(response.signature);
+					response = await getClaimPrizeApi(userProfile.token, selectedRaffleForEnroll.pk);
+					response.nonce = 1;
+					response.multiplier = 1;
+					setEnrollOrClaimPayload(response);
 					setClaimOrEnrollSignatureLoading(false);
 				} catch (e: any) {
 					setClaimError(e.response?.data.message);
@@ -209,7 +205,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			}
 		};
 		getSignature();
-	}, [selectedRaffleForEnroll, userToken, method]);
+	}, [selectedRaffleForEnroll, userProfile, method]);
 
 	const handleClaimPrize = useCallback(async () => {
 		if (!selectedRaffleForEnroll || claimOrEnrollLoading) return;
@@ -238,8 +234,6 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				claimOrEnrollWithMetamaskResponse,
 				method,
 				setMethod,
-				isEnrolled,
-				isClaimed,
 			}}
 		>
 			{children}

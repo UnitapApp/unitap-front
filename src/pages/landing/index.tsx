@@ -203,7 +203,7 @@ const Landing: FC = () => {
 						</Link>
 					</section>
 
-					<section className={'flex--1'}>
+					{/* <section className={'flex--1'}>
 						<Widget
 							description={'Give it a shot and try your chance at winning valuable prizes'}
 							className={'after:bg-prizetap-texture h-full after:w-full after:-top-4'}
@@ -213,21 +213,21 @@ const Landing: FC = () => {
 							buttonTitle={'Soon...'}
 							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
 						></Widget>
-					</section>
+					</section> */}
 
-					{/* <section className={'flex--1'}>
-            <Link className={'flex--1'} to={RoutePath.PRIZE}>
-              <Widget
-                description={'Where everyone has chances to win larger prizes'}
-                className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
-                icon={'prizetap-icon.png'}
-                iconSize={'w-8 h-7'}
-                title={'Prize Tap'}
-                buttonTitle={'Go to Tap'}
-                buttonClass={'gradient-outline-button text-gray100'}
-              ></Widget>
-            </Link>
-          </section> */}
+					<section className={'flex--1'}>
+						<Link className={'flex--1'} to={RoutePath.PRIZE}>
+							<Widget
+								description={'Where everyone has chances to win larger prizes'}
+								className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
+								icon={'prizetap-icon.png'}
+								iconSize={'w-8 h-7'}
+								title={'Prize Tap'}
+								buttonTitle={'Go to Tap'}
+								buttonClass={'gradient-outline-button text-gray100'}
+							></Widget>
+						</Link>
+					</section>
 				</section>
 
 				<section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>

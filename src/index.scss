@@ -509,13 +509,13 @@ body {
 
 
 .prize-card-bg-1 {
-  @apply bg-no-repeat pb-10  pt-5 pl-6 pr-0;
-  background-image: url("../public/assets/images/prize-tap/nft-cover.svg");
+  @apply bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+	@apply lg:bg-[url("../public/assets/images/prize-tap/nft-cover.svg")];
 }
 
 .prize-card-bg-2 {
-  @apply bg-no-repeat p-4 pl-6 pr-0;
-  background-image: url("../public/assets/images/prize-tap/cover.svg");
+  @apply bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+	@apply lg:bg-[url("../public/assets/images/prize-tap/cover.svg")];
 }
 
 
@@ -542,9 +542,26 @@ body {
     background:linear-gradient(95deg, #4BF2A2 1.66%, #A89FE7 10.06%, #E1C4F4 18.07%, #DD40CD 47.44%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+		font-size: 14px;
+		font-weight: 600;
+		margin-left: 24px;
   }
   @apply bg-g-primary relative z-10 before:content-[''];
   @apply before:block before:rounded-lg before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)];
   @apply text-white text-[14px];
   @apply p-3 rounded-lg;
+}
+
+.test {
+	p {
+		padding: 2px;
+		text-align: center;
+		// text-transform: uppercase;
+		/* Warning: no fallback */
+		margin: 2em 0 2em 0;
+		background: -webkit-linear-gradient(12deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%);
+		-webkit-background-clip: text;
+		-webkit-text-stroke: 3px transparent;
+		color: inherit;
+	}
 }
