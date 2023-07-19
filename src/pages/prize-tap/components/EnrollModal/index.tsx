@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
 import { Chain, Permission, PermissionType } from 'types';
-import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
+import { getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
@@ -51,7 +51,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 				</DropIconWrapper>
 
 				<p className="text-sm font-medium text-white mt-2 mb-12 text-center px-4 leading-6">
-					{method == 'Enroll' ? 'Connect your wallet to enroll in raffle' : ' Connect your wallet to claim your prize'}
+					{method === 'Enroll' ? 'Connect your wallet to enroll in raffle' : ' Connect your wallet to claim your prize'}
 				</p>
 
 				<ClaimButton
@@ -81,7 +81,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 				</DropIconWrapper>
 
 				<p className="text-white text-sm mb-5 mt-11">
-					{method == 'Enroll'
+					{method === 'Enroll'
 						? 'You need to connect your BrightID to enroll in raffle'
 						: ' You need to connect your BrightID to claim your prize'}
 				</p>
@@ -206,7 +206,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
-		if (method == 'Enroll') {
+		if (method === 'Enroll') {
 			return (
 				<>
 					<DropIconWrapper data-testid={`chain-claim-initial-${selectedRaffleForEnroll!.chain.pk}`}>
@@ -333,7 +333,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		return (
 			<>
-				{method == 'Claim' ? (
+				{method === 'Claim' ? (
 					<div>
 						<div className="prize-success-stroke">
 							{!selectedRaffleForEnroll!.isPrizeNft ? (
@@ -488,7 +488,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		// 	return null;
 		// }
 
-		if (method == 'Enroll' && !selectedRaffleForEnroll?.winnerEntry && selectedRaffleForEnroll?.userEntry?.txHash) {
+		if (method === 'Enroll' && !selectedRaffleForEnroll?.winnerEntry && selectedRaffleForEnroll?.userEntry?.txHash) {
 			closeEnrollModal();
 			return null;
 		}
@@ -497,7 +497,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 			(selectedRaffleForEnroll.isExpired &&
 				!selectedRaffleForEnroll?.userEntry?.txHash &&
 				!selectedRaffleForEnroll?.winnerEntry) ||
-			selectedRaffleForEnroll?.maxNumberOfEntries == selectedRaffleForEnroll?.numberOfEntries
+			selectedRaffleForEnroll?.maxNumberOfEntries === selectedRaffleForEnroll?.numberOfEntries
 		) {
 			return renderMaxedOutBody();
 		}

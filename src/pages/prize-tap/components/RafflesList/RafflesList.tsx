@@ -3,7 +3,6 @@ import { Prize } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimAndEnrollButton, ClaimPrizeButton, EnrolledButton } from 'components/basic/Button/button';
 import { useLocation } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import styled from 'styled-components';
@@ -91,7 +90,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
-	const { account } = useWeb3React();
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
 	let tokenImgLink: string | undefined = tokenUri
@@ -282,7 +280,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										height="167px"
 									/>
 								</span>
-							) : winnerEntry && winnerEntry?.userProfile == userProfile?.pk && !userEntry?.claimingPrizeTx ? (
+							) : winnerEntry && winnerEntry?.userProfile === userProfile?.pk && !userEntry?.claimingPrizeTx ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
 										<p className="text-[10px] text-white">

@@ -8,7 +8,6 @@ import {
 } from '../../api';
 import { Prize, UserEntryInRaffle } from '../../types';
 import { RefreshContext } from '../../context/RefreshContext';
-import useToken from '../useToken';
 import { useWeb3React } from '@web3-react/core';
 import { useUnitapPrizeCallback } from './useUnitapPrizeCallback';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -127,9 +126,9 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 							success: true,
 							state: 'Done',
 							txHash: res.transactionHash,
-							message: method == 'Claim' ? 'Claimed successfully.' : 'Enrolled successfully',
+							message: method === 'Claim' ? 'Claimed successfully.' : 'Enrolled successfully',
 						});
-						method == 'Enroll'
+						method === 'Enroll'
 							? updateEnrolledFinished(userProfile.token, id, res.transactionHash)
 							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash);
 						setClaimOrEnrollLoading(false);
@@ -175,7 +174,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 		const getSignature = async () => {
 			setClaimOrEnrollSignatureLoading(true);
 			let response;
-			if (method == 'Enroll') {
+			if (method === 'Enroll') {
 				if (selectedRaffleForEnroll.isExpired) return;
 				if (selectedRaffleForEnroll.userEntry) {
 					setEnrollOrClaimPayload(selectedRaffleForEnroll.userEntry);
