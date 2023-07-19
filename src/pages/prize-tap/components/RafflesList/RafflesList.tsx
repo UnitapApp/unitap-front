@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useState, useContext } from 'react';
 import { Prize } from 'types';
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimAndEnrollButton, ClaimButton, ClaimPrizeButton, EnrolledButton } from 'components/basic/Button/button';
+import { ClaimAndEnrollButton, ClaimPrizeButton, EnrolledButton } from 'components/basic/Button/button';
 import { useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
@@ -70,7 +70,6 @@ const RafflesList = () => {
 
 const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, isHighlighted }) => {
 	const {
-		pk,
 		imageUrl,
 		tokenUri,
 		creator,
@@ -82,7 +81,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		deadline,
 		name,
 		chain,
-		winner,
 		isExpired,
 		numberOfEntries,
 		maxNumberOfEntries,

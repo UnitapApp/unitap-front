@@ -509,13 +509,11 @@ body {
 
 
 .prize-card-bg-1 {
-  @apply bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
-	@apply lg:bg-[url("../public/assets/images/prize-tap/nft-cover.svg")];
+  @apply lg:bg-[url("../public/assets/images/prize-tap/nft-cover.svg")] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
 }
 
 .prize-card-bg-2 {
-  @apply bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
-	@apply lg:bg-[url("../public/assets/images/prize-tap/cover.svg")];
+  @apply lg:bg-[url("../public/assets/images/prize-tap/cover.svg")] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
 }
 
 
@@ -552,7 +550,7 @@ body {
   @apply p-3 rounded-lg;
 }
 
-.test {
+.prize-success-stroke {
 	p {
 		padding: 2px;
 		text-align: center;

@@ -335,7 +335,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 			<>
 				{method == 'Claim' ? (
 					<div>
-						<div className="test">
+						<div className="prize-success-stroke">
 							{!selectedRaffleForEnroll!.isPrizeNft ? (
 								<p data-heading={calculateClaimAmount + ' ' + selectedRaffleForEnroll!.prizeSymbol}>
 									{calculateClaimAmount} {selectedRaffleForEnroll!.prizeSymbol}
