@@ -225,42 +225,41 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 							{claimOrEnrollWithMetamaskResponse?.message}
 						</p>
 					) : (
-						<div className="text-left text-white">
-							{/* <p className="text-lg mb-2 text-center leading-loose">Your claim is ready.</p> */}
-							{/* <p className="text-xs mb-2">If you have not already claimed your tokens, you can claim them now.</p> */}
-							{/* <p className="text-xs mb-2">
-              You will need to sign a wallet transaction and pay a small gas fee to claim tokens.
-            </p> */}
-							{/* <p className="text-xs mb-6">
-              If you do not have sufficient gas, please visit{' '}
-              <Link className="text-blue-500" to={'/gas-tap?hc=' + selectedRaffleForEnroll!.chain.chainName}>
-                Gas Tap
-              </Link>
-              .
-            </p> */}
-						</div>
+						<div className="text-left text-white"></div>
 					)}
 					<Text width="100%" fontSize="14">
 						Wallet Address
 					</Text>
 					<WalletAddress fontSize="12">{walletConnected ? shortenAddress(account) : ''}</WalletAddress>
-					<ClaimButton
-						onClick={() => handleEnroll()}
-						width="100%"
-						fontSize="16px"
-						className="!w-full"
-						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
-					>
-						{claimOrEnrollLoading ? (
-							<p>Enrolling...</p>
-						) : claimOrEnrollSignatureLoading ? (
-							<p>Preparing...</p>
-						) : claimOrEnrollWithMetamaskResponse?.state === 'Retry' ? (
-							<p>Retry</p>
-						) : (
-							<p>Enroll</p>
-						)}
-					</ClaimButton>
+					{!selectedRaffleForEnroll?.userEntry?.txHash ? (
+						<ClaimButton
+							onClick={() => handleEnroll()}
+							width="100%"
+							fontSize="16px"
+							className="!w-full"
+							data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
+						>
+							{claimOrEnrollLoading ? (
+								<p>Enrolling...</p>
+							) : claimOrEnrollSignatureLoading ? (
+								<p>Preparing...</p>
+							) : claimOrEnrollWithMetamaskResponse?.state === 'Retry' ? (
+								<p>Retry</p>
+							) : (
+								<p>Enroll</p>
+							)}
+						</ClaimButton>
+					) : (
+						<ClaimButton
+							onClick={() => closeEnrollModal()}
+							width="100%"
+							fontSize="16px"
+							className="!w-full"
+							data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
+						>
+							Enrolled
+						</ClaimButton>
+					)}
 				</>
 			);
 		}
@@ -337,11 +336,11 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					<div>
 						<div className="prize-success-stroke">
 							{!selectedRaffleForEnroll!.isPrizeNft ? (
-								<p data-heading={calculateClaimAmount + ' ' + selectedRaffleForEnroll!.prizeSymbol}>
+								<h1 data-heading={calculateClaimAmount + ' ' + selectedRaffleForEnroll!.prizeSymbol}>
 									{calculateClaimAmount} {selectedRaffleForEnroll!.prizeSymbol}
-								</p>
+								</h1>
 							) : (
-								<p data-heading={selectedRaffleForEnroll!.prizeName}> {selectedRaffleForEnroll!.prizeName} </p>
+								<h1 data-heading={selectedRaffleForEnroll!.prizeName}> {selectedRaffleForEnroll!.prizeName} </h1>
 							)}
 						</div>
 
@@ -360,7 +359,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 						<span className="flex justify-center items-center font-medium mb-3">
 							<Text className="!mb-8" color="gray100" width="100%" fontSize="14" textAlign="center">
-								Congratulations, @{userProfile?.userName} on your grand prize win!
+								Congratulations, @{userProfile?.username} on your grand prize win!
 							</Text>
 						</span>
 
@@ -478,17 +477,6 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 	const getEnrollModalBody = () => {
 		if (!selectedRaffleForEnroll) {
-			closeEnrollModal();
-			return null;
-		}
-
-		// if (walletConnected) return renderSuccessBody();
-		// if (isEnrolled) {
-		// 	closeEnrollModal();
-		// 	return null;
-		// }
-
-		if (method === 'Enroll' && !selectedRaffleForEnroll?.winnerEntry && selectedRaffleForEnroll?.userEntry?.txHash) {
 			closeEnrollModal();
 			return null;
 		}

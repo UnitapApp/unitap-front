@@ -105,7 +105,7 @@ export type UserProfile = {
 	token: string;
 	pk: PK;
 	wallets: UserWallet[];
-	userName: string;
+	username: string;
 };
 
 export type Settings = {
@@ -240,10 +240,10 @@ export type Prize = {
 	prizeAmount:number;
 	prizeName: string;
 	prizeSymbol: string;
-	winnerEntry: winnerEntry
+	winnerEntry: WinnerEntry
 }
 
-export type winnerEntry = {
+export type WinnerEntry = {
 	claimingPrizeTx: string;
 	createdAt: string; 
 	multiplier: number;
@@ -251,7 +251,7 @@ export type winnerEntry = {
 	pk: number;
 	signature: string;
 	txHash: string;
-	userProfile: 21
+	userProfile: UserProfile
 }
 
 export type EnrollPayload = {

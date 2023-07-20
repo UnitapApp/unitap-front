@@ -7,7 +7,7 @@ import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
-import { getTxUrl } from 'utils';
+import { getTxUrl, shortenAddress } from 'utils';
 
 const Action = styled.div`
 	display: flex;
@@ -92,6 +92,15 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
+
+	const getWinnerWallet = () => {
+		if (!winnerEntry) return;
+		let wallet = winnerEntry.userProfile.wallets.filter((item) => item.walletType === 'EVM');
+		return wallet[0].address;
+	};
+
+	getWinnerWallet();
+
 	let tokenImgLink: string | undefined = tokenUri
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
@@ -155,11 +164,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								)}
 							</p>
 						</span>
-						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto">
+						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
 							{description}
 						</p>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
-							{isExpired && !winnerEntry && !userEntry?.txHash ? (
+							{(isExpired && !winnerEntry && !userEntry?.txHash) || maxNumberOfEntries === numberOfEntries ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
@@ -256,11 +265,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										</div>
 									</EnrolledButton>
 								</span>
-							) : winnerEntry && winnerEntry?.userProfile !== userProfile?.pk ? (
+							) : winnerEntry && winnerEntry?.userProfile.pk !== userProfile?.pk ? (
 								<span className="winner overflow-hidden font-medium md:leading-[normal] leading-[15px] winner-box-bg flex h-[70px] md:h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
-									<p className="text-[10px] text-white pl-5 md:flex">
-										Congratulations to <span className="mx-0 md:mx-1"> {'@' + userProfile?.userName} </span> for being
-										the winner !
+									<p className="text-[10px] text-white pl-5 md:flex md:shrink-0 font-medium">
+										Congratulations to{' '}
+										<span className="mx-0 md:mx-1 font-normal">
+											{' '}
+											<span className="font-semibold">{'@' + winnerEntry?.userProfile?.username + ' '}</span> (
+											<span>{shortenAddress(getWinnerWallet())}) wallet address</span>
+										</span>{' '}
+										for being the winner !
 										{winnerEntry!.claimingPrizeTx && (
 											<span className="flex md:ml-2">
 												View on Explorer
@@ -274,17 +288,17 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										)}
 									</p>
 									<Icon
-										className="opacity-[.3] mt-[-10px]"
+										className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
 										iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
 										width="167px"
 										height="167px"
 									/>
 								</span>
-							) : winnerEntry && winnerEntry?.userProfile === userProfile?.pk && !userEntry?.claimingPrizeTx ? (
+							) : winnerEntry && winnerEntry?.userProfile.pk === userProfile?.pk && !userEntry?.claimingPrizeTx ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
 										<p className="text-[10px] text-white">
-											Congratulations @{userProfile?.userName} ! claim your prize now.
+											Congratulations @{winnerEntry?.userProfile?.username} ! claim your prize now.
 										</p>
 										<Icon
 											className="opacity-[.3] mt-[-10px] mr-[-20px]"
@@ -309,7 +323,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							) : (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-										<p className="text-[10px] text-white">Congratulations @{userProfile?.userName}!</p>
+										<p className="text-[10px] text-white">Congratulations @{winnerEntry?.userProfile?.username}!</p>
 										<Icon
 											className="opacity-[.3] mt-[-10px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
