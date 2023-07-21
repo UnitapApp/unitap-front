@@ -50,7 +50,7 @@ export type Token = {
 
 export type Permission = {
 	id: PK;
-	name: PermissionType;
+	name: string;
 	description: string;
 	resourcetype: string;
 	type: 'TIME' | 'VER';

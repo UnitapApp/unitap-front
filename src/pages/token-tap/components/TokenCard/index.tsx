@@ -242,10 +242,17 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						<Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
 					</div>
 
-					<div className="bg-gray20 flex items-center justify-center px-5 py-2 absolute top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
-						{timePermissionVerification?.title}
-						<Icon iconSrc="/assets/images/token-tap/repeat.svg" className="ml-3" />
-					</div>
+					{!!timePermissionVerification && (
+						<div className="bg-gray20 flex items-center justify-center px-5 py-2 absolute top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
+							{timePermissionVerification.title}
+							<Icon
+								iconSrc={`/assets/images/token-tap/${
+									timePermissionVerification.name === 'OnceInALifeTimeVerification' ? 'non-repeat.svg' : 'repeat.svg'
+								}`}
+								className="ml-3"
+							/>
+						</div>
+					)}
 
 					<div className="flex gap-x-6 items-center">
 						<a target="_blank" rel="noreferrer" href={token.twitterUrl}>
