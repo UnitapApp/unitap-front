@@ -65,7 +65,7 @@ const Landing: FC = () => {
 		{
 			name: 'Learn Tap',
 			icon: 'learntap-icon.png',
-			description: 'Where users can learn to use web 3 technologies',
+			description: 'Where users can learn to use web3 technologies',
 			class: 'after:bg-learntap-texture after:inset-0',
 			iconSize: 'w-6',
 		},
