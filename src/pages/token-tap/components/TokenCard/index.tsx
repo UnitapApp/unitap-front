@@ -209,7 +209,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 												: '/assets/images/token-tap/not-verified.svg'
 										}
 									/>
-									{permission.name}
+									{permission.title}
 								</div>
 							</Tooltip>
 						))}
