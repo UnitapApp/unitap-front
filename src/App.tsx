@@ -30,7 +30,6 @@ import { MulticallUpdater } from 'lib/state/multicall';
 import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
 import { ErrorsProvider } from './context/ErrorsProvider';
-import HighGasFeeModal from './pages/home/components/HighGasFeeModal/highGasFeeModal';
 
 require('typeface-jetbrains-mono');
 

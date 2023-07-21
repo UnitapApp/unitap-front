@@ -22,6 +22,7 @@ export type Chain = {
 	chainType: string;
 	needsFunding: boolean;
 	blockScanAddress: string;
+	tokentapContractAddress?: string;
 };
 
 export type Token = {
@@ -49,9 +50,11 @@ export type Token = {
 
 export type Permission = {
 	id: PK;
-	name: PermissionType;
+	name: string;
 	description: string;
 	resourcetype: string;
+	type: 'TIME' | 'VER';
+	title?: string;
 };
 
 export type ClaimedToken = {
