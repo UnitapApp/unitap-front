@@ -56,7 +56,18 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 	const calculateClaimAmount =
 		token.chain.chainName === 'Lightning' ? token.amount : token.amount / 10 ** token.chain.decimals;
 
-	const permissionVerificationsList = token.permissions.map((permission) => isPermissionVerified(permission));
+	const timePermissionVerification = useMemo(
+		() => token.permissions.find((permission) => permission.type === 'TIME'),
+		[token],
+	);
+
+	const permissionVerificationsList = useMemo(
+		() =>
+			token.permissions
+				.filter((permission) => permission.type === 'VER')
+				.map((permission) => isPermissionVerified(permission)),
+		[token.permissions, isPermissionVerified],
+	);
 
 	const needsVerification = permissionVerificationsList.includes(false);
 
@@ -148,7 +159,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									<ClaimButton
 										data-testid={`chain-show-claim-${token.id}`}
 										mlAuto
-										// disabled={needsVerification}
+										disabled={needsVerification}
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
@@ -178,7 +189,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 							isHighlighted ? 'bg-g-primary-low' : 'bg-gray40'
 						} p-3 flex items-center flex-wrap text-xs gap-2 text-white`}
 					>
-						{(showAllPermissions ? token.permissions : token.permissions.slice(0, 6)).map((permission, key) => (
+						{(showAllPermissions
+							? token.permissions
+							: token.permissions.filter((permission) => permission.type === 'VER').slice(0, 6)
+						).map((permission, key) => (
 							<Tooltip
 								className={
 									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
@@ -228,7 +242,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						<Icon iconSrc={getChainIcon(token.chain)} width="auto" height="16px" />
 					</div>
 
-					{/* <TokenDeadlineTimer deadline={token.deadline} /> */}
+					<div className="bg-gray20 flex items-center justify-center px-5 py-2 absolute top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
+						{timePermissionVerification?.title}
+						<Icon iconSrc="/assets/images/token-tap/repeat.svg" className="ml-3" />
+					</div>
 
 					<div className="flex gap-x-6 items-center">
 						<a target="_blank" rel="noreferrer" href={token.twitterUrl}>

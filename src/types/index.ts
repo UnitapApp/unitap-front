@@ -53,6 +53,8 @@ export type Permission = {
 	name: PermissionType;
 	description: string;
 	resourcetype: string;
+	type: 'TIME' | 'VER';
+	title?: string;
 };
 
 export type ClaimedToken = {
