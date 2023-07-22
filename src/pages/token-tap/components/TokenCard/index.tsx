@@ -134,7 +134,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										<ClaimButton
 											data-testid={`chain-show-claim-${token.id}`}
 											mlAuto
-											// disabled={needsVerification}
+											disabled={needsVerification}
 											onClick={() => openClaimModal(token)}
 											className="text-sm m-auto"
 										>
@@ -243,7 +243,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 					</div>
 
 					{!!timePermissionVerification && (
-						<div className="bg-gray20 flex items-center justify-center px-5 py-2 absolute top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
+						<div className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
 							{timePermissionVerification.title}
 							<Icon
 								iconSrc={`/assets/images/token-tap/${
