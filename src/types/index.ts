@@ -212,13 +212,12 @@ export type Prize = {
   id: PK;
   pk: PK;
   imageUrl: string;
-	tokenUri: string | undefined;
+	tokenUri: string;
   background: string;
   creator: string;
   creatorUrl: string;
   contract: string;
   isPrizeNft: boolean;
-  enrolled: number;
   twitterUrl: string;
   discordUrl: string;
   description: string;
@@ -229,11 +228,8 @@ export type Prize = {
   chainLogoUrl: string;
   chain: Chain;
   raffleId: string;
-  winner: string;
   isClaimable: boolean
   isExpired: boolean;
-	isMaxedOut: boolean;
-  permissions: Permission[];
   userEntry: UserEntryInRaffle
 	numberOfEntries: number;
 	maxNumberOfEntries: number;

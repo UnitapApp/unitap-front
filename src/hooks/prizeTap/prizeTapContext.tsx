@@ -46,9 +46,7 @@ export const PrizeTapContext = createContext<{
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const { fastRefresh } = useContext(RefreshContext);
-	// const [userToken] = useToken();
 	const { userProfile } = useContext(UserProfileContext);
-	// console.log(userProfile);
 	const [rafflesList, setRafflesList] = useState<Prize[]>([]);
 	const [claimError, setClaimError] = useState<string | null>(null);
 

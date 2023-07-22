@@ -99,8 +99,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		return wallet[0].address;
 	};
 
-	getWinnerWallet();
-
 	let tokenImgLink: string | undefined = tokenUri
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
@@ -131,9 +129,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 					>
 						<span className="flex justify-between w-full mb-3">
 							<p className="prize-card__title text-white text-sm">{name}</p>
-							{/* <p className="prize-card__enrolled-count mt-1 text-gray100 text-2xs">
-                {enrolled > 0 ? enrolled + ' people enrolled' : !started ? 'not started yet' : ''}
-              </p> */}
 							<div className="prize-card__links flex gap-4">
 								<Icon
 									iconSrc="assets/images/prize-tap/twitter-logo.svg"
@@ -183,7 +178,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
-										// onClick={() => openEnrollModal(raffle, 'Enroll')}
 										disabled={true}
 										className="min-w-[552px] md:!w-[352px] !w-full"
 										height="48px"
@@ -191,7 +185,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									>
 										{' '}
 										<div className="relative w-full">
-											<p> Enroll</p>{' '}
+											{maxNumberOfEntries === numberOfEntries ? <p> Full</p> : <p> Unavailable</p>}
 											<Icon
 												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"

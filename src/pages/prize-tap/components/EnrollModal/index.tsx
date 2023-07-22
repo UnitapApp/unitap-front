@@ -35,7 +35,11 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 	const { userProfile } = useContext(UserProfileContext);
 
-	// const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedRaffleForEnroll!.id);
+	const tokenImgLink: string = selectedRaffleForEnroll!.isPrizeNft
+		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+				Number(selectedRaffleForEnroll!.tokenUri.split('/')[3]) + 1
+		  }.png`
+		: '';
 
 	function renderWalletNotConnectedBody() {
 		return (
@@ -45,7 +49,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						className="chain-logo z-10 mt-14 mb-10"
 						width="auto"
 						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
+						iconSrc={selectedRaffleForEnroll!.isPrizeNft ? tokenImgLink : selectedRaffleForEnroll!.imageUrl}
 						alt=""
 					/>
 				</DropIconWrapper>
@@ -75,7 +79,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						className="chain-logo z-10 mt-14 mb-10"
 						width="auto"
 						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
+						iconSrc={selectedRaffleForEnroll!.isPrizeNft ? tokenImgLink : selectedRaffleForEnroll!.imageUrl}
 						alt=""
 					/>
 				</DropIconWrapper>
@@ -180,7 +184,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						className="chain-logo z-10 mt-14 mb-10"
 						width="auto"
 						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
+						iconSrc={selectedRaffleForEnroll!.isPrizeNft ? tokenImgLink : selectedRaffleForEnroll!.imageUrl}
 						alt=""
 					/>
 				</DropIconWrapper>
@@ -214,7 +218,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 							className="chain-logo z-10 mt-14 mb-10"
 							width="auto"
 							height="110px"
-							iconSrc={selectedRaffleForEnroll!.imageUrl}
+							iconSrc={selectedRaffleForEnroll!.isPrizeNft ? tokenImgLink : selectedRaffleForEnroll!.imageUrl}
 							alt=""
 						/>
 					</DropIconWrapper>
@@ -271,7 +275,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						className="chain-logo z-10 mt-14 mb-10"
 						width="auto"
 						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
+						iconSrc={selectedRaffleForEnroll!.isPrizeNft ? tokenImgLink : selectedRaffleForEnroll!.imageUrl}
 						alt=""
 					/>
 				</DropIconWrapper>
@@ -280,20 +284,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 				) : claimOrEnrollWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimOrEnrollWithMetamaskResponse?.message}</p>
 				) : (
-					<div className="text-left text-white">
-						{/* <p className="text-lg mb-2 text-center leading-loose">Your claim is ready.</p> */}
-						{/* <p className="text-xs mb-2">If you have not already claimed your tokens, you can claim them now.</p> */}
-						{/* <p className="text-xs mb-2">
-            You will need to sign a wallet transaction and pay a small gas fee to claim tokens.
-          </p> */}
-						{/* <p className="text-xs mb-6">
-            If you do not have sufficient gas, please visit{' '}
-            <Link className="text-blue-500" to={'/gas-tap?hc=' + selectedRaffleForEnroll!.chain.chainName}>
-              Gas Tap
-            </Link>
-            .
-          </p> */}
-					</div>
+					<div className="text-left text-white"></div>
 				)}
 				<Text width="100%" fontSize="14">
 					Wallet Address
@@ -444,50 +435,41 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		);
 	}
 
-	function renderMaxedOutBody() {
-		return (
-			<>
-				<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
-					<Icon
-						className="chain-logo z-10 mt-14 mb-10"
-						width="auto"
-						height="110px"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
-						alt=""
-					/>
-				</DropIconWrapper>
-				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-					{selectedRaffleForEnroll?.isExpired
-						? 'Unfortunately, The raffle has ended.'
-						: 'Unfortunately, The capacity to participate in the raffle has been completed.'}
-				</Text>
-				<ClaimButton
-					onClick={closeEnrollModal}
-					width={'100%'}
-					fontSize="16px"
-					className="!w-full"
-					data-testid={`chain-claim-action-${chain.pk}`}
-					color="space_green"
-				>
-					<p>Close</p>
-				</ClaimButton>
-			</>
-		);
-	}
+	// function renderMaxedOutBody() {
+	// 	return (
+	// 		<>
+	// 			<DropIconWrapper data-testid={`chain-claim-finished-${chain.pk}`}>
+	// 				<Icon
+	// 					className="chain-logo z-10 mt-14 mb-10"
+	// 					width="auto"
+	// 					height="110px"
+	// 					iconSrc={selectedRaffleForEnroll!.imageUrl}
+	// 					alt=""
+	// 				/>
+	// 			</DropIconWrapper>
+	// 			<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+	// 				{selectedRaffleForEnroll?.isExpired
+	// 					? 'Unfortunately, The raffle has ended.'
+	// 					: 'Unfortunately, The capacity to participate in the raffle has been completed.'}
+	// 			</Text>
+	// 			<ClaimButton
+	// 				onClick={closeEnrollModal}
+	// 				width={'100%'}
+	// 				fontSize="16px"
+	// 				className="!w-full"
+	// 				data-testid={`chain-claim-action-${chain.pk}`}
+	// 				color="space_green"
+	// 			>
+	// 				<p>Close</p>
+	// 			</ClaimButton>
+	// 		</>
+	// 	);
+	// }
 
 	const getEnrollModalBody = () => {
 		if (!selectedRaffleForEnroll) {
 			closeEnrollModal();
 			return null;
-		}
-
-		if (
-			(selectedRaffleForEnroll.isExpired &&
-				!selectedRaffleForEnroll?.userEntry?.txHash &&
-				!selectedRaffleForEnroll?.winnerEntry) ||
-			selectedRaffleForEnroll?.maxNumberOfEntries === selectedRaffleForEnroll?.numberOfEntries
-		) {
-			return renderMaxedOutBody();
 		}
 
 		if (!userProfile) return renderBrightNotConnectedBody();
