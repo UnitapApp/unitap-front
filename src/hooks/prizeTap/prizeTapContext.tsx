@@ -68,7 +68,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			const response = await getRafflesListAPI(undefined);
 			setRafflesListLoading(false);
 			setRafflesList(response);
-			console.log(response, 'no user token');
+			// console.log(response, 'no user token');
 		} catch (e: any) {
 			setRafflesListLoading(false);
 			setClaimError(e.response?.data.message);
@@ -82,7 +82,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			const response = await getRafflesListAPI(userProfile?.token);
 			setRafflesListLoading(false);
 			setRafflesList(response);
-			console.log(response, 'with token');
+			// console.log(response, 'with token');
 		} catch (e: any) {
 			setRafflesListLoading(false);
 			setClaimError(e.response?.data.message);
