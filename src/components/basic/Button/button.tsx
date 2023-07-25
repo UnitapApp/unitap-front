@@ -235,7 +235,7 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 	}
 
 	::before {
-		background: #030317 !important;
+		background: ${DV.colors.gray20} !important;
 	}
 
 	&:disabled {
