@@ -101,32 +101,35 @@ const Content: FC = () => {
 
 		setSubmittingFundTransaction(true);
 
-		if (selectedChain.symbol === 'tBNB') {
-			const value = parseEther(fundAmount);
-			const contractAddress = '0x48f707c73a4013b6c66f11b85e387491f43584ae';
-			const signer = provider.getSigner();
-			const contract = new ethers.Contract(contractAddress, AutoFund, signer);
+		// if (selectedChain.symbol === 'tBNB') {
+		// 	const value = parseEther(fundAmount);
+		// 	const contractAddress = '0x48f707c73a4013b6c66f11b85e387491f43584ae';
+		// 	const signer = provider.getSigner();
+		// 	const contract = new ethers.Contract(contractAddress, AutoFund, signer);
 
-			try {
-				const estimatedGas = await contract.estimateGas.addFund({
-					value,
-				});
+		// 	try {
+		// 		const estimatedGas = await contract.estimateGas.addFund({
+		// 			value,
+		// 		});
 
-				const transaction = await contract.addFund({
-					value,
-					gasLimit: estimatedGas,
-				});
+		// 		const gasPrice = await provider.getGasPrice();
 
-				const receipt = await transaction.wait();
-				const transactionHash = receipt.transactionHash;
-				setTxHash(transactionHash);
-			} catch (error) {
-				handleTransactionError(error);
-			} finally {
-				setSubmittingFundTransaction(false);
-			}
-			return;
-		}
+		// 		const transaction = await contract.addFund({
+		// 			value,
+		// 			gasLimit: estimatedGas,
+		// 			gasPrice,
+		// 		});
+
+		// 		const receipt = await transaction.wait();
+		// 		const transactionHash = receipt.transactionHash;
+		// 		setTxHash(transactionHash);
+		// 	} catch (error) {
+		// 		handleTransactionError(error);
+		// 	} finally {
+		// 		setSubmittingFundTransaction(false);
+		// 	}
+		// 	return;
+		// }
 
 		const estimatedGas = await provider.estimateGas(tx).catch((err: any) => {
 			return err;

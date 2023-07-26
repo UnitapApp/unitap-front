@@ -4,7 +4,7 @@ import { Contract } from '@ethersproject/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import MulticallJson from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json';
 import { useWeb3React } from '@web3-react/core';
-import { UnitapPassBatchSaleMain, UnitapPassMain, UnitapEVMTokenTap, AutoFund } from '../abis/types';
+import { UnitapPassBatchSaleMain, UnitapPassMain, UnitapEVMTokenTap } from '../abis/types';
 import UnitapPassBatchSale_ABI from '../abis/UnitapPassBatchSaleMain.json';
 import UnitapPass_ABI from '../abis/UnitapPassMain.json';
 import UnitapEVMTokenTap_ABI from '../abis/UnitapEVMTokenTap.json';
