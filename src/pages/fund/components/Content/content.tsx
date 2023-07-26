@@ -107,27 +107,17 @@ const Content: FC = () => {
 			const signer = provider.getSigner();
 			const contract = new ethers.Contract(contractAddress, AutoFund, signer);
 
-			const estimatedGas = await contract.estimateGas
-				.addFund({
+			try {
+				const estimatedGas = await contract.estimateGas.addFund({
 					value,
-				})
-				.catch((err: any) => {
-					return err;
 				});
 
-			if ('error' in estimatedGas || 'code' in estimatedGas) {
-				handleTransactionError(estimatedGas);
-				setSubmittingFundTransaction(false);
-				return;
-			}
-
-			try {
 				const transaction = await contract.addFund({
 					value,
+					gasLimit: estimatedGas,
 				});
 
 				const receipt = await transaction.wait();
-
 				const transactionHash = receipt.transactionHash;
 				setTxHash(transactionHash);
 			} catch (error) {
@@ -135,7 +125,6 @@ const Content: FC = () => {
 			} finally {
 				setSubmittingFundTransaction(false);
 			}
-
 			return;
 		}
 
