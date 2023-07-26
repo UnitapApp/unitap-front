@@ -3,12 +3,7 @@ import { useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import {
-	ClaimButton,
-	LightOutlinedButton,
-	LightOutlinedButtonNew,
-	SecondaryGreenColorButton,
-} from 'components/basic/Button/button';
+import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
@@ -22,9 +17,13 @@ import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import ClaimNotAvailable from '../ClaimNotRemaining';
 
+const ModelViewer = require('@metamask/logo');
+
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();
 	const walletConnected = !!account;
+
+	const metamaskLogo = useRef<HTMLDivElement>(null);
 
 	const { tryActivation } = useWalletActivation();
 	const { claim, closeClaimModal, activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
@@ -57,20 +56,42 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 		}; // ... and to false on unmount
 	}, []);
 
+	useEffect(() => {
+		if (!metamaskLogo.current) return;
+
+		const viewer = ModelViewer({
+			pxNotRatio: true,
+			width: 200,
+			height: 200,
+			followMouse: true,
+			slowDrift: false,
+		});
+
+		metamaskLogo.current.innerHTML = '';
+
+		metamaskLogo.current.appendChild(viewer.container);
+
+		return () => {
+			viewer.stopAnimation();
+		};
+	}, [metamaskLogo]);
+
 	function renderWalletNotConnectedBody() {
 		return (
 			<>
-				<DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
-					<Icon
-						className="chain-logo z-10 mt-14 mb-10"
-						width="auto"
-						height="110px"
-						iconSrc={getChainClaimIcon(chain)}
-						alt=""
-					/>
+				<DropIconWrapper className="text-center flex items-center" data-testid={`chain-claim-wallet-not-connected`}>
+					<div className="flex items-center justify-center" ref={metamaskLogo}></div>
 				</DropIconWrapper>
 
-				<p className="text-white text-sm mb-5 mt-11">Connect your wallet to claim your tokens</p>
+				<p className="text-gray100 font-semibold text-left text-sm mb-2 mt-5 w-full">Don’t have a metamask wallet?</p>
+
+				<p className="text-gray90 text-sm mb-5">
+					Go to{' '}
+					<a href="https://metamask.io" rel="noreferrer" className="text-orange" target="_blank">
+						Metamask.io
+					</a>{' '}
+					and create your first wallet and come back to start with web3
+				</p>
 
 				<ClaimButton
 					onClick={tryActivation}

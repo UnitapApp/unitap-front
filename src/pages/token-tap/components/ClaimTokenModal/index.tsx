@@ -18,12 +18,13 @@ import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
-import Tooltip from 'components/basic/Tooltip';
-import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
+
+const ModelViewer = require('@metamask/logo');
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
 	const walletConnected = !!account;
+	const metamaskLogo = useRef<HTMLDivElement>(null);
 
 	const { tryActivation } = useWalletActivation();
 	const {
@@ -56,21 +57,41 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		}
 	}, [claimTokenLoading]);
 
+	useEffect(() => {
+		if (!metamaskLogo.current) return;
+
+		const viewer = ModelViewer({
+			pxNotRatio: true,
+			width: 200,
+			height: 200,
+			followMouse: true,
+			slowDrift: false,
+		});
+
+		metamaskLogo.current.innerHTML = '';
+
+		metamaskLogo.current.appendChild(viewer.container);
+
+		return () => {
+			viewer.stopAnimation();
+		};
+	}, [metamaskLogo]);
+
 	function renderWalletNotConnectedBody() {
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
-					<Icon
-						className="chain-logo z-10 mt-14 mb-10"
-						width="auto"
-						height="110px"
-						iconSrc={selectedTokenForClaim!.imageUrl}
-						alt=""
-					/>
+					<div className="flex items-center justify-center" ref={metamaskLogo}></div>
 				</DropIconWrapper>
 
-				<p className="text-sm font-medium text-white mt-2 mb-12 text-center px-4 leading-6">
-					Connect your wallet to claim your tokens
+				<p className="text-gray100 font-semibold text-left text-sm mb-2 mt-5 w-full">Don’t have a metamask wallet?</p>
+
+				<p className="text-gray90 text-sm mb-5">
+					Go to{' '}
+					<a href="https://metamask.io" rel="noreferrer" className="text-orange" target="_blank">
+						Metamask.io
+					</a>{' '}
+					and create your first wallet and come back to start with web3
 				</p>
 
 				<ClaimButton

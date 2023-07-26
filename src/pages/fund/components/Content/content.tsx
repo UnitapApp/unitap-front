@@ -229,8 +229,8 @@ const Content: FC = () => {
 					</div>
 
 					<ClaimButton
-						width="100% !important"
 						height="3.5rem"
+						className="!w-full mt-5"
 						fontSize="20px"
 						onClick={handleSendFunds}
 						disabled={!Number(fundAmount) && isRightChain && active}
