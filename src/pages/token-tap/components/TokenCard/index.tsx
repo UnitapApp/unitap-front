@@ -69,7 +69,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 		[token.permissions, isPermissionVerified],
 	);
 
-	const needsVerification = permissionVerificationsList.includes(false);
+	const needsVerification =
+		permissionVerificationsList.includes(false) || permissionVerificationsList.includes(undefined);
 
 	return (
 		<div key={token.id}>
