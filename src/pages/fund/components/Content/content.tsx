@@ -15,6 +15,8 @@ import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
 import { fromWei } from 'utils/numbers';
+import { ethers } from 'ethers';
+import AutoFund from 'abis/AutoFund.json';
 
 const Content: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -91,12 +93,52 @@ const Content: FC = () => {
 			return;
 		}
 		if (!provider) return;
-		const tx = {
+		let tx = {
 			from: account,
 			to: selectedChain.fundManagerAddress,
 			value: parseEther(fundAmount),
 		};
+
 		setSubmittingFundTransaction(true);
+
+		if (selectedChain.symbol === 'tBNB') {
+			const value = parseEther(fundAmount);
+			const contractAddress = '0x48f707c73a4013b6c66f11b85e387491f43584ae';
+			const signer = provider.getSigner();
+			const contract = new ethers.Contract(contractAddress, AutoFund, signer);
+
+			const estimatedGas = await contract.estimateGas
+				.addFund({
+					value,
+				})
+				.catch((err: any) => {
+					return err;
+				});
+
+			if ('error' in estimatedGas || 'code' in estimatedGas) {
+				handleTransactionError(estimatedGas);
+				setSubmittingFundTransaction(false);
+				return;
+			}
+
+			try {
+				const transaction = await contract.addFund({
+					value,
+				});
+
+				const receipt = await transaction.wait();
+
+				const transactionHash = receipt.transactionHash;
+				setTxHash(transactionHash);
+			} catch (error) {
+				handleTransactionError(error);
+			} finally {
+				setSubmittingFundTransaction(false);
+			}
+
+			return;
+		}
+
 		const estimatedGas = await provider.estimateGas(tx).catch((err: any) => {
 			return err;
 		});
