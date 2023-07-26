@@ -178,7 +178,7 @@ const Content: FC = () => {
 					src="./assets/images/fund/provide-gas-fee-planet.svg"
 					className="absolute -left-64 -top-16 scale-150 z-10"
 				/>
-				<span className="z-100">
+				<span className="z-100 w-full">
 					<Icon
 						className="mb-2"
 						iconSrc="./assets/images/fund/provide-gas-fee-battery.svg"
@@ -204,7 +204,14 @@ const Content: FC = () => {
 								<p className="select-box__info__coin-symbol text-white text-xs font-semibold">
 									{selectedChain?.symbol}
 								</p>
-								{/* <p className="select-box__info__coin-balance text-gray100 text-xs font-semibold">Balance: 1,049.00</p> */}
+								{!!balance && (
+									<p
+										onClick={() => setFundAmount(balance.toString())}
+										className="select-box__info__coin-balance text-gray100 text-xs cursor-pointer hover:text-primary-light font-semibold"
+									>
+										Balance: {balance + ' ' + selectedChain?.symbol}{' '}
+									</p>
+								)}
 							</div>
 							<div className="select-box__info__amount w-full">
 								<input
@@ -220,16 +227,7 @@ const Content: FC = () => {
 							</div>
 						</div>
 					</div>
-					<p className="text-gray100 text-right text-xs mb-3 z-1">
-						{!!balance && (
-							<>
-								<span>Available: </span>
-								<button onClick={() => setFundAmount(balance.toString())} className="text-blue-500">
-									{balance + ' ' + selectedChain?.symbol}{' '}
-								</button>
-							</>
-						)}
-					</p>
+
 					<ClaimButton
 						width="100% !important"
 						height="3.5rem"
