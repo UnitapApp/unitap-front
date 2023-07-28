@@ -36,6 +36,7 @@ export const claimTokenCallback = async (
 	chainId: number,
 	provider: JsonRpcProvider,
 	addTransaction: (response: TransactionResponse, info: TransactionInfo) => void,
+	claimAddress: string,
 ) => {
 	const info: MintTransactionInfo = {
 		type: TransactionType.MINT,
@@ -43,7 +44,7 @@ export const claimTokenCallback = async (
 
 	const calls = [
 		{
-			address: evmTokenTapContract.address,
+			address: claimAddress,
 			calldata:
 				evmTokenTapContract.interface.encodeFunctionData('claimToken', [
 					user,

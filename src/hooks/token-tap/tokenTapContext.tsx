@@ -125,12 +125,14 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 		async (claimTokenPayload?: TokenClaimPayload, claimId?: number) => {
 			if (!userToken || !provider || !EVMTokenTapContract) return;
 
+			const claimAddress = selectedTokenForClaim!.chain.tokentapContractAddress;
+
 			try {
 				const res = await claimToken(selectedTokenForClaim!);
 
 				const txPayload = res?.payload ?? claimTokenPayload;
 
-				if (!txPayload || !account || !chainId) {
+				if (!txPayload || !account || !chainId || !claimAddress) {
 					return;
 				}
 
@@ -147,6 +149,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 					chainId,
 					provider,
 					addTransaction,
+					claimAddress,
 				);
 
 				setClaimTokenLoading(true);
