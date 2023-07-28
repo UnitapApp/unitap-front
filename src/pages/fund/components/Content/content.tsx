@@ -15,8 +15,6 @@ import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
 import { fromWei } from 'utils/numbers';
-import { ethers } from 'ethers';
-import AutoFund from 'abis/AutoFund.json';
 
 const Content: FC = () => {
 	const { chainList } = useContext(ClaimContext);
