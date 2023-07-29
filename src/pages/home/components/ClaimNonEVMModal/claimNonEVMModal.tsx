@@ -216,11 +216,12 @@ const ClaimNonEVMModalContent = () => {
 					height="110px"
 				/>
 				<Text width="100%" fontSize="14" color="space_green" textAlign="center">
-					{formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} Claimed
+					{formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)} {activeNonEVMChain!.symbol}{' '}
+					Claimed
 				</Text>
 				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-					we successfully transferred {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol}{' '}
-					to your wallet
+					we successfully transferred {formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)}{' '}
+					{activeNonEVMChain!.symbol} to your wallet
 				</Text>
 				<Text
 					width="100%"

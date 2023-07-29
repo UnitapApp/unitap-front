@@ -464,10 +464,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			}
 		});
 
-		if (!walletConnected) return renderWalletNotConnectedBody();
-
 		if (claimTokenWithMetamaskResponse?.state === 'Done' || collectedToken?.status === 'Verified')
 			return renderSuccessBody();
+
+		if (!walletConnected) return renderWalletNotConnectedBody();
 
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);

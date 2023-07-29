@@ -188,6 +188,9 @@ const Content: FC = () => {
 						height="auto"
 					/>
 					<p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
+					<p className="text-gray100 text-xs mb-3 z-1">
+						100% of contributions will fund distributions and transaction costs of the gas tap.
+					</p>
 
 					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
 						<div

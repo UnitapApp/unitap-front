@@ -398,7 +398,7 @@ body {
 }
 
 .content-wrapper {
-	@apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-24 max-w-screen-2xl m-auto;
+	@apply px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-14 max-w-screen-2xl m-auto;
 	@apply flex flex-col w-full;
 	min-height: calc(100vh - 65px);
 }
