@@ -11,6 +11,7 @@ import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { ChainType } from 'types';
 import ClaimNonEVMModal from './components/ClaimNonEVMModal/claimNonEVMModal';
+import FundContextProvider from './context/fundContext';
 
 const Home = () => {
 	const { searchPhrase } = useContext(ClaimContext);
@@ -20,13 +21,17 @@ const Home = () => {
 			<Navbar />
 			<div className="content-wrapper">
 				<Header />
-				<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
-					<SearchInput className="w-full sm:w-1/2 md:w-1/3" />
-					{searchPhrase === '' && <Filters />}
-				</div>
-				<ChainList />
-				<p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
-				<ProvideGasCard />
+				<FundContextProvider>
+					<>
+						<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
+							<SearchInput className="w-full sm:w-1/2 md:w-1/3" />
+							{searchPhrase === '' && <Filters />}
+						</div>
+						<ChainList />
+						<p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
+						<ProvideGasCard />
+					</>
+				</FundContextProvider>
 			</div>
 			<ClaimModal />
 			<ClaimNonEVMModal />

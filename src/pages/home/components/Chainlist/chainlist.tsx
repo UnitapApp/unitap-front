@@ -9,9 +9,9 @@ import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, Network, PK } from 'types';
 import { useLocation, useNavigate } from 'react-router-dom';
-import RoutePath from '../../../../routes';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import EmptyChainListCard from './EmptyChainListCard';
+import { FundContext } from 'pages/home/context/fundContext';
 
 const AddMetamaskButton = styled(SecondaryButton)`
 	display: flex;
@@ -103,7 +103,7 @@ type ChainCardProps = {
 
 const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { openClaimModal } = useContext(ClaimContext);
-
+	const { setChainId, setIsOpen } = useContext(FundContext);
 	const addAndSwitchToChain = useSelectChain();
 	const { account } = useWeb3React();
 	const active = !!account;
@@ -111,7 +111,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const navigate = useNavigate();
 
 	const handleRefillButtonClicked = (chainId: PK) => {
-		navigate(RoutePath.FUND + `?chain=${chainId}`);
+		setChainId(chainId);
+		setIsOpen(true);
+		// navigate(RoutePath.FUND + `?chain=${chainId}`);
 	};
 
 	const { activeClaimHistory } = useContext(ClaimContext);
