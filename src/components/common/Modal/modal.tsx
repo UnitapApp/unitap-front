@@ -17,17 +17,7 @@ type props = {
 	errorSource?: APIErrorsSource;
 };
 
-const Modal = ({
-	spaceman,
-	title,
-	titleLeft,
-	children,
-	isOpen,
-	closeModalHandler,
-	className,
-	size,
-	errorSource,
-}: props) => {
+const Modal = ({ title, titleLeft, children, isOpen, closeModalHandler, className, size, errorSource }: props) => {
 	const { getError } = React.useContext(ErrorsContext);
 
 	return (

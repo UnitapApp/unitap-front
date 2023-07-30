@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
 import Input from 'components/basic/Input/input';
 import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';

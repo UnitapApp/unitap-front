@@ -33,7 +33,7 @@ export const claimTokenCallback = async (
 	signature: BytesLike,
 	evmTokenTapContract: UnitapEVMTokenTap,
 	account: string,
-	chainId: number,
+	_chainId: number,
 	provider: JsonRpcProvider,
 	addTransaction: (response: TransactionResponse, info: TransactionInfo) => void,
 	claimAddress: string,

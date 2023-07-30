@@ -31,7 +31,7 @@ import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
 import { ErrorsProvider } from './context/ErrorsProvider';
 
-require('typeface-jetbrains-mono');
+import 'typeface-jetbrains-mono';
 
 function Updaters() {
 	return (

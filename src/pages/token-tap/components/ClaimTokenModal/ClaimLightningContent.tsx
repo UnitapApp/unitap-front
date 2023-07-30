@@ -1,8 +1,8 @@
-import React, { FC, useContext, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo } from 'react';
 
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
-import { Chain, ClaimReceiptState, Permission, PermissionType, Token } from 'types';
+import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import lottie from 'lottie-web';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
@@ -20,7 +20,6 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		claimTokenSignatureLoading,
 		claimError,
 		claimedTokensList,
-		tokensList,
 	} = useContext(TokenTapContext);
 
 	const { openBrightIdModal } = useContext(ClaimContext);
@@ -159,7 +158,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	}
 
 	function renderSuccessBody() {
-		const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id)!;
+		// const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id)!;
 
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(

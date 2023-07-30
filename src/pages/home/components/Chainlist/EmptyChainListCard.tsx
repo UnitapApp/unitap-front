@@ -1,5 +1,3 @@
-import React from 'react';
-
 const EmptyChainListCard = () => {
 	return (
 		// <div className="empty-chain-list-card flex flex-col rounded-xl w-full overflow-hidden">

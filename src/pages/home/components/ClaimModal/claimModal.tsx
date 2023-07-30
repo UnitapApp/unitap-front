@@ -1,10 +1,9 @@
-import * as React from 'react';
 import { useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState } from 'types';
+import { BrightIdModalState, Chain, ClaimReceiptState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
@@ -17,7 +16,8 @@ import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import ClaimNotAvailable from '../ClaimNotRemaining';
 
-const ModelViewer = require('@metamask/logo');
+// @ts-ignore
+import ModelViewer from '@metamask/logo';
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();

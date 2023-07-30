@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useContext } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { UserProfileContext } from 'hooks/useUserProfile';

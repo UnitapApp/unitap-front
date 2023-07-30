@@ -1,4 +1,3 @@
-import React from 'react';
 import { FundTransactionModalWrapper } from './FundTransactionModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';

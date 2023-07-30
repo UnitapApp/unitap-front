@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, useState } from 'react';
 
 const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: string; toolTipClassName?: string }> = ({
 	text,

@@ -1,12 +1,11 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react';
-import Icon from 'components/basic/Icon/Icon';
+import { useContext, useState, useMemo, useEffect } from 'react';
+
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import { useLocation } from 'react-router-dom';
 import TokenCard from '../TokenCard';
 
 const TokensList = () => {
 	const { tokensList, tokensListLoading, tokenListSearchResult } = useContext(TokenTapContext);
-	const windowSize = window.innerWidth;
 	const [highlightedToken, setHighlightedToken] = useState('');
 
 	const location = useLocation();

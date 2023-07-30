@@ -1,7 +1,6 @@
 import Icon from 'components/basic/Icon/Icon';
 import Footer from 'components/common/Footer/footer';
 import Navbar from 'components/common/Navbar/navbar';
-import React from 'react';
 
 const About = () => {
 	return (

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Icon from 'components/basic/Icon/Icon';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { range } from 'utils';

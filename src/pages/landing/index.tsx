@@ -1,7 +1,6 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import Navbar from 'components/common/Navbar/navbar';
 import Widget from './components/widget';
-import UButton from '../../components/basic/Button/UButton';
 import RoutePath from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
@@ -53,7 +52,7 @@ const Landing: FC = () => {
 	]);
 
 	useEffect(() => {
-		setStats((prev) => [
+		setStats(() => [
 			{ name: 'Unitap Users', number: '+4000' },
 			{ name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },

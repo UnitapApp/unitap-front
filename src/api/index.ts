@@ -67,7 +67,7 @@ export async function getUserProfileWithTokenAPI(token: string) {
 	return response.data;
 }
 
-export async function getWeeklyChainClaimLimitAPI(token: string) {
+export async function getWeeklyChainClaimLimitAPI() {
 	const response = await axiosInstance.get<Settings>('/api/v1/settings/');
 	return response.data;
 }

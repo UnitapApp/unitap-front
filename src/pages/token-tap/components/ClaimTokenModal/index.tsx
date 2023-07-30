@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
@@ -19,7 +18,8 @@ import ClaimLightningContent from './ClaimLightningContent';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
 
-const ModelViewer = require('@metamask/logo');
+// @ts-ignore
+import ModelViewer from '@metamask/logo';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();

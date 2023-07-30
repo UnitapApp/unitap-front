@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState, useMemo } from 'react';
+import { FC, useContext, useState, useMemo } from 'react';
 import { Token } from 'types';
 import { useWeb3React } from '@web3-react/core';
 import Icon from 'components/basic/Icon/Icon';

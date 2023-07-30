@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import Modal from 'components/common/Modal/modal';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
 import { ClaimNonEVMModalState, ClaimReceiptState } from 'types';
 
-import { formatChainBalance, formatWeiBalance } from 'utils/numbers';
+import { formatChainBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { getChainClaimIcon, getTxUrl } from 'utils';

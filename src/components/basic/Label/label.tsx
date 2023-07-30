@@ -1,19 +1,19 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 
 interface props {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 const LabelWrapper = styled.p`
-  font-size: 12px;
-  color: #4c4c64;
-  margin: ${DV.sizes.baseMargin * 3}px ${DV.sizes.baseMargin}px ${DV.sizes.baseMargin}px ;
+	font-size: 12px;
+	color: #4c4c64;
+	margin: ${DV.sizes.baseMargin * 3}px ${DV.sizes.baseMargin}px ${DV.sizes.baseMargin}px;
 `;
 
 const Label = ({ children }: props) => {
-  return <LabelWrapper>{children}</LabelWrapper>;
+	return <LabelWrapper>{children}</LabelWrapper>;
 };
 
 export default Label;

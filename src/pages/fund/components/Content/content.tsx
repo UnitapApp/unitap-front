@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ClaimButton } from 'components/basic/Button/button';
 import { ContentCard } from './content.style';
 import Icon from 'components/basic/Icon/Icon';
