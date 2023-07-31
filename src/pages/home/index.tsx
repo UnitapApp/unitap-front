@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 
 import ChainList from './components/Chainlist/chainlist';
-import Navbar from 'components/common/Navbar/navbar';
 import Header from 'pages/home/components/Header/header';
 import Footer from '../../components/common/Footer/footer';
 import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
@@ -17,7 +16,6 @@ const Home = () => {
 
 	return (
 		<>
-			<Navbar />
 			<div className="content-wrapper">
 				<Header />
 				<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">

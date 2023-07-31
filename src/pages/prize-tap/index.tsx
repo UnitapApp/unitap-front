@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-
 import { Prize } from 'types';
-
-import Navbar from 'components/common/Navbar/navbar';
 import Header from './components/Header/header';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
@@ -11,7 +8,6 @@ import Footer from 'components/common/Footer/footer';
 const PrizeTap = () => {
 	return (
 		<div className="prize-tap">
-			<Navbar />
 			<div className="content-wrapper">
 				<div className="m-auto flex flex-col justify-center items-center w-full">
 					<div className="flex wrap w-full">

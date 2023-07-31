@@ -1,3 +1,5 @@
+@import './styles/animations.scss';
+
 *:not(i) {
 	font-family: 'Noto Sans', sans-serif;
 }
@@ -468,21 +470,6 @@ body {
 	animation: dabe-waiting 1.5s infinite;
 }
 
-@keyframes lightToggle {
-	0% {
-		opacity: 10%;
-	}
-	50% {
-		opacity: 100%;
-	}
-	100% {
-		opacity: 100%;
-	}
-}
-
-.light-toggle {
-	animation: lightToggle 2s infinite steps(1);
-}
 .go-to-mint-button {
 	&:after {
 		@apply transition-all duration-300;

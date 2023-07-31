@@ -32,6 +32,7 @@ import PrizeTap from 'pages/prize-tap';
 import { ErrorsProvider } from './context/ErrorsProvider';
 
 import 'typeface-jetbrains-mono';
+import Navbar from 'components/common/Navbar/navbar';
 
 function Updaters() {
 	return (
@@ -52,31 +53,49 @@ function App() {
 					<RefreshContextProvider>
 						<ErrorsProvider>
 							<UserProfileProvider>
-								<ClaimProvider>
-									<TokenTapProvider>
-										<BrowserRouter>
-											<BlockNumberProvider>
-												<Updaters />
-												<ScrollToTop>
-													<Routes>
-														<Route path={RoutePath.FAUCET} element={<Home />} />
-														<Route path={RoutePath.FUND} element={<Fund />} />
-														<Route path={RoutePath.LANDING} element={<Landing />} />
-														<Route path={RoutePath.DONATE} element={<Donate />} />
-														<Route path={RoutePath.NFT} element={<NFT />} />
-														<Route path={RoutePath.ABOUT} element={<About />} />
-														<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
-														<Route path={RoutePath.TOKEN} element={<TokenTap />} />
-													</Routes>
-												</ScrollToTop>
-												<ConnectBrightIdModal />
-												<BrightConnectionModal />
-												<ConnectMetamaskModal />
-												<CreateBrightIdAccountModal />
-											</BlockNumberProvider>
-										</BrowserRouter>
-									</TokenTapProvider>
-								</ClaimProvider>
+								<BrowserRouter>
+									<BlockNumberProvider>
+										<Updaters />
+										<ScrollToTop>
+											<Navbar />
+											<Routes>
+												<Route
+													path={RoutePath.FAUCET}
+													element={
+														<ClaimProvider>
+															<Home />
+														</ClaimProvider>
+													}
+												/>
+												<Route
+													path={RoutePath.FUND}
+													element={
+														<ClaimProvider>
+															<Fund />
+														</ClaimProvider>
+													}
+												/>
+												<Route path={RoutePath.LANDING} element={<Landing />} />
+												<Route path={RoutePath.DONATE} element={<Donate />} />
+												<Route path={RoutePath.NFT} element={<NFT />} />
+												<Route path={RoutePath.ABOUT} element={<About />} />
+												<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
+												<Route
+													path={RoutePath.TOKEN}
+													element={
+														<TokenTapProvider>
+															<TokenTap />
+														</TokenTapProvider>
+													}
+												/>
+											</Routes>
+										</ScrollToTop>
+										<ConnectBrightIdModal />
+										<BrightConnectionModal />
+										<ConnectMetamaskModal />
+										<CreateBrightIdAccountModal />
+									</BlockNumberProvider>
+								</BrowserRouter>
 							</UserProfileProvider>
 						</ErrorsProvider>
 					</RefreshContextProvider>

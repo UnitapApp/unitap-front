@@ -1,24 +1,66 @@
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
-import Navbar from 'components/common/Navbar/navbar';
+import { FC, Suspense, lazy, useContext, useEffect, useMemo, useState } from 'react';
 import Widget from './components/widget';
 import RoutePath from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
-import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
 import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
 import { getTotalEVMNetworks } from '../../utils';
-import { TokenTapContext } from '../../hooks/token-tap/tokenTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import NotAvailableTap from './components/notAvailableTap';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
+import TapLoading from './components/loading';
+import GasTapLandingLazy from './components/gas-tap';
+import TokenTapLandingLazy from './components/token-tap';
+
+export const socialLinks = [
+	{
+		img: 'twitter-icon.svg',
+		localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
+		link: 'http://twitter.com/unitap_app',
+	},
+	{
+		img: 'github-icon.svg',
+		localClass: 'hover:bg-blue-200',
+		link: 'https://github.com/UnitapApp',
+	},
+	{
+		img: 'discord-icon.svg',
+		localClass: 'hover:bg-purple-200',
+		link: 'https://discord.gg/unitap',
+	},
+];
+
+export const futureTaps = [
+	{
+		name: 'Learn Tap',
+		icon: 'learntap-icon.png',
+		description: 'Where users can learn to use web3 technologies',
+		class: 'after:bg-learntap-texture after:inset-0',
+		iconSize: 'w-6',
+	},
+	{
+		name: 'Stake Tap',
+		icon: 'staketap-icon.png',
+		description: 'Stake, Earn and simultaneously Donate to public good',
+		class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
+		iconSize: 'w-7 h-8',
+	},
+	{
+		name: 'Launch Tap',
+		icon: 'launchtap-icon.png',
+		description: 'A public good launch pad where every unique human will benefit from each launch through Prize Tap',
+		class: 'after:bg-launchtap-texture after:right-0 after:w-28',
+		iconSize: 'w-6',
+	},
+];
+
+const GasTapLandingComponent = lazy(GasTapLandingLazy);
+
+const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
 
 const Landing: FC = () => {
 	const { chainList } = useContext(ClaimContext);
-
-	const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
-	const { tokensList } = useContext(TokenTapContext);
 
 	const { batchSoldCount, batchSize } = useUnitapBatchSale();
 
@@ -27,23 +69,6 @@ const Landing: FC = () => {
 
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
-	const [socialLinks] = useState([
-		{
-			img: 'twitter-icon.svg',
-			localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
-			link: 'http://twitter.com/unitap_app',
-		},
-		{
-			img: 'github-icon.svg',
-			localClass: 'hover:bg-blue-200',
-			link: 'https://github.com/UnitapApp',
-		},
-		{
-			img: 'discord-icon.svg',
-			localClass: 'hover:bg-purple-200',
-			link: 'https://discord.gg/unitap',
-		},
-	]);
 	const [stats, setStats] = useState([
 		{ name: 'Unitap Users', number: '+4000' },
 		{ name: 'EVM Networks', number: 0 },
@@ -60,37 +85,12 @@ const Landing: FC = () => {
 		]);
 	}, [chainList]);
 
-	const [futureTaps] = useState([
-		{
-			name: 'Learn Tap',
-			icon: 'learntap-icon.png',
-			description: 'Where users can learn to use web3 technologies',
-			class: 'after:bg-learntap-texture after:inset-0',
-			iconSize: 'w-6',
-		},
-		{
-			name: 'Stake Tap',
-			icon: 'staketap-icon.png',
-			description: 'Stake, Earn and simultaneously Donate to public good',
-			class: 'after:bg-staketap-texture after:inset-auto after:!right-0 after:!bottom-0 after:w-28 after:h-20',
-			iconSize: 'w-7 h-8',
-		},
-		{
-			name: 'Launch Tap',
-			icon: 'launchtap-icon.png',
-			description: 'A public good launch pad where every unique human will benefit from each launch through Prize Tap',
-			class: 'after:bg-launchtap-texture after:right-0 after:w-28',
-			iconSize: 'w-6',
-		},
-	]);
-
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
 
 	const navigate = useNavigate();
 
 	return (
 		<>
-			<Navbar />
 			<main className={'flex flex-col gap-6 content-wrapper'}>
 				<section
 					id="home-header"
@@ -98,7 +98,13 @@ const Landing: FC = () => {
 						'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
 					}
 				>
-					<img src={'/assets/images/landing/uni-logo.svg'} className={'w-48 mx-auto sm:mx-0'} alt={'logo'} />
+					<img
+						src={'/assets/images/landing/uni-logo.svg'}
+						className={'w-40 mx-auto sm:mx-0'}
+						width={157}
+						height={32}
+						alt={'logo'}
+					/>
 					<h4 className={'text-gradient-primary'}>
 						Unitap is an onboarding tool for networks and communities and a gateway to web3
 					</h4>
@@ -118,7 +124,7 @@ const Landing: FC = () => {
 							<h3 className={'font-bold text-2xl text-white'}>Mint Unitap Pass NFT</h3>
 							<Icon iconSrc="/assets/images/landing/unitap-pass.svg" className="ml-4" />
 						</div>
-						{maxCount > 0 && (
+						{maxCount > 0 ? (
 							<p className={'text-gray100'}>
 								{deadline < new Date() && (
 									<>
@@ -128,6 +134,8 @@ const Landing: FC = () => {
 									</>
 								)}
 							</p>
+						) : (
+							<div className="h-6 w-full"></div>
 						)}
 					</div>
 					<div>
@@ -149,35 +157,9 @@ const Landing: FC = () => {
 							buttonTitle={'Go to Tap'}
 							buttonClass={'gradient-outline-button before:inset-[2px] text-gray100'}
 						>
-							<div className="relative">
-								<div className={isGasTapAvailable ? '' : 'blur-md'}>
-									{sortedChainList.length > 0 && (
-										<>
-											<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
-											<ul className={'text-white'}>
-												{sortedChainList.slice(0, 3).map((token, index) => (
-													<li
-														key={token.chainId}
-														className={'flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2'}
-													>
-														<div className={'flex gap-2 items-center'}>
-															<p>#{index + 1}</p>
-															<span className="token-logo-container w-6 h-6 flex items-center justify-center">
-																<img src={token.logoUrl} alt={token.chainName} className="token-logo w-auto h-[100%]" />
-															</span>
-															<p>{token.chainName}</p>
-														</div>
-														<p>
-															{token.totalClaimsSinceLastMonday} <span>claims</span>
-														</p>
-													</li>
-												))}
-											</ul>
-										</>
-									)}
-								</div>
-								{isGasTapAvailable || <NotAvailableTap />}
-							</div>
+							<Suspense fallback={<TapLoading isGasTap />}>
+								<GasTapLandingComponent />
+							</Suspense>
 						</Widget>
 					</Link>
 
@@ -192,21 +174,9 @@ const Landing: FC = () => {
 								buttonTitle={'Beta'}
 								buttonClass={'green-text-button text-gray100'}
 							>
-								{tokensList.length > 0 &&
-									tokensList.slice(0, 3).map((token, key) => (
-										<div
-											key={key}
-											className={'flex text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-center mb-2'}
-										>
-											<span className="token-logo-container w-6 h-6">
-												<img src={token.imageUrl} alt={token.name} className="token-logo w-auto h-[100%]" />
-											</span>
-											<p className="text-xs ml-4">{token.name}</p>
-											<p className="ml-auto">
-												{token.maxNumberOfClaims - token.numberOfClaims} <span>left</span>
-											</p>
-										</div>
-									))}
+								<Suspense fallback={<TapLoading />}>
+									<TokenTapLandingComponent />
+								</Suspense>
 							</Widget>
 						</Link>
 					</section>
