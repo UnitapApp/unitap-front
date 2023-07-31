@@ -7,13 +7,13 @@ import { ClaimButton, WhiteOutlinedButton } from 'components/basic/Button/button
 import { BrightIdModalState } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ConnectBrightIdModalContent = () => {
 	const { userProfile, loading } = useContext(UserProfileContext);
 	const tried = false;
-	const { closeBrightIdModal, openHaveBrightIdAccountModal, openBrightIdConnectionModal } = useContext(ClaimContext);
+	const { closeBrightIdModal, openHaveBrightIdAccountModal, openBrightIdConnectionModal } = useContext(GlobalContext);
 
 	const handleHaveBrightIdClicked = () => {
 		closeBrightIdModal();
@@ -64,7 +64,8 @@ const ConnectBrightIdModalContent = () => {
 };
 
 const ConnectBrightIdModal = () => {
-	const { brightidModalStatus, closeBrightIdModal } = useContext(ClaimContext);
+	const { brightidModalStatus, closeBrightIdModal } = useContext(GlobalContext);
+
 	return (
 		<Modal
 			title=""

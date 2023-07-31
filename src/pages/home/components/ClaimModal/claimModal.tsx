@@ -18,6 +18,7 @@ import ClaimNotAvailable from '../ClaimNotRemaining';
 
 // @ts-ignore
 import ModelViewer from '@metamask/logo';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();
@@ -26,7 +27,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const metamaskLogo = useRef<HTMLDivElement>(null);
 
 	const { tryActivation } = useWalletActivation();
-	const { claim, closeClaimModal, activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
+	const { claim, closeClaimModal, activeClaimReceipt } = useContext(ClaimContext);
+
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { claimLoading } = useContext(ClaimContext);
 
@@ -357,7 +360,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 const ClaimModal = () => {
 	const { closeClaimModal, activeChain } = useContext(ClaimContext);
-	const { brightidModalStatus } = useContext(ClaimContext);
+	const { brightidModalStatus } = useContext(GlobalContext);
 
 	const isOpen = useMemo(() => {
 		return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED;

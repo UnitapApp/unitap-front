@@ -1,15 +1,12 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { claimMax, claimMaxNonEVMAPI, getActiveClaimHistory, getChainList } from 'api';
 import {
-	BrightIdConnectionModalState,
-	BrightIdModalState,
 	Chain,
 	ChainType,
 	ClaimBoxState,
 	ClaimBoxStateContainer,
 	ClaimNonEVMModalState,
 	ClaimReceipt,
-	HaveBrightIdAccountModalState,
 	Network,
 	PK,
 } from 'types';
@@ -34,19 +31,10 @@ export const ClaimContext = createContext<{
 	activeChain: Chain | null;
 	activeNonEVMChain: Chain | null;
 	claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
-	retryClaim: () => void;
-	openBrightIdModal: () => void;
-	closeBrightIdModal: () => void;
 	openClaimNonEVMModal: () => void;
 	closeClaimNonEVMModal: () => void;
-	brightidModalStatus: BrightIdModalState;
 	claimNonEVMModalStatus: ClaimNonEVMModalState;
-	openHaveBrightIdAccountModal: () => void;
-	closeHaveBrightIdAccountModal: () => void;
-	haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState;
-	openBrightIdConnectionModal: () => void;
-	closeBrightIdConnectionModal: () => void;
-	brightIdConnectionModalStatus: BrightIdConnectionModalState;
+	retryClaim: () => void;
 	selectedNetwork: Network;
 	selectedChainType: ChainType;
 	setSelectedNetwork: (network: Network) => void;
@@ -69,20 +57,11 @@ export const ClaimContext = createContext<{
 	openClaimModal: EmptyCallback,
 	activeChain: null,
 	activeNonEVMChain: null,
+	claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
 	claimBoxStatus: { status: ClaimBoxState.CLOSED, lastFailPk: null },
 	retryClaim: EmptyCallback,
-	openBrightIdModal: EmptyCallback,
-	closeBrightIdModal: EmptyCallback,
 	openClaimNonEVMModal: EmptyCallback,
 	closeClaimNonEVMModal: EmptyCallback,
-	brightidModalStatus: BrightIdModalState.CLOSED,
-	claimNonEVMModalStatus: ClaimNonEVMModalState.CLOSED,
-	openHaveBrightIdAccountModal: EmptyCallback,
-	closeHaveBrightIdAccountModal: EmptyCallback,
-	haveBrightIdAccountModalStatus: HaveBrightIdAccountModalState.CLOSED,
-	openBrightIdConnectionModal: EmptyCallback,
-	closeBrightIdConnectionModal: EmptyCallback,
-	brightIdConnectionModalStatus: BrightIdConnectionModalState.CLOSED,
 	selectedNetwork: Network.MAINNET,
 	selectedChainType: ChainType.EVM,
 	setSelectedNetwork: EmptyCallback,
@@ -104,16 +83,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 		status: ClaimBoxState.CLOSED,
 		lastFailPk: null,
 	});
-	const [brightidModalStatus, setBrightidModalStatus] = useState<BrightIdModalState>(BrightIdModalState.CLOSED);
-	const [claimNonEVMModalStatus, setClaimNonEVMModalStatus] = useState<ClaimNonEVMModalState>(
-		ClaimNonEVMModalState.CLOSED,
-	);
-	const [haveBrightIdAccountModalStatus, setHaveBrightIdAccountModalStatus] = useState<HaveBrightIdAccountModalState>(
-		HaveBrightIdAccountModalState.CLOSED,
-	);
-	const [brightIdConnectionModalStatus, setBrightIdConnectionModalStatus] = useState<BrightIdConnectionModalState>(
-		BrightIdConnectionModalState.CLOSED,
-	);
 
 	const [activeChain, setActiveChain] = useState<Chain | null>(null);
 	const [activeNonEVMChain, setActiveNonEVMChain] = useState<Chain | null>(null);
@@ -124,10 +93,22 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 	const { userProfile, userToken } = useContext(UserProfileContext);
 	const { fastRefresh } = useContext(RefreshContext);
 
+	const [claimNonEVMModalStatus, setClaimNonEVMModalStatus] = useState<ClaimNonEVMModalState>(
+		ClaimNonEVMModalState.CLOSED,
+	);
+
 	const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false);
 	const changeIsHighGasFeeModalOpen = useCallback((isOpen: boolean) => {
 		setIsHighGasFeeModalOpen(isOpen);
 	}, []);
+
+	const openClaimNonEVMModal = () => {
+		setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
+	};
+	const closeClaimNonEVMModal = () => {
+		setActiveNonEVMChain(null);
+		setClaimNonEVMModalStatus(ClaimNonEVMModalState.CLOSED);
+	};
 
 	const updateChainList = useCallback(async () => {
 		try {
@@ -243,35 +224,6 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 		setSearchPhrase(newSearchPhrase);
 	};
 
-	const openBrightIdModal = () => {
-		setBrightidModalStatus(BrightIdModalState.OPENED);
-	};
-	const closeBrightIdModal = () => {
-		setBrightidModalStatus(BrightIdModalState.CLOSED);
-	};
-
-	const openClaimNonEVMModal = () => {
-		setClaimNonEVMModalStatus(ClaimNonEVMModalState.OPENED);
-	};
-	const closeClaimNonEVMModal = () => {
-		setActiveNonEVMChain(null);
-		setClaimNonEVMModalStatus(ClaimNonEVMModalState.CLOSED);
-	};
-
-	const openHaveBrightIdAccountModal = () => {
-		setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.OPENED);
-	};
-	const closeHaveBrightIdAccountModal = () => {
-		setHaveBrightIdAccountModalStatus(HaveBrightIdAccountModalState.CLOSED);
-	};
-
-	const openBrightIdConnectionModal = () => {
-		setBrightIdConnectionModalStatus(BrightIdConnectionModalState.OPENED);
-	};
-	const closeBrightIdConnectionModal = () => {
-		setBrightIdConnectionModalStatus(BrightIdConnectionModalState.CLOSED);
-	};
-
 	return (
 		<ClaimContext.Provider
 			value={{
@@ -289,18 +241,9 @@ export function ClaimProvider({ children }: PropsWithChildren<{}>) {
 				activeNonEVMChain,
 				claimBoxStatus,
 				retryClaim,
-				openBrightIdModal,
-				closeBrightIdModal,
 				openClaimNonEVMModal,
 				closeClaimNonEVMModal,
-				brightidModalStatus,
 				claimNonEVMModalStatus,
-				openHaveBrightIdAccountModal,
-				closeHaveBrightIdAccountModal,
-				haveBrightIdAccountModalStatus,
-				openBrightIdConnectionModal,
-				closeBrightIdConnectionModal,
-				brightIdConnectionModalStatus,
 				selectedNetwork,
 				setSelectedNetwork,
 				selectedChainType,

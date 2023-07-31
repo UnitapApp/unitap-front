@@ -5,14 +5,13 @@ import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import { shortenAddress } from 'utils';
-import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
-import useWalletActivation from '../../../../hooks/useWalletActivation';
+import useWalletActivation from 'hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
-import { UserProfileContext } from '../../../../hooks/useUserProfile';
-import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
-import { switchChain } from '../../../../utils/switchChain';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
+import { switchChain } from 'utils/switchChain';
 import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
 import lottie from 'lottie-web';
@@ -20,6 +19,7 @@ import animation from 'assets/animations/GasFee-delivery2.json';
 
 // @ts-ignore
 import ModelViewer from '@metamask/logo';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -36,7 +36,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		claimTokenWithMetamaskResponse,
 		claimTokenSignatureLoading,
 	} = useContext(TokenTapContext);
-	const { openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile } = useContext(UserProfileContext);
 

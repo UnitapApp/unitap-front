@@ -5,9 +5,9 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import { ClaimButton } from 'components/basic/Button/button';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
 import useGenerateKeys from 'hooks/useGenerateKeys';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ConnectMetamaskModalContent = () => {
 	const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
@@ -63,7 +63,7 @@ const ConnectMetamaskModalContent = () => {
 };
 
 const ConnectMetamaskModal = () => {
-	const { closeBrightIdModal } = useContext(ClaimContext);
+	const { closeBrightIdModal } = useContext(GlobalContext);
 	return (
 		<Modal
 			title="Connect Metamask"

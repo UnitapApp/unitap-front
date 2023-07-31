@@ -1,10 +1,8 @@
 import { useContext } from 'react';
-
 import { HaveBrightIdAccountModalState } from 'types';
-
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const CreateBrightIdAccountModalContent = () => {
 	return (
@@ -54,7 +52,7 @@ const CreateBrightIdAccountModalContent = () => {
 };
 
 const CreateBrightIdAccountModal = () => {
-	const { closeHaveBrightIdAccountModal, haveBrightIdAccountModalStatus } = useContext(ClaimContext);
+	const { closeHaveBrightIdAccountModal, haveBrightIdAccountModalStatus } = useContext(GlobalContext);
 
 	return (
 		<Modal

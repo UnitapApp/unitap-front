@@ -13,13 +13,14 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import lottie from 'lottie-web';
 import animation from '../../../../assets/animations/GasFee-delivery2.json';
 import ClaimNotAvailable from '../ClaimNotRemaining';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const lightingChainId = '286621';
 
 const ClaimNonEVMModalContent = () => {
-	const { activeNonEVMChain } = useContext(ClaimContext);
+	const { activeNonEVMChain, activeClaimReceipt } = useContext(ClaimContext);
 
-	const { activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress, remainingClaims } = useContext(UserProfileContext);
 
