@@ -1,15 +1,17 @@
-import { useContext } from 'react';
+import { Suspense, lazy, useContext } from 'react';
 
 import ChainList from './components/Chainlist/chainlist';
 import Header from 'pages/home/components/Header/header';
 import Footer from '../../components/common/Footer/footer';
 import ProvideGasCard from './components/ProvideGasCard/provideGasCard';
 import SearchInput from './components/SearchInput/searchInput';
-import ClaimModal from './components/ClaimModal/claimModal';
 import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { ChainType } from 'types';
-import ClaimNonEVMModal from './components/ClaimNonEVMModal/claimNonEVMModal';
+
+const ClaimModal = lazy(() => import('./components/ClaimModal/claimModal'));
+
+const ClaimNonEVMModal = lazy(() => import('./components/ClaimNonEVMModal/claimNonEVMModal'));
 
 const Home = () => {
 	const { searchPhrase } = useContext(ClaimContext);
@@ -26,8 +28,12 @@ const Home = () => {
 				<p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
 				<ProvideGasCard />
 			</div>
-			<ClaimModal />
-			<ClaimNonEVMModal />
+			<Suspense>
+				<ClaimModal />
+			</Suspense>
+			<Suspense>
+				<ClaimNonEVMModal />
+			</Suspense>
 			<Footer />
 		</>
 	);
