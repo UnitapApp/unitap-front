@@ -89,6 +89,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	} = raffle;
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
+	// console.log(userProfile);
 	const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
@@ -163,7 +164,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							{description}
 						</p>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
-							{(isExpired && !winnerEntry && !userEntry?.txHash) || maxNumberOfEntries === numberOfEntries ? (
+							{(isExpired && !winnerEntry && !userEntry?.txHash) ||
+							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfEntries) ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
@@ -270,14 +272,12 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										</span>{' '}
 										for being the winner !
 										{winnerEntry!.claimingPrizeTx && (
-											<span className="flex md:ml-2">
+											<span
+												className="flex md:ml-2 cursor-pointer"
+												onClick={() => window.open(getTxUrl(chain, winnerEntry!.claimingPrizeTx), '_blank')}
+											>
 												View on Explorer
-												<Icon
-													className="ml-2"
-													iconSrc="assets/images/prize-tap/ic_link_white.svg"
-													onClick={() => window.open(getTxUrl(chain, winnerEntry!.claimingPrizeTx), '_blank')}
-													hoverable={true}
-												/>
+												<Icon className="ml-2" iconSrc="assets/images/prize-tap/ic_link_white.svg" hoverable={true} />
 											</span>
 										)}
 									</p>

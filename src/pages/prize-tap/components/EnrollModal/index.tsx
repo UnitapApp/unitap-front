@@ -314,10 +314,17 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	function renderSuccessBody() {
 		const calculateClaimAmount = selectedRaffleForEnroll!.prizeAmount / 10 ** selectedRaffleForEnroll!.chain.decimals;
 
-		const handleClick = () => {
+		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
 				`I've just claimed from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+			window.open(twitterUrl, '_blank');
+		};
+
+		const handleShareEnrollTwitter = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I've just Enroll in raffle from @Unitap_app 🔥\n Claim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
 		};
 
@@ -367,7 +374,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						</Text>
 						<div className="relative w-full">
 							<button
-								onClick={handleClick}
+								onClick={handleShareClaimTwitter}
 								className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
 							>
 								<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
@@ -382,15 +389,6 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					</div>
 				) : (
 					<>
-						{/* <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
-							<Icon
-								className="chain-logo z-10 mt-14 mb-10"
-								width="auto"
-								height="110px"
-								iconSrc={getChainClaimIcon(chain)}
-								alt=""
-							/>
-						</DropIconWrapper> */}
 						<span className="flex justify-center items-center font-medium mb-3">
 							<Text className="!mb-0" width="100%" fontSize="14" color="space_green" textAlign="center">
 								successfully enrolled in {selectedRaffleForEnroll?.name} raffle
@@ -417,7 +415,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 						<div className="relative w-full">
 							<button
-								onClick={handleClick}
+								onClick={handleShareEnrollTwitter}
 								className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
 							>
 								<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
