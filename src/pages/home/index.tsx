@@ -50,6 +50,7 @@ const Filters = () => {
 					className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
 						selectedChainType === ChainType.ALL ? `text-white bg-gray50` : `text-gray80`
 					}`}
+					data-testid="chains-filter-chain-type-all"
 					onClick={() => {
 						setSelectedChainType(ChainType.ALL);
 					}}
@@ -60,6 +61,7 @@ const Filters = () => {
 					className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
 						selectedChainType === ChainType.EVM ? `text-white bg-gray50` : `text-gray80`
 					}`}
+					data-testid="chains-filter-chain-type-evm"
 					onClick={() => {
 						setSelectedChainType(ChainType.EVM);
 					}}
@@ -73,6 +75,7 @@ const Filters = () => {
 					onClick={() => {
 						setSelectedChainType(ChainType.NONEVM);
 					}}
+					data-testid="chains-filter-chain-type-non-evm"
 				>
 					nonEVM
 				</div>
@@ -82,6 +85,7 @@ const Filters = () => {
 					className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
 						selectedNetwork === Network.ALL ? `text-white bg-gray50` : `text-gray80`
 					}`}
+					data-testid="chains-filter-all"
 					onClick={() => {
 						setSelectedNetwork(Network.ALL);
 					}}
@@ -92,6 +96,7 @@ const Filters = () => {
 					className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
 						selectedNetwork === Network.MAINNET ? `text-white bg-gray50` : `text-gray80`
 					}`}
+					data-testid="chains-filter-mainnets"
 					onClick={() => {
 						setSelectedNetwork(Network.MAINNET);
 					}}
@@ -102,6 +107,7 @@ const Filters = () => {
 					className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs border-l-2 border-l-gray30 rounded-r-[11px] cursor-pointer ${
 						selectedNetwork === Network.TESTNET ? `text-white bg-gray50` : `text-gray80`
 					}`}
+					data-testid="chains-filter-testnets"
 					onClick={() => {
 						setSelectedNetwork(Network.TESTNET);
 					}}

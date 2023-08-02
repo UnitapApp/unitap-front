@@ -39,6 +39,7 @@ const Dabes = () => {
 							<Icon
 								onClick={() => openClaimModal(claim.chain.pk)}
 								key={claim.chain.chainId}
+								data-testid={`chain-claimed-success-dabe-${claim.pk}`}
 								iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
 								className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
 								width="36px"
