@@ -130,10 +130,13 @@ export const userProfileNotVerified = {
 	pk: 11,
 	verificationStatus: BrightIdVerificationStatus.PENDING,
 	verificationUrl: 'https://app.brightid.org/link-verification/GasFaucet/948347ac-d66e-410a-b389-a3d797633a23',
+	wallets: [],
 };
 
 export const userProfileVerified = {
 	...userProfileNotVerified,
+	isAuraVerified: true,
+	isMeetVerified: true,
 	verificationStatus: BrightIdVerificationStatus.VERIFIED,
 };
 

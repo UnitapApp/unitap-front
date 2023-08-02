@@ -199,7 +199,11 @@ const RenderNavbarConnectWalletButton = () => {
 
 	return (
 		<>
-			<button className="btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline" onClick={tryActivation}>
+			<button
+				data-testid="wallet-connect"
+				className="btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline"
+				onClick={tryActivation}
+			>
 				Connect Wallet
 			</button>
 		</>

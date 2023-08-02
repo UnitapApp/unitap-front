@@ -27,7 +27,10 @@ const Dabes = () => {
 	const { openClaimModal } = useContext(ClaimContext);
 
 	return (
-		<div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+		<div
+			data-testid="claims-chain-list"
+			className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3"
+		>
 			<>
 				{activeClaimHistory
 					.filter((claim) => claim.status !== ClaimReceiptState.REJECTED)

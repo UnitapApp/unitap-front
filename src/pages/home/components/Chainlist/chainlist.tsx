@@ -117,7 +117,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { activeClaimHistory } = useContext(ClaimContext);
 
 	return (
-		<div key={chain.chainId}>
+		<div>
 			<div
 				className={`chain-card ${
 					isHighlighted ? 'before:!inset-[1.5px] p-0 gradient-outline-card mb-20' : 'mb-4'
