@@ -223,6 +223,7 @@ const RenderNavbarWalletAddress = ({ active }: { active: boolean }) => {
 	return (
 		<>
 			<button
+				data-testid="wallet-address"
 				className={`btn btn--sm btn--address ${active && 'btn--address--active'} !w-36 h-[28px] !py-0 align-baseline`}
 				onClick={tryActivation}
 			>

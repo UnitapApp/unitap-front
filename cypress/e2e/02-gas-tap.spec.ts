@@ -6,7 +6,7 @@
 // https://on.cypress.io/writing-first-test
 
 import RoutePath from '../../src/routes';
-import { ChainType, ClaimReceipt, ClaimReceiptState, Network } from '../../src/types';
+import { ChainType, ClaimReceipt, ClaimReceiptState } from '../../src/types';
 import { setupGetUserProfileVerified } from '../helpers/auth';
 import { connectWallet, setupEthBridge } from '../helpers/wallet';
 import { chainList, claimMaxResponse, createClaimHistory } from '../utils/data';
