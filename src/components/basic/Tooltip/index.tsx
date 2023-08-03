@@ -5,6 +5,7 @@ const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: st
 	children,
 	className,
 	toolTipClassName,
+	...props
 }) => {
 	const [showTooltip, setShowTooltip] = useState(false);
 
@@ -21,6 +22,7 @@ const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: st
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			className={'relative inline-block ' + className}
+			{...props}
 		>
 			<span className="cursor-pointer">{children}</span>
 			<div

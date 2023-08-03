@@ -49,7 +49,7 @@ const TokensList = () => {
 			))}
 
 			{tokenListSearchResult.length === 0 && !!tokensList.length && (
-				<div className="my-10">
+				<div className="my-10" data-testid="tokens-not-found">
 					<div className="bg-gray30 text-white shadow-lg rounded-lg p-6 mx-auto">
 						<div className="flex justify-center items-center h-20">
 							<h1 className="text-4xl bg-primaryGradient text-transparent bg-clip-text font-semibold">404</h1>

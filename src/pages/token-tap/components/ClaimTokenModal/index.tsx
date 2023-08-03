@@ -283,7 +283,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					width="100%"
 					fontSize="16px"
 					className="!w-full"
-					data-testid={`chain-claim-action-${selectedTokenForClaim!.chain.pk}`}
+					data-testid={`token-claim-action-${selectedTokenForClaim!.chain.pk}`}
 				>
 					{claimTokenLoading ? (
 						<p>Claiming...</p>

@@ -14,6 +14,20 @@ export const setupGetUserProfileVerified = () => {
 	cy.intercept(
 		{
 			method: 'GET',
+			url: '/api/v1/settings',
+		},
+		(req) =>
+			req.reply({
+				isGasTapAvailable: true,
+				prizetapWeeklyClaimLimit: 3,
+				tokentapWeeklyClaimLimit: 20,
+				weeklyChainClaimLimit: 5,
+			}),
+	);
+
+	cy.intercept(
+		{
+			method: 'GET',
 			url: `/api/v1/user/**/claims?**`,
 		},
 		(req) => {

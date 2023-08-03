@@ -140,6 +140,11 @@ export const userProfileVerified = {
 	verificationStatus: BrightIdVerificationStatus.VERIFIED,
 };
 
+export const userMeetNotVerified = {
+	...userProfileVerified,
+	isMeetVerified: false,
+};
+
 export const claimMaxResponse: Omit<ClaimReceipt, 'chain'> & { chain: number } = {
 	pk: 8,
 	txHash: '0x26c59bf189bc48e8e9d1b0cf190187546bf3f311123d0a61e601eda30edadaab',
