@@ -77,7 +77,6 @@ const Navbar = () => {
 						</BrightConnectedButton>
 					) : (
 						<BrightPrimaryButton
-							data-testid="brightid-show-modal"
 							mb={2}
 							fontSize="12px"
 							fontWeight="800"
@@ -186,6 +185,7 @@ const RenderNavbarLoginBrightIdButton = () => {
 		<>
 			<button
 				className="btn btn--sm btn--bright !w-36 h-[28px] !py-0 align-baseline"
+				data-testid="brightid-show-modal"
 				onClick={() => !userProfileLoading && openBrightIdModal()}
 			>
 				{userProfileLoading ? 'Connecting...' : 'Connect BrightID'}

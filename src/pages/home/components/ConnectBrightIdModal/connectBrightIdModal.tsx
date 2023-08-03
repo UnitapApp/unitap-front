@@ -44,7 +44,11 @@ const ConnectBrightIdModalContent = () => {
 				BrightID is a social identity network that allows users to prove that they are only using one account.
 			</p>
 			{loading && <Text data-testid={`loading`}>Loading...</Text>}
-			<WhiteOutlinedButton className="mb-4 !w-full bg-gray30" onClick={handleBrightIdConnectClicked}>
+			<WhiteOutlinedButton
+				data-testid="setup-bright-id-qr-code"
+				className="mb-4 !w-full bg-gray30"
+				onClick={handleBrightIdConnectClicked}
+			>
 				I have a BrightID
 			</WhiteOutlinedButton>
 

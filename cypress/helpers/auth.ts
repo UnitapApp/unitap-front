@@ -23,3 +23,8 @@ export const setupGetUserProfileVerified = () => {
 
 	localStorage.setItem('userToken', 'b12321d8ye8834y273627e27');
 };
+
+export const setupGetUserProfileNotVerified = () => {
+	cy.clearLocalStorage();
+	cy.clearAllCookies();
+};

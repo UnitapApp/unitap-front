@@ -25,16 +25,6 @@ const setupGetChainListServerGeneral = () => {
 
 	cy.intercept(
 		{
-			method: 'POST',
-			url: '/api/v1/chain/**/claim-max',
-		},
-		(req) => {
-			return req.reply(claimMaxResponse);
-		},
-	);
-
-	cy.intercept(
-		{
 			method: 'GET',
 			url: '/api/v1/user/remainig-claims/',
 		},
