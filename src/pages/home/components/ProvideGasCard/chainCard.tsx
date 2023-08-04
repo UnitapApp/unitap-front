@@ -11,7 +11,6 @@ import { CurrencyAmount } from '@uniswap/sdk-core';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 
-const connection = new Connection(clusterApiUrl('testnet'));
 interface props {
 	chain: Chain;
 }
@@ -22,6 +21,10 @@ const ChainCard = ({ chain }: props) => {
 
 	useEffect(() => {
 		if (chain.chainType === ChainType.SOLANA) {
+			const connection = new Connection(
+				chain.isTestnet ? clusterApiUrl('testnet') : 'https://api.metaplex.solana.com/',
+			);
+
 			connection
 				.getBalance(new PublicKey(chain.fundManagerAddress))
 				.then((balance) => {
