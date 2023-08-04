@@ -2,26 +2,37 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Icon from 'components/basic/Icon/Icon';
 
-import { Chain } from 'types';
+import { Chain, ChainType } from 'types';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useNativeCurrencyOnChain } from '../../../../hooks/useNativeCurrency';
 import JSBI from 'jsbi';
 import { CurrencyAmount } from '@uniswap/sdk-core';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 
+const connection = new Connection(clusterApiUrl('testnet'));
 interface props {
 	chain: Chain;
 }
 
 const ChainCard = ({ chain }: props) => {
 	const { provider } = useWeb3React();
-	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
+	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | string | null>(null);
 
 	useEffect(() => {
-		new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
-			setFundManagerBalance(balance);
-		});
+		if (chain.chainType === ChainType.SOLANA) {
+			connection
+				.getBalance(new PublicKey(chain.fundManagerAddress))
+				.then((balance) => {
+					setFundManagerBalance((balance / 1e9).toString());
+				})
+				.catch((e) => console.log(e));
+		} else {
+			new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
+				setFundManagerBalance(balance);
+			});
+		}
 	}, [chain, provider]);
 
 	const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
@@ -31,7 +42,7 @@ const ChainCard = ({ chain }: props) => {
 	}
 
 	const fundManagerBalanceAmount = useMemo(() => {
-		if (!fundManagerBalance) return null;
+		if (!fundManagerBalance || typeof fundManagerBalance === 'string') return null;
 		const amount = JSBI.BigInt(fundManagerBalance.toString());
 		return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
 	}, [nativeCurrency, fundManagerBalance]);
@@ -45,7 +56,11 @@ const ChainCard = ({ chain }: props) => {
 			<p className="chain__info text-xs text-gray90 flex">
 				balance:
 				<span className="chain__info__balance text-white ml-1">
-					{fundManagerBalanceAmount ? numberWithCommas(parseFloat(fundManagerBalanceAmount.toSignificant(5))) : '...'}
+					{fundManagerBalanceAmount
+						? typeof fundManagerBalance === 'string'
+							? fundManagerBalance
+							: numberWithCommas(parseFloat(fundManagerBalanceAmount.toSignificant(5)))
+						: '...'}
 				</span>
 			</p>
 		</div>

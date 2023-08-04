@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ClaimButton } from 'components/basic/Button/button';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
-import { Chain } from 'types';
+import { Chain, ChainType } from 'types';
 import { parseEther } from '@ethersproject/units';
 import Modal from 'components/common/Modal/modal';
 import { getChainIcon } from 'utils';
@@ -10,18 +10,22 @@ import { calculateGasMargin, USER_DENIED_REQUEST_ERROR_CODE } from 'utils/web3';
 import useWalletActivation from 'hooks/useWalletActivation';
 import useSelectChain from 'hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
-import { fromWei } from 'utils/numbers';
+import { fromWei, parseToLamports } from 'utils/numbers';
 import FundTransactionModal from 'pages/fund/components/FundTransactionModal/FundTransactionModal';
 import SelectChainModal from 'pages/fund/components/SelectChainModal/selectChainModal';
 
 const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
-	const { chainList } = useContext(ClaimContext);
+	const { chainList: originalChainList } = useContext(ClaimContext);
 	const { chainId, provider, account } = useWeb3React();
 	const active = !!account;
 	const { tryActivation } = useWalletActivation();
 
 	const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
 	const [balance, setBalance] = useState<string | number>('');
+
+	const chainList = useMemo(() => {
+		return originalChainList.filter((chain) => chain.chainType !== ChainType.SOLANA);
+	}, [originalChainList]);
 
 	useEffect(() => {
 		if (chainList.length > 0 && !selectedChain) {
@@ -84,11 +88,12 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 			alert('Enter fund amount');
 			return;
 		}
+
 		if (!provider) return;
 		let tx = {
 			from: account,
 			to: selectedChain.fundManagerAddress,
-			value: parseEther(fundAmount),
+			value: selectedChain.symbol === 'SOL' ? parseToLamports(fundAmount) : parseEther(fundAmount),
 		};
 
 		setSubmittingFundTransaction(true);
@@ -171,6 +176,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 			</Modal>
 			<div className="rounded-xl py-6 px-4 z-0">
 				<img
+					alt="gas fee planet"
 					src="./assets/images/fund/provide-gas-fee-planet.svg"
 					className="absolute -left-64 -top-16 scale-150 -z-10"
 				/>
@@ -180,6 +186,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 						iconSrc="./assets/images/fund/provide-gas-fee-battery.svg"
 						width="146px"
 						height="auto"
+						alt="gas fee battery"
 					/>
 					<p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
 					<p className="text-gray100 text-xs mb-3 z-1">
@@ -192,7 +199,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 							onClick={() => setModalState(true)}
 						>
 							{selectedChain ? (
-								<Icon iconSrc={getChainIcon(selectedChain)} width="auto" height="32px" />
+								<Icon alt={selectedChain.chainName} iconSrc={getChainIcon(selectedChain)} width="auto" height="32px" />
 							) : (
 								<span className="w-8 h-8 rounded-full bg-gray50"></span>
 							)}

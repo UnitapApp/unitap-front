@@ -38,7 +38,7 @@ const Modal = ({ title, titleLeft, children, isOpen, closeModalHandler, classNam
 						)}
 						<span
 							onClick={closeModalHandler}
-							className="close absolute right-4 top-4 cursor-pointer"
+							className="close absolute right-4 z-20 top-4 cursor-pointer"
 							data-testid="close-modal"
 						>
 							<Icon iconSrc="assets/images/modal/exit.svg" />
