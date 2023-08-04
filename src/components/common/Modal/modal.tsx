@@ -32,8 +32,10 @@ const Modal = ({ title, titleLeft, children, isOpen, closeModalHandler, classNam
 						data-testid="modal-content"
 						size={size}
 					>
-						{titleLeft && <p className="text-xl text-left text-white"> {titleLeft} </p>}
-						{title && <p className="modal-title font-bold text-sm text-center mx-auto text-white"> {title} </p>}
+						{titleLeft && <p className="text-xl text-left relative z-10 text-white"> {titleLeft} </p>}
+						{title && (
+							<p className="modal-title font-bold text-sm relative z-10 text-center mx-auto text-white"> {title} </p>
+						)}
 						<span
 							onClick={closeModalHandler}
 							className="close absolute right-4 top-4 cursor-pointer"
