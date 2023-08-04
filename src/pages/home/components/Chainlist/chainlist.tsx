@@ -108,8 +108,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { account } = useWeb3React();
 	const active = !!account;
 
-	const navigate = useNavigate();
-
 	const handleRefillButtonClicked = (chainId: PK) => {
 		setChainId(chainId);
 		setIsOpen(true);

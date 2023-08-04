@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal from 'components/common/Modal/modal';
 import { FC, PropsWithChildren, createContext, useState } from 'react';
 import Content from './content';
