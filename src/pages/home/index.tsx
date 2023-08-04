@@ -8,6 +8,7 @@ import SearchInput from './components/SearchInput/searchInput';
 import { Network } from 'types';
 import { ClaimContext } from 'hooks/useChainList';
 import { ChainType } from 'types';
+import FundContextProvider from './context/fundContext';
 
 const ClaimModal = lazy(() => import('./components/ClaimModal/claimModal'));
 
@@ -20,13 +21,17 @@ const Home = () => {
 		<>
 			<div className="content-wrapper">
 				<Header />
-				<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
-					<SearchInput className="w-full sm:w-1/2 md:w-1/3" />
-					{searchPhrase === '' && <Filters />}
-				</div>
-				<ChainList />
-				<p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
-				<ProvideGasCard />
+				<FundContextProvider>
+					<>
+						<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
+							<SearchInput className="w-full sm:w-1/2 md:w-1/3" />
+							{searchPhrase === '' && <Filters />}
+						</div>
+						<ChainList />
+						<p className="provide-gas-title text-white text-xl mr-auto mb-3">GasTap Chains Balances</p>
+						<ProvideGasCard />
+					</>
+				</FundContextProvider>
 			</div>
 			<Suspense>
 				<ClaimModal />
