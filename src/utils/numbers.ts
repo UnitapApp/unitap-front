@@ -32,6 +32,10 @@ export const formatSolanaBalance = (amount: number) => {
 	return formatBalance(fw);
 };
 
+export const parseToLamports = (amount: number | string) => {
+	return Number(amount) * 1e9;
+};
+
 export const formatChainBalance = (amount: number, chainSymbol: string) => {
 	if (chainSymbol === 'SOL') return formatSolanaBalance(amount);
 

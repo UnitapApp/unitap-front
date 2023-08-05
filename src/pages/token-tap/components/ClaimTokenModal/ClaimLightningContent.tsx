@@ -1,8 +1,7 @@
-import React, { FC, useContext, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo } from 'react';
 
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimContext } from 'hooks/useChainList';
-import { Chain, Permission, PermissionType } from 'types';
+import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import lottie from 'lottie-web';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
@@ -10,6 +9,7 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import animation from '../../../../assets/animations/GasFee-delivery2.json';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	const {
@@ -22,7 +22,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		claimedTokensList,
 	} = useContext(TokenTapContext);
 
-	const { openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const token = useMemo(
 		() => claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id),
@@ -158,7 +158,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	}
 
 	function renderSuccessBody() {
-		const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id)!;
+		// const token = claimedTokensList.find((token) => token.tokenDistribution.id === selectedTokenForClaim!.id)!;
 
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -371,6 +371,36 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		);
 	};
 
+	function claimMaxedOutBody() {
+		return (
+			<div className="flex text-white flex-col items-center justify-center w-full pt-2">
+				<div className="mt-20 claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+					{claimedTokensList
+						.filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
+						.map((claim, key) => {
+							return (
+								<Icon
+									key={key}
+									iconSrc={claim.tokenDistribution.imageUrl}
+									className={`rounded-full ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
+									width="36px"
+									height="40px"
+								/>
+							);
+						})}
+				</div>
+				<div className="mt-10 text-center text-gray100">{"You've"} reached your claim limit for now</div>
+
+				<button
+					onClick={closeClaimModal}
+					className="w-full mt-10 py-3 border-2 text-gray100 font-normal bg-gray10 border-gray50 rounded-xl"
+				>
+					Close
+				</button>
+			</div>
+		);
+	}
+
 	const getLightningClaimBody = () => {
 		if (!userProfile) return renderBrightNotConnectedBody();
 
@@ -384,6 +414,8 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 
 		if (token?.status === 'Verified') return renderSuccessBody();
 		if (token?.status === 'Pending') return renderPendingBody();
+
+		if (claimedTokensList.length >= 3) return claimMaxedOutBody();
 
 		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
 

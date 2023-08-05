@@ -1,25 +1,30 @@
-import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
-import { ClaimButton, LightOutlinedButtonNew } from 'components/basic/Button/button';
-import { Chain, Permission, PermissionType } from 'types';
+import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
+import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import { shortenAddress } from 'utils';
-import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
-import useWalletActivation from '../../../../hooks/useWalletActivation';
+import useWalletActivation from 'hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
-import { UserProfileContext } from '../../../../hooks/useUserProfile';
-import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
-import { switchChain } from '../../../../utils/switchChain';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
+import { switchChain } from 'utils/switchChain';
 import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
+import lottie from 'lottie-web';
+import animation from 'assets/animations/GasFee-delivery2.json';
+
+// @ts-ignore
+import ModelViewer from '@metamask/logo';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
 	const walletConnected = !!account;
+	const metamaskLogo = useRef<HTMLDivElement>(null);
 
 	const { tryActivation } = useWalletActivation();
 	const {
@@ -31,27 +36,62 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		claimTokenWithMetamaskResponse,
 		claimTokenSignatureLoading,
 	} = useContext(TokenTapContext);
-	const { openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile } = useContext(UserProfileContext);
 
 	const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim!.id);
 
+	useEffect(() => {
+		if (claimTokenLoading) {
+			const animationElement = document.querySelector('#animation');
+			if (animationElement) {
+				animationElement.innerHTML = '';
+			}
+			lottie.loadAnimation({
+				container: document.querySelector('#animation') as HTMLInputElement,
+				animationData: animation,
+				loop: true,
+				autoplay: true,
+			});
+		}
+	}, [claimTokenLoading]);
+
+	useEffect(() => {
+		if (!metamaskLogo.current) return;
+
+		const viewer = ModelViewer({
+			pxNotRatio: true,
+			width: 200,
+			height: 200,
+			followMouse: true,
+			slowDrift: false,
+		});
+
+		metamaskLogo.current.innerHTML = '';
+
+		metamaskLogo.current.appendChild(viewer.container);
+
+		return () => {
+			viewer.stopAnimation();
+		};
+	}, [metamaskLogo]);
+
 	function renderWalletNotConnectedBody() {
 		return (
 			<>
 				<DropIconWrapper data-testid={`chain-claim-wallet-not-connected`}>
-					<Icon
-						className="chain-logo z-10 mt-14 mb-10"
-						width="auto"
-						height="110px"
-						iconSrc={selectedTokenForClaim!.imageUrl}
-						alt=""
-					/>
+					<div className="flex items-center justify-center" ref={metamaskLogo}></div>
 				</DropIconWrapper>
 
-				<p className="text-sm font-medium text-white mt-2 mb-12 text-center px-4 leading-6">
-					Connect your wallet to claim your tokens
+				<p className="text-gray100 font-semibold text-left text-sm mb-2 mt-5 w-full">Don’t have a metamask wallet?</p>
+
+				<p className="text-gray90 text-sm mb-5">
+					Go to{' '}
+					<a href="https://metamask.io" rel="noreferrer" className="text-orange" target="_blank">
+						Metamask.io
+					</a>{' '}
+					and create your first wallet and come back to start with web3
 				</p>
 
 				<ClaimButton
@@ -214,9 +254,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						alt=""
 					/>
 				</DropIconWrapper>
-				{claimTokenSignatureLoading ? (
-					<p className="text-white text-sm my-4 text-center px-3 mb-6">Preparing your claim signature...</p>
-				) : claimTokenWithMetamaskResponse?.state === 'Retry' ? (
+				{claimTokenWithMetamaskResponse?.state === 'Retry' ? (
 					<p className="text-white text-sm my-4 text-center px-3 mb-6">{claimTokenWithMetamaskResponse?.message}</p>
 				) : (
 					<div className="text-left text-white">
@@ -234,16 +272,18 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						</p>
 					</div>
 				)}
+
 				<Text width="100%" fontSize="14">
 					Wallet Address
 				</Text>
 				<WalletAddress fontSize="12">{walletConnected ? shortenAddress(account) : ''}</WalletAddress>
+
 				<ClaimButton
 					onClick={() => handleClaimToken()}
 					width="100%"
 					fontSize="16px"
 					className="!w-full"
-					data-testid={`chain-claim-action-${selectedTokenForClaim!.chain.pk}`}
+					data-testid={`token-claim-action-${selectedTokenForClaim!.chain.pk}`}
 				>
 					{claimTokenLoading ? (
 						<p>Claiming...</p>
@@ -264,8 +304,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${calculateClaimAmount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + selectedTokenForClaim?.token)}`;
+				`I've just claimed ${calculateClaimAmount} ${selectedTokenForClaim?.token} from @Unitap_app 🔥\nClaim yours:`,
+			)}&url=${encodeURIComponent('unitap.app/token-tap?hc=' + encodeURIComponent(selectedTokenForClaim!.token))}`;
 			window.open(twitterUrl, '_blank');
 		};
 
@@ -297,7 +337,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					textAlign="center"
 					onClick={() =>
 						window.open(
-							'https://gnosisscan.io/tx/' + (collectedToken?.txHash ?? claimTokenWithMetamaskResponse?.txHash),
+							selectedTokenForClaim!.chain.explorerUrl +
+								'tx/' +
+								(collectedToken?.txHash ?? claimTokenWithMetamaskResponse?.txHash),
 						)
 					}
 				>
@@ -353,6 +395,55 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		);
 	}
 
+	function claimMaxedOutBody() {
+		return (
+			<div className="flex text-white flex-col items-center justify-center w-full pt-2">
+				<div className="mt-20 claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+					{claimedTokensList
+						.filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
+						.map((claim, key) => {
+							return (
+								<Icon
+									key={key}
+									iconSrc={claim.tokenDistribution.imageUrl}
+									className={`rounded-full ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
+									width="36px"
+									height="40px"
+								/>
+							);
+						})}
+				</div>
+				<div className="mt-10 text-center text-gray100">{"You've"} reached your claim limit for now</div>
+
+				<button
+					onClick={closeClaimModal}
+					className="w-full mt-10 py-3 border-2 text-gray100 font-normal bg-gray10 border-gray50 rounded-xl"
+				>
+					Close
+				</button>
+			</div>
+		);
+	}
+
+	function renderPendingBody() {
+		if (!selectedTokenForClaim) return null;
+
+		return (
+			<>
+				<div data-testid={`chain-claim-pending-${chain.pk}`} id="animation" style={{ width: '200px' }}></div>
+				<Text width="100%" fontSize="14" color="space_green" textAlign="center">
+					Claim transaction submitted
+				</Text>
+				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
+					The claim transaction will be completed soon
+				</Text>
+				<SecondaryGreenColorButton onClick={closeClaimModal} width={'100%'}>
+					Close
+				</SecondaryGreenColorButton>
+			</>
+		);
+	}
+
 	const getClaimTokenModalBody = () => {
 		if (!selectedTokenForClaim) {
 			closeClaimModal();
@@ -373,13 +464,17 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			}
 		});
 
-		if (!walletConnected) return renderWalletNotConnectedBody();
-
 		if (claimTokenWithMetamaskResponse?.state === 'Done' || collectedToken?.status === 'Verified')
 			return renderSuccessBody();
 
+		if (!walletConnected) return renderWalletNotConnectedBody();
+
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);
+
+		if (claimTokenLoading) return renderPendingBody();
+
+		if (claimedTokensList.length >= 3 && !collectedToken) return claimMaxedOutBody();
 
 		return renderInitialBody();
 	};

@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from 'react';
 import {
 	getRemainingClaimsAPI,
 	getUserProfile,
@@ -98,7 +98,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
 	useEffect(() => {
 		const getWeeklyChainClaimLimit = async () => {
-			const { weeklyChainClaimLimit, isGasTapAvailable } = await getWeeklyChainClaimLimitAPI(userToken!);
+			const { weeklyChainClaimLimit, isGasTapAvailable } = await getWeeklyChainClaimLimitAPI();
 			setWeeklyChainClaimLimit(weeklyChainClaimLimit);
 			setIsGasTapAvailable(isGasTapAvailable);
 		};

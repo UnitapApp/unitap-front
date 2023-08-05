@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ClaimButton } from 'components/basic/Button/button';
 import { ContentCard } from './content.style';
 import Icon from 'components/basic/Icon/Icon';
@@ -14,7 +14,7 @@ import useWalletActivation from '../../../../hooks/useWalletActivation';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router-dom';
-import { formatWeiBalance, fromWei } from 'utils/numbers';
+import { fromWei } from 'utils/numbers';
 
 const Content: FC = () => {
 	const { chainList } = useContext(ClaimContext);
@@ -91,12 +91,14 @@ const Content: FC = () => {
 			return;
 		}
 		if (!provider) return;
-		const tx = {
+		let tx = {
 			from: account,
 			to: selectedChain.fundManagerAddress,
 			value: parseEther(fundAmount),
 		};
+
 		setSubmittingFundTransaction(true);
+
 		const estimatedGas = await provider.estimateGas(tx).catch((err: any) => {
 			return err;
 		});
@@ -178,7 +180,7 @@ const Content: FC = () => {
 					src="./assets/images/fund/provide-gas-fee-planet.svg"
 					className="absolute -left-64 -top-16 scale-150 z-10"
 				/>
-				<span className="z-100">
+				<span className="z-100 w-full">
 					<Icon
 						className="mb-2"
 						iconSrc="./assets/images/fund/provide-gas-fee-battery.svg"
@@ -186,12 +188,11 @@ const Content: FC = () => {
 						height="auto"
 					/>
 					<p className="text-white font-bold text-xl mb-3 z-1">Provide Gas Fee</p>
-
 					<p className="text-gray100 text-xs mb-3 z-1">
-						{!!balance && balance + ' ' + selectedChain?.symbol + ' is available in your wallet'}
+						100% of contributions will fund distributions and transaction costs of the gas tap.
 					</p>
 
-					<div className="select-box w-full flex rounded-xl overflow-hidden my-5 bg-gray40">
+					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
 						<div
 							className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60"
 							onClick={() => setModalState(true)}
@@ -208,7 +209,14 @@ const Content: FC = () => {
 								<p className="select-box__info__coin-symbol text-white text-xs font-semibold">
 									{selectedChain?.symbol}
 								</p>
-								{/* <p className="select-box__info__coin-balance text-gray100 text-xs font-semibold">Balance: 1,049.00</p> */}
+								{!!balance && (
+									<p
+										onClick={() => setFundAmount(balance.toString())}
+										className="select-box__info__coin-balance text-gray100 text-xs cursor-pointer hover:text-primary-light font-semibold"
+									>
+										Balance: {balance + ' ' + selectedChain?.symbol}{' '}
+									</p>
+								)}
 							</div>
 							<div className="select-box__info__amount w-full">
 								<input
@@ -224,9 +232,10 @@ const Content: FC = () => {
 							</div>
 						</div>
 					</div>
+
 					<ClaimButton
-						width="100% !important"
 						height="3.5rem"
+						className="!w-full mt-5"
 						fontSize="20px"
 						onClick={handleSendFunds}
 						disabled={!Number(fundAmount) && isRightChain && active}

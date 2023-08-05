@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { ClaimContext } from 'hooks/useChainList';
 import Input from 'components/basic/Input/input';

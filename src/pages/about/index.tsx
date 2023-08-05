@@ -1,12 +1,9 @@
 import Icon from 'components/basic/Icon/Icon';
 import Footer from 'components/common/Footer/footer';
-import Navbar from 'components/common/Navbar/navbar';
-import React from 'react';
 
 const About = () => {
 	return (
 		<>
-			<Navbar />
 			<div className={'content-wrapper'}>
 				<div className={' m-auto flex flex-col justify-center items-center w-full'}>
 					<section
@@ -167,10 +164,10 @@ const About = () => {
 							</p>
 						</div>
 					</div>
-					<section id={'timeline'} className={'mt-16 text-center'}>
+					{/* <section id={'timeline'} className={'mt-16 text-center'}>
 						<header className={'text-gradient-primary text-3xl inline-block mb-10'}>Unitap Roadmap</header>
 						<img src={'/assets/images/about/roadmap.svg'} />
-					</section>
+					</section> */}
 				</div>
 			</div>
 			<Footer />

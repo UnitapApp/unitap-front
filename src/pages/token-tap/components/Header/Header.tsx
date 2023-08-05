@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Icon from 'components/basic/Icon/Icon';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { range } from 'utils';
@@ -13,7 +13,7 @@ const Header = () => {
 				<span className="flex items-center mb-2">
 					<Icon className="gas-tap h-12 w-auto mb-1" iconSrc="assets/images/token-tap/token-tap-typo-logo.svg" />
 					<div className="bg-gray10 px-3 py-2 border font-bold border-gray50 text-white text-xs rounded-lg">
-						<p className="text-gradient-primary opacity-10 light-toggle">Beta</p>
+						<p className="text-gradient-primary">Beta</p>
 					</div>
 				</span>
 				<p className="text-xs text-gray100">
@@ -43,11 +43,11 @@ const TokenCoins = () => {
 	return (
 		<div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
 			<>
-				{claimedTokensList.map((claim) => {
+				{claimedTokensList.map((claim, key) => {
 					return (
 						<Icon
 							onClick={() => openClaimModal(claim.tokenDistribution)}
-							key={claim.tokenDistribution.chain.chainId}
+							key={key}
 							iconSrc={claim.tokenDistribution.imageUrl || claim.tokenDistribution.chain.logoUrl}
 							className={`cursor-pointer rounded-full transition ${claim.status === 'Pending' && 'animated-dabe'}`}
 							width="36px"

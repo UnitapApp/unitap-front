@@ -1,6 +1,6 @@
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ClaimReceiptState } from 'types';
 import { diffToNextMonday } from 'utils';
 

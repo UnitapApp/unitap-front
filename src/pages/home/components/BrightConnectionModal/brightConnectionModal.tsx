@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserProfileContext } from 'hooks/useUserProfile';
 
@@ -8,11 +7,11 @@ import { QRCode } from 'react-qrcode-logo';
 import { APIError, APIErrorsSource, BrightIdConnectionModalState } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
 import useGenerateKeys from 'hooks/useGenerateKeys';
 import { sponsorAPI } from 'api';
 import { ErrorsContext } from '../../../../context/ErrorsProvider';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const BrightConnectionModalBody = () => {
 	const { userProfile, refreshUserProfile, loading } = useContext(UserProfileContext);
@@ -119,7 +118,7 @@ const BrightConnectionModalBody = () => {
 				</ClaimButton>
 			)}
 			<span className="dont-have-bright-id md:flex flex-col md:flex-row items-center md:justify-between w-full">
-				<p className="text-xs text-gray100 text-center mb-2 md:mb-0">Don’t have a verified BrightID account?</p>
+				<p className="text-xs text-gray100 text-center mb-2 md:mb-0">Don’t have a verified BrightID?</p>
 				<p
 					className="text-xs font-semibold cursor-pointer underline text-white text-center"
 					onClick={() => {
@@ -134,7 +133,7 @@ const BrightConnectionModalBody = () => {
 };
 
 const BrightConnectionModal = () => {
-	const { brightIdConnectionModalStatus, closeBrightIdConnectionModal } = useContext(ClaimContext);
+	const { brightIdConnectionModalStatus, closeBrightIdConnectionModal } = useContext(GlobalContext);
 	return (
 		<Modal
 			className="bright-modal"
