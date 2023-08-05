@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { CallbackState, UseCallbackReturns } from '../pass/utils';
 import useUnitapPrizeTransaction from './useUnitapPrizeTransaction';
 import { MintTransactionInfo, TransactionType } from 'state/transactions/types';
-import { BigNumberish, BytesLike } from 'ethers';
+import { BigNumberish } from 'ethers';
 import { useUnitapPrizeContract } from '../useContract';
 
 export function useUnitapPrizeCallback(
