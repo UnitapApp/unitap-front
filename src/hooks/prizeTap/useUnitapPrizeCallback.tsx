@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { CallbackState, UseCallbackReturns } from '../pass/utils';
 import useUnitapPrizeTransaction from './useUnitapPrizeTransaction';

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState, useContext } from 'react';
+import { FC, useEffect, useMemo, useState, useContext } from 'react';
 import { Prize } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimAndEnrollButton, ClaimPrizeButton, EnrolledButton } from 'components/basic/Button/button';
@@ -90,7 +90,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	// console.log(userProfile);
-	const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
+	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
 

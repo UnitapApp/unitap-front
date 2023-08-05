@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
@@ -14,6 +13,7 @@ import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { switchChain } from '../../../../utils/switchChain';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -31,7 +31,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		claimOrEnrollSignatureLoading,
 	} = useContext(PrizeTapContext);
 
-	const { openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile } = useContext(UserProfileContext);
 
@@ -103,78 +103,78 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		);
 	}
 
-	function renderVerifyPermission(permission: Permission) {
-		function getPermissionTitle(permission: Permission) {
-			if (permission.name === PermissionType.BRIGHTID) {
-				return 'You are not verified on BrightID';
-			} else if (permission.name === PermissionType.AURA) {
-				return 'You are not verified on Aura';
-			}
+	// function renderVerifyPermission(permission: Permission) {
+	// 	function getPermissionTitle(permission: Permission) {
+	// 		if (permission.name === PermissionType.BRIGHTID) {
+	// 			return 'You are not verified on BrightID';
+	// 		} else if (permission.name === PermissionType.AURA) {
+	// 			return 'You are not verified on Aura';
+	// 		}
 
-			return '';
-		}
+	// 		return '';
+	// 	}
 
-		function getPermissionButtonText(permission: Permission) {
-			if (permission.name === PermissionType.BRIGHTID) {
-				return 'Verified on BrightID';
-			} else if (permission.name === PermissionType.AURA) {
-				return 'Verified on Aura';
-			}
+	// 	function getPermissionButtonText(permission: Permission) {
+	// 		if (permission.name === PermissionType.BRIGHTID) {
+	// 			return 'Verified on BrightID';
+	// 		} else if (permission.name === PermissionType.AURA) {
+	// 			return 'Verified on Aura';
+	// 		}
 
-			return '';
-		}
+	// 		return '';
+	// 	}
 
-		function getPermissionCheckButtonText(permission: Permission) {
-			if (permission.name === PermissionType.BRIGHTID) {
-				return 'If you verified your BrightID click here.';
-			} else if (permission.name === PermissionType.AURA) {
-				return 'If you verified your Aura click here.';
-			}
+	// 	function getPermissionCheckButtonText(permission: Permission) {
+	// 		if (permission.name === PermissionType.BRIGHTID) {
+	// 			return 'If you verified your BrightID click here.';
+	// 		} else if (permission.name === PermissionType.AURA) {
+	// 			return 'If you verified your Aura click here.';
+	// 		}
 
-			return '';
-		}
+	// 		return '';
+	// 	}
 
-		function verifyPermission() {
-			if (permission.name === PermissionType.BRIGHTID) {
-				window.open('https://meet.brightid.org/', '_blank');
-			} else if (permission.name === PermissionType.AURA) {
-				window.open('https://brightid.gitbook.io/aura/how-to-play/verification-levels', '_blank');
-			}
-		}
+	// 	function verifyPermission() {
+	// 		if (permission.name === PermissionType.BRIGHTID) {
+	// 			window.open('https://meet.brightid.org/', '_blank');
+	// 		} else if (permission.name === PermissionType.AURA) {
+	// 			window.open('https://brightid.gitbook.io/aura/how-to-play/verification-levels', '_blank');
+	// 		}
+	// 	}
 
-		return (
-			<>
-				<div
-					className="bright-connection-modal flex flex-col items-center justify-center pt-2"
-					data-testid="brightid-modal"
-				>
-					<Icon
-						data-testid="brightid-logo"
-						className="bright-logo !w-4/12 z-10 mb-5"
-						iconSrc={selectedRaffleForEnroll!.imageUrl}
-					/>
-					<p className="text-sm font-bold text-error mb-2">{getPermissionTitle(permission)}</p>
-					<p className="text-xs font-medium text-gray100 mb-12 text-center px-4 leading-6">{permission.description}</p>
+	// 	return (
+	// 		<>
+	// 			<div
+	// 				className="bright-connection-modal flex flex-col items-center justify-center pt-2"
+	// 				data-testid="brightid-modal"
+	// 			>
+	// 				<Icon
+	// 					data-testid="brightid-logo"
+	// 					className="bright-logo !w-4/12 z-10 mb-5"
+	// 					iconSrc={selectedRaffleForEnroll!.imageUrl}
+	// 				/>
+	// 				<p className="text-sm font-bold text-error mb-2">{getPermissionTitle(permission)}</p>
+	// 				<p className="text-xs font-medium text-gray100 mb-12 text-center px-4 leading-6">{permission.description}</p>
 
-					<span className="w-full relative">
-						<LightOutlinedButtonNew className="!w-full" onClick={() => verifyPermission()}>
-							{getPermissionButtonText(permission)}
-							<Icon className="cursor-pointer arrow-icon mt-0.5 ml-1.5 w-2" iconSrc="assets/images/arrow-icon.svg" />
-						</LightOutlinedButtonNew>
-						<Icon
-							iconSrc="assets/images/modal/bright-id-check.svg"
-							className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"
-						/>
-					</span>
+	// 				<span className="w-full relative">
+	// 					<LightOutlinedButtonNew className="!w-full" onClick={() => verifyPermission()}>
+	// 						{getPermissionButtonText(permission)}
+	// 						<Icon className="cursor-pointer arrow-icon mt-0.5 ml-1.5 w-2" iconSrc="assets/images/arrow-icon.svg" />
+	// 					</LightOutlinedButtonNew>
+	// 					<Icon
+	// 						iconSrc="assets/images/modal/bright-id-check.svg"
+	// 						className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"
+	// 					/>
+	// 				</span>
 
-					{/* eslint-disable-next-line no-restricted-globals */}
-					<p className="text-white mt-4 text-xs hover:underline cursor-pointer" onClick={() => location.reload()}>
-						{getPermissionCheckButtonText(permission)}
-					</p>
-				</div>
-			</>
-		);
-	}
+	// 				{/* eslint-disable-next-line no-restricted-globals */}
+	// 				<p className="text-white mt-4 text-xs hover:underline cursor-pointer" onClick={() => location.reload()}>
+	// 					{getPermissionCheckButtonText(permission)}
+	// 				</p>
+	// 			</div>
+	// 		</>
+	// 	);
+	// }
 
 	function renderWrongNetworkBody(chain: Chain) {
 		return (
