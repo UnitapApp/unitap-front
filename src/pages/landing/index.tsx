@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
 import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
-import { getTotalEVMNetworks } from '../../utils';
+import { getTotalNetworks } from '../../utils';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
@@ -79,7 +79,7 @@ const Landing: FC = () => {
 	useEffect(() => {
 		setStats(() => [
 			{ name: 'Unitap Users', number: '+4000' },
-			{ name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
+			{ name: 'Networks', number: getTotalNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },
 			{ name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
 		]);

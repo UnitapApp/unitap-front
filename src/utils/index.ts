@@ -125,8 +125,8 @@ export const getTotalTestNetworks = (chains: Chain[]) => {
 	return chains.reduce((total, chain) => total + (chain.isTestnet ? 1 : 0), 0);
 };
 
-export const getTotalEVMNetworks = (chains: Chain[]) => {
-	return chains.reduce((total, chain) => total + (chain.chainType === 'EVM' ? 1 : 0), 0);
+export const getTotalNetworks = (chains: Chain[]) => {
+	return chains.reduce((total, chain) => total + (!chain.isTestnet ? 1 : 0), 0);
 };
 
 export const getChainClaimIcon = (chain: Chain) => {
