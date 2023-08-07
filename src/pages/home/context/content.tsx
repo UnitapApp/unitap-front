@@ -115,6 +115,10 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 				...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
 				// gasPrice /// TODO add gasPrice based on EIP 1559
 			})
+			.then(async (tx) => {
+				await tx.wait(1);
+				return tx;
+			})
 			.then((tx) => {
 				setTxHash(tx.hash);
 			})

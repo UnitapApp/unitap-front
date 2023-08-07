@@ -354,10 +354,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 						<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
 					</button>
 					<Icon
-						iconSrc="/assets/images/gas-tap/twitter-share.svg"
-						className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
-						width="auto"
-						height="26px"
+						iconSrc="/assets/images/landing/twitter-seeklogo.com-4.svg"
+						className="w-10 h-10 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+						// width="auto"
+						// height="30px"
 					/>
 				</div>
 			</>
