@@ -15,7 +15,7 @@ import TokenTapLandingLazy from './components/token-tap';
 
 export const socialLinks = [
 	{
-		img: 'twitter-seeklogo.com-4.svg',
+		img: 'twitter-icon.svg',
 		localClass: 'hover:bg-light-space-green sm:rounded-l-2xl',
 		link: 'http://twitter.com/unitap_app',
 	},

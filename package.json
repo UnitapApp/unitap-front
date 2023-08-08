@@ -54,6 +54,7 @@
 		"contracts:compile": "yarn contracts:compile:abi && yarn contracts:compile:uniswaphelpers",
 		"prepare": "yarn contracts:compile",
 		"dev": "vite",
+		"start": "vite",
 		"build": "tsc && vite build",
 		"start:cypress": "cross-env REACT_APP_IS_CYPRESS='true' yarn dev",
 		"test": "react-scripts test",

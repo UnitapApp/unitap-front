@@ -30,13 +30,7 @@ const Footer: FC = () => {
 	return (
 		<FooterWrapper>
 			<span onClick={() => window.open('http://twitter.com/unitap_app', '_blank')}>
-				<Icon
-					iconSrc="assets/images/landing/twitter-seeklogo.com-4.svg"
-					width="50px"
-					height="auto"
-					mr={4}
-					hoverable
-				></Icon>
+				<Icon iconSrc="assets/images/footer/twitter.svg" width="34px" height="auto" mr={4} hoverable></Icon>
 			</span>
 			<span onClick={() => window.open('https://github.com/UnitapApp', '_blank')}>
 				<Icon iconSrc="assets/images/footer/github.svg" width="34px" height="auto" mr={4} hoverable></Icon>
