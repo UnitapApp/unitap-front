@@ -2,9 +2,8 @@ import { FC, Suspense, lazy, useContext, useEffect, useMemo, useState } from 're
 import Widget from './components/widget';
 import RoutePath from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
-import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
-import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
+import { getTotalTestNetworks } from 'utils';
 import { getTotalNetworks } from '../../utils';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import Icon from 'components/basic/Icon/Icon';

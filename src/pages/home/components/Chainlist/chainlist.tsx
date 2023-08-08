@@ -66,12 +66,6 @@ const ChainList = () => {
 	return (
 		<div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
 			<div>
-				{!chainList.length && (
-					<div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
-						Loading...
-					</div>
-				)}
-
 				{!chainList.length || isGasTapAvailable ? (
 					<>
 						{!!chainListMemo.length && (

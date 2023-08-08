@@ -3,7 +3,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { Text } from 'components/basic/Text/text.style';
 import { SecondaryButton } from 'components/basic/Button/button';
 import { Chain } from '../../../../types';
-import { formatBalance, formatWeiBalance } from '../../../../utils/numbers';
+import { formatBalance } from '../../../../utils/numbers';
 import { getTxUrl } from '../../../../utils';
 
 const FundTransactionModal = ({
