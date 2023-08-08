@@ -1,4 +1,5 @@
 import { getChainList } from 'api';
+import { Chain } from 'types';
 
 const GasTapLandingLazy = async () => {
 	const [GasTapLandingComponent, chainList] = await Promise.all([
@@ -7,7 +8,9 @@ const GasTapLandingLazy = async () => {
 	]);
 
 	return {
-		default: () => <GasTapLandingComponent chainList={chainList} />,
+		default: ({ setChainClaims }: { setChainClaims: (chains: Chain[]) => void }) => (
+			<GasTapLandingComponent chainList={chainList} setChainClaims={setChainClaims} />
+		),
 	};
 };
 

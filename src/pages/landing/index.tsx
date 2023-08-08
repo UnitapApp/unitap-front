@@ -13,6 +13,7 @@ import TapLoading from './components/loading';
 import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
 import { countGasClaimedAPI, countUsersAPI } from 'api';
+import { Chain } from 'types';
 
 export const socialLinks = [
 	{
@@ -56,13 +57,11 @@ export const futureTaps = [
 	},
 ];
 
-const GasTapLandingComponent = lazy(GasTapLandingLazy);
-
 const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
 
-const Landing: FC = () => {
-	const { chainList } = useContext(ClaimContext);
+const GasTapLandingComponent = lazy(GasTapLandingLazy);
 
+const Landing: FC = () => {
 	const { batchSoldCount, batchSize } = useUnitapBatchSale();
 
 	const maxCount = useMemo(() => batchSize || 0, [batchSize]);
@@ -78,12 +77,12 @@ const Landing: FC = () => {
 	const [usersCount, setUsersCount] = useState('+4000');
 	const [gasClaimedCount, setGasClaimedCount] = useState(0);
 
-	useEffect(() => {
+	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
 			{ name: 'Networks', number: getTotalNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },
 		]);
-	}, [chainList]);
+	};
 
 	useEffect(() => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
@@ -163,7 +162,7 @@ const Landing: FC = () => {
 							buttonClass={'gradient-outline-button before:inset-[2px] text-gray100'}
 						>
 							<Suspense fallback={<TapLoading isGasTap />}>
-								<GasTapLandingComponent />
+								<GasTapLandingComponent setChainClaims={setChainClaims} />
 							</Suspense>
 						</Widget>
 					</Link>
