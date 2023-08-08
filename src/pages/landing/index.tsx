@@ -12,6 +12,7 @@ import { ClaimButton } from 'components/basic/Button/button';
 import TapLoading from './components/loading';
 import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
+import { countGasClaimedAPI, countUsersAPI } from 'api';
 
 export const socialLinks = [
 	{
@@ -70,20 +71,24 @@ const Landing: FC = () => {
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const [stats, setStats] = useState([
-		{ name: 'Unitap Users', number: '+4000' },
 		{ name: 'EVM Networks', number: 0 },
 		{ name: 'Test Networks', number: 0 },
-		{ name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
 	]);
+
+	const [usersCount, setUsersCount] = useState('+4000');
+	const [gasClaimedCount, setGasClaimedCount] = useState(0);
 
 	useEffect(() => {
 		setStats(() => [
-			{ name: 'Unitap Users', number: '+4000' },
 			{ name: 'Networks', number: getTotalNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },
-			{ name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
 		]);
 	}, [chainList]);
+
+	useEffect(() => {
+		countUsersAPI().then((res) => setUsersCount(res.toString()));
+		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
+	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
 
@@ -233,6 +238,10 @@ const Landing: FC = () => {
 						titleClass={'!justify-center'}
 					>
 						<div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
+							<div className="flex flex-col gap-2 items-center">
+								<p className={'text-xl text-space-green font-semibold'}>{usersCount}</p>
+								<p className={'text-gradient-primary text-xs font-medium'}> Unitap Users</p>
+							</div>
 							{stats.map((stat) => (
 								<div key={stat.name} className={'flex flex-col gap-2 items-center'}>
 									<p className={'text-xl text-space-green font-semibold'}>
@@ -242,6 +251,10 @@ const Landing: FC = () => {
 									<p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
 								</div>
 							))}
+							<div className="flex flex-col gap-2 items-center">
+								<p className={'text-xl text-space-green font-semibold'}>{gasClaimedCount}</p>
+								<p className={'text-gradient-primary text-xs font-medium'}> Gas Fees Claimed</p>
+							</div>
 						</div>
 					</Widget>
 				</section>
