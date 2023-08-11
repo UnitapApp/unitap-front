@@ -14,12 +14,12 @@ const GasTapLoading = () => {
 				</div>
 				<div className="flex flex-col mt-2 items-center absolute bottom-0 left-1/2 -translate-x-1/2 bg-gray70 w-68 h-16 py-2 px-4 rounded-t-lg"></div>
 
-				<div className="flex justify-center md:justify-start mt-2">
-					<div className="claim-stat__claimed rounded-lg bg-gray70 py-[2px] px-3 flex gap-x-3">
-						<img src="/assets/images/gas-tap/dabe-loading.svg" alt="loading" />
+				<div className="flex flex-wrap justify-center md:justify-start mt-2">
+					<div className="claim-stat__claimed rounded-lg bg-gray70 py-[2px] px-3 items-start h-14 flex gap-x-3">
+						<img className="w-full" src="/assets/images/gas-tap/dabe-loading.svg" alt="loading" />
 					</div>
 				</div>
-				<div className="absolute w-96 h-[500px] animate-skeleton -top-40 z-10 opacity-20 rotate-[21.574deg] blur-2xl bg-[#797992]"></div>
+				<div className="absolute w-96 h-[400px] animate-skeleton -top-40 z-10 opacity-20 rotate-[21.574deg] blur-2xl bg-[#797992]"></div>
 			</div>
 			<div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
 				<SearchInput className="w-full sm:w-1/2 md:w-1/3" />

@@ -10,13 +10,10 @@
 
 @keyframes shine {
 	0% {
-		left: -500px;
-	}
-	80% {
-		left: calc(100% + 500px);
+		left: -120%;
 	}
 	100% {
-		left: calc(100% + 500px);
+		left: 150%;
 	}
 }
 
@@ -46,7 +43,7 @@
 }
 
 .animate-skeleton {
-	animation: shine 3s linear infinite;
+	animation: shine 2s ease-in-out infinite;
 }
 
 .skeleton-item {

@@ -100,6 +100,7 @@ function App() {
 													/>
 													<Route path={RoutePath.ABOUT} element={<About />} />
 													<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
+
 													<Route
 														path={RoutePath.TOKEN}
 														element={

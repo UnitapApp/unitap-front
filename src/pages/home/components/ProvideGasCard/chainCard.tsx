@@ -22,13 +22,15 @@ const ChainCard = ({ chain }: props) => {
 	useEffect(() => {
 		if (chain.chainType === ChainType.SOLANA) {
 			const connection = new Connection(
-				chain.isTestnet ? clusterApiUrl('testnet') : 'https://api.metaplex.solana.com/',
+				// chain.isTestnet ? clusterApiUrl('testnet'):
+				clusterApiUrl('devnet'),
+				// 'https://api.metaplex.solana.com/',
 			);
 
 			connection
-				.getBalance(new PublicKey(chain.fundManagerAddress))
+				.getAccountInfo(new PublicKey(chain.fundManagerAddress))
 				.then((balance) => {
-					setFundManagerBalance((balance / 1e9).toString());
+					if (balance?.lamports) setFundManagerBalance((balance.lamports / 1e9).toString());
 				})
 				.catch((e) => console.log(e));
 		} else {
@@ -53,7 +55,7 @@ const ChainCard = ({ chain }: props) => {
 	return (
 		<div className="chain p-5 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
 			<div className="chain__name flex mb-4 text-white">
-				{chain.symbol}
+				{chain.chainName}
 				<Icon className="ml-2" iconSrc={chain.logoUrl} width="auto" height="22px" />
 			</div>
 			<p className="chain__info text-xs text-gray90 flex">
