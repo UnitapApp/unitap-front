@@ -248,11 +248,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 					>
 						{fundActionButtonLabel}
 					</ClaimButton>
-					<Modal
-						title="Provide Gas Fee"
-						isOpen={!!fundTransactionError || !!txHash}
-						closeModalHandler={closeModalHandler}
-					>
+					<Modal isOpen={!!fundTransactionError || !!txHash} closeModalHandler={closeModalHandler}>
 						<FundTransactionModal
 							fundAmount={fundAmount}
 							closeModalHandler={closeModalHandler}
