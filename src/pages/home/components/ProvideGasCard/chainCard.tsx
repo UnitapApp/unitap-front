@@ -20,24 +20,30 @@ const ChainCard = ({ chain }: props) => {
 	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | string | null>(null);
 
 	useEffect(() => {
-		if (chain.chainType === ChainType.SOLANA) {
-			const connection = new Connection(
-				// chain.isTestnet ? clusterApiUrl('testnet'):
-				clusterApiUrl('devnet'),
-				// 'https://api.metaplex.solana.com/',
-			);
+		const fetchBalance = async () => {
+			try {
+				if (chain.chainType === ChainType.SOLANA) {
+					const connection = new Connection(
+						chain.isTestnet
+							? clusterApiUrl('testnet')
+							: 'https://empty-magical-leaf.solana-mainnet.discover.quiknode.pro/4968f7a4791085816487ee6e15889f653f53ba13/',
+					);
+					const balance = await connection.getAccountInfo(new PublicKey(chain.fundManagerAddress));
 
-			connection
-				.getAccountInfo(new PublicKey(chain.fundManagerAddress))
-				.then((balance) => {
-					if (balance?.lamports) setFundManagerBalance((balance.lamports / 1e9).toString());
-				})
-				.catch((e) => console.log(e));
-		} else {
-			new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
-				setFundManagerBalance(balance);
-			});
-		}
+					if (balance?.lamports) {
+						setFundManagerBalance((balance.lamports / 1e9).toString());
+					}
+				} else {
+					const provider = new StaticJsonRpcProvider(chain.rpcUrl);
+					const balance = await provider.getBalance(chain.fundManagerAddress);
+					setFundManagerBalance(balance);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchBalance();
 	}, [chain, provider]);
 
 	const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
