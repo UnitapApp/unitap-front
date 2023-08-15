@@ -57,7 +57,7 @@
 		"start": "vite",
 		"build": "tsc && vite build",
 		"start:cypress": "cross-env REACT_APP_IS_CYPRESS='true' yarn dev",
-		"test": "yarn cypress",
+		"test": "cypress run",
 		"cypress": "start-server-and-test 'yarn start:cypress' http://localhost:3000 'cypress open'"
 	},
 	"browserslist": {
