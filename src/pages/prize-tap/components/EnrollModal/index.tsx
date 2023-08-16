@@ -260,10 +260,10 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						width="100%"
 						fontSize="16px"
 						className="!w-full mt-10"
-						disabled={!!needsVerification.length}
+						disabled={!!needsVerification.length || selectedRaffleForEnroll.isExpired}
 						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
 					>
-						{claimOrEnrollLoading ? <p>Enrolling...</p> : <p>Enroll</p>}
+						{selectedRaffleForEnroll.isExpired ? <p>Expired</p> : <p>Enroll</p>}
 					</ClaimButton>
 				</div>
 			);
