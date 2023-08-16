@@ -240,13 +240,14 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 
 	&:disabled {
 		opacity: 0.6;
+		border: 2px solid ${DV.colors.gray80};
 
-		background: ${DV.colors.gray90};
+		background: transparent;
 
 		p {
 			-webkit-background-clip: none !important;
 			-webkit-text-fill-color: none !important;
-			color: ${DV.colors.gray10};
+			color: ${DV.colors.gray90};
 		}
 
 		::before {
@@ -350,6 +351,23 @@ export const ClaimAndEnrollButton = styled(PrimaryOutlinedButton)`
 	}
 	::before {
 		background: #030317 !important;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		border: 2px solid ${DV.colors.gray80};
+
+		background: transparent;
+
+		p {
+			-webkit-background-clip: none !important;
+			-webkit-text-fill-color: none !important;
+			color: ${DV.colors.gray90};
+		}
+
+		::before {
+			background: none !important;
+		}
 	}
 `;
 

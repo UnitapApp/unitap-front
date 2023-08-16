@@ -88,8 +88,6 @@ export type ClaimTokenResponse = {
 	};
 };
 
-
-
 export enum BrightIdVerificationStatus {
 	PENDING = '0',
 	VERIFIED = '1',
@@ -114,6 +112,7 @@ export type UserProfile = {
 export type Settings = {
 	weeklyChainClaimLimit: number;
 	tokentapWeeklyClaimLimit: number;
+	prizetapWeeklyClaimLimit: number;
 	isGasTapAvailable: boolean;
 };
 
@@ -212,46 +211,47 @@ export type APIError = {
 };
 
 export type Prize = {
-  id: PK;
-  pk: PK;
-  imageUrl: string;
+	id: PK;
+	pk: PK;
+	constraints: Permission[];
+	imageUrl: string;
 	tokenUri: string;
-  background: string;
-  creator: string;
-  creatorUrl: string;
-  contract: string;
-  isPrizeNft: boolean;
-  twitterUrl: string;
-  discordUrl: string;
-  description: string;
-  createdAt: string;
-  deadline: string;
-  name: string;
-  chainName: string;
-  chainLogoUrl: string;
-  chain: Chain;
-  raffleId: string;
-  isClaimable: boolean
-  isExpired: boolean;
-  userEntry: UserEntryInRaffle
+	background: string;
+	creator: string;
+	creatorUrl: string;
+	contract: string;
+	isPrizeNft: boolean;
+	twitterUrl: string;
+	discordUrl: string;
+	description: string;
+	createdAt: string;
+	deadline: string;
+	name: string;
+	chainName: string;
+	chainLogoUrl: string;
+	chain: Chain;
+	raffleId: string;
+	isClaimable: boolean;
+	isExpired: boolean;
+	userEntry: UserEntryInRaffle;
 	numberOfEntries: number;
 	maxNumberOfEntries: number;
-	prizeAmount:number;
+	prizeAmount: number;
 	prizeName: string;
 	prizeSymbol: string;
-	winnerEntry: WinnerEntry
-}
+	winnerEntry: WinnerEntry;
+};
 
 export type WinnerEntry = {
 	claimingPrizeTx: string;
-	createdAt: string; 
+	createdAt: string;
 	multiplier: number;
 	nonce: number;
 	pk: number;
 	signature: string;
 	txHash: string;
-	userProfile: UserProfile
-}
+	userProfile: UserProfile;
+};
 
 export type EnrollPayload = {
 	raffleId: number;
@@ -261,18 +261,18 @@ export type EnrollPayload = {
 };
 
 export type EnrollmentSignature = {
-  detail: string;
+	detail: string;
 	signature: {
-    claimingPrizeTx: string | null;
-    createdAt: string;
-    nonce: number;
-    pk: number;
-    signature: string;
+		claimingPrizeTx: string | null;
+		createdAt: string;
+		nonce: number;
+		pk: number;
+		signature: string;
 		multiplier: number;
-    txHash: string | null;
-    userProfile: number;
-  }
-}
+		txHash: string | null;
+		userProfile: number;
+	};
+};
 
 export type ClaimPrizeSignature = {
 	detail: string;
@@ -284,15 +284,15 @@ export type ClaimPrizeSignature = {
 	multiplier: number;
 	txHash: string | null;
 	userProfile: number;
-}
+};
 
 export type UserEntryInRaffle = {
-  claimingPrizeTx: null | string;
-  createdAt: string;
-  nonce: number;
-  pk: number;
-  signature: string;
-  txHash: string | null;
-  userProfile: number;
+	claimingPrizeTx: null | string;
+	createdAt: string;
+	nonce: number;
+	pk: number;
+	signature: string;
+	txHash: string | null;
+	userProfile: number;
 	multiplier: number;
-}
+};

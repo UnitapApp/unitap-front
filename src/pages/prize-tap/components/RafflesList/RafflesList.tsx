@@ -8,6 +8,7 @@ import { UserProfileContext } from 'hooks/useUserProfile';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 import { getTxUrl, shortenAddress } from 'utils';
+import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 
 const Action = styled.div`
 	display: flex;
@@ -87,6 +88,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		userEntry,
 		winnerEntry,
 	} = raffle;
+	const isPermissionVerified = usePermissionResolver();
+
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	// console.log(userProfile);
@@ -103,6 +106,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	let tokenImgLink: string | undefined = tokenUri
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
+
+	const permissionVerificationsList = useMemo(
+		() =>
+			raffle.constraints
+				.filter((permission) => permission.type === 'VER')
+				.map((permission) => isPermissionVerified(permission)),
+		[raffle, isPermissionVerified],
+	);
+
+	const needsVerification = permissionVerificationsList.filter((permission) => !permission);
 
 	return (
 		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
@@ -163,11 +176,31 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
 							{description}
 						</p>
+						<span className="text-xs text-gray100 mb-3">
+							<span
+								onClick={openEnrollModal.bind(null, raffle, 'Verify')}
+								className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
+							>
+								{!needsVerification.length ? (
+									<>
+										<img src="/assets/images/prize-tap/check.svg" alt="check" />
+										requirements fulfilled
+									</>
+								) : (
+									<>
+										<img src="/assets/images/prize-tap/not-completed.svg" alt="check" />
+										{needsVerification.length + ' '}
+										requirements for enrollment
+									</>
+								)}
+							</span>
+						</span>
+						<span></span>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 							{(isExpired && !winnerEntry && !userEntry?.txHash) ||
 							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfEntries) ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -199,7 +232,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								</span>
 							) : !winnerEntry && !userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -214,6 +247,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									<ClaimAndEnrollButton
 										height="48px"
 										fontSize="14px"
+										disabled={!!needsVerification.length}
 										className="min-w-[552px] md:!w-[352px] !w-full"
 										onClick={() => openEnrollModal(raffle, 'Enroll')}
 									>
@@ -231,7 +265,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								</span>
 							) : !winnerEntry && userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between items-baseline w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -325,7 +359,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											height="167px"
 										/>
 									</div>
-									<div className="claimed-prize w-[252px] md:!w-[352px] !w-full">
+									<div className="claimed-prize md:!w-[352px] !w-full">
 										<div className="relative text-gray10">
 											<p> Claimed</p>
 											<Icon

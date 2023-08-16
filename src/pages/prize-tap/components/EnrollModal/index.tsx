@@ -13,10 +13,14 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { switchChain } from '../../../../utils/switchChain';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { GlobalContext } from 'hooks/useGlobalContext';
+import { RemainingRaffleComponent } from '../Header/header';
+import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
+import Tooltip from 'components/basic/Tooltip';
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
 	const walletConnected = !!account;
+	const isPermissionVerified = usePermissionResolver();
 
 	const { tryActivation } = useWalletActivation();
 	const {
@@ -28,6 +32,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		closeEnrollModal,
 		claimOrEnrollWithMetamaskResponse,
 		claimOrEnrollSignatureLoading,
+		setMethod,
 	} = useContext(PrizeTapContext);
 
 	const { openBrightIdModal } = useContext(GlobalContext);
@@ -207,6 +212,61 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	function renderInitialBody() {
 		if (!selectedRaffleForEnroll) {
 			return null;
+		}
+
+		if (method === 'Verify') {
+			const permissionVerificationsList = selectedRaffleForEnroll.constraints
+				.filter((permission) => permission.type === 'VER')
+				.map((permission) => isPermissionVerified(permission));
+
+			const needsVerification = permissionVerificationsList.filter((permission) => !permission);
+
+			return (
+				<div className="text-center pt-4">
+					<div>
+						<RemainingRaffleComponent />
+					</div>
+					<p className="text-sm text-gray100 leading-6 mt-10">
+						by clicking on “Enroll”, one of your coupon will be utilized and cannot be returned .To enroll, please
+						ensure that you meet the following requirements.
+					</p>
+					<div className="mt-5 text-xs">
+						{selectedRaffleForEnroll.constraints.map((permission, key) => (
+							<Tooltip
+								className={
+									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
+									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
+								}
+								data-testid={`token-verification-${selectedRaffleForEnroll.id}-${permission.name}`}
+								key={key}
+								text={permission.description}
+							>
+								<div className="flex items-center gap-3">
+									<img
+										src={
+											permissionVerificationsList[key]
+												? '/assets/images/token-tap/check.svg'
+												: '/assets/images/token-tap/not-verified.svg'
+										}
+									/>
+									{permission.title}
+								</div>
+							</Tooltip>
+						))}
+					</div>
+
+					<ClaimButton
+						onClick={() => setMethod('Claim')}
+						width="100%"
+						fontSize="16px"
+						className="!w-full mt-10"
+						disabled={!!needsVerification.length}
+						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
+					>
+						{claimOrEnrollLoading ? <p>Enrolling...</p> : <p>Enroll</p>}
+					</ClaimButton>
+				</div>
+			);
 		}
 
 		if (method === 'Enroll') {
@@ -492,7 +552,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 };
 
 const EnrollModal = () => {
-	const { selectedRaffleForEnroll, setSelectedRaffleForEnroll } = useContext(PrizeTapContext);
+	const { selectedRaffleForEnroll, setSelectedRaffleForEnroll, method } = useContext(PrizeTapContext);
 
 	const closeClaimTokenModal = useCallback(() => {
 		setSelectedRaffleForEnroll(null);
@@ -506,7 +566,7 @@ const EnrollModal = () => {
 
 	return (
 		<Modal
-			title={`${selectedRaffleForEnroll.name}`}
+			title={`${method === 'Verify' ? 'Requirements' : selectedRaffleForEnroll.name}`}
 			size="small"
 			closeModalHandler={closeClaimTokenModal}
 			isOpen={isOpen}
