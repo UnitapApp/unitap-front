@@ -2,16 +2,17 @@ import { FC, Suspense, lazy, useContext, useEffect, useMemo, useState } from 're
 import Widget from './components/widget';
 import RoutePath from 'routes';
 import { Link, useNavigate } from 'react-router-dom';
-import { ClaimContext } from 'hooks/useChainList';
 import { useUnitapBatchSale } from 'hooks/pass/useUnitapBatchSale';
-import { getTotalGasFeeClaims, getTotalTestNetworks } from 'utils';
-import { getTotalEVMNetworks } from '../../utils';
+import { getTotalTestNetworks } from 'utils';
+import { getTotalNetworks } from '../../utils';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton } from 'components/basic/Button/button';
 import TapLoading from './components/loading';
 import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
+import { countGasClaimedAPI, countUsersAPI } from 'api';
+import { Chain } from 'types';
 
 export const socialLinks = [
 	{
@@ -55,13 +56,11 @@ export const futureTaps = [
 	},
 ];
 
-const GasTapLandingComponent = lazy(GasTapLandingLazy);
-
 const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
 
-const Landing: FC = () => {
-	const { chainList } = useContext(ClaimContext);
+const GasTapLandingComponent = lazy(GasTapLandingLazy);
 
+const Landing: FC = () => {
 	const { batchSoldCount, batchSize } = useUnitapBatchSale();
 
 	const maxCount = useMemo(() => batchSize || 0, [batchSize]);
@@ -70,20 +69,24 @@ const Landing: FC = () => {
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const [stats, setStats] = useState([
-		{ name: 'Unitap Users', number: '+4000' },
 		{ name: 'EVM Networks', number: 0 },
 		{ name: 'Test Networks', number: 0 },
-		{ name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
 	]);
 
-	useEffect(() => {
+	const [usersCount, setUsersCount] = useState('+4000');
+	const [gasClaimedCount, setGasClaimedCount] = useState(0);
+
+	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
-			{ name: 'Unitap Users', number: '+4000' },
-			{ name: 'EVM Networks', number: getTotalEVMNetworks(chainList) },
+			{ name: 'Networks', number: getTotalNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },
-			{ name: 'Gas Fees Claimed', number: getTotalGasFeeClaims(chainList) },
 		]);
-	}, [chainList]);
+	};
+
+	useEffect(() => {
+		countUsersAPI().then((res) => setUsersCount(res.toString()));
+		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
+	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
 
@@ -158,7 +161,7 @@ const Landing: FC = () => {
 							buttonClass={'gradient-outline-button before:inset-[2px] text-gray100'}
 						>
 							<Suspense fallback={<TapLoading isGasTap />}>
-								<GasTapLandingComponent />
+								<GasTapLandingComponent setChainClaims={setChainClaims} />
 							</Suspense>
 						</Widget>
 					</Link>
@@ -233,6 +236,10 @@ const Landing: FC = () => {
 						titleClass={'!justify-center'}
 					>
 						<div className={'flex justify-between mt-4 md:flex-row flex-col gap-4 md:gap-0'}>
+							<div className="flex flex-col gap-2 items-center">
+								<p className={'text-xl text-space-green font-semibold'}>{usersCount}</p>
+								<p className={'text-gradient-primary text-xs font-medium'}> Unitap Users</p>
+							</div>
 							{stats.map((stat) => (
 								<div key={stat.name} className={'flex flex-col gap-2 items-center'}>
 									<p className={'text-xl text-space-green font-semibold'}>
@@ -242,6 +249,10 @@ const Landing: FC = () => {
 									<p className={'text-gradient-primary text-xs font-medium'}>{stat.name}</p>
 								</div>
 							))}
+							<div className="flex flex-col gap-2 items-center">
+								<p className={'text-xl text-space-green font-semibold'}>{gasClaimedCount}</p>
+								<p className={'text-gradient-primary text-xs font-medium'}> Gas Fees Claimed</p>
+							</div>
 						</div>
 					</Widget>
 				</section>
@@ -262,7 +273,7 @@ const Landing: FC = () => {
 								key={social.link}
 								className={`${social.localClass} flex home-footer-social-link justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
 							>
-								<img className={''} src={`/assets/images/landing/${social.img}`} />
+								<img className={social.localClass} src={`/assets/images/landing/${social.img}`} />
 							</div>
 						))}
 

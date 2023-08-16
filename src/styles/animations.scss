@@ -8,6 +8,15 @@
 	}
 }
 
+@keyframes shine {
+	0% {
+		left: -120%;
+	}
+	100% {
+		left: 150%;
+	}
+}
+
 @keyframes shimmer {
 	0% {
 		background-position: 100% 0;
@@ -33,8 +42,11 @@
 	animation: lightToggle 2s infinite steps(1);
 }
 
+.animate-skeleton {
+	animation: shine 2s ease-in-out infinite;
+}
+
 .skeleton-item {
 	animation: pulse 1.5s ease-in-out infinite, shimmer 1.5s linear infinite;
-	background: linear-gradient(-45deg, #1b1b26 25%, #232362 37%, #1b1b26 63%);
 	background-size: 200% 100%;
 }

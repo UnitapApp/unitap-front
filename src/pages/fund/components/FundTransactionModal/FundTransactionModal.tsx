@@ -20,6 +20,14 @@ const FundTransactionModal = ({
 	fundAmount: string;
 }) => {
 	function successful() {
+		const handleClick = () => {
+			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+				`I donated to @Unitap_app's ${
+					selectedChain!.chainName
+				} faucet 💚💜\nJoin me in making Web3 more accessible for everyone!\nDonate: `,
+			)}&url=${encodeURIComponent('unitap.app/fund?chain=' + encodeURIComponent(selectedChain!.pk))}`;
+			window.open(twitterUrl, '_blank');
+		};
 		return (
 			<>
 				<Icon mb={3} iconSrc="assets/images/fund/success-provide-spaceman.svg"></Icon>
@@ -30,15 +38,35 @@ const FundTransactionModal = ({
 							<br />
 							{formatBalance(Number(fundAmount))} {selectedChain.symbol} donation transaction submitted
 						</Text>
-						<SecondaryButton
-							fontSize="14px"
-							size="large"
+
+						<Text
+							width="100%"
+							fontSize="14"
+							color="second_gray_light"
+							className="underline cursor-pointer"
+							mb={3}
+							textAlign="center"
 							onClick={() => {
 								window.open(getTxUrl(selectedChain, txHash), '_blank');
 							}}
 						>
 							View on Explorer
-						</SecondaryButton>
+						</Text>
+
+						<div className="relative w-full">
+							<button
+								onClick={handleClick}
+								className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+							>
+								<p className="text-sm font-semibold text-twitter">Share on Twitter</p>
+							</button>
+							<Icon
+								iconSrc="/assets/images/gas-tap/twitter-share.svg"
+								className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+								width="auto"
+								height="26px"
+							/>
+						</div>
 					</>
 				)}
 			</>

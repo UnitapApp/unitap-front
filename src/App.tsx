@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import Home from 'pages/home';
+import GasTapWrapper from 'pages/home';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Landing from 'pages/landing';
@@ -68,7 +68,7 @@ function App() {
 														path={RoutePath.FAUCET}
 														element={
 															<ClaimProvider>
-																<Home />
+																<GasTapWrapper />
 															</ClaimProvider>
 														}
 													/>

@@ -1,13 +1,22 @@
 import NotAvailableTap from '../notAvailableTap';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { Chain } from 'types';
 import { sortChainListByTotalClaimWeekly } from 'utils/hook/sortChainList';
-
-const GasTapLanding = ({ chainList }: { chainList: Chain[] }) => {
+const GasTapLanding = ({
+	chainList,
+	setChainClaims,
+}: {
+	chainList: Chain[];
+	setChainClaims?: (chains: Chain[]) => void;
+}) => {
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const sortedChainList = useMemo(() => sortChainListByTotalClaimWeekly(chainList), [chainList]);
+
+	useEffect(() => {
+		if (setChainClaims) setChainClaims(chainList);
+	}, [chainList]);
 
 	return (
 		<div className="relative">

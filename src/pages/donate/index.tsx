@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Footer from '../../components/common/Footer/footer';
 
 const Home = () => {
+	const [copyMessage, setCopyMessage] = useState('');
+
 	const [networks] = useState([
 		{
 			name: 'Bitcoin',
@@ -43,13 +45,13 @@ const Home = () => {
 	}
 
 	function copyToClipboard(address: string) {
-		// Get the text field
-
-		// Copy the text inside the text field
 		navigator.clipboard.writeText(address);
 
-		// Alert the copied text
-		alert('Address copied :)');
+		setCopyMessage('Copied');
+
+		setTimeout(() => {
+			if (setCopyMessage) setCopyMessage('');
+		}, 3000);
 	}
 
 	return (
@@ -65,11 +67,18 @@ const Home = () => {
 						{selectedNetwork.name && (
 							<div className={'flex gap-2'}>
 								<p className={'text-space-green text-[11px] sm:text-base'}>{selectedNetwork.address} </p>
-								<img
-									onClick={() => copyToClipboard(selectedNetwork.address)}
-									src={'/assets/images/donate/copy-green.svg'}
-									className={'cursor-pointer inline-block'}
-								/>
+								<div className="relative">
+									<img
+										onClick={() => copyToClipboard(selectedNetwork.address)}
+										src={'/assets/images/donate/copy-green.svg'}
+										className={'cursor-pointer inline-block'}
+									/>
+									{copyMessage && (
+										<div className="absolute bottom-full mb-3 w-16 -left-10 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+											{copyMessage}
+										</div>
+									)}
+								</div>
 							</div>
 						)}
 					</div>
@@ -91,6 +100,7 @@ const Home = () => {
 								} sm:w-36 cursor-pointer  text-white rounded-xl transition-colors hover:bg-gray00 duration-200 flex gap-2 flex-col justify-center items-center px-2 py-3`}
 							>
 								<img src={`/assets/images/donate/${network.icon}`} />
+
 								<p className={'text-xs'}>{network.name}</p>
 							</div>
 						))}

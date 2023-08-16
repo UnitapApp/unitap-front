@@ -238,7 +238,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	function renderSuccessBody() {
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol} from @Unitap_app 🔥\nClaim yours:`,
+				`I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol} on ${
+					chain.chainName
+				} from @Unitap_app 🔥\nClaim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/gas-tap?hc=' + encodeURIComponent(chain.chainName))}`;
 			window.open(twitterUrl, '_blank');
 		};

@@ -115,6 +115,10 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 				...(estimatedGas ? { gasLimit: calculateGasMargin(estimatedGas) } : {}),
 				// gasPrice /// TODO add gasPrice based on EIP 1559
 			})
+			.then(async (tx) => {
+				await tx.wait(1);
+				return tx;
+			})
 			.then((tx) => {
 				setTxHash(tx.hash);
 			})
@@ -244,11 +248,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 					>
 						{fundActionButtonLabel}
 					</ClaimButton>
-					<Modal
-						title="Provide Gas Fee"
-						isOpen={!!fundTransactionError || !!txHash}
-						closeModalHandler={closeModalHandler}
-					>
+					<Modal isOpen={!!fundTransactionError || !!txHash} closeModalHandler={closeModalHandler}>
 						<FundTransactionModal
 							fundAmount={fundAmount}
 							closeModalHandler={closeModalHandler}
