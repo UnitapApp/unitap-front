@@ -176,25 +176,28 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
 							{description}
 						</p>
-						<span className="text-xs text-gray100 mb-3">
-							<span
-								onClick={openEnrollModal.bind(null, raffle, 'Verify')}
-								className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
-							>
-								{!needsVerification.length ? (
-									<>
-										<img src="/assets/images/prize-tap/check.svg" alt="check" />
-										requirements fulfilled
-									</>
-								) : (
-									<>
-										<img src="/assets/images/prize-tap/not-completed.svg" alt="check" />
-										{needsVerification.length + ' '}
-										requirements for enrollment
-									</>
-								)}
+						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
+							<span className="text-xs text-gray100 mb-3">
+								<span
+									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
+									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
+								>
+									{!needsVerification.length ? (
+										<>
+											<img src="/assets/images/prize-tap/check.svg" alt="check" />
+											requirements fulfilled
+										</>
+									) : (
+										<>
+											<img src="/assets/images/prize-tap/not-completed.svg" alt="check" />
+											{needsVerification.length + ' '}
+											requirements for enrollment
+										</>
+									)}
+								</span>
 							</span>
-						</span>
+						)}
+
 						<span></span>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 							{(isExpired && !winnerEntry && !userEntry?.txHash) ||

@@ -328,6 +328,22 @@ export const ClaimPrizeButton = styled(PrimaryButton)`
 		-webkit-background-clip: text;
 	}
 `;
+export const PrizeTapCard = styled(PrimaryOutlinedButton)`
+	background-image: linear-gradient(to left, #4bf2a2, #a89fe7, #e1c3f4, #dd40cc) !important;
+	display: block;
+	font-weight: 500 !important;
+
+	&::before {
+		background: url('/assets/images/prize-tap/raffle-win.svg');
+		background-size: cover;
+	}
+
+	p {
+		padding-right: 100px;
+		height: 100%;
+		text-align: left;
+	}
+`;
 
 export const EnrolledButton = styled(PrimaryOutlinedButton)`
 	width: 220px;
