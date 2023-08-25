@@ -67,7 +67,7 @@ export async function getUserProfileWithTokenAPI(token: string) {
 	return response.data;
 }
 
-export async function getWeeklyChainClaimLimitAPI(token: string) {
+export async function getWeeklyChainClaimLimitAPI() {
 	const response = await axiosInstance.get<Settings>('/api/v1/settings/');
 	return response.data;
 }
@@ -124,6 +124,18 @@ export async function claimTokenAPI(token: string, tokenId: number, body?: any) 
 		},
 	);
 	return response.data.signature;
+}
+
+export async function countUsersAPI() {
+	const response = await axiosInstance.get<{ count: number }>('/api/auth/user/count/');
+
+	return response.data.count;
+}
+
+export async function countGasClaimedAPI() {
+	const response = await axiosInstance.get<{ count: number }>('/api/v1/claims/count/');
+
+	return response.data.count;
 }
 
 export async function updateClaimFinished(token: string, claimId: number, txHash: string) {

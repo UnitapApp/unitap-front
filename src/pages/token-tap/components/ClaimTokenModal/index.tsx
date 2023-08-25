@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
@@ -6,20 +5,21 @@ import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
 import { shortenAddress } from 'utils';
-import { ClaimContext } from 'hooks/useChainList';
 import WalletAddress from 'pages/home/components/ClaimModal/walletAddress';
 import Modal from 'components/common/Modal/modal';
-import useWalletActivation from '../../../../hooks/useWalletActivation';
+import useWalletActivation from 'hooks/useWalletActivation';
 import { useWeb3React } from '@web3-react/core';
-import { UserProfileContext } from '../../../../hooks/useUserProfile';
-import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
-import { switchChain } from '../../../../utils/switchChain';
+import { UserProfileContext } from 'hooks/useUserProfile';
+import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
+import { switchChain } from 'utils/switchChain';
 import { Link } from 'react-router-dom';
 import ClaimLightningContent from './ClaimLightningContent';
 import lottie from 'lottie-web';
 import animation from 'assets/animations/GasFee-delivery2.json';
 
-const ModelViewer = require('@metamask/logo');
+// @ts-ignore
+import ModelViewer from '@metamask/logo';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -36,7 +36,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		claimTokenWithMetamaskResponse,
 		claimTokenSignatureLoading,
 	} = useContext(TokenTapContext);
-	const { openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile } = useContext(UserProfileContext);
 
@@ -283,7 +283,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 					width="100%"
 					fontSize="16px"
 					className="!w-full"
-					data-testid={`chain-claim-action-${selectedTokenForClaim!.chain.pk}`}
+					data-testid={`token-claim-action-${selectedTokenForClaim!.chain.pk}`}
 				>
 					{claimTokenLoading ? (
 						<p>Claiming...</p>
@@ -464,10 +464,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			}
 		});
 
-		if (!walletConnected) return renderWalletNotConnectedBody();
-
 		if (claimTokenWithMetamaskResponse?.state === 'Done' || collectedToken?.status === 'Verified')
 			return renderSuccessBody();
+
+		if (!walletConnected) return renderWalletNotConnectedBody();
 
 		if (!chainId || chainId.toString() !== selectedTokenForClaim?.chain.chainId)
 			return renderWrongNetworkBody(selectedTokenForClaim.chain);

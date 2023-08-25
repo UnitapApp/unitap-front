@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 const TokenDeadlineTimer: FC<{ deadline: string }> = ({ deadline }) => {
 	const expireDate = useMemo(() => new Date(deadline), [deadline]);

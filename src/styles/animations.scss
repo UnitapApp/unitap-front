@@ -1,0 +1,52 @@
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.4;
+	}
+}
+
+@keyframes shine {
+	0% {
+		left: -120%;
+	}
+	100% {
+		left: 150%;
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
+}
+
+@keyframes lightToggle {
+	0% {
+		opacity: 10%;
+	}
+	50% {
+		opacity: 100%;
+	}
+	100% {
+		opacity: 100%;
+	}
+}
+
+.light-toggle {
+	animation: lightToggle 2s infinite steps(1);
+}
+
+.animate-skeleton {
+	animation: shine 2s ease-in-out infinite;
+}
+
+.skeleton-item {
+	animation: pulse 1.5s ease-in-out infinite, shimmer 1.5s linear infinite;
+	background-size: 200% 100%;
+}

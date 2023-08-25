@@ -1,10 +1,11 @@
-import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, useState } from 'react';
 
 const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: string; toolTipClassName?: string }> = ({
 	text,
 	children,
 	className,
 	toolTipClassName,
+	...props
 }) => {
 	const [showTooltip, setShowTooltip] = useState(false);
 
@@ -21,6 +22,7 @@ const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: st
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 			className={'relative inline-block ' + className}
+			{...props}
 		>
 			<span className="cursor-pointer">{children}</span>
 			<div

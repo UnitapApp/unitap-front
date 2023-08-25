@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/';
 import { DV } from 'components/basic/designVariables';
 import { ClaimButton, ClaimedButton, SecondaryButton } from 'components/basic/Button/button';
@@ -8,15 +8,10 @@ import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, Network, PK } from 'types';
-import { useLocation, useNavigate } from 'react-router-dom';
-import RoutePath from '../../../../routes';
+import { useLocation } from 'react-router-dom';
 import { UserProfileContext } from 'hooks/useUserProfile';
-import { BigNumber } from '@ethersproject/bignumber';
-
-// import { StaticJsonRpcProvider } from '@ethersproject/providers';
-// import { useNativeCurrencyOnChain } from 'hooks/useNativeCurrency';
-// import JSBI from 'jsbi';
-// import { CurrencyAmount } from '@uniswap/sdk-core';
+import EmptyChainListCard from './EmptyChainListCard';
+import { FundContext } from 'pages/home/context/fundContext';
 
 const AddMetamaskButton = styled(SecondaryButton)`
 	display: flex;
@@ -71,12 +66,6 @@ const ChainList = () => {
 	return (
 		<div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
 			<div>
-				{!chainList.length && (
-					<div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
-						Loading...
-					</div>
-				)}
-
 				{!chainList.length || isGasTapAvailable ? (
 					<>
 						{!!chainListMemo.length && (
@@ -101,37 +90,6 @@ const ChainList = () => {
 	);
 };
 
-const EmptyChainListCard = () => {
-	return (
-		<div className="empty-chain-list-card flex flex-col rounded-xl w-full overflow-hidden">
-			<div className="empty-chain-list-card__top flex gap-4 flex-col sm:flex-row justify-between bg-gray20 pl-3 pr-6 py-4">
-				<span className="empty-chain-list-card__info flex w-full items-center justify-center sm:justify-start gap-3">
-					<span className="empty-chain-list-card__info__logo w-11 h-11 bg-gray30 rounded-full"></span>
-					<p className="empty-chain-list-card__info__name text-white">Chain Not Found</p>
-				</span>
-				<span className="empty-chain-list-card__actions flex flex-col w-full items-center sm:justify-end sm:flex-row gap-2 sm:gap-4">
-					<span className="empty-chain-list-card__actions__action w-24 h-11 bg-gray30 rounded-lg"></span>
-					<span className="empty-chain-list-card__actions__action w-56 h-11 bg-gray30 rounded-lg"></span>
-				</span>
-			</div>
-			<div className="empty-chain-list-card__bottom flex flex-col sm:flex-row justify-between items-center py-2.5 px-9 bg-gray30">
-				<span className="flex justify-between w-full sm:justify-start">
-					<p className="chain-card__info__title text-sm text-gray90">Currency</p>
-					<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">404</p>
-				</span>
-				<span className="flex justify-between w-full sm:justify-center">
-					<p className="chain-card__info__title text-sm text-gray90">Claims This Round</p>
-					<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">404</p>
-				</span>
-				<span className="flex justify-between w-full sm:justify-end">
-					<p className="chain-card__info__title text-sm text-gray90">Total Claims</p>
-					<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">404</p>
-				</span>
-			</div>
-		</div>
-	);
-};
-
 type ChainCardProps = {
 	chain: Chain;
 	isHighlighted?: boolean;
@@ -139,38 +97,21 @@ type ChainCardProps = {
 
 const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 	const { openClaimModal } = useContext(ClaimContext);
-
+	const { setChainId, setIsOpen } = useContext(FundContext);
 	const addAndSwitchToChain = useSelectChain();
 	const { account } = useWeb3React();
 	const active = !!account;
 
-	const navigate = useNavigate();
-
 	const handleRefillButtonClicked = (chainId: PK) => {
-		navigate(RoutePath.FUND + `?chain=${chainId}`);
+		setChainId(chainId);
+		setIsOpen(true);
+		// navigate(RoutePath.FUND + `?chain=${chainId}`);
 	};
-
-	// const { provider } = useWeb3React();
-	const [fundManagerBalance, setFundManagerBalance] = useState<BigNumber | null>(null);
-
-	// useEffect(() => {
-	//   new StaticJsonRpcProvider(chain.rpcUrl)?.getBalance(chain.fundManagerAddress).then((balance) => {
-	//     setFundManagerBalance(balance);
-	//   });
-	// }, [chain, provider]);
-
-	// const nativeCurrency = useNativeCurrencyOnChain(Number(chain.chainId));
-
-	// const fundManagerBalanceAmount = useMemo(() => {
-	//   if (!fundManagerBalance) return null;
-	//   const amount = JSBI.BigInt(fundManagerBalance.toString());
-	//   return CurrencyAmount.fromRawAmount(nativeCurrency, amount);
-	// }, [nativeCurrency, fundManagerBalance]);
 
 	const { activeClaimHistory } = useContext(ClaimContext);
 
 	return (
-		<div key={chain.chainId}>
+		<div>
 			<div
 				className={`chain-card ${
 					isHighlighted ? 'before:!inset-[1.5px] p-0 gradient-outline-card mb-20' : 'mb-4'

@@ -17,17 +17,7 @@ type props = {
 	errorSource?: APIErrorsSource;
 };
 
-const Modal = ({
-	spaceman,
-	title,
-	titleLeft,
-	children,
-	isOpen,
-	closeModalHandler,
-	className,
-	size,
-	errorSource,
-}: props) => {
+const Modal = ({ title, titleLeft, children, isOpen, closeModalHandler, className, size, errorSource }: props) => {
 	const { getError } = React.useContext(ErrorsContext);
 
 	return (
@@ -42,11 +32,13 @@ const Modal = ({
 						data-testid="modal-content"
 						size={size}
 					>
-						{titleLeft && <p className="text-xl text-left text-white"> {titleLeft} </p>}
-						{title && <p className="modal-title font-bold text-sm text-center mx-auto text-white"> {title} </p>}
+						{titleLeft && <p className="text-xl text-left relative z-10 text-white"> {titleLeft} </p>}
+						{title && (
+							<p className="modal-title font-bold text-sm relative z-10 text-center mx-auto text-white"> {title} </p>
+						)}
 						<span
 							onClick={closeModalHandler}
-							className="close absolute right-4 top-4 cursor-pointer"
+							className="close absolute right-4 z-20 top-4 cursor-pointer"
 							data-testid="close-modal"
 						>
 							<Icon iconSrc="assets/images/modal/exit.svg" />

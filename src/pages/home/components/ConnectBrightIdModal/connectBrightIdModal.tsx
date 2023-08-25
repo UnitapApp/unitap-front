@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useContext } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { UserProfileContext } from 'hooks/useUserProfile';
@@ -8,13 +7,13 @@ import { ClaimButton, WhiteOutlinedButton } from 'components/basic/Button/button
 import { BrightIdModalState } from 'types';
 import BrightStatusModal from '../BrightStatusModal/brightStatusModal';
 import Modal from 'components/common/Modal/modal';
-import { ClaimContext } from 'hooks/useChainList';
 import Icon from 'components/basic/Icon/Icon';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ConnectBrightIdModalContent = () => {
 	const { userProfile, loading } = useContext(UserProfileContext);
 	const tried = false;
-	const { closeBrightIdModal, openHaveBrightIdAccountModal, openBrightIdConnectionModal } = useContext(ClaimContext);
+	const { closeBrightIdModal, openHaveBrightIdAccountModal, openBrightIdConnectionModal } = useContext(GlobalContext);
 
 	const handleHaveBrightIdClicked = () => {
 		closeBrightIdModal();
@@ -45,7 +44,11 @@ const ConnectBrightIdModalContent = () => {
 				BrightID is a social identity network that allows users to prove that they are only using one account.
 			</p>
 			{loading && <Text data-testid={`loading`}>Loading...</Text>}
-			<WhiteOutlinedButton className="mb-4 !w-full bg-gray30" onClick={handleBrightIdConnectClicked}>
+			<WhiteOutlinedButton
+				data-testid="setup-bright-id-qr-code"
+				className="mb-4 !w-full bg-gray30"
+				onClick={handleBrightIdConnectClicked}
+			>
 				I have a BrightID
 			</WhiteOutlinedButton>
 
@@ -65,7 +68,8 @@ const ConnectBrightIdModalContent = () => {
 };
 
 const ConnectBrightIdModal = () => {
-	const { brightidModalStatus, closeBrightIdModal } = useContext(ClaimContext);
+	const { brightidModalStatus, closeBrightIdModal } = useContext(GlobalContext);
+
 	return (
 		<Modal
 			title=""

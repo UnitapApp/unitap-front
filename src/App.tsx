@@ -1,10 +1,9 @@
-import React from 'react';
-import Home from 'pages/home';
+import React, { Suspense } from 'react';
+import GasTapWrapper from 'pages/home';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Fund from './pages/fund';
 import Landing from 'pages/landing';
-import Donate from 'pages/donate';
+
 import NFT from 'pages/nft';
 import About from 'pages/about';
 import TokenTap from 'pages/token-tap';
@@ -31,7 +30,12 @@ import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
 import { ErrorsProvider } from './context/ErrorsProvider';
 
-require('typeface-jetbrains-mono');
+import 'typeface-jetbrains-mono';
+import Navbar from 'components/common/Navbar/navbar';
+import GlobalContextProvider from 'hooks/useGlobalContext';
+
+const Fund = React.lazy(() => import('./pages/fund'));
+const Donate = React.lazy(() => import('./pages/donate'));
 
 function Updaters() {
 	return (
@@ -52,31 +56,68 @@ function App() {
 					<RefreshContextProvider>
 						<ErrorsProvider>
 							<UserProfileProvider>
-								<ClaimProvider>
-									<TokenTapProvider>
-										<BrowserRouter>
-											<BlockNumberProvider>
-												<Updaters />
-												<ScrollToTop>
-													<Routes>
-														<Route path={RoutePath.FAUCET} element={<Home />} />
-														<Route path={RoutePath.FUND} element={<Fund />} />
-														<Route path={RoutePath.LANDING} element={<Landing />} />
-														<Route path={RoutePath.DONATE} element={<Donate />} />
-														<Route path={RoutePath.NFT} element={<NFT />} />
-														<Route path={RoutePath.ABOUT} element={<About />} />
-														<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
-														<Route path={RoutePath.TOKEN} element={<TokenTap />} />
-													</Routes>
-												</ScrollToTop>
-												<ConnectBrightIdModal />
-												<BrightConnectionModal />
-												<ConnectMetamaskModal />
-												<CreateBrightIdAccountModal />
-											</BlockNumberProvider>
-										</BrowserRouter>
-									</TokenTapProvider>
-								</ClaimProvider>
+								<GlobalContextProvider>
+									<BrowserRouter>
+										<BlockNumberProvider>
+											<Updaters />
+											<ScrollToTop>
+												<Navbar />
+												<Routes>
+													<Route
+														path={RoutePath.FAUCET}
+														element={
+															<ClaimProvider>
+																<GasTapWrapper />
+															</ClaimProvider>
+														}
+													/>
+													<Route
+														path={RoutePath.FUND}
+														element={
+															<ClaimProvider>
+																<Suspense>
+																	<Fund />
+																</Suspense>
+															</ClaimProvider>
+														}
+													/>
+													<Route path={RoutePath.LANDING} element={<Landing />} />
+													<Route
+														path={RoutePath.DONATE}
+														element={
+															<Suspense>
+																<Donate />
+															</Suspense>
+														}
+													/>
+													<Route
+														path={RoutePath.NFT}
+														element={
+															<ClaimProvider>
+																<NFT />
+															</ClaimProvider>
+														}
+													/>
+													<Route path={RoutePath.ABOUT} element={<About />} />
+													<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
+
+													<Route
+														path={RoutePath.TOKEN}
+														element={
+															<TokenTapProvider>
+																<TokenTap />
+															</TokenTapProvider>
+														}
+													/>
+												</Routes>
+											</ScrollToTop>
+											<ConnectBrightIdModal />
+											<BrightConnectionModal />
+											<ConnectMetamaskModal />
+											<CreateBrightIdAccountModal />
+										</BlockNumberProvider>
+									</BrowserRouter>
+								</GlobalContextProvider>
 							</UserProfileProvider>
 						</ErrorsProvider>
 					</RefreshContextProvider>

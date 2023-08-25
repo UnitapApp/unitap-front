@@ -44,6 +44,7 @@ export type Token = {
 	isExpired: boolean;
 	isMaxedOut: boolean;
 	isClaimable: boolean;
+	tokenImageUrl?: string;
 	chain: Chain;
 	permissions: Permission[];
 };

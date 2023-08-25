@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState, useMemo } from 'react';
+import { FC, useContext, useState, useMemo } from 'react';
 import { Token } from 'types';
 import { useWeb3React } from '@web3-react/core';
 import Icon from 'components/basic/Icon/Icon';
@@ -90,7 +90,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 								<img className="chain-logo w-auto h-full" src={token.imageUrl} alt="chain logo" />
 							</span>
 							<span className="w-max">
-								<p className="text-white text-center md:text-left flex mb-2" data-testid={`chain-name-${token.id}`}>
+								<p className="text-white text-center md:text-left flex mb-2" data-testid={`token-name-${token.id}`}>
 									{token.name}
 									<img className="arrow-icon mt-1 ml-1 w-2" src="assets/images/arrow-icon.svg" alt="arrow" />
 								</p>
@@ -114,7 +114,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									</AddMetamaskButton>
 								)}
 							</div>
-							<Action className={'w-full sm:w-auto items-center sm:items-end '}>
+							<Action className={'w-full sm:w-auto items-center sm:items-end'}>
 								{/* todo migrate buttom logic*/}
 								{token.isMaxedOut ? (
 									<NoCurrencyButton disabled fontSize="13px">
@@ -164,7 +164,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
-										<p>
+										<p data-testid={`token-claim-text-${token.id}`}>
 											{needsVerification ? 'Complete Verifications' : `Claim ${calculateClaimAmount} ${token.token}`}
 										</p>{' '}
 									</ClaimButton>
@@ -199,6 +199,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
 									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
 								}
+								data-testid={`token-verification-${token.id}-${permission.name}`}
 								key={key}
 								text={permission.description}
 							>
@@ -244,7 +245,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 					</div>
 
 					{!!timePermissionVerification && (
-						<div className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80">
+						<div
+							data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+							className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80"
+						>
 							{timePermissionVerification.title}
 							<Icon
 								iconSrc={`/assets/images/token-tap/${

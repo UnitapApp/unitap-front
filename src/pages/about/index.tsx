@@ -1,12 +1,9 @@
 import Icon from 'components/basic/Icon/Icon';
 import Footer from 'components/common/Footer/footer';
-import Navbar from 'components/common/Navbar/navbar';
-import React from 'react';
 
 const About = () => {
 	return (
 		<>
-			<Navbar />
 			<div className={'content-wrapper'}>
 				<div className={' m-auto flex flex-col justify-center items-center w-full'}>
 					<section

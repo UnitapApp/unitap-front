@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import Modal from 'components/common/Modal/modal';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
 import { ClaimNonEVMModalState, ClaimReceiptState } from 'types';
 
-import { formatChainBalance, formatWeiBalance } from 'utils/numbers';
+import { formatChainBalance } from 'utils/numbers';
 import { Text } from 'components/basic/Text/text.style';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
 import { getChainClaimIcon, getTxUrl } from 'utils';
@@ -13,13 +13,14 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import lottie from 'lottie-web';
 import animation from '../../../../assets/animations/GasFee-delivery2.json';
 import ClaimNotAvailable from '../ClaimNotRemaining';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const lightingChainId = '286621';
 
 const ClaimNonEVMModalContent = () => {
-	const { activeNonEVMChain } = useContext(ClaimContext);
+	const { activeNonEVMChain, activeClaimReceipt } = useContext(ClaimContext);
 
-	const { activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress, remainingClaims } = useContext(UserProfileContext);
 
@@ -216,11 +217,12 @@ const ClaimNonEVMModalContent = () => {
 					height="110px"
 				/>
 				<Text width="100%" fontSize="14" color="space_green" textAlign="center">
-					{formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol} Claimed
+					{formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)} {activeNonEVMChain!.symbol}{' '}
+					Claimed
 				</Text>
 				<Text width="100%" fontSize="14" color="second_gray_light" mb={3} textAlign="center">
-					we successfully transferred {formatWeiBalance(activeNonEVMChain!.maxClaimAmount)} {activeNonEVMChain!.symbol}{' '}
-					to your wallet
+					we successfully transferred {formatChainBalance(activeNonEVMChain!.maxClaimAmount, activeNonEVMChain!.symbol)}{' '}
+					{activeNonEVMChain!.symbol} to your wallet
 				</Text>
 				<Text
 					width="100%"

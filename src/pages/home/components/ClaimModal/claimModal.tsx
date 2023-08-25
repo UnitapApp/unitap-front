@@ -1,10 +1,9 @@
-import * as React from 'react';
 import { useContext, useEffect, useMemo, useRef } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimButton, LightOutlinedButtonNew, SecondaryGreenColorButton } from 'components/basic/Button/button';
-import { BrightIdModalState, Chain, ClaimBoxState, ClaimReceiptState } from 'types';
+import { BrightIdModalState, Chain, ClaimReceiptState } from 'types';
 import { getChainClaimIcon, getTxUrl, shortenAddress } from 'utils';
 import { ClaimContext } from 'hooks/useChainList';
 import { formatWeiBalance } from 'utils/numbers';
@@ -17,7 +16,9 @@ import { useWeb3React } from '@web3-react/core';
 import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import ClaimNotAvailable from '../ClaimNotRemaining';
 
-const ModelViewer = require('@metamask/logo');
+// @ts-ignore
+import ModelViewer from '@metamask/logo';
+import { GlobalContext } from 'hooks/useGlobalContext';
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const { account } = useWeb3React();
@@ -26,7 +27,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	const metamaskLogo = useRef<HTMLDivElement>(null);
 
 	const { tryActivation } = useWalletActivation();
-	const { claim, closeClaimModal, activeClaimReceipt, openBrightIdModal } = useContext(ClaimContext);
+	const { claim, closeClaimModal, activeClaimReceipt } = useContext(ClaimContext);
+
+	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { claimLoading } = useContext(ClaimContext);
 
@@ -235,7 +238,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 	function renderSuccessBody() {
 		const handleClick = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol} from @Unitap_app 🔥\nClaim yours:`,
+				`I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol} on ${
+					chain.chainName
+				} from @Unitap_app 🔥\nClaim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/gas-tap?hc=' + encodeURIComponent(chain.chainName))}`;
 			window.open(twitterUrl, '_blank');
 		};
@@ -357,7 +362,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
 const ClaimModal = () => {
 	const { closeClaimModal, activeChain } = useContext(ClaimContext);
-	const { brightidModalStatus } = useContext(ClaimContext);
+	const { brightidModalStatus } = useContext(GlobalContext);
 
 	const isOpen = useMemo(() => {
 		return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED;

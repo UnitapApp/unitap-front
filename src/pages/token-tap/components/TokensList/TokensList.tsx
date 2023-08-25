@@ -1,12 +1,11 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react';
-import Icon from 'components/basic/Icon/Icon';
+import { useContext, useState, useMemo, useEffect } from 'react';
+
 import { TokenTapContext } from '../../../../hooks/token-tap/tokenTapContext';
 import { useLocation } from 'react-router-dom';
 import TokenCard from '../TokenCard';
 
 const TokensList = () => {
 	const { tokensList, tokensListLoading, tokenListSearchResult } = useContext(TokenTapContext);
-	const windowSize = window.innerWidth;
 	const [highlightedToken, setHighlightedToken] = useState('');
 
 	const location = useLocation();
@@ -50,13 +49,14 @@ const TokensList = () => {
 			))}
 
 			{tokenListSearchResult.length === 0 && !!tokensList.length && (
-				<Icon
-					className="mb-4"
-					iconSrc={
-						windowSize > 992 ? 'assets/images/claim/empty-list.svg' : 'assets/images/claim/empty-list-mobile.svg'
-					}
-					width="100%"
-				/>
+				<div className="my-10" data-testid="tokens-not-found">
+					<div className="bg-gray30 text-white shadow-lg rounded-lg p-6 mx-auto">
+						<div className="flex justify-center items-center h-20">
+							<h1 className="text-4xl bg-primaryGradient text-transparent bg-clip-text font-semibold">404</h1>
+						</div>
+						<p className="text-center mb-6">No network with the current filter could be found.</p>
+					</div>
+				</div>
 			)}
 			<FinalVersionCard />
 		</div>
