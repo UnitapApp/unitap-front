@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { claimTokenAPI, getClaimedTokensListAPI, getTokensListAPI, updateClaimFinished } from '../../api';
-import { ClaimedToken, Token, TokenClaimPayload } from '../../types';
+import { ClaimedToken, PK, Token, TokenClaimPayload } from '../../types';
 import { RefreshContext } from '../../context/RefreshContext';
 import { useWeb3React } from '@web3-react/core';
 import { useEVMTokenTapContract } from '../useContract';
@@ -25,6 +25,7 @@ export const TokenTapContext = createContext<{
 	searchPhrase: string;
 	changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
 	tokenListSearchResult: Token[];
+	claimingTokenPk: PK | null;
 }>({
 	claimError: null,
 	tokensList: [],
@@ -42,6 +43,7 @@ export const TokenTapContext = createContext<{
 	searchPhrase: '',
 	changeSearchPhrase: null,
 	tokenListSearchResult: [],
+	claimingTokenPk: null,
 });
 
 const TokenTapProvider = ({ children }: { children: ReactNode }) => {
@@ -59,6 +61,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const [selectedTokenForClaim, setSelectedTokenForClaim] = useState<Token | null>(null);
 	const [claimTokenLoading, setClaimTokenLoading] = useState<boolean>(false);
+	const [claimingTokenPk, setClaimingTokenPk] = useState<PK | null>(null);
 
 	const { provider, account, chainId } = useWeb3React();
 	const EVMTokenTapContract = useEVMTokenTapContract();
@@ -153,6 +156,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 				);
 
 				setClaimTokenLoading(true);
+				setClaimingTokenPk(selectedTokenForClaim!.id);
 
 				if (response) {
 					response
@@ -230,6 +234,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 				claimTokenWithMetamaskResponse,
 				searchPhrase,
 				changeSearchPhrase: setSearchPhrase,
+				claimingTokenPk,
 			}}
 		>
 			{children}
