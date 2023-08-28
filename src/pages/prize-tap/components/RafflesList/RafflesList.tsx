@@ -22,7 +22,7 @@ const RafflesList = () => {
 	const location = useLocation();
 	const { rafflesList, rafflesListLoading } = useContext(PrizeTapContext);
 	const [highlightedPrize, setHighlightedPrize] = useState('');
-
+	console.log(rafflesList);
 	const prizesSortListMemo = useMemo(
 		() =>
 			rafflesList.sort((a, b) => {
@@ -203,7 +203,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							{(isExpired && !winnerEntry && !userEntry?.txHash) ||
 							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfEntries) ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -235,7 +235,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								</span>
 							) : !winnerEntry && !userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -268,7 +268,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								</span>
 							) : !winnerEntry && userEntry?.txHash ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full items-center bg-gray40 px-5 py-1 rounded-xl">
+									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">Winner in:</p>
 											<p className="text-[10px] text-gray100">
@@ -363,10 +363,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										/>
 									</div>
 									<div className="claimed-prize md:!w-[352px] !w-full">
-										<div className="relative text-gray10">
-											<p> Claimed</p>
+										<div className="relative">
+											<p>Claimed</p>
 											<Icon
-												className="absolute right-0 top-0"
+												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 												width="27px"
 												height="24px"

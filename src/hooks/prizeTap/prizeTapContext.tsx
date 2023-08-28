@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import {
-	getClaimPrizeApi,
 	getEnrollmentApi,
+	getMuonApi,
 	getRafflesListAPI,
 	updateClaimPrizeFinished,
 	updateEnrolledFinished,
 } from '../../api';
-import { Prize, UserEntryInRaffle } from '../../types';
+import { EnrollmentSignature, Prize } from '../../types';
 import { RefreshContext } from '../../context/RefreshContext';
 import { useWeb3React } from '@web3-react/core';
 import { useUnitapPrizeCallback } from './useUnitapPrizeCallback';
@@ -57,7 +57,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const { provider } = useWeb3React();
 
-	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<UserEntryInRaffle | null>(null);
+	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
 	const [claimOrEnrollWithMetamaskResponse, setClaimOrEnrollWithMetamaskResponse] = useState<any | null>(null);
 
 	const [method, setMethod] = useState<string | null>(null);
@@ -100,10 +100,12 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 
 	const { callback } = useUnitapPrizeCallback(
 		selectedRaffleForEnroll?.raffleId,
-		enrollOrClaimPayload?.nonce,
-		enrollOrClaimPayload?.signature,
-		enrollOrClaimPayload?.multiplier,
+		enrollOrClaimPayload?.result.data.init.nonceAddress,
+		enrollOrClaimPayload?.result.signatures[0].signature,
+		enrollOrClaimPayload?.result.signatures[0].owner,
+		enrollOrClaimPayload?.result.reqId,
 		method,
+		selectedRaffleForEnroll?.userEntry?.multiplier,
 		selectedRaffleForEnroll?.contract,
 		selectedRaffleForEnroll?.isPrizeNft,
 	);
@@ -171,37 +173,42 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 		}
 		const getSignature = async () => {
 			setClaimOrEnrollSignatureLoading(true);
-			let response;
-			if (method === 'Enroll') {
-				if (selectedRaffleForEnroll.isExpired) return;
-				if (selectedRaffleForEnroll.userEntry) {
-					setEnrollOrClaimPayload(selectedRaffleForEnroll.userEntry);
-					setClaimOrEnrollSignatureLoading(false);
-				} else {
-					try {
-						response = await getEnrollmentApi(userProfile.token, selectedRaffleForEnroll.pk);
-						selectedRaffleForEnroll.userEntry = response.signature;
-						setEnrollOrClaimPayload(response.signature);
-						setClaimOrEnrollSignatureLoading(false);
-					} catch (e: any) {
-						setClaimError(e.response?.data.message);
-						setClaimOrEnrollSignatureLoading(false);
-					}
-				}
+			if (selectedRaffleForEnroll.isExpired) return;
+			let raffleEntryId;
+			console.log(selectedRaffleForEnroll?.userEntry);
+			if (!selectedRaffleForEnroll?.userEntry) {
+				console.log('-------------');
+				const enrollInApi = await getEnrollmentApi(userProfile.token, selectedRaffleForEnroll.pk);
+				selectedRaffleForEnroll.userEntry = enrollInApi.signature;
+				raffleEntryId = enrollInApi.signature.pk;
 			} else {
-				try {
-					response = await getClaimPrizeApi(userProfile.token, selectedRaffleForEnroll.pk);
-					response.nonce = 1;
-					response.multiplier = 1;
-					setEnrollOrClaimPayload(response);
-					setClaimOrEnrollSignatureLoading(false);
-				} catch (e: any) {
-					setClaimError(e.response?.data.message);
-					setClaimOrEnrollSignatureLoading(false);
-				}
+				raffleEntryId = selectedRaffleForEnroll?.userEntry.pk;
+			}
+
+			let response;
+			try {
+				response = await getMuonApi(raffleEntryId);
+				console.log(raffleEntryId);
+				console.log(response);
+				setEnrollOrClaimPayload(response);
+				setClaimOrEnrollSignatureLoading(false);
+			} catch (e: any) {
+				setClaimError(e.response?.data.message);
+				setClaimOrEnrollSignatureLoading(false);
 			}
 		};
-		getSignature();
+		if (method == 'Enroll') {
+			getSignature();
+		}
+		if (method == 'Claim') {
+			setEnrollOrClaimPayload({
+				result: {
+					data: { init: { nonceAddress: '1' } },
+					reqId: '1',
+					signatures: [{ owner: '1', signature: '1' }],
+				},
+			});
+		}
 	}, [selectedRaffleForEnroll, userProfile, method]);
 
 	const handleClaimPrize = useCallback(async () => {

@@ -123,8 +123,8 @@ export const PrimaryButton = styled(Button)`
 `;
 
 export const PrimaryOutlinedButton = styled(Button)`
-	/* border: 1px solid ${DV.colors.primary}; */
-	color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
+	// border: 1px solid ${DV.colors.primary};
+	// color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
 	background: ${({ disabled }) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
 	position: relative;
 	z-index: 1;

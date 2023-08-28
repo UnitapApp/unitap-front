@@ -246,11 +246,11 @@ export type WinnerEntry = {
 	claimingPrizeTx: string;
 	createdAt: string;
 	multiplier: number;
-	nonce: number;
 	pk: number;
-	signature: string;
+	raffle: userRaffle;
 	txHash: string;
 	userProfile: UserProfile;
+	wallet: string
 };
 
 export type EnrollPayload = {
@@ -260,39 +260,45 @@ export type EnrollPayload = {
 	method: string;
 };
 
-export type EnrollmentSignature = {
+export type EnrollmentRaffleApi = {
 	detail: string;
-	signature: {
-		claimingPrizeTx: string | null;
-		createdAt: string;
-		nonce: number;
-		pk: number;
-		signature: string;
-		multiplier: number;
-		txHash: string | null;
-		userProfile: number;
-	};
+	signature: UserEntryInRaffle
+}
+
+export type EnrollmentSignature = {
+	result: muonResult;
+
 };
 
-export type ClaimPrizeSignature = {
-	detail: string;
-	claimingPrizeTx: string | null;
-	createdAt: string;
-	nonce: number;
-	pk: number;
-	signature: string;
-	multiplier: number;
-	txHash: string | null;
-	userProfile: number;
-};
+type muonResult = {
+	data: muonInit;
+	reqId: string;
+	signatures:muonSignature[]
+}
+
+type muonInit = {
+	init: { nonceAddress: string }
+}
+
+type muonSignature = {
+	owner: string,
+	signature: string
+}
 
 export type UserEntryInRaffle = {
 	claimingPrizeTx: null | string;
 	createdAt: string;
-	nonce: number;
-	pk: number;
-	signature: string;
-	txHash: string | null;
-	userProfile: number;
 	multiplier: number;
+	pk: number;
+	raffle: userRaffle
+	txHash: string | null;
+	userProfile: UserProfile;
+	wallet: string;
 };
+
+type userRaffle = {
+	contract: string;
+	name: string;
+	pk: number;
+	raffleId: 4
+}

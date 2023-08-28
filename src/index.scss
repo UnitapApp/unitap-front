@@ -520,17 +520,17 @@ body {
 
 .claimed-prize {
 	p {
-		background: linear-gradient(95deg, #4bf2a2 1.66%, #a89fe7 10.06%, #e1c4f4 18.07%, #dd40cd 47.44%);
+		background: linear-gradient(103deg, #4BF2A2 10.66%, #a89fe7 15.06%, #e1c4f4 10.07%, #dd40cd 30.44%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		font-size: 14px;
 		font-weight: 600;
-		margin-left: 24px;
+		margin-left: 10px;
 	}
 	@apply bg-g-primary relative z-10 before:content-[''];
 	@apply before:block before:rounded-lg before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)];
 	@apply text-white text-[14px];
-	@apply p-3 rounded-lg;
+	@apply p-3 rounded-[10px];
 }
 
 .prize-success-stroke {

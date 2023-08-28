@@ -3,7 +3,7 @@ import Footer from 'components/common/Footer/footer';
 import RafflesList from './components/RafflesList/RafflesList';
 import EnrollModal from './components/EnrollModal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
-import RaffleWinCard from './components/RaffleWinCard';
+// import RaffleWinCard from './components/RaffleWinCard';
 
 const PrizeTap = () => {
 	return (
