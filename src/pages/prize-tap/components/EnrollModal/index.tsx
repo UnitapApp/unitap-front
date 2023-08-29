@@ -259,7 +259,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					</div>
 
 					<ClaimButton
-						onClick={() => setMethod('Claim')}
+						onClick={() => setMethod('Enroll')}
 						width="100%"
 						fontSize="16px"
 						className="!w-full mt-10"

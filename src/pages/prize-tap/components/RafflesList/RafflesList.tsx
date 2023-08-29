@@ -128,7 +128,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							<img src={imageUrl ? imageUrl : tokenImgLink} alt={name} />
 						</div>
 					</div>
-					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50  border-2 border-gray70 min-w-[130px] justify-center">
+					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
 						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
 						<p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
 					</div>
@@ -177,7 +177,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
 							<span className="text-xs text-gray100 mb-3">
 								<span
-									onClick={openEnrollModal.bind(null, raffle, 'Enroll')}
+									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
 									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
 								>
 									{!needsVerification.length ? (
