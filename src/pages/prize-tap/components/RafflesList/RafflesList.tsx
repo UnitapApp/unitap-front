@@ -293,7 +293,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="relative w-full">
 											<p> Enrolled</p>{' '}
 											<Icon
-												className="absolute right-0 top-[-2px]"
+												className="absolute  right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 												width="27px"
 												height="24px"
