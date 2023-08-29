@@ -177,7 +177,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
 							<span className="text-xs text-gray100 mb-3">
 								<span
-									onClick={openEnrollModal.bind(null, raffle, 'Enroll')}
+									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
 									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
 								>
 									{!needsVerification.length ? (
