@@ -95,7 +95,10 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 				</p>
 
 				<ClaimButton
-					onClick={openBrightIdModal}
+					onClick={() => {
+						openBrightIdModal();
+						closeEnrollModal();
+					}}
 					width="100%"
 					className="!w-full"
 					fontSize="16px"

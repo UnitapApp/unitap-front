@@ -22,7 +22,7 @@ const RafflesList = () => {
 	const location = useLocation();
 	const { rafflesList, rafflesListLoading } = useContext(PrizeTapContext);
 	const [highlightedPrize, setHighlightedPrize] = useState('');
-	console.log(rafflesList);
+
 	const prizesSortListMemo = useMemo(
 		() =>
 			rafflesList.sort((a, b) => {
