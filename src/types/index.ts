@@ -222,6 +222,7 @@ export type Prize = {
 	contract: string;
 	isPrizeNft: boolean;
 	twitterUrl: string;
+	decimals: number;
 	discordUrl: string;
 	description: string;
 	createdAt: string;

@@ -89,10 +89,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		winnerEntry,
 	} = raffle;
 	const isPermissionVerified = usePermissionResolver();
-
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
-	// console.log(userProfile);
 	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
@@ -179,7 +177,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
 							<span className="text-xs text-gray100 mb-3">
 								<span
-									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
+									onClick={openEnrollModal.bind(null, raffle, 'Enroll')}
 									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
 								>
 									{!needsVerification.length ? (
@@ -198,7 +196,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							</span>
 						)}
 
-						<span></span>
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 							{(isExpired && !winnerEntry && !userEntry?.txHash) ||
 							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfEntries) ? (
@@ -210,7 +207,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 												{!isRemainingPercentLessThanTen
 													? `
 											${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
-													: `${remainingPeople} people remains`}
+													: remainingPeople > 0
+													? `${remainingPeople} people remains`
+													: `${numberOfEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
@@ -241,8 +240,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-											${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
-													: `${remainingPeople} people remains`}
+													${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
+													: remainingPeople > 0
+													? `${remainingPeople} people remains`
+													: `${numberOfEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
@@ -274,8 +275,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-											${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
-													: `${remainingPeople} people remains`}
+													${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
+													: remainingPeople > 0
+													? `${remainingPeople} people remains`
+													: `${numberOfEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />

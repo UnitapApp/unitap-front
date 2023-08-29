@@ -374,7 +374,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	}
 
 	function renderSuccessBody() {
-		const calculateClaimAmount = selectedRaffleForEnroll!.prizeAmount / 10 ** selectedRaffleForEnroll!.chain.decimals;
+		const calculateClaimAmount = selectedRaffleForEnroll!.prizeAmount / 10 ** selectedRaffleForEnroll!.decimals;
 
 		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -419,7 +419,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 						<span className="flex justify-center items-center font-medium mb-3">
 							<Text className="!mb-8" color="gray100" width="100%" fontSize="14" textAlign="center">
-								Congratulations, @{userProfile?.username} on your grand prize win!
+								Congratulations, @{selectedRaffleForEnroll?.winnerEntry?.userProfile?.username} on your grand prize win!
 							</Text>
 						</span>
 

@@ -68,7 +68,6 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			const response = await getRafflesListAPI(undefined);
 			setRafflesListLoading(false);
 			setRafflesList(response);
-			// console.log(response, 'no user token');
 		} catch (e: any) {
 			setRafflesListLoading(false);
 			setClaimError(e.response?.data.message);
@@ -175,9 +174,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			setClaimOrEnrollSignatureLoading(true);
 			if (selectedRaffleForEnroll.isExpired) return;
 			let raffleEntryId;
-			console.log(selectedRaffleForEnroll?.userEntry);
 			if (!selectedRaffleForEnroll?.userEntry) {
-				console.log('-------------');
 				const enrollInApi = await getEnrollmentApi(userProfile.token, selectedRaffleForEnroll.pk);
 				selectedRaffleForEnroll.userEntry = enrollInApi.signature;
 				raffleEntryId = enrollInApi.signature.pk;
@@ -188,8 +185,6 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			let response;
 			try {
 				response = await getMuonApi(raffleEntryId);
-				console.log(raffleEntryId);
-				console.log(response);
 				setEnrollOrClaimPayload(response);
 				setClaimOrEnrollSignatureLoading(false);
 			} catch (e: any) {

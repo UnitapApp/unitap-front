@@ -19,7 +19,6 @@ export function useUnitapPrizeCallback(
 ): UseCallbackReturns {
 	const { account, chainId, provider } = useWeb3React();
 	const prizeContract = useUnitapPrizeContract(contractAddress, isPrizeNft);
-	// console.log(prizeContract, owner, reqId, account, raffleId, nonce, signature, raffleId, method, multiplier);
 	const calls = useMemo(() => {
 		if (
 			!prizeContract ||
