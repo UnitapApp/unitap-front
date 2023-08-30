@@ -22,6 +22,11 @@ export default ({ mode }) => {
 					target: env['REACT_APP_API_URL'],
 					changeOrigin: true,
 				},
+
+				'/enroll-prize-tap/': {
+					target: env['ENROLL_PRIZE_TAP_URL'],
+					changeOrigin: true,
+				},
 			},
 		},
 	});
