@@ -301,5 +301,5 @@ type userRaffle = {
 	contract: string;
 	name: string;
 	pk: number;
-	raffleId: 4
+	raffleId: number
 }
