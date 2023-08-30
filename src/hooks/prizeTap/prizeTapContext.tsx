@@ -176,7 +176,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 			let raffleEntryId;
 			if (!selectedRaffleForEnroll?.userEntry) {
 				const enrollInApi = await getEnrollmentApi(userProfile.token, selectedRaffleForEnroll.pk);
-				selectedRaffleForEnroll.userEntry = enrollInApi.signature;
+				setSelectedRaffleForEnroll({ ...selectedRaffleForEnroll, userEntry: enrollInApi.signature });
 				raffleEntryId = enrollInApi.signature.pk;
 			} else {
 				raffleEntryId = selectedRaffleForEnroll?.userEntry.pk;
