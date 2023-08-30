@@ -55,7 +55,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const [selectedRaffleForEnroll, setSelectedRaffleForEnroll] = useState<Prize | null>(null);
 	const [claimOrEnrollLoading, setClaimOrEnrollLoading] = useState<boolean>(false);
 
-	const { provider } = useWeb3React();
+	const { provider, account } = useWeb3React();
 
 	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
 	const [claimOrEnrollWithMetamaskResponse, setClaimOrEnrollWithMetamaskResponse] = useState<any | null>(null);
@@ -192,7 +192,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				setClaimOrEnrollSignatureLoading(false);
 			}
 		};
-		if (method == 'Enroll') {
+		if (method == 'Enroll' && account) {
 			getSignature();
 		}
 		if (method == 'Claim') {
@@ -204,7 +204,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				},
 			});
 		}
-	}, [selectedRaffleForEnroll, userProfile, method]);
+	}, [selectedRaffleForEnroll, userProfile, method, account]);
 
 	const handleClaimPrize = useCallback(async () => {
 		if (!selectedRaffleForEnroll || claimOrEnrollLoading) return;
