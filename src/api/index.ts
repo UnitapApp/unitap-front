@@ -1,4 +1,15 @@
-import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse, Settings ,Prize, EnrollmentSignature, EnrollmentRaffleApi } from 'types';
+import {
+	Chain,
+	ClaimReceipt,
+	UserProfile,
+	Token,
+	ClaimedToken,
+	ClaimTokenResponse,
+	Settings,
+	Prize,
+	EnrollmentSignature,
+	EnrollmentRaffleApi,
+} from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -152,7 +163,7 @@ export async function updateClaimFinished(token: string, claimId: number, txHash
 }
 
 export async function getRafflesListAPI(token: string | undefined) {
-	if(token) {
+	if (token) {
 		const response = await axiosInstance.get<Prize[]>('/api/prizetap/raffle-list/', {
 			headers: {
 				Authorization: `Token ${token}`,
@@ -164,7 +175,7 @@ export async function getRafflesListAPI(token: string | undefined) {
 	return response.data;
 }
 
-export async function updateEnrolledFinished(token: string, raffleID: number | undefined , txHash: string) {
+export async function updateEnrolledFinished(token: string, raffleID: number | undefined, txHash: string) {
 	const response = await axiosInstance.post<any>(
 		`api/prizetap/set-enrollment-tx/${raffleID}/`,
 		{ txHash },
@@ -177,7 +188,7 @@ export async function updateEnrolledFinished(token: string, raffleID: number | u
 	return response.data;
 }
 
-export async function updateClaimPrizeFinished(token: string, raffleID: number | undefined , txHash: string) {
+export async function updateClaimPrizeFinished(token: string, raffleID: number | undefined, txHash: string) {
 	const response = await axiosInstance.post<any>(
 		`api/prizetap/set-claiming-prize-tx/${raffleID}/`,
 		{ txHash },
@@ -190,18 +201,19 @@ export async function updateClaimPrizeFinished(token: string, raffleID: number |
 	return response.data;
 }
 
-
 export async function getEnrollmentApi(token: string, raffleID: number) {
-  const response = await axiosInstance.post<EnrollmentRaffleApi>(`/api/prizetap/raffle-enrollment/${raffleID}/`, null, {
-    headers: {
-      'Authorization': `Token ${token}`
-    }
-  })
-  return response.data;
+	const response = await axiosInstance.post<EnrollmentRaffleApi>(`/api/prizetap/raffle-enrollment/${raffleID}/`, null, {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
+	return response.data;
 }
 
 export async function getMuonApi(raffleEntryId: number) {
-  const response = await axios.post<EnrollmentSignature>(`http://52.14.41.79:8000/v1/?app=unitap&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`, null)
-  return response.data;
+	const response = await axios.post<EnrollmentSignature>(
+		`http://52.14.41.79:8000/v1/?app=unitap&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`,
+		null,
+	);
+	return response.data;
 }
-
