@@ -236,6 +236,7 @@ export type Prize = {
 	isExpired: boolean;
 	userEntry: UserEntryInRaffle;
 	numberOfEntries: number;
+	numberOfOnchainEntries:number;
 	maxNumberOfEntries: number;
 	prizeAmount: number;
 	prizeName: string;

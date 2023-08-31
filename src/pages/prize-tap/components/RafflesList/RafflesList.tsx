@@ -82,7 +82,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		name,
 		chain,
 		isExpired,
-		numberOfEntries,
+		numberOfOnchainEntries,
 		maxNumberOfEntries,
 		isPrizeNft,
 		userEntry,
@@ -92,7 +92,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
-	const remainingPeople = maxNumberOfEntries - numberOfEntries;
+	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
 
 	const getWinnerWallet = () => {
@@ -198,7 +198,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 
 						<Action className={'w-full sm:w-auto items-center sm:items-end '}>
 							{(isExpired && !winnerEntry && !userEntry?.txHash) ||
-							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfEntries) ? (
+							(!winnerEntry && !userEntry?.txHash && maxNumberOfEntries === numberOfOnchainEntries) ? (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
@@ -206,10 +206,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-											${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
+											${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfEntries} people enrolled`}
+													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
@@ -222,7 +222,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									>
 										{' '}
 										<div className="relative w-full">
-											{maxNumberOfEntries === numberOfEntries ? <p> Full</p> : <p> Unavailable</p>}
+											{maxNumberOfEntries === numberOfOnchainEntries ? <p> Full</p> : <p> Unavailable</p>}
 											<Icon
 												className="absolute right-0 top-[-2px]"
 												iconSrc="assets/images/prize-tap/header-prize-logo.svg"
@@ -240,10 +240,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-													${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
+													${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfEntries} people enrolled`}
+													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
@@ -275,10 +275,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-													${numberOfEntries} / ${maxNumberOfEntries} people enrolled`
+													${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfEntries} people enrolled`}
+													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
