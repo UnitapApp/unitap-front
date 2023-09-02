@@ -217,3 +217,20 @@ export async function getMuonApi(raffleEntryId: number) {
 	);
 	return response.data;
 }
+
+export async function submitDonationTxHash(txHash: string, chainName: string, token: string) {
+	const response = await axios.post(
+		'/api/v1/user/donation',
+		{
+			txHash,
+			chainName,
+		},
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+
+	return response.data;
+}
