@@ -73,6 +73,7 @@ module.exports = {
 				'home-header-texture': "url('../public/assets/images/landing/home-header-texture.png')",
 				'what-is-unitap-header': "url('../public/assets/images/about/what-is-unitap-header.png')",
 				'gastap-texture': "url('../public/assets/images/landing/gastap-texture.png')",
+				'learn-tap-texture': "url('../public/assets/images/learn-tap/header.svg')",
 				'tokentap-texture': "url('../public/assets/images/landing/tokentap-texture.png')",
 				'prizetap-texture': "url('../public/assets/images/landing/prizetap-texture.png')",
 				'learntap-texture': "url('../public/assets/images/landing/prize-tap-bg.svg')",

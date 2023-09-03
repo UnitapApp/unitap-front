@@ -33,6 +33,7 @@ import { ErrorsProvider } from './context/ErrorsProvider';
 import 'typeface-jetbrains-mono';
 import Navbar from 'components/common/Navbar/navbar';
 import GlobalContextProvider from 'hooks/useGlobalContext';
+import LearnTap from 'pages/learn-tap';
 
 const Fund = React.lazy(() => import('./pages/fund'));
 const Donate = React.lazy(() => import('./pages/donate'));
@@ -71,6 +72,7 @@ function App() {
 															</ClaimProvider>
 														}
 													/>
+													<Route path={RoutePath.LEARN} element={<LearnTap />} />
 													<Route
 														path={RoutePath.FUND}
 														element={
