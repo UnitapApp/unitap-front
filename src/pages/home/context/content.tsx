@@ -94,7 +94,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
 		if (!provider) return;
 
-		const chainName = selectedChain.chainName;
+		const chainPk = selectedChain.pk;
 
 		let tx = {
 			from: account,
@@ -126,7 +126,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 				return tx;
 			})
 			.then(async (tx) => {
-				if (userToken) await submitDonationTxHash(tx.hash, chainName, userToken);
+				if (userToken) await submitDonationTxHash(tx.hash, chainPk, userToken);
 				setTxHash(tx.hash);
 			})
 			.catch((err) => {
@@ -203,6 +203,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 					<p className="text-gray100 text-xs mb-3 z-1">
 						100% of contributions will fund distributions and transaction costs of the gas tap.
 					</p>
+					{!userToken && (
+						<p className="text-warn text-xs mb-3 z-1">You must login in order to contribute in leaderboard</p>
+					)}
 
 					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
 						<div

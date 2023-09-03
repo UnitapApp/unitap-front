@@ -218,12 +218,12 @@ export async function getMuonApi(raffleEntryId: number) {
 	return response.data;
 }
 
-export async function submitDonationTxHash(txHash: string, chainName: string, token: string) {
+export async function submitDonationTxHash(txHash: string, chainPk: number, token: string) {
 	const response = await axios.post(
 		'/api/v1/user/donation',
 		{
 			txHash,
-			chainName,
+			chainPk,
 		},
 		{
 			headers: {
