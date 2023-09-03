@@ -1,4 +1,15 @@
-import { Chain, ClaimReceipt, UserProfile, Token, ClaimedToken, ClaimTokenResponse, Settings } from 'types';
+import {
+	Chain,
+	ClaimReceipt,
+	UserProfile,
+	Token,
+	ClaimedToken,
+	ClaimTokenResponse,
+	Settings,
+	Prize,
+	EnrollmentSignature,
+	EnrollmentRaffleApi,
+} from 'types';
 import axios from 'axios';
 import { getLastMonday } from 'utils';
 
@@ -126,6 +137,18 @@ export async function claimTokenAPI(token: string, tokenId: number, body?: any) 
 	return response.data.signature;
 }
 
+export async function countUsersAPI() {
+	const response = await axiosInstance.get<{ count: number }>('/api/auth/user/count/');
+
+	return response.data.count;
+}
+
+export async function countGasClaimedAPI() {
+	const response = await axiosInstance.get<{ count: number }>('/api/v1/claims/count/');
+
+	return response.data.count;
+}
+
 export async function updateClaimFinished(token: string, claimId: number, txHash: string) {
 	const response = await axiosInstance.post<any>(
 		`/api/tokentap/claims-list/${claimId}/update/`,
@@ -136,5 +159,78 @@ export async function updateClaimFinished(token: string, claimId: number, txHash
 			},
 		},
 	);
+	return response.data;
+}
+
+export async function getRafflesListAPI(token: string | undefined) {
+	if (token) {
+		const response = await axiosInstance.get<Prize[]>('/api/prizetap/raffle-list/', {
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		});
+		return response.data;
+	}
+	const response = await axiosInstance.get<Prize[]>('/api/prizetap/raffle-list/');
+	return response.data;
+}
+
+export async function updateEnrolledFinished(token: string, raffleID: number | undefined, txHash: string) {
+	const response = await axiosInstance.post<any>(
+		`api/prizetap/set-enrollment-tx/${raffleID}/`,
+		{ txHash },
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+	return response.data;
+}
+
+export async function updateClaimPrizeFinished(token: string, raffleID: number | undefined, txHash: string) {
+	const response = await axiosInstance.post<any>(
+		`api/prizetap/set-claiming-prize-tx/${raffleID}/`,
+		{ txHash },
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+	return response.data;
+}
+
+export async function getEnrollmentApi(token: string, raffleID: number) {
+	const response = await axiosInstance.post<EnrollmentRaffleApi>(`/api/prizetap/raffle-enrollment/${raffleID}/`, null, {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
+	return response.data;
+}
+
+export async function getMuonApi(raffleEntryId: number) {
+	const response = await axios.post<EnrollmentSignature>(
+		`http://70.34.214.214:3000/v1/?app=unitap&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`,
+		null,
+	);
+	return response.data;
+}
+
+export async function submitDonationTxHash(txHash: string, chainPk: number, token: string) {
+	const response = await axiosInstance.post(
+		'/api/v1/user/donation',
+		{
+			txHash,
+			chainPk,
+		},
+		{
+			headers: {
+				Authorization: `Token ${token}`,
+			},
+		},
+	);
+
 	return response.data;
 }

@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
 		"target": "ES2020",
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
 		"useDefineForClassFields": true,
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
@@ -21,8 +23,6 @@
 		"jsx": "react-jsx",
 
 		/* Linting */
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
 	"exclude": ["build", "dist"],

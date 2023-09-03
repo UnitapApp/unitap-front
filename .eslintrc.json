@@ -14,5 +14,5 @@
 	},
 	"parser": "@typescript-eslint/parser",
 	"plugins": ["react-refresh"],
-	"ignorePatterns": ["**/*.sass", "dist", ".eslintrc.json"]
+	"ignorePatterns": ["**/*.sass", "dist", ".eslintrc.json", "./src/abis/**/*.ts"]
 }

@@ -137,7 +137,8 @@ describe('can claim gasses', () => {
 	it('shows 404 card when searching invalid', () => {
 		cy.visit(RoutePath.FAUCET);
 
-		cy.get('[data-testid=search-box]').focus().type('invalid chain');
+		cy.wait(200);
+		cy.get('[data-testid=search-box]').focus().type('invalid chain').wait(200);
 
 		cy.get('[data-testid=chains-not-found]').should('exist');
 	});

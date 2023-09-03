@@ -76,6 +76,7 @@ module.exports = {
 				'learn-tap-texture': "url('../public/assets/images/learn-tap/header.svg')",
 				'tokentap-texture': "url('../public/assets/images/landing/tokentap-texture.png')",
 				'prizetap-texture': "url('../public/assets/images/landing/prizetap-texture.png')",
+				'prizetap-raffle-texture': "url('../public/assets/images/prize-tap/raffle-win.svg')",
 				'learntap-texture': "url('../public/assets/images/landing/prize-tap-bg.svg')",
 				'launchtap-texture': "url('../public/assets/images/landing/launchtap-texture.png')",
 				'staketap-texture': "url('../public/assets/images/landing/staketap-texture.png')",

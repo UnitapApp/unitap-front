@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import Home from 'pages/home';
+import GasTapWrapper from 'pages/home';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Landing from 'pages/landing';
@@ -28,6 +28,7 @@ import UserUpdater from 'state/user/updater';
 import { MulticallUpdater } from 'lib/state/multicall';
 import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
+import PrizeTapProvider from 'hooks/prizeTap/prizeTapContext';
 import { ErrorsProvider } from './context/ErrorsProvider';
 
 import 'typeface-jetbrains-mono';
@@ -68,7 +69,7 @@ function App() {
 														path={RoutePath.FAUCET}
 														element={
 															<ClaimProvider>
-																<Home />
+																<GasTapWrapper />
 															</ClaimProvider>
 														}
 													/>
@@ -101,7 +102,14 @@ function App() {
 														}
 													/>
 													<Route path={RoutePath.ABOUT} element={<About />} />
-													<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
+													<Route
+														path={RoutePath.PRIZE}
+														element={
+															<PrizeTapProvider>
+																<PrizeTap />
+															</PrizeTapProvider>
+														}
+													/>
 													<Route
 														path={RoutePath.TOKEN}
 														element={

@@ -13,7 +13,7 @@ import { DV } from 'components/basic/designVariables';
 import { SecondaryButton, NoCurrencyButton, ClaimButton, ClaimedButton } from 'components/basic/Button/button';
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
-	const { openClaimModal, claimedTokensList, claimTokenLoading } = useContext(TokenTapContext);
+	const { openClaimModal, claimedTokensList, claimingTokenPk } = useContext(TokenTapContext);
 
 	const { account } = useWeb3React();
 	const isPermissionVerified = usePermissionResolver();
@@ -121,7 +121,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										Empty
 									</NoCurrencyButton>
 								) : collectedToken ? (
-									claimTokenLoading ||
+									claimingTokenPk === token.id ||
 									(token.chain.chainName === 'Lightning' && collectedToken.status === 'Pending') ? (
 										<ClaimButton
 											data-testid={`chain-pending-claim-${token.id}`}

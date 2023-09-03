@@ -18,6 +18,8 @@ export const UserProfileContext = createContext<{
 	refreshUserProfile: ((address: string, signature: string) => Promise<void>) | null;
 	loading: boolean;
 	weeklyChainClaimLimit: number | null;
+	weeklyTokenClaimLimit?: number;
+	weeklyPrizeTapClaimLimit?: number;
 	remainingClaims: number | null;
 	userProfileLoading: boolean;
 	nonEVMWalletAddress: string;
@@ -41,11 +43,21 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 	const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [userToken, setToken] = useToken();
-	const [weeklyChainClaimLimit, setWeeklyChainClaimLimit] = useState<number | null>(null);
+	const [weeklyClaimSettings, setWeeklyClaimSettings] = useState<{
+		weeklyChainClaimLimit: number;
+		tokentapWeeklyClaimLimit: number;
+		prizetapWeeklyClaimLimit: number;
+		isGasTapAvailable: boolean;
+	}>({
+		weeklyChainClaimLimit: 0,
+		tokentapWeeklyClaimLimit: 0,
+		prizetapWeeklyClaimLimit: 0,
+		isGasTapAvailable: false,
+	});
+
 	const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
 	const { addError } = useContext(ErrorsContext);
 	const [userProfileLoading, setUserProfileLoading] = useState(false);
-	const [isGasTapAvailable, setIsGasTapAvailable] = useState(true);
 	const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState('');
 
 	const { fastRefresh } = useContext(RefreshContext);
@@ -98,9 +110,8 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
 	useEffect(() => {
 		const getWeeklyChainClaimLimit = async () => {
-			const { weeklyChainClaimLimit, isGasTapAvailable } = await getWeeklyChainClaimLimitAPI();
-			setWeeklyChainClaimLimit(weeklyChainClaimLimit);
-			setIsGasTapAvailable(isGasTapAvailable);
+			const res = await getWeeklyChainClaimLimitAPI();
+			setWeeklyClaimSettings(res);
 		};
 
 		const getRemainingClaims = async () => {
@@ -127,10 +138,12 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 		<UserProfileContext.Provider
 			value={{
 				userProfile,
-				isGasTapAvailable,
+				isGasTapAvailable: weeklyClaimSettings.isGasTapAvailable,
 				refreshUserProfile,
 				loading,
-				weeklyChainClaimLimit,
+				weeklyChainClaimLimit: weeklyClaimSettings.weeklyChainClaimLimit,
+				weeklyTokenClaimLimit: weeklyClaimSettings.tokentapWeeklyClaimLimit,
+				weeklyPrizeTapClaimLimit: weeklyClaimSettings.prizetapWeeklyClaimLimit,
 				userToken,
 				remainingClaims,
 				userProfileLoading,

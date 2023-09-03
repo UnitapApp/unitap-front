@@ -48,7 +48,7 @@ const TokenCoins = () => {
 						<Icon
 							onClick={() => openClaimModal(claim.tokenDistribution)}
 							key={key}
-							iconSrc={claim.tokenDistribution.imageUrl || claim.tokenDistribution.chain.logoUrl}
+							iconSrc={claim.tokenDistribution.tokenImageUrl || claim.tokenDistribution.chain.logoUrl}
 							className={`cursor-pointer rounded-full transition ${claim.status === 'Pending' && 'animated-dabe'}`}
 							width="36px"
 							height="40px"

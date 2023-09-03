@@ -8,7 +8,7 @@ import { getChainIcon } from '../../../../utils';
 import useSelectChain from '../../../../hooks/useSelectChain';
 import { useWeb3React } from '@web3-react/core';
 import { Chain, ChainType, ClaimReceipt, ClaimReceiptState, Network, PK } from 'types';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import EmptyChainListCard from './EmptyChainListCard';
 import { FundContext } from 'pages/home/context/fundContext';
@@ -66,12 +66,6 @@ const ChainList = () => {
 	return (
 		<div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
 			<div>
-				{!chainList.length && (
-					<div style={{ color: 'white', textAlign: 'center' }} data-testid="chain-list-loading">
-						Loading...
-					</div>
-				)}
-
 				{!chainList.length || isGasTapAvailable ? (
 					<>
 						{!!chainListMemo.length && (
