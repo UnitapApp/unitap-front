@@ -16,6 +16,7 @@ export function useUnitapPrizeCallback(
 	multiplier: number | undefined,
 	contractAddress: string | undefined,
 	isPrizeNft: boolean | undefined,
+	shieldSignature: string | undefined,
 ): UseCallbackReturns {
 	const { account, chainId, provider } = useWeb3React();
 	const prizeContract = useUnitapPrizeContract(contractAddress, isPrizeNft);
@@ -24,6 +25,7 @@ export function useUnitapPrizeCallback(
 			!prizeContract ||
 			!owner ||
 			!reqId ||
+			!shieldSignature ||
 			!account ||
 			!raffleId ||
 			!nonce ||
@@ -45,6 +47,7 @@ export function useUnitapPrizeCallback(
 								multiplier,
 								reqId,
 								{ signature: signature, owner: owner, nonce: nonce },
+								shieldSignature,
 						  ]) ?? '',
 			},
 		];

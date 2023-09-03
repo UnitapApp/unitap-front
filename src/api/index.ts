@@ -211,9 +211,10 @@ export async function getEnrollmentApi(token: string, raffleID: number) {
 }
 
 export async function getMuonApi(raffleEntryId: number) {
-	const response = await axios.post<EnrollmentSignature>(
-		`http://52.14.41.79:8000/v1/?app=unitap&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`,
+	const response = await axios.post(
+		`http://70.34.214.214:3000/v1/?app=unitap&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`,
 		null,
 	);
+	console.log(response)
 	return response.data;
 }

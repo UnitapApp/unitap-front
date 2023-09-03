@@ -107,6 +107,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 		selectedRaffleForEnroll?.userEntry?.multiplier,
 		selectedRaffleForEnroll?.contract,
 		selectedRaffleForEnroll?.isPrizeNft,
+		enrollOrClaimPayload?.result.shieldSignature,
 	);
 
 	const claimOrEnrollWithMetamask = useCallback(async () => {
@@ -201,6 +202,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 					data: { init: { nonceAddress: '1' } },
 					reqId: '1',
 					signatures: [{ owner: '1', signature: '1' }],
+					shieldSignature: '1',
 				},
 			});
 		}
