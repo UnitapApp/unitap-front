@@ -35,6 +35,7 @@ import 'typeface-jetbrains-mono';
 import Navbar from 'components/common/Navbar/navbar';
 import GlobalContextProvider from 'hooks/useGlobalContext';
 import LearnTap from 'pages/learn-tap';
+import Missions from 'pages/learn-tap/missions';
 
 const Fund = React.lazy(() => import('./pages/fund'));
 const Donate = React.lazy(() => import('./pages/donate'));
@@ -74,6 +75,7 @@ function App() {
 														}
 													/>
 													<Route path={RoutePath.LEARN} element={<LearnTap />} />
+													<Route path={RoutePath.MISSIONS} element={<Missions />} />
 													<Route
 														path={RoutePath.FUND}
 														element={

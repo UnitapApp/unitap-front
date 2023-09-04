@@ -3,6 +3,7 @@ enum RoutePath {
 	FAUCET = '/gas-tap',
 	TOKEN = '/token-tap',
 	LEARN = '/learn-tap',
+	MISSIONS = '/missions',
 	DONATE = '/donate',
 	FUND = '/fund',
 	PRIZE = '/prize-tap',
