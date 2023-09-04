@@ -69,7 +69,7 @@ const Landing: FC = () => {
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
 	const [stats, setStats] = useState([
-		{ name: 'EVM Networks', number: 0 },
+		{ name: 'Main Networks', number: 0 },
 		{ name: 'Test Networks', number: 0 },
 	]);
 
@@ -78,7 +78,7 @@ const Landing: FC = () => {
 
 	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
-			{ name: 'Networks', number: getTotalNetworks(chainList) },
+			{ name: 'Main Networks', number: getTotalNetworks(chainList) },
 			{ name: 'Test Networks', number: getTotalTestNetworks(chainList) },
 		]);
 	};
