@@ -87,10 +87,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		isPrizeNft,
 		userEntry,
 		winnerEntry,
+		prizeSymbol,
+		prizeAmount,
+		decimals,
 	} = raffle;
 	const isPermissionVerified = usePermissionResolver();
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
+	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
@@ -125,12 +129,17 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 							} justify-center items-center p-5 rounded-xl`}
 						>
+							{!isPrizeNft && (
+								<p className="">
+									{calculateClaimAmount} {prizeSymbol}
+								</p>
+							)}
 							<img src={imageUrl ? imageUrl : tokenImgLink} alt={name} />
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
 						<p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
+						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
 					</div>
 				</div>
 				<div className={isHighlighted ? 'before:!inset-[3px] p-[2px] gradient-outline-card w-full' : 'w-full'}>
