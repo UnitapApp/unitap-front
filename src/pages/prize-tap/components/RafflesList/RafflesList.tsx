@@ -88,8 +88,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		userEntry,
 		winnerEntry,
 		prizeSymbol,
-		prizeAmount,
 		decimals,
+		prizeAmount,
 	} = raffle;
 	const isPermissionVerified = usePermissionResolver();
 	const { openEnrollModal } = useContext(PrizeTapContext);
@@ -130,11 +130,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							} justify-center items-center p-5 rounded-xl`}
 						>
 							{!isPrizeNft && (
-								<p className="">
-									{calculateClaimAmount} {prizeSymbol}
-								</p>
+								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
+									{calculateClaimAmount + '  ' + prizeSymbol}
+								</div>
 							)}
-							<img src={imageUrl ? imageUrl : tokenImgLink} alt={name} />
+							<img
+								src={imageUrl ? imageUrl : tokenImgLink}
+								alt={name}
+								width={!isPrizeNft ? '24px' : ''}
+								className={`${!isPrizeNft ? 'ml-1' : ''}`}
+							/>
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
@@ -333,8 +338,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									<Icon
 										className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
 										iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-										width="167px"
-										height="167px"
+										width="215px"
+										height="215px"
 									/>
 								</span>
 							) : winnerEntry && winnerEntry?.userProfile.pk === userProfile?.pk && !userEntry?.claimingPrizeTx ? (
@@ -346,8 +351,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<Icon
 											className="opacity-[.3] mt-[-10px] mr-[-20px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-											width="167px"
-											height="167px"
+											width="215px"
+											height="215px"
 										/>
 									</div>
 
@@ -370,8 +375,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<Icon
 											className="opacity-[.3] mt-[-10px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-											width="167px"
-											height="167px"
+											width="215px"
+											height="215px"
 										/>
 									</div>
 									<div className="claimed-prize md:!w-[352px] !w-full">

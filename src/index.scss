@@ -514,7 +514,8 @@ body {
 }
 
 .winner-box-bg {
-	background-image: url('../public/assets/images/prize-tap/winner_bg.svg');
+	background-color: #10101b;
+	// background-image: url('../public/assets/images/prize-tap/winner_bg.svg');
 	@apply bg-no-repeat bg-cover bg-center;
 }
 
@@ -545,5 +546,29 @@ body {
 		-webkit-background-clip: text;
 		-webkit-text-stroke: 3px transparent;
 		color: inherit;
+	}
+}
+
+
+.prize__amount {
+	position: relative;
+	@apply text-gray20;
+	background: radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2a3837 0%, #3f2b44 42.19%, #322837 100%);
+	-webkit-text-stroke: 6px transparent;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-size: 1.6em;
+	font-weight: 600;
+
+	&:after {
+		content: attr(data-amount);
+		position: absolute;
+		z-index: 9;
+		background: linear-gradient(91.35deg, #4bf2a2 -4.66%, #a89fe7 56.06%, #e1c4f4 73.07%, #dd40cd 111.44%);
+		@apply text-gray20;
+		-webkit-text-stroke: 2px transparent;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: #1b1b26;
+		left: 0px;
 	}
 }
