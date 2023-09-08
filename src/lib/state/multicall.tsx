@@ -2,7 +2,7 @@ import { createMulticall, ListenerOptions } from '@uniswap/redux-multicall';
 import { useWeb3React } from '@web3-react/core';
 import { useInterfaceMulticall } from 'hooks/useContract';
 import useBlockNumber from 'lib/hooks/useBlockNumber';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { combineReducers, createStore } from 'redux';
 
 const multicall = createMulticall();
@@ -12,35 +12,35 @@ export const store = createStore(reducer);
 export default multicall;
 
 function getBlocksPerFetchForChainId(chainId: number | undefined): number {
-  switch (chainId) {
-    // case SupportedChainId.ARBITRUM_ONE:
-    // case SupportedChainId.OPTIMISM:
-    //   return 15
-    // case SupportedChainId.CELO:
-    // case SupportedChainId.CELO_ALFAJORES:
-    //   return 5
-    default:
-      return 1;
-  }
+	switch (chainId) {
+		// case SupportedChainId.ARBITRUM_ONE:
+		// case SupportedChainId.OPTIMISM:
+		//   return 15
+		// case SupportedChainId.CELO:
+		// case SupportedChainId.CELO_ALFAJORES:
+		//   return 5
+		default:
+			return 1;
+	}
 }
 
 export function MulticallUpdater() {
-  const { chainId } = useWeb3React();
-  const latestBlockNumber = useBlockNumber();
-  const contract = useInterfaceMulticall();
-  const listenerOptions: ListenerOptions = useMemo(
-    () => ({
-      blocksPerFetch: getBlocksPerFetchForChainId(chainId),
-    }),
-    [chainId],
-  );
+	const { chainId } = useWeb3React();
+	const latestBlockNumber = useBlockNumber();
+	const contract = useInterfaceMulticall();
+	const listenerOptions: ListenerOptions = useMemo(
+		() => ({
+			blocksPerFetch: getBlocksPerFetchForChainId(chainId),
+		}),
+		[chainId],
+	);
 
-  return (
-    <multicall.Updater
-      chainId={chainId}
-      latestBlockNumber={latestBlockNumber}
-      contract={contract}
-      listenerOptions={listenerOptions}
-    />
-  );
+	return (
+		<multicall.Updater
+			chainId={chainId}
+			latestBlockNumber={latestBlockNumber}
+			contract={contract}
+			listenerOptions={listenerOptions}
+		/>
+	);
 }

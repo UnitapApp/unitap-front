@@ -102,20 +102,20 @@
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: 200;
-    src: URL('../public/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
+    src: URL('/assets/font/JetBrainsMono-Thin.ttf') format('truetype');
 }
 
 @font-face {
     font-family: JetBrainsMono;
     font-style: normal;
     font-weight: normal;
-    src: URL('../public/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
+    src: URL('/assets/font/JetBrainsMono-Regular.ttf') format('truetype');
 }
 @font-face {
     font-family: DigitalNumbers;
     font-style: normal;
     font-weight: normal;
-    src: URL('../public/assets/font/DigitalNumbers/DigitalNumbers-Regular.ttf') format('truetype');
+    src: URL('/assets/font/DigitalNumbers/DigitalNumbers-Regular.ttf') format('truetype');
 }
 
 
