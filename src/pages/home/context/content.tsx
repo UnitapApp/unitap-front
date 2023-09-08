@@ -204,7 +204,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 						100% of contributions will fund distributions and transaction costs of the gas tap.
 					</p>
 					{!userToken && (
-						<p className="text-warn text-xs mb-3 z-1">You must login in order to contribute in leaderboard</p>
+						<p className="text-warn text-xs mb-3 z-1">
+							You must login in order for your contribution to be counted in leaderboard
+						</p>
 					)}
 
 					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
