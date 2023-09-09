@@ -270,10 +270,10 @@ export type EnrollmentRaffleApi = {
 export type User = {
 	id: number;
 	image: string;
-	userName: string;
+	username: string;
 	level: number;
-	walletAddress: string;
-	totalGas: string;
+	wallet: string;
+	sumTotalPrice: string;
 	twitterLink?: string;
 	instagramLink?: string;
 };
