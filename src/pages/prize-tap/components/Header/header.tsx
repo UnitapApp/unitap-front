@@ -23,9 +23,6 @@ const Header = () => {
 					{/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
 				</span>
 			</div>
-			<div className="header__right">
-				<RemainingRaffleComponent />
-			</div>
 		</div>
 	);
 };
