@@ -156,20 +156,24 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						<span className="flex justify-between w-full mb-3">
 							<p className="prize-card__title text-white text-sm">{name}</p>
 							<div className="prize-card__links flex gap-4">
-								<Icon
-									iconSrc="assets/images/prize-tap/twitter-logo.svg"
-									onClick={() => window.open(twitterUrl, '_blank')}
-									width="20px"
-									height="16px"
-									hoverable
-								/>
-								<Icon
-									iconSrc="assets/images/prize-tap/discord-logo.svg"
-									onClick={() => window.open(discordUrl, '_blank')}
-									width="20px"
-									height="16px"
-									hoverable
-								/>
+								{twitterUrl && (
+									<Icon
+										iconSrc="assets/images/prize-tap/twitter-logo.svg"
+										onClick={() => window.open(twitterUrl, '_blank')}
+										width="20px"
+										height="16px"
+										hoverable
+									/>
+								)}
+								{discordUrl && (
+									<Icon
+										iconSrc="assets/images/prize-tap/discord-logo.svg"
+										onClick={() => window.open(discordUrl, '_blank')}
+										width="20px"
+										height="16px"
+										hoverable
+									/>
+								)}
 							</div>
 						</span>
 						<span className="flex justify-between w-full mb-4">
