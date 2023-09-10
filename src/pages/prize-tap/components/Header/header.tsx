@@ -22,10 +22,6 @@ const Header = () => {
 					<img className="h-12 w-auto" src="assets/images/prize-tap/header-typography.png" />
 					{/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
 				</span>
-				<p className="z-10 text-sm text-gray100">Aura verification needed</p>
-			</div>
-			<div className="header__right">
-				<RemainingRaffleComponent />
 			</div>
 		</div>
 	);

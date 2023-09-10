@@ -13,7 +13,6 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { switchChain } from '../../../../utils/switchChain';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { GlobalContext } from 'hooks/useGlobalContext';
-import { RemainingRaffleComponent } from '../Header/header';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 import Tooltip from 'components/basic/Tooltip';
 
@@ -226,11 +225,8 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 			return (
 				<div className="text-center pt-4">
-					<div>
-						<RemainingRaffleComponent />
-					</div>
 					<p className="text-sm text-gray100 leading-6 mt-10">
-						by clicking on “Enroll”, one of your coupon will be utilized and cannot be returned .To enroll, please
+						by clicking on “Enroll”, one of your coupons will be utilized and cannot be returned .To enroll, please
 						ensure that you meet the following requirements.
 					</p>
 					<div className="mt-5 text-xs">
@@ -378,14 +374,14 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed from @Unitap_app 🔥\n Claim yours:`,
+				`I've just claimed in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
 		};
 
 		const handleShareEnrollTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just Enroll in raffle from @Unitap_app 🔥\n Claim yours:`,
+				`I've just enrolled in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
 			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
 		};
