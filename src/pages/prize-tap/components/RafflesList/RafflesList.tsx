@@ -125,21 +125,21 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 				<div className="prize-card__image relative mb-3 lg:mb-0">
 					<div className={isHighlighted ? 'before:!inset-[2px] p-[2px] gradient-outline-card' : ''}>
 						<div
-							className={`prize-card__container h-[212px] w-[212px] flex ${
+							className={`prize-card__container h-[212px] w-[212px] flex flex-col ${
 								isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 							} justify-center items-center p-5 rounded-xl`}
 						>
+							<img
+								src={imageUrl ? imageUrl : tokenImgLink}
+								alt={name}
+								width={!isPrizeNft ? '24px' : ''}
+								className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
+							/>
 							{!isPrizeNft && (
 								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
 									{calculateClaimAmount + '  ' + prizeSymbol}
 								</div>
 							)}
-							<img
-								src={imageUrl ? imageUrl : tokenImgLink}
-								alt={name}
-								width={!isPrizeNft ? '24px' : ''}
-								className={`${!isPrizeNft ? 'ml-1' : ''}`}
-							/>
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
