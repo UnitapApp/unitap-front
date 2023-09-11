@@ -129,12 +129,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 							} justify-center items-center p-5 rounded-xl`}
 						>
-							<img
-								src={imageUrl ? imageUrl : tokenImgLink}
-								alt={name}
-								width={!isPrizeNft ? '24px' : ''}
-								className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
-							/>
+							{(imageUrl || tokenImgLink) && (
+								<img
+									src={imageUrl ? imageUrl : tokenImgLink}
+									alt={name}
+									width={!isPrizeNft ? '24px' : ''}
+									className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
+								/>
+							)}
 							{!isPrizeNft && (
 								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
 									{calculateClaimAmount + '  ' + prizeSymbol}
