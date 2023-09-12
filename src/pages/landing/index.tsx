@@ -13,6 +13,10 @@ import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
 import { countGasClaimedAPI, countUsersAPI } from 'api';
 import { Chain } from 'types';
+import PrizeTapLandingLazy from './components/prize-tap';
+import { getRafflesListAPI } from 'api';
+
+const [rafflesList] = await Promise.all([getRafflesListAPI(undefined)]);
 
 export const socialLinks = [
 	{
@@ -57,6 +61,8 @@ export const futureTaps = [
 ];
 
 const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
+
+const PrizeTapLandingComponent = lazy(PrizeTapLandingLazy);
 
 const GasTapLandingComponent = lazy(GasTapLandingLazy);
 
@@ -184,29 +190,21 @@ const Landing: FC = () => {
 						</Link>
 					</section>
 
-					{/* <section className={'flex--1'}>
-						<Widget
-							description={'Give it a shot and try your chance at winning valuable prizes'}
-							className={'after:bg-prizetap-texture h-full after:w-full after:-top-4'}
-							icon={'prizetap-icon.png'}
-							iconSize={'w-8 h-7'}
-							title={'Prize Tap'}
-							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
-						></Widget>
-					</section> */}
-
 					<section className={'flex--1'}>
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
-								description={'Where everyone has chances to win larger prizes'}
-								className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
+								description={rafflesList.length + ' Raffles are live on PrizeTap...'}
+								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
 								title={'Prize Tap'}
 								buttonTitle={'Go to Tap'}
 								buttonClass={'gradient-outline-button text-gray100'}
-							></Widget>
+							>
+								<Suspense fallback={<TapLoading />}>
+									<PrizeTapLandingComponent />
+								</Suspense>
+							</Widget>
 						</Link>
 					</section>
 				</section>
