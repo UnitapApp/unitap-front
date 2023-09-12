@@ -16,8 +16,6 @@ import { Chain } from 'types';
 import PrizeTapLandingLazy from './components/prize-tap';
 import { getRafflesListAPI } from 'api';
 
-const [rafflesList] = await Promise.all([getRafflesListAPI(undefined)]);
-
 export const socialLinks = [
 	{
 		img: 'twitter-icon.svg',
@@ -193,7 +191,7 @@ const Landing: FC = () => {
 					<section className={'flex--1'}>
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
-								description={rafflesList.length + ' Raffles are live on PrizeTap...'}
+								description={' Raffles are live on PrizeTap...'}
 								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
