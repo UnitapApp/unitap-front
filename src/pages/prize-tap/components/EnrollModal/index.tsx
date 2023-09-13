@@ -296,6 +296,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						<ClaimButton
 							onClick={() => handleEnroll()}
 							width="100%"
+							disabled={new Date(selectedRaffleForEnroll.startAt) > new Date()}
 							fontSize="16px"
 							className="!w-full"
 							data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
