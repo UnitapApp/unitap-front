@@ -77,7 +77,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		twitterUrl,
 		discordUrl,
 		description,
-		createdAt,
+		startAt,
 		deadline,
 		name,
 		chain,
@@ -95,10 +95,12 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const calculateClaimAmount = prizeAmount / 10 ** decimals;
-	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
-
+	const [start, setStarted] = useState<boolean>(false);
+	useEffect(() => {
+		setStarted(new Date(startAt) < new Date());
+	}, [new Date()]);
 	const getWinnerWallet = () => {
 		if (!winnerEntry) return;
 		let wallet = winnerEntry.userProfile.wallets.filter((item) => item.walletType === 'EVM');
@@ -222,7 +224,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -232,7 +234,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
 										disabled={true}
@@ -256,7 +258,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -266,12 +268,12 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
 										height="48px"
 										fontSize="14px"
-										disabled={!!needsVerification.length}
+										disabled={!!needsVerification.length || !start}
 										className="min-w-[552px] md:!w-[352px] !w-full"
 										onClick={() => openEnrollModal(raffle, 'Enroll')}
 									>
@@ -291,7 +293,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -301,7 +303,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<EnrolledButton
 										disabled={true}
@@ -417,9 +419,14 @@ const RaffleCardTimer = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
 	const [hours, setHours] = useState('00');
 	const [minutes, setMinutes] = useState('00');
 	const [seconds, setSeconds] = useState('00');
+	const [start, setStarted] = useState<boolean>(false);
+
+	useEffect(() => {
+		setStarted(new Date(startTime) < new Date());
+	}, [new Date()]);
 
 	let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
-	let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime]);
+	let FinishTimeDate = useMemo(() => new Date(start ? FinishTime : new Date()), [FinishTime]);
 
 	let deadline = useMemo(
 		() => (startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate),
