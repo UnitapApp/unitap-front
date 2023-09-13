@@ -74,12 +74,6 @@ const Landing: FC = () => {
 
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
-	const getRaffles = async () => {
-		const raffles = await getRafflesListAPI(undefined);
-		console.log(raffles.length);
-		return raffles.length;
-	};
-
 	const [stats, setStats] = useState([
 		{ name: 'Main Networks', number: 0 },
 		{ name: 'Test Networks', number: 0 },
