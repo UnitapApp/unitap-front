@@ -97,7 +97,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
-	const [start, setStarted] = useState<boolean>(false);
+	const [start, setStarted] = useState<boolean>(true);
 	useEffect(() => {
 		setStarted(new Date(startAt) < new Date());
 	}, [new Date()]);
@@ -419,7 +419,7 @@ const RaffleCardTimer = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
 	const [hours, setHours] = useState('00');
 	const [minutes, setMinutes] = useState('00');
 	const [seconds, setSeconds] = useState('00');
-	const [start, setStarted] = useState<boolean>(false);
+	const [start, setStarted] = useState<boolean>(true);
 
 	useEffect(() => {
 		setStarted(new Date(startTime) < new Date());
