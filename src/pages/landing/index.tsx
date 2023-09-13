@@ -13,6 +13,7 @@ import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
 import { countGasClaimedAPI, countUsersAPI } from 'api';
 import { Chain } from 'types';
+import UButton from 'components/basic/Button/UButton';
 import PrizeTapLandingLazy from './components/prize-tap';
 import { getRafflesListAPI } from 'api';
 
@@ -34,14 +35,15 @@ export const socialLinks = [
 	},
 ];
 
+const learnTap = {
+	name: 'Learn Tap',
+	icon: 'learntap-icon.png',
+	description: 'Where users can learn to use web3 technologies',
+	class: 'bg-learntap-texture',
+	iconSize: 'w-6',
+};
+
 export const futureTaps = [
-	{
-		name: 'Learn Tap',
-		icon: 'learntap-icon.png',
-		description: 'Where users can learn to use web3 technologies',
-		class: 'after:bg-learntap-texture after:inset-0',
-		iconSize: 'w-6',
-	},
 	{
 		name: 'Stake Tap',
 		icon: 'staketap-icon.png',
@@ -109,20 +111,25 @@ const Landing: FC = () => {
 			<main className={'flex flex-col gap-6 content-wrapper'}>
 				<section
 					id="home-header"
-					className={
-						'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
-					}
+					className="uni-card flex items-start p-4 justify-between gap-4 after:rounded-2xl after:bg-home-header-texture text-white text-center sm:text-left sm:px-12 overflow-hidden h-52"
 				>
-					<img
-						src={'/assets/images/landing/uni-logo.svg'}
-						className={'w-40 mx-auto sm:mx-0'}
-						width={157}
-						height={32}
-						alt={'logo'}
-					/>
-					<h4 className={'text-gradient-primary'}>
-						Unitap is an onboarding tool for networks and communities and a gateway to web3
-					</h4>
+					<div className="flex items-center">
+						<img src="/assets/images/landing/profile-img.svg" alt="profile-unitap" width={57} height={64} />
+						<div className="ml-4">
+							<strong>@CNA</strong>
+							<div className="mt-3 text-xs text-gray90">Level: [Coming soon]</div>
+						</div>
+					</div>
+					<div>
+						<img
+							src={'/assets/images/landing/uni-logo.svg'}
+							className={'w-40 mx-auto sm:mx-0'}
+							width={157}
+							height={32}
+							alt={'logo'}
+						/>
+						<h4 className={'text-secondary-text text-sm font-bold mt-5 text-center'}>The gateway to web3</h4>
+					</div>
 				</section>
 
 				<section
@@ -215,20 +222,33 @@ const Landing: FC = () => {
 					</section>
 				</section>
 
-				<section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
-					{futureTaps.map((tap) => (
-						<Widget
-							icon={tap.icon}
-							iconSize={tap.iconSize}
-							key={tap.name}
-							description={tap.description}
-							className={`${tap.class} flex-1 pb-12`}
-							title={tap.name}
-							unClickable
-							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
-						></Widget>
-					))}
+				<section id="learn-tap">
+					<div className="flex flex-col justify-between uni-card bg-learntap-texture bg-cover h-40">
+						<section className="sm:flex items-center justify-center flex-col p-4 h-full">
+							<header className={`flex gap-4 items-center justify-between h-10`}>
+								<div className={`flex gap-3 sm:justify-center items-center flex-auto`}>
+									<p className={'text-white text-xl font-semibold'}>{learnTap.name}</p>
+									<img
+										className={`${learnTap.iconSize} widget-icon`}
+										src={`/assets/images/landing/${learnTap.icon}`}
+										alt={'widget'}
+									/>
+								</div>
+								<div>
+									<UButton
+										unClickable
+										className={`secondary-button sm:absolute sm:top-4 sm:right-4 !bg-gray30 text-gradient-primary text-white`}
+										size={'btn-small'}
+									>
+										Soon...
+									</UButton>
+								</div>
+							</header>
+							<p className={'text-secondary-text text-center text-xs leading-loose font-normal py-4'}>
+								{learnTap.description}
+							</p>
+						</section>
+					</div>
 				</section>
 
 				<section id="home-stats" className={'flex gap-4 justify-between'}>
