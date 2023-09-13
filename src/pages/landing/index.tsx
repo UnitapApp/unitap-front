@@ -72,6 +72,12 @@ const Landing: FC = () => {
 
 	const { isGasTapAvailable } = useContext(UserProfileContext);
 
+	const getRaffles = async () => {
+		const raffles = await getRafflesListAPI(undefined);
+		console.log(raffles.length);
+		return raffles.length;
+	};
+
 	const [stats, setStats] = useState([
 		{ name: 'Main Networks', number: 0 },
 		{ name: 'Test Networks', number: 0 },
@@ -79,6 +85,7 @@ const Landing: FC = () => {
 
 	const [usersCount, setUsersCount] = useState('+4000');
 	const [gasClaimedCount, setGasClaimedCount] = useState(0);
+	const [rafflesLength, setRafflesLength] = useState(0);
 
 	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
@@ -90,6 +97,7 @@ const Landing: FC = () => {
 	useEffect(() => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
 		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
+		getRafflesListAPI(undefined).then((res) => setRafflesLength(res ? res.length : 0));
 	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
@@ -191,7 +199,7 @@ const Landing: FC = () => {
 					<section className={'flex--1'}>
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
-								description={' Raffles are live on PrizeTap...'}
+								description={rafflesLength + ' Raffles are live on PrizeTap...'}
 								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
