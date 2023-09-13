@@ -1,9 +1,14 @@
 import { FC } from 'react';
 import { Prize } from 'types';
-
 import { RaffleCardTimerLandingPage } from 'pages/prize-tap/components/RafflesList/RafflesList';
 
 const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
+	const nftImage = (tokenUri: string | undefined | null) => {
+		let tokenImgLink: string | undefined = tokenUri
+			? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
+			: undefined;
+		return tokenImgLink;
+	};
 	return (
 		<>
 			{rafflesList.length > 0 &&
@@ -14,9 +19,14 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 					>
 						<div className="z-100 w-full">
 							<div className="flex gap-4">
-								<div className="raffle-logo-container w-[64px] h-[64px] relative z-100">
-									<span className=" w-[62px] left-[1px] h-[63px] rounded-xl bg-gray40 absolute">
-										<img width="100%" height="100%" src={raffle.imageUrl} alt={raffle.name} />
+								<div className="raffle-logo-container w-[64px] h-[63px] relative z-100 overflow-hidden">
+									<span className=" w-[62px] left-[1px] h-[62px] rounded-[13px] bg-gray40 absolute overflow-hidden">
+										<img
+											width="62px"
+											height="63px"
+											src={raffle.isPrizeNft ? nftImage(raffle.tokenUri) : raffle.imageUrl}
+											alt={raffle.name}
+										/>
 									</span>
 								</div>
 								<div>
