@@ -226,8 +226,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 			return (
 				<div className="text-center pt-4">
 					<p className="text-sm text-gray100 leading-6 mt-10">
-						by clicking on “Enroll”, one of your coupons will be utilized and cannot be returned .To enroll, please
-						ensure that you meet the following requirements.
+						You are about to enroll in a raffle. Please make sure you meet the following requirements.
 					</p>
 					<div className="mt-5 text-xs">
 						{selectedRaffleForEnroll.constraints.map((permission, key) => (
