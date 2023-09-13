@@ -258,7 +258,11 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						width="100%"
 						fontSize="16px"
 						className="!w-full mt-10"
-						disabled={!!needsVerification.length || selectedRaffleForEnroll.isExpired}
+						disabled={
+							new Date(selectedRaffleForEnroll.startAt) > new Date() ||
+							!!needsVerification.length ||
+							selectedRaffleForEnroll.isExpired
+						}
 						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
 					>
 						{selectedRaffleForEnroll.isExpired ? <p>Expired</p> : <p>Enroll</p>}
@@ -296,7 +300,6 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						<ClaimButton
 							onClick={() => handleEnroll()}
 							width="100%"
-							disabled={new Date(selectedRaffleForEnroll.startAt) > new Date()}
 							fontSize="16px"
 							className="!w-full"
 							data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
