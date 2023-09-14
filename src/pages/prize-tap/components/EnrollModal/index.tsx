@@ -385,7 +385,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleShareEnrollTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`Trying my chance to win ${selectedRaffleForEnroll?.name} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 💚💜
+				`Trying my chances to win ${selectedRaffleForEnroll?.name} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 💚💜
 					Feeling lucky? 😎 https://unitap.app/prize-tap`,
 			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
