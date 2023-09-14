@@ -377,14 +377,16 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+				`I won ${selectedRaffleForEnroll?.name} from @Unitap_app among ${selectedRaffleForEnroll?.numberOfOnchainEntries} participants. 🤩🎉 (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 
+				Try your luck to win valuable prizes at https://unitap.app/prize-tap`,
+			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.prizeName)}`;
 			window.open(twitterUrl, '_blank');
 		};
 
 		const handleShareEnrollTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just enrolled in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
+				`Trying my chance to win ${selectedRaffleForEnroll?.name} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 💚💜
+					Feeling lucky? 😎 https://unitap.app/prize-tap`,
 			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
 			window.open(twitterUrl, '_blank');
 		};
