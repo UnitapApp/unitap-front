@@ -188,7 +188,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									</span>
 								) : (
 									<span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
-										from {creator} Collection by UNITAP.APP
+										by {creator}
 									</span>
 								)}
 							</p>
