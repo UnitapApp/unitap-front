@@ -24,7 +24,7 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 										<img
 											width="62px"
 											height="63px"
-											src={raffle.isPrizeNft ? nftImage(raffle.tokenUri) : raffle.imageUrl}
+											src={nftImage(raffle.tokenUri) || raffle.imageUrl}
 											alt={raffle.name}
 										/>
 									</span>
