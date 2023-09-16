@@ -12,7 +12,7 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 	return (
 		<>
 			{rafflesList.length > 0 &&
-				rafflesList.slice(0, 3).map((raffle, key) => (
+				rafflesList.slice(0, 2).map((raffle, key) => (
 					<div
 						key={key}
 						className={'flex relative text-xs text-white bg-gray30 rounded-xl py-2 px-2 mb-2 overflow-hidden h-[80px] '}

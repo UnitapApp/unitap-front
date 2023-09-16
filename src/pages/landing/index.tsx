@@ -105,6 +105,24 @@ const Landing: FC = () => {
 			<main className={'flex flex-col gap-6 content-wrapper'}>
 				<section
 					id="home-header"
+					className={
+						'uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden'
+					}
+				>
+					<img
+						src={'/assets/images/landing/uni-logo.svg'}
+						className={'w-40 mx-auto sm:mx-0'}
+						width={157}
+						height={32}
+						alt={'logo'}
+					/>
+					<h4 className={'text-gradient-primary'}>
+						Unitap is an onboarding tool for networks and communities and a gateway to web3
+					</h4>
+				</section>
+
+				{/* <section
+					id="home-header"
 					className="uni-card flex items-start p-4 justify-between gap-4 after:rounded-2xl after:bg-home-header-texture text-white text-center sm:text-left sm:px-12 overflow-hidden h-52"
 				>
 					<div className="flex items-center">
@@ -124,7 +142,7 @@ const Landing: FC = () => {
 						/>
 						<h4 className={'text-secondary-text text-sm font-bold mt-5 text-center'}>The gateway to web3</h4>
 					</div>
-				</section>
+				</section> */}
 
 				<section
 					id="home-nft"
