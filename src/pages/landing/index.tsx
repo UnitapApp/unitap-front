@@ -200,7 +200,13 @@ const Landing: FC = () => {
 					<section className={'flex--1'}>
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
-								description={rafflesLength + ' Raffles are live on PrizeTap...'}
+								description={
+									rafflesLength === 0
+										? 'No raffles are live on Prize Tap'
+										: rafflesLength === 1
+										? '1 raffle is live on Prize Tap'
+										: rafflesLength + ' Raffles are live on PrizeTap...'
+								}
 								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
