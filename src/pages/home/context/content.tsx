@@ -13,9 +13,12 @@ import { useWeb3React } from '@web3-react/core';
 import { fromWei, parseToLamports } from 'utils/numbers';
 import FundTransactionModal from 'pages/fund/components/FundTransactionModal/FundTransactionModal';
 import SelectChainModal from 'pages/fund/components/SelectChainModal/selectChainModal';
+import { submitDonationTxHash } from 'api';
+import { UserProfileContext } from 'hooks/useUserProfile';
 
 const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 	const { chainList: originalChainList } = useContext(ClaimContext);
+	const { userToken } = useContext(UserProfileContext);
 	const { chainId, provider, account } = useWeb3React();
 	const active = !!account;
 	const { tryActivation } = useWalletActivation();
@@ -90,6 +93,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 		}
 
 		if (!provider) return;
+
+		const chainPk = selectedChain.pk;
+
 		let tx = {
 			from: account,
 			to: selectedChain.fundManagerAddress,
@@ -119,7 +125,8 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 				await tx.wait(1);
 				return tx;
 			})
-			.then((tx) => {
+			.then(async (tx) => {
+				if (userToken) await submitDonationTxHash(tx.hash, chainPk, userToken);
 				setTxHash(tx.hash);
 			})
 			.catch((err) => {
@@ -196,6 +203,11 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 					<p className="text-gray100 text-xs mb-3 z-1">
 						100% of contributions will fund distributions and transaction costs of the gas tap.
 					</p>
+					{!userToken && (
+						<p className="text-warn text-xs mb-3 z-1">
+							You must login in order for your contribution to be counted in leaderboard
+						</p>
+					)}
 
 					<div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
 						<div
@@ -240,7 +252,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
 					<ClaimButton
 						height="3.5rem"
-						className="!w-full mt-5"
+						className="!w-full text-white mt-5"
 						fontSize="20px"
 						onClick={handleSendFunds}
 						disabled={!Number(fundAmount) && isRightChain && active}

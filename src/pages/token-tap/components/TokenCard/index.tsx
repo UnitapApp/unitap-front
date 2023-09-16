@@ -13,7 +13,7 @@ import { DV } from 'components/basic/designVariables';
 import { SecondaryButton, NoCurrencyButton, ClaimButton, ClaimedButton } from 'components/basic/Button/button';
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
-	const { openClaimModal, claimedTokensList, claimTokenLoading, claimingTokenPk } = useContext(TokenTapContext);
+	const { openClaimModal, claimedTokensList, claimingTokenPk } = useContext(TokenTapContext);
 
 	const { account } = useWeb3React();
 	const isPermissionVerified = usePermissionResolver();
@@ -149,7 +149,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 											mlAuto
 											icon="../assets/images/landing/tokentap-icon.png"
 											iconWidth={24}
-											iconHeight={20}
+											iconHeight={24}
 											onClick={() => openClaimModal(token)}
 											className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
 										>

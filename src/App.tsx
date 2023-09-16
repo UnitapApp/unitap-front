@@ -28,6 +28,7 @@ import UserUpdater from 'state/user/updater';
 import { MulticallUpdater } from 'lib/state/multicall';
 import ScrollToTop from 'components/basic/ScrollToTop/scrollToTop';
 import PrizeTap from 'pages/prize-tap';
+import PrizeTapProvider from 'hooks/prizeTap/prizeTapContext';
 import { ErrorsProvider } from './context/ErrorsProvider';
 
 import 'typeface-jetbrains-mono';
@@ -99,8 +100,14 @@ function App() {
 														}
 													/>
 													<Route path={RoutePath.ABOUT} element={<About />} />
-													<Route path={RoutePath.PRIZE} element={<PrizeTap />} />
-
+													<Route
+														path={RoutePath.PRIZE}
+														element={
+															<PrizeTapProvider>
+																<PrizeTap />
+															</PrizeTapProvider>
+														}
+													/>
 													<Route
 														path={RoutePath.TOKEN}
 														element={

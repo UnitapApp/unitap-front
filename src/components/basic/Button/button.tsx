@@ -123,9 +123,9 @@ export const PrimaryButton = styled(Button)`
 `;
 
 export const PrimaryOutlinedButton = styled(Button)`
-	/* border: 1px solid ${DV.colors.primary}; */
-	color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
-	background: ${({ disabled }) => (disabled ? '#C0AFC7' : DV.bgGradient.primary)};
+	// border: 1px solid ${DV.colors.primary};
+	// color: ${({ disabled }) => (disabled ? '#C0AFC7' : 'white')};
+	background: ${({ disabled }) => (disabled ? DV.bgGradient.primary : DV.bgGradient.primary)};
 	position: relative;
 	z-index: 1;
 
@@ -240,13 +240,14 @@ export const ClaimButton = styled(PrimaryOutlinedButton)`
 
 	&:disabled {
 		opacity: 0.6;
+		border: 2px solid ${DV.colors.gray80};
 
-		background: ${DV.colors.gray90};
+		background: transparent;
 
 		p {
 			-webkit-background-clip: none !important;
 			-webkit-text-fill-color: none !important;
-			color: ${DV.colors.gray10};
+			color: ${DV.colors.gray90};
 		}
 
 		::before {
@@ -315,6 +316,74 @@ export const EmptyWithRefillButton = styled(Button)`
 	&:hover {
 		background: ${DV.colors.gray90};
 		color: ${DV.colors.gray70};
+	}
+`;
+
+export const ClaimPrizeButton = styled(PrimaryButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.dark};
+		-webkit-background-clip: text;
+	}
+`;
+export const PrizeTapCard = styled(PrimaryOutlinedButton)`
+	background-image: linear-gradient(to left, #4bf2a2, #a89fe7, #e1c3f4, #dd40cc) !important;
+	display: block;
+	font-weight: 500 !important;
+
+	&::before {
+		background: url('/assets/images/prize-tap/raffle-win.svg');
+		background-size: cover;
+	}
+
+	p {
+		padding-right: 100px;
+		height: 100%;
+		text-align: left;
+	}
+`;
+
+export const EnrolledButton = styled(PrimaryOutlinedButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.primary_2};
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+`;
+
+export const ClaimAndEnrollButton = styled(PrimaryOutlinedButton)`
+	width: 220px;
+	font-weight: 600;
+
+	p {
+		background: ${DV.bgGradient.primary_2};
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	::before {
+		background: #030317 !important;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		border: 2px solid ${DV.colors.gray80};
+
+		background: transparent;
+
+		p {
+			-webkit-background-clip: none !important;
+			-webkit-text-fill-color: none !important;
+			color: ${DV.colors.gray90};
+		}
+
+		::before {
+			background: none !important;
+		}
 	}
 `;
 
