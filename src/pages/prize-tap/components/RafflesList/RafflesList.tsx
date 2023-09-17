@@ -135,7 +135,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<img
 									src={imageUrl ? imageUrl : tokenImgLink}
 									alt={name}
-									width={!isPrizeNft ? '24px' : ''}
+									width={!isPrizeNft ? '168px' : ''}
 									className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
 								/>
 							)}
