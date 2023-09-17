@@ -34,7 +34,7 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 										{raffle.isPrizeNft ? raffle.prizeAmount : raffle.prizeAmount / 10 ** raffle.decimals}{' '}
 										{raffle.prizeSymbol}
 									</p>
-									<p className="text-secondary-text mt-2">{raffle.isPrizeNft ? '' : 'by ' + raffle.creator}</p>
+									<p className="text-secondary-text mt-2">{'by ' + raffle.creator}</p>
 								</div>
 							</div>
 							<div className="flex mt-[-1.2em] ml-[6em] justify-between">
