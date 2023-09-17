@@ -139,11 +139,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
 								/>
 							)}
-							{!isPrizeNft && (
+							{/* {!isPrizeNft && (
 								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
 									{calculateClaimAmount + '  ' + prizeSymbol}
 								</div>
-							)}
+							)} */}
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
