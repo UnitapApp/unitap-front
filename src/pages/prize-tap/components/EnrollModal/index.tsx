@@ -377,17 +377,21 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I won ${selectedRaffleForEnroll?.name} from @Unitap_app among ${selectedRaffleForEnroll?.numberOfOnchainEntries} participants. 🤩🎉 (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 
+				`I won ${selectedRaffleForEnroll?.name} from @Unitap_app among ${
+					selectedRaffleForEnroll?.numberOfOnchainEntries
+				} participants. 🤩🎉 (raffled off by @${selectedRaffleForEnroll?.twitterUrl.split('/').at(-1)}) 
 				Try your luck to win valuable prizes at https://unitap.app/prize-tap`,
-			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.prizeName)}`;
+			)}&url=${encodeURIComponent('unitap.app/prize-tap')}`;
 			window.open(twitterUrl, '_blank');
 		};
 
 		const handleShareEnrollTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`Trying my chances to win ${selectedRaffleForEnroll?.name} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl}) 💚💜
+				`Trying my chances to win ${
+					selectedRaffleForEnroll?.name
+				} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl.split('/').at(-1)}) 💚💜
 					Feeling lucky? 😎 https://unitap.app/prize-tap`,
-			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+			)}&url=${encodeURIComponent('unitap.app/prize-tap')}`;
 			window.open(twitterUrl, '_blank');
 		};
 
@@ -537,7 +541,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (!walletConnected) return renderWalletNotConnectedBody();
 
-		if (claimOrEnrollWithMetamaskResponse?.state === 'Done') return renderSuccessBody();
+		if (claimOrEnrollWithMetamaskResponse?.state === 'Done' || true) return renderSuccessBody();
 
 		if (!chainId || chainId.toString() !== selectedRaffleForEnroll?.chain.chainId)
 			return renderWrongNetworkBody(selectedRaffleForEnroll.chain);
