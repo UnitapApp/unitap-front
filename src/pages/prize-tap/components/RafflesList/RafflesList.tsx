@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 import { getTxUrl, shortenAddress } from 'utils';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
+import Tooltip from 'components/basic/Tooltip';
 
 const Action = styled.div`
 	display: flex;
@@ -91,13 +92,15 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		decimals,
 		prizeAmount,
 	} = raffle;
-	const isPermissionVerified = usePermissionResolver();
+
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
 	const [start, setStarted] = useState<boolean>(true);
+	const [showAllPermissions, setShowAllPermissions] = useState(false);
+
 	useEffect(() => {
 		setStarted(new Date(startAt) < new Date());
 	}, [new Date()]);
@@ -110,16 +113,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	let tokenImgLink: string | undefined = tokenUri
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
-
-	const permissionVerificationsList = useMemo(
-		() =>
-			raffle.constraints
-				.filter((permission) => permission.type === 'VER')
-				.map((permission) => isPermissionVerified(permission)),
-		[raffle, isPermissionVerified],
-	);
-
-	const needsVerification = permissionVerificationsList.filter((permission) => !permission);
 
 	return (
 		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
@@ -157,7 +150,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							isHighlighted ? 'bg-g-primary-low' : 'bg-gray30 border-2 border-gray40'
 						} rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
 					>
-						<span className="flex justify-between w-full mb-3">
+						<span className="flex justify-between w-full mb-1">
 							<p className="prize-card__title text-white text-sm">{name}</p>
 							<div className="prize-card__links flex gap-4">
 								{twitterUrl && (
@@ -193,28 +186,43 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								)}
 							</p>
 						</span>
-						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
+						<p className="prize-card__description text-gray100 text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
 							{description}
 						</p>
+
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
-							<span className="text-xs text-gray100 mb-3">
-								<span
-									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
-									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
-								>
-									{!needsVerification.length ? (
-										<>
-											<img src="/assets/images/prize-tap/check.svg" alt="check" />
-											requirements fulfilled
-										</>
-									) : (
-										<>
-											<img src="/assets/images/prize-tap/not-completed.svg" alt="check" />
-											{needsVerification.length + ' '}
-											requirements for enrollment
-										</>
+							<span className="text-xs mb-3">
+								<div className={`flex items-center flex-wrap text-xs gap-2 text-white`}>
+									{(showAllPermissions
+										? raffle.constraints
+										: raffle.constraints.filter((permission) => permission.type === 'VER').slice(0, 6)
+									).map((permission, key) => (
+										<Tooltip
+											onClick={openEnrollModal.bind(null, raffle, 'Verify')}
+											className={
+												'border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg '
+											}
+											data-testid={`token-verification-${raffle.id}-${permission.name}`}
+											key={key}
+											text={permission.description}
+										>
+											<div className="flex items-center gap-3">{permission.title}</div>
+										</Tooltip>
+									))}
+
+									{raffle.constraints.length > 6 && (
+										<button
+											onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
+											className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+										>
+											<span>{showAllPermissions ? 'Show less' : 'Show more'}</span>
+											<img
+												src="/assets/images/token-tap/angle-down.svg"
+												className={`ml-2 ${showAllPermissions ? 'rotate-180' : ''} transition-transform`}
+											/>
+										</button>
 									)}
-								</span>
+								</div>
 							</span>
 						)}
 
@@ -273,9 +281,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									<ClaimAndEnrollButton
 										height="48px"
 										fontSize="14px"
-										disabled={!!needsVerification.length || !start}
+										disabled={!start}
 										className="min-w-[552px] md:!w-[352px] !w-full"
-										onClick={() => openEnrollModal(raffle, 'Enroll')}
+										onClick={() => openEnrollModal(raffle, 'Verify')}
 									>
 										{' '}
 										<div className="relative w-full">

@@ -15,6 +15,7 @@ import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { GlobalContext } from 'hooks/useGlobalContext';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 import Tooltip from 'components/basic/Tooltip';
+import RafflePermissions from '../permissions';
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -217,58 +218,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		}
 
 		if (method === 'Verify') {
-			const permissionVerificationsList = selectedRaffleForEnroll.constraints
-				.filter((permission) => permission.type === 'VER')
-				.map((permission) => isPermissionVerified(permission));
-
-			const needsVerification = permissionVerificationsList.filter((permission) => !permission);
-
-			return (
-				<div className="text-center pt-4">
-					<p className="text-sm text-gray100 leading-6 mt-10">
-						You are about to enroll in a raffle. Please make sure you meet the following requirements.
-					</p>
-					<div className="mt-5 text-xs">
-						{selectedRaffleForEnroll.constraints.map((permission, key) => (
-							<Tooltip
-								className={
-									'border-gray70 mx-3 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
-									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
-								}
-								data-testid={`token-verification-${selectedRaffleForEnroll.id}-${permission.name}`}
-								key={key}
-								text={permission.description}
-							>
-								<div className="flex items-center gap-3">
-									<img
-										src={
-											permissionVerificationsList[key]
-												? '/assets/images/token-tap/check.svg'
-												: '/assets/images/token-tap/not-verified.svg'
-										}
-									/>
-									{permission.title}
-								</div>
-							</Tooltip>
-						))}
-					</div>
-
-					<ClaimButton
-						onClick={() => setMethod('Enroll')}
-						width="100%"
-						fontSize="16px"
-						className="!w-full mt-10"
-						disabled={
-							new Date(selectedRaffleForEnroll.startAt) > new Date() ||
-							!!needsVerification.length ||
-							selectedRaffleForEnroll.isExpired
-						}
-						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
-					>
-						{selectedRaffleForEnroll.isExpired ? <p>Expired</p> : <p>Enroll</p>}
-					</ClaimButton>
-				</div>
-			);
+			return <RafflePermissions raffle={selectedRaffleForEnroll!} />;
 		}
 
 		if (method === 'Enroll') {

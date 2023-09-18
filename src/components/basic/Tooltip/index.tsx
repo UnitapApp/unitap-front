@@ -1,12 +1,13 @@
-import { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, useState, MouseEvent } from 'react';
 
-const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: string; toolTipClassName?: string }> = ({
-	text,
-	children,
-	className,
-	toolTipClassName,
-	...props
-}) => {
+const Tooltip: FC<
+	PropsWithChildren & {
+		text: string | ReactNode;
+		className?: string;
+		toolTipClassName?: string;
+		onClick?: (e: MouseEvent) => void;
+	}
+> = ({ text, children, className, toolTipClassName, ...props }) => {
 	const [showTooltip, setShowTooltip] = useState(false);
 
 	const handleMouseEnter = () => {
@@ -25,6 +26,7 @@ const Tooltip: FC<PropsWithChildren & { text: string | ReactNode; className?: st
 			{...props}
 		>
 			<span className="cursor-pointer">{children}</span>
+
 			<div
 				className={`absolute bottom-full mb-3 -translate-x-1/2 left-1/2 w-full p-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs transition-opacity opacity-0 ${toolTipClassName} ${
 					showTooltip ? 'opacity-100 pointer-events-auto' : 'pointer-events-none'

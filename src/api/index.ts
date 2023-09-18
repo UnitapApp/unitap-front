@@ -234,3 +234,13 @@ export async function submitDonationTxHash(txHash: string, chainPk: number, toke
 
 	return response.data;
 }
+
+export async function getRaffleConstraintsVerifications(rafflePk: number, token: string) {
+	const response = await axiosInstance.get('/api/prizetap/get-raffle-constraints/' + rafflePk + '/', {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
+
+	return response.data;
+}
