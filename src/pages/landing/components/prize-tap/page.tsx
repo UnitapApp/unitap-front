@@ -38,8 +38,14 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 								</div>
 							</div>
 							<div className="flex mt-[-1.2em] ml-[6em] justify-between">
-								<p className="text-gray90 ml-2">Winner in:</p>
-								<RaffleCardTimerLandingPage startTime={raffle.createdAt} FinishTime={raffle.deadline} />
+								{raffle.winnerEntry ? (
+									<p className="text-gray90">Congratulations, @{raffle.winnerEntry?.userProfile?.username}</p>
+								) : (
+									<>
+										<p className="text-gray90 ml-2">Winner in:</p>
+										<RaffleCardTimerLandingPage startTime={raffle.createdAt} FinishTime={raffle.deadline} />
+									</>
+								)}
 							</div>
 						</div>
 						<div className="w-full bg-gray40 absolute bottom-0 left-0 h-[30px] flex items-center justify-between px-10  "></div>
