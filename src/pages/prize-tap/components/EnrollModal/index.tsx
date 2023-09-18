@@ -232,7 +232,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 						{selectedRaffleForEnroll.constraints.map((permission, key) => (
 							<Tooltip
 								className={
-									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
+									'border-gray70 mx-3 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
 									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
 								}
 								data-testid={`token-verification-${selectedRaffleForEnroll.id}-${permission.name}`}
