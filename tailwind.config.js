@@ -62,7 +62,7 @@ module.exports = {
 				'disabled-bg': '#C0C0C0',
 				'disabled-text': '#939393',
 				'secondary-text': '#997EA4',
-				warn: '#D7AC5A',
+				warn: '#F16E35',
 			},
 
 			borderWidth: {
