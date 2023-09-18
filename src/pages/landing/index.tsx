@@ -229,8 +229,8 @@ const Landing: FC = () => {
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
 								title={'Prize Tap'}
-								buttonTitle={'Go to Tap'}
-								buttonClass={'gradient-outline-button text-gray100'}
+								buttonTitle={'Beta'}
+								buttonClass={'green-text-button text-gray100'}
 							>
 								<Suspense fallback={<TapLoading />}>
 									<PrizeTapLandingComponent />
