@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from 'components/common/Navbar/navbar';
+import { useContext, useEffect, useState } from 'react';
 import Header from './components/Header/header';
 import SearchInput from './components/SearchInput/searchInput';
 import Dropdown from './components/Dropdown/dropdown';
 import Pagination from './components/Pagination/pagination';
 import UsersList from './components/UsersList/usersList';
-import { users } from 'constants/usersList';
-import { getLeaderBoardPaginated } from 'api';
+import { getLeaderBoardPaginated, getUserRankLeaderBoard } from 'api';
+import { UserProfileContext } from 'hooks/useUserProfile';
 
 const Leaderboard = () => {
-	const [records, setRecords] = useState({
-		start: users.length == 0 ? 0 : 1,
-		end: users.length >= 10 ? 10 : users.length,
-	});
-
 	const [loading, setLoading] = useState(true);
-	const [chains, setChains] = useState([]);
 	const [data, setData] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pagination, setPagination] = useState({ previous: null, next: null, count: 0 });
 
-	let currentUser = users.filter((user) => user.username === '@This is a test')[0];
-	let displayUser = users.slice(records.start - 1, records.end);
+	const { userToken } = useContext(UserProfileContext);
 
-	const handlePagination = (start: number, end: number) => {
-		if (start > users.length || start < 1) return;
-		setRecords({ ...records, start: start, end: end >= users.length ? users.length : end });
-	};
+	let [currentUser, setCurrentUser] = useState(null);
 
 	useEffect(() => {
 		getLeaderBoardPaginated(currentPage).then((res) => {
@@ -40,6 +29,12 @@ const Leaderboard = () => {
 			setLoading(false);
 		});
 	}, [currentPage]);
+
+	useEffect(() => {
+		if (!userToken) return;
+
+		getUserRankLeaderBoard(userToken).then((res) => setCurrentUser(res));
+	}, [userToken]);
 
 	return (
 		<>
@@ -57,7 +52,13 @@ const Leaderboard = () => {
 							<div className="text-center mt-10">Loading...</div>
 						) : (
 							<>
-								<UsersList page={currentPage} users={data} currentUser={currentUser} />
+								<UsersList
+									next={pagination.next}
+									previous={pagination.previous}
+									page={currentPage}
+									users={data}
+									currentUser={currentUser}
+								/>
 								<Pagination
 									next={pagination.next}
 									previous={pagination.previous}

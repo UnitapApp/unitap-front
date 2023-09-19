@@ -236,7 +236,19 @@ export async function submitDonationTxHash(txHash: string, chainPk: number, toke
 }
 
 export async function getLeaderBoardPaginated(page: number) {
-	const response = await axiosInstance.get('/api/v1/gas-tap/leaderboard?page=' + page);
+	const response = await axiosInstance.get('/api/v1/gas-tap/leaderboard?page=' + page + '&page_size=15');
+
+	return response.data;
+}
+
+export async function getUserRankLeaderBoard(token: string) {
+	const response = await axiosInstance.get('/api/v1/user/gas-tap/leaderboard/', {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
+
+	return response.data;
 }
 
 export async function getRaffleConstraintsVerifications(rafflePk: number, token: string) {

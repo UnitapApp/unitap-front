@@ -1,6 +1,8 @@
-import { UsersCardProps } from 'types';
+import { Chain, UsersCardProps } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 import { shortenAddress } from 'utils';
+import { useContext, useMemo } from 'react';
+import { ClaimContext } from 'hooks/useChainList';
 
 const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: number }) => {
 	const {
@@ -13,6 +15,19 @@ const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: numbe
 		twitterLink,
 		instagramLink,
 	} = user;
+
+	const { chainList } = useContext(ClaimContext);
+
+	const chainMap = useMemo(() => {
+		const map: { [key: number]: Chain } = {};
+
+		chainList.forEach((chain) => {
+			map[chain.pk] = chain;
+		});
+
+		return map;
+	}, [chainList]);
+
 	return (
 		<div className="pt-4">
 			<div
@@ -30,7 +45,7 @@ const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: numbe
 								: `user__id text-white md:w-[40px] h-[40px] md:h-[auto] user-card__id`
 						}
 					>
-						<div>#{id}</div>
+						<div>#{index}</div>
 					</div>
 					<Icon
 						iconSrc={'assets/images/leaderboard/profileImage.svg'}
@@ -60,9 +75,10 @@ const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: numbe
 					<div className="flex flex-col gap-2 p-2 items-center mr-0">
 						<div className="text-gray80 text-[12px] user-card_title_color">Interacted Chains</div>
 						<div className="flex xl:justify-between items-center gap-3">
-							<Icon iconSrc="assets/images/leaderboard/ic_arbitrum.svg" width="24px" height="24px" hoverable />
-							<Icon iconSrc="assets/images/leaderboard/chain1.svg" width="24px" height="24px" hoverable />
-							<Icon iconSrc="assets/images/leaderboard/telos.svg" width="24px" height="24px" hoverable />
+							{!!user.interactedChains &&
+								user.interactedChains.map((chainId, key) => (
+									<Icon key={key} iconSrc={chainMap[chainId].logoUrl} hoverable width="24px" height="24px" />
+								))}
 						</div>
 					</div>
 				</div>

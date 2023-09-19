@@ -242,7 +242,7 @@ export type Prize = {
 	prizeName: string;
 	prizeSymbol: string;
 	winnerEntry: WinnerEntry;
-	startAt: string
+	startAt: string;
 };
 
 export type WinnerEntry = {
@@ -280,7 +280,7 @@ export type User = {
 };
 
 export type UsersCardProps = {
-	user: User;
+	user: User & { interactedChains?: number[] };
 	currentUser: User;
 };
 export type EnrollmentSignature = {

@@ -1,19 +1,22 @@
-import React from 'react';
 import { User } from 'types';
 import UsersCard from '../UsersCard/usersCard';
 import Icon from 'components/basic/Icon/Icon';
 
 interface UsersListProp {
 	users: User[];
-	currentUser: User;
+	currentUser: (User & { rank: number }) | null;
 	page: number;
+	next: number | null;
+	previous: number | null;
 }
 
-const UsersList = ({ users, currentUser, page }: UsersListProp) => {
+const UsersList = ({ users, currentUser, page, next, previous }: UsersListProp) => {
 	let period = { first: users[0].id, last: users[users.length - 1].id };
+	if (!currentUser) return null;
+
 	return (
 		<div className="users-card">
-			{currentUser.id < period.first && (
+			{currentUser.rank < (previous ?? -1) && (
 				<div className="pt-4">
 					<UsersCard index={-1} key={currentUser.id} user={currentUser} currentUser={currentUser} />
 					<Icon className="pt-3" iconSrc="assets/images/leaderboard/space.svg" width="28px" height="28px" />
@@ -22,7 +25,7 @@ const UsersList = ({ users, currentUser, page }: UsersListProp) => {
 			{users.map((user, index) => (
 				<UsersCard index={(page - 1) * 10 + index + 1} key={index} user={user} currentUser={currentUser} />
 			))}
-			{currentUser.id > period.last && (
+			{currentUser.rank > (next ?? Infinity) && (
 				<div className="pt-4">
 					<Icon iconSrc="assets/images/leaderboard/space.svg" width="28px" height="28px" />
 					<UsersCard index={-1} key={currentUser.id} user={currentUser} currentUser={currentUser} />

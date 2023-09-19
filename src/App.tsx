@@ -100,7 +100,14 @@ function App() {
 															</ClaimProvider>
 														}
 													/>
-													<Route path={RoutePath.LEADERBOARD} element={<Leaderboard />} />
+													<Route
+														path={RoutePath.LEADERBOARD}
+														element={
+															<ClaimProvider>
+																<Leaderboard />
+															</ClaimProvider>
+														}
+													/>
 													<Route path={RoutePath.ABOUT} element={<About />} />
 													<Route
 														path={RoutePath.PRIZE}
