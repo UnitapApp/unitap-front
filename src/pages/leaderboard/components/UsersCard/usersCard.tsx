@@ -32,7 +32,7 @@ const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: numbe
 		<div className="pt-4">
 			<div
 				className={
-					currentUser.username == user.username
+					currentUser?.username == user.username
 						? 'bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row user-card__wrap'
 						: 'bg-gray30 justify-between rounded-2xl flex flex-col md:flex-row xl:flex-row'
 				}

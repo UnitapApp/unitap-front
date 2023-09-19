@@ -281,7 +281,7 @@ export type User = {
 
 export type UsersCardProps = {
 	user: User & { interactedChains?: number[] };
-	currentUser: User;
+	currentUser: User | null;
 };
 export type EnrollmentSignature = {
 	result: muonResult;

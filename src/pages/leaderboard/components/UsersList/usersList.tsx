@@ -12,11 +12,10 @@ interface UsersListProp {
 
 const UsersList = ({ users, currentUser, page, next, previous }: UsersListProp) => {
 	let period = { first: users[0].id, last: users[users.length - 1].id };
-	if (!currentUser) return null;
 
 	return (
 		<div className="users-card">
-			{currentUser.rank < (previous ?? -1) && (
+			{!!currentUser && currentUser.rank < (previous ?? -1) && (
 				<div className="pt-4">
 					<UsersCard index={-1} key={currentUser.id} user={currentUser} currentUser={currentUser} />
 					<Icon className="pt-3" iconSrc="assets/images/leaderboard/space.svg" width="28px" height="28px" />
@@ -25,7 +24,7 @@ const UsersList = ({ users, currentUser, page, next, previous }: UsersListProp) 
 			{users.map((user, index) => (
 				<UsersCard index={(page - 1) * 10 + index + 1} key={index} user={user} currentUser={currentUser} />
 			))}
-			{currentUser.rank > (next ?? Infinity) && (
+			{!!currentUser && currentUser.rank > (next ?? Infinity) && (
 				<div className="pt-4">
 					<Icon iconSrc="assets/images/leaderboard/space.svg" width="28px" height="28px" />
 					<UsersCard index={-1} key={currentUser.id} user={currentUser} currentUser={currentUser} />
