@@ -76,9 +76,12 @@ const UsersCard = ({ user, currentUser, index }: UsersCardProps & { index: numbe
 						<div className="text-gray80 text-[12px] user-card_title_color">Interacted Chains</div>
 						<div className="flex xl:justify-between items-center gap-3">
 							{!!user.interactedChains &&
-								user.interactedChains.map((chainId, key) => (
-									<Icon key={key} iconSrc={chainMap[chainId].logoUrl} hoverable width="24px" height="24px" />
-								))}
+								user.interactedChains.map(
+									(chainId, key) =>
+										!!chainMap[chainId]?.logoUrl && (
+											<Icon key={key} iconSrc={chainMap[chainId]?.logoUrl} hoverable width="24px" height="24px" />
+										),
+								)}
 						</div>
 					</div>
 				</div>
