@@ -13,9 +13,9 @@ import { UserProfileContext } from '../../../../hooks/useUserProfile';
 import { switchChain } from '../../../../utils/switchChain';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { GlobalContext } from 'hooks/useGlobalContext';
-import { RemainingRaffleComponent } from '../Header/header';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 import Tooltip from 'components/basic/Tooltip';
+import RafflePermissions from '../permissions';
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -218,58 +218,7 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 		}
 
 		if (method === 'Verify') {
-			const permissionVerificationsList = selectedRaffleForEnroll.constraints
-				.filter((permission) => permission.type === 'VER')
-				.map((permission) => isPermissionVerified(permission));
-
-			const needsVerification = permissionVerificationsList.filter((permission) => !permission);
-
-			return (
-				<div className="text-center pt-4">
-					<div>
-						<RemainingRaffleComponent />
-					</div>
-					<p className="text-sm text-gray100 leading-6 mt-10">
-						by clicking on “Enroll”, one of your coupons will be utilized and cannot be returned .To enroll, please
-						ensure that you meet the following requirements.
-					</p>
-					<div className="mt-5 text-xs">
-						{selectedRaffleForEnroll.constraints.map((permission, key) => (
-							<Tooltip
-								className={
-									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
-									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
-								}
-								data-testid={`token-verification-${selectedRaffleForEnroll.id}-${permission.name}`}
-								key={key}
-								text={permission.description}
-							>
-								<div className="flex items-center gap-3">
-									<img
-										src={
-											permissionVerificationsList[key]
-												? '/assets/images/token-tap/check.svg'
-												: '/assets/images/token-tap/not-verified.svg'
-										}
-									/>
-									{permission.title}
-								</div>
-							</Tooltip>
-						))}
-					</div>
-
-					<ClaimButton
-						onClick={() => setMethod('Enroll')}
-						width="100%"
-						fontSize="16px"
-						className="!w-full mt-10"
-						disabled={!!needsVerification.length || selectedRaffleForEnroll.isExpired}
-						data-testid={`chain-claim-action-${selectedRaffleForEnroll!.chain.pk}`}
-					>
-						{selectedRaffleForEnroll.isExpired ? <p>Expired</p> : <p>Enroll</p>}
-					</ClaimButton>
-				</div>
-			);
+			return <RafflePermissions raffle={selectedRaffleForEnroll!} />;
 		}
 
 		if (method === 'Enroll') {
@@ -378,15 +327,21 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
 		const handleShareClaimTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just claimed in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+				`I won ${selectedRaffleForEnroll?.name} from @Unitap_app among ${
+					selectedRaffleForEnroll?.numberOfOnchainEntries
+				} participants. 🤩🎉 (raffled off by @${selectedRaffleForEnroll?.twitterUrl.split('/').at(-1)}) 
+				Try your luck to win valuable prizes at `,
+			)}&url=${encodeURIComponent('unitap.app/prize-tap')}`;
 			window.open(twitterUrl, '_blank');
 		};
 
 		const handleShareEnrollTwitter = () => {
 			const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-				`I've just enrolled in ${selectedRaffleForEnroll?.name} from @Unitap_app 🔥\n Claim yours:`,
-			)}&url=${encodeURIComponent('unitap.app/prize-tap?hc=' + selectedRaffleForEnroll?.name)}`;
+				`Trying my chances to win ${
+					selectedRaffleForEnroll?.name
+				} at @unitap_app (raffled off by @${selectedRaffleForEnroll?.twitterUrl.split('/').at(-1)}) 💚💜
+					Feeling lucky? 😎 `,
+			)}&url=${encodeURIComponent('unitap.app/prize-tap')}`;
 			window.open(twitterUrl, '_blank');
 		};
 

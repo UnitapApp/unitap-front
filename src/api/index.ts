@@ -237,6 +237,14 @@ export async function submitDonationTxHash(txHash: string, chainPk: number, toke
 
 export async function getLeaderBoardPaginated(page: number) {
 	const response = await axiosInstance.get('/api/v1/gas-tap/leaderboard?page=' + page);
+}
+
+export async function getRaffleConstraintsVerifications(rafflePk: number, token: string) {
+	const response = await axiosInstance.get('/api/prizetap/get-raffle-constraints/' + rafflePk + '/', {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
 
 	return response.data;
 }

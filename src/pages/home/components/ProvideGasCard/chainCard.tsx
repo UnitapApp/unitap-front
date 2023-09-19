@@ -23,11 +23,7 @@ const ChainCard = ({ chain }: props) => {
 		const fetchBalance = async () => {
 			try {
 				if (chain.chainType === ChainType.SOLANA) {
-					const connection = new Connection(
-						chain.isTestnet
-							? clusterApiUrl('testnet')
-							: 'https://empty-magical-leaf.solana-mainnet.discover.quiknode.pro/4968f7a4791085816487ee6e15889f653f53ba13/',
-					);
+					const connection = new Connection(chain.rpcUrl);
 					const balance = await connection.getAccountInfo(new PublicKey(chain.fundManagerAddress));
 
 					if (balance?.lamports) {

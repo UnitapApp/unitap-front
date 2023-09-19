@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 import { getTxUrl, shortenAddress } from 'utils';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
+import Tooltip from 'components/basic/Tooltip';
 
 const Action = styled.div`
 	display: flex;
@@ -77,7 +78,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		twitterUrl,
 		discordUrl,
 		description,
-		createdAt,
+		startAt,
 		deadline,
 		name,
 		chain,
@@ -87,14 +88,22 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		isPrizeNft,
 		userEntry,
 		winnerEntry,
+		prizeSymbol,
+		decimals,
+		prizeAmount,
 	} = raffle;
-	const isPermissionVerified = usePermissionResolver();
+
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
-	// const started = useMemo(() => new Date(createdAt) < new Date(), [createdAt]);
+	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
 	const isRemainingPercentLessThanTen = remainingPeople < (maxNumberOfEntries / 100) * 10;
+	const [start, setStarted] = useState<boolean>(true);
+	const [showAllPermissions, setShowAllPermissions] = useState(false);
 
+	useEffect(() => {
+		setStarted(new Date(startAt) < new Date());
+	}, [new Date()]);
 	const getWinnerWallet = () => {
 		if (!winnerEntry) return;
 		let wallet = winnerEntry.userProfile.wallets.filter((item) => item.walletType === 'EVM');
@@ -105,32 +114,34 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
 
-	const permissionVerificationsList = useMemo(
-		() =>
-			raffle.constraints
-				.filter((permission) => permission.type === 'VER')
-				.map((permission) => isPermissionVerified(permission)),
-		[raffle, isPermissionVerified],
-	);
-
-	const needsVerification = permissionVerificationsList.filter((permission) => !permission);
-
 	return (
 		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
 			<div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
 				<div className="prize-card__image relative mb-3 lg:mb-0">
 					<div className={isHighlighted ? 'before:!inset-[2px] p-[2px] gradient-outline-card' : ''}>
 						<div
-							className={`prize-card__container h-[212px] w-[212px] flex ${
+							className={`prize-card__container h-[212px] w-[212px] flex flex-col ${
 								isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 							} justify-center items-center p-5 rounded-xl`}
 						>
-							<img src={imageUrl ? imageUrl : tokenImgLink} alt={name} />
+							{(imageUrl || tokenImgLink) && (
+								<img
+									src={imageUrl ? imageUrl : tokenImgLink}
+									alt={name}
+									width={!isPrizeNft ? '168px' : ''}
+									className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
+								/>
+							)}
+							{/* {!isPrizeNft && (
+								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
+									{calculateClaimAmount + '  ' + prizeSymbol}
+								</div>
+							)} */}
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
 						<p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
+						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
 					</div>
 				</div>
 				<div className={isHighlighted ? 'before:!inset-[3px] p-[2px] gradient-outline-card w-full' : 'w-full'}>
@@ -139,23 +150,27 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 							isHighlighted ? 'bg-g-primary-low' : 'bg-gray30 border-2 border-gray40'
 						} rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
 					>
-						<span className="flex justify-between w-full mb-3">
+						<span className="flex justify-between w-full mb-1">
 							<p className="prize-card__title text-white text-sm">{name}</p>
 							<div className="prize-card__links flex gap-4">
-								<Icon
-									iconSrc="assets/images/prize-tap/twitter-logo.svg"
-									onClick={() => window.open(twitterUrl, '_blank')}
-									width="20px"
-									height="16px"
-									hoverable
-								/>
-								<Icon
-									iconSrc="assets/images/prize-tap/discord-logo.svg"
-									onClick={() => window.open(discordUrl, '_blank')}
-									width="20px"
-									height="16px"
-									hoverable
-								/>
+								{twitterUrl && (
+									<Icon
+										iconSrc="assets/images/prize-tap/twitter-logo.svg"
+										onClick={() => window.open(twitterUrl, '_blank')}
+										width="20px"
+										height="16px"
+										hoverable
+									/>
+								)}
+								{discordUrl && (
+									<Icon
+										iconSrc="assets/images/prize-tap/discord-logo.svg"
+										onClick={() => window.open(discordUrl, '_blank')}
+										width="20px"
+										height="16px"
+										hoverable
+									/>
+								)}
 							</div>
 						</span>
 						<span className="flex justify-between w-full mb-4">
@@ -166,33 +181,48 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									</span>
 								) : (
 									<span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
-										from {creator} Collection by UNITAP.APP
+										by {creator}
 									</span>
 								)}
 							</p>
 						</span>
-						<p className="prize-card__description text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
+						<p className="prize-card__description text-gray100 text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
 							{description}
 						</p>
+
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
-							<span className="text-xs text-gray100 mb-3">
-								<span
-									onClick={openEnrollModal.bind(null, raffle, 'Verify')}
-									className="inline-flex items-center gap-1 cursor-pointer underline font-semibold"
-								>
-									{!needsVerification.length ? (
-										<>
-											<img src="/assets/images/prize-tap/check.svg" alt="check" />
-											requirements fulfilled
-										</>
-									) : (
-										<>
-											<img src="/assets/images/prize-tap/not-completed.svg" alt="check" />
-											{needsVerification.length + ' '}
-											requirements for enrollment
-										</>
+							<span className="text-xs mb-3">
+								<div className={`flex items-center flex-wrap text-xs gap-2 text-white`}>
+									{(showAllPermissions
+										? raffle.constraints
+										: raffle.constraints.filter((permission) => permission.type === 'VER').slice(0, 6)
+									).map((permission, key) => (
+										<Tooltip
+											onClick={openEnrollModal.bind(null, raffle, 'Verify')}
+											className={
+												'border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg '
+											}
+											data-testid={`token-verification-${raffle.id}-${permission.name}`}
+											key={key}
+											text={permission.description}
+										>
+											<div className="flex items-center gap-3">{permission.title}</div>
+										</Tooltip>
+									))}
+
+									{raffle.constraints.length > 6 && (
+										<button
+											onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
+											className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+										>
+											<span>{showAllPermissions ? 'Show less' : 'Show more'}</span>
+											<img
+												src="/assets/images/token-tap/angle-down.svg"
+												className={`ml-2 ${showAllPermissions ? 'rotate-180' : ''} transition-transform`}
+											/>
+										</button>
 									)}
-								</span>
+								</div>
 							</span>
 						)}
 
@@ -202,7 +232,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -212,7 +242,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
 										disabled={true}
@@ -236,7 +266,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -246,14 +276,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<ClaimAndEnrollButton
 										height="48px"
 										fontSize="14px"
-										disabled={!!needsVerification.length}
+										disabled={!start}
 										className="min-w-[552px] md:!w-[352px] !w-full"
-										onClick={() => openEnrollModal(raffle, 'Enroll')}
+										onClick={() => openEnrollModal(raffle, 'Verify')}
 									>
 										{' '}
 										<div className="relative w-full">
@@ -271,7 +301,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 										<div className="flex flex-col gap-1">
-											<p className="text-[10px] text-white">Winner in:</p>
+											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
@@ -281,7 +311,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 													: `${numberOfOnchainEntries} people enrolled`}
 											</p>
 										</div>
-										<RaffleCardTimer startTime={createdAt} FinishTime={deadline} />
+										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 									</div>
 									<EnrolledButton
 										disabled={true}
@@ -324,8 +354,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 									<Icon
 										className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
 										iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-										width="167px"
-										height="167px"
+										width="215px"
+										height="215px"
 									/>
 								</span>
 							) : winnerEntry && winnerEntry?.userProfile.pk === userProfile?.pk && !userEntry?.claimingPrizeTx ? (
@@ -337,8 +367,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<Icon
 											className="opacity-[.3] mt-[-10px] mr-[-20px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-											width="167px"
-											height="167px"
+											width="215px"
+											height="215px"
 										/>
 									</div>
 
@@ -361,8 +391,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<Icon
 											className="opacity-[.3] mt-[-10px]"
 											iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-											width="167px"
-											height="167px"
+											width="215px"
+											height="215px"
 										/>
 									</div>
 									<div className="claimed-prize md:!w-[352px] !w-full">
@@ -397,9 +427,14 @@ const RaffleCardTimer = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
 	const [hours, setHours] = useState('00');
 	const [minutes, setMinutes] = useState('00');
 	const [seconds, setSeconds] = useState('00');
+	const [start, setStarted] = useState<boolean>(true);
+
+	useEffect(() => {
+		setStarted(new Date(startTime) < new Date());
+	}, [new Date()]);
 
 	let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
-	let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime]);
+	let FinishTimeDate = useMemo(() => new Date(start ? FinishTime : new Date()), [FinishTime]);
 
 	let deadline = useMemo(
 		() => (startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate),
@@ -451,6 +486,64 @@ const RaffleCardTimer = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
 			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
 				<p className="prize-card__timer-item-value text-white font-semibold">{seconds}</p>
 				<p className="prize-card__timer-item-label text-gray90">s</p>
+			</div>
+		</div>
+	);
+};
+
+export const RaffleCardTimerLandingPage = ({ startTime, FinishTime }: RaffleCardTimerProps) => {
+	const [now, setNow] = useState(new Date());
+	const [days, setDays] = useState('00');
+	const [hours, setHours] = useState('00');
+	const [minutes, setMinutes] = useState('00');
+	const [seconds, setSeconds] = useState('00');
+
+	let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
+	let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime]);
+
+	let deadline = useMemo(
+		() => (startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate),
+		[startTimeDate, FinishTimeDate, now],
+	);
+
+	useEffect(() => {
+		const diff = deadline.getTime() - now.getTime();
+		if (diff <= 0) {
+			return;
+		}
+		const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+		setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
+		setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
+		setHours(hours < 10 ? `0${hours}` : hours.toString());
+		setDays(days < 10 ? `0${days}` : days.toString());
+	}, [now, deadline]);
+
+	useEffect(() => {
+		const interval = setInterval(() => setNow(new Date()), 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+
+	return (
+		<div className="prize-card__timer flex gap-1 md:px-1 mt-[-2px] text-gray100 items-center">
+			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+				<p className="prize-card__timer-item-value font-semibold">{days}</p>
+			</div>
+			<p className="text-sm">:</p>
+			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+				<p className="prize-card__timer-item-value font-semibold">{hours}</p>
+			</div>
+			<p className="text-sm">:</p>
+			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+				<p className="prize-card__timer-item-value font-semibold">{minutes}</p>
+			</div>
+			<p className="text-sm">:</p>
+			<div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+				<p className="prize-card__timer-item-value font-semibold">{seconds}</p>
 			</div>
 		</div>
 	);

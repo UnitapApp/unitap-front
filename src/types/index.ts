@@ -242,6 +242,7 @@ export type Prize = {
 	prizeName: string;
 	prizeSymbol: string;
 	winnerEntry: WinnerEntry;
+	startAt: string
 };
 
 export type WinnerEntry = {

@@ -149,7 +149,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 											mlAuto
 											icon="../assets/images/landing/tokentap-icon.png"
 											iconWidth={24}
-											iconHeight={20}
+											iconHeight={24}
 											onClick={() => openClaimModal(token)}
 											className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
 										>
@@ -196,7 +196,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 						).map((permission, key) => (
 							<Tooltip
 								className={
-									'border-gray70 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
+									'border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
 									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
 								}
 								data-testid={`token-verification-${token.id}-${permission.name}`}

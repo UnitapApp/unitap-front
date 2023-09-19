@@ -13,6 +13,9 @@ import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
 import { countGasClaimedAPI, countUsersAPI } from 'api';
 import { Chain } from 'types';
+import UButton from 'components/basic/Button/UButton';
+import PrizeTapLandingLazy from './components/prize-tap';
+import { getRafflesListAPI } from 'api';
 
 export const socialLinks = [
 	{
@@ -32,14 +35,15 @@ export const socialLinks = [
 	},
 ];
 
+const learnTap = {
+	name: 'Learn Tap',
+	icon: 'learntap-icon.png',
+	description: 'Where users can learn to use web3 technologies',
+	class: 'bg-learntap-texture',
+	iconSize: 'w-6',
+};
+
 export const futureTaps = [
-	{
-		name: 'Learn Tap',
-		icon: 'learntap-icon.png',
-		description: 'Where users can learn to use web3 technologies',
-		class: 'after:bg-learntap-texture after:inset-0',
-		iconSize: 'w-6',
-	},
 	{
 		name: 'Stake Tap',
 		icon: 'staketap-icon.png',
@@ -58,6 +62,8 @@ export const futureTaps = [
 
 const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
 
+const PrizeTapLandingComponent = lazy(PrizeTapLandingLazy);
+
 const GasTapLandingComponent = lazy(GasTapLandingLazy);
 
 const Landing: FC = () => {
@@ -75,6 +81,7 @@ const Landing: FC = () => {
 
 	const [usersCount, setUsersCount] = useState('+4000');
 	const [gasClaimedCount, setGasClaimedCount] = useState(0);
+	const [rafflesLength, setRafflesLength] = useState(0);
 
 	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
@@ -86,6 +93,7 @@ const Landing: FC = () => {
 	useEffect(() => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
 		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
+		getRafflesListAPI(undefined).then((res) => setRafflesLength(res ? res.length : 0));
 	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
@@ -112,6 +120,29 @@ const Landing: FC = () => {
 						Unitap is an onboarding tool for networks and communities and a gateway to web3
 					</h4>
 				</section>
+
+				{/* <section
+					id="home-header"
+					className="uni-card flex items-start p-4 justify-between gap-4 after:rounded-2xl after:bg-home-header-texture text-white text-center sm:text-left sm:px-12 overflow-hidden h-52"
+				>
+					<div className="flex items-center">
+						<img src="/assets/images/landing/profile-img.svg" alt="profile-unitap" width={57} height={64} />
+						<div className="ml-4">
+							<strong>@CNA</strong>
+							<div className="mt-3 text-xs text-gray90">Level: [Coming soon]</div>
+						</div>
+					</div>
+					<div>
+						<img
+							src={'/assets/images/landing/uni-logo.svg'}
+							className={'w-40 mx-auto sm:mx-0'}
+							width={157}
+							height={32}
+							alt={'logo'}
+						/>
+						<h4 className={'text-secondary-text text-sm font-bold mt-5 text-center'}>The gateway to web3</h4>
+					</div>
+				</section> */}
 
 				<section
 					id="home-nft"
@@ -184,47 +215,58 @@ const Landing: FC = () => {
 						</Link>
 					</section>
 
-					{/* <section className={'flex--1'}>
-						<Widget
-							description={'Give it a shot and try your chance at winning valuable prizes'}
-							className={'after:bg-prizetap-texture h-full after:w-full after:-top-4'}
-							icon={'prizetap-icon.png'}
-							iconSize={'w-8 h-7'}
-							title={'Prize Tap'}
-							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
-						></Widget>
-					</section> */}
-
 					<section className={'flex--1'}>
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
-								description={'Where everyone has chances to win larger prizes'}
-								className={'after:bg-prizetap-texture h-full after:w-full after:-top-8 hover:bg-gray00'}
+								description={
+									rafflesLength === 0
+										? 'No raffles are live on Prize Tap'
+										: rafflesLength === 1
+										? '1 raffle is live on Prize Tap'
+										: rafflesLength + ' Raffles are live on PrizeTap...'
+								}
+								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
 								iconSize={'w-8 h-7'}
 								title={'Prize Tap'}
-								buttonTitle={'Go to Tap'}
-								buttonClass={'gradient-outline-button text-gray100'}
-							></Widget>
+								buttonTitle={'Beta'}
+								buttonClass={'green-text-button text-gray100'}
+							>
+								<Suspense fallback={<TapLoading />}>
+									<PrizeTapLandingComponent />
+								</Suspense>
+							</Widget>
 						</Link>
 					</section>
 				</section>
 
-				<section id={'home-future-taps'} className={'flex gap-4 justify-between md:flex-row flex-col'}>
-					{futureTaps.map((tap) => (
-						<Widget
-							icon={tap.icon}
-							iconSize={tap.iconSize}
-							key={tap.name}
-							description={tap.description}
-							className={`${tap.class} flex-1 pb-12`}
-							title={tap.name}
-							unClickable
-							buttonTitle={'Soon...'}
-							buttonClass={'secondary-button !bg-gray30 text-gradient-primary'}
-						></Widget>
-					))}
+				<section id="learn-tap">
+					<div className="flex flex-col justify-between uni-card bg-learntap-texture bg-cover h-40">
+						<section className="sm:flex items-center justify-center flex-col p-4 h-full">
+							<header className={`flex gap-4 items-center justify-between h-10`}>
+								<div className={`flex gap-3 sm:justify-center items-center flex-auto`}>
+									<p className={'text-white text-xl font-semibold'}>{learnTap.name}</p>
+									<img
+										className={`${learnTap.iconSize} widget-icon`}
+										src={`/assets/images/landing/${learnTap.icon}`}
+										alt={'widget'}
+									/>
+								</div>
+								<div>
+									<UButton
+										unClickable
+										className={`secondary-button sm:absolute sm:top-4 sm:right-4 !bg-gray30 text-gradient-primary text-white`}
+										size={'btn-small'}
+									>
+										Soon...
+									</UButton>
+								</div>
+							</header>
+							<p className={'text-secondary-text text-center text-xs leading-loose font-normal py-4'}>
+								{learnTap.description}
+							</p>
+						</section>
+					</div>
 				</section>
 
 				<section id="home-stats" className={'flex gap-4 justify-between'}>
