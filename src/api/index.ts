@@ -236,7 +236,7 @@ export async function submitDonationTxHash(txHash: string, chainPk: number, toke
 }
 
 export async function getLeaderBoardPaginated(page: number) {
-	const response = await axiosInstance.get('/api/v1/gas-tap/leaderboard?page=' + page + '&page_size=15');
+	const response = await axiosInstance.get('/api/v1/gas-tap/leaderboard?page=' + page + '&pageSize=15');
 
 	return response.data;
 }
