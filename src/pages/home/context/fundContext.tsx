@@ -22,7 +22,7 @@ const FundContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	return (
 		<>
-			<Modal title="Provide Gas Fee" isOpen={isOpen} closeModalHandler={() => setIsOpen(false)}>
+			<Modal className="!z-20" title="Provide Gas Fee" isOpen={isOpen} closeModalHandler={() => setIsOpen(false)}>
 				<Content initialChainId={chainId} />
 			</Modal>
 			<FundContext.Provider
