@@ -117,7 +117,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
 
-	const prizeLink = isPrizeNft ? (tokenImgLink as string) : `https://etherscan.io/address/${raffle.prizeAsset}`;
+	const prizeLink = isPrizeNft
+		? imageUrl
+			? imageUrl
+			: tokenImgLink
+		: `https://etherscan.io/address/${raffle.prizeAsset}`;
 
 	const onPrizeClick = () => {
 		if (prizeLink) window.open(prizeLink, '_blank');
