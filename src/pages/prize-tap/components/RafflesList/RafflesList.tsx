@@ -120,7 +120,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const prizeLink = isPrizeNft ? (tokenImgLink as string) : `https://etherscan.io/address/${raffle.prizeAsset}`;
 
 	const onPrizeClick = () => {
-		if (prizeLink) window.open(prizeLink);
+		if (prizeLink) window.open(prizeLink, '_blank');
 	};
 
 	return (
