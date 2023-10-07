@@ -16,6 +16,7 @@ import { GlobalContext } from 'hooks/useGlobalContext';
 import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 import Tooltip from 'components/basic/Tooltip';
 import RafflePermissions from '../permissions';
+import { Link } from 'react-router-dom';
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
@@ -242,6 +243,18 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 					) : (
 						<div className="text-left text-white"></div>
 					)}
+					<div className="text-left text-white">
+						<p className="text-xs mb-2">
+							You will need to sign a wallet transaction and pay a small gas fee to claim tokens.
+						</p>
+						<p className="text-xs mb-6">
+							If you do not have sufficient gas, please visit{' '}
+							<Link className="text-blue-500" to={'/gas-tap?hc=' + selectedRaffleForEnroll!.chain.chainName}>
+								Gas Tap
+							</Link>
+							.
+						</p>
+					</div>
 					<Text width="100%" fontSize="14">
 						Wallet Address
 					</Text>

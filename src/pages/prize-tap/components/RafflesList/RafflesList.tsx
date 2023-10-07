@@ -2,14 +2,14 @@ import { FC, useEffect, useMemo, useState, useContext } from 'react';
 import { Prize } from 'types';
 import Icon from 'components/basic/Icon/Icon';
 import { ClaimAndEnrollButton, ClaimPrizeButton, EnrolledButton } from 'components/basic/Button/button';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import styled from 'styled-components';
 import { DV } from 'components/basic/designVariables';
 import { getTxUrl, shortenAddress } from 'utils';
-import usePermissionResolver from 'hooks/token-tap/usePermissionResolver';
 import Tooltip from 'components/basic/Tooltip';
+import { numberWithCommas } from 'utils/numbers';
 
 const Action = styled.div`
 	display: flex;
@@ -73,10 +73,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 	const {
 		imageUrl,
 		tokenUri,
-		creator,
 		creatorUrl,
 		twitterUrl,
 		discordUrl,
+		creatorName,
 		description,
 		startAt,
 		deadline,
@@ -91,7 +91,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		prizeSymbol,
 		decimals,
 		prizeAmount,
+		creatorProfile,
 	} = raffle;
+
+	const creator = creatorName || creatorProfile?.username;
 
 	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
@@ -114,6 +117,12 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
 
+	const prizeLink = isPrizeNft ? (tokenImgLink as string) : `https://etherscan.io/address/${raffle.prizeAsset}`;
+
+	const onPrizeClick = () => {
+		if (prizeLink) window.open(prizeLink);
+	};
+
 	return (
 		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
 			<div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
@@ -126,10 +135,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						>
 							{(imageUrl || tokenImgLink) && (
 								<img
+									onClick={onPrizeClick}
 									src={imageUrl ? imageUrl : tokenImgLink}
 									alt={name}
 									width={!isPrizeNft ? '168px' : ''}
-									className={`${!isPrizeNft ? 'ml-1' : ''} mb-2`}
+									className={`${!isPrizeNft ? 'ml-1' : ''} cursor-pointer mb-2`}
 								/>
 							)}
 							{/* {!isPrizeNft && (
@@ -151,7 +161,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 						} rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
 					>
 						<span className="flex justify-between w-full mb-1">
-							<p className="prize-card__title text-white text-sm">{name}</p>
+							<p className="prize-card__title cursor-pointer text-white text-sm" onClick={onPrizeClick}>
+								{name}
+							</p>
 							<div className="prize-card__links flex gap-4">
 								{twitterUrl && (
 									<Icon
@@ -217,6 +229,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										>
 											<span>{showAllPermissions ? 'Show less' : 'Show more'}</span>
 											<img
+												alt="angle down"
 												src="/assets/images/token-tap/angle-down.svg"
 												className={`ml-2 ${showAllPermissions ? 'rotate-180' : ''} transition-transform`}
 											/>
@@ -236,10 +249,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-											${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
+											${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfOnchainEntries} people enrolled`}
+													: `${numberWithCommas(maxNumberOfEntries)} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
@@ -270,10 +283,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-													${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
+													${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfOnchainEntries} people enrolled`}
+													: `${numberWithCommas(maxNumberOfEntries)} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
@@ -305,10 +318,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 											<p className="text-[10px] text-gray100">
 												{!isRemainingPercentLessThanTen
 													? `
-													${numberOfOnchainEntries} / ${maxNumberOfEntries} people enrolled`
+													${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
 													? `${remainingPeople} people remains`
-													: `${numberOfOnchainEntries} people enrolled`}
+													: `${numberWithCommas(maxNumberOfEntries)} people enrolled`}
 											</p>
 										</div>
 										<RaffleCardTimer startTime={startAt} FinishTime={deadline} />

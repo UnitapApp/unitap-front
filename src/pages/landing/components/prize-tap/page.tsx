@@ -9,6 +9,7 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 			: undefined;
 		return tokenImgLink;
 	};
+
 	return (
 		<>
 			{rafflesList.length > 0 &&
@@ -34,7 +35,9 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 										{raffle.isPrizeNft ? raffle.prizeAmount : raffle.prizeAmount / 10 ** raffle.decimals}{' '}
 										{raffle.prizeSymbol}
 									</p>
-									<p className="text-secondary-text mt-2">{'by ' + raffle.creator}</p>
+									<p className="text-secondary-text mt-2">
+										{'by ' + (raffle.creatorName || raffle.creatorProfile?.username)}
+									</p>
 								</div>
 							</div>
 							<div className="flex mt-[-1.2em] ml-[6em] justify-between">
