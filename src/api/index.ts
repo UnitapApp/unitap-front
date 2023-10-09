@@ -220,7 +220,7 @@ export async function getMuonApi(raffleEntryId: number) {
 
 export async function submitDonationTxHash(txHash: string, chainPk: number, token: string) {
 	const response = await axiosInstance.post(
-		'/api/v1/user/donation',
+		'/api/v1/user/donation/',
 		{
 			txHash,
 			chainPk,
