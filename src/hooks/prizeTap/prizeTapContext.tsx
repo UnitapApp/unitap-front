@@ -28,7 +28,7 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: any | null;
 	method: string | null;
 	setMethod: (method: string | null) => void;
-	setLiniaEntryId: (id: number) => void;
+	setLineaEntryId: (id: number | null) => void;
 }>({
 	claimError: null,
 	rafflesList: [],
@@ -44,7 +44,7 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: null,
 	method: null,
 	setMethod: () => {},
-	setLiniaEntryId: NullCallback,
+	setLineaEntryId: NullCallback,
 });
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
@@ -57,7 +57,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const [claimOrEnrollSignatureLoading, setClaimOrEnrollSignatureLoading] = useState<boolean>(false);
 	const [selectedRaffleForEnroll, setSelectedRaffleForEnroll] = useState<Prize | null>(null);
 	const [claimOrEnrollLoading, setClaimOrEnrollLoading] = useState<boolean>(false);
-	const [liniaEntryId, setLiniaEntryId] = useState<number | null>(null);
+	const [lineaEntryId, setLineaEntryId] = useState<number | null>(null);
 	const { provider, account } = useWeb3React();
 
 	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
@@ -133,9 +133,9 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 						});
 						method === 'Enroll'
 							? updateEnrolledFinished(userProfile.token, id, res.transactionHash)
-							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash, liniaEntryId);
+							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash, lineaEntryId);
 
-						setLiniaEntryId(null);
+						setLineaEntryId(null);
 
 						setClaimOrEnrollLoading(false);
 					})
@@ -241,7 +241,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				claimOrEnrollWithMetamaskResponse,
 				method,
 				setMethod,
-				setLiniaEntryId,
+				setLineaEntryId: setLineaEntryId,
 			}}
 		>
 			{children}

@@ -10,7 +10,7 @@ import { DV } from 'components/basic/designVariables';
 import { getTxUrl, shortenAddress } from 'utils';
 import Tooltip from 'components/basic/Tooltip';
 import { numberWithCommas } from 'utils/numbers';
-import { LiniaRaffleCard } from '../LiniaRaffle';
+import { LineaRaffleCard } from '../LiniaRaffle';
 
 const Action = styled.div`
 	display: flex;
@@ -71,7 +71,7 @@ const RafflesList = () => {
 };
 
 const RaffleCardWrapper: FC<{ raffle: Prize; isHighlighted?: boolean }> = (props) => {
-	if (props.raffle.pk === 70) return <LiniaRaffleCard {...props} />;
+	if (props.raffle.pk === 70) return <LineaRaffleCard {...props} />;
 
 	return <RaffleCard {...props} />;
 };
@@ -103,7 +103,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 
 	const creator = creatorName || creatorProfile?.username;
 
-	const { openEnrollModal } = useContext(PrizeTapContext);
+	const { openEnrollModal, setLineaEntryId } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
@@ -400,7 +400,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										height="48px"
 										fontSize="14px"
 										className="min-w-[552px] md:!w-[352px] !w-full"
-										onClick={() => openEnrollModal(raffle, 'Claim')}
+										onClick={() => {
+											setLineaEntryId(null);
+											openEnrollModal(raffle, 'Claim');
+										}}
 									>
 										{' '}
 										<div className="relative w-full text-gray10">

@@ -1,4 +1,4 @@
-import { ClaimAndEnrollButton, EnrolledButton, ClaimPrizeButton } from 'components/basic/Button/button';
+import { ClaimAndEnrollButton, EnrolledButton, ClaimPrizeButton, Button } from 'components/basic/Button/button';
 import Icon from 'components/basic/Icon/Icon';
 import Tooltip from 'components/basic/Tooltip';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
@@ -12,8 +12,8 @@ import { RaffleCardTimer } from '../RafflesList/RafflesList';
 import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components';
 import useWalletActivation from 'hooks/useWalletActivation';
-import { LiniaRaffleEntry } from '../types';
-import { getLiniaRaffleEntries } from 'api';
+import { LineaRaffleEntry } from '../types';
+import { getLineaRaffleEntries } from 'api';
 import { RefreshContext } from 'context/RefreshContext';
 
 const Action = styled.div`
@@ -24,11 +24,11 @@ const Action = styled.div`
 	}
 `;
 
-const getUserEntry = (entryWallets: LiniaRaffleEntry[], userWallet?: string) => {
+const getUserEntry = (entryWallets: LineaRaffleEntry[], userWallet?: string) => {
 	return !!userWallet && entryWallets.find((entry) => entry.walletAddress === userWallet);
 };
 
-export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, isHighlighted }) => {
+export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, isHighlighted }) => {
 	const {
 		imageUrl,
 		tokenUri,
@@ -57,9 +57,9 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 
 	const { slowRefresh } = useContext(RefreshContext);
 
-	const [enrolledUsers, setEnrolledUsers] = useState<LiniaRaffleEntry[]>([]);
+	const [enrolledUsers, setEnrolledUsers] = useState<LineaRaffleEntry[]>([]);
 
-	const { openEnrollModal, setLiniaEntryId } = useContext(PrizeTapContext);
+	const { openEnrollModal, setLineaEntryId } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const [start, setStarted] = useState<boolean>(true);
 	const [showAllPermissions, setShowAllPermissions] = useState(false);
@@ -81,7 +81,7 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 	}, [new Date()]);
 
 	useEffect(() => {
-		getLiniaRaffleEntries().then((res) => {
+		getLineaRaffleEntries().then((res) => {
 			setEnrolledUsers(res);
 		});
 	}, [slowRefresh]);
@@ -101,7 +101,7 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 	};
 
 	return (
-		<div className={`${isPrizeNft ? 'prize-card-bg-1' : 'prize-card-bg-2'} ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
+		<div className={`prize-card-linea ${isHighlighted ? 'mb-20' : 'mb-4'}`}>
 			<div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
 				<div className="prize-card__image relative mb-3 lg:mb-0">
 					<div className={isHighlighted ? 'before:!inset-[2px] p-[2px] gradient-outline-card' : ''}>
@@ -122,8 +122,8 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 						</div>
 					</div>
 					<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-						<p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
-						<Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
+						<p className="text-gray100 text-[10px] p-1">on</p>
+						<img src="/assets/images/prize-tap/linea.svg" className="ml-2" alt="" />
 					</div>
 				</div>
 				<div className={isHighlighted ? 'before:!inset-[3px] p-[2px] gradient-outline-card w-full' : 'w-full'}>
@@ -133,9 +133,12 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 						} rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
 					>
 						<span className="flex justify-between w-full mb-1">
-							<p className="prize-card__title cursor-pointer text-white text-sm" onClick={onPrizeClick}>
-								{name}
-							</p>
+							<div className="flex items-center gap-x-2">
+								<p className="prize-card__title cursor-pointer text-[#61DFFF] text-sm" onClick={onPrizeClick}>
+									{name}
+								</p>
+								<small className="rounded-xl text-xs p-1 bg-[#0E1217] text-[#1D788F]">x100 Winners</small>
+							</div>
 							<div className="prize-card__links flex gap-4">
 								{twitterUrl && (
 									<Icon
@@ -158,7 +161,7 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 							</div>
 						</span>
 						<span className="flex justify-between w-full mb-4">
-							<p className="prize-card__source text-xs text-gray90">
+							<p className="prize-card__source text-xs text-[#61DFFF]">
 								{!isPrizeNft ? (
 									<span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
 										by {creator}
@@ -170,8 +173,12 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 								)}
 							</p>
 						</span>
-						<p className="prize-card__description text-gray100 text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
+						<p className="prize-card__description text-[#1D677C] text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
 							{description}
+						</p>
+
+						<p className="text-[#1D677C] text-xs leading-5 mb-2 grow shrink-0 basis-auto">
+							1,000 Whitelisted Wallets automatically enrolled to this raffle by Linea
 						</p>
 
 						{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
@@ -290,23 +297,21 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 											</ClaimAndEnrollButton>
 										)
 									) : (
-										<ClaimAndEnrollButton
-											height="48px"
-											fontSize="14px"
+										<Button
 											disabled={!start}
-											className="min-w-[552px] md:!w-[352px] !w-full"
+											className="min-w-[552px] px-5 border-2 flex justify-center border-[#61DFFF] rounded-xl text-[#61DFFF] text-center bg-[#191921] py-3 md:!w-[352px] !w-full"
 											onClick={tryActivation}
 										>
 											<div className="relative w-full">
 												<p> Connect Wallet </p>{' '}
-												<Icon
+												{/* <Icon
 													className="absolute right-0 top-[-2px]"
 													iconSrc="assets/images/prize-tap/header-prize-logo.svg"
 													width="27px"
 													height="24px"
-												/>
+												/> */}
 											</div>
-										</ClaimAndEnrollButton>
+										</Button>
 									)}
 								</span>
 							) : enrollment && !enrollment.isWinner ? (
@@ -355,7 +360,7 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 										fontSize="14px"
 										className="min-w-[552px] md:!w-[352px] !w-full"
 										onClick={() => {
-											setLiniaEntryId(enrollment.id!);
+											setLineaEntryId(enrollment.id!);
 											openEnrollModal(raffle, 'Claim');
 										}}
 									>
@@ -369,7 +374,7 @@ export const LiniaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 								<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 									<div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
 										<p className="text-[10px] text-white">
-											Congratulations @User {(enrollment as LiniaRaffleEntry)?.id}!
+											Congratulations @User {(enrollment as LineaRaffleEntry)?.id}!
 										</p>
 										<Icon
 											className="opacity-[.3] mt-[-10px]"

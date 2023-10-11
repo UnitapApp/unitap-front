@@ -1,4 +1,4 @@
-export type LiniaRaffleEntry = {
+export type LineaRaffleEntry = {
 	id: number;
 	walletAddress: string;
 	isWinner: boolean;
