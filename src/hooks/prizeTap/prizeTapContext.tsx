@@ -11,6 +11,7 @@ import { RefreshContext } from '../../context/RefreshContext';
 import { useWeb3React } from '@web3-react/core';
 import { useUnitapPrizeCallback } from './useUnitapPrizeCallback';
 import { UserProfileContext } from 'hooks/useUserProfile';
+import { NullCallback } from 'utils';
 
 export const PrizeTapContext = createContext<{
 	rafflesList: Prize[];
@@ -27,6 +28,7 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: any | null;
 	method: string | null;
 	setMethod: (method: string | null) => void;
+	setLiniaEntryId: (id: number) => void;
 }>({
 	claimError: null,
 	rafflesList: [],
@@ -42,6 +44,7 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: null,
 	method: null,
 	setMethod: () => {},
+	setLiniaEntryId: NullCallback,
 });
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
@@ -54,7 +57,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const [claimOrEnrollSignatureLoading, setClaimOrEnrollSignatureLoading] = useState<boolean>(false);
 	const [selectedRaffleForEnroll, setSelectedRaffleForEnroll] = useState<Prize | null>(null);
 	const [claimOrEnrollLoading, setClaimOrEnrollLoading] = useState<boolean>(false);
-
+	const [liniaEntryId, setLiniaEntryId] = useState<number | null>(null);
 	const { provider, account } = useWeb3React();
 
 	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
@@ -130,7 +133,10 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 						});
 						method === 'Enroll'
 							? updateEnrolledFinished(userProfile.token, id, res.transactionHash)
-							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash);
+							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash, liniaEntryId);
+
+						setLiniaEntryId(null);
+
 						setClaimOrEnrollLoading(false);
 					})
 					.catch(() => {
@@ -235,6 +241,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				claimOrEnrollWithMetamaskResponse,
 				method,
 				setMethod,
+				setLiniaEntryId,
 			}}
 		>
 			{children}

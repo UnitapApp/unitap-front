@@ -188,7 +188,20 @@ export async function updateEnrolledFinished(token: string, raffleID: number | u
 	return response.data;
 }
 
-export async function updateClaimPrizeFinished(token: string, raffleID: number | undefined, txHash: string) {
+export async function updateClaimPrizeFinished(
+	token: string,
+	raffleID: number | undefined,
+	txHash: string,
+	liniaEntryId?: number | null,
+) {
+	if (raffleID === 70) {
+		const res = await axiosInstance.post(`/api/prizetap/set-linea-hash/${liniaEntryId}/`, {
+			txHash,
+		});
+
+		return res.data;
+	}
+
 	const response = await axiosInstance.post<any>(
 		`api/prizetap/set-claiming-prize-tx/${raffleID}/`,
 		{ txHash },
@@ -241,6 +254,12 @@ export async function getRaffleConstraintsVerifications(rafflePk: number, token:
 			Authorization: `Token ${token}`,
 		},
 	});
+
+	return response.data;
+}
+
+export async function getLiniaRaffleEntries() {
+	const response = await axiosInstance.get('/api/prizetap/get-linea-entries/');
 
 	return response.data;
 }
