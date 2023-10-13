@@ -12,6 +12,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useUnitapPrizeCallback } from './useUnitapPrizeCallback';
 import { UserProfileContext } from 'hooks/useUserProfile';
 import { NullCallback } from 'utils';
+import { LineaRaffleEntry } from 'pages/prize-tap/components/types';
 
 export const PrizeTapContext = createContext<{
 	rafflesList: Prize[];
@@ -28,7 +29,10 @@ export const PrizeTapContext = createContext<{
 	claimOrEnrollWithMetamaskResponse: any | null;
 	method: string | null;
 	setMethod: (method: string | null) => void;
-	setLineaEntryId: (id: number | null) => void;
+	isLineaWinnersOpen: boolean;
+	setIsLineaWinnersOpen: (arg: boolean) => void;
+	lineaEnrolledUsers: LineaRaffleEntry[];
+	setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
 }>({
 	claimError: null,
 	rafflesList: [],
@@ -43,8 +47,11 @@ export const PrizeTapContext = createContext<{
 	closeEnrollModal: () => {},
 	claimOrEnrollWithMetamaskResponse: null,
 	method: null,
-	setMethod: () => {},
-	setLineaEntryId: NullCallback,
+	setMethod: NullCallback,
+	setIsLineaWinnersOpen: NullCallback,
+	isLineaWinnersOpen: false,
+	lineaEnrolledUsers: [],
+	setLineaEnrolledUsers: NullCallback,
 });
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
@@ -52,13 +59,13 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const { userProfile } = useContext(UserProfileContext);
 	const [rafflesList, setRafflesList] = useState<Prize[]>([]);
 	const [claimError, setClaimError] = useState<string | null>(null);
-
+	const [isLineaWinnersOpen, setIsLineaWinnersOpen] = useState(false);
 	const [rafflesListLoading, setRafflesListLoading] = useState<boolean>(false);
 	const [claimOrEnrollSignatureLoading, setClaimOrEnrollSignatureLoading] = useState<boolean>(false);
 	const [selectedRaffleForEnroll, setSelectedRaffleForEnroll] = useState<Prize | null>(null);
 	const [claimOrEnrollLoading, setClaimOrEnrollLoading] = useState<boolean>(false);
-	const [lineaEntryId, setLineaEntryId] = useState<number | null>(null);
 	const { provider, account } = useWeb3React();
+	const [lineaEnrolledUsers, setLineaEnrolledUsers] = useState<LineaRaffleEntry[]>([]);
 
 	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
 	const [claimOrEnrollWithMetamaskResponse, setClaimOrEnrollWithMetamaskResponse] = useState<any | null>(null);
@@ -133,9 +140,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 						});
 						method === 'Enroll'
 							? updateEnrolledFinished(userProfile.token, id, res.transactionHash)
-							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash, lineaEntryId);
-
-						setLineaEntryId(null);
+							: updateClaimPrizeFinished(userProfile.token, setClaimHashId, res.transactionHash);
 
 						setClaimOrEnrollLoading(false);
 					})
@@ -241,7 +246,10 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				claimOrEnrollWithMetamaskResponse,
 				method,
 				setMethod,
-				setLineaEntryId: setLineaEntryId,
+				isLineaWinnersOpen,
+				setIsLineaWinnersOpen,
+				setLineaEnrolledUsers,
+				lineaEnrolledUsers,
 			}}
 		>
 			{children}

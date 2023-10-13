@@ -103,7 +103,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 
 	const creator = creatorName || creatorProfile?.username;
 
-	const { openEnrollModal, setLineaEntryId } = useContext(PrizeTapContext);
+	const { openEnrollModal } = useContext(PrizeTapContext);
 	const { userProfile } = useContext(UserProfileContext);
 	const calculateClaimAmount = prizeAmount / 10 ** decimals;
 	const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
@@ -400,10 +400,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										height="48px"
 										fontSize="14px"
 										className="min-w-[552px] md:!w-[352px] !w-full"
-										onClick={() => {
-											setLineaEntryId(null);
-											openEnrollModal(raffle, 'Claim');
-										}}
+										onClick={() => openEnrollModal(raffle, 'Claim')}
 									>
 										{' '}
 										<div className="relative w-full text-gray10">

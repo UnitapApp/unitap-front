@@ -63,6 +63,7 @@ module.exports = {
 				'disabled-text': '#939393',
 				'secondary-text': '#997EA4',
 				warn: '#F16E35',
+				'mid-dark-space-green': '#2C6E59',
 			},
 
 			borderWidth: {

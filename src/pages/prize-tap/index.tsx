@@ -3,6 +3,7 @@ import Footer from 'components/common/Footer/footer';
 import RafflesList from './components/RafflesList/RafflesList';
 import EnrollModal from './components/EnrollModal';
 import BrightConnectionModal from 'pages/home/components/BrightConnectionModal/brightConnectionModal';
+import LineaWinnersModal from './components/LiniaRaffle/LiniaWinnersModal';
 
 const PrizeTap = () => {
 	return (
@@ -12,6 +13,7 @@ const PrizeTap = () => {
 				<RafflesList />
 			</div>
 			<Footer />
+			<LineaWinnersModal />
 			<EnrollModal />
 			<BrightConnectionModal />
 		</div>
