@@ -211,7 +211,7 @@ export async function getEnrollmentApi(token: string, raffleID: number) {
 }
 
 export async function getMuonApi(raffleEntryId: number) {
-	const app = process.env.IS_STAGE ? 'stage_unitap' : 'unitap';
+	const app = Number(process.env.IS_STAGE) ? 'stage_unitap' : 'unitap';
 
 	const response = await axios.post<EnrollmentSignature>(
 		`https://shield.unitap.app/v1/?app=${app}&method=raffle-entry&params[raffleEntryId]=${raffleEntryId}`,
