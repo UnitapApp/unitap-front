@@ -1,21 +1,25 @@
 import Modal from 'components/common/Modal/modal';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
 import { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getUserEntry } from '.';
 import { useWeb3React } from '@web3-react/core';
 import { ReactComponent as CheckCircleImage } from './check-circle.svg';
-import { PrimaryButton } from 'components/basic/Button/button';
 import UButton from 'components/basic/Button/UButton';
 import useWalletActivation from 'hooks/useWalletActivation';
+import { numberWithCommas } from 'utils/numbers';
 
 const LineaCheckWalletsModal: FC<{}> = ({}) => {
-	const { isLineaCheckEnrolledModalOpen, setIsLineaCheckEnrolledModalOpen, lineaEnrolledUsers } =
+	const { isLineaCheckEnrolledModalOpen, setIsLineaCheckEnrolledModalOpen, lineaEnrolledUsers, rafflesList } =
 		useContext(PrizeTapContext);
+
+	const lineaRaffle = useMemo(() => {
+		return rafflesList.find((item) => item.pk === 70);
+	}, [rafflesList]);
 
 	const [result, setResult] = useState({
 		blank: true,
 		found: false,
 	});
+
 	const { account } = useWeb3React();
 	const [searchPhraseInput, setSearchPhraseInput] = useState('');
 	const { tryActivation } = useWalletActivation();
@@ -81,8 +85,8 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 					<h5>LINEA NFT</h5>
 					<p className="mt-3 text-xs text-gray100">by linea</p>
 					<div className="mt-10 text-xs text-left text-secondary-text">
-						1,000 Whitelisted Wallets automatically enrolled to this raffle by Linea{' '}
-						<CheckCircleImage className="inline-block" />
+						{numberWithCommas(lineaRaffle!.maxNumberOfEntries)} Whitelisted Wallets automatically enrolled to this
+						raffle by Linea <CheckCircleImage className="inline-block" />
 					</div>
 
 					<div className="mt-10 font-semibold text-left text-xs text-gray90 px-2">Check Enrollment</div>
@@ -150,7 +154,8 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 					{result.blank ||
 						(result.found ? (
 							<div className="mt-3 text-space-green text-xs text-center">
-								This wallet is one of the 1,000 whitelisted wallets by Linea.
+								This wallet is one of the {numberWithCommas(lineaRaffle!.maxNumberOfEntries)} whitelisted wallets by
+								Linea.
 							</div>
 						) : (
 							<div className="mt-3 text-error text-xs text-center">This wallet is not whitelisted by Linea.</div>

@@ -25,10 +25,14 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 	const enrollment = useMemo(() => getUserEntry(lineaEnrolledUsers, account), [lineaEnrolledUsers, account]);
 
 	const userEnrollments = useMemo(() => {
-		if (!searchPhraseInput) return lineaEnrolledUsers;
+		const items = !searchPhraseInput
+			? lineaEnrolledUsers
+			: lineaEnrolledUsers.filter((item) => item.walletAddress.includes(searchPhraseInput));
 
-		return lineaEnrolledUsers.filter((item) => item.isWinner && item.walletAddress.includes(searchPhraseInput));
-	}, [searchPhraseInput]);
+		return items.sort((x, y) => {
+			return x.isWinner === y.isWinner ? 0 : x.isWinner ? -1 : 1;
+		});
+	}, [searchPhraseInput, lineaEnrolledUsers]);
 
 	if (!isLineaWinnersOpen) return null;
 
@@ -52,11 +56,9 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 				</div>
 
 				<div className="mt-4 text-sm w-full overflow-auto">
-					{userEnrollments
-						.filter((item) => item.isWinner)
-						.map((item, key) => (
-							<WalletWinner key={key} {...item} />
-						))}
+					{userEnrollments.map((item, key) => (
+						<WalletWinner key={key} {...item} />
+					))}
 
 					{searchPhraseInput && !userEnrollments.length && <p className="text-white">No users found</p>}
 
@@ -99,16 +101,16 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({ claimTx, walletAddress, isW
 		<div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
 			<span>{shortenAddress(walletAddress)}</span>
 
-			{/* {claimTx ? ( */}
-			<button className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
-				Winner
-				<Icon height="25px" iconSrc="/assets/images/prize-tap/diamond.svg" className="ml-2" />
-			</button>
-			{/* ) : (
+			{isWinner ? (
+				<button className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
+					Winner
+					<Icon height="25px" iconSrc="/assets/images/prize-tap/diamond.svg" className="ml-2" />
+				</button>
+			) : (
 				<span className="bg-gray50 border-2 border-gray70 rounded-lg px-4 py-2 text-xs ml-auto text-gray80">
-					Not claimed by the winner yet
+					Not a winner
 				</span>
-			)} */}
+			)}
 		</div>
 	);
 };
