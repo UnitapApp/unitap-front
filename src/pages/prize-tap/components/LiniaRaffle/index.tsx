@@ -104,15 +104,13 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 									isHighlighted ? 'bg-g-primary-low ' : 'bg-gray30 border-2 border-gray40'
 								} justify-center items-center p-5 rounded-xl`}
 							>
-								{(imageUrl || tokenImgLink) && (
-									<img
-										onClick={onPrizeClick}
-										src={imageUrl ? imageUrl : tokenImgLink}
-										alt={name}
-										width={!isPrizeNft ? '168px' : ''}
-										className={`${!isPrizeNft ? 'ml-1' : ''} cursor-pointer mb-2`}
-									/>
-								)}
+								<img
+									onClick={onPrizeClick}
+									src={'assets/images/prize-tap/linea-raffle-image.svg'}
+									alt={name}
+									width={!isPrizeNft ? '168px' : ''}
+									className={`${!isPrizeNft ? 'ml-1' : ''} cursor-pointer mb-2`}
+								/>
 							</div>
 						</div>
 						<div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
