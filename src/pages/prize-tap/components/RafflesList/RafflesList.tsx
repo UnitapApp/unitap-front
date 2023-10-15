@@ -251,7 +251,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
-												{!isRemainingPercentLessThanTen
+												{maxNumberOfEntries > 1_000_000_000
+													? `${numberWithCommas(maxNumberOfEntries)} people enrolled`
+													: !isRemainingPercentLessThanTen
 													? `
 											${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
@@ -285,7 +287,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
-												{!isRemainingPercentLessThanTen
+												{maxNumberOfEntries > 1_000_000_000
+													? `${numberWithCommas(maxNumberOfEntries)} people enrolled`
+													: !isRemainingPercentLessThanTen
 													? `
 													${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
@@ -320,7 +324,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, is
 										<div className="flex flex-col gap-1">
 											<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
 											<p className="text-[10px] text-gray100">
-												{!isRemainingPercentLessThanTen
+												{maxNumberOfEntries > 1_000_000_000
+													? `${numberWithCommas(maxNumberOfEntries)} people enrolled`
+													: !isRemainingPercentLessThanTen
 													? `
 													${numberOfOnchainEntries} / ${numberWithCommas(maxNumberOfEntries)} people enrolled`
 													: remainingPeople > 0
