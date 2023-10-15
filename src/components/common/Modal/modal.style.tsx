@@ -7,7 +7,7 @@ interface props {
 
 export const ModalWrapper = styled.div<props>`
 	position: fixed;
-	z-index: 10;
+	z-index: 30;
 	left: 0;
 	top: 0;
 	width: 100%;

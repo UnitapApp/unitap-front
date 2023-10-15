@@ -6,6 +6,8 @@ import { LineaRaffleEntry } from '../types';
 import { shortenAddress } from 'utils';
 import { getUserEntry } from '.';
 import { useWeb3React } from '@web3-react/core';
+import UButton from 'components/basic/Button/UButton';
+import useWalletActivation from 'hooks/useWalletActivation';
 
 const LineaWinnersModal: FC<{}> = ({}) => {
 	const { isLineaWinnersOpen, setIsLineaWinnersOpen, lineaEnrolledUsers } = useContext(PrizeTapContext);
@@ -15,6 +17,8 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 	const closeClaimTokenModal = useCallback(() => {
 		setIsLineaWinnersOpen(false);
 	}, [setIsLineaWinnersOpen]);
+
+	const { tryActivation } = useWalletActivation();
 
 	const { account } = useWeb3React();
 
@@ -56,7 +60,18 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 
 					{searchPhraseInput && !userEnrollments.length && <p className="text-white">No users found</p>}
 
-					{enrollment && enrollment.isWinner ? (
+					{!account ? (
+						<div className="flex px-5 py-3 border-2 border-gray70 rounded-xl mt-5 bg-gray20 items-center text-white">
+							<p className="text-gray80 text-base">0xYour...Wallet</p>
+							<UButton
+								onClick={tryActivation}
+								size="small"
+								className="gradient-outline-button text-xs ml-auto font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"
+							>
+								<p className="bg-clip-text bg-g-primary text-transparent">Connect Wallet</p>
+							</UButton>
+						</div>
+					) : enrollment && enrollment.isWinner ? (
 						<div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
 							{shortenAddress(enrollment.walletAddress)}
 
@@ -84,17 +99,17 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({ claimTx, walletAddress, isW
 		<div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
 			<span>{shortenAddress(walletAddress)}</span>
 
-			{claimTx ? (
-				<button className="ml-auto text-xs border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 underline py-1">
-					Claimed
-					<Icon iconSrc="/assets/images/prize-tap/ic_link_green.svg" />
-					<Icon height="25px" iconSrc="/assets/images/prize-tap/diamond.svg" className="ml-2" />
-				</button>
-			) : (
+			{/* {claimTx ? ( */}
+			<button className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 underline py-1">
+				Claimed
+				<Icon iconSrc="/assets/images/prize-tap/ic_link_green.svg" />
+				<Icon height="25px" iconSrc="/assets/images/prize-tap/diamond.svg" className="ml-2" />
+			</button>
+			{/* ) : (
 				<span className="bg-gray50 border-2 border-gray70 rounded-lg px-4 py-2 text-xs ml-auto text-gray80">
 					Not claimed by the winner yet
 				</span>
-			)}
+			)} */}
 		</div>
 	);
 };

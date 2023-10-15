@@ -33,6 +33,8 @@ export const PrizeTapContext = createContext<{
 	setIsLineaWinnersOpen: (arg: boolean) => void;
 	lineaEnrolledUsers: LineaRaffleEntry[];
 	setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
+	isLineaCheckEnrolledModalOpen: boolean;
+	setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
 }>({
 	claimError: null,
 	rafflesList: [],
@@ -52,6 +54,8 @@ export const PrizeTapContext = createContext<{
 	isLineaWinnersOpen: false,
 	lineaEnrolledUsers: [],
 	setLineaEnrolledUsers: NullCallback,
+	isLineaCheckEnrolledModalOpen: false,
+	setIsLineaCheckEnrolledModalOpen: NullCallback,
 });
 
 const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
@@ -66,7 +70,7 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 	const [claimOrEnrollLoading, setClaimOrEnrollLoading] = useState<boolean>(false);
 	const { provider, account } = useWeb3React();
 	const [lineaEnrolledUsers, setLineaEnrolledUsers] = useState<LineaRaffleEntry[]>([]);
-
+	const [isLineaCheckEnrolledModalOpen, setIsLineaCheckEnrolledModalOpen] = useState(false);
 	const [enrollOrClaimPayload, setEnrollOrClaimPayload] = useState<EnrollmentSignature | null>(null);
 	const [claimOrEnrollWithMetamaskResponse, setClaimOrEnrollWithMetamaskResponse] = useState<any | null>(null);
 
@@ -250,6 +254,8 @@ const PrizeTapProvider = ({ children }: { children: ReactNode }) => {
 				setIsLineaWinnersOpen,
 				setLineaEnrolledUsers,
 				lineaEnrolledUsers,
+				isLineaCheckEnrolledModalOpen,
+				setIsLineaCheckEnrolledModalOpen,
 			}}
 		>
 			{children}

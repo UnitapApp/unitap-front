@@ -1,20 +1,16 @@
-import { ClaimAndEnrollButton, EnrolledButton, ClaimPrizeButton, Button } from 'components/basic/Button/button';
+import { ClaimAndEnrollButton, Button } from 'components/basic/Button/button';
 import Icon from 'components/basic/Icon/Icon';
 import Tooltip from 'components/basic/Tooltip';
 import { PrizeTapContext } from 'hooks/prizeTap/prizeTapContext';
-import { UserProfileContext } from 'hooks/useUserProfile';
 import { FC, useContext, useState, useEffect, useMemo } from 'react';
 import { Prize } from 'types';
-import { useWeb3React } from '@web3-react/core';
-import { shortenAddress, getTxUrl } from 'utils';
-import { numberWithCommas } from 'utils/numbers';
 import { RaffleCardTimer } from '../RafflesList/RafflesList';
 import { DV } from 'components/basic/designVariables';
 import styled from 'styled-components';
-import useWalletActivation from 'hooks/useWalletActivation';
 import { LineaRaffleEntry } from '../types';
 import { getLineaRaffleEntries } from 'api';
 import { RefreshContext } from 'context/RefreshContext';
+import { ReactComponent as CheckCircleImage } from './check-circle.svg';
 
 const Action = styled.div`
 	display: flex;
@@ -57,21 +53,17 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 
 	const { slowRefresh } = useContext(RefreshContext);
 
-	const { openEnrollModal, setIsLineaWinnersOpen, lineaEnrolledUsers, setLineaEnrolledUsers } =
-		useContext(PrizeTapContext);
-	const { userProfile } = useContext(UserProfileContext);
+	const {
+		openEnrollModal,
+		setIsLineaCheckEnrolledModalOpen,
+		setIsLineaWinnersOpen,
+		lineaEnrolledUsers,
+		setLineaEnrolledUsers,
+	} = useContext(PrizeTapContext);
 	const [start, setStarted] = useState<boolean>(true);
 	const [showAllPermissions, setShowAllPermissions] = useState(false);
 
-	const { tryActivation } = useWalletActivation();
-
-	const { account } = useWeb3React();
-
-	const isConnected = !!account;
-
 	const isEnded = (new Date().getTime() - new Date(deadline).getTime()) / (1000 * 60) > 0;
-
-	const enrollment = useMemo(() => getUserEntry(lineaEnrolledUsers, account), [lineaEnrolledUsers, account]);
 
 	const firstWinner = useMemo(() => lineaEnrolledUsers.find((entry) => entry.isWinner), [lineaEnrolledUsers]);
 
@@ -85,7 +77,7 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 		});
 	}, [slowRefresh]);
 
-	let tokenImgLink: string | undefined = tokenUri
+	const tokenImgLink: string | undefined = tokenUri
 		? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${Number(tokenUri.split('/')[3]) + 1}.png`
 		: undefined;
 
@@ -136,22 +128,28 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 							alt="prize-tap"
 							className="top-0 right-0 z-20 absolute"
 						/>
+
 						<div
-							className={`card prize-card__content z-10 relative h-full md:max-h-[225px] md:min-h-[212px] ${
+							className={`card prize-card__content relative h-full md:max-h-[225px] md:min-h-[212px] ${
 								isHighlighted ? 'bg-g-primary-low' : 'bg-gray30 border-2 border-gray40'
 							} rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
 						>
-							<span className="flex justify-between w-full mb-1">
+							<img
+								src="/assets/images/prize-tap/linea-texture.svg"
+								alt="prize-tap"
+								className="top-0 left-0 z-10 absolute"
+							/>
+							<span className="flex relative z-20 justify-between w-full mb-1">
 								<div className="flex items-center gap-x-2">
 									<p className="prize-card__title cursor-pointer text-[#61DFFF] text-sm" onClick={onPrizeClick}>
 										{name}
 									</p>
-									<small className="rounded-xl text-xs p-1 bg-[#0E1217] text-[#1D788F]">x100 Winners</small>
+									<small className="rounded-lg font-bold text-xs p-1 bg-[#0E1217] text-[#1D788F]">x100 Winners</small>
 								</div>
-								<div className="prize-card__links flex gap-4">
+								<div className="prize-card__links text-secondary-text flex gap-4">
 									{twitterUrl && (
 										<Icon
-											iconSrc="assets/images/prize-tap/twitter-logo.svg"
+											iconSrc="assets/images/prize-tap/linea-twitter-logo.svg"
 											onClick={() => window.open(twitterUrl, '_blank')}
 											width="20px"
 											height="16px"
@@ -160,16 +158,23 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 									)}
 									{discordUrl && (
 										<Icon
-											iconSrc="assets/images/prize-tap/discord-logo.svg"
+											iconSrc="assets/images/prize-tap/discord-logo-linea.svg"
 											onClick={() => window.open(discordUrl, '_blank')}
 											width="20px"
 											height="16px"
 											hoverable
 										/>
 									)}
+									<Icon
+										iconSrc="assets/images/prize-tap/website.svg"
+										onClick={() => window.open('https://linea.build', '_blank')}
+										width="20px"
+										height="16px"
+										hoverable
+									/>
 								</div>
 							</span>
-							<span className="flex justify-between w-full mb-4">
+							<span className="flex relative z-20 justify-between w-full mb-4">
 								<p className="prize-card__source text-xs text-[#61DFFF]">
 									{!isPrizeNft ? (
 										<span className="hover:cursor-pointer" onClick={() => window.open(creatorUrl, '_blank')}>
@@ -186,8 +191,8 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 								{description}
 							</p>
 
-							<p className="text-[#1D677C] bg-gray30 text-xs leading-5 mb-2 grow shrink-0 basis-auto">
-								1,000 Whitelisted Wallets automatically enrolled to this raffle by Linea
+							<p className="text-[#1D677C] flex items-center gap-2 bg-gray30 text-xs leading-5 mb-2 grow shrink-0 basis-auto">
+								1,000 Whitelisted Wallets automatically enrolled to this raffle by Linea <CheckCircleImage />
 							</p>
 
 							{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
@@ -232,10 +237,7 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 									<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 										<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 											<div className="flex flex-col gap-1">
-												<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
-												<p className="text-[10px] text-gray100">
-													{`${numberWithCommas(maxNumberOfEntries)} people enrolled`}
-												</p>
+												<p className="text-[10px] text-white">{start ? 'Winners in:' : 'Starts in:'}</p>
 											</div>
 											<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 										</div>
@@ -261,80 +263,30 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 									<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
 										<div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
 											<div className="flex flex-col gap-1">
-												<p className="text-[10px] text-white">{start ? 'Winner in:' : 'Starts in:'}</p>
-												<p className="text-[10px] text-gray100">
-													{`${numberWithCommas(maxNumberOfEntries)} people enrolled`}
-												</p>
+												<p className="text-[10px] text-white">{start ? 'Winners in:' : 'Starts in:'}</p>
 											</div>
 											<RaffleCardTimer startTime={startAt} FinishTime={deadline} />
 										</div>
-										{isConnected ? (
-											!!enrollment ? (
-												<EnrolledButton
-													disabled={true}
-													className="min-w-[552px] md:!w-[352px] !w-full"
-													height="48px"
-													fontSize="14px"
-												>
-													<div className="relative w-full">
-														<p> Enrolled</p>{' '}
-														<Icon
-															className="absolute  right-0 top-[-2px]"
-															iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-															width="27px"
-															height="24px"
-														/>
-													</div>
-												</EnrolledButton>
-											) : (
-												<ClaimAndEnrollButton
-													height="48px"
-													fontSize="14px"
-													aria-disabled
-													disabled
-													className="min-w-[552px] md:!w-[352px] !w-full"
-												>
-													<div className="relative w-full">
-														<p> Enroll </p>
-														<Icon
-															className="absolute right-0 top-[-2px]"
-															iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-															width="27px"
-															height="24px"
-														/>
-													</div>
-												</ClaimAndEnrollButton>
-											)
-										) : (
-											<Button
-												disabled={!start}
-												className="min-w-[552px] px-5 border-2 flex justify-center border-[#61DFFF] rounded-xl text-[#61DFFF] text-center bg-[#191921] py-3 md:!w-[352px] !w-full"
-												onClick={tryActivation}
-											>
-												<div className="relative w-full">
-													<p> Connect Wallet </p>{' '}
-													{/* <Icon
-													className="absolute right-0 top-[-2px]"
-													iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-													width="27px"
-													height="24px"
-												/> */}
-												</div>
-											</Button>
-										)}
+
+										<Button
+											onClick={() => setIsLineaCheckEnrolledModalOpen(true)}
+											className="min-w-[552px] px-5 border-2 flex justify-center border-[#61DFFF] rounded-xl transition-colors active:bg-[#1C222B] text-[#61DFFF] text-center bg-[#191921] py-3 md:!w-[352px] !w-full"
+											height="48px"
+											fontSize="14px"
+										>
+											<p> Check Enrolled Wallets </p>
+										</Button>
 									</span>
 								) : (
 									<span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
 										<div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-											<p className="text-[10px] text-white">
-												Winners are announced, prizes will be sent to winners soon.
-											</p>
-											<Icon
+											<p className="text-[10px] text-white">Raffle is done, check the winners: </p>
+											{/* <Icon
 												className="opacity-[.3] mt-[-10px] mr-[-20px]"
 												iconSrc="/assets/images/prize-tap/linia-winner-bg.svg"
 												width="215px"
 												height="215px"
-											/>
+											/> */}
 										</div>
 										<Button
 											disabled={!start}
