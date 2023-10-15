@@ -69,7 +69,7 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 
 	const isConnected = !!account;
 
-	const isEnded = (new Date().getTime() - new Date(deadline).getTime()) / (1000 * 60) > 10;
+	const isEnded = (new Date().getTime() - new Date(deadline).getTime()) / (1000 * 60) > 0;
 
 	const enrollment = useMemo(() => getUserEntry(lineaEnrolledUsers, account), [lineaEnrolledUsers, account]);
 
