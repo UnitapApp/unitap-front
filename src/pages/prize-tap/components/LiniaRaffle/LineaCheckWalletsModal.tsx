@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { ReactComponent as CheckCircleImage } from './check-circle.svg';
 import { PrimaryButton } from 'components/basic/Button/button';
 import UButton from 'components/basic/Button/UButton';
+import useWalletActivation from 'hooks/useWalletActivation';
 
 const LineaCheckWalletsModal: FC<{}> = ({}) => {
 	const { isLineaCheckEnrolledModalOpen, setIsLineaCheckEnrolledModalOpen, lineaEnrolledUsers } =
@@ -15,11 +16,25 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 		blank: true,
 		found: false,
 	});
+	const { account } = useWeb3React();
 	const [searchPhraseInput, setSearchPhraseInput] = useState('');
+	const { tryActivation } = useWalletActivation();
 
 	const closeClaimTokenModal = useCallback(() => {
 		setIsLineaCheckEnrolledModalOpen(false);
 	}, [setIsLineaCheckEnrolledModalOpen]);
+
+	const tryFetchWallet = () => {
+		if (!account) {
+			tryActivation();
+			return;
+		}
+
+		setSearchPhraseInput(account);
+		setTimeout(() => {
+			findUserWallet();
+		}, 0);
+	};
 
 	const findUserWallet = () => {
 		const userEnrollment = lineaEnrolledUsers.find((item) => item.walletAddress === searchPhraseInput);
@@ -102,12 +117,21 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 								) : (
 									<>
 										{isSearchFilled || (
-											<button
-												onClick={() => navigator.clipboard.readText().then((text) => setSearchPhraseInput(text))}
-												className="rounded-lg font-semibold bg-gray00 border border-gray100 text-gray100 text-center px-3 py-[6px]"
-											>
-												PASTE
-											</button>
+											<>
+												<button
+													onClick={() => navigator.clipboard.readText().then((text) => setSearchPhraseInput(text))}
+													className="rounded-lg font-semibold bg-gray00 border border-gray100 text-gray100 text-center px-3 py-[6px]"
+												>
+													PASTE
+												</button>
+												<UButton
+													onClick={tryFetchWallet}
+													size="small"
+													className="gradient-outline-button font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"
+												>
+													<p className="bg-clip-text bg-g-primary text-transparent">WALLET</p>
+												</UButton>
+											</>
 										)}
 
 										<UButton

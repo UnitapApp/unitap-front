@@ -27,7 +27,7 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 	const userEnrollments = useMemo(() => {
 		if (!searchPhraseInput) return lineaEnrolledUsers;
 
-		return lineaEnrolledUsers.filter((item) => item.walletAddress.includes(searchPhraseInput));
+		return lineaEnrolledUsers.filter((item) => item.isWinner && item.walletAddress.includes(searchPhraseInput));
 	}, [searchPhraseInput]);
 
 	if (!isLineaWinnersOpen) return null;
@@ -100,9 +100,8 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({ claimTx, walletAddress, isW
 			<span>{shortenAddress(walletAddress)}</span>
 
 			{/* {claimTx ? ( */}
-			<button className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 underline py-1">
-				Claimed
-				<Icon iconSrc="/assets/images/prize-tap/ic_link_green.svg" />
+			<button className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
+				Winner
 				<Icon height="25px" iconSrc="/assets/images/prize-tap/diamond.svg" className="ml-2" />
 			</button>
 			{/* ) : (

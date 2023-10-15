@@ -11,6 +11,7 @@ import { LineaRaffleEntry } from '../types';
 import { getLineaRaffleEntries } from 'api';
 import { RefreshContext } from 'context/RefreshContext';
 import { ReactComponent as CheckCircleImage } from './check-circle.svg';
+import { numberWithCommas } from 'utils/numbers';
 
 const Action = styled.div`
 	display: flex;
@@ -47,6 +48,7 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 		decimals,
 		prizeAmount,
 		creatorProfile,
+		maxMultiplier,
 	} = raffle;
 
 	const creator = creatorName || creatorProfile?.username;
@@ -144,7 +146,9 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 									<p className="prize-card__title cursor-pointer text-[#61DFFF] text-sm" onClick={onPrizeClick}>
 										{name}
 									</p>
-									<small className="rounded-lg font-bold text-xs p-1 bg-[#0E1217] text-[#1D788F]">x100 Winners</small>
+									<small className="rounded-lg font-bold text-xs p-1 bg-[#0E1217] text-[#1D788F]">
+										x{maxMultiplier} Winners
+									</small>
 								</div>
 								<div className="prize-card__links text-secondary-text flex gap-4">
 									{twitterUrl && (
@@ -192,7 +196,8 @@ export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
 							</p>
 
 							<p className="text-[#1D677C] flex items-center gap-2 bg-gray30 text-xs leading-5 mb-2 grow shrink-0 basis-auto">
-								1,000 Whitelisted Wallets automatically enrolled to this raffle by Linea <CheckCircleImage />
+								{numberWithCommas(maxNumberOfEntries)} Whitelisted Wallets automatically enrolled to this raffle by
+								Linea <CheckCircleImage />
 							</p>
 
 							{!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
