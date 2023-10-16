@@ -12,7 +12,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 		useContext(PrizeTapContext);
 
 	const lineaRaffle = useMemo(() => {
-		return rafflesList.find((item) => item.pk === 70);
+		return rafflesList.find((item) => item.pk === 4);
 	}, [rafflesList]);
 
 	const [result, setResult] = useState({

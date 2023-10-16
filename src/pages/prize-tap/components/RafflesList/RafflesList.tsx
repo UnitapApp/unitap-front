@@ -71,7 +71,7 @@ const RafflesList = () => {
 };
 
 const RaffleCardWrapper: FC<{ raffle: Prize; isHighlighted?: boolean }> = (props) => {
-	if (props.raffle.pk === 70) return <LineaRaffleCard {...props} />;
+	if (props.raffle.pk === 4) return <LineaRaffleCard {...props} />;
 
 	return <RaffleCard {...props} />;
 };
