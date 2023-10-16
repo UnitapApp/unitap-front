@@ -93,7 +93,17 @@ const Landing: FC = () => {
 	useEffect(() => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
 		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
-		getRafflesListAPI(undefined).then((res) => setRafflesLength(res ? res.length : 0));
+		getRafflesListAPI(undefined).then((res) =>
+			setRafflesLength(
+				res
+					? res.filter(
+							(raffle) =>
+								new Date(raffle.deadline).getTime() > new Date().getTime() &&
+								new Date().getTime() > new Date(raffle.startAt).getTime(),
+					  ).length
+					: 0,
+			),
+		);
 	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
