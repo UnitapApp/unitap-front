@@ -245,6 +245,7 @@ export type Prize = {
 	prizeSymbol: string;
 	winnerEntry: WinnerEntry;
 	startAt: string;
+	maxMultiplier: number;
 	prizeAsset?: string;
 };
 

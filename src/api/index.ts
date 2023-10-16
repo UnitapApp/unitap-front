@@ -246,3 +246,9 @@ export async function getRaffleConstraintsVerifications(rafflePk: number, token:
 
 	return response.data;
 }
+
+export async function getLineaRaffleEntries() {
+	const response = await axiosInstance.get('/api/prizetap/get-linea-entries/');
+
+	return response.data;
+}
