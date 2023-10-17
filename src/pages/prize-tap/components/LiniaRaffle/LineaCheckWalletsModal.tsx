@@ -36,12 +36,12 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 
 		setSearchPhraseInput(account);
 		setTimeout(() => {
-			findUserWallet();
+			findUserWallet(account);
 		}, 0);
 	};
 
-	const findUserWallet = () => {
-		const userEnrollment = lineaEnrolledUsers.find((item) => item.walletAddress === searchPhraseInput);
+	const findUserWallet = (address: string) => {
+		const userEnrollment = lineaEnrolledUsers.find((item) => item.walletAddress === address);
 
 		if (userEnrollment) {
 			setResult({
@@ -139,7 +139,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 										)}
 
 										<UButton
-											onClick={findUserWallet}
+											onClick={() => findUserWallet(searchPhraseInput)}
 											disabled={!isSearchFilled}
 											size="small"
 											className="gradient-outline-button font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"

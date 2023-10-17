@@ -55,7 +55,7 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 					/>
 				</div>
 
-				<div className="mt-4 text-sm w-full overflow-auto">
+				<div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
 					{userEnrollments.map((item, key) => (
 						<WalletWinner key={key} {...item} />
 					))}
