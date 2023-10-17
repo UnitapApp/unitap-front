@@ -22,7 +22,10 @@ const Action = styled.div`
 `;
 
 export const getUserEntry = (entryWallets: LineaRaffleEntry[], userWallet?: string) => {
-	return !!userWallet && entryWallets.find((entry) => entry.walletAddress === userWallet);
+	return (
+		!!userWallet &&
+		entryWallets.find((entry) => entry.walletAddress.toLocaleLowerCase() === userWallet.toLocaleLowerCase())
+	);
 };
 
 export const LineaRaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({ raffle, isHighlighted }) => {
