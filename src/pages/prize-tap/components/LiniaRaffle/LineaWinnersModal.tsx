@@ -22,6 +22,8 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 
 	const { account } = useWeb3React();
 
+	lineaEnrolledUsers.map((item) => item.walletAddress.toLocaleLowerCase());
+
 	const enrollment = useMemo(() => getUserEntry(lineaEnrolledUsers, account), [lineaEnrolledUsers, account]);
 
 	const userEnrollments = useMemo(() => {
