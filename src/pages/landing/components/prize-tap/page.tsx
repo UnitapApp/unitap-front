@@ -10,10 +10,16 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 		return tokenImgLink;
 	};
 
+	const availableRaffles = rafflesList.filter(
+		(raffle) =>
+			new Date(raffle.deadline).getTime() > new Date().getTime() &&
+			new Date().getTime() > new Date(raffle.startAt).getTime(),
+	);
+
 	return (
 		<>
 			{rafflesList.length > 0 &&
-				rafflesList.slice(0, 2).map((raffle, key) => (
+				availableRaffles.slice(0, 2).map((raffle, key) => (
 					<div
 						key={key}
 						className={'flex relative text-xs text-white bg-gray30 rounded-xl py-2 px-2 mb-2 overflow-hidden h-[80px] '}
