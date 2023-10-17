@@ -61,7 +61,8 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 					))}
 
 					{searchPhraseInput && !userEnrollments.length && <p className="text-white">No users found</p>}
-
+				</div>
+				<div className="w-full">
 					{!account ? (
 						<div className="flex px-5 py-3 border-2 border-gray70 rounded-xl mt-5 bg-gray20 items-center text-white">
 							<p className="text-gray80 text-base">0xYour...Wallet</p>
