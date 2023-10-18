@@ -41,7 +41,9 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
 	};
 
 	const findUserWallet = (address: string) => {
-		const userEnrollment = lineaEnrolledUsers.find((item) => item.walletAddress === address);
+		const userEnrollment = lineaEnrolledUsers.find(
+			(item) => item.walletAddress.toLocaleLowerCase() === address.toLocaleLowerCase(),
+		);
 
 		if (userEnrollment) {
 			setResult({

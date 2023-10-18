@@ -22,14 +22,14 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 
 	const { account } = useWeb3React();
 
-	lineaEnrolledUsers.map((item) => item.walletAddress.toLocaleLowerCase());
-
 	const enrollment = useMemo(() => getUserEntry(lineaEnrolledUsers, account), [lineaEnrolledUsers, account]);
 
 	const userEnrollments = useMemo(() => {
 		const items = !searchPhraseInput
 			? lineaEnrolledUsers
-			: lineaEnrolledUsers.filter((item) => item.walletAddress.includes(searchPhraseInput));
+			: lineaEnrolledUsers.filter((item) =>
+					item.walletAddress.toLocaleLowerCase().includes(searchPhraseInput.toLocaleLowerCase()),
+			  );
 
 		return items.sort((x, y) => {
 			return x.isWinner === y.isWinner ? 0 : x.isWinner ? -1 : 1;
