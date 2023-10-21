@@ -474,7 +474,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (claimTokenLoading) return renderPendingBody();
 
-		if (claimedTokensList.length >= 3 && !collectedToken) return claimMaxedOutBody();
+		if (claimedTokensList.length >= 4 && !collectedToken) return claimMaxedOutBody();
 
 		return renderInitialBody();
 	};

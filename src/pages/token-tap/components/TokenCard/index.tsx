@@ -188,7 +188,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 					<div
 						className={`${
 							isHighlighted ? 'bg-g-primary-low' : 'bg-gray40'
-						} p-3 flex items-center flex-wrap text-xs gap-2 text-white`}
+						} pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
 					>
 						{(showAllPermissions
 							? token.permissions
