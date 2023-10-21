@@ -38,7 +38,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	} = useContext(TokenTapContext);
 	const { openBrightIdModal } = useContext(GlobalContext);
 
-	const { userProfile } = useContext(UserProfileContext);
+	const { userProfile, weeklyTokenClaimLimit } = useContext(UserProfileContext);
 
 	const collectedToken = claimedTokensList.find((item) => item.tokenDistribution.id === selectedTokenForClaim!.id);
 
@@ -474,7 +474,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
 		if (claimTokenLoading) return renderPendingBody();
 
-		if (claimedTokensList.length >= 4 && !collectedToken) return claimMaxedOutBody();
+		if (claimedTokensList.length >= (weeklyTokenClaimLimit ?? 4) && !collectedToken) return claimMaxedOutBody();
 
 		return renderInitialBody();
 	};

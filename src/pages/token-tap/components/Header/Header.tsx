@@ -5,7 +5,7 @@ import { range } from 'utils';
 import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
 
 const Header = () => {
-	const { userProfile, weeklyTokenClaimLimit } = useContext(UserProfileContext);
+	const { userProfile } = useContext(UserProfileContext);
 
 	return (
 		<div className="header token-tap__header h-[202px] w-full rounded-2xl flex flex-col md:flex-row lg:items-end md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
@@ -40,6 +40,8 @@ const RenderConnectBrightID = () => {
 const TokenCoins = () => {
 	const { openClaimModal, claimedTokensList } = useContext(TokenTapContext);
 
+	const { weeklyTokenClaimLimit } = useContext(UserProfileContext);
+
 	return (
 		<div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
 			<>
@@ -55,7 +57,7 @@ const TokenCoins = () => {
 						/>
 					);
 				})}
-				{range(0, 4 - claimedTokensList.length).map((i) => {
+				{range(0, (weeklyTokenClaimLimit ?? 4) - claimedTokensList.length).map((i) => {
 					return <Icon key={i} iconSrc="assets/images/token-tap/empty-coin.png" width="36px" height="36px" />;
 				})}
 			</>
