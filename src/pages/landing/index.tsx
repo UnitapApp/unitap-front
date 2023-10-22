@@ -12,10 +12,11 @@ import TapLoading from './components/loading';
 import GasTapLandingLazy from './components/gas-tap';
 import TokenTapLandingLazy from './components/token-tap';
 import { countGasClaimedAPI, countUsersAPI } from 'api';
-import { Chain } from 'types';
+import { Chain, Prize } from 'types';
 import UButton from 'components/basic/Button/UButton';
 import PrizeTapLandingLazy from './components/prize-tap';
 import { getRafflesListAPI } from 'api';
+import PrizeTapLanding from './components/prize-tap/page';
 
 export const socialLinks = [
 	{
@@ -81,7 +82,7 @@ const Landing: FC = () => {
 
 	const [usersCount, setUsersCount] = useState('+4000');
 	const [gasClaimedCount, setGasClaimedCount] = useState(0);
-	const [rafflesLength, setRafflesLength] = useState(0);
+	const [raffles, setRaffles] = useState<Prize[]>([]);
 
 	const setChainClaims = (chainList: Chain[]) => {
 		setStats(() => [
@@ -94,14 +95,14 @@ const Landing: FC = () => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
 		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
 		getRafflesListAPI(undefined).then((res) =>
-			setRafflesLength(
+			setRaffles(
 				res
 					? res.filter(
 							(raffle) =>
 								new Date(raffle.deadline).getTime() > new Date().getTime() &&
 								new Date().getTime() > new Date(raffle.startAt).getTime(),
-					  ).length
-					: 0,
+					  )
+					: [],
 			),
 		);
 	}, []);
@@ -229,11 +230,11 @@ const Landing: FC = () => {
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
 								description={
-									rafflesLength === 0
+									raffles.length === 0
 										? 'No raffles are live on Prize Tap'
-										: rafflesLength === 1
+										: raffles.length === 1
 										? '1 raffle is live on Prize Tap'
-										: rafflesLength + ' Raffles are live on PrizeTap...'
+										: raffles.length + ' Raffles are live on PrizeTap...'
 								}
 								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
@@ -243,7 +244,7 @@ const Landing: FC = () => {
 								buttonClass={'green-text-button text-gray100'}
 							>
 								<Suspense fallback={<TapLoading />}>
-									<PrizeTapLandingComponent />
+									<PrizeTapLanding rafflesList={raffles} />
 								</Suspense>
 							</Widget>
 						</Link>
