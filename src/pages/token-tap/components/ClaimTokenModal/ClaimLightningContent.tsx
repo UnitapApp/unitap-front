@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 
 import Icon from 'components/basic/Icon/Icon';
 import { Chain, ClaimReceiptState, Permission, PermissionType } from 'types';
@@ -10,6 +10,7 @@ import { TokenTapContext } from 'hooks/token-tap/tokenTapContext';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import animation from '../../../../assets/animations/GasFee-delivery2.json';
 import { GlobalContext } from 'hooks/useGlobalContext';
+import TokenPermissions from '../permissions';
 
 const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	const {
@@ -22,6 +23,8 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		claimedTokensList,
 	} = useContext(TokenTapContext);
 
+	const [isPermissionsVerified, setIsPermissionsVerified] = useState(false);
+
 	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const token = useMemo(
@@ -29,7 +32,8 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		[claimedTokensList, selectedTokenForClaim],
 	);
 
-	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress } = useContext(UserProfileContext);
+	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress, weeklyTokenClaimLimit } =
+		useContext(UserProfileContext);
 
 	useEffect(() => {
 		if (!token?.status) return;
@@ -404,22 +408,17 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	const getLightningClaimBody = () => {
 		if (!userProfile) return renderBrightNotConnectedBody();
 
-		for (const permission of selectedTokenForClaim?.permissions ?? []) {
-			if (permission.name === PermissionType.BRIGHTID) {
-				if (!userProfile.isMeetVerified) return renderVerifyPermission(permission);
-			} else if (permission.name === PermissionType.AURA) {
-				if (!userProfile.isAuraVerified) return renderVerifyPermission(permission);
-			}
-		}
-
 		if (token?.status === 'Verified') return renderSuccessBody();
 		if (token?.status === 'Pending') return renderPendingBody();
 
-		if (claimedTokensList.length >= 3) return claimMaxedOutBody();
-
-		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
+		if (claimedTokensList.length >= (weeklyTokenClaimLimit ?? 4)) return claimMaxedOutBody();
 
 		if (claimError) return renderFailedBody();
+
+		if (!isPermissionsVerified) {
+			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
+		}
+		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
 
 		return renderNotAvailableBody();
 	};

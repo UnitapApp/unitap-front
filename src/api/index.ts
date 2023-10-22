@@ -247,6 +247,16 @@ export async function getRaffleConstraintsVerifications(rafflePk: number, token:
 	return response.data;
 }
 
+export async function getTokenConstraintsVerifications(tokenPk: number, token: string) {
+	const response = await axiosInstance.get('/api/tokentap/get-token-constraints/' + tokenPk + '/', {
+		headers: {
+			Authorization: `Token ${token}`,
+		},
+	});
+
+	return response.data;
+}
+
 export async function getLineaRaffleEntries() {
 	const response = await axiosInstance.get('/api/prizetap/get-linea-entries/');
 
