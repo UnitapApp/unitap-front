@@ -62,15 +62,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 	);
 
 	const permissionVerificationsList = useMemo(
-		() =>
-			token.permissions
-				.filter((permission) => permission.type === 'VER')
-				.map((permission) => isPermissionVerified(permission)),
+		() => token.permissions.filter((permission) => permission.type === 'VER'),
 		[token.permissions, isPermissionVerified],
 	);
-
-	const needsVerification =
-		permissionVerificationsList.includes(false) || permissionVerificationsList.includes(undefined);
 
 	return (
 		<div key={token.id}>
@@ -135,13 +129,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 										<ClaimButton
 											data-testid={`chain-show-claim-${token.id}`}
 											mlAuto
-											disabled={needsVerification}
 											onClick={() => openClaimModal(token)}
 											className="text-sm m-auto"
 										>
-											<p>
-												{needsVerification ? 'Complete Verifications' : `Claim ${calculateClaimAmount} ${token.token}`}
-											</p>
+											<p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
 										</ClaimButton>
 									) : (
 										<ClaimedButton
@@ -160,13 +151,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 									<ClaimButton
 										data-testid={`chain-show-claim-${token.id}`}
 										mlAuto
-										disabled={needsVerification}
 										onClick={() => openClaimModal(token)}
 										className="text-sm m-auto"
 									>
-										<p data-testid={`token-claim-text-${token.id}`}>
-											{needsVerification ? 'Complete Verifications' : `Claim ${calculateClaimAmount} ${token.token}`}
-										</p>{' '}
+										<p data-testid={`token-claim-text-${token.id}`}>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
 									</ClaimButton>
 								) : (
 									<ClaimedButton
@@ -195,24 +183,12 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 							: token.permissions.filter((permission) => permission.type === 'VER').slice(0, 6)
 						).map((permission, key) => (
 							<Tooltip
-								className={
-									'border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg ' +
-									(permissionVerificationsList[key] ? 'text-space-green' : 'text-[#D7AC5A]')
-								}
+								className={'border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg '}
 								data-testid={`token-verification-${token.id}-${permission.name}`}
 								key={key}
 								text={permission.description}
 							>
-								<div className="flex items-center gap-3">
-									<img
-										src={
-											permissionVerificationsList[key]
-												? '/assets/images/token-tap/check.svg'
-												: '/assets/images/token-tap/not-verified.svg'
-										}
-									/>
-									{permission.title}
-								</div>
+								<div className="flex items-center gap-3">{permission.title}</div>
 							</Tooltip>
 						))}
 
@@ -223,6 +199,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 							>
 								<span>{showAllPermissions ? 'Show less' : 'Show more'}</span>
 								<img
+									alt="angle-down"
 									src="/assets/images/token-tap/angle-down.svg"
 									className={`ml-2 ${showAllPermissions ? 'rotate-180' : ''} transition-transform`}
 								/>

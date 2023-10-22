@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Text } from 'components/basic/Text/text.style';
 import { DropIconWrapper } from 'pages/home/components/ClaimModal/claimModal.style';
 import Icon from 'components/basic/Icon/Icon';
@@ -20,11 +20,14 @@ import animation from 'assets/animations/GasFee-delivery2.json';
 // @ts-ignore
 import ModelViewer from '@metamask/logo';
 import { GlobalContext } from 'hooks/useGlobalContext';
+import TokenPermissions from '../permissions';
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	const { account, chainId, connector } = useWeb3React();
 	const walletConnected = !!account;
 	const metamaskLogo = useRef<HTMLDivElement>(null);
+
+	const [isPermissionsVerified, setIsPermissionsVerified] = useState(false);
 
 	const { tryActivation } = useWalletActivation();
 	const {
@@ -36,6 +39,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		claimTokenWithMetamaskResponse,
 		claimTokenSignatureLoading,
 	} = useContext(TokenTapContext);
+
 	const { openBrightIdModal } = useContext(GlobalContext);
 
 	const { userProfile, weeklyTokenClaimLimit } = useContext(UserProfileContext);
@@ -239,6 +243,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 	function renderInitialBody() {
 		if (!selectedTokenForClaim) {
 			return null;
+		}
+
+		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
+			return renderMaxedOutBody();
 		}
 
 		const calculateClaimAmount = selectedTokenForClaim.amount / 10 ** selectedTokenForClaim.chain.decimals;
@@ -448,6 +456,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		if (!selectedTokenForClaim) {
 			closeClaimModal();
 			return null;
+		}
+
+		if (!isPermissionsVerified) {
+			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
 		}
 
 		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
