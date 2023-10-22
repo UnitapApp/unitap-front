@@ -112,7 +112,7 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 			setClaimTokenSignatureLoading(true);
 			try {
 				const response = await claimTokenAPI(userToken, token.id, body);
-				setClaimedTokensList([...claimedTokensList, response]);
+				// setClaimedTokensList([...claimedTokensList, response]);
 				setClaimTokenSignatureLoading(false);
 
 				return response;
@@ -187,6 +187,8 @@ const TokenTapProvider = ({ children }: { children: ReactNode }) => {
 					message: 'Something went wrong. Please try again!',
 				});
 				setClaimTokenLoading(false);
+			} finally {
+				setClaimingTokenPk(null);
 			}
 		},
 		[userToken, provider, selectedTokenForClaim, claimToken, EVMTokenTapContract, account, addTransaction, chainId],
