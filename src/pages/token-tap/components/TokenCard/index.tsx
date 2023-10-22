@@ -61,11 +61,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 		[token],
 	);
 
-	const permissionVerificationsList = useMemo(
-		() => token.permissions.filter((permission) => permission.type === 'VER'),
-		[token.permissions, isPermissionVerified],
-	);
-
 	return (
 		<div key={token.id}>
 			<div
@@ -92,7 +87,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 							</span>
 						</div>
 
-						<div className={'flex items-center justify-end flex-col md:flex-row !w-full sm:w-auto'}>
+						<div className={'flex items-center gap-2 justify-end flex-col md:flex-row !w-full sm:w-auto'}>
 							<div className="w-full sm:w-auto items-center sm:items-end">
 								{token.chain.chainName === 'Lightning' || (
 									<AddMetamaskButton
@@ -224,7 +219,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHig
 					{!!timePermissionVerification && (
 						<div
 							data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-							className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 -translate-x-1/2 text-xs text-gray80"
+							className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 md:-translate-x-1/2 text-xs text-gray80"
 						>
 							{timePermissionVerification.title}
 							<Icon
