@@ -86,7 +86,7 @@ const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({ token, on
 					) : (
 						<ClaimAndEnrollButton height="48px" fontSize="14px" className="!w-full mt-5" onClick={onClose}>
 							<div className="relative w-full">
-								<p> Enroll</p>{' '}
+								<p> Claim </p>
 							</div>
 						</ClaimAndEnrollButton>
 					)}
