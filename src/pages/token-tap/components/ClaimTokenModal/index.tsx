@@ -458,10 +458,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 			return null;
 		}
 
-		if (!isPermissionsVerified) {
-			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
-		}
-
 		if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut) {
 			return renderMaxedOutBody();
 		}
@@ -487,6 +483,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 		if (claimTokenLoading) return renderPendingBody();
 
 		if (claimedTokensList.length >= (weeklyTokenClaimLimit ?? 4) && !collectedToken) return claimMaxedOutBody();
+
+		if (!isPermissionsVerified) {
+			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
+		}
 
 		return renderInitialBody();
 	};

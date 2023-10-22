@@ -408,18 +408,17 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 	const getLightningClaimBody = () => {
 		if (!userProfile) return renderBrightNotConnectedBody();
 
-		if (!isPermissionsVerified) {
-			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
-		}
-
 		if (token?.status === 'Verified') return renderSuccessBody();
 		if (token?.status === 'Pending') return renderPendingBody();
 
 		if (claimedTokensList.length >= (weeklyTokenClaimLimit ?? 4)) return claimMaxedOutBody();
 
-		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
-
 		if (claimError) return renderFailedBody();
+
+		if (!isPermissionsVerified) {
+			return <TokenPermissions token={selectedTokenForClaim!} onClose={() => setIsPermissionsVerified(true)} />;
+		}
+		if (!selectedTokenForClaim?.isMaxedOut && !selectedTokenForClaim?.isExpired) return renderInitialBody();
 
 		return renderNotAvailableBody();
 	};
