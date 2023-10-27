@@ -23,9 +23,8 @@ const Header = () => {
 };
 
 const Dabes = () => {
-	const { activeClaimHistory } = useContext(ClaimContext);
-	const { openClaimModal } = useContext(ClaimContext);
-
+	const { activeClaimHistory, openClaimModal } = useContext(ClaimContext);
+	const { gastapRoundClaimLimit } = useContext(UserProfileContext);
 	return (
 		<div
 			data-testid="claims-chain-list"
@@ -47,11 +46,13 @@ const Dabes = () => {
 							/>
 						);
 					})}
-				{range(0, 5 - activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length).map(
-					(i) => {
-						return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
-					},
-				)}
+				{range(
+					0,
+					(gastapRoundClaimLimit ?? 5) -
+						activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length,
+				).map((i) => {
+					return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
+				})}
 			</>
 		</div>
 	);

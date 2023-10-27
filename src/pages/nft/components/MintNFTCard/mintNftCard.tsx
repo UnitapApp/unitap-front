@@ -96,7 +96,7 @@ const MintNFTCard = () => {
 			fundManagerAddress: '0x0000000000000000000000000000000000000000',
 			totalClaims: 0,
 			gasImageUrl: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
-			totalClaimsSinceLastMonday: 0,
+			totalClaims: 0,
 			isTestnet: false,
 			chainType: 'Ethereum',
 			needsFunding: false,

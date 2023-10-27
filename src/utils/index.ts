@@ -113,6 +113,22 @@ export const diffToNextMonday = (date: Date) => {
 	};
 };
 
+export const diffToNextMonth = (utcDate: Date) => {
+	const currentMonth = utcDate.getUTCMonth();
+	const nextMonth = (currentMonth + 1) % 12;
+	const nextMonthYear = currentMonth === 11 ? utcDate.getUTCFullYear() + 1 : utcDate.getUTCFullYear();
+	const firstDayOfNextMonth = new Date(Date.UTC(nextMonthYear, nextMonth, 1));
+
+	const diffTime = Math.ceil((firstDayOfNextMonth.getTime() - utcDate.getTime()) / 1000);
+
+	return {
+		seconds: String(diffTime % 60).padStart(2, '0'),
+		minutes: String(Math.floor(diffTime / 60) % 60).padStart(2, '0'),
+		hours: String(Math.floor(diffTime / 3600) % 24).padStart(2, '0'),
+		days: String(Math.floor(diffTime / 86400)).padStart(2, '0'),
+	};
+};
+
 export const getChainIcon = (chain: Chain) => {
 	return chain.logoUrl;
 };
