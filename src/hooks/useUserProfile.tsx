@@ -116,7 +116,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
 		const getRemainingClaims = async () => {
 			const newRemainingClaims = await getRemainingClaimsAPI(userToken!);
-			setRemainingClaims(newRemainingClaims.totalWeeklyClaimsRemaining);
+			setRemainingClaims(newRemainingClaims.totalRoundClaimsRemaining);
 		};
 
 		getWeeklyChainClaimLimit();
