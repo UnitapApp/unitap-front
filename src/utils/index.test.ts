@@ -5,6 +5,7 @@ import { TEST_ADDRESS_NEVER_USE_2 } from '../../cypress/utils/data';
 describe('utils', () => {
 	const chainList: Chain[] = [
 		{
+			totalClaimsThisRound: 0,
 			pk: 1,
 			chainName: 'Gnosis Chain (formerly xDai) Mocked',
 			chainId: '100',
@@ -23,13 +24,13 @@ describe('utils', () => {
 			gasImageUrl: '',
 			fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
 			totalClaims: 2000,
-			totalClaims: 10,
 			isTestnet: false,
 			chainType: 'EVM',
 			needsFunding: false,
 			blockScanAddress: 'https://blockscout.com/xdai/mainnet/address/',
 		},
 		{
+			totalClaimsThisRound: 0,
 			pk: 2,
 			chainName: 'IDChain Mainnet Mocked',
 			chainId: '74',
@@ -46,7 +47,6 @@ describe('utils', () => {
 			gasImageUrl: '',
 			fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
 			totalClaims: 2000,
-			totalClaims: 10,
 			isTestnet: true,
 			chainType: 'Non-EVM',
 			needsFunding: true,
