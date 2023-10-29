@@ -58,15 +58,13 @@ export async function claimMaxNonEVMAPI(token: string, chainPk: number, address:
 }
 
 export async function getActiveClaimHistory(token: string) {
-	const date = new Date();
-	const lastMonday = getLastMonday(date).toISOString();
 	const response = await axiosInstance.get<ClaimReceipt[]>('/api/v1/user/claims/', {
 		headers: {
 			Authorization: `Token ${token}`,
 		},
 	});
 
-	return response.data.filter((claim) => claim.datetime >= lastMonday).sort((b, a) => a.pk - b.pk);
+	return response.data;
 }
 
 export async function getUserProfileWithTokenAPI(token: string) {
