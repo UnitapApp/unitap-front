@@ -2,7 +2,7 @@ import Icon from 'components/basic/Icon/Icon';
 import { ClaimContext } from 'hooks/useChainList';
 import { useContext, useEffect, useState } from 'react';
 import { ClaimReceiptState } from 'types';
-import { diffToNextMonday } from 'utils';
+import { diffToNextMonth } from 'utils';
 
 const ClaimNotAvailable = () => {
 	const { activeClaimHistory } = useContext(ClaimContext);
@@ -14,7 +14,7 @@ const ClaimNotAvailable = () => {
 	const [seconds, setSeconds] = useState('00');
 
 	useEffect(() => {
-		const diff = diffToNextMonday(now);
+		const diff = diffToNextMonth(now);
 		setSeconds(diff.seconds);
 		setMinutes(diff.minutes);
 		setHours(diff.hours);
