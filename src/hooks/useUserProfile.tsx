@@ -6,32 +6,37 @@ import {
 	getWeeklyChainClaimLimitAPI,
 	setWalletAPI,
 } from 'api';
-import { APIErrorsSource, UserProfile } from 'types';
+import { APIErrorsSource, Settings, UserProfile } from 'types';
 import useToken from './useToken';
 import { useWeb3React } from '@web3-react/core';
 import { RefreshContext } from 'context/RefreshContext';
 import { AxiosError } from 'axios';
 import { ErrorsContext } from '../context/ErrorsProvider';
 
-export const UserProfileContext = createContext<{
-	userProfile: UserProfile | null;
-	refreshUserProfile: ((address: string, signature: string) => Promise<void>) | null;
-	loading: boolean;
-	weeklyChainClaimLimit: number | null;
-	weeklyTokenClaimLimit?: number;
-	weeklyPrizeTapClaimLimit?: number;
-	remainingClaims: number | null;
-	userProfileLoading: boolean;
-	nonEVMWalletAddress: string;
-	setNonEVMWalletAddress: (address: string) => void;
-	userToken: string | null;
-	isGasTapAvailable: boolean;
-}>({
+// TODO:
+//  	total claims since last monday field renamed
+//    gas tap monthly check if anything needs modifying
+//    settings field names changed
+
+export const UserProfileContext = createContext<
+	Partial<Settings> & {
+		userProfile: UserProfile | null;
+		refreshUserProfile: ((address: string, signature: string) => Promise<void>) | null;
+		loading: boolean;
+		remainingClaims: number | null;
+		userProfileLoading: boolean;
+		nonEVMWalletAddress: string;
+		setNonEVMWalletAddress: (address: string) => void;
+		userToken: string | null;
+		isGasTapAvailable: boolean;
+	}
+>({
 	userProfile: null,
 	isGasTapAvailable: true,
 	refreshUserProfile: null,
 	loading: false,
-	weeklyChainClaimLimit: null,
+	tokentapRoundClaimLimit: 0,
+	gastapRoundClaimLimit: 0,
 	remainingClaims: null,
 	userProfileLoading: false,
 	nonEVMWalletAddress: '',
@@ -43,15 +48,10 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 	const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [userToken, setToken] = useToken();
-	const [weeklyClaimSettings, setWeeklyClaimSettings] = useState<{
-		weeklyChainClaimLimit: number;
-		tokentapWeeklyClaimLimit: number;
-		prizetapWeeklyClaimLimit: number;
-		isGasTapAvailable: boolean;
-	}>({
-		weeklyChainClaimLimit: 0,
-		tokentapWeeklyClaimLimit: 0,
-		prizetapWeeklyClaimLimit: 0,
+	const [weeklyClaimSettings, setWeeklyClaimSettings] = useState<Settings>({
+		gastapRoundClaimLimit: 0,
+		tokentapRoundClaimLimit: 0,
+		prizetapRoundClaimLimit: 0,
 		isGasTapAvailable: false,
 	});
 
@@ -116,7 +116,7 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 
 		const getRemainingClaims = async () => {
 			const newRemainingClaims = await getRemainingClaimsAPI(userToken!);
-			setRemainingClaims(newRemainingClaims.totalWeeklyClaimsRemaining);
+			setRemainingClaims(newRemainingClaims.totalRoundClaimsRemaining);
 		};
 
 		getWeeklyChainClaimLimit();
@@ -141,9 +141,9 @@ export function UserProfileProvider({ children }: PropsWithChildren<{}>) {
 				isGasTapAvailable: weeklyClaimSettings.isGasTapAvailable,
 				refreshUserProfile,
 				loading,
-				weeklyChainClaimLimit: weeklyClaimSettings.weeklyChainClaimLimit,
-				weeklyTokenClaimLimit: weeklyClaimSettings.tokentapWeeklyClaimLimit,
-				weeklyPrizeTapClaimLimit: weeklyClaimSettings.prizetapWeeklyClaimLimit,
+				gastapRoundClaimLimit: weeklyClaimSettings.gastapRoundClaimLimit,
+				tokentapRoundClaimLimit: weeklyClaimSettings.tokentapRoundClaimLimit,
+				prizetapRoundClaimLimit: weeklyClaimSettings.prizetapRoundClaimLimit,
 				userToken,
 				remainingClaims,
 				userProfileLoading,

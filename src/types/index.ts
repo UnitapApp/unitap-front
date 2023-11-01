@@ -17,7 +17,7 @@ export type Chain = {
 	fundManagerAddress: string;
 	totalClaims: number;
 	gasImageUrl: string;
-	totalClaimsSinceLastMonday: number;
+	totalClaimsThisRound: number;
 	isTestnet: boolean;
 	chainType: string;
 	needsFunding: boolean;
@@ -110,9 +110,9 @@ export type UserProfile = {
 };
 
 export type Settings = {
-	weeklyChainClaimLimit: number;
-	tokentapWeeklyClaimLimit: number;
-	prizetapWeeklyClaimLimit: number;
+	gastapRoundClaimLimit: number;
+	tokentapRoundClaimLimit: number;
+	prizetapRoundClaimLimit: number;
 	isGasTapAvailable: boolean;
 };
 

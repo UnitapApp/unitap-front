@@ -23,9 +23,8 @@ const Header = () => {
 };
 
 const Dabes = () => {
-	const { activeClaimHistory } = useContext(ClaimContext);
-	const { openClaimModal } = useContext(ClaimContext);
-
+	const { activeClaimHistory, openClaimModal } = useContext(ClaimContext);
+	const { gastapRoundClaimLimit } = useContext(UserProfileContext);
 	return (
 		<div
 			data-testid="claims-chain-list"
@@ -34,11 +33,11 @@ const Dabes = () => {
 			<>
 				{activeClaimHistory
 					.filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
-					.map((claim) => {
+					.map((claim, index) => {
 						return (
 							<Icon
 								onClick={() => openClaimModal(claim.chain.pk)}
-								key={claim.chain.chainId}
+								key={index}
 								data-testid={`chain-claimed-success-dabe-${claim.pk}`}
 								iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
 								className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
@@ -47,11 +46,13 @@ const Dabes = () => {
 							/>
 						);
 					})}
-				{range(0, 5 - activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length).map(
-					(i) => {
-						return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
-					},
-				)}
+				{range(
+					0,
+					(gastapRoundClaimLimit ?? 5) -
+						activeClaimHistory.filter((claim) => claim.status !== ClaimReceiptState.REJECTED).length,
+				).map((i) => {
+					return <Icon key={i} iconSrc="assets/images/gas-tap/empty-dabe.svg" width="36px" height="auto" />;
+				})}
 			</>
 		</div>
 	);

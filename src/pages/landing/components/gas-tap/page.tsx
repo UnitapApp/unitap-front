@@ -44,7 +44,7 @@ const GasTapLanding = ({
 										<p>{token.chainName}</p>
 									</div>
 									<p>
-										{token.totalClaimsSinceLastMonday} <span>claims</span>
+										{token.totalClaims} <span>claims</span>
 									</p>
 								</li>
 							))}

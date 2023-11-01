@@ -225,7 +225,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 					>
 						<p className="chain-card__info__title text-sm text-gray90">This Round Claims</p>
 						<p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
-							{numberWithCommas(chain.totalClaimsSinceLastMonday)}
+							{numberWithCommas(chain.totalClaimsThisRound)}
 						</p>
 					</div>
 					<div

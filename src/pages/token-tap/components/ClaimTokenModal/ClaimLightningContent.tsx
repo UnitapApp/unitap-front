@@ -32,8 +32,12 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		[claimedTokensList, selectedTokenForClaim],
 	);
 
-	const { userProfile, nonEVMWalletAddress, setNonEVMWalletAddress, weeklyTokenClaimLimit } =
-		useContext(UserProfileContext);
+	const {
+		userProfile,
+		nonEVMWalletAddress,
+		setNonEVMWalletAddress,
+		tokentapRoundClaimLimit: tokentapWeeklyClaimLimit,
+	} = useContext(UserProfileContext);
 
 	useEffect(() => {
 		if (!token?.status) return;
@@ -411,7 +415,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
 		if (token?.status === 'Verified') return renderSuccessBody();
 		if (token?.status === 'Pending') return renderPendingBody();
 
-		if (claimedTokensList.length >= (weeklyTokenClaimLimit ?? 4)) return claimMaxedOutBody();
+		if (claimedTokensList.length >= (tokentapWeeklyClaimLimit ?? 4)) return claimMaxedOutBody();
 
 		if (claimError) return renderFailedBody();
 
