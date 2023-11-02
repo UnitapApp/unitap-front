@@ -3,7 +3,7 @@ import { FC } from 'react';
 const TapLoading: FC<{ isGasTap?: boolean }> = ({ isGasTap }) => {
 	return (
 		<div className="relative">
-			{isGasTap && <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>}
+			{isGasTap && <p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Monthly Ranking</p>}
 
 			<ul className={'text-white'}>
 				{Array.from(new Array(3)).map((_token, index) => (
