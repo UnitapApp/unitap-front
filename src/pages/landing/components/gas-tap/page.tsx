@@ -23,7 +23,7 @@ const GasTapLanding = ({
 			<div className={isGasTapAvailable ? '' : 'blur-md'}>
 				{sortedChainList.length > 0 && (
 					<>
-						<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Weekly Ranking</p>
+						<p className={'font-semibold text-sm text-white mb-2.5 mt-6'}>Monthly Ranking</p>
 						<ul className={'text-white'}>
 							{sortedChainList.slice(0, 3).map((token, index) => (
 								<li

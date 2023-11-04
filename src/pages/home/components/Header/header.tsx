@@ -33,11 +33,11 @@ const Dabes = () => {
 			<>
 				{activeClaimHistory
 					.filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
-					.map((claim) => {
+					.map((claim, index) => {
 						return (
 							<Icon
 								onClick={() => openClaimModal(claim.chain.pk)}
-								key={claim.chain.chainId}
+								key={index}
 								data-testid={`chain-claimed-success-dabe-${claim.pk}`}
 								iconSrc={claim.chain.gasImageUrl || claim.chain.logoUrl}
 								className={`cursor-pointer transition ${claim.status === ClaimReceiptState.PENDING && 'animated-dabe'}`}
