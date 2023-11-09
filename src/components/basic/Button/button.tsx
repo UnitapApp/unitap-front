@@ -32,10 +32,6 @@ interface props {
 	size?: 'small' | 'large';
 }
 
-// export const Xp = styled.p`
-//     color: ${(props) => DV.colors[color]};
-// `
-
 export const Text = styled.p<props>`
 	color: ${({ color }): string => {
 		const xyz: string | undefined = Object.keys(DV.colors).find((x) => x === color);
