@@ -97,6 +97,12 @@ const Landing: FC = () => {
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
 
+	const rafflesCount = raffles.filter(
+		(raffle) =>
+			new Date(raffle.deadline).getTime() > new Date().getTime() &&
+			new Date().getTime() > new Date(raffle.startAt).getTime(),
+	);
+
 	const navigate = useNavigate();
 
 	return (
@@ -218,11 +224,11 @@ const Landing: FC = () => {
 						<Link className={'flex--1'} to={RoutePath.PRIZE}>
 							<Widget
 								description={
-									raffles.length === 0
+									rafflesCount.length === 0
 										? 'No raffles are live on Prize Tap'
-										: raffles.length === 1
+										: rafflesCount.length === 1
 										? '1 raffle is live on Prize Tap'
-										: raffles.length + ' Raffles are live on PrizeTap...'
+										: rafflesCount.length + ' Raffles are live on PrizeTap...'
 								}
 								className={' h-full after:w-full after:-top-8 hover:bg-gray00'}
 								icon={'prizetap-icon.png'}
