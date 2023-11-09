@@ -63,8 +63,6 @@ export const futureTaps = [
 
 const TokenTapLandingComponent = lazy(TokenTapLandingLazy);
 
-const PrizeTapLandingComponent = lazy(PrizeTapLandingLazy);
-
 const GasTapLandingComponent = lazy(GasTapLandingLazy);
 
 const Landing: FC = () => {
@@ -94,17 +92,7 @@ const Landing: FC = () => {
 	useEffect(() => {
 		countUsersAPI().then((res) => setUsersCount(res.toString()));
 		countGasClaimedAPI().then((res) => setGasClaimedCount(res));
-		getRafflesListAPI(undefined).then((res) =>
-			setRaffles(
-				res
-					? res.filter(
-							(raffle) =>
-								new Date(raffle.deadline).getTime() > new Date().getTime() &&
-								new Date().getTime() > new Date(raffle.startAt).getTime(),
-					  )
-					: [],
-			),
-		);
+		getRafflesListAPI(undefined).then((res) => setRaffles(res ? res : []));
 	}, []);
 
 	const deadline = useMemo(() => new Date('January 12, 2023 16:00:00 UTC'), []);
