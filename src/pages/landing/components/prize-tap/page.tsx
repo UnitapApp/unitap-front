@@ -10,11 +10,12 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 		return tokenImgLink;
 	};
 
-	const availableRaffles = rafflesList.filter(
-		(raffle) =>
-			new Date(raffle.deadline).getTime() > new Date().getTime() &&
-			new Date().getTime() > new Date(raffle.startAt).getTime(),
-	);
+	const availableRaffles = rafflesList.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
+	// .filter(
+	// 	(raffle) =>
+	// 		new Date(raffle.deadline).getTime() > new Date().getTime() &&
+	// 		new Date().getTime() > new Date(raffle.startAt).getTime(),
+	// );
 
 	return (
 		<>
@@ -49,6 +50,8 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 							<div className="flex mt-[-1.2em] ml-[6em] justify-between">
 								{raffle.winnerEntry ? (
 									<p className="text-gray90">Congratulations, @{raffle.winnerEntry?.userProfile?.username}</p>
+								) : raffle.isExpired ? (
+									<p className="text-gray90">Check result in prize tap</p>
 								) : (
 									<>
 										<p className="text-gray90 ml-2">Winner in:</p>
