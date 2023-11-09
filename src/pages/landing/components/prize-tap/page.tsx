@@ -11,11 +11,6 @@ const PrizeTapLanding: FC<{ rafflesList: Prize[] }> = ({ rafflesList }) => {
 	};
 
 	const availableRaffles = rafflesList.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
-	// .filter(
-	// 	(raffle) =>
-	// 		new Date(raffle.deadline).getTime() > new Date().getTime() &&
-	// 		new Date().getTime() > new Date(raffle.startAt).getTime(),
-	// );
 
 	return (
 		<>
