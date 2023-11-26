@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@/styles/buttons.scss";
+@import "@/styles/cards.scss";
+@import "@/styles/index.scss";
+@import "@/styles/animations.scss";
+
+@mixin btn {
+  @apply ease-out duration-300;
+}
+
+@layer base {
+  // TYPOGRAPHY
+  h1 {
+    @apply text-3xl font-semibold items-center;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+
+  h3 {
+    @apply text-xl font-semibold;
+  }
+
+  h4 {
+    @apply text-lg font-medium;
+  }
+
+  input {
+    @apply focus:outline-none;
+  }
+
+  .text-gradient-primary {
+    @apply bg-g-primary bg-clip-text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  // FLEX SIZES
+  .flex--1 {
+    flex: 1;
+  }
+
+  .flex-2 {
+    flex: 2;
+  }
+
+  .flex-3 {
+    flex: 3;
+  }
+
+  .flex-4 {
+    flex: 4;
+  }
+}
+
+@font-face {
+  font-family: DigitalNumbers;
+  font-style: normal;
+  font-weight: normal;
+  src: URL("/assets/font/DigitalNumbers/DigitalNumbers-Regular.ttf")
+    format("truetype");
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* Chrome, Safari, Edge, Opera */
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  /* Firefox */
+  -moz-appearance: textfield;
+}

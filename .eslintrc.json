@@ -1,18 +1,3 @@
 {
-	"root": true,
-	"env": { "browser": true, "es2020": true },
-	"extends": [
-		"eslint:recommended",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"prettier"
-	],
-	"rules": {
-		"react-hooks/exhaustive-deps": "error",
-		"jsx-a11y/alt-text": "off"
-	},
-	"parser": "@typescript-eslint/parser",
-	"plugins": ["react-refresh"],
-	"ignorePatterns": ["**/*.sass", "dist", ".eslintrc.json", "./src/abis/**/*.ts"]
+  "extends": "next/core-web-vitals"
 }

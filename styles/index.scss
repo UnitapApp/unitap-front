@@ -1,0 +1,38 @@
+.uni-card {
+  @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20 overflow-hidden;
+  @apply transition-all duration-250 after:transition-all after:duration-250;
+
+  .card-text {
+    @apply transition duration-300;
+  }
+
+  &:hover > .card-text {
+    @apply -translate-y-1 transition duration-300;
+  }
+}
+
+.text-gradient-primary {
+  @apply bg-g-primary bg-clip-text;
+  -webkit-text-fill-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #4bf2a2 -4.66%,
+    #a89fe7 56.06%,
+    #e1c4f4 73.07%,
+    #dd40cd 111.44%
+  );
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #10101b;
+}

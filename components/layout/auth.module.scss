@@ -1,0 +1,20 @@
+.dropdownHeader {
+  // background: linear-gradient(
+  //   to left,
+  //   #612e66,
+  //   #9e4f9e 30%,
+  //   #8971af 40%,
+  //   #446f6f 60%,
+  //   #202b33 95%
+  // );
+  background: linear-gradient(
+    91deg,
+    #202b33 2.66%,
+    #426d6d,
+    rgba(168, 159, 231, 0.68) 56.06%,
+    #a958a9 73.07%,
+    rgba(221, 64, 205, 0) 111.44%
+  );
+
+  backdrop-filter: blur(25px);
+}

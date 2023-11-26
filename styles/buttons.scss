@@ -1,0 +1,137 @@
+.gradient-outline-button {
+  @apply bg-g-primary relative z-10 before:content-[''];
+  @apply before:block before:-z-10 before:absolute before:inset-[1px] before:bg-gray00;
+
+  button {
+    @apply bg-g-primary bg-clip-text;
+  }
+}
+
+.secondary-button {
+  @apply border-2 border-gray50 bg-gray00;
+
+  button {
+    @apply bg-g-primary bg-clip-text;
+  }
+}
+
+.green-text-button {
+  @apply border-2 border-gray50 bg-gray00;
+
+  button {
+    @apply text-space-green;
+  }
+}
+
+.btn {
+  &--primary {
+    @apply bg-g-primary text-gray00;
+  }
+
+  &--primary-light {
+    @apply bg-g-primary relative z-10 text-white;
+    border-radius: 8px !important;
+
+    &::before {
+      @apply block -z-10 absolute inset-0 bg-gray10 bg-opacity-80 m-0.5 rounded-[7px];
+      content: "";
+    }
+  }
+
+  &--primary-outlined {
+    @apply bg-g-primary relative z-10;
+    border-radius: 12px !important;
+
+    & p {
+      @apply bg-g-primary bg-clip-text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    &::before {
+      @apply block -z-10 absolute inset-0 bg-gray10 m-0.5 rounded-[11px];
+      content: "";
+    }
+  }
+
+  &--claim {
+    width: 220px !important;
+  }
+
+  &--out-of-balance {
+    @apply text-gray90 bg-gray60 border-2 border-gray90 flex justify-between items-center font-semibold;
+    padding: 5px 5px 5px 16px !important;
+    border-radius: 12px !important;
+    cursor: default !important;
+  }
+
+  &--refill {
+    @apply bg-gray50 text-white border border-white font-medium hover:bg-gray70 transition;
+    padding: 7px 20px !important;
+    border-radius: 7px !important;
+  }
+
+  &--disabled {
+    @apply bg-gray70 hover:cursor-not-allowed border-gray90 text-gray90 border-2 rounded-xl #{!important};
+  }
+
+  &--bright {
+    @apply bg-orange text-gray00;
+  }
+
+  &--address {
+    @apply bg-gray00 text-white;
+
+    &::before {
+      @apply w-1.5 h-[6px] rounded-3xl bg-error inline-block -ml-4 mr-4 mb-[1px];
+      content: "";
+    }
+
+    &--active {
+      @apply before:bg-space-green;
+    }
+  }
+
+  // BUTTON SIZE
+  @apply rounded-lg text-base font-semibold px-4 py-3;
+  @apply hover:cursor-pointer;
+
+  &--sm {
+    @apply rounded-md text-xs font-bold px-3 py-2;
+  }
+
+  &--lg {
+    @apply rounded-xl;
+  }
+
+  &-default {
+    button {
+      @apply text-sm;
+    }
+  }
+
+  &-large {
+    @apply py-2.5 px-4 rounded-xl border-[3px] #{!important};
+
+    &:before {
+      border-radius: 0.75rem !important;
+    }
+
+    button {
+      @apply font-medium;
+    }
+  }
+
+  &-small {
+    @apply px-3 py-2;
+
+    button {
+      @apply text-xs font-semibold;
+    }
+  }
+
+  // STATUS
+  &.status-red {
+    @apply bg-red-100 text-red-500;
+  }
+}
