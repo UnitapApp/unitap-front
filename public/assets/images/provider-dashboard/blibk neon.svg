@@ -1,0 +1,22 @@
+<svg width="357" height="49" viewBox="0 0 357 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_6928_11934)">
+<text stroke="#4CE6A1" stroke-width="3.5" xml:space="preserve" style="white-space: pre" font-family="Noto Sans" font-size="36" font-weight="bold" letter-spacing="0em"><tspan x="0" y="38.468">Provider </tspan></text>
+</g>
+<g filter="url(#filter1_f_6928_11934)">
+<text stroke="#4CE6A1" stroke-width="3.5" xml:space="preserve" style="white-space: pre" font-family="Noto Sans" font-size="36" font-weight="bold" letter-spacing="0em"><tspan x="161" y="38.468">Dashboard</tspan></text>
+</g>
+<text stroke="#4CE6A1" stroke-width="2" xml:space="preserve" style="white-space: pre" font-family="Noto Sans" font-size="36" font-weight="bold" letter-spacing="0em"><tspan x="0" y="38.468">Provider</tspan></text>
+<text stroke="#4CE6A1" stroke-width="2" xml:space="preserve" style="white-space: pre" font-family="Noto Sans" font-size="36" font-weight="bold" letter-spacing="0em"><tspan x="161" y="38.468">Dashboard</tspan></text>
+<defs>
+<filter id="filter0_f_6928_11934" x="-6.76001" y="0.639999" width="167.7" height="47.72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_6928_11934"/>
+</filter>
+<filter id="filter1_f_6928_11934" x="154.24" y="0.639999" width="209.111" height="47.72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_6928_11934"/>
+</filter>
+</defs>
+</svg>
