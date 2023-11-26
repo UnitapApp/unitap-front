@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useGasTapContext } from "@/context/gasTapProvider"
-import ChainList from "./Cards/Chainlist"
-import Filters from "./filters"
-import SearchInput from "./searchInput"
+import { useGasTapContext } from "@/context/gasTapProvider";
+import ChainList from "./Cards/Chainlist";
+import Filters from "./filters";
+import SearchInput from "./searchInput";
 
 export const GasTapMainContent = () => {
-  const { searchPhrase } = useGasTapContext()
+  const { searchPhrase } = useGasTapContext();
   return (
     <>
       <div className="action-bar flex flex-col-reverse md:flex-row justify-between items-center">
@@ -18,7 +18,7 @@ export const GasTapMainContent = () => {
         GasTap Chains Balances
       </p>
     </>
-  )
-}
+  );
+};
 
-export default GasTapMainContent
+export default GasTapMainContent;
