@@ -3,8 +3,8 @@ import {
   IntervalType,
   MEDIUM_INTERVAL,
   SLOW_INTERVAL,
-} from "@/constants"
-import { useEffect } from "react"
+} from "@/constants";
+import { useEffect } from "react";
 
 export const useFastRefresh = (
   callback: CallableFunction,
@@ -12,14 +12,14 @@ export const useFastRefresh = (
 ) => {
   useEffect(() => {
     const timeout = setInterval(() => {
-      callback()
-    }, FAST_INTERVAL)
+      callback();
+    }, FAST_INTERVAL);
 
     return () => {
-      clearInterval(timeout)
-    }
-  }, [dependencies])
-}
+      clearInterval(timeout);
+    };
+  }, [...dependencies, callback]);
+};
 
 export const useMediumRefresh = (
   callback: CallableFunction,
@@ -27,14 +27,14 @@ export const useMediumRefresh = (
 ) => {
   useEffect(() => {
     const timeout = setInterval(() => {
-      callback()
-    }, MEDIUM_INTERVAL)
+      callback();
+    }, MEDIUM_INTERVAL);
 
     return () => {
-      clearInterval(timeout)
-    }
-  }, dependencies)
-}
+      clearInterval(timeout);
+    };
+  }, dependencies);
+};
 
 export const useSlowRefresh = (
   callback: CallableFunction,
@@ -42,14 +42,14 @@ export const useSlowRefresh = (
 ) => {
   useEffect(() => {
     const timeout = setInterval(() => {
-      callback()
-    }, SLOW_INTERVAL)
+      callback();
+    }, SLOW_INTERVAL);
 
     return () => {
-      clearInterval(timeout)
-    }
-  }, dependencies)
-}
+      clearInterval(timeout);
+    };
+  }, dependencies);
+};
 
 export const useRefreshWithInitial = (
   callback: CallableFunction,
@@ -58,13 +58,13 @@ export const useRefreshWithInitial = (
 ) => {
   useEffect(() => {
     const timeout = setInterval(() => {
-      callback()
-    }, interval)
+      callback();
+    }, interval);
 
-    callback()
+    callback();
 
     return () => {
-      clearInterval(timeout)
-    }
-  }, dependencies)
-}
+      clearInterval(timeout);
+    };
+  }, dependencies);
+};
