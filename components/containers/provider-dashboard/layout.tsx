@@ -1,32 +1,72 @@
-"use client"
+"use client";
 
-import { FC, PropsWithChildren } from "react"
-import Header from "./Header"
-import { usePathname } from "next/navigation"
-import RoutePath from "@/utils/routes"
-import Icon from "@/components/ui/Icon"
-import Link from "next/link"
+import { FC, PropsWithChildren } from "react";
+import Header from "./Header";
+import { usePathname } from "next/navigation";
+import RoutePath from "@/utils/routes";
+import Icon from "@/components/ui/Icon";
+import Link from "next/link";
+import { useGlobalContext } from "@/context/globalProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import { useWalletAccount } from "@/utils/wallet";
+import { BackToHomeButton } from "./Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
+  const { userToken } = useUserProfileContext();
+
+  const { address } = useWalletAccount();
+
+  const { openBrightIdModal } = useGlobalContext();
+
   return (
     <>
       <Header />
-      <ProviderTabs />
 
-      {children}
+      {userToken ? (
+        <>
+          <ProviderTabs />
+
+          {children}
+        </>
+      ) : (
+        <div className="bg-gray20 rounded-xl flex flex-col items-center justify-center py-10">
+          <div className="mb-10">
+            <Icon iconSrc="assets/images/provider-dashboard/dashboard-login.svg" />
+          </div>
+          <p
+            className=" text-[14px] font-semibold text-white cursor-pointer"
+            onClick={openBrightIdModal}
+          >
+            Sign up first!
+          </p>
+          <p className="text-gray100">
+            If you have account log in to have access to provider dashboard!
+          </p>
+
+          <Link href="/">
+            <BackToHomeButton
+              height="32px"
+              className="!w-full mt-10 max-w-[100px]"
+              $fontSize="10px"
+            >
+              <p>Back to Home</p>
+            </BackToHomeButton>
+          </Link>
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 const ProviderTabs: FC = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const borderPosition =
     pathname === RoutePath.PROVIDER_GASTAP
       ? "after:left-0"
       : pathname == RoutePath.PROVIDER_TOKENTAP
       ? "after:left-[33.3%]"
-      : "after:left-[66.6%]"
+      : "after:left-[66.6%]";
 
   return (
     <div
@@ -65,7 +105,7 @@ const ProviderTabs: FC = () => {
         <Icon iconSrc="/assets/images/provider-dashboard/prize-tap.svg" />
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default ProviderDashboardLayout
+export default ProviderDashboardLayout;
