@@ -8,8 +8,19 @@ import {
   ProviderDashboardFormDataProp,
   UserRafflesProps,
 } from "@/types";
-import { NullCallback } from "@/utils";
-import { FC, PropsWithChildren, createContext, useState } from "react";
+import { NullCallback, fromWei } from "@/utils";
+import {
+  FC,
+  PropsWithChildren,
+  SetStateAction,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useUserProfileContext } from "./userProfile";
 import {
   useWalletAccount,
@@ -17,6 +28,21 @@ import {
   useWalletProvider,
   useWalletSigner,
 } from "@/utils/wallet";
+import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
+import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
+import { isAddress } from "viem";
+import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
+import {
+  getConstraintsApi,
+  getProviderDashboardValidChain,
+  getUserRaffles,
+} from "@/utils/api";
+import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
+import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
+import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
+import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
+import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
+import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 
 const formInitialData: ProviderDashboardFormDataProp = {
   provider: "",
@@ -317,6 +343,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [setDuration, setSetDuration] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
 
+  const [data, setData] =
+    useState<ProviderDashboardFormDataProp>(formInitialData);
+
   // validation states
   const [isTokenContractAddressValid, setIsTokenContractAddressValid] =
     useState<boolean>(false);
@@ -324,12 +353,24 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [isNftContractAddressValid, setIsNftContractAddressValid] =
     useState<boolean>(false);
 
+  const [constraintsList, setConstraintsList] = useState<ConstraintProps[]>([]);
+
   // hooks
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
   const provider = useWalletProvider();
   const { address, isConnected } = useWalletAccount();
   const { chain } = useWalletNetwork();
+
+  const refController = useRef<any>();
+
+  const filterChainList = useMemo(() => {
+    return chainList.filter((chain) =>
+      chain.chainName
+        .toLocaleLowerCase()
+        .includes(searchPhrase.toLocaleLowerCase())
+    );
+  }, [chainList, searchPhrase]);
 
   const chainId = chain?.id;
 
@@ -362,20 +403,711 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setSetDuration(e);
   };
 
-  const isValidContractAddress = async (contractAddress: string) => {
-    // try {
-    //   const res = await provider?.getCode(contractAddress);
-    //   return res != "0x";
-    // } catch {
-    //   return false;
-    // }
+  const isValidContractAddress = useCallback(
+    async (contractAddress: string) => {
+      try {
+        const res = await provider?.getBytecode({
+          address: contractAddress as any,
+        });
+        return res != "0x";
+      } catch {
+        return false;
+      }
+    },
+    [provider]
+  );
+
+  const checkContractInfo = useCallback(async () => {
+    if (!data.isNft && provider && address) {
+      getErc20TokenContract(
+        data,
+        address,
+        provider,
+        setCheckingContractInfo,
+        setIsTokenContractAddressValid,
+        setData,
+        setIsErc20Approved,
+        setCanDisplayErrors
+      );
+    }
+
+    if (data.isNft && provider && address) {
+      getErc721TokenContract(
+        data,
+        address,
+        provider,
+        setCheckingContractInfo,
+        setIsNftContractAddressValid,
+        setData,
+        setIsApprovedAll,
+        setCanDisplayErrors
+      );
+    }
+  }, [address, data, provider]);
+
+  const checkContractAddress = useCallback(
+    async (contractAddress: string) => {
+      const step1Check = isAddress(contractAddress);
+      const step2Check = await isValidContractAddress(contractAddress);
+      const isValid = !!step1Check && step2Check;
+      if (isValid) {
+        checkContractInfo();
+      } else {
+        setCheckingContractInfo(false);
+        data.isNft
+          ? setIsNftContractAddressValid(false)
+          : setIsTokenContractAddressValid(false);
+        setCanDisplayErrors(true);
+      }
+    },
+    [checkContractInfo, data.isNft, isValidContractAddress]
+  );
+
+  const handleSetDate = (timeStamp: number, label: string) => {
+    label == "startTime"
+      ? setData((prevData) => ({ ...prevData, startTimeStamp: timeStamp }))
+      : setData((prevData) => ({ ...prevData, endTimeStamp: timeStamp }));
   };
 
+  const canGoStepTwo = () => {
+    if (isShowingDetails) return true;
+    const {
+      provider,
+      description,
+      selectedChain,
+      tokenAmount,
+      nftContractAddress,
+      isNativeToken,
+      tokenContractAddress,
+      nftTokenIds,
+    } = data;
+
+    const checkToken = () => {
+      if (!data.isNft) {
+        const isValid =
+          tokenContractAddress == ZERO_ADDRESS
+            ? true
+            : isTokenContractAddressValid;
+        if (!isValid || !tokenAmount || Number(tokenAmount) <= 0) return false;
+        if (!isNativeToken && !tokenContractAddress) return false;
+        if (isNativeToken && tokenAmount && tokenContractAddress) return true;
+      }
+      return true;
+    };
+
+    const checkNft = () => {
+      if (data.isNft) {
+        const isValid = isNftContractAddressValid;
+        return !!(nftContractAddress && nftTokenIds.length >= 1 && isValid);
+      }
+      return true;
+    };
+
+    return !!(
+      provider &&
+      description &&
+      selectedChain &&
+      checkNft() &&
+      checkToken()
+    );
+  };
+
+  const canGoStepThree = () => {
+    const errorObject: ErrorObjectProp = {
+      startDateStatus: true,
+      statDateStatusMessage: null,
+      endDateStatus: true,
+      endDateStatusMessage: null,
+      numberOfDurationStatus: true,
+      numberOfDurationMessage: null,
+      maximumLimitationStatus: true,
+      maximumLimitationMessage: null,
+      numberOfWinnersStatus: true,
+      numberOfWinnersMessage: null,
+    };
+
+    const { startTimeStamp, endTimeStamp } = data;
+    if (!startTimeStamp) {
+      errorObject.startDateStatus = false;
+      errorObject.statDateStatusMessage = errorMessages.required;
+    }
+    const sevenDaysLaterAfterNow: Date = new Date(
+      Date.now() + 7 * 24 * 60 * 60 * 1000
+    );
+    const sevenDaysLaterAfterNowTimeStamp = Math.round(
+      sevenDaysLaterAfterNow.getTime() / 1000
+    );
+
+    if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
+      errorObject.startDateStatus = false;
+      errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
+    }
+    if (!setDuration && !endTimeStamp) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.required;
+    }
+
+    if (!setDuration && endTimeStamp && startTimeStamp) {
+      if (endTimeStamp <= startTimeStamp) {
+        errorObject.endDateStatus = false;
+        errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+      }
+    }
+
+    if (setDuration && !data.numberOfDuration) {
+      errorObject.numberOfDurationStatus = false;
+      errorObject.numberOfDurationMessage = errorMessages.required;
+    }
+
+    if (data.limitEnrollPeopleCheck && !data.maxNumberOfEntries) {
+      errorObject.maximumLimitationStatus = false;
+      errorObject.maximumLimitationMessage = errorMessages.required;
+    }
+
+    if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
+      errorObject.maximumLimitationStatus = false;
+      errorObject.maximumLimitationMessage = errorMessages.required;
+    }
+
+    if (
+      data.winnersCount &&
+      Math.floor(data.winnersCount) != data.winnersCount
+    ) {
+      console.log(data.winnersCount, Math.floor(data.winnersCount));
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    }
+
+    if (data.winnersCount && data.winnersCount <= 0) {
+      console.log("----+");
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    }
+
+    if (!data.winnersCount) {
+      console.log("---++");
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.required;
+    }
+
+    return errorObject;
+  };
+
+  const canGoStepFive = () => {
+    if (isShowingDetails) return true;
+    const { email, twitter } = data;
+    return !!(email && twitter);
+  };
+
+  const handleSelectNativeToken = (e: boolean) => {
+    setCanDisplayErrors(false);
+    if (!data.selectedChain || isShowingDetails) return;
+    setIsErc20Approved(!e);
+    setData((prevData) => ({
+      ...prevData,
+      isNativeToken: !e,
+      tokenContractAddress: !e ? ZERO_ADDRESS : "",
+      decimal: !e ? 18 : null,
+    }));
+  };
+
+  const handleSelectDurationUnitTime = (unit: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      ["durationUnitTime"]: unit,
+    }));
+  };
+
+  const handleSelectAllowListPrivate = () => {
+    setAllowListPrivate(!allowListPrivate);
+  };
+
+  const handleSelectTokenOrNft = (e: boolean) => {
+    if (!data.selectedChain || isShowingDetails) return;
+    setData((prevData) => ({
+      ...prevData,
+      ["isNft"]: e,
+    }));
+  };
+
+  const handleGetUserRaffles = useCallback(async () => {
+    if (!userToken) return;
+    setUserRafflesLoading(true);
+    refController.current = new AbortController();
+    try {
+      const raffles = await getUserRaffles(
+        userToken,
+        refController.current.signal
+      );
+      refController.current = null;
+      setUserRaffles(raffles);
+      setUserRafflesLoading(false);
+    } catch (e: any) {
+      if (e?.message !== "canceled" || !e?.message) {
+        console.log(e);
+      }
+      setUserRafflesLoading(false);
+    }
+  }, [userToken]);
+
+  const updateChainList = useCallback(async () => {
+    try {
+      const newChainList = await getProviderDashboardValidChain();
+      setChainList(newChainList);
+    } catch (e) {}
+  }, []);
+
+  const handleSearchChain = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setChainName(e.target.value);
+    setSearchPhrase(e.target.value);
+  };
+
+  const handleSelectChain = (chain: Chain) => {
+    setSelectedChain(chain);
+    setChainName(chain.chainName);
+    setSearchPhrase("");
+  };
+
+  const handleSelectSatisfy = (satisfy: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      ["satisfy"]: satisfy,
+    }));
+  };
+
+  const handleGetConstraints = async () => {
+    if (constraintsList.length != 0) return;
+    const res = await getConstraintsApi();
+    setConstraintsList(res);
+  };
+
+  const handleSelectLimitEnrollPeopleCheck = () => {
+    if (isShowingDetails) return true;
+    setData((prevData) => ({
+      ...prevData,
+      limitEnrollPeopleCheck: !data.limitEnrollPeopleCheck,
+      maxNumberOfEntries: null,
+    }));
+  };
+
+  const handleChange = (e: {
+    target: { type: any; name: any; checked: any; value: any };
+  }) => {
+    if (isShowingDetails) return;
+    setCanDisplayWrongAddress(false);
+    const type = e.target.type;
+    const name = e.target.name;
+    if (name == "tokenContractAddress" || name == "nftContractAddress") {
+      setCanDisplayErrors(false);
+    }
+    const value = type == "checkbox" ? e.target.checked : e.target.value;
+    if (name == "provider" && value.length > 30) return;
+    if (name == "description" && value.length > 100) return;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectConstraint = (constraint: ConstraintProps) => {
+    setSelectedConstraintTitle(constraint.title);
+    setSelectedConstrains(constraint);
+  };
+
+  const handleBackToRequirementModal = () => {
+    setSelectedConstrains(null);
+    setSelectedConstraintTitle(null);
+  };
+
+  const closeRequirementModal = () => {
+    setSelectedConstrains(null);
+    setSelectedConstraintTitle(null);
+    setIsModalOpen(false);
+  };
+
+  const closeAddNftIdListModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const closeCreateRaffleModal = () => {
+    setIsCreateRaffleModalOpen(false);
+  };
+
+  const openCreteRaffleModal = () => {
+    setIsCreateRaffleModalOpen(true);
+  };
+
+  const openRequirementModal = () => {
+    if (isShowingDetails) return;
+    setIsModalOpen(true);
+  };
+
+  const openAddNftIdListModal = () => {
+    if (isShowingDetails) return;
+    setIsModalOpen(true);
+  };
+
+  const closeShowPreviewModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openShowPreviewModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleGOToDashboard = () => {
+    setSelectNewOffer(false);
+    setIsShowingDetails(false);
+    setPage(0);
+    setData(formInitialData);
+    setChainName("");
+    setSelectedChain(null);
+    setCreteRaffleResponse(null);
+    setRequirementList([]);
+    setIsModalOpen(false);
+  };
+
+  const handleApproveErc20Token = () => {
+    if (!provider || !address || !signer) return;
+
+    approveErc20Token(
+      data,
+      provider,
+      signer,
+      address,
+      setApproveLoading,
+      setIsErc20Approved
+    );
+  };
+
+  const handleApproveErc721Token = () => {
+    if (!provider || !address || !signer) return;
+    approveErc721Token(
+      data,
+      provider,
+      signer,
+      address,
+      setApproveLoading,
+      setIsApprovedAll
+    );
+  };
+
+  const handleSetCreateRaffleLoading = () => {
+    setCreateRaffleLoading(true);
+  };
+
+  const handleCreateRaffle = () => {
+    if (!address || !address || !provider || !userToken || !signer) return;
+
+    if (!data.isNft) {
+      createErc20Raffle(
+        data,
+        provider,
+        signer,
+        requirementList,
+        address,
+        userToken,
+        setCreateRaffleLoading,
+        setCreteRaffleResponse
+      );
+    } else {
+      createErc721Raffle(
+        data,
+        provider,
+        signer,
+        requirementList,
+        address,
+        userToken,
+        setCreateRaffleLoading,
+        setCreteRaffleResponse
+      );
+    }
+  };
+
+  const insertRequirement = (
+    requirement: ConstraintParamValues | null,
+    id: number,
+    name: string
+  ) => {
+    setRequirementList([
+      ...requirementList,
+      {
+        pk: id,
+        values: !requirement ? null : { 1: "test", 2: "name", 3: "lastName" },
+        name,
+      },
+    ]);
+  };
+
+  const handleCheckForReason = (raffle: UserRafflesProps) => {
+    setPage(5);
+    setSelectNewOffer(true);
+    setSelectedRaffleForCheckReason(raffle);
+  };
+
+  const handleShowUserDetails = async (raffle: UserRafflesProps) => {
+    setCanDisplayErrors(false);
+    setChainName(raffle.chain.chainName);
+    setData((prev) => ({
+      ...prev,
+      provider: raffle.name,
+      selectedChain: raffle.chain,
+      description: raffle.description,
+      isNft: raffle.isPrizeNft,
+      isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
+      tokenAmount: fromWei(BigInt(raffle.prizeAmount), raffle.decimals),
+      tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
+      startTimeStamp: Date.parse(raffle.startAt) / 1000,
+      endTimeStamp: Date.parse(raffle.deadline) / 1000,
+      limitEnrollPeopleCheck:
+        raffle.maxNumberOfEntries != 1000000000 ? true : false,
+      maxNumberOfEntries:
+        raffle.maxNumberOfEntries != 1000000000
+          ? raffle.maxNumberOfEntries.toString()
+          : null,
+      winnersCount: raffle.winnersCount,
+      nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
+      twitter: raffle.twitterUrl,
+      discord: raffle.discordUrl,
+      creatorUrl: raffle.creatorUrl,
+      telegram: raffle.telegramUrl,
+      email: raffle.emailUrl,
+      necessaryInfo: raffle.necessaryInformation,
+    }));
+    setIsShowingDetails(true);
+    setSelectNewOffer(true);
+    raffle.isPrizeNft
+      ? setIsNftContractAddressValid(true)
+      : setIsTokenContractAddressValid(true);
+    setConstraintsList(await getConstraintsApi());
+    setRequirementList(raffle.constraints);
+  };
+
+  const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
+    if (provider && address) {
+      setNftStatus([]);
+      const res = await checkNftsAreValid(data, provider, nftIds, address);
+      const invalidNfts = res?.filter((item) => !item.isOwner);
+      if (invalidNfts && invalidNfts.length > 0) {
+        setNftStatus(invalidNfts);
+      }
+      return !res?.find((item) => !item.isOwner);
+    }
+    return false;
+  };
+
+  const handleAddNftToData = async (nftIds: string[]) => {
+    setData((prev) => ({
+      ...prev,
+      nftTokenIds: nftIds,
+    }));
+  };
+
+  const handleClearNfts = () => {
+    if (isShowingDetails) return;
+    setUploadedFile(null);
+    setData((prev) => ({ ...prev, nftTokenIds: [], nftContractAddress: "" }));
+  };
+
+  useEffect(() => {
+    if (isShowingDetails) return;
+    setCheckingContractInfo(true);
+    setCanDisplayErrors(false);
+    if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
+      setIsTokenContractAddressValid(true);
+      setCheckingContractInfo(false);
+      return;
+    }
+    checkContractAddress(data.tokenContractAddress);
+  }, [
+    data.tokenContractAddress,
+    chainId,
+    isShowingDetails,
+    data.isNft,
+    checkContractAddress,
+  ]);
+
+  useEffect(() => {
+    if (isShowingDetails) return;
+    setCheckingContractInfo(true);
+    setCanDisplayErrors(false);
+    checkContractAddress(data.nftContractAddress);
+  }, [
+    data.nftContractAddress,
+    chainId,
+    isShowingDetails,
+    checkContractAddress,
+  ]);
+
+  useEffect(() => {
+    if (isShowingDetails) return;
+    if (data.tokenAmount && data.tokenContractAddress != ZERO_ADDRESS) {
+      const debounce = setTimeout(() => {
+        checkContractInfo();
+      }, 700);
+
+      return () => clearTimeout(debounce);
+    }
+  }, [
+    checkContractInfo,
+    data.tokenAmount,
+    data.tokenContractAddress,
+    isShowingDetails,
+  ]);
+
+  useEffect(() => {
+    return () => refController.current?.abort();
+  }, []);
+
+  useEffect(() => {
+    if (selectedChain) {
+      setChainName(selectedChain?.chainName);
+      setData((prevData) => ({
+        ...prevData,
+        ["selectedChain"]: selectedChain,
+      }));
+    }
+  }, [selectedChain]);
+
+  useEffect(() => {
+    updateChainList();
+  }, [updateChainList]);
+
+  useEffect(() => {
+    let newEndTimeStamp: any;
+    if (setDuration && data.startTimeStamp && data.numberOfDuration > 0) {
+      if (data.durationUnitTime == "Day") {
+        newEndTimeStamp =
+          data.startTimeStamp + data.numberOfDuration * 24 * 60 * 60;
+      }
+      if (data.durationUnitTime == "Week") {
+        newEndTimeStamp =
+          data.startTimeStamp + data.numberOfDuration * 7 * 24 * 60 * 60;
+      }
+      if (data.durationUnitTime == "Month") {
+        const currentDate = new Date(data.startTimeStamp * 1000);
+
+        newEndTimeStamp = Math.round(
+          currentDate.setMonth(
+            Number(currentDate.getMonth()) + Number(data.numberOfDuration)
+          ) / 1000
+        );
+      }
+    }
+    if (newEndTimeStamp) {
+      setData((prevData) => ({
+        ...prevData,
+        ["endTimeStamp"]: newEndTimeStamp,
+      }));
+    }
+  }, [
+    setDuration,
+    data.durationUnitTime,
+    data.numberOfDuration,
+    setData,
+    data.startTimeStamp,
+  ]);
+
+  useRefreshWithInitial(
+    () => {
+      if (userRaffles.length > 0) return;
+      handleGetUserRaffles();
+    },
+    FAST_INTERVAL,
+    [handleGetUserRaffles, userRaffles]
+  );
+
   return (
-    <ProviderDashboardContext.Provider value={{}}>
+    <ProviderDashboardContext.Provider
+      value={{
+        page,
+        setPage,
+        data,
+        title,
+        handleChange,
+        handleSelectTokenOrNft,
+        handleSelectLimitEnrollPeopleCheck,
+        openRequirementModal,
+        closeRequirementModal,
+        openAddNftIdListModal,
+        closeAddNftIdListModal,
+        isModalOpen,
+        selectedConstrains,
+        handleSelectConstraint,
+        selectedConstraintTitle,
+        handleBackToRequirementModal,
+        chainList,
+        selectedChain,
+        setSelectedChain,
+        chainName,
+        handleSearchChain,
+        setChainName,
+        filterChainList,
+        setSearchPhrase,
+        handleSelectChain,
+        handleSelectSatisfy,
+        allowListPrivate,
+        handleSelectAllowListPrivate,
+        canGoStepTwo,
+        canGoStepThree,
+        canGoStepFive,
+        setDuration,
+        handleSetDuration,
+        handleSelectDurationUnitTime,
+        closeShowPreviewModal,
+        openShowPreviewModal,
+        selectNewOffer,
+        handleSelectNewOffer,
+        handleGOToDashboard,
+        insertRequirement,
+        requirementList,
+        deleteRequirement,
+        updateRequirement,
+        handleSelectNativeToken,
+        handleCreateRaffle,
+        closeCreateRaffleModal,
+        isCreateRaffleModalOpen,
+        openCreteRaffleModal,
+        createRaffleResponse,
+        createRaffleLoading,
+        handleSetCreateRaffleLoading,
+        checkingContractInfo,
+        isTokenContractAddressValid,
+        isNftContractAddressValid,
+        handleSetDate,
+        handleApproveErc20Token,
+        isErc20Approved,
+        approveLoading,
+        constraintsList,
+        isApprovedAll,
+        handleApproveErc721Token,
+        canDisplayErrors,
+        userRaffles,
+        userRafflesLoading,
+        handleGetConstraints,
+        updateChainList,
+        canDisplayWrongAddress,
+        handleCheckForReason,
+        handleShowUserDetails,
+        handleAddNftToData,
+        setUploadedFile,
+        uploadedFile,
+        isShowingDetails,
+        handleCheckOwnerOfNfts,
+        nftStatus,
+        handleClearNfts,
+        selectedRaffleForCheckReason,
+      }}
+    >
       {children}
     </ProviderDashboardContext.Provider>
   );
+};
+
+export const usePrizeOfferFormContext = () => {
+  return useContext(ProviderDashboardContext);
 };
 
 export default ProviderDashboard;

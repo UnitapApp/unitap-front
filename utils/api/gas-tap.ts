@@ -1,10 +1,10 @@
-import { Settings } from "@/types"
-import { axiosInstance } from "."
-import { Chain, ClaimReceipt } from "@/types/gas-tap"
+import { Settings } from "@/types";
+import { axiosInstance } from ".";
+import { Chain, ClaimReceipt } from "@/types/gas-tap";
 
 export async function getWeeklyChainClaimLimitAPI() {
-  const response = await axiosInstance.get<Settings>("/api/v1/settings/")
-  return response.data
+  const response = await axiosInstance.get<Settings>("/api/v1/settings/");
+  return response.data;
 }
 
 export async function getRemainingClaimsAPI(token: string) {
@@ -12,13 +12,13 @@ export async function getRemainingClaimsAPI(token: string) {
     headers: {
       Authorization: `Token ${token}`,
     },
-  })
-  return response.data
+  });
+  return response.data;
 }
 
 export async function getChainList() {
-  const response = await axiosInstance.get<Chain[]>("/api/v1/chain/list/")
-  return response.data
+  const response = await axiosInstance.get<Chain[]>("/api/v1/chain/list/");
+  return response.data;
 }
 
 export async function getActiveClaimHistory(token: string) {
@@ -29,9 +29,9 @@ export async function getActiveClaimHistory(token: string) {
         Authorization: `Token ${token}`,
       },
     }
-  )
+  );
 
-  return response.data
+  return response.data;
 }
 
 export async function claimMax(token: string, chainPk: number) {
@@ -43,8 +43,8 @@ export async function claimMax(token: string, chainPk: number) {
         Authorization: `Token ${token}`,
       },
     }
-  )
-  return response.data
+  );
+  return response.data;
 }
 
 export async function claimMaxNonEVMAPI(
@@ -60,8 +60,8 @@ export async function claimMaxNonEVMAPI(
         Authorization: `Token ${token}`,
       },
     }
-  )
-  return response.data
+  );
+  return response.data;
 }
 
 export async function submitDonationTxHash(
@@ -80,7 +80,20 @@ export async function submitDonationTxHash(
         Authorization: `Token ${token}`,
       },
     }
-  )
+  );
 
-  return response.data
+  return response.data;
+}
+
+export async function getUserDonation(token: string, page = 1) {
+  const response = await axiosInstance.get(
+    `api/v1/user/donation?chain_pk=9&page_size=${page}`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  console.log(response.data);
 }
