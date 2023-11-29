@@ -359,7 +359,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
   const provider = useWalletProvider();
-  const { address, isConnected } = useWalletAccount();
+  const { address } = useWalletAccount();
   const { chain } = useWalletNetwork();
 
   const refController = useRef<any>();
@@ -631,6 +631,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleGetUserRaffles = useCallback(async () => {
+    console.log(userToken);
     if (!userToken) return;
     setUserRafflesLoading(true);
     refController.current = new AbortController();
@@ -1012,11 +1013,13 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useRefreshWithInitial(
     () => {
+      console.log(userToken);
+
       if (userRaffles.length > 0) return;
       handleGetUserRaffles();
     },
     FAST_INTERVAL,
-    [handleGetUserRaffles, userRaffles]
+    [handleGetUserRaffles, userToken, userRaffles]
   );
 
   return (

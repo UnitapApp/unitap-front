@@ -5,7 +5,8 @@ import PrizeTapContent from "@/components/containers/provider-dashboard/prize-ta
 const Page = () => {
   const cookieStore = cookies();
 
-  console.log(cookieStore.get("userToken"));
+  // const userToken = cookieStore.get("userToken")?.value;
+
   return (
     <div>
       <PrizeTapContent />

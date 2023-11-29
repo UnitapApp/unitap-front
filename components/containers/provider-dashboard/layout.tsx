@@ -31,7 +31,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
       ) : (
         <div className="bg-gray20 rounded-xl flex flex-col items-center justify-center py-10">
           <div className="mb-10">
-            <Icon iconSrc="assets/images/provider-dashboard/dashboard-login.svg" />
+            <Icon iconSrc="/assets/images/provider-dashboard/dashboard-login.svg" />
           </div>
           <p
             className=" text-[14px] font-semibold text-white cursor-pointer"

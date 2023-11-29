@@ -15,6 +15,9 @@ import SearchInput from "./SearchInput";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 
+import Styles from "./content.module.scss";
+import "./content.module.scss";
+
 interface PrizeCardProp {
   prize: UserRafflesProps;
 }
@@ -49,7 +52,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </p>
           </div>
           <div
-            className="providePrize__amount flex items-center gap-2"
+            className={`${Styles.providePrize__amount} flex items-center gap-2`}
             data-amount={prize.prizeName}
           >
             <p>{prize.prizeName}</p>{" "}
@@ -235,7 +238,9 @@ const PrizeTapContent = () => {
               className="w-full md:w-1/3"
               handleSetSearchPhrase={handleSetSearchPhrase}
             />
-            <div className="provider-dashboard__status select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div
+              className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+            >
               <div
                 className={`${
                   RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
@@ -278,7 +283,9 @@ const PrizeTapContent = () => {
               </div>
             </div>
           </div>
-          <div className="refill-token h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center">
+          <div
+            className={`${Styles.refillToken} h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center`}
+          >
             <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
               <div className="flex items-center relative">
                 <div>
@@ -289,7 +296,7 @@ const PrizeTapContent = () => {
                 </div>
                 <Icon
                   className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
-                  iconSrc="assets/images/provider-dashboard/prize-bg.png"
+                  iconSrc="/assets/images/provider-dashboard/prize-bg.png"
                 />
               </div>
               <div
