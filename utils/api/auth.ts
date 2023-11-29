@@ -14,7 +14,7 @@ export async function getUserProfile(address: string, signature: string) {
 
 export async function createUserProfile(address: string) {
   const response = await axiosInstance.post<UserProfile>(
-    `/api/v1/user/create/`,
+    `/api/gastap/user/create/`,
     { address }
   );
   return response.data;

@@ -1,66 +1,66 @@
-import RoutePath from "../../utils/routes"
+import RoutePath from "../../utils/routes";
 import {
   setupGetUserProfileNotVerified,
   setupGetUserProfileVerified,
-} from "../helpers/auth"
-import { connectWallet, setupEthBridge } from "../helpers/wallet"
-import { chainList, userProfileVerified } from "../utils/data"
+} from "../helpers/auth";
+import { connectWallet, setupEthBridge } from "../helpers/wallet";
+import { chainList, userProfileVerified } from "../utils/data";
 
 const setupGetChainListServerGeneral = () => {
   cy.intercept(
     {
       method: "GET",
-      url: `/api/v1/chain/list/`,
+      url: `/api/gastap/chain/list/`,
     },
     (req) => req.reply(chainList)
-  )
+  );
 
   cy.intercept(
     {
       method: "GET",
-      url: "/api/v1/user/claims/",
+      url: "/api/gastap/user/claims/",
     },
     (req) => req.reply([])
-  )
+  );
 
   cy.intercept(
     {
       method: "GET",
-      url: "/api/v1/user/remainig-claims/",
+      url: "/api/gastap/user/remainig-claims/",
     },
     (req) => req.reply({ totalWeeklyClaimsRemaining: 2 })
-  )
-}
+  );
+};
 
 describe("BrightID interaction", () => {
   beforeEach(() => {
-    setupEthBridge()
-    setupGetChainListServerGeneral()
-  })
+    setupEthBridge();
+    setupGetChainListServerGeneral();
+  });
 
   it("does not show BrightID linking when verified", () => {
-    setupGetUserProfileVerified()
-    cy.visit(RoutePath.FAUCET)
-    connectWallet()
+    setupGetUserProfileVerified();
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
 
-    cy.get(`[data-testid=brightid-modal]`).should("not.exist")
-  })
+    cy.get(`[data-testid=brightid-modal]`).should("not.exist");
+  });
 
   const openBrightIdModal = () => {
-    setupGetUserProfileNotVerified()
-    cy.visit(RoutePath.FAUCET)
-    cy.get(`[data-testid=brightid-show-modal]`).contains("Connect").click()
-    cy.get(`[data-testid=brightid-modal]`).should("exist")
-  }
+    setupGetUserProfileNotVerified();
+    cy.visit(RoutePath.FAUCET);
+    cy.get(`[data-testid=brightid-show-modal]`).contains("Connect").click();
+    cy.get(`[data-testid=brightid-modal]`).should("exist");
+  };
 
   it("closes modal on click outside", () => {
-    openBrightIdModal()
-    cy.get(`[data-testid=brightid-modal]`).should("exist")
-    cy.get(`[data-testid=modal-content]`).click()
-    cy.get(`[data-testid=brightid-modal]`).should("exist")
-    cy.get(`[data-testid=modal-wrapper]`).click("left")
-    cy.get(`[data-testid=brightid-modal]`).should("not.exist")
-  })
+    openBrightIdModal();
+    cy.get(`[data-testid=brightid-modal]`).should("exist");
+    cy.get(`[data-testid=modal-content]`).click();
+    cy.get(`[data-testid=brightid-modal]`).should("exist");
+    cy.get(`[data-testid=modal-wrapper]`).click("left");
+    cy.get(`[data-testid=brightid-modal]`).should("not.exist");
+  });
 
   // it('copies BrightID linking url when not verified', () => {
   // 	Cypress.on('window:before:load', (win) => {
@@ -83,4 +83,4 @@ describe("BrightID interaction", () => {
 
   // 	(cy.get(`[data-testid=brightid-qr]`) as any).readQRCode().should('have.property', 'text', qrText);
   // });
-})
+});

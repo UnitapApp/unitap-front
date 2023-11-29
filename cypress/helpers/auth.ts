@@ -14,7 +14,7 @@ export const setupGetUserProfileVerified = () => {
   cy.intercept(
     {
       method: "GET",
-      url: "/api/v1/settings",
+      url: "/api/gastap/settings",
     },
     (req) =>
       req.reply({
@@ -28,7 +28,7 @@ export const setupGetUserProfileVerified = () => {
   cy.intercept(
     {
       method: "GET",
-      url: `/api/v1/user/**/claims?**`,
+      url: `/api/gastap/user/**/claims?**`,
     },
     (req) => {
       req.reply(emptyClaimHistoryResponse);
