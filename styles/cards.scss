@@ -1,0 +1,8 @@
+.card {
+  @apply rounded-3xl bg-gray20 text-white;
+}
+
+.gradient-outline-card {
+  @apply bg-g-primary relative z-10 before:content-[''] p-1 rounded-2xl overflow-hidden;
+  @apply before:block before:-z-10 before:absolute before:inset-[3px] before:rounded-xl before:bg-gray00;
+}
