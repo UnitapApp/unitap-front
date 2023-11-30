@@ -71,6 +71,7 @@ export interface ConstraintParamValues {
   name: string;
   pk: number;
   values: Record<number, string | number | boolean> | null;
+  title: string;
 }
 
 export interface UserRafflesProps {
@@ -127,4 +128,9 @@ type userRaffle = {
   name: string;
   pk: number;
   raffleId: number;
+};
+
+export type ProviderFormPaginationProp = {
+  handleChangeFormPagePrev: () => void;
+  handleChangeFormPageNext: () => void;
 };

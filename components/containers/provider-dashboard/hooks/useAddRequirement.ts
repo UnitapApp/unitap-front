@@ -1,3 +1,5 @@
+"use client";
+
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ConstraintParamValues } from "@/types";
 
@@ -8,12 +10,13 @@ const useAddRequirement = () => {
     existRequirement: any,
     params: ConstraintParamValues | null,
     id: number,
-    name: string
+    name: string,
+    title: string
   ) => {
     if (id) {
       handleBackToRequirementModal();
       if (!existRequirement) {
-        insertRequirement(params, id, name);
+        insertRequirement(params, id, name, title);
       } else {
         updateRequirement(id, params);
       }

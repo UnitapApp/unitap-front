@@ -17,6 +17,7 @@ import { ProviderDashboardCardTimer } from "./CardTimer";
 
 import Styles from "./content.module.scss";
 import "./content.module.scss";
+import OfferPrizeForm from "./OfferPrizeForm";
 
 interface PrizeCardProp {
   prize: UserRafflesProps;
@@ -330,6 +331,8 @@ const PrizeTapContent = () => {
             )}
         </div>
       )}
+
+      {selectNewOffer && <OfferPrizeForm />}
     </div>
   );
 };

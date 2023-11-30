@@ -43,6 +43,7 @@ import { approveErc721Token } from "@/components/containers/provider-dashboard/h
 import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
 
 const formInitialData: ProviderDashboardFormDataProp = {
   provider: "",
@@ -159,7 +160,8 @@ export const ProviderDashboardContext = createContext<{
   insertRequirement: (
     requirement: ConstraintParamValues | null,
     id: number,
-    name: string
+    name: string,
+    title: string
   ) => void;
   requirementList: ConstraintParamValues[];
   deleteRequirement: (id: number) => void;
@@ -199,6 +201,13 @@ export const ProviderDashboardContext = createContext<{
   nftStatus: NftStatusProp[];
   handleClearNfts: () => void;
   selectedRaffleForCheckReason: UserRafflesProps | null;
+  socialMediaValidation: {
+    creatorUrl: boolean;
+    twitter: boolean;
+    discord: boolean;
+    email: boolean;
+    telegram: boolean;
+  };
 }>({
   page: 0,
   setPage: NullCallback,
@@ -277,6 +286,13 @@ export const ProviderDashboardContext = createContext<{
   nftStatus: [],
   handleClearNfts: NullCallback,
   selectedRaffleForCheckReason: null,
+  socialMediaValidation: {
+    creatorUrl: true,
+    twitter: false,
+    discord: true,
+    email: false,
+    telegram: true,
+  },
 });
 
 const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
@@ -345,6 +361,14 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);
+
+  const [socialMediaValidation, setSocialMediaValidation] = useState({
+    creatorUrl: true,
+    twitter: true,
+    discord: true,
+    email: true,
+    telegram: true,
+  });
 
   // validation states
   const [isTokenContractAddressValid, setIsTokenContractAddressValid] =
@@ -595,8 +619,37 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter } = data;
-    return !!(email && twitter);
+    const { email, twitter, creatorUrl, discord, telegram } = data;
+    if (!email || !twitter) {
+      return false;
+    }
+    const {
+      urlValidation,
+      twitterValidation,
+      discordValidation,
+      emailValidation,
+      telegramValidation,
+    } = checkSocialMediaValidation(
+      creatorUrl,
+      twitter,
+      discord,
+      email,
+      telegram
+    );
+    setSocialMediaValidation({
+      creatorUrl: urlValidation,
+      twitter: twitterValidation,
+      discord: discordValidation,
+      email: emailValidation,
+      telegram: telegramValidation,
+    });
+    return !!(
+      urlValidation &&
+      twitterValidation &&
+      discordValidation &&
+      emailValidation &&
+      telegramValidation
+    );
   };
 
   const handleSelectNativeToken = (e: boolean) => {
@@ -700,6 +753,15 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setCanDisplayWrongAddress(false);
     const type = e.target.type;
     const name = e.target.name;
+    if (page == 3) {
+      setSocialMediaValidation({
+        creatorUrl: true,
+        twitter: true,
+        discord: true,
+        email: true,
+        telegram: true,
+      });
+    }
     if (name == "tokenContractAddress" || name == "nftContractAddress") {
       setCanDisplayErrors(false);
     }
@@ -830,18 +892,20 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const insertRequirement = (
     requirement: ConstraintParamValues | null,
     id: number,
-    name: string
+    name: string,
+    title: string
   ) => {
+    console.log(title);
     setRequirementList([
       ...requirementList,
       {
         pk: id,
-        values: !requirement ? null : { 1: "test", 2: "name", 3: "lastName" },
+        values: !requirement ? null : { 1: "", 2: "", 3: "" },
         name,
+        title,
       },
     ]);
   };
-
   const handleCheckForReason = (raffle: UserRafflesProps) => {
     setPage(5);
     setSelectNewOffer(true);
@@ -1102,6 +1166,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         nftStatus,
         handleClearNfts,
         selectedRaffleForCheckReason,
+        socialMediaValidation,
       }}
     >
       {children}
