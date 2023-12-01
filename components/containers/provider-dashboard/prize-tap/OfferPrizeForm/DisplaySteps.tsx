@@ -27,8 +27,10 @@ const DisplaySteps = ({ page }: DisplayStepsProp) => {
           className="flex items-center gap-3 relative text-[12px] text-white"
           key={index}
         >
-          <div className="prizeForm-current-step-icon z-[1]">
+          <div className="rounded-full bg-gray30 overflow-hidden w-[26px] h-[26px] z-[1]">
             <Icon
+              width="26px"
+              height="26px"
               iconSrc={
                 index == page
                   ? item.activeIcon
@@ -36,7 +38,7 @@ const DisplaySteps = ({ page }: DisplayStepsProp) => {
                   ? item.nextIcon
                   : item.prevIcon
               }
-            />{" "}
+            />
           </div>
           <div
             className={`${

@@ -53,7 +53,7 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
         onClick={handleBackToRequirementModal}
       >
         <Icon
-          iconSrc="assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer z-[999999]"
         />
       </div>

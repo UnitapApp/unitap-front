@@ -26,7 +26,7 @@ const SelectSatisfyDropdown = () => {
             : "Should satisfy some"}
         </p>
         <Icon
-          iconSrc="assets/images/fund/arrow-down.png"
+          iconSrc="/assets/images/fund/arrow-down.png"
           height="8px"
           width="14px"
         />

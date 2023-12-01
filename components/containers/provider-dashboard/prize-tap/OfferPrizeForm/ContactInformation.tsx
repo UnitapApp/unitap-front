@@ -19,9 +19,9 @@ interface ContactField {
 
 export const socialMediaDescription = {
   id: 3,
-  prevIcon: "assets/images/provider-dashboard/step-3-green.png",
-  activeIcon: "assets/images/provider-dashboard/step-3-active.png",
-  nextIcon: "assets/images/provider-dashboard/step-3-off.png",
+  prevIcon: "/assets/images/provider-dashboard/step-3-green.png",
+  activeIcon: "/assets/images/provider-dashboard/step-3-active.png",
+  nextIcon: "/assets/images/provider-dashboard/step-3-off.png",
   title: "Social Media  & Contact Info",
   description: "Add your contact info & Social Media ",
 };
@@ -30,35 +30,35 @@ const contactFields: ContactField[] = [
   {
     name: "creatorUrl",
     placeholder: "https://www.example.com (will be shown on card)",
-    icon: "assets/images/provider-dashboard/creatorUrl.svg",
+    icon: "/assets/images/provider-dashboard/creatorUrl.svg",
     require: false,
     baseUrl: "",
   },
   {
     name: "twitter",
     placeholder: "@providerUsername (will be shown on card)",
-    icon: "assets/images/provider-dashboard/twitter.svg",
+    icon: "/assets/images/provider-dashboard/twitter.svg",
     require: true,
     baseUrl: "https://twitter.com/",
   },
   {
     name: "discord",
     placeholder: "@providerUsername (will be shown on card)",
-    icon: "assets/images/provider-dashboard/discord.svg",
+    icon: "/assets/images/provider-dashboard/discord.svg",
     require: false,
     baseUrl: "https://discord.com/",
   },
   {
     name: "email",
     placeholder: "example@email.com",
-    icon: "assets/images/provider-dashboard/email.svg",
+    icon: "/assets/images/provider-dashboard/email.svg",
     require: true,
     baseUrl: "",
   },
   {
     name: "telegram",
     placeholder: "@yourTelegramHandle",
-    icon: "assets/images/provider-dashboard/telegram.svg",
+    icon: "/assets/images/provider-dashboard/telegram.svg",
     require: false,
     baseUrl: "https://t.me/",
   },
@@ -88,11 +88,7 @@ const ContactInformation = ({
       <div className="text-gray100 text-[12px] min-h-[424px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
         {contactFields.map((field, index) => (
           <div key={index}>
-            {index == 3 ? (
-              <p className="mt-[-4px] mt-5 mb-2">Contact info</p>
-            ) : (
-              ""
-            )}
+            {index == 3 ? <p className="mt-5 mb-2">Contact info</p> : ""}
             <section className="relative" key={index}>
               <div
                 className={`flex gap-5 overflow-hidden text-gray80 text-[12px] bg-gray40 border ${

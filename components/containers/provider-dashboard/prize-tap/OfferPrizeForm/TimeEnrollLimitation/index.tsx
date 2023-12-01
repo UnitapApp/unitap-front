@@ -12,9 +12,9 @@ import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 
 export const TimeEnrollLimitationDescription = {
   id: 1,
-  prevIcon: "assets/images/provider-dashboard/step-1-green.svg",
-  activeIcon: "assets/images/provider-dashboard/step-1-active.svg",
-  nextIcon: "assets/images/provider-dashboard/step-1-off.svg",
+  prevIcon: "/assets/images/provider-dashboard/step-1-green.svg",
+  activeIcon: "/assets/images/provider-dashboard/step-1-active.svg",
+  nextIcon: "/assets/images/provider-dashboard/step-1-off.svg",
   title: "Time/Enrollment Limitation",
   description: "Information of time and enrollment ",
 };

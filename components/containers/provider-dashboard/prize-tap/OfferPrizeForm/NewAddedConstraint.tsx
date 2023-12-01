@@ -50,7 +50,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           <Icon
             onClick={() => handleDelete(constraint.pk)}
             className="cursor-pointer"
-            iconSrc="assets/images/modal/exit.svg"
+            iconSrc="/assets/images/modal/exit.svg"
             height="14px"
             width="14px"
           />

@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Spaceman } from "@/constants/spaceman"
-import Icon from "@/components/ui/Icon"
-import { APIErrorsSource } from "@/types"
-import { ErrorsContext } from "@/context/errorsProvider"
-import { ModalWrapper, ModalContent, ModalChildrenWrapper } from "./modal.style"
+import * as React from "react";
+import { Spaceman } from "@/constants/spaceman";
+import Icon from "@/components/ui/Icon";
+import { APIErrorsSource } from "@/types";
+import { ErrorsContext } from "@/context/errorsProvider";
+import {
+  ModalWrapper,
+  ModalContent,
+  ModalChildrenWrapper,
+} from "./modal.style";
 
 type props = {
-  title?: string
-  titleLeft?: string
-  className?: string
-  isOpen: boolean
-  spaceman?: Spaceman
-  children: React.ReactNode
-  size?: "small" | "medium" | "large"
-  closeModalHandler: () => void
-  errorSource?: APIErrorsSource
-}
+  title?: string;
+  titleLeft?: string;
+  className?: string;
+  isOpen: boolean;
+  spaceman?: Spaceman;
+  children: React.ReactNode;
+  size?: "small" | "medium" | "large";
+  closeModalHandler: () => void;
+  errorSource?: APIErrorsSource;
+};
 
 const Modal = ({
   title,
@@ -29,7 +33,7 @@ const Modal = ({
   size,
   errorSource,
 }: props) => {
-  const { getError } = React.useContext(ErrorsContext)
+  const { getError } = React.useContext(ErrorsContext);
 
   return (
     <>
@@ -65,7 +69,7 @@ const Modal = ({
                 className="close ml-auto cursor-pointer"
                 data-testid="close-modal"
               >
-                <Icon iconSrc="assets/images/modal/exit.svg" />
+                <Icon iconSrc="/assets/images/modal/exit.svg" />
               </span>
             </div>
             <ModalChildrenWrapper
@@ -78,7 +82,7 @@ const Modal = ({
         </ModalWrapper>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

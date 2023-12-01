@@ -1,15 +1,17 @@
-import ProviderDashboardLayout from "@/components/containers/provider-dashboard/layout"
-import { Metadata } from "next"
-import { FC, PropsWithChildren } from "react"
+import ProviderDashboardLayout from "@/components/containers/provider-dashboard/layout";
+import { Metadata } from "next";
+import { FC, PropsWithChildren } from "react";
+
+import "./styles.scss";
 
 export const metadata: Metadata = {
   title: "Unitap | Provider Dashboard 🖥️",
   description:
     "If you have account log in to have access to provider dashboard",
-}
+};
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
-  return <ProviderDashboardLayout>{children}</ProviderDashboardLayout>
-}
+  return <ProviderDashboardLayout>{children}</ProviderDashboardLayout>;
+};
 
-export default Layout
+export default Layout;

@@ -8,7 +8,7 @@ const RenderInitialBody = () => {
     <div className="flex flex-col gap-2 ">
       <div className="absolute top-5 cursor-pointer z-[999]">
         <Icon
-          iconSrc="assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer z-[999999]"
         />
       </div>

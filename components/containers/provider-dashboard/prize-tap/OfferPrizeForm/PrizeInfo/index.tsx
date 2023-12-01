@@ -18,9 +18,9 @@ import { ClaimButton } from "@/components/ui/Button/button";
 export const PrizeInfoDescription = {
   id: 0,
   prevIcon:
-    "assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
-  activeIcon: "assets/images/provider-dashboard/prizeForm-step-diamond.png",
-  nextIcon: "assets/images/provider-dashboard/prizeForm-step-diamond.svg",
+    "/assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
+  activeIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.png",
+  nextIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.svg",
   title: "Prize info",
   description: "Your prize information",
 };

@@ -6,9 +6,9 @@ import { ProviderDashboardGoToDashBoard } from "../../Buttons";
 
 export const InformationVerificationDes = {
   id: 5,
-  prevIcon: "assets/images/provider-dashboard/step-5-active.svg",
-  activeIcon: "assets/images/provider-dashboard/step-5-active.svg",
-  nextIcon: "assets/images/provider-dashboard/step-5-off.svg",
+  prevIcon: "/assets/images/provider-dashboard/step-5-active.svg",
+  activeIcon: "/assets/images/provider-dashboard/step-5-active.svg",
+  nextIcon: "/assets/images/provider-dashboard/step-5-off.svg",
   title: "Verification",
   description: "Processing your request",
 };
@@ -63,8 +63,8 @@ const InformationVerification = () => {
               </p>
             </div>
             <p>
-              haven't heard from us by then, we encourage you to contact us via
-              this email address:
+              haven{"'"}t heard from us by then, we encourage you to contact us
+              via this email address:
             </p>
             <div className="flex items-center justify-center gap-1">
               <a
@@ -74,7 +74,7 @@ const InformationVerification = () => {
               >
                 unitap.support@gmail.com
               </a>
-              <Icon iconSrc="assets/images/provider-dashboard/ic_link_gray.svg" />
+              <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
             </div>
           </div>
         ) : (
@@ -85,7 +85,7 @@ const InformationVerification = () => {
                   className="ml-[-5px] mr-[5px]"
                   width="12px"
                   height="12px"
-                  iconSrc="assets/images/provider-dashboard/rejected.svg"
+                  iconSrc="/assets/images/provider-dashboard/rejected.svg"
                 />
                 <p>{selectedRaffleForCheckReason.rejectionReason}</p>
               </div>
@@ -103,7 +103,7 @@ const InformationVerification = () => {
                 >
                   unitap.support@gmail.com
                 </a>
-                <Icon iconSrc="assets/images/provider-dashboard/ic_link_gray.svg" />
+                <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
               </div>
             </div>
           </div>

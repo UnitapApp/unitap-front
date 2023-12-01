@@ -24,7 +24,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
   return (
     <div className=" w-full mt-[-10px]">
       <div className="flex gap-2 items-center text-gray100 text-[14px] cursor-pointer max-w-[200px]">
-        <Icon iconSrc="assets/images/provider-dashboard/check-true.svg" />
+        <Icon iconSrc="/assets/images/provider-dashboard/check-true.svg" />
         <p>Set Duration Manually</p>
       </div>
       <div className="relative">

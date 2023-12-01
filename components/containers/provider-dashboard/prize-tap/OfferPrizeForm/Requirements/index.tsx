@@ -8,9 +8,9 @@ import Icon from "@/components/ui/Icon";
 
 export const RequirementDescription = {
   id: 2,
-  prevIcon: "assets/images/provider-dashboard/step-2-green.png",
-  activeIcon: "assets/images/provider-dashboard/step-2-active.png",
-  nextIcon: "assets/images/provider-dashboard/step-2-off.png",
+  prevIcon: "/assets/images/provider-dashboard/step-2-green.png",
+  activeIcon: "/assets/images/provider-dashboard/step-2-active.png",
+  nextIcon: "/assets/images/provider-dashboard/step-2-off.png",
   title: "Requirements",
   description: "Add requirements for Enrollment",
 };
@@ -43,7 +43,7 @@ const Requirements = ({
           className=" flex cursor-pointer items-center gap-2 bg-gray40 h-[44px] rounded-xl px-4 text-white text-[12px]"
         >
           <Icon
-            iconSrc="assets/images/provider-dashboard/add-requirement.svg"
+            iconSrc="/assets/images/provider-dashboard/add-requirement.svg"
             height="16px"
             width="16px"
           />

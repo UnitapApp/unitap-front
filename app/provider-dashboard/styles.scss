@@ -1,0 +1,7 @@
+.provider-dashboard-input {
+  @apply placeholder-gray80 text-white w-full bg-transparent h-[100%];
+}
+
+.requireModal {
+  @apply text-[14px] font-semibold flex flex-col gap-2 items-center justify-center cursor-pointer max-w-[184px] h-[84px] bg-gray40 border border-gray70 rounded-xl;
+}

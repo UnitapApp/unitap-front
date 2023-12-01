@@ -24,6 +24,7 @@ import {
 import { useUserProfileContext } from "./userProfile";
 import {
   useWalletAccount,
+  useWalletBalance,
   useWalletNetwork,
   useWalletProvider,
   useWalletSigner,
@@ -81,6 +82,7 @@ const formInitialData: ProviderDashboardFormDataProp = {
   userNftBalance: undefined,
   nftTokenUri: null,
   winnersCount: 1,
+  totalAmount: "",
 };
 
 const title = {
@@ -161,13 +163,15 @@ export const ProviderDashboardContext = createContext<{
     requirement: ConstraintParamValues | null,
     id: number,
     name: string,
-    title: string
+    title: string,
+    isNotSatisfy: boolean
   ) => void;
   requirementList: ConstraintParamValues[];
   deleteRequirement: (id: number) => void;
   updateRequirement: (
     id: number,
-    requirements: ConstraintParamValues | null
+    requirements: ConstraintParamValues | null,
+    isNotSatisfy: boolean
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
   handleCreateRaffle: () => void;
@@ -201,6 +205,8 @@ export const ProviderDashboardContext = createContext<{
   nftStatus: NftStatusProp[];
   handleClearNfts: () => void;
   selectedRaffleForCheckReason: UserRafflesProps | null;
+  insufficientBalance: boolean;
+  userBalance: string | null;
   socialMediaValidation: {
     creatorUrl: boolean;
     twitter: boolean;
@@ -210,82 +216,86 @@ export const ProviderDashboardContext = createContext<{
   };
 }>({
   page: 0,
-  setPage: NullCallback,
+  setPage: () => {},
   data: formInitialData,
   selectedConstrains: null,
-  title,
-  handleChange: NullCallback,
-  handleSelectTokenOrNft: NullCallback,
-  handleSelectLimitEnrollPeopleCheck: NullCallback,
-  closeRequirementModal: NullCallback,
-  closeAddNftIdListModal: NullCallback,
-  closeCreateRaffleModal: NullCallback,
-  openRequirementModal: NullCallback,
-  openAddNftIdListModal: NullCallback,
-  openCreteRaffleModal: NullCallback,
-  handleSelectConstraint: NullCallback,
+  title: {
+    ...title,
+  },
+  handleChange: () => {},
+  handleSelectTokenOrNft: () => {},
+  handleSelectLimitEnrollPeopleCheck: () => {},
+  closeRequirementModal: () => {},
+  closeAddNftIdListModal: () => {},
+  closeCreateRaffleModal: () => {},
+  openRequirementModal: () => {},
+  openAddNftIdListModal: () => {},
+  openCreteRaffleModal: () => {},
+  handleSelectConstraint: () => {},
   isModalOpen: false,
   selectedConstraintTitle: null,
-  handleBackToRequirementModal: NullCallback,
+  handleBackToRequirementModal: () => {},
   chainList: [],
   selectedChain: null,
-  setSelectedChain: NullCallback,
+  setSelectedChain: () => {},
   chainName: "",
-  handleSearchChain: NullCallback,
-  setChainName: NullCallback,
+  handleSearchChain: () => {},
+  setChainName: () => {},
   filterChainList: [],
-  setSearchPhrase: NullCallback,
-  handleSelectChain: NullCallback,
-  handleSelectSatisfy: NullCallback,
+  setSearchPhrase: () => {},
+  handleSelectChain: () => {},
+  handleSelectSatisfy: () => {},
   allowListPrivate: false,
-  handleSelectAllowListPrivate: NullCallback,
+  handleSelectAllowListPrivate: () => {},
   canGoStepTwo: () => false,
-  canGoStepThree: NullCallback,
+  canGoStepThree: () => {},
   canGoStepFive: () => false,
   setDuration: false,
-  handleSetDuration: NullCallback,
-  handleSelectDurationUnitTime: NullCallback,
-  openShowPreviewModal: NullCallback,
-  closeShowPreviewModal: NullCallback,
+  handleSetDuration: () => {},
+  handleSelectDurationUnitTime: () => {},
+  openShowPreviewModal: () => {},
+  closeShowPreviewModal: () => {},
   selectNewOffer: false,
-  handleSelectNewOffer: NullCallback,
-  handleGOToDashboard: NullCallback,
-  insertRequirement: NullCallback,
+  handleSelectNewOffer: () => {},
+  handleGOToDashboard: () => {},
+  insertRequirement: () => {},
   requirementList: [],
-  deleteRequirement: NullCallback,
-  updateRequirement: NullCallback,
-  handleSelectNativeToken: NullCallback,
-  handleCreateRaffle: NullCallback,
+  deleteRequirement: () => {},
+  updateRequirement: () => {},
+  handleSelectNativeToken: () => {},
+  handleCreateRaffle: () => {},
   isCreateRaffleModalOpen: false,
   createRaffleResponse: null,
   createRaffleLoading: false,
-  handleSetCreateRaffleLoading: NullCallback,
+  handleSetCreateRaffleLoading: () => {},
   checkingContractInfo: false,
   isTokenContractAddressValid: false,
   isNftContractAddressValid: false,
-  handleSetDate: NullCallback,
-  handleApproveErc20Token: NullCallback,
+  handleSetDate: () => {},
+  handleApproveErc20Token: () => {},
   isErc20Approved: false,
   approveLoading: false,
   constraintsList: [],
   isApprovedAll: false,
-  handleApproveErc721Token: NullCallback,
+  handleApproveErc721Token: () => {},
   canDisplayErrors: false,
   userRaffles: [],
   userRafflesLoading: false,
-  handleGetConstraints: NullCallback,
-  updateChainList: NullCallback,
+  handleGetConstraints: () => {},
+  updateChainList: () => {},
   canDisplayWrongAddress: false,
-  handleCheckForReason: NullCallback,
-  handleShowUserDetails: NullCallback,
-  handleAddNftToData: NullCallback,
-  setUploadedFile: NullCallback,
+  handleCheckForReason: () => {},
+  handleShowUserDetails: () => {},
+  handleAddNftToData: () => {},
+  setUploadedFile: () => {},
   uploadedFile: null,
   isShowingDetails: false,
   handleCheckOwnerOfNfts: async () => false,
   nftStatus: [],
-  handleClearNfts: NullCallback,
+  handleClearNfts: () => {},
   selectedRaffleForCheckReason: null,
+  insufficientBalance: false,
+  userBalance: null,
   socialMediaValidation: {
     creatorUrl: true,
     twitter: false,
@@ -325,6 +335,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
 
   const [allowListPrivate, setAllowListPrivate] = useState<boolean>(false);
+
+  const [insufficientBalance, setInsufficientBalance] =
+    useState<boolean>(false);
 
   const [createRaffleResponse, setCreteRaffleResponse] = useState<any | null>(
     null
@@ -385,6 +398,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const provider = useWalletProvider();
   const { address } = useWalletAccount();
   const { chain } = useWalletNetwork();
+
+  const { data: userBalance } = useWalletBalance({
+    address,
+    chainId: chain?.id,
+  });
 
   const refController = useRef<any>();
 
@@ -1167,6 +1185,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         handleClearNfts,
         selectedRaffleForCheckReason,
         socialMediaValidation,
+        insufficientBalance,
+        userBalance: userBalance?.formatted.toString() ?? null,
       }}
     >
       {children}

@@ -147,7 +147,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               <div className="relative w-full text-center">
                 <p>{prize.numberOfOnchainEntries} Spots Left</p>
                 <Icon
-                  iconSrc="assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="/assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"

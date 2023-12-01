@@ -1,7 +1,7 @@
 import { UserProfile } from "./auth";
 import { Chain } from "./gas-tap";
 
-export interface ProviderDashboardFormDataProp {
+export type ProviderDashboardFormDataProp = {
   provider: string | null;
   description: string | null;
   isNft: boolean;
@@ -37,7 +37,8 @@ export interface ProviderDashboardFormDataProp {
   userNftBalance: string | undefined;
   nftTokenUri: string | null;
   winnersCount: number;
-}
+  totalAmount: string;
+};
 
 export type ErrorProps = {
   startDateStatus: null | boolean;
