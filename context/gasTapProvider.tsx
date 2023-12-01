@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ClaimReceipt,
@@ -10,8 +10,8 @@ import {
   Chain,
   ClaimBoxStateContainer,
   ClaimReceiptState,
-} from "@/types"
-import { EmptyCallback } from "@/utils"
+} from "@/types";
+import { EmptyCallback } from "@/utils";
 import {
   FC,
   PropsWithChildren,
@@ -21,41 +21,41 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react"
-import { useUserProfileContext } from "./userProfile"
+} from "react";
+import { useUserProfileContext } from "./userProfile";
 import {
   claimMax,
   claimMaxNonEVMAPI,
   getActiveClaimHistory,
   getChainList,
-} from "@/utils/api"
-import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh"
-import getCorrectAddress, { useWalletAccount } from "@/utils/wallet"
-import { FAST_INTERVAL } from "@/constants"
-import { useGlobalContext } from "./globalProvider"
+} from "@/utils/api";
+import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import getCorrectAddress, { useWalletAccount } from "@/utils/wallet";
+import { FAST_INTERVAL } from "@/constants";
+import { useGlobalContext } from "./globalProvider";
 
 export const GasTapContext = createContext<{
-  chainList: Chain[]
-  chainListSearchResult: Chain[]
-  chainListSearchSimpleResult: Chain[]
-  changeSearchPhrase: ((newSearchPhrase: string) => void) | null
-  claim: (chainPK: number) => void
-  claimNonEVM: (chain: Chain, address: string) => void
-  activeClaimReceipt: ClaimReceipt | null
-  activeClaimHistory: ClaimReceipt[]
-  isNonEvmActive: boolean
-  closeClaimModal: () => void
-  openClaimModal: (chainPk: PK) => void
-  activeChain: Chain | null
-  claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null }
-  selectedNetwork: Network
-  selectedChainType: ChainType
-  setSelectedNetwork: (network: Network) => void
-  setSelectedChainType: (chainType: ChainType) => void
-  claimLoading: boolean
-  searchPhrase: string
-  isHighGasFeeModalOpen: boolean
-  changeIsHighGasFeeModalOpen: (isOpen: boolean) => void
+  chainList: Chain[];
+  chainListSearchResult: Chain[];
+  chainListSearchSimpleResult: Chain[];
+  changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
+  claim: (chainPK: number) => void;
+  claimNonEVM: (chain: Chain, address: string) => void;
+  activeClaimReceipt: ClaimReceipt | null;
+  activeClaimHistory: ClaimReceipt[];
+  isNonEvmActive: boolean;
+  closeClaimModal: () => void;
+  openClaimModal: (chainPk: PK) => void;
+  activeChain: Chain | null;
+  claimBoxStatus: { status: ClaimBoxState; lastFailPk: number | null };
+  selectedNetwork: Network;
+  selectedChainType: ChainType;
+  setSelectedNetwork: (network: Network) => void;
+  setSelectedChainType: (chainType: ChainType) => void;
+  claimLoading: boolean;
+  searchPhrase: string;
+  isHighGasFeeModalOpen: boolean;
+  changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -78,40 +78,40 @@ export const GasTapContext = createContext<{
   isHighGasFeeModalOpen: false,
   isNonEvmActive: true,
   changeIsHighGasFeeModalOpen: EmptyCallback,
-})
+});
 
-export const useGasTapContext = () => useContext(GasTapContext)
+export const useGasTapContext = () => useContext(GasTapContext);
 
 export const GasTapProvider: FC<
   {
-    chains: Chain[]
+    chains: Chain[];
   } & PropsWithChildren
 > = ({ children, chains }) => {
-  const [chainList, setChainList] = useState(chains)
-  const [activeChain, setActiveChain] = useState<Chain | null>(null)
-  const [isNonEvmActive, setIsNonEvmActive] = useState<boolean>(false)
-  const [searchPhrase, setSearchPhrase] = useState<string>("")
+  const [chainList, setChainList] = useState(chains);
+  const [activeChain, setActiveChain] = useState<Chain | null>(null);
+  const [isNonEvmActive, setIsNonEvmActive] = useState<boolean>(false);
+  const [searchPhrase, setSearchPhrase] = useState<string>("");
   const [activeClaimReceipt, setActiveClaimReceipt] =
-    useState<ClaimReceipt | null>(null)
+    useState<ClaimReceipt | null>(null);
   const [claimBoxStatus, setClaimBoxStatus] = useState<ClaimBoxStateContainer>({
     status: ClaimBoxState.CLOSED,
     lastFailPk: null,
-  })
+  });
 
-  const [claimLoading, setClaimLoading] = useState(false)
+  const [claimLoading, setClaimLoading] = useState(false);
 
-  const { userProfile, userToken } = useUserProfileContext()
+  const { userProfile, userToken } = useUserProfileContext();
 
   const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>(
     []
-  )
-  const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false)
+  );
+  const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false);
   const changeIsHighGasFeeModalOpen = useCallback((isOpen: boolean) => {
-    setIsHighGasFeeModalOpen(isOpen)
-  }, [])
+    setIsHighGasFeeModalOpen(isOpen);
+  }, []);
 
-  const [selectedNetwork, setSelectedNetwork] = useState(Network.MAINNET)
-  const [selectedChainType, setSelectedChainType] = useState(ChainType.ALL)
+  const [selectedNetwork, setSelectedNetwork] = useState(Network.MAINNET);
+  const [selectedChainType, setSelectedChainType] = useState(ChainType.ALL);
 
   const chainListSearchResult = useMemo(
     () =>
@@ -122,52 +122,52 @@ export const GasTapProvider: FC<
         selectedChainType
       ),
     [searchPhrase, chainList, selectedNetwork, selectedChainType]
-  )
+  );
 
-  const { setIsWalletPromptOpen } = useGlobalContext()
-  const { isConnected } = useWalletAccount()
+  const { setIsWalletPromptOpen } = useGlobalContext();
+  const { isConnected } = useWalletAccount();
 
   const updateChainList = useCallback(async () => {
     try {
-      const newChainList = await getChainList()
-      setChainList(newChainList)
+      const newChainList = await getChainList();
+      setChainList(newChainList);
     } catch (e) {}
-  }, [])
+  }, []);
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (userToken && userProfile) {
       try {
-        const newClaimHistory = await getActiveClaimHistory(userToken)
-        setActiveClaimHistory(newClaimHistory)
+        const newClaimHistory = await getActiveClaimHistory(userToken);
+        setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }
-  }, [userToken, userProfile])
+  }, [userToken, userProfile]);
 
   const openClaimModal = useCallback(
     (chainPk: PK) => {
       if (!isConnected) {
-        setIsWalletPromptOpen(true)
-        return
+        setIsWalletPromptOpen(true);
+        return;
       }
 
-      let chain = chainList.find((chan) => chan.pk === chainPk)
+      let chain = chainList.find((chan) => chan.pk === chainPk);
 
-      if (!chain) return
+      if (!chain) return;
 
       if (chain.chainType === ChainType.EVM) {
-        setActiveChain(chain)
-        setIsNonEvmActive(false)
+        setActiveChain(chain);
+        setIsNonEvmActive(false);
       } else if (
         chain.chainType === ChainType.NONEVMXDC ||
         chain.chainType === ChainType.SOLANA ||
         chain.chainType === ChainType.LIGHTNING
       ) {
-        setActiveChain(chain)
-        setIsNonEvmActive(true)
+        setActiveChain(chain);
+        setIsNonEvmActive(true);
       }
     },
-    [chainList, isConnected]
-  )
+    [chainList, isConnected, setIsWalletPromptOpen]
+  );
 
   const claimNonEVM = async (
     chain: Chain,
@@ -175,49 +175,49 @@ export const GasTapProvider: FC<
     userToken: string
   ) => {
     try {
-      let correctAddress = getCorrectAddress(chain, address)
-      await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress)
+      let correctAddress = getCorrectAddress(chain, address);
+      await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
 
-      await updateActiveClaimHistory()
+      await updateActiveClaimHistory();
     } catch (ex) {
-      await updateActiveClaimHistory()
+      await updateActiveClaimHistory();
     } finally {
       setTimeout(() => {
-        setClaimLoading(false)
-      }, 1000)
+        setClaimLoading(false);
+      }, 1000);
     }
-  }
+  };
 
   const claim = useCallback(
     async (claimChainPk: number, address?: string) => {
       if (!userToken || claimLoading) {
-        return
+        return;
       }
-      setClaimLoading(true)
+      setClaimLoading(true);
 
       if (isNonEvmActive && address) {
         return await claimNonEVM(
           chainList.find((item) => item.pk === claimChainPk)!,
           address,
           userToken
-        )
+        );
       }
 
       if (activeClaimReceipt)
         setClaimBoxStatus({
           status: ClaimBoxState.INITIAL,
           lastFailPk: activeClaimReceipt.pk,
-        })
+        });
 
       try {
-        await claimMax(userToken, claimChainPk)
+        await claimMax(userToken, claimChainPk);
         setTimeout(() => {
-          setClaimLoading(false)
-        }, 1000)
-        await updateActiveClaimHistory()
+          setClaimLoading(false);
+        }, 1000);
+        await updateActiveClaimHistory();
       } catch (ex) {
-        setClaimLoading(false)
-        await updateActiveClaimHistory()
+        setClaimLoading(false);
+        await updateActiveClaimHistory();
       }
     },
     [
@@ -226,37 +226,39 @@ export const GasTapProvider: FC<
       activeClaimReceipt,
       claimLoading,
       isNonEvmActive,
+      chainList,
+      claimNonEVM,
     ]
-  )
+  );
 
   const chainListSearchSimpleResult = useMemo(
     () => searchChainListSimple(searchPhrase, chainList),
     [searchPhrase, chainList]
-  )
+  );
 
   useFastRefresh(() => {
-    updateChainList()
-  }, [updateChainList])
+    updateChainList();
+  }, [updateChainList]);
 
   useRefreshWithInitial(
     () => {
-      updateActiveClaimHistory()
+      updateActiveClaimHistory();
     },
     FAST_INTERVAL,
     [updateActiveClaimHistory]
-  )
+  );
 
   useEffect(() => {
     if (activeChain) {
       setActiveClaimReceipt(
         getActiveClaimReceipt(activeClaimHistory, activeChain, "EVM")
-      )
+      );
     } else if (isNonEvmActive) {
       setActiveClaimReceipt(
         getActiveClaimReceipt(activeClaimHistory, activeChain, "NONEVM")
-      )
+      );
     }
-  }, [activeChain, isNonEvmActive, setActiveClaimReceipt, activeClaimHistory])
+  }, [activeChain, isNonEvmActive, setActiveClaimReceipt, activeClaimHistory]);
 
   return (
     <GasTapContext.Provider
@@ -287,40 +289,40 @@ export const GasTapProvider: FC<
     >
       {children}
     </GasTapContext.Provider>
-  )
-}
+  );
+};
 
 const getNetworkFilterResult = (
   selectedNetwork: Network,
   chainList: Chain[]
 ) => {
   if (selectedNetwork === Network.MAINNET) {
-    chainList = chainList.filter((chain) => chain.isTestnet === false)
+    chainList = chainList.filter((chain) => chain.isTestnet === false);
   } else if (selectedNetwork === Network.TESTNET) {
-    chainList = chainList.filter((chain) => chain.isTestnet === true)
+    chainList = chainList.filter((chain) => chain.isTestnet === true);
   }
-  return chainList
-}
+  return chainList;
+};
 
 const getChainTypeFilterResult = (
   selectedChainType: ChainType,
   chainList: Chain[]
 ) => {
   if (selectedChainType === ChainType.EVM) {
-    chainList = chainList.filter((chain) => chain.chainType === ChainType.EVM)
+    chainList = chainList.filter((chain) => chain.chainType === ChainType.EVM);
   } else if (selectedChainType === ChainType.NONEVM) {
     chainList = chainList.filter(
       (chain) =>
         chain.chainType === ChainType.NONEVMXDC ||
         chain.chainType === ChainType.SOLANA ||
         chain.chainType === ChainType.LIGHTNING
-    )
+    );
   }
-  return chainList
-}
+  return chainList;
+};
 
 const getSearchQueryResult = (searchPhrase: string, chainList: Chain[]) => {
-  if (searchPhrase === "") return chainList
+  if (searchPhrase === "") return chainList;
 
   const filteredChains: Chain[] = chainList.filter(
     (chain) =>
@@ -328,18 +330,18 @@ const getSearchQueryResult = (searchPhrase: string, chainList: Chain[]) => {
         .toLowerCase()
         .includes(searchPhrase.toLowerCase()) ||
       chain.chainName.toLowerCase().includes(searchPhrase.toLowerCase())
-  )
+  );
 
-  return filteredChains
-}
+  return filteredChains;
+};
 
 export const searchChainListSimple = (
   searchPhrase: string,
   chainList: Chain[]
 ) => {
-  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList)
-  return searchChainListResult
-}
+  let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
+  return searchChainListResult;
+};
 
 export const searchChainList = (
   searchPhrase: string,
@@ -347,28 +349,31 @@ export const searchChainList = (
   selectedNetwork: Network,
   selectedChainType: ChainType
 ) => {
-  if (searchPhrase !== "") return getSearchQueryResult(searchPhrase, chainList)
+  if (searchPhrase !== "") return getSearchQueryResult(searchPhrase, chainList);
 
-  let searchChainListResult = getNetworkFilterResult(selectedNetwork, chainList)
+  let searchChainListResult = getNetworkFilterResult(
+    selectedNetwork,
+    chainList
+  );
   searchChainListResult = getChainTypeFilterResult(
     selectedChainType,
     searchChainListResult
-  )
-  return searchChainListResult
-}
+  );
+  return searchChainListResult;
+};
 
 const getActiveClaimReceipt = (
   activeClaimHistory: ClaimReceipt[],
   activeChain: Chain | null,
   chainType: string
 ) => {
-  if (!activeChain) return null
+  if (!activeChain) return null;
 
   const filteredClaimHistory = activeClaimHistory.filter(
     (claimReceipt: ClaimReceipt) => claimReceipt.chain.pk === activeChain.pk
-  )
+  );
 
-  let selectedClaimReceipt = null
+  let selectedClaimReceipt = null;
 
   if (chainType === "EVM") {
     selectedClaimReceipt =
@@ -383,7 +388,7 @@ const getActiveClaimReceipt = (
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
           claimReceipt.status === ClaimReceiptState.REJECTED
-      )
+      );
   } else if (chainType === "NONEVM") {
     selectedClaimReceipt =
       filteredClaimHistory.find(
@@ -397,10 +402,10 @@ const getActiveClaimReceipt = (
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
           claimReceipt.status === ClaimReceiptState.REJECTED
-      )
+      );
   }
 
-  return selectedClaimReceipt || null
-}
+  return selectedClaimReceipt || null;
+};
 
-export default GasTapProvider
+export default GasTapProvider;

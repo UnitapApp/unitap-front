@@ -1,37 +1,38 @@
-import { WagmiConfig } from "wagmi"
-import "./globals.scss"
-import type { Metadata } from "next"
-import { config } from "@/utils/wallet/wagmi"
-import { Noto_Sans } from "next/font/google"
-import UnitapProvider from "@/context"
-import Header from "@/components/layout/header"
-import Progressbar from "@/components/progress"
-import Footer from "@/components/layout/footer"
+import { WagmiConfig } from "wagmi";
+import "./globals.scss";
+import type { Metadata } from "next";
+import { config } from "@/utils/wallet/wagmi";
+import { Noto_Sans } from "next/font/google";
+import UnitapProvider from "@/context";
+import Header from "@/components/layout/header";
+import Progressbar from "@/components/progress";
+import Footer from "@/components/layout/footer";
 
 import {
   ConnectBrightIdModal,
   BrightConnectionModal,
   CreateBrightIdAccountModal,
-} from "@/components/containers/modals"
-import StyledJsxRegistry from "@/components/styled-components"
-import { ConnectWalletModal } from "@/components/containers/modals/ConnectWalletModal"
+} from "@/components/containers/modals";
+import StyledJsxRegistry from "@/components/styled-components";
+import { ConnectWalletModal } from "@/components/containers/modals/ConnectWalletModal";
+import GoogleAnalytics from "@/components/google-analytics";
 
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   adjustFontFallback: false,
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Unitap",
   description: "Bright ID faucet",
-}
+};
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" dir="ltr" className="dark">
@@ -55,7 +56,11 @@ export default async function RootLayout({
         </WagmiConfig>
 
         <Progressbar />
+
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        ) : null}
       </body>
     </html>
-  )
+  );
 }

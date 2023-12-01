@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { FC, useEffect, useMemo, useState, useContext } from "react"
-import { Prize } from "@/types"
-import Icon from "@/components/ui/Icon"
+import { FC, useEffect, useMemo, useState, useContext } from "react";
+import { Prize } from "@/types";
+import Icon from "@/components/ui/Icon";
 import {
   ClaimAndEnrollButton,
   ClaimPrizeButton,
   EnrolledButton,
-} from "@/components/ui/Button/button"
-import styled from "styled-components"
-import { DV } from "@/components/ui/designVariables"
-import { getTxUrl, shortenAddress } from "@/utils"
-import Tooltip from "@/components/ui/Tooltip"
-import { numberWithCommas } from "@/utils/numbers"
-import { LineaRaffleCard } from "./Linea"
-import { usePrizeTapContext } from "@/context/prizeTapProvider"
-import { useSearchParams } from "next/navigation"
-import { useUserProfileContext } from "@/context/userProfile"
+} from "@/components/ui/Button/button";
+import styled from "styled-components";
+import { DV } from "@/components/ui/designVariables";
+import { getTxUrl, shortenAddress } from "@/utils";
+import Tooltip from "@/components/ui/Tooltip";
+import { numberWithCommas } from "@/utils/numbers";
+import { LineaRaffleCard } from "./Linea";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
+import { useSearchParams } from "next/navigation";
+import { useUserProfileContext } from "@/context/userProfile";
 
 export const Action = styled.div`
   display: flex;
@@ -24,31 +24,31 @@ export const Action = styled.div`
   @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
   }
-`
+`;
 
 const RafflesList = () => {
-  const params = useSearchParams()
-  const { rafflesList } = usePrizeTapContext()
-  const [highlightedPrize, setHighlightedPrize] = useState("")
+  const params = useSearchParams();
+  const { rafflesList } = usePrizeTapContext();
+  const [highlightedPrize, setHighlightedPrize] = useState("");
 
   const prizesSortListMemo = useMemo(
     () =>
       rafflesList.sort((a, b) => {
-        const lowerHighlightChainName = highlightedPrize.toLowerCase()
+        const lowerHighlightChainName = highlightedPrize.toLowerCase();
 
-        if (a.name.toLowerCase() === lowerHighlightChainName) return -1
-        if (b.name.toLowerCase() === lowerHighlightChainName) return 1
+        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
 
-        return 0
+        return 0;
       }),
     [rafflesList, highlightedPrize]
-  )
+  );
 
   useEffect(() => {
-    const highlightedPrize = params.get("icebox")
+    const highlightedPrize = params.get("icebox");
 
-    setHighlightedPrize(highlightedPrize || "")
-  }, [params, setHighlightedPrize])
+    setHighlightedPrize(highlightedPrize || "");
+  }, [params, setHighlightedPrize]);
 
   return (
     <div className="grid md:flex-row wrap w-full mb-4 gap-4">
@@ -70,16 +70,16 @@ const RafflesList = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 const RaffleCardWrapper: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
   props
 ) => {
-  if (props.raffle.pk === 70) return <LineaRaffleCard {...props} />
+  if (props.raffle.pk === 4) return <LineaRaffleCard {...props} />;
 
-  return <RaffleCard {...props} />
-}
+  return <RaffleCard {...props} />;
+};
 
 const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   raffle,
@@ -107,46 +107,46 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     decimals,
     prizeAmount,
     creatorProfile,
-  } = raffle
+  } = raffle;
 
-  const creator = creatorName || creatorProfile?.username
+  const creator = creatorName || creatorProfile?.username;
 
-  const { openEnrollModal } = usePrizeTapContext()
-  const { userProfile } = useUserProfileContext()
+  const { openEnrollModal } = usePrizeTapContext();
+  const { userProfile } = useUserProfileContext();
 
-  const calculateClaimAmount = prizeAmount / 10 ** decimals
-  const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries
+  const calculateClaimAmount = prizeAmount / 10 ** decimals;
+  const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
   const isRemainingPercentLessThanTen =
-    remainingPeople < (maxNumberOfEntries / 100) * 10
-  const [start, setStarted] = useState<boolean>(true)
-  const [showAllPermissions, setShowAllPermissions] = useState(false)
+    remainingPeople < (maxNumberOfEntries / 100) * 10;
+  const [start, setStarted] = useState<boolean>(true);
+  const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   useEffect(() => {
-    setStarted(new Date(startAt) < new Date())
-  }, [new Date()])
+    setStarted(new Date(startAt) < new Date());
+  }, [new Date()]);
   const getWinnerWallet = () => {
-    if (!winnerEntry) return
+    if (!winnerEntry) return;
     let wallet = winnerEntry.userProfile.wallets.filter(
       (item) => item.walletType === "EVM"
-    )
-    return wallet[0].address
-  }
+    );
+    return wallet[0].address;
+  };
 
   let tokenImgLink: string | undefined = tokenUri
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
         Number(tokenUri.split("/")[3]) + 1
       }.png`
-    : undefined
+    : undefined;
 
   const prizeLink = isPrizeNft
     ? imageUrl
       ? imageUrl
       : tokenImgLink
-    : `https://etherscan.io/address/${raffle.prizeAsset}`
+    : `https://etherscan.io/address/${raffle.prizeAsset}`;
 
   const onPrizeClick = () => {
-    if (prizeLink) window.open(prizeLink, "_blank")
-  }
+    if (prizeLink) window.open(prizeLink, "_blank");
+  };
 
   return (
     <div
@@ -558,65 +558,65 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 type RaffleCardTimerProps = {
-  startTime: string
-  FinishTime: string
-}
+  startTime: string;
+  FinishTime: string;
+};
 
 export const RaffleCardTimer = ({
   startTime,
   FinishTime,
 }: RaffleCardTimerProps) => {
-  const [now, setNow] = useState(new Date())
-  const [days, setDays] = useState("00")
-  const [hours, setHours] = useState("00")
-  const [minutes, setMinutes] = useState("00")
-  const [seconds, setSeconds] = useState("00")
-  const [start, setStarted] = useState<boolean>(true)
+  const [now, setNow] = useState(new Date());
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
+  const [start, setStarted] = useState<boolean>(true);
 
   useEffect(() => {
-    setStarted(new Date(startTime) < new Date())
-  }, [new Date()])
+    setStarted(new Date(startTime) < new Date());
+  }, [new Date()]);
 
-  let startTimeDate = useMemo(() => new Date(startTime), [startTime])
+  let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
   let FinishTimeDate = useMemo(
     () => new Date(start ? FinishTime : new Date()),
     [FinishTime]
-  )
+  );
 
   let deadline = useMemo(
     () =>
       startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate,
     [startTimeDate, FinishTimeDate, now]
-  )
+  );
 
   useEffect(() => {
     // calculate time difference between now and deadline
-    const diff = deadline.getTime() - now.getTime()
+    const diff = deadline.getTime() - now.getTime();
     if (diff <= 0) {
-      return
+      return;
     }
     // time calculations for days, hours, minutes and seconds
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
     // set the state with the time difference
-    setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString())
-    setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString())
-    setHours(hours < 10 ? `0${hours}` : hours.toString())
-    setDays(days < 10 ? `0${days}` : days.toString())
-  }, [now, deadline])
+    setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
+    setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
+    setHours(hours < 10 ? `0${hours}` : hours.toString());
+    setDays(days < 10 ? `0${days}` : days.toString());
+  }, [now, deadline]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
@@ -648,49 +648,49 @@ export const RaffleCardTimer = ({
         <p className="prize-card__timer-item-label text-gray90">s</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const RaffleCardTimerLandingPage = ({
   startTime,
   FinishTime,
 }: RaffleCardTimerProps) => {
-  const [now, setNow] = useState(new Date())
-  const [days, setDays] = useState("00")
-  const [hours, setHours] = useState("00")
-  const [minutes, setMinutes] = useState("00")
-  const [seconds, setSeconds] = useState("00")
+  const [now, setNow] = useState(new Date());
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
 
-  let startTimeDate = useMemo(() => new Date(startTime), [startTime])
-  let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime])
+  let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
+  let FinishTimeDate = useMemo(() => new Date(FinishTime), [FinishTime]);
 
   let deadline = useMemo(
     () =>
       startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate,
     [startTimeDate, FinishTimeDate, now]
-  )
+  );
 
   useEffect(() => {
-    const diff = deadline.getTime() - now.getTime()
+    const diff = deadline.getTime() - now.getTime();
     if (diff <= 0) {
-      return
+      return;
     }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000)
-    setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString())
-    setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString())
-    setHours(hours < 10 ? `0${hours}` : hours.toString())
-    setDays(days < 10 ? `0${days}` : days.toString())
-  }, [now, deadline])
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
+    setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
+    setHours(hours < 10 ? `0${hours}` : hours.toString());
+    setDays(days < 10 ? `0${days}` : days.toString());
+  }, [now, deadline]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className="prize-card__timer flex gap-1 md:px-1 mt-[-2px] text-gray100 items-center">
@@ -710,7 +710,7 @@ export const RaffleCardTimerLandingPage = ({
         <p className="prize-card__timer-item-value font-semibold">{seconds}</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RafflesList
+export default RafflesList;
