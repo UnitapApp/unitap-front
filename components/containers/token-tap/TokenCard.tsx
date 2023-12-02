@@ -12,11 +12,12 @@ import {
   NoCurrencyButton,
   ClaimButton,
   ClaimedButton,
-} from "@/components/ui/Button/button"
-import { useWalletAccount } from "@/utils/wallet"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { AddMetamaskButton } from "../gas-tap/Cards/Chainlist/ChainCard"
-import Markdown from "./Markdown"
+} from "@/components/ui/Button/button";
+import { useWalletAccount } from "@/utils/wallet";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { AddMetamaskButton } from "../gas-tap/Cards/Chainlist/ChainCard";
+import Markdown from "./Markdown";
+
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -42,7 +43,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         symbol: token.token,
         image: token.imageUrl,
         address: token.tokenAddress,
-      })
+      });
       // await (window.ethereum as any).request({
       //   method: "wallet_watchAsset",
       //   params: {
@@ -57,25 +58,28 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       //   },
       // })
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const collectedToken = useMemo(
     () =>
       claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
     [claimedTokensList, token]
-  )
+  );
+
 
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
       ? token.amount
-      : token.amount / 10 ** token.chain.decimals
+      : token.amount / 10 ** token.chain.decimals;
+
 
   const timePermissionVerification = useMemo(
     () => token.permissions.find((permission) => permission.type === "TIME"),
     [token]
-  )
+  );
+
 
   return (
     <div>
@@ -289,7 +293,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               <Icon
                 iconSrc={`/assets/images/token-tap/${
                   timePermissionVerification.name ===
-                  "OnceInALifeTimeVerification"
+                  "tokenTap.OnceInALifeTimeVerification"
                     ? "non-repeat.svg"
                     : "repeat.svg"
                 }`}
@@ -319,8 +323,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 const Action = styled.div`
   display: flex;
@@ -328,6 +333,6 @@ const Action = styled.div`
   @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
     flex-direction: column;
   }
-`
+`;
 
-export default TokenCard
+export default TokenCard;
