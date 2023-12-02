@@ -150,12 +150,12 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 </ClaimedButton>
               ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
                 <div className="btn btn--claim btn--sm btn--out-of-balance">
-                  Out of balance
+                  Out of Gas
                   <button
                     onClick={() => handleRefillButtonClicked(chain.pk)}
                     className="btn btn--sm btn--refill"
                   >
-                    Refill
+                    Refuel
                   </button>
                 </div>
               ) : !activeClaimHistory.find(
