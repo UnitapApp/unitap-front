@@ -8,6 +8,7 @@ const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
     },
   }).then((res) => res.json());
 
+
   return <GasTapProvider chains={chains}>{children}</GasTapProvider>;
 };
 
