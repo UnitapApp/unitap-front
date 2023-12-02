@@ -24,6 +24,19 @@ export async function getChainList() {
   return response.data;
 }
 
+export async function getOneTimeClaimedChainList(token: string) {
+  const response = await axiosInstance.get(
+    "/api/gastap/user/one-time-claims/",
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+
+  return response.data;
+}
+
 export async function getActiveClaimHistory(token: string) {
   const response = await axiosInstance.get<ClaimReceipt[]>(
     "/api/gastap/user/claims/",

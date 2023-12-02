@@ -3,7 +3,12 @@ import { FC, PropsWithChildren } from "react";
 
 const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
   const chains = await fetch(
-    process.env.API_URL! + "/api/gastap/chain/list/"
+    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/chain/list/",
+    {
+      next: {
+        revalidate: 10,
+      },
+    }
   ).then((res) => res.json());
 
   return <GasTapProvider chains={chains}>{children}</GasTapProvider>;
