@@ -491,7 +491,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     async (contractAddress: string) => {
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(contractAddress);
-      const isValid = !!step1Check && step2Check;
+      const isValid = !!(step1Check && step2Check);
       if (isValid) {
         checkContractInfo();
       } else {
@@ -615,19 +615,16 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       data.winnersCount &&
       Math.floor(data.winnersCount) != data.winnersCount
     ) {
-      console.log(data.winnersCount, Math.floor(data.winnersCount));
       errorObject.numberOfWinnersStatus = false;
       errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
     }
 
     if (data.winnersCount && data.winnersCount <= 0) {
-      console.log("----+");
       errorObject.numberOfWinnersStatus = false;
       errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
     }
 
     if (!data.winnersCount) {
-      console.log("---++");
       errorObject.numberOfWinnersStatus = false;
       errorObject.numberOfWinnersMessage = errorMessages.required;
     }
@@ -702,7 +699,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleGetUserRaffles = useCallback(async () => {
-    console.log(userToken);
     if (!userToken) return;
     setUserRafflesLoading(true);
     refController.current = new AbortController();
@@ -913,7 +909,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     name: string,
     title: string
   ) => {
-    console.log(title);
     setRequirementList([
       ...requirementList,
       {
@@ -995,7 +990,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isShowingDetails) return;
+    if (isShowingDetails || !data.tokenContractAddress) return;
     setCheckingContractInfo(true);
     setCanDisplayErrors(false);
     if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
@@ -1013,7 +1008,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   ]);
 
   useEffect(() => {
-    if (isShowingDetails) return;
+    if (isShowingDetails || !data.nftContractAddress) return;
     setCheckingContractInfo(true);
     setCanDisplayErrors(false);
     checkContractAddress(data.nftContractAddress);
@@ -1095,7 +1090,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useRefreshWithInitial(
     () => {
-      console.log(userToken);
+      // console.log(userToken);
 
       if (userRaffles.length > 0) return;
       handleGetUserRaffles();
