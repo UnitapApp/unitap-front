@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { Chain } from "@/types";
 import { RenderWalletNotConnectedBody } from "./RenderWalletNotConnectedBody";
 import { RenderBrightNotConnectedBody } from "./RenderBrightNotConnectedBody";
