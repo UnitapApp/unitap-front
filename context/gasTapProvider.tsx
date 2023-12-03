@@ -4,7 +4,6 @@ import {
   ClaimReceipt,
   PK,
   ClaimBoxState,
-  ClaimNonEVMModalState,
   Network,
   ChainType,
   Chain,
@@ -28,6 +27,7 @@ import {
   claimMaxNonEVMAPI,
   getActiveClaimHistory,
   getChainList,
+  getOneTimeClaimedChainList,
 } from "@/utils/api";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import getCorrectAddress, { useWalletAccount } from "@/utils/wallet";
@@ -56,6 +56,7 @@ export const GasTapContext = createContext<{
   searchPhrase: string;
   isHighGasFeeModalOpen: boolean;
   changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
+  oneTimeClaimedGasList: ClaimReceipt[];
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -78,6 +79,7 @@ export const GasTapContext = createContext<{
   isHighGasFeeModalOpen: false,
   isNonEvmActive: true,
   changeIsHighGasFeeModalOpen: EmptyCallback,
+  oneTimeClaimedGasList: [],
 });
 
 export const useGasTapContext = () => useContext(GasTapContext);
@@ -97,6 +99,10 @@ export const GasTapProvider: FC<
     status: ClaimBoxState.CLOSED,
     lastFailPk: null,
   });
+
+  const [oneTimeClaimedGasList, setOneTimeClaimedGasList] = useState<
+    ClaimReceipt[]
+  >([]);
 
   const [claimLoading, setClaimLoading] = useState(false);
 
@@ -133,6 +139,17 @@ export const GasTapProvider: FC<
       setChainList(newChainList);
     } catch (e) {}
   }, []);
+
+  const updateOneTimeClaimedList = async () => {
+    if (!userToken) return;
+
+    try {
+      setOneTimeClaimedGasList(await getOneTimeClaimedChainList(userToken));
+    } catch (e) {
+      console.warn("error fetching users claimed list");
+      console.error(e);
+    }
+  };
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (userToken && userProfile) {
@@ -243,6 +260,7 @@ export const GasTapProvider: FC<
   useRefreshWithInitial(
     () => {
       updateActiveClaimHistory();
+      updateOneTimeClaimedList();
     },
     FAST_INTERVAL,
     [updateActiveClaimHistory]
@@ -285,6 +303,7 @@ export const GasTapProvider: FC<
         claim,
         claimLoading,
         claimNonEVM: (chain, address) => claim(chain.pk, address),
+        oneTimeClaimedGasList,
       }}
     >
       {children}

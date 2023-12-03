@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
-import { Text } from "@/components/ui/text.style"
-import Icon from "@/components/ui/Icon"
-import { ClaimButton } from "@/components/ui/Button/button"
-import { BrightIdModalState, Chain, ClaimReceiptState } from "@/types"
-import { getChainClaimIcon } from "@/utils/chain"
-import { formatWeiBalance } from "@/utils/numbers"
+import { useMemo } from "react";
+import { Text } from "@/components/ui/text.style";
+import Icon from "@/components/ui/Icon";
+import { ClaimButton } from "@/components/ui/Button/button";
+import { BrightIdModalState, Chain, ClaimReceiptState } from "@/types";
+import { getChainClaimIcon } from "@/utils/chain";
+import { formatWeiBalance } from "@/utils/numbers";
 import {
   BrightIdNotVerifiedBody,
   WalletNotConnectedBody,
@@ -14,19 +14,19 @@ import {
   ClaimPendingBody,
   ClaimFailedBody,
   BrightIdNotConnectedBody,
-} from "./ModalStatusesBody"
-import { useGasTapContext } from "@/context/gasTapProvider"
-import { useUserProfileContext } from "@/context/userProfile"
-import { DropIconWrapper } from "./claimModal.style"
-import WalletAddress from "./walletAddress"
-import { useGlobalContext } from "@/context/globalProvider"
-import { shortenAddress } from "@/utils"
-import ClaimNotAvailable from "../ClaimNotRemaining"
-import { useWalletAccount } from "@/utils/wallet"
-import Modal from "@/components/ui/Modal/modal"
+} from "./ModalStatusesBody";
+import { useGasTapContext } from "@/context/gasTapProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import { DropIconWrapper } from "./claimModal.style";
+import WalletAddress from "./walletAddress";
+import { useGlobalContext } from "@/context/globalProvider";
+import { shortenAddress } from "@/utils";
+import ClaimNotAvailable from "../ClaimNotRemaining";
+import { useWalletAccount } from "@/utils/wallet";
+import Modal from "@/components/ui/Modal/modal";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
-  const { address, isConnected } = useWalletAccount()
+  const { address, isConnected } = useWalletAccount();
 
   const {
     claim,
@@ -34,9 +34,15 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     activeClaimReceipt,
     claimLoading,
     activeChain,
-  } = useGasTapContext()
+    oneTimeClaimedGasList,
+  } = useGasTapContext();
 
-  const { userProfile, remainingClaims } = useUserProfileContext()
+  const { userProfile, remainingClaims } = useUserProfileContext();
+
+  const oneTimeReceipt = useMemo(
+    () => oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
+    [chain, oneTimeClaimedGasList]
+  );
 
   if (!userProfile)
     return (
@@ -44,19 +50,24 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         chainPk={chain.pk}
         iconSrc={getChainClaimIcon(chain)}
       />
-    )
+    );
 
-  if (!userProfile.isMeetVerified) return <BrightIdNotVerifiedBody />
+  if (!userProfile.isMeetVerified) return <BrightIdNotVerifiedBody />;
 
-  if (!isConnected) return <WalletNotConnectedBody chainPk={chain.pk} />
+  if (!isConnected) return <WalletNotConnectedBody chainPk={chain.pk} />;
 
   if (!activeClaimReceipt && (!remainingClaims || remainingClaims <= 0))
-    return <ClaimNotAvailable />
+    return <ClaimNotAvailable />;
 
   if (activeClaimReceipt?.status === ClaimReceiptState.VERIFIED)
     return (
       <ClaimSuccessBody activeClaimReceipt={activeClaimReceipt} chain={chain} />
-    )
+    );
+
+  if (oneTimeReceipt)
+    return (
+      <ClaimSuccessBody activeClaimReceipt={oneTimeReceipt} chain={chain} />
+    );
 
   if (activeClaimReceipt?.status === ClaimReceiptState.PENDING)
     return (
@@ -65,7 +76,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         chain={chain}
         closeClaimModal={closeClaimModal}
       />
-    )
+    );
 
   if (activeClaimReceipt?.status === ClaimReceiptState.REJECTED)
     return (
@@ -74,9 +85,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         claim={claim}
         claimLoading={claimLoading}
       />
-    )
+    );
 
-  if (!activeChain) return null
+  if (!activeChain) return null;
 
   return (
     <>
@@ -111,18 +122,18 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         )}
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
 const ClaimModal = () => {
-  const { closeClaimModal, activeChain, isNonEvmActive } = useGasTapContext()
-  const { brightidModalStatus } = useGlobalContext()
+  const { closeClaimModal, activeChain, isNonEvmActive } = useGasTapContext();
+  const { brightidModalStatus } = useGlobalContext();
 
   const isOpen = useMemo(() => {
-    return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED
-  }, [activeChain, brightidModalStatus])
+    return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED;
+  }, [activeChain, brightidModalStatus]);
 
-  if (!activeChain || isNonEvmActive) return null
+  if (!activeChain || isNonEvmActive) return null;
 
   return (
     <>
@@ -142,6 +153,6 @@ const ClaimModal = () => {
         </div>
       </Modal>
     </>
-  )
-}
-export default ClaimModal
+  );
+};
+export default ClaimModal;
