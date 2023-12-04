@@ -103,47 +103,6 @@ const TimeEnrollLimitation = ({
           <ManualDuration showErrors={showErrors} />
         )}
         <PeopleLimitation showErrors={showErrors} />
-        {/* <section className="w-full relative">
-					<div
-						className={` flex relative gap-2 text-gray80 text-[12px] ${
-							winnerCountError.status ? 'border-error' : 'border-gray50'
-						} bg-gray40 border  rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
-					>
-						<div className="bg-gray30 flex h-full w-full max-w-[148px] items-center items-center justify-center">
-							<p>Number of Winners</p>
-						</div>
-						<input
-							name="winnersCount"
-							value={data.isNft ? data.nftTokenIds?.length : data.winnersCount}
-							className="provider-dashboard-input"
-							type="number"
-							onChange={handleChange}
-							min={1}
-							disabled={isShowingDetails || data.isNft}
-							step={1}
-							pattern="[0-9]*"
-						/>
-					</div>
-					<div className={`text-gray90 text-[12px] w-full mt-[8px] font-semibold min-h-[18px]`}>
-						{data.winnersCount && Math.floor(data.winnersCount) == data.winnersCount && data.winnersCount > 0 && (
-							<p>
-								Each winner can win{' '}
-								{data.isNft
-									? 1
-									: Number(data.winnersCount)
-									? Number(data.tokenAmount) / Number(data.winnersCount)
-									: Number(data.tokenAmount)}
-								<span>
-									{' '}
-									{data.isNft ? data.nftName : data.isNativeToken ? data.selectedChain.symbol : data.tokenName}
-								</span>
-							</p>
-						)}
-					</div>
-					{winnerCountError.status && (
-						<p className="text-error text-[10px] m-0 p-0 absolute left-1 bottom-2">{winnerCountError.message}</p>
-					)}
-				</section> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

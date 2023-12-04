@@ -73,12 +73,13 @@ export interface ConstraintParamValues {
   pk: number;
   values: Record<number, string | number | boolean> | null;
   title: string;
+  isNotSatisfy: boolean
 }
 
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints: any;
+  constraints:  ConstraintParamValues[];
   contract: string;
   createdAt: string;
   creatorAddress: string;
@@ -107,6 +108,7 @@ export interface UserRafflesProps {
   prizeSymbol: string;
   raffleId: string | null;
   rejectionReason: string | null;
+  reversedConstraints: string | null;
   startAt: string;
   status: string;
   tokenUri: string | null;

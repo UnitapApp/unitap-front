@@ -54,7 +54,6 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-
     setIsErc20Approved(
       Number(fromWei(r5.toString(), r3)) != 0 &&
         Number(fromWei(r5.toLocaleString(), r3)) >= Number(data.tokenAmount)

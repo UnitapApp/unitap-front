@@ -11,14 +11,15 @@ const useAddRequirement = () => {
     params: ConstraintParamValues | null,
     id: number,
     name: string,
-    title: string
+    title: string,
+    isNotSatisfy: boolean
   ) => {
     if (id) {
       handleBackToRequirementModal();
       if (!existRequirement) {
-        insertRequirement(params, id, name, title);
+        insertRequirement(params, id, name, title, isNotSatisfy);
       } else {
-        updateRequirement(id, params);
+        updateRequirement(id, params, isNotSatisfy);
       }
     }
   };

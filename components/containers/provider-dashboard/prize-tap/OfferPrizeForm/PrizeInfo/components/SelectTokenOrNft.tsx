@@ -151,15 +151,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   Invalid Token Contract Address
                 </p>
               )}
-            {/* {!data.isNativeToken &&
-							data.userTokenBalance &&
-							data.tokenContractAddress &&
-							isTokenContractAddressValid &&
-							!checkingContractInfo && (
-								<p className="absolute text-[10px] tracking-[1.2px] text-gray100 mt-[2px]">
-									Balance: {data.userTokenBalance}
-								</p>
-							)} */}
           </div>
 
           <div className="relative">

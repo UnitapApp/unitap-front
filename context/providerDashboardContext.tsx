@@ -8,7 +8,7 @@ import {
   ProviderDashboardFormDataProp,
   UserRafflesProps,
 } from "@/types";
-import { NullCallback, fromWei } from "@/utils";
+import { NullCallback, fromWei, toWei } from "@/utils";
 import {
   FC,
   PropsWithChildren,
@@ -31,7 +31,7 @@ import {
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
-import { isAddress } from "viem";
+import { Address, isAddress } from "viem";
 import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
 import {
   getConstraintsApi,
@@ -372,6 +372,10 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [setDuration, setSetDuration] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
 
+  const [reverseConstraint, setReverseConstrain] = useState<string | null>(
+    null
+  );
+
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);
 
@@ -392,7 +396,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const [constraintsList, setConstraintsList] = useState<ConstraintProps[]>([]);
 
-  // hooks
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
   const provider = useWalletProvider();
@@ -403,6 +406,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     address,
     chainId: chain?.id,
   });
+
+  useEffect(() => {
+    if (!address || !userBalance?.value) return;
+    console.log(userBalance.formatted);
+  }, [chain, address, data.selectedChain]);
 
   const refController = useRef<any>();
 
@@ -426,13 +434,14 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const updateRequirement = (
     id: number,
-    requirements: ConstraintParamValues | null
+    requirements: ConstraintParamValues | null,
+    isNotSatisfy: boolean
   ) => {
     if (!requirements) return;
 
     const newItem = requirementList.map((item) => {
       if (item.pk == id) {
-        return { ...requirements };
+        return { ...requirements, isNotSatisfy };
       }
       return item;
     });
@@ -511,6 +520,29 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       : setData((prevData) => ({ ...prevData, endTimeStamp: timeStamp }));
   };
 
+  useEffect(() => {
+    if (!data.tokenAmount) setInsufficientBalance(true);
+    else {
+      setInsufficientBalance(
+        data.isNativeToken
+          ? Number(data.tokenAmount) * Number(data.winnersCount) <
+              Number(userBalance?.formatted)
+          : Number(data.tokenAmount) * Number(data.winnersCount) <
+              Number(data.userTokenBalance)
+      );
+    }
+  }, [data.tokenAmount, data.tokenContractAddress, data.winnersCount]);
+
+  useEffect(() => {
+    if (data.tokenAmount && data.winnersCount) {
+      const totalAmount = (
+        Number(data.tokenAmount) * data.winnersCount
+      ).toString();
+
+      setData((prev) => ({ ...prev, totalAmount: totalAmount }));
+    }
+  }, [data.tokenAmount, data.winnersCount]);
+
   const canGoStepTwo = () => {
     if (isShowingDetails) return true;
     const {
@@ -522,15 +554,25 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       isNativeToken,
       tokenContractAddress,
       nftTokenIds,
+      userTokenBalance,
+      winnersCount,
     } = data;
 
     const checkToken = () => {
       if (!data.isNft) {
+        if (!data.totalAmount || Number(data.tokenAmount) <= 0) return false;
+        let balance: boolean = !data.isNativeToken
+          ? Number(tokenAmount) * Number(winnersCount) <=
+            Number(userTokenBalance)
+          : Number(tokenAmount) * Number(winnersCount) <
+            Number(userBalance?.formatted);
+        setInsufficientBalance(balance);
         const isValid =
           tokenContractAddress == ZERO_ADDRESS
             ? true
             : isTokenContractAddressValid;
-        if (!isValid || !tokenAmount || Number(tokenAmount) <= 0) return false;
+        if (!isValid || !tokenAmount || Number(tokenAmount) <= 0 || !balance)
+          return false;
         if (!isNativeToken && !tokenContractAddress) return false;
         if (isNativeToken && tokenAmount && tokenContractAddress) return true;
       }
@@ -907,7 +949,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     requirement: ConstraintParamValues | null,
     id: number,
     name: string,
-    title: string
+    title: string,
+    isNotSatisfy: boolean
   ) => {
     setRequirementList([
       ...requirementList,
@@ -916,6 +959,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         values: !requirement ? null : { 1: "", 2: "", 3: "" },
         name,
         title,
+        isNotSatisfy,
       },
     ]);
   };
@@ -937,6 +981,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
       tokenAmount: fromWei(BigInt(raffle.prizeAmount), raffle.decimals),
       tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
+      nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,
       endTimeStamp: Date.parse(raffle.deadline) / 1000,
       limitEnrollPeopleCheck:
@@ -953,6 +998,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       telegram: raffle.telegramUrl,
       email: raffle.emailUrl,
       necessaryInfo: raffle.necessaryInformation,
+      tokenSymbol: raffle.prizeSymbol,
+      nftName: raffle.prizeName,
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
@@ -960,7 +1007,14 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       ? setIsNftContractAddressValid(true)
       : setIsTokenContractAddressValid(true);
     setConstraintsList(await getConstraintsApi());
-    setRequirementList(raffle.constraints);
+    setRequirementList(
+      raffle.constraints.map((constraint) =>
+        raffle.reversedConstraints?.includes(constraint.pk.toString())
+          ? { ...constraint, isNotSatisfy: true }
+          : { ...constraint, isNotSatisfy: false }
+      )
+    );
+    setReverseConstrain(raffle.reversedConstraints);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
@@ -999,13 +1053,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
     checkContractAddress(data.tokenContractAddress);
-  }, [
-    data.tokenContractAddress,
-    chainId,
-    isShowingDetails,
-    data.isNft,
-    checkContractAddress,
-  ]);
+  }, [data.tokenContractAddress, chainId, isShowingDetails, data.isNft]);
 
   useEffect(() => {
     if (isShowingDetails || !data.nftContractAddress) return;
@@ -1028,12 +1076,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
       return () => clearTimeout(debounce);
     }
-  }, [
-    checkContractInfo,
-    data.tokenAmount,
-    data.tokenContractAddress,
-    isShowingDetails,
-  ]);
+  }, [data.tokenAmount, data.tokenContractAddress, isShowingDetails]);
 
   useEffect(() => {
     return () => refController.current?.abort();

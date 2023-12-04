@@ -19,12 +19,14 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
     usePrizeOfferFormContext();
   const addRequirements = useAddRequirement();
   const [params, setParams] = useState<ConstraintParamValues | null>(null);
+  const [isNotSatisfy, setIsNotSatisfy] = useState<boolean>(false);
   const existRequirement: any = requirementList.find(
     (item) => item.pk == constraint.pk
   );
   useEffect(() => {
     if (existRequirement) {
       setParams(existRequirement);
+      setIsNotSatisfy(existRequirement.isNotSatisfy);
     }
   }, []);
 
@@ -34,13 +36,18 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
       params,
       constraint.pk,
       constraint.name,
-      constraint.title
+      constraint.title,
+      isNotSatisfy
     );
   };
 
   interface CreateParamsProps {
     params: ConstraintParams[];
   }
+
+  const handleSelectNotSatisfy = () => {
+    setIsNotSatisfy((prev) => !prev);
+  };
 
   const CreateParams = ({ params }: CreateParamsProps) => {
     return <div></div>;
@@ -53,12 +60,30 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
         onClick={handleBackToRequirementModal}
       >
         <Icon
-          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer z-[999999]"
         />
       </div>
       <CreateParams params={constraint.params} />
       <div className="mb-5">{constraint.description}</div>
+      <div className="">
+        <div
+          onClick={handleSelectNotSatisfy}
+          className="flex items-center gap-1 cursor-pointer max-w-[125px]"
+        >
+          <Icon
+            iconSrc={
+              isNotSatisfy
+                ? "../assets/images/provider-dashboard/check-true.svg"
+                : "../assets/images/provider-dashboard/checkbox.svg"
+            }
+            className="mt-[-2px]"
+            height="15px"
+            width="15px"
+          />
+          <p className="p-0 m-0">Should not satisfy</p>
+        </div>
+      </div>
       <div
         onClick={handleAddRequirement}
         className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"

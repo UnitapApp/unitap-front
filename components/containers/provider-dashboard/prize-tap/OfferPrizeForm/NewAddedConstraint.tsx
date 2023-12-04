@@ -19,7 +19,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
   const constraint = constraintsList.filter(
     (item) => item.pk == requirement.pk
   )[0];
-
+  const isNotSatisfy = requirement.isNotSatisfy;
   const handleClick = () => {
     if (isShowingDetails) return;
     handleSelectConstraint(constraint);
@@ -37,6 +37,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
         <div className="flex items-center gap-2">
           {constraint?.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
           <p>{constraint.title} requirement</p>
+          <p>{isNotSatisfy && "Not satisfy"}</p>
         </div>
         <div className="flex items-center gap-3">
           {requirement.values && (

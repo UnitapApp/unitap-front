@@ -65,8 +65,8 @@ const ProviderTabs: FC = () => {
     pathname === RoutePath.PROVIDER_GASTAP
       ? "after:left-0"
       : pathname == RoutePath.PROVIDER_TOKENTAP
-      ? "after:left-[33.3%]"
-      : "after:left-[66.6%]";
+      ? "after:left-[33.33%]"
+      : "after:left-[67%]";
 
   return (
     <div
