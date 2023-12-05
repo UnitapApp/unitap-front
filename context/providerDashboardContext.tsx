@@ -8,7 +8,7 @@ import {
   ProviderDashboardFormDataProp,
   UserRafflesProps,
 } from "@/types";
-import { NullCallback, fromWei, toWei } from "@/utils";
+import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
   FC,
   PropsWithChildren,
@@ -535,10 +535,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (data.tokenAmount && data.winnersCount) {
-      const totalAmount = (
-        Number(data.tokenAmount) * data.winnersCount
-      ).toString();
-
+      const totalAmount = fromWei(
+        toWei(data.tokenAmount) * Number(data.winnersCount)
+      );
       setData((prev) => ({ ...prev, totalAmount: totalAmount }));
     }
   }, [data.tokenAmount, data.winnersCount]);
@@ -979,7 +978,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       description: raffle.description,
       isNft: raffle.isPrizeNft,
       isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
-      tokenAmount: fromWei(BigInt(raffle.prizeAmount), raffle.decimals),
+      tokenAmount: fromWei(raffle.prizeAmount, raffle.decimals),
       tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
       nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,
