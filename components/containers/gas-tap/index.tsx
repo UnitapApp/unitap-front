@@ -15,7 +15,7 @@ export const GasTapMainContent = () => {
       </div>
       <ChainList />
       <p className="provide-gas-title text-white text-xl mr-auto mb-3">
-        GasTap Chains Balances
+        GasTap Fuel Levels
       </p>
     </>
   );

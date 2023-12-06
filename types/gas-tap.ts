@@ -1,4 +1,4 @@
-import { PK } from "."
+import { PK } from ".";
 
 export enum Network {
   MAINNET = "0",
@@ -16,29 +16,30 @@ export enum ChainType {
 }
 
 export type Chain = {
-  pk: PK
-  chainName: string
-  nativeCurrencyName: string
-  symbol: string
-  chainId: string
-  logoUrl: string
-  modalUrl: string
-  explorerUrl: string
-  rpcUrl: string
-  maxClaimAmount: number
-  claimed: string | number
-  unclaimed: string | number
-  decimals: number
-  fundManagerAddress: string
-  totalClaims: number
-  gasImageUrl: string
-  totalClaimsThisRound: number
-  isTestnet: boolean
-  chainType: string
-  needsFunding: boolean
-  blockScanAddress: string
-  tokentapContractAddress?: string
-}
+  pk: PK;
+  chainName: string;
+  nativeCurrencyName: string;
+  symbol: string;
+  chainId: string;
+  logoUrl: string;
+  modalUrl: string;
+  explorerUrl: string;
+  rpcUrl: string;
+  maxClaimAmount: number;
+  claimed: string | number;
+  unclaimed: string | number;
+  decimals: number;
+  fundManagerAddress: string;
+  totalClaims: number;
+  gasImageUrl: string;
+  totalClaimsThisRound: number;
+  isTestnet: boolean;
+  chainType: string;
+  needsFunding: boolean;
+  blockScanAddress: string;
+  tokentapContractAddress?: string;
+  isOneTimeClaim: boolean;
+};
 
 export enum ClaimReceiptState {
   PENDING = "Pending",
@@ -47,13 +48,13 @@ export enum ClaimReceiptState {
 }
 
 export type ClaimReceipt = {
-  pk: PK
-  txHash: string | null
-  chain: Chain
-  datetime: string
-  amount: number
-  status: ClaimReceiptState
-}
+  pk: PK;
+  txHash: string | null;
+  chain: Chain;
+  datetime: string;
+  amount: number;
+  status: ClaimReceiptState;
+};
 
 export enum ClaimBoxState {
   CLOSED = "-5",
@@ -73,6 +74,6 @@ export enum ClaimNonEVMModalState {
 }
 
 export type ClaimBoxStateContainer = {
-  status: ClaimBoxState
-  lastFailPk: number | null
-}
+  status: ClaimBoxState;
+  lastFailPk: number | null;
+};

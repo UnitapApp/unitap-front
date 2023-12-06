@@ -1,32 +1,32 @@
-import { FC } from "react"
-import Widget from "../widget"
-import Link from "next/link"
-import RoutePath from "@/utils/routes"
-import { RaffleCardTimerLandingPage } from "./raffleTimer"
-import { serverFetch } from "@/utils/api"
-import { Prize } from "@/types"
+import { FC } from "react";
+import Widget from "../widget";
+import Link from "next/link";
+import RoutePath from "@/utils/routes";
+import { RaffleCardTimerLandingPage } from "./raffleTimer";
+import { serverFetch } from "@/utils/api";
+import { Prize } from "@/types";
 
 const nftImage = (tokenUri: string | undefined | null) => {
   let tokenImgLink: string | undefined = tokenUri
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
         Number(tokenUri.split("/")[3]) + 1
       }.png`
-    : undefined
-  return tokenImgLink
-}
+    : undefined;
+  return tokenImgLink;
+};
 
 const PrizeTapLanding: FC = async () => {
-  const rafflesList: Prize[] = await serverFetch("/api/prizetap/raffle-list/")
+  const rafflesList: Prize[] = await serverFetch("/api/prizetap/raffle-list/");
 
   const validRaffles = rafflesList.sort(
     (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
-  )
+  );
 
   const availableRaffles = rafflesList.filter(
     (raffle) =>
       new Date(raffle.deadline).getTime() > new Date().getTime() &&
       new Date().getTime() > new Date(raffle.startAt).getTime()
-  )
+  );
 
   return (
     <section className={"flex--1"}>
@@ -88,7 +88,9 @@ const PrizeTapLanding: FC = async () => {
                       </p>
                     ) : (
                       <>
-                        <p className="text-gray90 ml-2">Winner in:</p>
+                        <p className="text-gray90 ml-2">
+                          Winners Announced in:
+                        </p>
                         <RaffleCardTimerLandingPage
                           startTime={raffle.createdAt}
                           FinishTime={raffle.deadline}
@@ -103,7 +105,7 @@ const PrizeTapLanding: FC = async () => {
         </Widget>
       </Link>
     </section>
-  )
-}
+  );
+};
 
-export default PrizeTapLanding
+export default PrizeTapLanding;

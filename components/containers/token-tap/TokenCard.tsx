@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { FC, useState, useMemo } from "react"
-import { Token } from "@/types"
-import Icon from "@/components/ui/Icon"
-import Tooltip from "@/components/ui/Tooltip"
-import { getChainIcon } from "@/utils/chain"
-import { numberWithCommas } from "@/utils/numbers"
-import styled from "styled-components/"
-import { DV } from "@/components/ui/designVariables"
+import { FC, useState, useMemo } from "react";
+import { Token } from "@/types";
+import Icon from "@/components/ui/Icon";
+import Tooltip from "@/components/ui/Tooltip";
+import { getChainIcon } from "@/utils/chain";
+import { numberWithCommas } from "@/utils/numbers";
+import styled from "styled-components/";
+import { DV } from "@/components/ui/designVariables";
 import {
   NoCurrencyButton,
   ClaimButton,
@@ -18,24 +18,23 @@ import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { AddMetamaskButton } from "../gas-tap/Cards/Chainlist/ChainCard";
 import Markdown from "./Markdown";
 
-
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
   isHighlighted,
 }) => {
   const { openClaimModal, claimedTokensList, claimingTokenPk } =
-    useTokenTapContext()
+    useTokenTapContext();
 
-  const { isConnected, connector } = useWalletAccount()
+  const { isConnected, connector } = useWalletAccount();
 
-  const [showAllPermissions, setShowAllPermissions] = useState(false)
+  const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const onTokenClicked = () => {
-    window.open(token.distributorUrl)
-  }
+    window.open(token.distributorUrl);
+  };
 
   const addToken = async () => {
-    if (!isConnected) return
+    if (!isConnected) return;
 
     try {
       await connector?.watchAsset?.({
@@ -68,18 +67,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     [claimedTokensList, token]
   );
 
-
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
       ? token.amount
       : token.amount / 10 ** token.chain.decimals;
 
-
   const timePermissionVerification = useMemo(
     () => token.permissions.find((permission) => permission.type === "TIME"),
     [token]
   );
-
 
   return (
     <div>
@@ -325,7 +321,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     </div>
   );
 };
-
 
 const Action = styled.div`
   display: flex;
