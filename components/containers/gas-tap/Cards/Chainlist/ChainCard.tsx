@@ -170,7 +170,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   className="text-sm m-auto"
                 >
                   <p>{`Claim ${formatChainBalance(
-                    BigInt(chain.maxClaimAmount),
+                    chain.maxClaimAmount,
                     chain.symbol
                   )} ${chain.symbol}`}</p>
                 </ClaimButton>

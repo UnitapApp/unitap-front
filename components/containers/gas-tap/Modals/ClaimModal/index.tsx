@@ -116,9 +116,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         {claimLoading ? (
           <p>Claiming...</p>
         ) : (
-          <p>{`Claim ${formatWeiBalance(
-            activeChain.maxClaimAmount.toString()
-          )} ${activeChain.symbol}`}</p>
+          <p>{`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
+            activeChain.symbol
+          }`}</p>
         )}
       </ClaimButton>
     </>
@@ -138,9 +138,9 @@ const ClaimModal = () => {
   return (
     <>
       <Modal
-        title={`Claim ${formatWeiBalance(
-          activeChain.maxClaimAmount.toString()
-        )} ${activeChain.symbol}`}
+        title={`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
+          activeChain.symbol
+        }`}
         size="small"
         closeModalHandler={closeClaimModal}
         isOpen={isOpen}
