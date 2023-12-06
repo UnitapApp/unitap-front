@@ -49,7 +49,7 @@ const InformationVerification = () => {
           </p>
         ) : null}
         {!selectedRaffleForCheckReason ? (
-          <div className="bg-gray50 p-4 rounded-[12px] leading-5 relative">
+          <div className="bg-gray50 p-4 rounded-xl leading-5 relative">
             <div className="flex flex-col md:flex-row items-center justify-center">
               <Icon
                 className="ml-[-5px] mr-[5px]"
@@ -79,7 +79,7 @@ const InformationVerification = () => {
           </div>
         ) : (
           <div>
-            <div className="bg-gray50 p-4 rounded-[12px] leading-5 relative">
+            <div className="bg-gray50 p-4 rounded-xl leading-5 relative">
               <div className="flex flex-col md:flex-row items-center justify-center">
                 <Icon
                   className="ml-[-5px] mr-[5px]"

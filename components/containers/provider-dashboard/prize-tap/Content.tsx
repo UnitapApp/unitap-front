@@ -41,7 +41,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
     <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
       <div className="providePrize-item-container">
         <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-          <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-[6px]">
+          <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md">
             <Icon
               className="mr-2"
               iconSrc={prize.chain.logoUrl}
@@ -302,7 +302,7 @@ const PrizeTapContent = () => {
               </div>
               <div
                 onClick={() => handleSelectNewOffer(true)}
-                className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
+                className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
               >
                 + Provide a New Prize
               </div>
@@ -343,7 +343,7 @@ const Skeleton = () => {
       <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
         <div className="providePrize-item-container">
           <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-            <div className="providePrize__chainName absolute h-[22px] top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-[6px]"></div>
+            <div className="providePrize__chainName absolute h-[22px] top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md"></div>
           </div>
           <div>
             <div className="providePrize_stats flex justify-between my-2">

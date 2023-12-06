@@ -33,7 +33,7 @@ const FormYouFilled = ({ data }: Prop) => {
         data.isNft ? "prize-card-bg-1" : "prize-card-bg-2"
       } min-w-[348px] flex-col lg:flex-row gap-4 mt-5 overflow-hidden overflow-x-scroll cursor-pointer styled-scroll pb-8`}
     >
-      <div className="bg-gray30 border border-gray40 rounded-[6px] min-w-[208px] min-h-[208px] max-h-[208px] relative flex justify-center">
+      <div className="bg-gray30 border border-gray40 rounded-md min-w-[208px] min-h-[208px] max-h-[208px] relative flex justify-center">
         <div
           className="providePrize__amount_modal flex flex-col justify-center items-center"
           data-amount={prizeName}
@@ -58,7 +58,7 @@ const FormYouFilled = ({ data }: Prop) => {
           />
         </div>
       </div>
-      <div className="bg-gray30 border border-gray40 rounded-[6px] min-h-[100px] max-h-[208px] text-[14px] text-white p-4">
+      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-[14px] text-white p-4">
         <div className="flex justify-between">
           <p>{prizeName}</p>
           <div className="flex gap-2">

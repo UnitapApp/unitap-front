@@ -16,7 +16,7 @@ const RenderSocialMedia = ({ data }: Prop) => {
           data[item as keyof ProviderDashboardFormDataProp] && (
             <div
               key={index}
-              className=" overflow-hidden h-[44px] flex gap-2 items-center rounded-[8px] bg-gray40 border border-gray50"
+              className=" overflow-hidden h-[44px] flex gap-2 items-center rounded-lg bg-gray40 border border-gray50"
             >
               <div className="bg-gray30 h-[100%] w-[54px] flex items-center justify-center">
                 <Icon iconSrc="/assets/images/provider-dashboard/email.svg" />

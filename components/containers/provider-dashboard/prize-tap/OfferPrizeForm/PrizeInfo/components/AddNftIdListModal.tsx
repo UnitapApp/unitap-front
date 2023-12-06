@@ -61,9 +61,10 @@ const AddNftIdListModalModalBody = () => {
     if (isOwner) {
       handleAddNftToData(nftIds);
       closeAddNftIdListModal();
-    } else {
-      // handleClearNfts();
     }
+    // else {
+    // handleClearNfts();
+    // }
   };
 
   const handleClearNfts = () => {
@@ -137,7 +138,7 @@ const AddNftIdListModalModalBody = () => {
               <Icon
                 width="16px"
                 height="16px"
-                iconSrc="./assets/images/provider-dashboard/upload.svg"
+                iconSrc="../assets/images/provider-dashboard/upload.svg"
               />
               <p className="absolute top-[-22px] left-0">
                 Upload from file, only .txt or .csv{" "}

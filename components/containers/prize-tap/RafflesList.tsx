@@ -186,8 +186,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 							)} */}
             </div>
           </div>
-          <div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-            <p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
+          <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
+            <p className="text-gray100 text-[10px] p-1">
+              {" "}
+              on {chain.chainName}{" "}
+            </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
         </div>

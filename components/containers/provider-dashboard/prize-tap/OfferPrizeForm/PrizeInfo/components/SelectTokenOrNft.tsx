@@ -80,7 +80,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                  (showErrors && !data.tokenContractAddress)
                    ? "border-error"
                    : "border-gray50"
-               } rounded-[12px] h-[43px]  max-w-[452px] overflow-hidden`}
+               } rounded-xl h-[43px] max-w-[452px] overflow-hidden`}
             >
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
                 <p>Token Contract address</p>
@@ -162,7 +162,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 (showErrors && !insufficientBalance)
                   ? "border-error"
                   : "border-gray50 "
-              } rounded-[12px] h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
             >
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                 Number of Winners
@@ -171,7 +171,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 name="winnersCount"
                 value={data.winnersCount}
                 className="provider-dashboard-input"
-                type="number"
+                type="text"
+                inputMode="numeric"
                 onChange={handleChange}
                 min={1}
                 disabled={
@@ -182,7 +183,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   !data.tokenContractAddress
                 }
                 step={1}
-                pattern="[0-9]*"
+                pattern="[0-9]"
               />
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                 <p>Amount per user</p>
@@ -242,7 +243,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                  (showErrors && !data.nftContractAddress)
                    ? "border-error"
                    : "border-gray50"
-               } rounded-[12px] h-[43px]  max-w-[452px] overflow-hidden`}
+               } rounded-xl h-[43px]  max-w-[452px] overflow-hidden`}
             >
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
                 <p>NFT Contract address</p>

@@ -4,6 +4,7 @@ import {
   Chain,
   ConstraintParamValues,
   ConstraintProps,
+  ErrorObjectProp,
   NftStatusProp,
   ProviderDashboardFormDataProp,
   UserRafflesProps,
@@ -102,19 +103,6 @@ const errorMessages = {
   period: "The minimum period is one week.",
   endLessThanStart: "The end time cannot be less than the start time.",
   invalidInput: "Invalid input",
-};
-
-type ErrorObjectProp = {
-  startDateStatus: null | boolean;
-  statDateStatusMessage: null | string;
-  endDateStatus: null | boolean;
-  endDateStatusMessage: null | string;
-  numberOfDurationStatus: null | boolean;
-  numberOfDurationMessage: null | string;
-  maximumLimitationStatus: null | boolean;
-  maximumLimitationMessage: null | string;
-  numberOfWinnersStatus: boolean;
-  numberOfWinnersMessage: null | string;
 };
 
 export const ProviderDashboardContext = createContext<{
@@ -558,7 +546,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
     const checkToken = () => {
       if (!data.isNft) {
-        if (!data.totalAmount || Number(data.tokenAmount) <= 0) return false;
+        if (
+          !data.totalAmount ||
+          Number(data.tokenAmount) <= 0 ||
+          !data.winnersCount
+        )
+          return false;
         let balance: boolean = !data.isNativeToken
           ? Number(tokenAmount) * Number(winnersCount) <=
             Number(userTokenBalance)
@@ -822,7 +815,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     let value = type == "checkbox" ? e.target.checked : e.target.value;
     if (name == "provider" && value.length > 30) return;
     if (name == "description" && value.length > 100) return;
-    if (name == "winnersCount") {
+    if (name == "winnersCount" || name == "maxNumberOfEntries") {
       value = value.replace(/[^0-9]/g, "");
     }
     setData((prevData) => ({
@@ -964,6 +957,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       },
     ]);
   };
+
   const handleCheckForReason = (raffle: UserRafflesProps) => {
     setPage(5);
     setSelectNewOffer(true);

@@ -13,9 +13,6 @@ import { BackToHomeButton } from "./Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
-
-  const { address } = useWalletAccount();
-
   const { openBrightIdModal } = useGlobalContext();
 
   return (
@@ -70,7 +67,7 @@ const ProviderTabs: FC = () => {
 
   return (
     <div
-      className={`${borderPosition} mb-4 select-not relative rounded-t-xl after:transition-all transition after:duration-[1s] ease-in-out  after:border after:absolute after:w-[33%] after:bottom-[-1.5px] flex bg-gray20 justify-between text-center text-white font-semibold border-b-2  border-gray80`}
+      className={`${borderPosition} mb-4 select-not relative rounded-t-xl after:transition-all transition after:duration-[1s] ease-in-out  after:border after:absolute after:w-[33%] after:bottom-[-1.8px] flex bg-gray20 justify-between text-center text-white font-semibold border-b-2  border-gray80`}
     >
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${

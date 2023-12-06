@@ -46,14 +46,17 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
         } h-[43px] rounded-xl px-3 `}
       >
         <input
-          type="number"
+          type="text"
           placeholder="Maximum Number of enrolling people"
           className="provider-dashboard-input"
           name="maxNumberOfEntries"
           min={0}
+          step={1}
+          inputMode="numeric"
           onChange={handleChange}
           value={data.maxNumberOfEntries ? data.maxNumberOfEntries : ""}
           disabled={!data.limitEnrollPeopleCheck || isShowingDetails}
+          pattern="[0-9]"
         />
       </div>
       {showErrors &&

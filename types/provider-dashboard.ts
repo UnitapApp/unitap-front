@@ -126,6 +126,7 @@ export interface NftStatusProp {
   nftId: string;
   isOwner: boolean;
 }
+
 type userRaffle = {
   contract: string;
   name: string;
@@ -136,4 +137,17 @@ type userRaffle = {
 export type ProviderFormPaginationProp = {
   handleChangeFormPagePrev: () => void;
   handleChangeFormPageNext: () => void;
+};
+
+export type ErrorObjectProp = {
+  startDateStatus: null | boolean;
+  statDateStatusMessage: null | string;
+  endDateStatus: null | boolean;
+  endDateStatusMessage: null | string;
+  numberOfDurationStatus: null | boolean;
+  numberOfDurationMessage: null | string;
+  maximumLimitationStatus: null | boolean;
+  maximumLimitationMessage: null | string;
+  numberOfWinnersStatus: boolean;
+  numberOfWinnersMessage: null | string;
 };
