@@ -2,6 +2,7 @@
 
 import Icon from "@/components/ui/Icon";
 import Modal from "@/components/ui/Modal/modal";
+import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { useEffect, useMemo, useState } from "react";
 import Lottie from "react-lottie";

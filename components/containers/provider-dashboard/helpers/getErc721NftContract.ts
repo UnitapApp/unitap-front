@@ -1,5 +1,5 @@
 import { ProviderDashboardFormDataProp } from "@/types";
-import { getContract } from "viem";
+import { Address, getContract } from "viem";
 import { PublicClient, erc721ABI } from "wagmi";
 
 export const getErc721TokenContract = async (
@@ -16,7 +16,7 @@ export const getErc721TokenContract = async (
 
   const contract = getContract({
     abi: erc721ABI,
-    address: address as any,
+    address: data.nftContractAddress as any,
     publicClient: provider,
   });
 
@@ -34,10 +34,10 @@ export const getErc721TokenContract = async (
   Promise.all([
     contract.read.name(),
     contract.read.symbol(),
-    contract.read.balanceOf(address as any),
+    contract.read.balanceOf([address as any]),
     contract.read.isApprovedForAll(
-      address as any,
-      data.selectedChain.erc721PrizetapAddr
+      [address as Address,
+      data.selectedChain.erc721PrizetapAddr]
     ),
   ]).then(([r1, r2, r3, r5]) => {
     setData((prevData: any) => ({

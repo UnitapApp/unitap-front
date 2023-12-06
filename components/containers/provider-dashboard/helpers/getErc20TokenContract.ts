@@ -1,5 +1,5 @@
 import { ProviderDashboardFormDataProp } from "@/types";
-import { fromWei } from "@/utils";
+import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
 import { PublicClient, erc20ABI } from "wagmi";
 
@@ -23,12 +23,9 @@ export const getErc20TokenContract = async (
 
   if (!contract) return;
 
-  console.log(contract)
-
   try {
     await contract.read.decimals();
   } catch (e) {
-    console.log('+-+-+-+')
     setIsContractAddressValid(false);
     setCheckingContractInfo(false);
     setCanDisplayErrors(true);
@@ -46,7 +43,6 @@ export const getErc20TokenContract = async (
       data.selectedChain.erc20PrizetapAddr]
     ),
   ]).then(([r1, r2, r3, r4, r5]) => {
-    console.log(r1, r2, r3, r4)
     setData((prevData: any) => ({
       ...prevData,
       tokenName: r1,
@@ -56,8 +52,10 @@ export const getErc20TokenContract = async (
     }));
     setIsErc20Approved(
       Number(fromWei(r5.toString(), r3)) != 0 &&
-        Number(fromWei(r5.toLocaleString(), r3)) >= Number(data.tokenAmount)
+        Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
     );
+    console.log( Number(fromWei(r5.toString(), r3)) != 0 ,
+    Number(fromWei(r5.toString(), r3)) , Number(data.totalAmount))
     setIsContractAddressValid(true);
     setCheckingContractInfo(false);
   });

@@ -169,9 +169,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               </div>
               <input
                 name="winnersCount"
-                value={
-                  data.isNft ? data.nftTokenIds?.length : data.winnersCount
-                }
+                value={data.winnersCount}
                 className="provider-dashboard-input"
                 type="number"
                 onChange={handleChange}

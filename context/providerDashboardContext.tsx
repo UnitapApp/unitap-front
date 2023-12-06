@@ -31,7 +31,7 @@ import {
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
-import { Address, isAddress } from "viem";
+import { isAddress } from "viem";
 import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
 import {
   getConstraintsApi,
@@ -409,7 +409,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!address || !userBalance?.value) return;
-    console.log(userBalance.formatted);
   }, [chain, address, data.selectedChain]);
 
   const refController = useRef<any>();
@@ -820,9 +819,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (name == "tokenContractAddress" || name == "nftContractAddress") {
       setCanDisplayErrors(false);
     }
-    const value = type == "checkbox" ? e.target.checked : e.target.value;
+    let value = type == "checkbox" ? e.target.checked : e.target.value;
     if (name == "provider" && value.length > 30) return;
     if (name == "description" && value.length > 100) return;
+    if (name == "winnersCount") {
+      value = value.replace(/[^0-9]/g, "");
+    }
     setData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -1052,30 +1054,25 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
     checkContractAddress(data.tokenContractAddress);
-  }, [data.tokenContractAddress, chainId, isShowingDetails, data.isNft]);
+  }, [data.tokenContractAddress, chainId, data.isNft]);
 
   useEffect(() => {
     if (isShowingDetails || !data.nftContractAddress) return;
     setCheckingContractInfo(true);
     setCanDisplayErrors(false);
     checkContractAddress(data.nftContractAddress);
-  }, [
-    data.nftContractAddress,
-    chainId,
-    isShowingDetails,
-    checkContractAddress,
-  ]);
+  }, [data.nftContractAddress, chainId]);
 
   useEffect(() => {
     if (isShowingDetails) return;
-    if (data.tokenAmount && data.tokenContractAddress != ZERO_ADDRESS) {
+    if (data.totalAmount && data.tokenContractAddress != ZERO_ADDRESS) {
       const debounce = setTimeout(() => {
         checkContractInfo();
       }, 700);
 
       return () => clearTimeout(debounce);
     }
-  }, [data.tokenAmount, data.tokenContractAddress, isShowingDetails]);
+  }, [data.totalAmount, data.tokenContractAddress]);
 
   useEffect(() => {
     return () => refController.current?.abort();

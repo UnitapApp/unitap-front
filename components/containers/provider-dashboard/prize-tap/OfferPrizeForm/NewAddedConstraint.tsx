@@ -40,14 +40,13 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           <p>{isNotSatisfy && "Not satisfy"}</p>
         </div>
         <div className="flex items-center gap-3">
-          {requirement.values && (
-            <div
-              onClick={handleClick}
-              className="cursor-pointer flex items-center justify-center text-gray90 text-[10px] w-[60px] h-[20px] font-semibold bg-gray70 border border-gray80 rounded-[8px]"
-            >
-              Edit
-            </div>
-          )}
+          <div
+            onClick={handleClick}
+            className="cursor-pointer flex items-center justify-center text-gray90 text-[10px] w-[60px] h-[20px] font-semibold bg-gray70 border border-gray80 rounded-[8px]"
+          >
+            Edit
+          </div>
+
           <Icon
             onClick={() => handleDelete(constraint.pk)}
             className="cursor-pointer"
