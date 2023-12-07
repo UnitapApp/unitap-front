@@ -37,8 +37,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
         className={`border ${
           showErrors &&
           !showErrors.maximumLimitationStatus &&
-          data.limitEnrollPeopleCheck &&
-          !data.maxNumberOfEntries
+          data.limitEnrollPeopleCheck
             ? "border-error"
             : "border-gray50"
         }  ${
@@ -50,7 +49,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
           placeholder="Maximum Number of enrolling people"
           className="provider-dashboard-input"
           name="maxNumberOfEntries"
-          min={0}
+          min={1}
           step={1}
           inputMode="numeric"
           onChange={handleChange}
@@ -61,8 +60,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
       </div>
       {showErrors &&
         !showErrors.maximumLimitationStatus &&
-        data.limitEnrollPeopleCheck &&
-        !data.maxNumberOfEntries && (
+        data.limitEnrollPeopleCheck && (
           <p className="text-error text-[10px] m-0 p-0 absolute left-1">
             {showErrors?.maximumLimitationMessage}
           </p>

@@ -545,37 +545,28 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     } = data;
 
     const checkToken = () => {
-      if (!data.isNft) {
-        if (
-          !data.totalAmount ||
-          Number(data.tokenAmount) <= 0 ||
-          !data.winnersCount
-        )
-          return false;
-        let balance: boolean = !data.isNativeToken
-          ? Number(tokenAmount) * Number(winnersCount) <=
-            Number(userTokenBalance)
-          : Number(tokenAmount) * Number(winnersCount) <
-            Number(userBalance?.formatted);
-        setInsufficientBalance(balance);
-        const isValid =
-          tokenContractAddress == ZERO_ADDRESS
-            ? true
-            : isTokenContractAddressValid;
-        if (!isValid || !tokenAmount || Number(tokenAmount) <= 0 || !balance)
-          return false;
-        if (!isNativeToken && !tokenContractAddress) return false;
-        if (isNativeToken && tokenAmount && tokenContractAddress) return true;
-      }
+      const total = Number(tokenAmount) * Number(winnersCount);
+      if (data.isNft) return;
+
+      if (Number(tokenAmount) <= 0 || !data.winnersCount || total <= 0)
+        return false;
+      let balance: boolean = !data.isNativeToken
+        ? total <= Number(userTokenBalance)
+        : total < Number(userBalance?.formatted);
+      setInsufficientBalance(balance);
+      const isValid =
+        tokenContractAddress == ZERO_ADDRESS
+          ? true
+          : isTokenContractAddressValid;
+      if (!isValid || !balance) return false;
+      if (!isNativeToken && !tokenContractAddress) return false;
       return true;
     };
 
     const checkNft = () => {
-      if (data.isNft) {
-        const isValid = isNftContractAddressValid;
-        return !!(nftContractAddress && nftTokenIds.length >= 1 && isValid);
-      }
-      return true;
+      if (!data.isNft) return;
+      const isValid = isNftContractAddressValid;
+      return !!(nftContractAddress && nftTokenIds.length >= 1 && isValid);
     };
 
     return !!(
@@ -645,21 +636,19 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     }
 
     if (
-      data.winnersCount &&
-      Math.floor(data.winnersCount) != data.winnersCount
+      data.limitEnrollPeopleCheck &&
+      data.maxNumberOfEntries &&
+      Number(data.maxNumberOfEntries) > 0
     ) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
-
-    if (data.winnersCount && data.winnersCount <= 0) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
-
-    if (!data.winnersCount) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.required;
+      if (
+        (data.isNft &&
+          Number(data.maxNumberOfEntries) < Number(data.nftTokenIds.length)) ||
+        (!data.isNft &&
+          Number(data.maxNumberOfEntries) < Number(data.winnersCount))
+      ) {
+        errorObject.maximumLimitationStatus = false;
+        errorObject.maximumLimitationMessage = errorMessages.invalidInput;
+      }
     }
 
     return errorObject;
