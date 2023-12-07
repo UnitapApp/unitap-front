@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
-import Icon from "@/components/ui/Icon"
-import { ClaimBoxState, ClaimReceiptState } from "@/types"
+import Icon from "@/components/ui/Icon";
+import { ClaimBoxState, ClaimReceiptState } from "@/types";
 
-import { formatChainBalance } from "@/utils/numbers"
-import { Text } from "@/components/ui/text.style"
+import { formatChainBalance } from "@/utils/numbers";
+import { Text } from "@/components/ui/text.style";
 import {
   ClaimButton,
   LightOutlinedButtonNew,
   SecondaryGreenColorButton,
-} from "@/components/ui/Button/button"
-import { getChainClaimIcon, getTxUrl } from "@/utils/chain"
-import lottie from "lottie-web"
-import animation from "@/assets/animations/GasFee-delivery2.json"
-import { useGasTapContext } from "@/context/gasTapProvider"
-import { useGlobalContext } from "@/context/globalProvider"
-import { useUserProfileContext } from "@/context/userProfile"
-import ClaimNotAvailable from "./ClaimNotRemaining"
-import Modal from "@/components/ui/Modal/modal"
-import { lightingChainId } from "@/constants/chains"
+} from "@/components/ui/Button/button";
+import { getChainClaimIcon, getTxUrl } from "@/utils/chain";
+import lottie from "lottie-web";
+import animation from "@/assets/animations/GasFee-delivery2.json";
+import { useGasTapContext } from "@/context/gasTapProvider";
+import { useGlobalContext } from "@/context/globalProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import ClaimNotAvailable from "./ClaimNotRemaining";
+import Modal from "@/components/ui/Modal/modal";
+import { lightingChainId } from "@/constants/chains";
 
 const ClaimNonEVMModalContent = () => {
   const {
@@ -30,40 +30,40 @@ const ClaimNonEVMModalContent = () => {
     closeClaimModal,
     claimLoading,
     activeChain,
-  } = useGasTapContext()
+  } = useGasTapContext();
 
-  const { openBrightIdModal } = useGlobalContext()
+  const { openBrightIdModal } = useGlobalContext();
 
   const {
     userProfile,
     nonEVMWalletAddress,
     setNonEVMWalletAddress,
     remainingClaims,
-  } = useUserProfileContext()
+  } = useUserProfileContext();
 
   const handleClaimNonEVMClicked = () => {
     if (isNonEvmActive && activeChain) {
-      claimNonEVM(activeChain, nonEVMWalletAddress)
+      claimNonEVM(activeChain, nonEVMWalletAddress);
     }
-  }
+  };
 
   useEffect(() => {
     if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
-      const animationElement = document.querySelector("#animation")
+      const animationElement = document.querySelector("#animation");
       if (animationElement) {
-        animationElement.innerHTML = ""
+        animationElement.innerHTML = "";
       }
       lottie.loadAnimation({
         container: document.querySelector("#animation") as HTMLInputElement,
         animationData: animation,
         loop: true,
         autoplay: true,
-      })
+      });
     }
-  }, [activeClaimReceipt])
+  }, [activeClaimReceipt]);
 
   function renderBrightNotConnectedBody() {
-    if (!isNonEvmActive || !activeChain) return null
+    if (!isNonEvmActive || !activeChain) return null;
 
     return (
       <>
@@ -88,7 +88,7 @@ const ClaimNonEVMModalContent = () => {
           <p>Connect BrightID</p>
         </ClaimButton>
       </>
-    )
+    );
   }
 
   function renderBrightNotVerifiedBody() {
@@ -138,7 +138,7 @@ const ClaimNonEVMModalContent = () => {
           </p>
         </div>
       </>
-    )
+    );
   }
 
   function renderInitialBody() {
@@ -189,7 +189,7 @@ const ClaimNonEVMModalContent = () => {
               {" "}
               Claiming{" "}
               {formatChainBalance(
-                activeChain!.maxClaimAmount.toString(),
+                activeChain!.maxClaimAmount,
                 activeChain!.symbol
               )}{" "}
               {activeChain!.symbol}{" "}
@@ -199,7 +199,7 @@ const ClaimNonEVMModalContent = () => {
               {" "}
               Claim{" "}
               {formatChainBalance(
-                activeChain!.maxClaimAmount.toString(),
+                activeChain!.maxClaimAmount,
                 activeChain!.symbol
               )}{" "}
               {activeChain!.symbol}{" "}
@@ -207,11 +207,11 @@ const ClaimNonEVMModalContent = () => {
           )}
         </button>
       </>
-    )
+    );
   }
 
   function renderPendingBody() {
-    if (!isNonEvmActive) return null
+    if (!isNonEvmActive) return null;
 
     return (
       <>
@@ -245,22 +245,22 @@ const ClaimNonEVMModalContent = () => {
           Close
         </SecondaryGreenColorButton>
       </>
-    )
+    );
   }
 
   function renderSuccessBody() {
     const handleClick = () => {
       const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         `I've just claimed ${formatChainBalance(
-          activeChain!.maxClaimAmount.toString(),
+          activeChain!.maxClaimAmount,
           activeChain!.symbol
         )} ${activeChain!.chainName} from @Unitap_app 🔥\n Claim yours:`
       )}&url=${encodeURIComponent(
         "unitap.app/gas-tap?hc=" + activeChain!.chainName
-      )}`
+      )}`;
 
-      window.open(twitterUrl, "_blank")
-    }
+      window.open(twitterUrl, "_blank");
+    };
 
     return (
       <>
@@ -277,10 +277,7 @@ const ClaimNonEVMModalContent = () => {
           color="space_green"
           $textAlign="center"
         >
-          {formatChainBalance(
-            activeChain!.maxClaimAmount.toString(),
-            activeChain!.symbol
-          )}{" "}
+          {formatChainBalance(activeChain!.maxClaimAmount, activeChain!.symbol)}{" "}
           {activeChain!.symbol} Claimed
         </Text>
         <Text
@@ -291,10 +288,7 @@ const ClaimNonEVMModalContent = () => {
           $textAlign="center"
         >
           we successfully transferred{" "}
-          {formatChainBalance(
-            activeChain!.maxClaimAmount.toString(),
-            activeChain!.symbol
-          )}{" "}
+          {formatChainBalance(activeChain!.maxClaimAmount, activeChain!.symbol)}{" "}
           {activeChain!.symbol} to your wallet
         </Text>
         <Text
@@ -331,11 +325,11 @@ const ClaimNonEVMModalContent = () => {
           />
         </div>
       </>
-    )
+    );
   }
 
   function renderFailedBody() {
-    if (!activeChain) return null
+    if (!activeChain) return null;
 
     return (
       <>
@@ -405,29 +399,29 @@ const ClaimNonEVMModalContent = () => {
           {claimLoading ? <p> Claiming... </p> : <p>Try Again</p>}
         </ClaimButton>
       </>
-    )
+    );
   }
 
   const getClaimNonEVMModalBody = () => {
-    if (!userProfile) return renderBrightNotConnectedBody()
+    if (!userProfile) return renderBrightNotConnectedBody();
 
-    if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody()
+    if (!userProfile.isMeetVerified) return renderBrightNotVerifiedBody();
 
     if (!activeClaimReceipt) {
-      if (remainingClaims && remainingClaims > 0) return renderInitialBody()
+      if (remainingClaims && remainingClaims > 0) return renderInitialBody();
 
-      return <ClaimNotAvailable />
+      return <ClaimNotAvailable />;
     }
 
     if (activeClaimReceipt.status === ClaimReceiptState.VERIFIED)
-      return renderSuccessBody()
+      return renderSuccessBody();
 
     if (activeClaimReceipt.status === ClaimReceiptState.PENDING)
-      return renderPendingBody()
+      return renderPendingBody();
 
     if (activeClaimReceipt.status === ClaimReceiptState.REJECTED)
-      return renderFailedBody()
-  }
+      return renderFailedBody();
+  };
 
   return (
     <div
@@ -436,19 +430,19 @@ const ClaimNonEVMModalContent = () => {
     >
       {getClaimNonEVMModalBody()}
     </div>
-  )
-}
+  );
+};
 
 const ClaimNonEVMModal = () => {
   const { activeChain, claimBoxStatus, closeClaimModal, isNonEvmActive } =
-    useGasTapContext()
+    useGasTapContext();
 
-  if (!isNonEvmActive || !activeChain) return null
+  if (!isNonEvmActive || !activeChain) return null;
 
   return (
     <Modal
       title={`Claim ${formatChainBalance(
-        activeChain.maxClaimAmount.toString(),
+        activeChain.maxClaimAmount,
         activeChain.symbol
       )} ${activeChain.symbol}`}
       size="small"
@@ -457,7 +451,7 @@ const ClaimNonEVMModal = () => {
     >
       <ClaimNonEVMModalContent />
     </Modal>
-  )
-}
+  );
+};
 
-export default ClaimNonEVMModal
+export default ClaimNonEVMModal;

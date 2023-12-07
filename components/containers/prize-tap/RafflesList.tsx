@@ -318,7 +318,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
                       <p className="text-[10px] text-white">
-                        {start ? "Winner in:" : "Starts in:"}
+                        {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
                         {maxNumberOfEntries > 1_000_000_000
@@ -369,7 +369,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
                       <p className="text-[10px] text-white">
-                        {start ? "Winner in:" : "Starts in:"}
+                        {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
                         {maxNumberOfEntries > 1_000_000_000
@@ -417,7 +417,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
                       <p className="text-[10px] text-white">
-                        {start ? "Winner in:" : "Starts in:"}
+                        {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
                         {maxNumberOfEntries > 1_000_000_000

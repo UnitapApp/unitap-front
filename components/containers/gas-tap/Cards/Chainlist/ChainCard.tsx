@@ -1,24 +1,25 @@
-"use client"
+"use client";
 
 import {
   SecondaryButton,
   ClaimedButton,
   ClaimButton,
-} from "@/components/ui/Button/button"
-import { DV } from "@/components/ui/designVariables"
-import { useGasTapContext } from "@/context/gasTapProvider"
-import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types"
-import { formatChainBalance, numberWithCommas } from "@/utils"
-import { getChainIcon } from "@/utils/chain"
-import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet"
-import { useContext } from "react"
-import styled from "styled-components"
-import { FundContext } from "../../Modals/FundGasModal"
+} from "@/components/ui/Button/button";
+import { DV } from "@/components/ui/designVariables";
+import { useGasTapContext } from "@/context/gasTapProvider";
+import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
+import { formatChainBalance, numberWithCommas } from "@/utils";
+import { getChainIcon } from "@/utils/chain";
+import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
+import { useContext, useMemo } from "react";
+import styled from "styled-components";
+import { FundContext } from "../../Modals/FundGasModal";
+import Icon from "@/components/ui/Icon";
 
 type ChainCardProps = {
-  chain: Chain
-  isHighlighted?: boolean
-}
+  chain: Chain;
+  isHighlighted?: boolean;
+};
 
 export const AddMetamaskButton = styled(SecondaryButton)`
   display: flex;
@@ -35,20 +36,36 @@ export const AddMetamaskButton = styled(SecondaryButton)`
     height: 20px;
     transform: scale(1.4);
   }
-`
+`;
 
 const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
-  const { openClaimModal, activeClaimHistory } = useGasTapContext()
+  const { openClaimModal, activeClaimHistory, oneTimeClaimedGasList } =
+    useGasTapContext();
 
-  const { setChainId, setIsOpen } = useContext(FundContext)
+  const isOneTimeCollected = useMemo(
+    () => !!oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
+    [chain, oneTimeClaimedGasList]
+  );
 
-  const { addAndSwitchChain } = useNetworkSwitcher()
-  const { isConnected } = useWalletAccount()
+  const isMonthlyCollected = useMemo(
+    () =>
+      !!activeClaimHistory.find(
+        (claim: ClaimReceipt) =>
+          claim.chain.pk === chain.pk &&
+          claim.status === ClaimReceiptState.VERIFIED
+      ),
+    [activeClaimHistory, chain]
+  );
+
+  const { setChainId, setIsOpen } = useContext(FundContext);
+
+  const { addAndSwitchChain } = useNetworkSwitcher();
+  const { isConnected } = useWalletAccount();
 
   const handleRefillButtonClicked = (chainId: PK) => {
-    setChainId(chainId)
-    setIsOpen(true)
-  }
+    setChainId(chainId);
+    setIsOpen(true);
+  };
 
   return (
     <div>
@@ -117,12 +134,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             </div>
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
-              {/* todo migrate buttom logic*/}
-              {activeClaimHistory.find(
-                (claim: ClaimReceipt) =>
-                  claim.chain.pk === chain.pk &&
-                  claim.status === ClaimReceiptState.VERIFIED
-              ) ? (
+              {isMonthlyCollected || isOneTimeCollected ? (
                 <ClaimedButton
                   data-testid={`chain-claimed-${chain.pk}`}
                   $mlAuto
@@ -138,12 +150,12 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 </ClaimedButton>
               ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
                 <div className="btn btn--claim btn--sm btn--out-of-balance">
-                  Out of balance
+                  Out of Gas
                   <button
                     onClick={() => handleRefillButtonClicked(chain.pk)}
                     className="btn btn--sm btn--refill"
                   >
-                    Refill
+                    Refuel
                   </button>
                 </div>
               ) : !activeClaimHistory.find(
@@ -158,7 +170,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   className="text-sm m-auto"
                 >
                   <p>{`Claim ${formatChainBalance(
-                    BigInt(chain.maxClaimAmount),
+                    chain.maxClaimAmount,
                     chain.symbol
                   )} ${chain.symbol}`}</p>
                 </ClaimButton>
@@ -178,7 +190,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 py-2.5 justify-between`}
+          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
         >
           <div
             className={`${
@@ -192,6 +204,32 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               {chain.symbol}
             </p>
           </div>
+          <div
+            className={`${
+              isHighlighted ? "bg-transparent" : "bg-gray40"
+            } w-full max-w-[180px] items-center flex rounded-none py-3 justify-between md:justify-center`}
+          >
+            {chain.isOneTimeClaim ? (
+              <>
+                <p className="text-xs">Single-Claim Tap</p>
+                <Icon
+                  className="text-white"
+                  ml={4}
+                  iconSrc="/assets/images/gas-tap/claimable-once.svg"
+                />
+              </>
+            ) : (
+              <>
+                <p className="text-xs">Periodic Tap</p>
+                <Icon
+                  className="text-white"
+                  ml={4}
+                  iconSrc="/assets/images/gas-tap/periodic-tap.svg"
+                />
+              </>
+            )}
+          </div>
+
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"
@@ -219,7 +257,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChainCard
+export default ChainCard;
