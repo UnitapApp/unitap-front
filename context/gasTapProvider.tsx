@@ -263,7 +263,7 @@ export const GasTapProvider: FC<
       updateOneTimeClaimedList();
     },
     FAST_INTERVAL,
-    [updateActiveClaimHistory]
+    [updateActiveClaimHistory, userToken]
   );
 
   useEffect(() => {
