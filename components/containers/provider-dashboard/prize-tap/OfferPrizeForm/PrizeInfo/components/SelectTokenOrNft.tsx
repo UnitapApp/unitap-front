@@ -18,14 +18,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     handleSelectTokenOrNft,
     handleSelectNativeToken,
     handleChange,
-    checkingContractInfo,
-    isTokenContractAddressValid,
-    isNftContractAddressValid,
     openAddNftIdListModal,
-    canDisplayErrors,
     isShowingDetails,
     handleClearNfts,
     insufficientBalance,
+    tokenContractStatus,
+    nftContractStatus,
   } = usePrizeOfferFormContext();
 
   return (
@@ -73,10 +71,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             <div
               className={`${data.isNativeToken ? "opacity-[.5]" : ""}
 							 flex text-gray80 text-[12px] bg-gray40 border-[1.4px] ${
-                 (!isTokenContractAddressValid &&
+                 (!tokenContractStatus.isValid &&
                    data.tokenContractAddress &&
-                   !checkingContractInfo &&
-                   canDisplayErrors) ||
+                   !tokenContractStatus.checking &&
+                   tokenContractStatus.canDisplayStatus) ||
                  (showErrors && !data.tokenContractAddress)
                    ? "border-error"
                    : "border-gray50"
@@ -91,7 +89,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     isShowingDetails ||
                     data.isNativeToken ||
                     !data.selectedChain ||
-                    checkingContractInfo ||
+                    tokenContractStatus.checking ||
                     !isRightChain ||
                     isShowingDetails
                   }
@@ -110,9 +108,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               </div>
 
               {!data.isNft &&
-              !data.isNativeToken &&
-              data.tokenContractAddress &&
-              checkingContractInfo ? (
+              tokenContractStatus.checking &&
+              !tokenContractStatus.canDisplayStatus ? (
                 <div className="w-[50px] h-full bg-gray30 p-0 m-0 flex items-center">
                   <Lottie
                     width={45}
@@ -120,16 +117,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     options={loadAnimationOption}
                   ></Lottie>
                 </div>
-              ) : data.tokenContractAddress &&
-                !checkingContractInfo &&
-                !isTokenContractAddressValid &&
-                canDisplayErrors ? (
+              ) : !tokenContractStatus.isValid &&
+                data.tokenContractAddress &&
+                tokenContractStatus.canDisplayStatus ? (
                 <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
                   <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
                 </div>
-              ) : data.tokenContractAddress &&
-                !checkingContractInfo &&
-                isTokenContractAddressValid ? (
+              ) : tokenContractStatus.isValid && data.tokenContractAddress ? (
                 <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
                   <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
                 </div>
@@ -144,9 +138,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </p>
               )}
             {data.tokenContractAddress &&
-              !checkingContractInfo &&
-              !isTokenContractAddressValid &&
-              canDisplayErrors && (
+              !tokenContractStatus.checking &&
+              !tokenContractStatus.isValid &&
+              tokenContractStatus.canDisplayStatus && (
                 <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute ">
                   Invalid Token Contract Address
                 </p>
@@ -178,8 +172,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 disabled={
                   isShowingDetails ||
                   data.isNft ||
-                  checkingContractInfo ||
-                  (!isTokenContractAddressValid && !data.isNativeToken) ||
+                  tokenContractStatus.checking ||
+                  (!tokenContractStatus.isValid && !data.isNativeToken) ||
                   !data.tokenContractAddress
                 }
                 step={1}
@@ -192,8 +186,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 disabled={
                   !data.selectedChain ||
                   isShowingDetails ||
-                  checkingContractInfo ||
-                  (!isTokenContractAddressValid && !data.isNativeToken) ||
+                  tokenContractStatus.checking ||
+                  (!tokenContractStatus.isValid && !data.isNativeToken) ||
                   !data.winnersCount ||
                   !data.tokenContractAddress
                 }
@@ -218,16 +212,20 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </p>
               )}
 
-            {showErrors && Number(data.tokenAmount) < 0 && (
+            {/* {showErrors && Number(data.tokenAmount) <= 0 && (
               <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
                 Invalid amount
               </p>
-            )}
-            {showErrors && !insufficientBalance && data.tokenAmount && (
-              <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
-                Insufficient Balance
-              </p>
-            )}
+            )} */}
+            {showErrors &&
+              !insufficientBalance &&
+              Number(data.totalAmount) > 0 &&
+              data.winnersCount &&
+              Number(data.totalAmount) > 0 && (
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
+                  Insufficient Balance
+                </p>
+              )}
           </div>
         </div>
       ) : (
@@ -236,10 +234,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             <div
               className={`
 							 flex text-gray80 text-[12px] bg-gray40 border-[1.4px] ${
-                 (!isNftContractAddressValid &&
-                   data.nftContractAddress &&
-                   !checkingContractInfo &&
-                   canDisplayErrors) ||
+                 (data.nftContractAddress &&
+                   !nftContractStatus.checking &&
+                   nftContractStatus.canDisplayStatus &&
+                   !nftContractStatus.isValid) ||
                  (showErrors && !data.nftContractAddress)
                    ? "border-error"
                    : "border-gray50"
@@ -253,7 +251,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   disabled={
                     isShowingDetails ||
                     !data.selectedChain ||
-                    checkingContractInfo ||
+                    nftContractStatus.checking ||
                     !isRightChain ||
                     isShowingDetails ||
                     data.nftTokenIds.length > 0
@@ -267,7 +265,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
 
-              {data.isNft && data.nftContractAddress && checkingContractInfo ? (
+              {data.isNft &&
+              data.nftContractAddress &&
+              nftContractStatus.checking &&
+              !nftContractStatus.canDisplayStatus ? (
                 <div className="w-[50px] h-full bg-gray30 p-0 m-0 flex items-center">
                   <Lottie
                     width={45}
@@ -276,15 +277,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   ></Lottie>
                 </div>
               ) : data.nftContractAddress &&
-                !checkingContractInfo &&
-                !isNftContractAddressValid &&
-                canDisplayErrors ? (
+                !nftContractStatus.checking &&
+                !nftContractStatus.isValid &&
+                nftContractStatus.canDisplayStatus ? (
                 <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
                   <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
                 </div>
               ) : data.nftContractAddress &&
-                !checkingContractInfo &&
-                isNftContractAddressValid ? (
+                !nftContractStatus.checking &&
+                nftContractStatus.isValid &&
+                nftContractStatus.canDisplayStatus ? (
                 <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
                   <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
                 </div>
@@ -296,9 +298,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               </p>
             )}
             {data.nftContractAddress &&
-              !checkingContractInfo &&
-              !isNftContractAddressValid &&
-              canDisplayErrors && (
+              !nftContractStatus.checking &&
+              !nftContractStatus.isValid &&
+              nftContractStatus.canDisplayStatus && (
                 <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute ">
                   Invalid NFT Contract Address
                 </p>
@@ -335,7 +337,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div
                 onClick={() => openAddNftIdListModal()}
                 className={`flex text-white text-[12px] ${
-                  !isNftContractAddressValid
+                  !nftContractStatus.isValid
                     ? "opacity-[0.4]"
                     : "cursor-pointer"
                 } ${

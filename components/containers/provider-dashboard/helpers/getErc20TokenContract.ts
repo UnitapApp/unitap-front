@@ -7,11 +7,9 @@ export const getErc20TokenContract = async (
   data: ProviderDashboardFormDataProp,
   address: string,
   provider: PublicClient,
-  setCheckingContractInfo: any,
-  setIsContractAddressValid: any,
   setData: any,
   setIsErc20Approved: any,
-  setCanDisplayErrors: any
+  handleSetContractStatus: any,
 ) => {
   if (!provider || !address) return;
 
@@ -26,9 +24,7 @@ export const getErc20TokenContract = async (
   try {
     await contract.read.decimals();
   } catch (e) {
-    setIsContractAddressValid(false);
-    setCheckingContractInfo(false);
-    setCanDisplayErrors(true);
+    handleSetContractStatus(false, false, false, true)
     return;
   }
 
@@ -54,9 +50,7 @@ export const getErc20TokenContract = async (
       Number(fromWei(r5.toString(), r3)) != 0 &&
         Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
     );
-    console.log( Number(fromWei(r5.toString(), r3)) != 0 ,
-    Number(fromWei(r5.toString(), r3)) , Number(data.totalAmount))
-    setIsContractAddressValid(true);
-    setCheckingContractInfo(false);
+
+    handleSetContractStatus(false, true, false, true);
   });
 };

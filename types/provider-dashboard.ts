@@ -147,7 +147,13 @@ export type ErrorObjectProp = {
   numberOfDurationStatus: null | boolean;
   numberOfDurationMessage: null | string;
   maximumLimitationStatus: null | boolean;
-  maximumLimitationMessage: null | string;
+  maximumLimitationMessage: any;
   numberOfWinnersStatus: boolean;
   numberOfWinnersMessage: null | string;
 };
+
+export interface ContractStatus {
+  checking: boolean;
+  isValid: boolean;
+  canDisplayStatus: boolean;
+}

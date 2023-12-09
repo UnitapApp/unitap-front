@@ -14,7 +14,7 @@ interface PagInationProp {
 }
 
 const Pagination = ({ handleNextPage, func }: PagInationProp) => {
-  const { checkingContractInfo } = usePrizeOfferFormContext();
+  const { nftContractStatus, tokenContractStatus } = usePrizeOfferFormContext();
   return (
     <section className="flex flex-col lg:flex-row w-full max-w-[452px] items-center ">
       <div className="flex flex-col-reverse sm:flex-row w-full gap-5">
@@ -28,7 +28,9 @@ const Pagination = ({ handleNextPage, func }: PagInationProp) => {
           </ProviderDashboardButtonSubmit>
         ) : (
           <ProviderDashboardButtonNext
-            disabled={checkingContractInfo}
+            disabled={
+              nftContractStatus.checking || tokenContractStatus.checking
+            }
             onClick={handleNextPage}
           >
             NEXT

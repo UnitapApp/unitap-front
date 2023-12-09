@@ -6,11 +6,9 @@ export const getErc721TokenContract = async (
   data: ProviderDashboardFormDataProp,
   address: string,
   provider: PublicClient,
-  setCheckingContractInfo: any,
-  setIsContractAddressValid: any,
   setData: any,
   setIsApprovedAll: any,
-  setCanDisplayErrors: any
+  handleSetContractStatus: any
 ) => {
   if (!provider || !address) return;
 
@@ -25,9 +23,7 @@ export const getErc721TokenContract = async (
   try {
     await contract.read.ownerOf([1n]);
   } catch (e) {
-    setIsContractAddressValid(false);
-    setCheckingContractInfo(false);
-    setCanDisplayErrors(true);
+    handleSetContractStatus(true, false, false, true)
     return;
   }
 
@@ -46,8 +42,7 @@ export const getErc721TokenContract = async (
       nftSymbol: r2,
       userNftBalance: r3?.toString(),
     }));
-    setIsContractAddressValid(true);
-    setCheckingContractInfo(false);
+    handleSetContractStatus(true, true, false, true)
     setIsApprovedAll(r5);
   });
 };
