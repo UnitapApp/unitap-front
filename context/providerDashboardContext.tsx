@@ -678,7 +678,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
             The maximum number of enrollees cannot be less than or equal to the
             number of winners.
             <br />
-            Number of winners: $
+            Number of winners:{" "}
             {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
           </p>
         );
