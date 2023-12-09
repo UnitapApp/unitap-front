@@ -27,10 +27,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     nftContractStatus,
   } = usePrizeOfferFormContext();
 
-  useEffect(() => {
-    console.log(tokenContractStatus);
-  }, [tokenContractStatus]);
-
   return (
     <div
       className={
