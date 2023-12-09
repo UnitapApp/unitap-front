@@ -102,7 +102,8 @@ const DepositPrize = ({
       ) : !approve && !isShowingDetails ? (
         <ProviderDashboardButtonSubmit
           $width="100%"
-          className="max-w-[452px] mt-[-7px]"
+          height="43px"
+          className="max-w-[452px] mt-[1px]"
           onClick={
             data.isNft && !isApprovedAll
               ? handleApproveErc721Token

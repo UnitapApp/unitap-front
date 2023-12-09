@@ -11,6 +11,7 @@ import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { ZERO_ADDRESS } from "@/constants";
+import { useEffect } from "react";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -25,6 +26,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     tokenContractStatus,
     nftContractStatus,
   } = usePrizeOfferFormContext();
+
+  useEffect(() => {
+    console.log(tokenContractStatus);
+  }, [tokenContractStatus]);
 
   return (
     <div

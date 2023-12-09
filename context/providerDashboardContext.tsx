@@ -180,7 +180,6 @@ export const ProviderDashboardContext = createContext<{
   userRafflesLoading: boolean;
   handleGetConstraints: () => void;
   updateChainList: () => void;
-  canDisplayWrongAddress: boolean;
   handleCheckForReason: (raffle: UserRafflesProps) => void;
   handleShowUserDetails: (raffle: UserRafflesProps) => void;
   handleAddNftToData: (nftIds: string[]) => void;
@@ -268,7 +267,6 @@ export const ProviderDashboardContext = createContext<{
   userRafflesLoading: false,
   handleGetConstraints: () => {},
   updateChainList: () => {},
-  canDisplayWrongAddress: false,
   handleCheckForReason: () => {},
   handleShowUserDetails: () => {},
   handleAddNftToData: () => {},
@@ -362,9 +360,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
 
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
-
-  const [canDisplayWrongAddress, setCanDisplayWrongAddress] =
-    useState<boolean>(false);
 
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
     useState<UserRafflesProps | null>(null);
@@ -725,7 +720,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const handleSelectNativeToken = (e: boolean) => {
     if (!data.selectedChain || isShowingDetails) return;
-    handleSetContractStatus(false, true, false, true);
+    handleSetContractStatus(false, !e, false, !e);
     setIsErc20Approved(!e);
     setData((prevData) => ({
       ...prevData,
@@ -820,7 +815,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     target: { type: any; name: any; checked: any; value: any };
   }) => {
     if (isShowingDetails) return;
-    setCanDisplayWrongAddress(false);
     const type = e.target.type;
     const name = e.target.name;
     if (page == 3) {
@@ -1067,6 +1061,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (isShowingDetails || !data.tokenContractAddress || data.isNft) return;
+    console.log("+-+-+");
     if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
       handleSetContractStatus(false, true, false, true);
       return;
@@ -1105,7 +1100,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   }, [data.nftContractAddress, chainId, data.isNft]);
 
   useEffect(() => {
-    if (isShowingDetails) return;
+    if (isShowingDetails || !data.tokenContractAddress) return;
     if (data.totalAmount && data.tokenContractAddress != ZERO_ADDRESS) {
       const debounce = setTimeout(() => {
         checkContractInfo();
@@ -1243,7 +1238,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         userRafflesLoading,
         handleGetConstraints,
         updateChainList,
-        canDisplayWrongAddress,
         handleCheckForReason,
         handleShowUserDetails,
         handleAddNftToData,
