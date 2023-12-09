@@ -565,7 +565,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         tokenContractAddress == ZERO_ADDRESS
           ? true
           : tokenContractStatus.isValid;
-      if (!isValid || !balance || (!isNativeToken && !tokenContractAddress))
+      if (
+        !isValid ||
+        !balance ||
+        (!isNativeToken && !tokenContractAddress) ||
+        Number(winnersCount) > 500
+      )
         return false;
       return true;
     };

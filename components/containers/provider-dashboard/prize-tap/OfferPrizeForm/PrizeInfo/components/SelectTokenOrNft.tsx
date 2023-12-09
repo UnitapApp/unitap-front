@@ -174,6 +174,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 inputMode="numeric"
                 onChange={handleChange}
                 min={1}
+                max={500}
                 disabled={
                   isShowingDetails ||
                   data.isNft ||
@@ -217,14 +218,19 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </p>
               )}
 
-            {/* {showErrors && Number(data.tokenAmount) <= 0 && (
-              <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
-                Invalid amount
-              </p>
-            )} */}
+            {showErrors &&
+              !data.isNft &&
+              Number(data.winnersCount) > 500 &&
+              data.tokenContractAddress && (
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
+                  The maximum number of winners is 500.
+                </p>
+              )}
+
             {showErrors &&
               !insufficientBalance &&
               Number(data.totalAmount) > 0 &&
+              Number(data.winnersCount) <= 500 &&
               data.winnersCount &&
               Number(data.totalAmount) > 0 && (
                 <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
