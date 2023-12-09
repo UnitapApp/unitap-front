@@ -91,9 +91,7 @@ const TimeEnrollLimitation = ({
       className={`flex flex-col items-center justify-center w-full animate-fadeIn ${fadeClass}`}
     >
       <div
-        className={`flex flex-col min-h-[340px] gap-5 w-full items-center max-w-[452px] ${
-          setDuration ? "mb-[57px]" : "mb-[84px]"
-        }`}
+        className={`flex flex-col min-h-[340px] gap-5 w-full items-center max-w-[452px] mb-[84px]`}
       >
         <StartDateComp showErrors={showErrors} />
         <SetDuration />
