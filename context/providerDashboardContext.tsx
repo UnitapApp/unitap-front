@@ -907,6 +907,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setCreteRaffleResponse(null);
     setRequirementList([]);
     setIsModalOpen(false);
+    setSelectedRaffleForCheckReason(null);
   };
 
   const handleApproveErc20Token = () => {
