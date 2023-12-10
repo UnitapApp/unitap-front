@@ -8,8 +8,11 @@ import {
   polygonMumbai,
   bscTestnet,
   gnosis,
-} from "viem/chains"
-import { mainnet, sepolia } from "wagmi"
+  meter,
+  zetachainAthensTestnet,
+  scroll,
+} from "viem/chains";
+import { mainnet, sepolia } from "wagmi";
 
 const IDChain = {
   id: 74,
@@ -24,7 +27,7 @@ const IDChain = {
     default: { http: ["https://idchain.one/rpc/"] },
     public: { http: ["https://idchain.one/rpc/"] },
   },
-}
+};
 
 const Optimism = {
   id: 10,
@@ -58,7 +61,7 @@ const Optimism = {
   // chainType: "EVM",
   // blockScanAddress:
   //   "https://optimistic.etherscan.io/address/0xb3A97684Eb67182BAa7994b226e6315196D8b364",
-}
+};
 
 export const supportedChains = [
   sepolia,
@@ -74,7 +77,10 @@ export const supportedChains = [
   gnosis,
   IDChain,
   Optimism,
-]
+  meter,
+  zetachainAthensTestnet,
+  scroll,
+];
 
 /**
  * List of all the networks supported by the Uniswap Interface
@@ -104,6 +110,6 @@ export const unitapPassSupportedNetworks = [
     address: "pRogDW5qSapudKBgeD2oTSaKku4jNgn3FE7RXo1ojrb",
     qr: "solana-address.png",
   },
-]
+];
 
-export const lightingChainId = "286621"
+export const lightingChainId = "286621";
