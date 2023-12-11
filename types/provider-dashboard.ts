@@ -157,3 +157,13 @@ export interface ContractStatus {
   isValid: boolean;
   canDisplayStatus: boolean;
 }
+
+
+export interface DisplayStepsProps {
+  id: number;
+  name: string;
+  des: string;
+  selectStepImage: string;
+  passedStepImage: string;
+  garyImage: string;
+}

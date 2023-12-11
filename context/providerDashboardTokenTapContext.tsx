@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, PropsWithChildren, createContext, useContext } from "react";
 
 export const ProviderDashboardTokenTapContext = createContext<{}>({});
