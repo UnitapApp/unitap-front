@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { UserProfileContext } from "@/context/userProfile"
-import { Chain } from "@/types/gas-tap"
-import { sortChainListByTotalClaimWeekly } from "@/utils/chain"
-import { FC, useContext, useMemo } from "react"
-import Widget from "../widget"
-import Link from "next/link"
-import RoutePath from "@/utils/routes"
+import { UserProfileContext } from "@/context/userProfile";
+import { Chain } from "@/types/gas-tap";
+import { sortChainListByTotalClaimWeekly } from "@/utils/chain";
+import { FC, useContext, useMemo } from "react";
+import Widget from "../widget";
+import Link from "next/link";
+import RoutePath from "@/utils/routes";
 
 const GasTapLandingWidget: FC<{
-  chainList: Chain[]
+  chainList: Chain[];
 }> = ({ chainList }) => {
-  const { isGasTapAvailable } = useContext(UserProfileContext)
+  const { isGasTapAvailable } = useContext(UserProfileContext);
 
   const sortedChainList = useMemo(
     () => sortChainListByTotalClaimWeekly(chainList),
     [chainList]
-  )
+  );
 
   return (
     <>
@@ -42,7 +42,7 @@ const GasTapLandingWidget: FC<{
               {sortedChainList.length > 0 && (
                 <>
                   <p className={"font-semibold text-sm text-white mb-2.5 mt-6"}>
-                    Monthly Ranking
+                    Weekly Ranking
                   </p>
                   <ul className={"text-white"}>
                     {sortedChainList.slice(0, 3).map((token, index) => (
@@ -79,8 +79,8 @@ const GasTapLandingWidget: FC<{
         </Widget>
       </Link>
     </>
-  )
-}
+  );
+};
 
 const NotAvailableTap: FC = () => {
   return (
@@ -89,7 +89,7 @@ const NotAvailableTap: FC = () => {
         Gas Tap is not available right now
       </h5>
     </div>
-  )
-}
+  );
+};
 
-export default GasTapLandingWidget
+export default GasTapLandingWidget;
