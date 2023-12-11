@@ -29,7 +29,7 @@ export async function getOneTimeClaimedChainList(token: string) {
     "/api/gastap/user/one-time-claims/",
     {
       headers: {
-        Authorization: token,
+        Authorization: `Token ${token}`,
       },
     }
   );

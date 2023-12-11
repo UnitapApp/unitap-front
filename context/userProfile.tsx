@@ -16,9 +16,11 @@ import { ErrorsContext } from "./errorsProvider";
 import {
   getRemainingClaimsAPI,
   getWeeklyChainClaimLimitAPI,
+  setWalletAPI,
 } from "@/utils/api";
 import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
+import { useWalletAccount } from "@/utils/wallet";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
@@ -54,6 +56,8 @@ export const UserContextProvider: FC<
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useLocalStorageState("userToken");
+
+  const { address } = useWalletAccount();
 
   const { addError } = useContext(ErrorsContext);
 
@@ -103,6 +107,19 @@ export const UserContextProvider: FC<
       getUserProfileWithToken();
     }
   }, [userToken, userProfile, setUserProfile]);
+
+  useEffect(() => {
+    if (!address || !userProfile) return;
+
+    if (
+      userProfile.wallets.find(
+        (item) => item.walletType === "EVM" && item.address === address
+      )
+    )
+      return;
+
+    setWalletAPI(userToken!, address, "EVM");
+  }, [address, userProfile, userToken]);
 
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
