@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { APIErrorsSource, Settings, UserProfile } from "@/types"
-import { getUserProfile, getUserProfileWithTokenAPI } from "@/utils/api/auth"
-import useLocalStorageState from "@/utils/hooks"
-import { AxiosError } from "axios"
+import { APIErrorsSource, Settings, UserProfile } from "@/types";
+import { getUserProfile, getUserProfileWithTokenAPI } from "@/utils/api/auth";
+import useLocalStorageState from "@/utils/hooks";
+import { AxiosError } from "axios";
 import {
   FC,
   PropsWithChildren,
@@ -11,25 +11,30 @@ import {
   useContext,
   useEffect,
   useState,
-} from "react"
-import { ErrorsContext } from "./errorsProvider"
-import { getRemainingClaimsAPI, getWeeklyChainClaimLimitAPI } from "@/utils/api"
-import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh"
-import { IntervalType } from "@/constants"
+} from "react";
+import { ErrorsContext } from "./errorsProvider";
+import {
+  getRemainingClaimsAPI,
+  getWeeklyChainClaimLimitAPI,
+  setWalletAPI,
+} from "@/utils/api";
+import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { IntervalType } from "@/constants";
+import { useWalletAccount } from "@/utils/wallet";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
-    userProfile: UserProfile | null
+    userProfile: UserProfile | null;
     refreshUserProfile:
       | ((address: string, signature: string) => Promise<void>)
-      | null
-    loading: boolean
-    remainingClaims: number | null
-    userProfileLoading: boolean
-    nonEVMWalletAddress: string
-    setNonEVMWalletAddress: (address: string) => void
-    userToken: string | null
-    isGasTapAvailable: boolean
+      | null;
+    loading: boolean;
+    remainingClaims: number | null;
+    userProfileLoading: boolean;
+    nonEVMWalletAddress: string;
+    setNonEVMWalletAddress: (address: string) => void;
+    userToken: string | null;
+    isGasTapAvailable: boolean;
   }
 >({
   userProfile: null,
@@ -43,31 +48,33 @@ export const UserProfileContext = createContext<
   nonEVMWalletAddress: "",
   userToken: null,
   setNonEVMWalletAddress: () => {},
-})
+});
 
 export const UserContextProvider: FC<
   PropsWithChildren & { settings: Settings }
 > = ({ children, settings }) => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [userToken, setToken] = useLocalStorageState("userToken")
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [userToken, setToken] = useLocalStorageState("userToken");
 
-  const { addError } = useContext(ErrorsContext)
+  const { address } = useWalletAccount();
 
-  const [remainingClaims, setRemainingClaims] = useState<number | null>(null)
-  const [userProfileLoading, setUserProfileLoading] = useState(false)
-  const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState("")
+  const { addError } = useContext(ErrorsContext);
+
+  const [remainingClaims, setRemainingClaims] = useState<number | null>(null);
+  const [userProfileLoading, setUserProfileLoading] = useState(false);
+  const [nonEVMWalletAddress, setNonEVMWalletAddress] = useState("");
 
   const [weeklyClaimSettings, setWeeklyClaimSettings] =
-    useState<Settings>(settings)
+    useState<Settings>(settings);
 
   const refreshUserProfile = async (address: string, signature: string) => {
-    setLoading(true)
+    setLoading(true);
     getUserProfile(address, signature)
       .then((refreshedUserProfile: UserProfile) => {
-        setUserProfile(refreshedUserProfile)
-        setToken(refreshedUserProfile.token)
-        return refreshedUserProfile
+        setUserProfile(refreshedUserProfile);
+        setToken(refreshedUserProfile.token);
+        return refreshedUserProfile;
       })
       .catch((ex: AxiosError) => {
         if (ex.response?.status === 403 || ex.response?.status === 409) {
@@ -75,53 +82,66 @@ export const UserContextProvider: FC<
             source: APIErrorsSource.BRIGHTID_CONNECTION_ERROR,
             message: (ex.response as any).data.message,
             statusCode: ex.response.status,
-          })
+          });
         }
-        throw ex
+        throw ex;
       })
-      .finally(() => setLoading(false))
-  }
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     const getUserProfileWithToken = async () => {
-      setUserProfileLoading(true)
+      setUserProfileLoading(true);
       try {
         const userProfileWithToken: UserProfile =
-          await getUserProfileWithTokenAPI(userToken!)
-        setUserProfile(userProfileWithToken)
+          await getUserProfileWithTokenAPI(userToken!);
+        setUserProfile(userProfileWithToken);
       } finally {
-        setUserProfileLoading(false)
+        setUserProfileLoading(false);
       }
-    }
+    };
 
     if (userToken && !userProfile) {
-      getUserProfileWithToken()
+      getUserProfileWithToken();
     }
-  }, [userToken, userProfile, setUserProfile])
+  }, [userToken, userProfile, setUserProfile]);
+
+  useEffect(() => {
+    if (!address || !userProfile) return;
+
+    if (
+      userProfile.wallets.find(
+        (item) => item.walletType === "EVM" && item.address === address
+      )
+    )
+      return;
+
+    setWalletAPI(userToken!, address, "EVM");
+  }, [address, userProfile]);
 
   const getWeeklyChainClaimLimit = async () => {
-    const res = await getWeeklyChainClaimLimitAPI()
-    setWeeklyClaimSettings(res)
-  }
+    const res = await getWeeklyChainClaimLimitAPI();
+    setWeeklyClaimSettings(res);
+  };
 
   const getRemainingClaims = async () => {
-    const newRemainingClaims = await getRemainingClaimsAPI(userToken!)
-    setRemainingClaims(newRemainingClaims.totalRoundClaimsRemaining)
-  }
+    const newRemainingClaims = await getRemainingClaimsAPI(userToken!);
+    setRemainingClaims(newRemainingClaims.totalRoundClaimsRemaining);
+  };
 
-  useMediumRefresh(getWeeklyChainClaimLimit, [getWeeklyChainClaimLimit])
+  useMediumRefresh(getWeeklyChainClaimLimit, [getWeeklyChainClaimLimit]);
 
   useRefreshWithInitial(
     () => {
       if (userToken && userProfile) {
-        getRemainingClaims()
+        getRemainingClaims();
       } else {
-        setRemainingClaims(null)
+        setRemainingClaims(null);
       }
     },
     IntervalType.MEDIUM,
     [userToken && userProfile]
-  )
+  );
 
   return (
     <UserProfileContext.Provider
@@ -142,7 +162,7 @@ export const UserContextProvider: FC<
     >
       {children}
     </UserProfileContext.Provider>
-  )
-}
+  );
+};
 
-export const useUserProfileContext = () => useContext(UserProfileContext)
+export const useUserProfileContext = () => useContext(UserProfileContext);
