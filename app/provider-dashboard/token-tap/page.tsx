@@ -1,5 +1,11 @@
-const Page = () => {
-  return <div>salam</div>
-}
+import TokenTapContent from "@/components/containers/provider-dashboard/token-tap/Content";
 
-export default Page
+const Page = () => {
+  return (
+    <div>
+      <TokenTapContent />
+    </div>
+  );
+};
+
+export default Page;

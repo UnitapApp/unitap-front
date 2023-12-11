@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import React, { useContext, useEffect } from "react"
-import { LightOutlinedButton } from "@/components/ui/Button/button"
-import ChainCard from "./chainCard"
-import { FundContext } from "../../Modals/FundGasModal"
-import { useGasTapContext } from "@/context/gasTapProvider"
+import React, { useContext, useEffect } from "react";
+import { LightOutlinedButton } from "@/components/ui/Button/button";
+import ChainCard from "./chainCard";
+import { FundContext } from "../../Modals/FundGasModal";
+import { useGasTapContext } from "@/context/gasTapProvider";
 
 const ProvideGasCard = () => {
-  const [chainListIndex, setChainListIndex] = React.useState(0)
-  const { chainList } = useGasTapContext()
+  const [chainListIndex, setChainListIndex] = React.useState(0);
+  const { chainList } = useGasTapContext();
 
-  const { setIsOpen } = useContext(FundContext)
+  const { setIsOpen } = useContext(FundContext);
 
   useEffect(() => {
     setTimeout(() => {
       if (chainListIndex > chainList.length - 5) {
-        setChainListIndex(0)
+        setChainListIndex(0);
       } else {
-        setChainListIndex(chainListIndex + 4)
+        setChainListIndex(chainListIndex + 4);
       }
-    }, 10000)
-  }, [chainListIndex, chainList])
+    }, 10000);
+  }, [chainListIndex, chainList]);
 
   if (chainList.length > 0) {
     return (
@@ -48,14 +48,14 @@ const ProvideGasCard = () => {
             $fontSize="14"
             height="46px"
           >
-            Provide Gas Fee
+            Contribute Gas
           </LightOutlinedButton>
         </span>
       </div>
-    )
+    );
   }
 
-  return <></>
-}
+  return <></>;
+};
 
-export default ProvideGasCard
+export default ProvideGasCard;

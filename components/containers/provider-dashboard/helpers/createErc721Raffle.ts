@@ -1,6 +1,6 @@
 import { ConstraintParamValues, ProviderDashboardFormDataProp } from "@/types";
-import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
-import { Abi, getContract, parseEther } from "viem";
+import { prizeTap721ABI } from "@/types/abis/contracts";
+import {  getContract } from "viem";
 import { PublicClient } from "wagmi";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
@@ -12,10 +12,10 @@ export const createErc721RaffleCallback = async (
   signer: GetWalletClientResult,
   provider: PublicClient,
   currencyAddress: `0x${string}`,
-  nftIds: bigint,
+  nftIds: string[],
   maxParticipants: bigint,
   startTime: bigint,
-  endTime: bigint
+  endTime: bigint,
 ) => {
   if (!provider || !signer) return;
 
@@ -26,12 +26,13 @@ export const createErc721RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       currencyAddress,
-      nftIds,
+      nftIds.map(item => BigInt(item)),
       maxParticipants,
       1n,
       startTime,
       endTime,
-      "0x4554480000000000000000000000000000000000000000000000000000000000",
+      BigInt(nftIds.length),
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
   });
 
@@ -42,12 +43,13 @@ export const createErc721RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       currencyAddress,
-      nftIds,
+      nftIds.map(item => BigInt(item)),
       maxParticipants,
       1n,
       startTime,
       endTime,
-      "0x4554480000000000000000000000000000000000000000000000000000000000",
+      BigInt(nftIds.length),
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
     gasPrice: gasEstimate,
   });
@@ -67,21 +69,15 @@ export const createErc721Raffle = async (
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";
-  const raffleContract: any = getContract({
-    address: raffleContractAddress as any,
-    abi: prizeTap721ABI,
-    publicClient: provider,
-  });
-
   const constraints = requirementList.map((item) => item.pk);
+  const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
+  const prizeName = data.nftName;
+  const twitter = 'https://twitter.com/' + data.twitter?.replace('@', '');
+	const discord = data.discord ? 'https://discord.com/' + data.discord.replace('@', '') : null;
+	const telegram = data.telegram ? 'https://t.me/' + data.telegram.replace('@', '') : null;
+	const creatorUrl = data.creatorUrl ? 'https://' + data.creatorUrl : null;
 
   if (!data.nftTokenIds) return;
-  const nfts =
-    data.nftTokenIds && data.nftTokenIds?.length > 1
-      ? data.nftTokenIds.join(",")
-      : data.nftTokenIds[0];
-  console.log(nfts);
-  const prizeName = data.nftName;
 
   const raffleData = {
     name: data.provider,
@@ -100,10 +96,42 @@ export const createErc721Raffle = async (
     deadline: deadline(data.endTimeStamp),
     max_number_of_entries: maxNumberOfEntries,
     start_at: startAt(data.startTimeStamp),
-    nftIds: nfts,
+		nftIds: data.nftTokenIds.length > 1 ?  data.nftTokenIds.join(',') : data.nftTokenIds[0],
     isPrizeNft: true,
     winnersCount: data.winnersCount,
+    discord_url:discord,
+		twitter_url:twitter,
+		creator_url:creatorUrl,
+		telegram_url: telegram,
+    reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
+		email_url:data.email,
+		necessary_information:data.necessaryInfo
   };
+
+    
+  const raffleContract: any = getContract({
+    address: raffleContractAddress as any,
+    abi: prizeTap721ABI,
+    publicClient: provider,
+  });
+
+
+
+  try {
+    setCreateRaffleLoading(true);
+    const response = await createErc721RaffleCallback(
+      address,
+      raffleContract,
+      signer,
+      provider,
+      data.nftContractAddress as any,
+      data.nftTokenIds,
+      BigInt(maxNumberOfEntries),
+      data.startTimeStamp,
+      data.endTimeStamp,
+    );
+
+      
   const raffle = await createRaffleApi(userToken, raffleData);
 
   if (!raffle.success) {
@@ -111,31 +139,6 @@ export const createErc721Raffle = async (
   }
 
   const rafflePk = raffle.data.id;
-
-  try {
-    setCreateRaffleLoading(true);
-
-    console.log(
-      address,
-      raffleContract,
-      data.nftContractAddress,
-      data.nftTokenIds,
-      maxNumberOfEntries,
-      data.startTimeStamp,
-      data.endTimeStamp
-    );
-
-    const response = await createErc721RaffleCallback(
-      address,
-      raffleContract,
-      signer,
-      provider,
-      data.nftContractAddress as any,
-      BigInt(nfts),
-      BigInt(maxNumberOfEntries),
-      data.startTimeStamp,
-      data.endTimeStamp
-    );
 
     if (!response) return;
 

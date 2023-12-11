@@ -1,5 +1,5 @@
 import { ProviderDashboardFormDataProp } from "@/types";
-import { toWei } from "@/utils";
+import { toWei } from "@/utils/numbersBigNumber";
 import { GetContractReturnType, getContract } from "viem";
 import { Address, PublicClient, erc20ABI } from "wagmi";
 import { GetWalletClientResult } from "wagmi/dist/actions";
@@ -8,26 +8,25 @@ export const approveErc20TokenCallback = async (
   address: Address,
   erc20Contract: GetContractReturnType,
   spenderAddress: Address,
-  tokenAddress: Address,
   provider: PublicClient,
   signer: GetWalletClientResult,
-  payableAmount: bigint,
-  decimals: number
+  decimals: number,
+  totalAmount: string,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: erc20ABI,
-    address,
+    address:erc20Contract.address,
     functionName: "approve",
-    account: erc20Contract.address,
-    args: [spenderAddress, toWei(payableAmount.toString(), decimals)],
+    account: address,
+    args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
   });
 
   const response = await signer?.writeContract({
     abi: erc20ABI,
-    address,
-    account: erc20Contract.address,
+    address:erc20Contract.address,
+    account: address,
     functionName: "approve",
-    args: [spenderAddress, toWei(payableAmount.toString(), decimals)],
+    args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
     gasPrice: gasEstimate,
   });
 
@@ -65,11 +64,10 @@ export const approveErc20Token = async (
       address,
       contract,
       data.selectedChain.erc20PrizetapAddr,
-      data.tokenContractAddress as Address,
       provider,
       signer,
-      BigInt(data.tokenAmount),
-      data.tokenDecimals
+      data.tokenDecimals,
+      data.totalAmount,
     );
 
     setApproveLoading(false);

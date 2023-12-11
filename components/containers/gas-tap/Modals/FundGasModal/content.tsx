@@ -129,10 +129,11 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
     let tx = {
       to: selectedChain.fundManagerAddress as any,
-      value:
+      value: BigInt(
         selectedChain.symbol === "SOL"
           ? parseToLamports(fundAmount)
-          : parseEther(fundAmount),
+          : parseEther(fundAmount)
+      ),
     };
 
     setSubmittingFundTransaction(true);
@@ -140,7 +141,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     const estimatedGas = await estimateGas(provider, {
       from: address,
       to: selectedChain.fundManagerAddress,
-      value: tx.value,
+      value: BigInt(tx.value),
     }).catch((err: any) => {
       return err;
     });
@@ -237,7 +238,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
             alt="gas fee battery"
           />
           <p className="text-white font-bold text-xl mb-3 z-1">
-            Provide Gas Fee
+            Contribute Gas
           </p>
           <p className="text-gray100 text-xs mb-3 z-1">
             100% of contributions will fund distributions and transaction costs

@@ -48,7 +48,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
               onClick={() => {
                 setShowItems(!showItems);
               }}
-              className="cursor-pointer flex items-center justify-between rounded-[6px] p-1 px-2 bg-gray40 border border-gray70 w-[90px] text-white text-[12px] font-medium"
+              className="cursor-pointer flex items-center justify-between rounded-md p-1 px-2 bg-gray40 border border-gray70 w-[90px] text-white text-[12px] font-medium"
             >
               <p className="text-[12px]">{data.durationUnitTime}</p>
               <Icon
@@ -63,7 +63,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
                   <p
                     key={index}
                     onClick={() => handleSelectDurationDropDown(date.date)}
-                    className=" flex pl-1 items-center hover:bg-gray70 h-[27px] cursor-pointer w-full rounded-[4px]"
+                    className=" flex pl-1 items-center hover:bg-gray70 h-[27px] cursor-pointer w-full rounded"
                   >
                     {date.date}
                   </p>

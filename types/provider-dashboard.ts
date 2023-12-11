@@ -73,12 +73,13 @@ export interface ConstraintParamValues {
   pk: number;
   values: Record<number, string | number | boolean> | null;
   title: string;
+  isNotSatisfy: boolean
 }
 
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints: any;
+  constraints:  ConstraintParamValues[];
   contract: string;
   createdAt: string;
   creatorAddress: string;
@@ -107,6 +108,7 @@ export interface UserRafflesProps {
   prizeSymbol: string;
   raffleId: string | null;
   rejectionReason: string | null;
+  reversedConstraints: string | null;
   startAt: string;
   status: string;
   tokenUri: string | null;
@@ -124,6 +126,7 @@ export interface NftStatusProp {
   nftId: string;
   isOwner: boolean;
 }
+
 type userRaffle = {
   contract: string;
   name: string;
@@ -135,3 +138,22 @@ export type ProviderFormPaginationProp = {
   handleChangeFormPagePrev: () => void;
   handleChangeFormPageNext: () => void;
 };
+
+export type ErrorObjectProp = {
+  startDateStatus: null | boolean;
+  statDateStatusMessage: null | string;
+  endDateStatus: null | boolean;
+  endDateStatusMessage: null | string;
+  numberOfDurationStatus: null | boolean;
+  numberOfDurationMessage: null | string;
+  maximumLimitationStatus: null | boolean;
+  maximumLimitationMessage: any;
+  numberOfWinnersStatus: boolean;
+  numberOfWinnersMessage: null | string;
+};
+
+export interface ContractStatus {
+  checking: boolean;
+  isValid: boolean;
+  canDisplayStatus: boolean;
+}

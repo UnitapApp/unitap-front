@@ -19,7 +19,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
   const constraint = constraintsList.filter(
     (item) => item.pk == requirement.pk
   )[0];
-
+  const isNotSatisfy = requirement.isNotSatisfy;
   const handleClick = () => {
     if (isShowingDetails) return;
     handleSelectConstraint(constraint);
@@ -37,16 +37,16 @@ const NewAddedConstraint = ({ requirement }: Props) => {
         <div className="flex items-center gap-2">
           {constraint?.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
           <p>{constraint.title} requirement</p>
+          <p>{isNotSatisfy && "Not satisfy"}</p>
         </div>
         <div className="flex items-center gap-3">
-          {requirement.values && (
-            <div
-              onClick={handleClick}
-              className="cursor-pointer flex items-center justify-center text-gray90 text-[10px] w-[60px] h-[20px] font-semibold bg-gray70 border border-gray80 rounded-[8px]"
-            >
-              Edit
-            </div>
-          )}
+          <div
+            onClick={handleClick}
+            className="cursor-pointer flex items-center justify-center p-[2px] text-gray90 text-[10px] w-[60px]  font-semibold bg-gray70 border border-gray80 rounded-lg"
+          >
+            Edit
+          </div>
+
           <Icon
             onClick={() => handleDelete(constraint.pk)}
             className="cursor-pointer"

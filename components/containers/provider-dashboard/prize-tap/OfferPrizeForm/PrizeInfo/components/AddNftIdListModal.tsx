@@ -2,6 +2,7 @@
 
 import Icon from "@/components/ui/Icon";
 import Modal from "@/components/ui/Modal/modal";
+import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { useEffect, useMemo, useState } from "react";
 import Lottie from "react-lottie";
@@ -9,7 +10,7 @@ import Lottie from "react-lottie";
 const AddNftIdListModalModalBody = () => {
   const {
     data,
-    isNftContractAddressValid,
+    nftContractStatus,
     closeAddNftIdListModal,
     handleCheckOwnerOfNfts,
     handleAddNftToData,
@@ -60,9 +61,10 @@ const AddNftIdListModalModalBody = () => {
     if (isOwner) {
       handleAddNftToData(nftIds);
       closeAddNftIdListModal();
-    } else {
-      // handleClearNfts();
     }
+    // else {
+    // handleClearNfts();
+    // }
   };
 
   const handleClearNfts = () => {
@@ -124,7 +126,7 @@ const AddNftIdListModalModalBody = () => {
       <div className="flex flex-col gap-4">
         <section
           className={`flex flex-col gap-4 ${
-            !isNftContractAddressValid ? "opacity-[.5]" : ""
+            !nftContractStatus.isValid ? "opacity-[.5]" : ""
           }`}
         >
           <div
@@ -136,7 +138,7 @@ const AddNftIdListModalModalBody = () => {
               <Icon
                 width="16px"
                 height="16px"
-                iconSrc="./assets/images/provider-dashboard/upload.svg"
+                iconSrc="../assets/images/provider-dashboard/upload.svg"
               />
               <p className="absolute top-[-22px] left-0">
                 Upload from file, only .txt or .csv{" "}
@@ -149,7 +151,7 @@ const AddNftIdListModalModalBody = () => {
               </p>
               <div className="w-full relative">
                 <input
-                  disabled={!isNftContractAddressValid || !!textAreaData}
+                  disabled={!nftContractStatus.isValid || !!textAreaData}
                   type="file"
                   className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
                   onChange={(e) => handleChangeUploadedFile(e)}
@@ -176,7 +178,7 @@ const AddNftIdListModalModalBody = () => {
           >
             <div className="w-full relative">
               <textarea
-                disabled={!isNftContractAddressValid || !!uploadedFile}
+                disabled={!nftContractStatus.isValid || !!uploadedFile}
                 placeholder={`... or paste ID, each one in a new line \n 1 \n 2 \n 3 `}
                 className="w-[100%] flex bg-gray40 h-[135px] p-2 text-gray100 nftIdTextarea pl-3"
                 onChange={(e) => handleChangeTextarea(e.target.value)}
@@ -206,12 +208,12 @@ const AddNftIdListModalModalBody = () => {
         <div
           onClick={handleAddNft}
           className={`flex cursor-pointer relative w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
-            !isNftContractAddressValid
+            !nftContractStatus.isValid
               ? "opacity-[.8] text-gray80"
               : "text-white"
           } `}
         >
-          <button disabled={!isNftContractAddressValid}>Add NFT</button>
+          <button disabled={!nftContractStatus.isValid}>Add NFT</button>
           {checkingNft ? (
             <div className="absolute right-0 bg-gray30">
               <Lottie

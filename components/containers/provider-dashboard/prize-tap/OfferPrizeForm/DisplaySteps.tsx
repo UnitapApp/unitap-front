@@ -5,6 +5,7 @@ import { socialMediaDescription } from "./ContactInformation";
 import { DepositDescription } from "./DepositPrize";
 import { InformationVerificationDes } from "./InformationVerification";
 import Icon from "@/components/ui/Icon";
+import Styles from "../content.module.scss";
 
 const displaySteps = [
   PrizeInfoDescription,
@@ -21,7 +22,9 @@ interface DisplayStepsProp {
 
 const DisplaySteps = ({ page }: DisplayStepsProp) => {
   return (
-    <div className="offerPrize-Steps w-full md:max-w-[362px] py-[4em] px-10 flex flex-col gap-[3.1em] select-not">
+    <div
+      className={`${Styles.offerPrizeSteps} offerPrize-Steps w-full md:max-w-[362px] py-[4em] px-10 flex flex-col gap-[3.1em] select-not`}
+    >
       {displaySteps.map((item, index) => (
         <div
           className="flex items-center gap-3 relative text-[12px] text-white"

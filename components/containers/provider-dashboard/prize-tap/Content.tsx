@@ -14,7 +14,6 @@ import {
 import SearchInput from "./SearchInput";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardCardTimer } from "./CardTimer";
-
 import Styles from "./content.module.scss";
 import "./content.module.scss";
 import OfferPrizeForm from "./OfferPrizeForm";
@@ -41,7 +40,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
     <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
       <div className="providePrize-item-container">
         <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-          <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-[6px]">
+          <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md">
             <Icon
               className="mr-2"
               iconSrc={prize.chain.logoUrl}
@@ -70,11 +69,12 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-            prize.status === RaffleStatus.VERIFIED ? (
+            prize.status === RaffleStatus.VERIFIED &&
+            diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
-            ) : prize.status === RaffleStatus.VERIFIED ? (
+            ) : prize.status === RaffleStatus.VERIFIED && diff > 0 ? (
               <ProviderDashboardButtonSuccess>
                 Verified
               </ProviderDashboardButtonSuccess>
@@ -82,7 +82,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               <ProviderDashboardButtonVerifying>
                 Verifying
               </ProviderDashboardButtonVerifying>
-            ) : prize.status === RaffleStatus.FINISHED ? (
+            ) : prize.status !== RaffleStatus.PENDING &&
+              prize.status !== RaffleStatus.REJECTED &&
+              diff <= 0 ? (
               <ProviderDashboardButtonVerifying>
                 Finished
               </ProviderDashboardButtonVerifying>
@@ -123,36 +125,49 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : day >= 1 ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white text-[8px] font-medium mb-2 ml-1">
+            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
               {Date.now() < new Date(prize.startAt).getTime()
                 ? "Starts in:"
                 : "Ends in:"}
             </p>
-            <div className="bg-gray50 rounded-xl px-5">
+            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
               />
             </div>
           </div>
-        ) : (
+        ) : diff > 0 ? (
           <div>
-            <p className="text-[10px] text-warn mt-[65px] ml-1">
-              <ProviderDashboardCardTimer
-                startTime={prize.startAt}
-                FinishTime={prize.deadline}
-              />
-            </p>
+            <ProviderDashboardCardTimer
+              startTime={prize.startAt}
+              FinishTime={prize.deadline}
+            />
             <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <div className="relative w-full text-center">
-                <p>{prize.numberOfOnchainEntries} Spots Left</p>
+                <p>
+                  {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
+                  Spots Left
+                </p>
                 <Icon
-                  iconSrc="/assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"
                 />
               </div>
+            </div>
+          </div>
+        ) : (
+          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
+            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+              in
+            </p>
+            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+              <ProviderDashboardCardTimer
+                startTime={prize.startAt}
+                FinishTime={prize.deadline}
+              />
             </div>
           </div>
         )}
@@ -185,7 +200,6 @@ const PrizeTapContent = () => {
   const handleSelectFilter = (filter: string) => {
     setSelectedFilter(filter);
   };
-
   useEffect(() => {
     if (selectedFilter == RaffleStatus.ONGOING) {
       setFilteredRaffle(
@@ -194,10 +208,27 @@ const PrizeTapContent = () => {
             (!selectedFilter ||
               (item.status === RaffleStatus.VERIFIED &&
                 new Date(item.startAt) < new Date())) &&
+            new Date(item.deadline) > new Date() &&
             (!searchPhrase ||
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      return;
+    }
+
+    if (selectedFilter == RaffleStatus.FINISHED) {
+      setFilteredRaffle(
+        userRaffles.filter(
+          (item) =>
+            (!selectedFilter ||
+              (new Date(item.deadline) < new Date() &&
+                item.status !== RaffleStatus.REJECTED &&
+                item.status !== RaffleStatus.PENDING)) &&
+            (!searchPhrase ||
+              item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
+        )
+      );
+      return;
     }
 
     if (selectedFilter === RaffleStatus.VERIFIED) {
@@ -211,6 +242,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      return;
     }
 
     if (
@@ -227,6 +259,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      return;
     }
   }, [selectedFilter, userRaffles, searchPhrase]);
 
@@ -302,7 +335,7 @@ const PrizeTapContent = () => {
               </div>
               <div
                 onClick={() => handleSelectNewOffer(true)}
-                className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
+                className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
               >
                 + Provide a New Prize
               </div>
@@ -343,7 +376,7 @@ const Skeleton = () => {
       <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
         <div className="providePrize-item-container">
           <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-            <div className="providePrize__chainName absolute h-[22px] top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-[6px]"></div>
+            <div className="providePrize__chainName absolute h-[22px] top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md"></div>
           </div>
           <div>
             <div className="providePrize_stats flex justify-between my-2">

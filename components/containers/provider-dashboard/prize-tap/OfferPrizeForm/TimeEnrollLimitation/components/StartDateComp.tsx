@@ -42,7 +42,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           showErrors && showErrors.startDateStatus == false
             ? "border-error"
             : "border-gray50"
-        } rounded-[12px] h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
+        } rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
       >
         <p className="text-gray100 text-[12px] w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
           Start Date & Time

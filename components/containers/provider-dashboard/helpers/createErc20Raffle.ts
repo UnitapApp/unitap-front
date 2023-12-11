@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from "@/constants";
 import { ProviderDashboardFormDataProp, ConstraintParamValues } from "@/types";
 import { prizeTapABI } from "@/types/abis/contracts";
-import { toWei } from "@/utils";
+import { toWei } from "@/utils/numbersBigNumber";
 import { PublicClient, getContract, parseEther } from "viem";
 import { GetContractResult, GetWalletClientResult } from "wagmi/dist/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
@@ -12,16 +12,18 @@ const createErc20RaffleCallback = async (
   raffleContract: GetContractResult,
   signer: GetWalletClientResult,
   provider: PublicClient,
-  payableAmount: bigint,
+  payableAmount: string,
   tokenDecimals: number,
   currencyAddress: `0x${string}`,
   maxParticipants: bigint,
   startTime: bigint,
   endTime: bigint,
   isNativeToken: boolean,
-  winnersCount: bigint
+  winnersCount: bigint,
+  totalAmount:  string
 ) => {
   if (!provider || !signer) return;
+
 
   const gasEstimate = await provider.estimateContractGas({
     abi: prizeTapABI,
@@ -30,20 +32,17 @@ const createErc20RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       isNativeToken
-        ? parseEther((BigInt(payableAmount) / winnersCount).toString())
-        : toWei(
-            (BigInt(payableAmount) / winnersCount).toString(),
-            tokenDecimals
-          ),
+        ? parseEther((Number(payableAmount).toString()))
+        : BigInt(toWei((Number(payableAmount)).toString(), tokenDecimals)),
       currencyAddress,
       maxParticipants,
       1n,
       startTime,
       endTime,
       winnersCount,
-      "0x4554480000000000000000000000000000000000000000000000000000000000",
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
-    value: currencyAddress == ZERO_ADDRESS ? payableAmount : 0n,
+    value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount): 0n,
   });
 
   return signer?.writeContract({
@@ -54,20 +53,17 @@ const createErc20RaffleCallback = async (
     gasPrice: gasEstimate,
     args: [
       isNativeToken
-        ? parseEther((BigInt(payableAmount) / winnersCount).toString())
-        : toWei(
-            (BigInt(payableAmount) / winnersCount).toString(),
-            tokenDecimals
-          ),
+      ? parseEther((Number(payableAmount).toString()))
+      : BigInt(toWei((Number(payableAmount)).toString(), tokenDecimals)),
       currencyAddress,
       maxParticipants,
       1n,
       startTime,
       endTime,
       winnersCount,
-      "0x4554480000000000000000000000000000000000000000000000000000000000",
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
-    value: currencyAddress == ZERO_ADDRESS ? payableAmount : 0n,
+    value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 };
 
@@ -82,8 +78,6 @@ export const createErc20Raffle = async (
   setCreteRaffleResponse: any
 ) => {
   const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
-
-  console.log(raffleContractAddress);
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";
@@ -107,6 +101,7 @@ export const createErc20Raffle = async (
     : null;
   const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
   const constraints = requirementList.map((item) => item.pk);
+  const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
   const raffleData = {
     name: data.provider,
     description: data.description,
@@ -129,6 +124,7 @@ export const createErc20Raffle = async (
     twitter_url: twitter,
     creator_url: creatorUrl,
     telegram_url: telegram,
+    reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
     email_url: data.email,
     necessary_information: data.necessaryInfo,
   };
@@ -146,14 +142,15 @@ export const createErc20Raffle = async (
       raffleContract,
       signer,
       provider,
-      BigInt(data.tokenAmount),
+      data.tokenAmount,
       decimals,
       data.tokenContractAddress as any,
       BigInt(maxNumberOfEntries),
       data.startTimeStamp,
       data.endTimeStamp,
       data.isNativeToken,
-      BigInt(data.winnersCount)
+      BigInt(data.winnersCount),
+      data.totalAmount
     );
 
     if (!response) throw new Error("Contract hash not found");

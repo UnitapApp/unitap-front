@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import { FC } from "react"
-import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types"
-import { getChainClaimIcon, getTxUrl } from "@/utils/chain"
-import { formatWeiBalance } from "@/utils/numbers"
-import { DropIconWrapper } from "../claimModal.style"
-import { Text } from "@/components/ui/text.style"
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types";
+import { getChainClaimIcon, getTxUrl } from "@/utils/chain";
+import { formatWeiBalance } from "@/utils/numbers";
+import { DropIconWrapper } from "../claimModal.style";
+import { Text } from "@/components/ui/text.style";
 
 const ClaimSuccessBody: FC<{
-  chain: Chain
-  activeClaimReceipt: ClaimReceipt
+  chain: Chain;
+  activeClaimReceipt: ClaimReceipt;
 }> = ({ chain, activeClaimReceipt }) => {
   const handleClick = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      `I've just claimed ${formatWeiBalance(chain.maxClaimAmount.toString())} ${
+      `I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${
         chain.symbol
       } on ${chain.chainName} from @Unitap_app 🔥\nClaim yours:`
     )}&url=${encodeURIComponent(
       "unitap.app/gas-tap?hc=" + encodeURIComponent(chain.chainName)
-    )}`
-    window.open(twitterUrl, "_blank")
-  }
+    )}`;
+    window.open(twitterUrl, "_blank");
+  };
 
   return (
     <>
@@ -42,8 +42,7 @@ const ClaimSuccessBody: FC<{
           color="space_green"
           $textAlign="center"
         >
-          {formatWeiBalance(chain.maxClaimAmount.toString())} {chain.symbol}{" "}
-          Claimed
+          {formatWeiBalance(chain.maxClaimAmount)} {chain.symbol} Claimed
         </Text>
         <Icon
           iconSrc="assets/images/modal/successful-state-check.svg"
@@ -59,9 +58,8 @@ const ClaimSuccessBody: FC<{
         mb={1}
         $textAlign="center"
       >
-        we successfully transferred{" "}
-        {formatWeiBalance(chain.maxClaimAmount.toString())} {chain.symbol} to
-        your wallet
+        we successfully transferred {formatWeiBalance(chain.maxClaimAmount)}{" "}
+        {chain.symbol} to your wallet
       </Text>
 
       <Text
@@ -93,7 +91,7 @@ const ClaimSuccessBody: FC<{
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ClaimSuccessBody
+export default ClaimSuccessBody;

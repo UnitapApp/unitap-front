@@ -1,12 +1,12 @@
-import { useContext } from "react"
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { formatWeiBalance } from "@/utils/numbers"
-import { useGasTapContext } from "@/context/gasTapProvider"
-import Modal from "@/components/ui/Modal/modal"
+import { useContext } from "react";
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { formatWeiBalance } from "@/utils/numbers";
+import { useGasTapContext } from "@/context/gasTapProvider";
+import Modal from "@/components/ui/Modal/modal";
 
 const HighGasFeeModalContent = () => {
-  const { changeIsHighGasFeeModalOpen } = useGasTapContext()
+  const { changeIsHighGasFeeModalOpen } = useGasTapContext();
 
   return (
     <div
@@ -34,8 +34,8 @@ const HighGasFeeModalContent = () => {
         <p className="font-semibold">Close</p>
       </ClaimButton>
     </div>
-  )
-}
+  );
+};
 
 const HighGasFeeModal = () => {
   const {
@@ -43,24 +43,22 @@ const HighGasFeeModal = () => {
     changeIsHighGasFeeModalOpen,
     activeChain,
     isNonEvmActive,
-  } = useGasTapContext()
+  } = useGasTapContext();
 
-  const chain = activeChain
+  const chain = activeChain;
 
-  if (!chain) return null
+  if (!chain) return null;
 
   return (
     <Modal
-      title={`Claim ${formatWeiBalance(chain.maxClaimAmount.toString())} ${
-        chain.symbol
-      }`}
+      title={`Claim ${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}
       size="small"
       isOpen={isHighGasFeeModalOpen}
       closeModalHandler={() => changeIsHighGasFeeModalOpen(false)}
     >
       <HighGasFeeModalContent />
     </Modal>
-  )
-}
+  );
+};
 
-export default HighGasFeeModal
+export default HighGasFeeModal;

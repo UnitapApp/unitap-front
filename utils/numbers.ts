@@ -24,41 +24,40 @@ export const toSignificant = (
   }
 };
 
-export const fromWei = (amount: bigint | string, decimals = 18): string => {
-  const bnAmount = BigInt(amount);
-  if (bnAmount === BigInt(0)) return "0";
-  return (bnAmount / BigInt(10) ** BigInt(decimals)).toString();
+export const fromWei = (amount: BigNumber.Value, decimals = 18) => {
+  const bnAmount = toBN(amount);
+  if (bnAmount.isZero()) return "0";
+  return bnAmount.dividedBy(toBN(10).pow(decimals)).toString();
 };
 
-export const toWei = (amount: bigint | string, decimals = 18): bigint => {
-  const bnAmount = BigInt(amount);
-  if (bnAmount === BigInt(0)) return BigInt(0);
-  return bnAmount * BigInt(10) ** BigInt(decimals);
+export const toWei = (amount: BigNumber.Value, decimals = 18) => {
+  const bnAmount = toBN(amount);
+  if (bnAmount.isZero()) return 0;
+  return bnAmount.multipliedBy(toBN(10).pow(decimals)).toNumber();
 };
 
-export const formatBalance = (amount: number): string => {
-  return amount < 0.000001 ? "< 0.000001" : amount.toString();
+export const formatBalance = (amount: number) => {
+  return amount < 0.000001 ? "< 0.000001" : amount;
 };
 
-export const formatWeiBalance = (amount: bigint | string): string => {
+export const formatWeiBalance = (amount: number) => {
   const fw = fromWei(amount);
   return formatBalance(Number(fw));
 };
 
-export const formatSolanaBalance = (amount: bigint | string): string => {
-  const fw = BigInt(amount) / BigInt(1e9);
-  return formatBalance(Number(fw));
+export const formatSolanaBalance = (amount: number) => {
+  const fw = amount / 1e9;
+
+  return formatBalance(fw);
 };
 
-export const parseToLamports = (amount: number | string): bigint => {
-  return BigInt(amount) * BigInt(1e9);
+export const parseToLamports = (amount: number | string) => {
+  return Number(amount) * 1e9;
 };
 
-export const formatChainBalance = (
-  amount: bigint | string,
-  chainSymbol: string
-): string => {
+export const formatChainBalance = (amount: number, chainSymbol: string) => {
   if (chainSymbol === "SOL") return formatSolanaBalance(amount);
+
   return formatWeiBalance(amount);
 };
 
