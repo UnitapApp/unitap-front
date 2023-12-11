@@ -281,21 +281,27 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           </div>
 
           {!!timePermissionVerification && (
-            <div
-              data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-              className="bg-gray20 flex items-center justify-center px-5 py-2 static md:absolute rounded top-0 bottom-0 left-1/2 md:-translate-x-1/2 text-xs text-gray80"
+            <Tooltip
+              className="px-5 py-2 md:absolute rounded top-0 bottom-0 static left-1/2 md:-translate-x-1/2 text-xs text-gray80 flex items-center justify-center bg-gray20"
+              withoutImage
+              text={timePermissionVerification.description}
             >
-              {timePermissionVerification.title}
-              <Icon
-                iconSrc={`/assets/images/token-tap/${
-                  timePermissionVerification.name ===
-                  "tokenTap.OnceInALifeTimeVerification"
-                    ? "non-repeat.svg"
-                    : "repeat.svg"
-                }`}
-                className="ml-3"
-              />
-            </div>
+              <div
+                data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+                className="flex items-center justify-center"
+              >
+                {timePermissionVerification.title}
+                <Icon
+                  iconSrc={`/assets/images/token-tap/${
+                    timePermissionVerification.name ===
+                    "tokenTap.OnceInALifeTimeVerification"
+                      ? "non-repeat.svg"
+                      : "repeat.svg"
+                  }`}
+                  className="ml-3"
+                />
+              </div>
+            </Tooltip>
           )}
 
           <div className="flex gap-x-6 items-center">
