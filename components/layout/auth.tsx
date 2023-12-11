@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useRef, useState } from "react"
-import { useOutsideClick } from "@/utils/hooks/dom"
-import { useUserProfileContext } from "@/context/userProfile"
-import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet"
-import { shortenAddress } from "@/utils"
-import Image from "next/image"
-import { useGlobalContext } from "@/context/globalProvider"
+import { useRef, useState } from "react";
+import { useOutsideClick } from "@/utils/hooks/dom";
+import { useUserProfileContext } from "@/context/userProfile";
+import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet";
+import { shortenAddress } from "@/utils";
+import Image from "next/image";
+import { useGlobalContext } from "@/context/globalProvider";
 
-import Styles from "./auth.module.scss"
+import Styles from "./auth.module.scss";
 
 const RenderNavbarLoginBrightIdButton = () => {
-  const { openBrightIdModal } = useGlobalContext()
-  const { userProfileLoading } = useUserProfileContext()
+  const { openBrightIdModal } = useGlobalContext();
+  const { userProfileLoading } = useUserProfileContext();
 
   return (
     <>
@@ -24,47 +24,48 @@ const RenderNavbarLoginBrightIdButton = () => {
         {userProfileLoading ? "Connecting..." : "Connect BrightID"}
       </button>
     </>
-  )
-}
+  );
+};
 
 export const UserAuthStatus = () => {
-  const divRef = useRef<HTMLDivElement>(null)
+  const divRef = useRef<HTMLDivElement>(null);
 
-  const [dropDownActive, setDropDownActive] = useState(false)
+  const [dropDownActive, setDropDownActive] = useState(false);
 
-  useOutsideClick(divRef, () => setDropDownActive(false))
+  useOutsideClick(divRef, () => setDropDownActive(false));
 
-  const { userProfile } = useUserProfileContext()
-
-  if (!userProfile) return <RenderNavbarLoginBrightIdButton />
+  const { userProfile } = useUserProfileContext();
 
   return (
     <div ref={divRef} className="md:relative ml-5">
       <div
-        onClick={setDropDownActive.bind(null, !dropDownActive)}
+        onClick={() => {
+          if (!userProfile) return;
+          setDropDownActive(!dropDownActive);
+        }}
         className="cursor-pointer ml-5 flex rounded-lg h-9 items-center justify-between bg-gray40 pr-0.5 pl-2 mr-3"
       >
         <span className="ml-2 hidden md:block text-sm">
           @ {userProfile?.username}
         </span>
 
-        <span className="text-gray90 hidden md:block ml-8">level: -</span>
+        <span className="text-gray90 hidden md:block ml-8 mr-2">level: ? </span>
         <RenderNavbarWalletAddress />
       </div>
 
       {dropDownActive && <ProfileDropdown />}
     </div>
-  )
-}
+  );
+};
 
 const WalletItem = ({
   wallet,
   isActive,
 }: {
-  wallet: string
-  isActive?: boolean
+  wallet: string;
+  isActive?: boolean;
 }) => {
-  const { disconnect } = useWalletConnection()
+  const { disconnect } = useWalletConnection();
 
   return (
     <div
@@ -103,19 +104,19 @@ const WalletItem = ({
         </button>
       )}
     </div>
-  )
-}
+  );
+};
 
 const ProfileDropdown = () => {
-  const { userProfile } = useUserProfileContext()
+  const { userProfile } = useUserProfileContext();
 
-  const { connection } = useUserWalletProvider()
+  const { connection } = useUserWalletProvider();
 
   const onLogout = () => {
-    localStorage.setItem("userToken", "")
+    localStorage.setItem("userToken", "");
 
-    window.location.reload()
-  }
+    window.location.reload();
+  };
   // #4BF2A200, #A89FE7AD, #A958A9, #DD40CD00
   return (
     <div className="absolute bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-10 top-full mt-2">
@@ -156,20 +157,20 @@ const ProfileDropdown = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const RenderNavbarWalletAddress = () => {
-  const { setIsWalletPromptOpen } = useGlobalContext()
-  const { userProfile } = useUserProfileContext()
+  const { setIsWalletPromptOpen } = useGlobalContext();
+  const { userProfile } = useUserProfileContext();
 
   const EVMWallet = userProfile?.wallets.find(
     (wallet) => wallet.walletType === "EVM"
-  )
+  );
 
-  const { connection } = useUserWalletProvider()
+  const { connection } = useUserWalletProvider();
 
-  let address = connection.isConnected ? connection.address : EVMWallet?.address
+  let address = EVMWallet?.address;
 
   if (!address)
     return (
@@ -180,7 +181,7 @@ export const RenderNavbarWalletAddress = () => {
       >
         Connect Wallet
       </button>
-    )
+    );
 
   return (
     <>
@@ -190,15 +191,15 @@ export const RenderNavbarWalletAddress = () => {
           connection.isConnected && "btn--address--active"
         } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {
-          if (connection.isConnected) return
-          e.stopPropagation()
-          setIsWalletPromptOpen(true)
+          if (connection.isConnected) return;
+          e.stopPropagation();
+          setIsWalletPromptOpen(true);
         }}
       >
         {shortenAddress(address)}
       </button>
     </>
-  )
-}
+  );
+};
 
-export default UserAuthStatus
+export default UserAuthStatus;
