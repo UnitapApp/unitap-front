@@ -131,7 +131,7 @@ export const GasTapProvider: FC<
   );
 
   const { setIsWalletPromptOpen } = useGlobalContext();
-  const { isConnected } = useWalletAccount();
+  const { isConnected, address: userAddress } = useWalletAccount();
 
   const updateChainList = useCallback(async () => {
     try {
@@ -226,8 +226,12 @@ export const GasTapProvider: FC<
           lastFailPk: activeClaimReceipt.pk,
         });
 
+      const addr =
+        userProfile?.wallets.find((item) => item.walletType == "EVM")
+          ?.address ?? userAddress;
+
       try {
-        await claimMax(userToken, claimChainPk);
+        await claimMax(userToken, claimChainPk, addr!);
         setTimeout(() => {
           setClaimLoading(false);
         }, 1000);

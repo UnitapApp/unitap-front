@@ -45,7 +45,7 @@ export async function setWalletAPI(
   walletType: string
 ) {
   const response = await axiosInstance.post(
-    "/api/auth/user/set-wallet/",
+    "/api/auth/user/wallets/",
     { walletType: walletType, address: wallet },
     {
       headers: {
