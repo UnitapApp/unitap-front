@@ -1,11 +1,11 @@
-import { ClaimTokenResponse, ClaimedToken, Token } from "@/types/token-tap"
-import { axiosInstance } from "."
+import { ClaimTokenResponse, ClaimedToken, Token } from "@/types/token-tap";
+import { axiosInstance } from ".";
 
 export async function getTokensListAPI() {
   const response = await axiosInstance.get<Token[]>(
     "/api/tokentap/token-distribution-list/"
-  )
-  return response.data
+  );
+  return response.data;
 }
 
 export async function getClaimedTokensListAPI(token: string) {
@@ -16,25 +16,28 @@ export async function getClaimedTokensListAPI(token: string) {
         Authorization: `Token ${token}`,
       },
     }
-  )
-  return response.data
+  );
+  return response.data;
 }
 
 export async function claimTokenAPI(
   token: string,
   tokenId: number,
+  address: string,
   body?: any
 ) {
   const response = await axiosInstance.post<ClaimTokenResponse>(
     `/api/tokentap/token-distribution/${tokenId}/claim/`,
-    body ?? {},
+    body
+      ? { ...body, userWalletAddress: address }
+      : { userWalletAddress: address },
     {
       headers: {
         Authorization: `Token ${token}`,
       },
     }
-  )
-  return response.data.signature
+  );
+  return response.data.signature;
 }
 
 export async function updateClaimFinished(
@@ -50,8 +53,8 @@ export async function updateClaimFinished(
         Authorization: `Token ${token}`,
       },
     }
-  )
-  return response.data
+  );
+  return response.data;
 }
 
 export async function getTokenConstraintsVerifications(
@@ -65,7 +68,7 @@ export async function getTokenConstraintsVerifications(
         Authorization: `Token ${token}`,
       },
     }
-  )
+  );
 
-  return response.data
+  return response.data;
 }
