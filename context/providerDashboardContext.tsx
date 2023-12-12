@@ -604,86 +604,86 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       numberOfWinnersMessage: null,
     };
 
-    const { startTimeStamp, endTimeStamp } = data;
-    if (!startTimeStamp) {
-      errorObject.startDateStatus = false;
-      errorObject.statDateStatusMessage = errorMessages.required;
-    }
-    const sevenDaysLaterAfterNow: Date = new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
-    );
-    const sevenDaysLaterAfterNowTimeStamp = Math.round(
-      sevenDaysLaterAfterNow.getTime() / 1000
-    );
+    // const { startTimeStamp, endTimeStamp } = data;
+    // if (!startTimeStamp) {
+    //   errorObject.startDateStatus = false;
+    //   errorObject.statDateStatusMessage = errorMessages.required;
+    // }
+    // const sevenDaysLaterAfterNow: Date = new Date(
+    //   Date.now() + 7 * 24 * 60 * 60 * 1000
+    // );
+    // const sevenDaysLaterAfterNowTimeStamp = Math.round(
+    //   sevenDaysLaterAfterNow.getTime() / 1000
+    // );
 
-    if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
-      errorObject.startDateStatus = false;
-      errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
-    }
-    if (!setDuration && !endTimeStamp) {
-      errorObject.endDateStatus = false;
-      errorObject.endDateStatusMessage = errorMessages.required;
-    }
+    // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
+    //   errorObject.startDateStatus = false;
+    //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
+    // }
+    // if (!setDuration && !endTimeStamp) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.required;
+    // }
 
-    if (!setDuration && endTimeStamp && startTimeStamp) {
-      if (endTimeStamp <= startTimeStamp) {
-        errorObject.endDateStatus = false;
-        errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-      }
-    }
+    // if (!setDuration && endTimeStamp && startTimeStamp) {
+    //   if (endTimeStamp <= startTimeStamp) {
+    //     errorObject.endDateStatus = false;
+    //     errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    //   }
+    // }
 
-    if (setDuration && !data.numberOfDuration) {
-      errorObject.numberOfDurationStatus = false;
-      errorObject.numberOfDurationMessage = errorMessages.required;
-    }
+    // if (setDuration && !data.numberOfDuration) {
+    //   errorObject.numberOfDurationStatus = false;
+    //   errorObject.numberOfDurationMessage = errorMessages.required;
+    // }
 
-    if (data.limitEnrollPeopleCheck && !data.maxNumberOfEntries) {
-      errorObject.maximumLimitationStatus = false;
-      errorObject.maximumLimitationMessage = errorMessages.required;
-    }
+    // if (data.limitEnrollPeopleCheck && !data.maxNumberOfEntries) {
+    //   errorObject.maximumLimitationStatus = false;
+    //   errorObject.maximumLimitationMessage = errorMessages.required;
+    // }
 
-    if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
-      errorObject.maximumLimitationStatus = false;
-      errorObject.maximumLimitationMessage = errorMessages.required;
-    }
+    // if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
+    //   errorObject.maximumLimitationStatus = false;
+    //   errorObject.maximumLimitationMessage = errorMessages.required;
+    // }
 
-    if (
-      data.winnersCount &&
-      Math.floor(data.winnersCount) != data.winnersCount
-    ) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
+    // if (
+    //   data.winnersCount &&
+    //   Math.floor(data.winnersCount) != data.winnersCount
+    // ) {
+    //   errorObject.numberOfWinnersStatus = false;
+    //   errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    // }
 
-    if (data.winnersCount && data.winnersCount <= 0) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
+    // if (data.winnersCount && data.winnersCount <= 0) {
+    //   errorObject.numberOfWinnersStatus = false;
+    //   errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    // }
 
-    if (!data.winnersCount) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.required;
-    }
+    // if (!data.winnersCount) {
+    //   errorObject.numberOfWinnersStatus = false;
+    //   errorObject.numberOfWinnersMessage = errorMessages.required;
+    // }
 
-    if (data.limitEnrollPeopleCheck && Number(data.maxNumberOfEntries) > 0) {
-      if (
-        (data.isNft &&
-          Number(data.maxNumberOfEntries) <= data.nftTokenIds.length) ||
-        (!data.isNft &&
-          Number(data.maxNumberOfEntries) <= Number(data.winnersCount))
-      ) {
-        errorObject.maximumLimitationStatus = false;
-        errorObject.maximumLimitationMessage = (
-          <p>
-            The maximum number of enrollees cannot be less than or equal to the
-            number of winners.
-            <br />
-            Number of winners:{" "}
-            {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
-          </p>
-        );
-      }
-    }
+    // if (data.limitEnrollPeopleCheck && Number(data.maxNumberOfEntries) > 0) {
+    //   if (
+    //     (data.isNft &&
+    //       Number(data.maxNumberOfEntries) <= data.nftTokenIds.length) ||
+    //     (!data.isNft &&
+    //       Number(data.maxNumberOfEntries) <= Number(data.winnersCount))
+    //   ) {
+    //     errorObject.maximumLimitationStatus = false;
+    //     errorObject.maximumLimitationMessage = (
+    //       <p>
+    //         The maximum number of enrollees cannot be less than or equal to the
+    //         number of winners.
+    //         <br />
+    //         Number of winners:{" "}
+    //         {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
+    //       </p>
+    //     );
+    //   }
+    // }
 
     return errorObject;
   };

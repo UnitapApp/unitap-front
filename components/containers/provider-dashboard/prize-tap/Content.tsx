@@ -123,7 +123,10 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               Show Details
             </ProviderDashboardButtonShowDetails>
           </div>
-        ) : day >= 1 ? (
+        ) : day >= 1 ||
+          (prize.status == RaffleStatus.VERIFIED &&
+            new Date(prize.startAt) > new Date() &&
+            new Date(prize.deadline) < new Date()) ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
               {Date.now() < new Date(prize.startAt).getTime()
@@ -137,7 +140,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               />
             </div>
           </div>
-        ) : diff > 0 ? (
+        ) : diff > 0 && Date.now() > new Date(prize.startAt).getTime() ? (
           <div>
             <ProviderDashboardCardTimer
               startTime={prize.startAt}
@@ -150,12 +153,24 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                   Spots Left
                 </p>
                 <Icon
-                  iconSrc="assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="../assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"
                 />
               </div>
+            </div>
+          </div>
+        ) : diff > 0 && prize.status == RaffleStatus.VERIFIED ? (
+          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
+            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+              Starts in:
+            </p>
+            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+              <ProviderDashboardCardTimer
+                startTime={prize.startAt}
+                FinishTime={prize.deadline}
+              />
             </div>
           </div>
         ) : (
