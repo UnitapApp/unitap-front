@@ -180,13 +180,13 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const setClaimHashId = selectedRaffleForEnroll?.pk;
 
-    setClaimOrEnrollSignatureLoading(true);
-
     const enrollOrClaimPayload = await getSignature();
+
+    setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
       args.push(
-        enrollOrClaimPayload?.multiplier,
+        selectedRaffleForEnroll?.userEntry?.multiplier,
         enrollOrClaimPayload?.result?.reqId,
         {
           signature: enrollOrClaimPayload?.result?.signatures[0].signature,
@@ -197,45 +197,50 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       );
     }
 
-    const response = await writeAsync({
-      args,
-    });
+    try {
+      const response = await writeAsync({
+        args,
+      });
 
-    if (response) {
-      await waitForTransaction({
-        hash: response.hash,
-        confirmations: 1,
-        chainId,
-      })
-        .then(async (res) => {
-          setClaimOrEnrollWalletResponse({
-            success: true,
-            state: "Done",
-            txHash: res.transactionHash,
-            message:
-              method === "Claim"
-                ? "Claimed successfully."
-                : "Enrolled successfully",
-          });
+      if (response) {
+        await waitForTransaction({
+          hash: response.hash,
+          confirmations: 1,
+          chainId,
+        })
+          .then(async (res) => {
+            setClaimOrEnrollWalletResponse({
+              success: true,
+              state: "Done",
+              txHash: res.transactionHash,
+              message:
+                method === "Claim"
+                  ? "Claimed successfully."
+                  : "Enrolled successfully",
+            });
 
-          await (method === "Enroll"
-            ? updateEnrolledFinished(userToken, id, res.transactionHash)
-            : updateClaimPrizeFinished(
-                userToken,
-                setClaimHashId,
-                res.transactionHash
-              ));
-        })
-        .catch((e) => {
-          setClaimOrEnrollWalletResponse({
-            success: false,
-            state: "Retry",
-            message: "Something went wrong. Please try again!",
+            await (method === "Enroll"
+              ? updateEnrolledFinished(userToken, id, res.transactionHash)
+              : updateClaimPrizeFinished(
+                  userToken,
+                  setClaimHashId,
+                  res.transactionHash
+                ));
+          })
+          .catch((e) => {
+            setClaimOrEnrollWalletResponse({
+              success: false,
+              state: "Retry",
+              message: "Something went wrong. Please try again!",
+            });
           });
-        })
-        .finally(() => {
-          setClaimOrEnrollLoading(false);
-        });
+        // .finally(() => {
+        //   setClaimOrEnrollLoading(false);
+        // });
+      }
+    } finally {
+      setClaimOrEnrollLoading(false);
+      console.log("-");
     }
   }, [getSignature, method, selectedRaffleForEnroll, userToken, writeAsync]);
 
