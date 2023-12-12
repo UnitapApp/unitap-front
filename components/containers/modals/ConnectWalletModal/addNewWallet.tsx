@@ -1,19 +1,28 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import Link from "next/link";
 import { FC } from "react";
-import { ConnectionProvider } from ".";
+import { ConnectionProvider, WalletState } from ".";
 import { WalletProviderButton } from "./walletPrompt";
 import { useWalletConnection } from "@/utils/wallet";
+import Image from "next/image";
 
 const AddNewWalletBody: FC<{
   setWalletProvider: (provider: ConnectionProvider) => void;
-}> = ({ setWalletProvider }) => {
+  setWalletState: (state: WalletState) => void;
+}> = ({ setWalletProvider, setWalletState }) => {
   const { connect, connectors } = useWalletConnection();
 
   return (
     <div className="text-center">
+      <Image
+        src="/assets/images/provider-dashboard/arrow-left.svg"
+        alt="back"
+        className="absolute top-5 left-4 cursor-pointer"
+        height={14}
+        width={19}
+        onClick={() => setWalletState(WalletState.UnknownWallet)}
+      />
       <Icon iconSrc="/assets/images/wallets.svg" alt="wallets" />
       <p className="font-semibold mt-3">Login</p>
 

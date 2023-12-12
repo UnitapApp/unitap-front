@@ -2,12 +2,14 @@
 
 import Modal from "@/components/ui/Modal/modal";
 import { useGlobalContext } from "@/context/globalProvider";
-import { useWalletAccount } from "@/utils/wallet";
 import { FC, useEffect, useMemo, useState } from "react";
 import WalletPrompt from "./walletPrompt";
 import WalletConnecting from "./walletConnecting";
 import UnknownWalletBody from "./unknownWallet";
 import AddNewWalletBody from "./addNewWallet";
+import SetUsernameBody from "./setUsername";
+import AddNewWalletSuccess from "./addNewWalletSuccess";
+import AddNewWalletFailed from "./addNewWalletFailed";
 
 export enum ConnectionProvider {
   Metamask,
@@ -18,7 +20,7 @@ export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.AddNewWallet
+    WalletState.AddWalletFailed
   );
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
@@ -60,7 +62,20 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.UnknownWallet) return <UnknownWalletBody />;
 
   if (walletState === WalletState.AddNewWallet)
-    return <AddNewWalletBody setWalletProvider={setWalletProvider} />;
+    return (
+      <AddNewWalletBody
+        setWalletState={setWalletState}
+        setWalletProvider={setWalletProvider}
+      />
+    );
+
+  if (walletState === WalletState.SetUsername) return <SetUsernameBody />;
+
+  if (walletState === WalletState.AddWalletSuccess)
+    return <AddNewWalletSuccess />;
+
+  if (walletState === WalletState.AddWalletFailed)
+    return <AddNewWalletFailed />;
 };
 
 export enum WalletState {
@@ -68,6 +83,7 @@ export enum WalletState {
   SignMessage,
   MetamaskSignMessage,
   WalletConnectSignMessage,
+  SetUsername,
   LoggedIn,
   UnknownWallet,
   AddNewWallet,
@@ -83,6 +99,7 @@ const walletStateTitles = {
   [WalletState.LoggedIn]: "Conenct Wallet",
   [WalletState.UnknownWallet]: "Select Wallet State",
   [WalletState.AddNewWallet]: "Add Wallet to an Existing Account",
+  [WalletState.SetUsername]: "Register",
   [WalletState.AddWalletFailed]: "Conenct Wallet",
   [WalletState.AddWalletSuccess]: "Adding wallet",
 };
