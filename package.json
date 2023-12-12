@@ -48,6 +48,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/react-lottie": "^1.2.10",
+    "@vercel/speed-insights": "^1.0.1",
     "@wagmi/cli": "^1.5.2",
     "@zxing/browser": "^0.1.4",
     "@zxing/library": "^0.20.0",

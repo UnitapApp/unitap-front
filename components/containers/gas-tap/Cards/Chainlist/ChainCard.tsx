@@ -15,6 +15,7 @@ import { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
+import Tooltip from "@/components/ui/Tooltip";
 
 type ChainCardProps = {
   chain: Chain;
@@ -204,32 +205,41 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               {chain.symbol}
             </p>
           </div>
-          <div
-            className={`${
+          <Tooltip
+            className={`text-xs !cursor-default py-3 w-full max-w-[180px] ${
               isHighlighted ? "bg-transparent" : "bg-gray40"
-            } w-full max-w-[180px] items-center flex rounded-none py-3 justify-between md:justify-center`}
+            }`}
+            withoutImage
+            text={
+              chain.isOneTimeClaim
+                ? "You can only claim from this tap once."
+                : "You can claim from this tap each round."
+            }
           >
-            {chain.isOneTimeClaim ? (
-              <>
-                <p className="text-xs">Single-Claim Tap</p>
-                <Icon
-                  className="text-white"
-                  ml={4}
-                  iconSrc="/assets/images/gas-tap/claimable-once.svg"
-                />
-              </>
-            ) : (
-              <>
-                <p className="text-xs">Periodic Tap</p>
-                <Icon
-                  className="text-white"
-                  ml={4}
-                  iconSrc="/assets/images/gas-tap/periodic-tap.svg"
-                />
-              </>
-            )}
-          </div>
-
+            <div
+              className={`items-center flex rounded-none justify-between md:justify-center`}
+            >
+              {chain.isOneTimeClaim ? (
+                <>
+                  <p className="text-xs">Single-Claim Tap</p>
+                  <Icon
+                    className="text-white"
+                    ml={4}
+                    iconSrc="/assets/images/gas-tap/claimable-once.svg"
+                  />
+                </>
+              ) : (
+                <>
+                  <p>Periodic Tap</p>
+                  <Icon
+                    className="text-white"
+                    ml={4}
+                    iconSrc="/assets/images/gas-tap/periodic-tap.svg"
+                  />
+                </>
+              )}
+            </div>
+          </Tooltip>
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"

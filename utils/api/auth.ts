@@ -38,3 +38,20 @@ export async function sponsorAPI(address: string) {
   });
   return response.data;
 }
+
+export async function setWalletAPI(
+  token: string,
+  wallet: string,
+  walletType: string
+) {
+  const response = await axiosInstance.post(
+    "/api/auth/user/set-wallet/",
+    { walletType: walletType, address: wallet },
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+  return response.data;
+}

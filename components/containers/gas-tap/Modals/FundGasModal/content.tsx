@@ -26,6 +26,7 @@ import { submitDonationTxHash } from "@/utils/api";
 import SelectChainModal from "../SelectChainModal";
 import FundTransactionModal from "../FundTransactionModal";
 import { parseEther } from "viem";
+import { useGlobalContext } from "@/context/globalProvider";
 
 const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const { chainList: originalChainList } = useGasTapContext();
@@ -83,6 +84,8 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     return chainId === Number(selectedChain.chainId);
   }, [selectedChain, isConnected, chainId]);
 
+  const { setIsWalletPromptOpen } = useGlobalContext();
+
   const handleTransactionError = useCallback((error: any) => {
     if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
     const message = error?.data?.message || error?.error?.message;
@@ -110,7 +113,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
   const handleSendFunds = useCallback(async () => {
     if (!isConnected) {
-      await tryActivation();
+      setIsWalletPromptOpen(true);
       return;
     }
     if (!chainId || !selectedChain || !address || loading) return;
@@ -277,10 +280,10 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                 <p className="select-box__info__coin-symbol text-white text-xs font-semibold">
                   {selectedChain?.symbol}
                 </p>
-                {(balance.isLoading && !balance.data?.formatted) || (
+                {(balance.isLoading && balance.data?.formatted) || (
                   <p
-                    onClick={() => setFundAmount(balance.toString())}
-                    className="select-box__info__coin-balance text-gray100 text-xs cursor-pointer hover:text-primary-light font-semibold"
+                    // onClick={() => setFundAmount(balance.toString())}
+                    className="select-box__info__coin-balance text-gray100 text-xs font-semibold"
                   >
                     Balance:{" "}
                     {balance.data?.formatted.slice(0, 5) +
