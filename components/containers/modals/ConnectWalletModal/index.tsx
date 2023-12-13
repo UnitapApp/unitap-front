@@ -10,6 +10,7 @@ import AddNewWalletBody from "./addNewWallet";
 import SetUsernameBody from "./setUsername";
 import AddNewWalletSuccess from "./addNewWalletSuccess";
 import AddNewWalletFailed from "./addNewWalletFailed";
+import LoginSuccessBody from "./LoginSuccess";
 
 export enum ConnectionProvider {
   Metamask,
@@ -20,7 +21,7 @@ export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.AddWalletFailed
+    WalletState.LoggedIn
   );
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
@@ -45,7 +46,7 @@ export const RenderWalletBody: FC<{
 
   useEffect(() => {
     setWalletTitle(walletStateTitles[walletState]);
-  }, [walletState]);
+  }, [setWalletTitle, walletState]);
 
   if (walletState === WalletState.Prompt)
     return <WalletPrompt setWalletProvider={setWalletProvider} />;
@@ -68,6 +69,8 @@ export const RenderWalletBody: FC<{
         setWalletProvider={setWalletProvider}
       />
     );
+
+  if (walletState === WalletState.LoggedIn) return <LoginSuccessBody />;
 
   if (walletState === WalletState.SetUsername) return <SetUsernameBody />;
 
