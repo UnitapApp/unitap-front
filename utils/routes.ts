@@ -1,10 +1,10 @@
 enum RoutePath {
   HOME = "/",
-  FAUCET = "/gas-tap",
-  TOKEN = "/token-tap",
+  FAUCET = "/gastap",
+  TOKEN = "/tokentap",
   DONATE = "/donate",
   FUND = "/fund",
-  PRIZE = "/prize-tap",
+  PRIZE = "/prizetap",
   ABOUT = "/about",
   NFT = "/pass",
   PROVIDERDASHBOARD = "/provider-dashboard",
@@ -13,4 +13,4 @@ enum RoutePath {
   PROVIDER_PRIZETAP = "/provider-dashboard/prize-tap",
 }
 
-export default RoutePath
+export default RoutePath;
