@@ -52,7 +52,6 @@ export const ProviderDashboardCardTimer = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setStarted(new Date(startTime) < new Date());
-      console.log(startTime);
       setNow(new Date());
     }, 1000);
     return () => {
