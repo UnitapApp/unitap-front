@@ -1,5 +1,6 @@
 "use client";
 
+import { useFastRefresh } from "@/utils/hooks/refresh";
 import { useState, useEffect, useMemo } from "react";
 
 type RaffleCardTimerProps = {
@@ -17,10 +18,6 @@ export const ProviderDashboardCardTimer = ({
   const [minutes, setMinutes] = useState("00");
   const [seconds, setSeconds] = useState("00");
   const [start, setStarted] = useState<boolean>(true);
-
-  useEffect(() => {
-    setStarted(new Date(startTime) < new Date());
-  }, [new Date()]);
 
   let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
   let FinishTimeDate = useMemo(
@@ -53,11 +50,15 @@ export const ProviderDashboardCardTimer = ({
   }, [now, deadline]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
+    const interval = setInterval(() => {
+      setStarted(new Date(startTime) < new Date());
+      console.log(startTime);
+      setNow(new Date());
+    }, 1000);
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [startTime]);
 
   return (
     <div>
