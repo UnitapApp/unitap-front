@@ -12,7 +12,9 @@ export async function getRafflesListAPI(token: string | undefined) {
         },
       }
     );
-    return response.data.filter((raffle) => raffle.status !== "PENDING");
+    return response.data.filter(
+      (raffle) => raffle.status !== "PENDING" && raffle.status !== "REJECTED"
+    );
   }
   const response = await axiosInstance.get<Prize[]>(
     "/api/prizetap/raffle-list/"

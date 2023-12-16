@@ -45,7 +45,7 @@ export type Prize = {
   startAt: string;
   maxMultiplier: number;
   prizeAsset?: string;
-  status: "PENDING" | string;
+  status: "PENDING" | "REJECTED" | string;
 };
 
 export type WinnerEntry = {
