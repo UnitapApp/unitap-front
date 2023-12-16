@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -67,6 +67,7 @@ const config: Config = {
         "disabled-text": "#939393",
         "secondary-text": "#997EA4",
         warn: "#F16E35",
+        warning2: "#877A74",
       },
 
       borderWidth: {
@@ -140,5 +141,5 @@ const config: Config = {
       },
     },
   },
-}
-export default config
+};
+export default config;

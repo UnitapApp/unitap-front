@@ -2,8 +2,8 @@
 
 import {
   SecondaryButton,
-  ClaimedButton,
   ClaimButton,
+  Button,
 } from "@/components/ui/Button/button";
 import { DV } from "@/components/ui/designVariables";
 import { useGasTapContext } from "@/context/gasTapProvider";
@@ -16,6 +16,8 @@ import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
+import Styles from "./chain-card.module.scss";
+import Image from "next/image";
 
 type ChainCardProps = {
   chain: Chain;
@@ -84,7 +86,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         >
           <div
             onClick={() => window.open(chain.blockScanAddress, "_blank")}
-            className="hover:cursor-pointer items-center flex mb-6 sm:mb-0"
+            className={`cursor-pointer ${
+              isOneTimeCollected ? "opacity-60" : ""
+            } items-center flex mb-6 sm:mb-0`}
           >
             <span className="chain-logo-container w-10 h-10 flex justify-center">
               <img
@@ -101,7 +105,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             </p>
             <img
               className="arrow-icon mt-1 ml-1.5 w-2 h-2"
-              src="assets/images/arrow-icon.svg"
+              src="/assets/images/arrow-icon.svg"
               alt="arrow"
             />
             <p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
@@ -136,29 +140,49 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {isMonthlyCollected || isOneTimeCollected ? (
-                <ClaimedButton
+                <Button
                   data-testid={`chain-claimed-${chain.pk}`}
                   $mlAuto
-                  $icon="../assets/images/claim/claimedIcon.svg"
-                  $iconWidth={24}
-                  $iconHeight={20}
                   onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+                  className={`text-sm ${Styles.claimedButton} !w-[220px] !py-2 m-auto`}
                 >
-                  <p className="text-gradient-primary flex-[2] font-semibold text-sm">
-                    Claimed!
-                  </p>
-                </ClaimedButton>
+                  <div className="flex-[2] text-left text-xs">
+                    <p className="text-space-green font-semibold">
+                      Gas Claimed!
+                    </p>
+                    <p
+                      className={`${
+                        isOneTimeCollected
+                          ? "text-warning2"
+                          : "text-secondary-text"
+                      } text-2xs font-normal`}
+                    >
+                      {isOneTimeCollected
+                        ? "Not claimable anymore"
+                        : "Claimable again in next round"}
+                    </p>
+                  </div>
+                  <Image
+                    width={24}
+                    height={20}
+                    src={`/assets/images/${
+                      isOneTimeCollected
+                        ? "gas-tap/claimed-logo.svg"
+                        : "claim/claimedIcon.svg"
+                    }`}
+                    alt="claimed logo"
+                  />
+                </Button>
               ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
-                <div className="btn btn--claim btn--sm btn--out-of-balance">
-                  Out of Gas
-                  <button
-                    onClick={() => handleRefillButtonClicked(chain.pk)}
-                    className="btn btn--sm btn--refill"
-                  >
-                    Refuel
-                  </button>
-                </div>
+                <Button
+                  onClick={() => handleRefillButtonClicked(chain.pk)}
+                  className="bg-gray60 text-xs !block border-2 !font-normal border-gray100 !w-[220px] !py-1 m-auto"
+                >
+                  <p>Refuel</p>
+                  <p className="text-2xs text-gray90">
+                    This FASET is out of balance
+                  </p>
+                </Button>
               ) : !activeClaimHistory.find(
                   (claim: ClaimReceipt) =>
                     claim.chain.pk === chain.pk &&
@@ -168,7 +192,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   data-testid={`chain-show-claim-${chain.pk}`}
                   $mlAuto
                   onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm m-auto"
+                  className="text-sm !h-11 m-auto"
                 >
                   <p>{`Claim ${formatChainBalance(
                     chain.maxClaimAmount,
@@ -180,7 +204,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   data-testid={`chain-show-claim-${chain.pk}`}
                   $mlAuto
                   onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm m-auto"
+                  className="text-sm !h-11 before:!bg-gray30 opacity-90 m-auto"
                 >
                   <p>Pending ...</p>
                 </ClaimButton>

@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "@/styles/buttons.scss";
-@import "@/styles/cards.scss";
-@import "@/styles/index.scss";
-@import "@/styles/animations.scss";
+@import "../styles/buttons.scss";
+@import "../styles/cards.scss";
+@import "../styles/index.scss";
+@import "../styles/animations.scss";
 
 @mixin btn {
   @apply ease-out duration-300;
