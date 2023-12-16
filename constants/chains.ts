@@ -11,6 +11,7 @@ import {
   meter,
   zetachainAthensTestnet,
   scroll,
+  xdc,
 } from "viem/chains";
 import { mainnet, sepolia } from "wagmi";
 
@@ -80,6 +81,7 @@ export const supportedChains = [
   meter,
   zetachainAthensTestnet,
   scroll,
+  xdc,
 ];
 
 /**
