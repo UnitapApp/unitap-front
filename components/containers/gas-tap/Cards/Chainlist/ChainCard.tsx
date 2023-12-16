@@ -241,11 +241,11 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             }
           >
             <div
-              className={`items-center flex rounded-none justify-between md:justify-center`}
+              className={`items-center font-semibold px-4 text-secondary-text flex rounded-none justify-between md:justify-center`}
             >
               {chain.isOneTimeClaim ? (
                 <>
-                  <p className="text-xs">Single-Claim Tap</p>
+                  <p className="flex-1">Single-Claim Tap</p>
                   <Icon
                     className="text-white"
                     ml={4}
@@ -254,7 +254,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 </>
               ) : (
                 <>
-                  <p>Periodic Tap</p>
+                  <p className="flex-1">Periodic Tap</p>
                   <Icon
                     className="text-white"
                     ml={4}
