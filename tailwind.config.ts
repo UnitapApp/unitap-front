@@ -130,14 +130,20 @@ const config: Config = {
         },
 				blinking: {
 					'50%': { opacity: '.3'},
-				}
+				},
+        fadeInOut: {
+          '0%': { opacity: '1' },
+          '50%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
         flip: "flip 0.5s ease-in ",
         rocket: "rocket 1500ms infinite  alternate;",
         fadeIn: 'fadeIn 0.8s ease-in-out',
-				blinking: 'blinking 2.2s step-start 0s infinite'
+				blinking: 'blinking 2.2s step-start 0s infinite',
+        fadeInOut: 'fadeIn 0.8s ease-in-out',
       },
       transitionProperty: {
         height: "height",

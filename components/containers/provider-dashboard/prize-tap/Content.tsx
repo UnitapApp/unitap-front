@@ -364,7 +364,7 @@ const PrizeTapContent = () => {
             </div>
           )}
           {filteredRaffles?.length == 0 && !userRafflesLoading && (
-            <div className="flex items-center justify-center mt-5 text-gray100">
+            <div className="flex items-center justify-center mt-5 text-gray100 animate-fadeInOut">
               No items found
             </div>
           )}

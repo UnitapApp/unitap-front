@@ -20,7 +20,7 @@ export const ProviderDashboardCardTimer = ({
 
   useEffect(() => {
     setStarted(new Date(startTime) < new Date());
-  }, [startTime]);
+  }, [new Date()]);
 
   let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
   let FinishTimeDate = useMemo(

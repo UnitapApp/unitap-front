@@ -20,7 +20,6 @@ export async function updateCreateRaffleTx(
   raffleID: number | undefined,
   txHash: string
 ) {
-  console.log(raffleID);
   const response = await axiosInstance.post<any>(
     `api/prizetap/set-raffle-tx/${raffleID}/`,
     { txHash },

@@ -756,7 +756,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const handleGetUserRaffles = useCallback(async () => {
     if (!userToken) return;
-    setUserRafflesLoading(true);
     refController.current = new AbortController();
     try {
       const raffles = await getUserRaffles(
@@ -1067,7 +1066,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (isShowingDetails || !data.tokenContractAddress || data.isNft) return;
-    console.log("+-+-+");
     if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
       handleSetContractStatus(false, true, false, true);
       return;
@@ -1171,11 +1169,14 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useRefreshWithInitial(
     () => {
-      if (userRaffles.length > 0) return;
-      handleGetUserRaffles();
+      // if (userRaffles.length > 0) return;
+      setUserRafflesLoading(true);
+      setTimeout(() => {
+        handleGetUserRaffles();
+      }, 5000);
     },
     FAST_INTERVAL,
-    [handleGetUserRaffles, userToken, userRaffles]
+    []
   );
 
   return (

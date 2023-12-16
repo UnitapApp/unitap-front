@@ -155,7 +155,7 @@ export const createErc20Raffle = async (
 
     if (!response) throw new Error("Contract hash not found");
 
-    await provider.waitForTransactionReceipt({
+    const transactionInfo = await provider.waitForTransactionReceipt({
       hash: response,
       confirmations: 1,
     });
@@ -170,11 +170,11 @@ export const createErc20Raffle = async (
     setCreteRaffleResponse({
       success: true,
       state: "Done",
-      txHash: response,
+      txHash: transactionInfo.transactionHash,
       message: "Created raffle successfully.",
     });
     setCreateRaffleLoading(false);
-    updateCreateRaffleTx(userToken, rafflePk, response);
+    updateCreateRaffleTx(userToken, rafflePk, transactionInfo.transactionHash);
   } catch (e: any) {
     console.log(e);
     setCreteRaffleResponse({
