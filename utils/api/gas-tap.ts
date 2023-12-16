@@ -21,7 +21,15 @@ export async function getRemainingClaimsAPI(token: string) {
 
 export async function getChainList() {
   const response = await axiosInstance.get<Chain[]>("/api/gastap/chain/list/");
-  return response.data;
+  return response.data.toSorted((a, b) =>
+    a.isOneTimeClaim && b.isOneTimeClaim
+      ? 0
+      : a.isOneTimeClaim
+      ? -1
+      : b.isOneTimeClaim
+      ? -1
+      : 0
+  );
 }
 
 export async function getOneTimeClaimedChainList(token: string) {

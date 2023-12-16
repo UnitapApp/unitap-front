@@ -15,6 +15,7 @@ export const serverFetch = async (url: string) => {
     next: {
       revalidate: 10,
     },
+    cache: "reload",
   });
 
   return await res.json();
