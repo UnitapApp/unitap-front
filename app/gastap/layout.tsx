@@ -15,7 +15,7 @@ const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
       next: {
         revalidate: 10,
       },
-      cache: "no-cache",
+      cache: "no-store",
     }
   ).then((res) => res.json());
 
