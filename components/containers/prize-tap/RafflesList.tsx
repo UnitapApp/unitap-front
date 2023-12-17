@@ -17,6 +17,7 @@ import { LineaRaffleCard } from "./Linea";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
+import Image from "next/image";
 
 export const Action = styled.div`
   display: flex;
@@ -147,7 +148,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const onPrizeClick = () => {
     if (prizeLink) window.open(prizeLink, "_blank");
   };
-
   return (
     <div
       className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
@@ -293,7 +293,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       <span>
                         {showAllPermissions ? "Show less" : "Show more"}
                       </span>
-                      <img
+                      <Image
+                        width={12}
+                        height={7}
                         alt="angle down"
                         src="/assets/images/token-tap/angle-down.svg"
                         className={`ml-2 ${
@@ -369,9 +371,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
-                        {maxNumberOfEntries > 1_000_000_000
+                        {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              maxNumberOfEntries
+                              numberOfOnchainEntries
                             )} people enrolled`
                           : !isRemainingPercentLessThanTen
                           ? `
@@ -417,9 +419,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
-                        {maxNumberOfEntries > 1_000_000_000
+                        {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              maxNumberOfEntries
+                              numberOfOnchainEntries
                             )} people enrolled`
                           : !isRemainingPercentLessThanTen
                           ? `
