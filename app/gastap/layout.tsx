@@ -1,18 +1,41 @@
 import GasTapProvider from "@/context/gasTapProvider";
+import { Chain } from "@/types";
 import { FC, PropsWithChildren } from "react";
+import { cookies } from "next/headers";
+import {
+  getClaimedReceiptsServer,
+  getOneTimeClaimedReceiptsServer,
+} from "@/utils/serverApis";
 
 const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const chains = await fetch(
+  const chainsApi = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/chain/list/",
     {
-      next: {
-        revalidate: 10,
-      },
-      cache: "no-cache",
+      cache: "no-store",
     }
   ).then((res) => res.json());
 
-  return <GasTapProvider chains={chains}>{children}</GasTapProvider>;
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("userToken");
+
+  const oneTimeClaimedChains = await getOneTimeClaimedReceiptsServer(
+    token?.value
+  );
+
+  const claimedChains = await getClaimedReceiptsServer(token?.value);
+
+  const chains = chainsApi as Array<Chain>;
+
+  return (
+    <GasTapProvider
+      claimReceiptInitial={claimedChains}
+      oneTimeClaimedGasListInitial={oneTimeClaimedChains}
+      chains={chains}
+    >
+      {children}
+    </GasTapProvider>
+  );
 };
 
 export default GasTapLayout;
