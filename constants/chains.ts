@@ -12,6 +12,14 @@ import {
   zetachainAthensTestnet,
   scroll,
   xdc,
+  arbitrum,
+  telos,
+  harmonyOne,
+  celo,
+  opBNBTestnet,
+  linea,
+  lineaTestnet,
+  arbitrumNova,
 } from "viem/chains";
 import { mainnet, sepolia } from "wagmi";
 
@@ -82,6 +90,14 @@ export const supportedChains = [
   zetachainAthensTestnet,
   scroll,
   xdc,
+  arbitrum,
+  telos,
+  harmonyOne,
+  celo,
+  opBNBTestnet,
+  linea,
+  lineaTestnet,
+  arbitrumNova,
 ];
 
 /**
