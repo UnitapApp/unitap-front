@@ -13,15 +13,7 @@ const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
     }
   ).then((res) => res.json());
 
-  const chains = (chainsApi as Array<Chain>).sort((a, b) =>
-    a.isOneTimeClaim && b.isOneTimeClaim
-      ? 0
-      : a.isOneTimeClaim
-      ? -1
-      : b.isOneTimeClaim
-      ? -1
-      : 0
-  );
+  const chains = chainsApi as Array<Chain>;
 
   return <GasTapProvider chains={chains}>{children}</GasTapProvider>;
 };
