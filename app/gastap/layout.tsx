@@ -1,6 +1,12 @@
 import GasTapProvider from "@/context/gasTapProvider";
 import { Chain } from "@/types";
 import { FC, PropsWithChildren } from "react";
+import { cookies } from "next/headers";
+import { getActiveClaimHistory, getOneTimeClaimedChainList } from "@/utils/api";
+import {
+  getClaimedReceiptsServer,
+  getOneTimeClaimedReceiptsServer,
+} from "@/utils/serverApis";
 
 const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
   const chainsApi = await fetch(
@@ -13,9 +19,25 @@ const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
     }
   ).then((res) => res.json());
 
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("userToken");
+
+  const claimedChains = await getOneTimeClaimedReceiptsServer(token?.value);
+
+  const oneTimeClaimedChains = await getClaimedReceiptsServer(token?.value);
+
   const chains = chainsApi as Array<Chain>;
 
-  return <GasTapProvider chains={chains}>{children}</GasTapProvider>;
+  return (
+    <GasTapProvider
+      claimReceiptInitial={claimedChains}
+      oneTimeClaimedGasListInitial={oneTimeClaimedChains}
+      chains={chains}
+    >
+      {children}
+    </GasTapProvider>
+  );
 };
 
 export default GasTapLayout;

@@ -117,7 +117,7 @@ export const UserContextProvider: FC<
       return;
 
     setWalletAPI(userToken!, address, "EVM");
-  }, [address, userProfile]);
+  }, [address, userProfile, userToken]);
 
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
