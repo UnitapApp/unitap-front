@@ -6,7 +6,7 @@ export const getClaimedReceiptsServer = async (token?: string) => {
   const res = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/user/claims/",
     {
-      cache: "no-cache",
+      cache: "no-store",
       headers: {
         Authorization: `token ${token}`,
       },
@@ -24,7 +24,7 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
   const res = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/user/one-time-claims/",
     {
-      cache: "no-cache",
+      cache: "no-store",
       headers: {
         Authorization: `token ${token}`,
       },
