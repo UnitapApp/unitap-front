@@ -2,7 +2,6 @@ import GasTapProvider from "@/context/gasTapProvider";
 import { Chain } from "@/types";
 import { FC, PropsWithChildren } from "react";
 import { cookies } from "next/headers";
-import { getActiveClaimHistory, getOneTimeClaimedChainList } from "@/utils/api";
 import {
   getClaimedReceiptsServer,
   getOneTimeClaimedReceiptsServer,
