@@ -7,8 +7,12 @@ import {
   ClaimButton,
   WhiteOutlinedButton,
 } from "@/components/ui/Button/button";
+import { FC } from "react";
+import { WalletState } from ".";
 
-const UnknownWalletBody = () => {
+const UnknownWalletBody: FC<{
+  setWalletState: (state: WalletState) => void;
+}> = ({ setWalletState }) => {
   const { address } = useWalletAccount();
 
   return (
@@ -27,14 +31,14 @@ const UnknownWalletBody = () => {
       </p>
 
       <WhiteOutlinedButton
-        className="mb-4 mt-5 !w-full bg-gray30"
-        // onClick={handleBrightIdConnectClicked}
+        className="mb-4 !border-1 !font-semibold mt-5 !w-full bg-gray10"
+        onClick={() => setWalletState(WalletState.LoggedIn)}
       >
         Add Wallet to an Existing Account
       </WhiteOutlinedButton>
 
       <ClaimButton
-        // onClick={handleHaveBrightIdClicked}
+        onClick={() => setWalletState(WalletState.AddNewWallet)}
         className="!w-full"
       >
         <p className="font-semibold">Register as New User</p>

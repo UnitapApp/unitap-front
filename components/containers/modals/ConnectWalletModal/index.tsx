@@ -21,7 +21,7 @@ export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.LoggedIn
+    WalletState.Prompt
   );
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
@@ -60,7 +60,8 @@ export const RenderWalletBody: FC<{
       />
     );
 
-  if (walletState === WalletState.UnknownWallet) return <UnknownWalletBody />;
+  if (walletState === WalletState.UnknownWallet)
+    return <UnknownWalletBody setWalletState={setWalletState} />;
 
   if (walletState === WalletState.AddNewWallet)
     return (
