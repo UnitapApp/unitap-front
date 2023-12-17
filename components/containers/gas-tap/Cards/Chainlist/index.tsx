@@ -30,17 +30,12 @@ const ChainList = () => {
 
         if (a.chainName.toLowerCase() === lowerHighlightChainName) return -1;
         if (b.chainName.toLowerCase() === lowerHighlightChainName) return 1;
-        if (
-          activeClaimHistory.find((item) => item.chain.pk === a.pk) ||
-          oneTimeClaimedGasList.find((item) => item.chain.pk === a.pk)
-        ) {
+
+        if (oneTimeClaimedGasList.find((item) => item.chain.pk === a.pk)) {
           return 10;
         }
 
-        if (
-          activeClaimHistory.find((item) => item.chain.pk === b.pk) ||
-          oneTimeClaimedGasList.find((item) => item.chain.pk === b.pk)
-        ) {
+        if (oneTimeClaimedGasList.find((item) => item.chain.pk === b.pk)) {
           return -10;
         }
 
