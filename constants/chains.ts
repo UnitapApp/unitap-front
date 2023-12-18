@@ -22,6 +22,7 @@ import {
   arbitrumNova,
   scrollSepolia,
   Chain,
+  opBNB,
 } from "viem/chains";
 
 import { mainnet, sepolia } from "wagmi";
@@ -130,6 +131,7 @@ export const supportedChains = [
   arbitrumNova,
   scrollSepolia,
   kccMainnet,
+  opBNB,
 ];
 
 /**
