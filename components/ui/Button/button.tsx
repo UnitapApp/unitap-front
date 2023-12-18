@@ -70,7 +70,7 @@ export const ButtonNative = styled.button<props>`
       iconLeft ? "inline-block" : "none"};
     content: " ";
     background-image: ${({ $iconLeft: iconLeft }) =>
-      `url(${iconLeft})` || "none"};
+      iconLeft ? `url(${iconLeft})` : "none"};
     position: relative;
     top: 2px;
     background-size: ${({
