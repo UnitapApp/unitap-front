@@ -12,10 +12,7 @@ export * from "./prize-tap";
 
 export const serverFetch = async (url: string) => {
   const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {
-    next: {
-      revalidate: 10,
-    },
-    cache: "reload",
+    cache: "no-store",
   });
 
   return await res.json();

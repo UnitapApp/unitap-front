@@ -39,8 +39,8 @@ const PrizeTapLanding: FC = async () => {
               ? "1 raffle is live on Prize Tap"
               : availableRaffles.length + " Raffles are live on PrizeTap..."
           }
-          className={" h-full after:w-full after:-top-8 hover:bg-gray00"}
-          icon={"prizetap-icon.png"}
+          className={"h-full after:w-full after:-top-8 hover:bg-gray00"}
+          icon={"/prizetap-icon.png"}
           iconSize={"w-8 h-7"}
           title={"Prize Tap"}
           buttonTitle={"Beta"}

@@ -162,6 +162,7 @@ export const GasTapProvider: FC<
     if (userToken && userProfile) {
       try {
         const newClaimHistory = await getActiveClaimHistory(userToken);
+
         setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }

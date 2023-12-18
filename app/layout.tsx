@@ -1,5 +1,4 @@
 import { WagmiConfig } from "wagmi";
-import "./globals.scss";
 import type { Metadata } from "next";
 import { config } from "@/utils/wallet/wagmi";
 import { Noto_Sans } from "next/font/google";
@@ -16,6 +15,8 @@ import {
 import StyledJsxRegistry from "@/components/styled-components";
 import { ConnectWalletModal } from "@/components/containers/modals/ConnectWalletModal";
 import GoogleAnalytics from "@/components/google-analytics";
+
+import "./globals.scss";
 
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
