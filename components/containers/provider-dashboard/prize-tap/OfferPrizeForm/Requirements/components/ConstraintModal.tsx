@@ -45,8 +45,8 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
     params: ConstraintParams[];
   }
 
-  const handleSelectNotSatisfy = () => {
-    setIsNotSatisfy((prev) => !prev);
+  const handleSelectNotSatisfy = (isSatisfy: boolean) => {
+    setIsNotSatisfy(isSatisfy);
   };
 
   const CreateParams = ({ params }: CreateParamsProps) => {
@@ -60,30 +60,30 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
         onClick={handleBackToRequirementModal}
       >
         <Icon
-          iconSrc="../assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer z-[999999]"
         />
       </div>
       <CreateParams params={constraint.params} />
-      <div className="mb-5">{constraint.description}</div>
-      <div className="">
+      <div className="w-full flex gap-4 h-[32px] mb-2">
         <div
-          onClick={handleSelectNotSatisfy}
-          className="flex items-center gap-1 cursor-pointer max-w-[125px]"
+          onClick={() => handleSelectNotSatisfy(false)}
+          className={`${
+            !isNotSatisfy ? "bg-gray50 text-white" : "bg-gray40 text-gray100"
+          } w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-[14px]`}
         >
-          <Icon
-            iconSrc={
-              isNotSatisfy
-                ? "../assets/images/provider-dashboard/check-true.svg"
-                : "../assets/images/provider-dashboard/checkbox.svg"
-            }
-            className="mt-[-2px]"
-            height="15px"
-            width="15px"
-          />
-          <p className="p-0 m-0">Should not satisfy</p>
+          Should satisfy
+        </div>
+        <div
+          onClick={() => handleSelectNotSatisfy(true)}
+          className={`${
+            isNotSatisfy ? "bg-gray50 text-white" : "bg-gray40 text-gray100"
+          } w-full flex items-center justify-center rounded-lg h-full cursor-pointer`}
+        >
+          Should not satisfy
         </div>
       </div>
+      <div className="mb-5">{constraint.description}</div>
       <div
         onClick={handleAddRequirement}
         className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"

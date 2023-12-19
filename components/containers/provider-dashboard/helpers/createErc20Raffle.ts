@@ -6,6 +6,7 @@ import { PublicClient, getContract, parseEther } from "viem";
 import { GetContractResult, GetWalletClientResult } from "wagmi/dist/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
+import Big from "big.js";
 
 const createErc20RaffleCallback = async (
   account: string,
@@ -23,8 +24,6 @@ const createErc20RaffleCallback = async (
   totalAmount:  string
 ) => {
   if (!provider || !signer) return;
-
-
   const gasEstimate = await provider.estimateContractGas({
     abi: prizeTapABI,
     account: account as any,
@@ -32,8 +31,8 @@ const createErc20RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       isNativeToken
-        ? parseEther((Number(payableAmount).toString()))
-        : BigInt(toWei((Number(payableAmount)).toString(), tokenDecimals)),
+        ? parseEther(new Big(payableAmount).toFixed())
+        : BigInt(toWei((Number(new Big(payableAmount).toFixed())), tokenDecimals)),
       currencyAddress,
       maxParticipants,
       1n,
@@ -53,8 +52,8 @@ const createErc20RaffleCallback = async (
     gasPrice: gasEstimate,
     args: [
       isNativeToken
-      ? parseEther((Number(payableAmount).toString()))
-      : BigInt(toWei((Number(payableAmount)).toString(), tokenDecimals)),
+      ? parseEther(new Big(payableAmount).toFixed())
+      : BigInt(toWei((Number(new Big(payableAmount).toFixed())), tokenDecimals)),
       currencyAddress,
       maxParticipants,
       1n,
@@ -82,8 +81,8 @@ export const createErc20Raffle = async (
     ? data.maxNumberOfEntries
     : "1000000000";
   const prizeName = data.isNativeToken
-    ? data.tokenAmount + " " + data.selectedChain.symbol
-    : data.tokenAmount + " " + data.tokenSymbol;
+    ? data.totalAmount + " " + data.selectedChain.symbol
+    : data.totalAmount + " " + data.tokenSymbol;
   const prizeSymbol = data.isNativeToken
     ? data.selectedChain.symbol
     : data.tokenSymbol;
@@ -135,8 +134,11 @@ export const createErc20Raffle = async (
     publicClient: provider,
   });
 
+
+
   try {
     setCreateRaffleLoading(true);
+
     const response = await createErc20RaffleCallback(
       address,
       raffleContract,
@@ -165,6 +167,7 @@ export const createErc20Raffle = async (
     if (!raffle.success) {
       return false;
     }
+
     const rafflePk = raffle.data.id;
 
     setCreteRaffleResponse({

@@ -33,6 +33,7 @@ const ShowPreviewModal = () => {
         size="medium"
         closeModalHandler={closeShowPreviewModal}
         isOpen={isOpen}
+        className="provider-dashboard__modal"
       >
         <ShowPreviewModalBody />
       </Modal>

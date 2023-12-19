@@ -24,6 +24,7 @@ const RenderInitialBody = ({ data }: Prop) => {
         onClick={handleCreateRaffle}
         $width="100%"
         className="text-[14px] md:text-[12px] lg:text-[14px] mt-10"
+        disabled={createRaffleLoading}
       >
         {createRaffleLoading ? (
           <p>Submit Contribution...</p>

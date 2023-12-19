@@ -109,6 +109,7 @@ const DepositPrize = ({
               ? handleApproveErc721Token
               : handleApproveErc20Token
           }
+          disabled={approveLoading}
         >
           <p>{approveLoading ? "Approving Contract..." : "Approve Contract"}</p>
         </ProviderDashboardButtonSubmit>

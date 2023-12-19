@@ -58,12 +58,11 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 const ProviderTabs: FC = () => {
   const pathname = usePathname();
 
-  const borderPosition =
-    pathname === RoutePath.PROVIDER_GASTAP
-      ? "after:left-0"
-      : pathname == RoutePath.PROVIDER_TOKENTAP
-      ? "after:left-[33.33%]"
-      : "after:left-[67%]";
+  const borderPosition = pathname.includes(RoutePath.PROVIDER_GASTAP)
+    ? "after:left-0"
+    : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
+    ? "after:left-[33.33%]"
+    : "after:left-[67%]";
 
   return (
     <div

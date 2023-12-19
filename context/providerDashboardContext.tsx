@@ -47,7 +47,7 @@ import { approveErc20Token } from "@/components/containers/provider-dashboard/he
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
-
+import Big from "big.js";
 const formInitialData: ProviderDashboardFormDataProp = {
   provider: "",
   description: "",
@@ -528,7 +528,10 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       const totalAmount = fromWei(
         toWei(data.tokenAmount) * Number(data.winnersCount)
       );
-      setData((prev) => ({ ...prev, totalAmount: totalAmount }));
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(totalAmount).toFixed(),
+      }));
     }
   }, [data.tokenAmount, data.winnersCount]);
 
@@ -1000,7 +1003,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       description: raffle.description,
       isNft: raffle.isPrizeNft,
       isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
-      tokenAmount: fromWei(raffle.prizeAmount, raffle.decimals),
+      tokenAmount: new Big(
+        fromWei(raffle.prizeAmount, raffle.decimals)
+      ).toFixed(),
       tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
       nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,

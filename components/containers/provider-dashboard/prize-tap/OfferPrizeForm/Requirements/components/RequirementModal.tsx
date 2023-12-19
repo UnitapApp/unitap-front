@@ -42,6 +42,7 @@ const RequirementModal = () => {
         size="small"
         closeModalHandler={closeRequirementModal}
         isOpen={isOpen}
+        className="provider-dashboard__modal"
       >
         <RequirementModalBody />
       </Modal>
