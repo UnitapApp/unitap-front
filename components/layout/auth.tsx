@@ -39,17 +39,27 @@ export const UserAuthStatus = () => {
   if (!userProfile) return <RenderNavbarLoginBrightIdButton />;
 
   return (
-    <div ref={divRef} className="md:relative ml-5" id="profile-dropdown">
+    <div ref={divRef} className="md:relative ml-5">
       <div
-        onClick={setDropDownActive.bind(null, !dropDownActive)}
-        className="cursor-pointer ml-5 flex rounded-lg h-9 items-center justify-between bg-gray40 pr-0.5 pl-2 mr-3"
+        className={`ml-5 p-[1px] rounded-lg mr-3 ${
+          // activatedId === "profile-dropdown"
+          //   ? "bg-g-primary relative z-100"
+          //   :
+          ""
+        }`}
+        id="profile-dropdown"
       >
-        <span className="ml-2 hidden md:block text-sm">
-          @ {userProfile?.username}
-        </span>
+        <div
+          onClick={setDropDownActive.bind(null, !dropDownActive)}
+          className="cursor-pointer pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
+        >
+          <span className="ml-2 hidden md:block text-sm">
+            @ {userProfile?.username}
+          </span>
 
-        <span className="text-gray90 hidden md:block ml-8">level: -</span>
-        <RenderNavbarWalletAddress />
+          <span className="text-gray90 hidden md:block ml-8">level: -</span>
+          <RenderNavbarWalletAddress />
+        </div>
       </div>
 
       {dropDownActive && <ProfileDropdown />}

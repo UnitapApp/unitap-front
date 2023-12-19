@@ -27,6 +27,7 @@ const GasTapLandingWidget: FC<{
         <Widget
           description={"Enjoy surfing Web3 without the worry of gas fees"}
           icon={"gastap-icon.svg"}
+          id="gastap"
           iconSize={"w-7"}
           className={
             "after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full"

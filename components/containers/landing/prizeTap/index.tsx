@@ -32,6 +32,7 @@ const PrizeTapLanding: FC = async () => {
     <section className={"flex--1"}>
       <Link className={"flex--1"} href={RoutePath.PRIZE}>
         <Widget
+          id="prizetap"
           description={
             availableRaffles.length === 0
               ? "No raffles are live on Prize Tap"
