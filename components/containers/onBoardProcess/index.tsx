@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/Button/button";
+import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
+import { BrightIdModalState } from "@/types";
 import { parseCookies } from "@/utils/cookies";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -39,6 +41,7 @@ const steps = [
 
 const OnBoardProcess = () => {
   const { userProfile } = useUserProfileContext();
+  const { brightidModalStatus } = useGlobalContext();
 
   const [showIntro, setShowIntro] = useState(false);
   const [step, setStep] = useState(0);
@@ -105,7 +108,8 @@ const OnBoardProcess = () => {
   }, [step, showIntro, currentState, userProfile]);
 
   useEffect(() => {
-    if (!userProfile) return;
+    if (!userProfile || brightidModalStatus !== BrightIdModalState.CLOSED)
+      return;
     const showTutorial = cookies["tutorial"];
 
     const timeout = setTimeout(() => {
@@ -117,7 +121,7 @@ const OnBoardProcess = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [cookies, pathname, userProfile]);
+  }, [cookies, pathname, userProfile, brightidModalStatus]);
 
   if (!currentState) return null;
 
