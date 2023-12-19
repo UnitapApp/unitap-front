@@ -62,7 +62,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           name="startTime"
           format="DD/MM/YYYY - hh:mm A"
           inputClass="custom-input"
-          plugins={[<TimePicker position="bottom" hideSeconds key={0} />]}
+          plugins={[<TimePicker key={0} position="bottom" hideSeconds />]}
           render={
             <Input
               className="date-picker-input"
