@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import styled from "styled-components"
-import { DV } from "@/components/ui/designVariables"
+import styled from "styled-components";
+import { DV } from "@/components/ui/designVariables";
 
 export const ProvideGasCardWrapper = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ export const ProvideGasCardWrapper = styled.div`
     display: block;
     z-index: -1;
     position: absolute;
-    background: url("assets/images/claim/provide-fund-hand.svg") #080808;
+    background: url("/assets/images/claim/provide-fund-hand.svg") #080808;
     background-repeat: no-repeat;
     inset: 0;
     margin: 0.1rem;
@@ -41,4 +41,4 @@ export const ProvideGasCardWrapper = styled.div`
   }
   @media only screen and (max-width: ${DV.breakpoints.mobile}) {
   }
-`
+`;

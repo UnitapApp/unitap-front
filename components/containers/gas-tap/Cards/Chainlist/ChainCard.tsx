@@ -46,7 +46,12 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
     useGasTapContext();
 
   const isOneTimeCollected = useMemo(
-    () => !!oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
+    () =>
+      !!oneTimeClaimedGasList.find(
+        (item) =>
+          item.status === ClaimReceiptState.VERIFIED &&
+          item.chain.pk === chain.pk
+      ),
     [chain, oneTimeClaimedGasList]
   );
 
