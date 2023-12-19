@@ -105,6 +105,7 @@ const OnBoardProcess = () => {
   }, [step, showIntro, currentState, userProfile]);
 
   useEffect(() => {
+    if (!userProfile) return;
     const showTutorial = cookies["tutorial"];
 
     const timeout = setTimeout(() => {
@@ -116,7 +117,7 @@ const OnBoardProcess = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [cookies, pathname]);
+  }, [cookies, pathname, userProfile]);
 
   if (!currentState) return null;
 
