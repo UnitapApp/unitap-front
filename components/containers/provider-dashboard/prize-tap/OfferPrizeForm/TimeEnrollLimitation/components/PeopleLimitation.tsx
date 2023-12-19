@@ -61,7 +61,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
       {showErrors &&
         !showErrors.maximumLimitationStatus &&
         data.limitEnrollPeopleCheck && (
-          <p className="text-error text-[10px] m-0 p-0 absolute left-1">
+          <p className="text-error text-[10px] m-0 p-0 absolute left-1 mt-1">
             {showErrors?.maximumLimitationMessage}
           </p>
         )}

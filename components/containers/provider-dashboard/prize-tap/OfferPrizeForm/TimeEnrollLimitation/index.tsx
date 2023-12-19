@@ -5,8 +5,6 @@ import SetDuration from "./components/SetDuration";
 import EndDateComp from "./components/EndDateComp";
 import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
-import BN from "bn.js";
-import { toBN, toWei } from "@/utils/numbers";
 import Pagination from "../../pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 
@@ -23,47 +21,14 @@ const TimeEnrollLimitation = ({
   handleChangeFormPagePrev,
   handleChangeFormPageNext,
 }: ProviderFormPaginationProp) => {
-  const {
-    page,
-    canGoStepThree,
-    setDuration,
-    data,
-    handleChange,
-    isShowingDetails,
-  } = usePrizeOfferFormContext();
+  const { page, canGoStepThree, setDuration, isShowingDetails } =
+    usePrizeOfferFormContext();
   const [showErrors, setShowErrors] = useState<ErrorProps | null>(null);
   const [fadeClass, setFadeClass] = useState("");
 
   useEffect(() => {
     setFadeClass(page == 1 ? "animate-fadeIn" : "animate-fadeOut");
   }, [page]);
-
-  const [winnerCountError, setWinnerCountError] = useState({
-    status: false,
-    message: "",
-  });
-
-  useEffect(() => {
-    if (data.winnersCount <= 0 || !data.winnersCount) {
-      setWinnerCountError({
-        status: true,
-        message: "Required",
-      });
-    } else if (
-      data.winnersCount > 0 &&
-      Math.floor(data.winnersCount) != data.winnersCount
-    ) {
-      setWinnerCountError({
-        status: true,
-        message: "Invalid Input",
-      });
-    } else {
-      setWinnerCountError({
-        status: false,
-        message: "",
-      });
-    }
-  }, [data.winnersCount]);
 
   const handleNextPage = () => {
     if (isShowingDetails) {
