@@ -16,7 +16,12 @@ const nftImage = (tokenUri: string | undefined | null) => {
 };
 
 const PrizeTapLanding: FC = async () => {
-  const rafflesList: Prize[] = await serverFetch("/api/prizetap/raffle-list/");
+  const rafflesList: Prize[] = (
+    await serverFetch("/api/prizetap/raffle-list/")
+  ).filter(
+    (raffle: Prize) =>
+      raffle.status !== "PENDING" && raffle.status !== "REJECTED"
+  );
 
   const validRaffles = rafflesList.sort(
     (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
