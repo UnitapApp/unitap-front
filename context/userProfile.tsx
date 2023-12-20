@@ -21,6 +21,7 @@ import {
 import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
+import { NullCallback } from "@/utils";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
@@ -35,6 +36,7 @@ export const UserProfileContext = createContext<
     setNonEVMWalletAddress: (address: string) => void;
     userToken: string | null;
     isGasTapAvailable: boolean;
+    updateUsername: (username: string) => void;
   }
 >({
   userProfile: null,
@@ -47,7 +49,8 @@ export const UserProfileContext = createContext<
   userProfileLoading: false,
   nonEVMWalletAddress: "",
   userToken: null,
-  setNonEVMWalletAddress: () => {},
+  setNonEVMWalletAddress: NullCallback,
+  updateUsername: NullCallback,
 });
 
 export const UserContextProvider: FC<
@@ -67,6 +70,13 @@ export const UserContextProvider: FC<
 
   const [weeklyClaimSettings, setWeeklyClaimSettings] =
     useState<Settings>(settings);
+
+  const updateUsername = (username: string) => {
+    setUserProfile({
+      ...userProfile!,
+      username,
+    });
+  };
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
@@ -160,6 +170,7 @@ export const UserContextProvider: FC<
         userProfileLoading,
         nonEVMWalletAddress,
         setNonEVMWalletAddress,
+        updateUsername,
       }}
     >
       {children}

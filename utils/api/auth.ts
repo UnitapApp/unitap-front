@@ -55,3 +55,19 @@ export async function setWalletAPI(
   );
   return response.data;
 }
+
+export const setUsernameApi = async (username: string, userToken: string) => {
+  const response = await axiosInstance.post(
+    "/api/auth/user/set-username/",
+    {
+      username,
+    },
+    {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
