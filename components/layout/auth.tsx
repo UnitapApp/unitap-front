@@ -203,7 +203,9 @@ export const RenderNavbarWalletAddress = () => {
     <>
       <button
         data-testid="wallet-address"
-        className={`btn ${NotoSansMono.className} btn--sm btn--address ${
+        className={`btn ${
+          NotoSansMono.className
+        } btn--sm btn--address tracking-wider !font-[500] ${
           connection.isConnected && "btn--address--active"
         } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {

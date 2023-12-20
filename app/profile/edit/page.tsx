@@ -26,7 +26,7 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
   const { deleteWallet } = useUserProfileContext();
 
   return (
-    <div className="p-4 flex bg-gray40 border-2 items-center border-gray50 rounded-lg">
+    <div className="p-4 flex bg-gray40 border-2 items-center border-gray50 rounded-xl">
       <span
         className={`w-2 h-2 rounded-full ${
           isActive ? "bg-space-green" : "bg-error"
