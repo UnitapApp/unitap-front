@@ -22,6 +22,7 @@ import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
 import { NullCallback } from "@/utils";
+import { Address, isAddressEqual } from "viem";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
@@ -37,6 +38,7 @@ export const UserProfileContext = createContext<
     userToken: string | null;
     isGasTapAvailable: boolean;
     updateUsername: (username: string) => void;
+    deleteWallet: (address: Address) => Promise<void>;
   }
 >({
   userProfile: null,
@@ -51,6 +53,7 @@ export const UserProfileContext = createContext<
   userToken: null,
   setNonEVMWalletAddress: NullCallback,
   updateUsername: NullCallback,
+  deleteWallet: async () => {},
 });
 
 export const UserContextProvider: FC<
@@ -141,6 +144,13 @@ export const UserContextProvider: FC<
     setRemainingClaims(newRemainingClaims.totalRoundClaimsRemaining);
   };
 
+  const deleteWallet = async (address: Address) => {
+    if (!userProfile) return;
+    const selectedWallet = userProfile.wallets.findIndex((wallet) =>
+      isAddressEqual(wallet.address, address)
+    );
+  };
+
   useMediumRefresh(getWeeklyChainClaimLimit, [getWeeklyChainClaimLimit]);
 
   useRefreshWithInitial(
@@ -171,6 +181,7 @@ export const UserContextProvider: FC<
         nonEVMWalletAddress,
         setNonEVMWalletAddress,
         updateUsername,
+        deleteWallet,
       }}
     >
       {children}

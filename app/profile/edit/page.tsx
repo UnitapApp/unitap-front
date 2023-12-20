@@ -2,28 +2,67 @@
 
 import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
+import { shortenAddress } from "@/utils";
 import { setUsernameApi } from "@/utils/api";
+import { useWalletAccount } from "@/utils/wallet";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
+import { Address, isAddressEqual } from "viem";
+import { Noto_Sans_Mono } from "next/font/google";
+
+const NotoSansMono = Noto_Sans_Mono({
+  weight: ["400", "500"],
+  display: "swap",
+  adjustFontFallback: false,
+  subsets: ["latin"],
+});
 
 export const Wallet: FC<{ address: string; isActive: boolean }> = ({
   address,
   isActive,
 }) => {
+  const { deleteWallet } = useUserProfileContext();
+
   return (
-    <div className="p-4 flex bg-gray40 border-2 border-gray50 rounded-lg">
-      <span>
-        <img src="/assets/images/up-profile/dot.svg" alt="dot" />
-      </span>
+    <div className="p-4 flex bg-gray40 border-2 items-center border-gray50 rounded-lg">
+      <span
+        className={`w-2 h-2 rounded-full ${
+          isActive ? "bg-space-green" : "bg-error"
+        }`}
+      ></span>
+      <p className={`ml-5 text-sm ${NotoSansMono.className}`}>
+        {shortenAddress(address)}
+      </p>
+      <Image
+        src="/assets/images/navbar/copy.svg"
+        width={12}
+        height={14}
+        className="ml-3 cursor-pointer"
+        alt="copy"
+      />
+      <Image
+        width={8}
+        height={8}
+        src="/assets/images/navbar/link.svg"
+        className="ml-4"
+        alt="link"
+      />
+      <Image
+        width={16}
+        height={18}
+        src="/assets/images/up-profile/trashcan.svg"
+        className="ml-auto opacity-70 cursor-pointer hover:opacity-100"
+        alt="delete"
+      />
     </div>
   );
 };
 
 const EditPage = () => {
   const { userProfile, updateUsername, userToken } = useUserProfileContext();
-
+  const { address } = useWalletAccount();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -95,30 +134,46 @@ const EditPage = () => {
 
       <div className="mt-5 bg-gray20 rounded-xl p-5">
         <p>
-          Wallets <small className="text-gray90">(0/10)</small>
+          Wallets{" "}
+          <small className="text-gray90">
+            ({userProfile?.wallets.length ?? 0}/10)
+          </small>
         </p>
 
         <div className="mt-10">
-          <div className="grid grid-cols-2 gap-4"></div>
-
-          <button
-            className="w-72 px-5 mt-5 py-4 flex items-center rounded-xl border-2 border-gray70"
-            type="button"
-          >
-            <span className="ml-auto text-sm font-semibold">
-              {" "}
-              Add New Wallet
-            </span>
-            <span className="ml-auto">
-              <Image
-                width={16}
-                height={16}
-                src="/assets/images/up-profile/plus.svg"
-                alt="plus"
-                className="w-[16px] h-[16px]"
-              />
-            </span>
-          </button>
+          <div className="grid grid-cols-2 gap-4">
+            {!!userProfile &&
+              userProfile.wallets.map((wallet, key) => (
+                <Wallet
+                  address={wallet.address}
+                  key={key}
+                  isActive={
+                    !!address &&
+                    isAddressEqual(
+                      address as Address,
+                      wallet.address as Address
+                    )
+                  }
+                />
+              ))}
+            <button
+              className="px-5 py-5 flex items-center rounded-xl border-2 border-gray70"
+              type="button"
+            >
+              <span className="ml-auto text-sm font-semibold">
+                Add New Wallet
+              </span>
+              <span className="ml-auto">
+                <Image
+                  width={16}
+                  height={16}
+                  src="/assets/images/up-profile/plus.svg"
+                  alt="plus"
+                  className="w-[16px] h-[16px]"
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

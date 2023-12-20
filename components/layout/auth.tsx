@@ -1,18 +1,27 @@
-"use client"
+"use client";
 
-import { useRef, useState } from "react"
-import { useOutsideClick } from "@/utils/hooks/dom"
-import { useUserProfileContext } from "@/context/userProfile"
-import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet"
-import { shortenAddress } from "@/utils"
-import Image from "next/image"
-import { useGlobalContext } from "@/context/globalProvider"
+import { useRef, useState } from "react";
+import { useOutsideClick } from "@/utils/hooks/dom";
+import { useUserProfileContext } from "@/context/userProfile";
+import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet";
+import { shortenAddress } from "@/utils";
+import Image from "next/image";
+import { useGlobalContext } from "@/context/globalProvider";
 
-import Styles from "./auth.module.scss"
+import Styles from "./auth.module.scss";
+
+import { Noto_Sans_Mono } from "next/font/google";
+
+const NotoSansMono = Noto_Sans_Mono({
+  weight: ["400", "500"],
+  display: "swap",
+  adjustFontFallback: false,
+  subsets: ["latin"],
+});
 
 const RenderNavbarLoginBrightIdButton = () => {
-  const { openBrightIdModal } = useGlobalContext()
-  const { userProfileLoading } = useUserProfileContext()
+  const { openBrightIdModal } = useGlobalContext();
+  const { userProfileLoading } = useUserProfileContext();
 
   return (
     <>
@@ -24,19 +33,19 @@ const RenderNavbarLoginBrightIdButton = () => {
         {userProfileLoading ? "Connecting..." : "Connect BrightID"}
       </button>
     </>
-  )
-}
+  );
+};
 
 export const UserAuthStatus = () => {
-  const divRef = useRef<HTMLDivElement>(null)
+  const divRef = useRef<HTMLDivElement>(null);
 
-  const [dropDownActive, setDropDownActive] = useState(false)
+  const [dropDownActive, setDropDownActive] = useState(false);
 
-  useOutsideClick(divRef, () => setDropDownActive(false))
+  useOutsideClick(divRef, () => setDropDownActive(false));
 
-  const { userProfile } = useUserProfileContext()
+  const { userProfile } = useUserProfileContext();
 
-  if (!userProfile) return <RenderNavbarLoginBrightIdButton />
+  if (!userProfile) return <RenderNavbarLoginBrightIdButton />;
 
   return (
     <div ref={divRef} className="md:relative ml-5">
@@ -54,17 +63,17 @@ export const UserAuthStatus = () => {
 
       {dropDownActive && <ProfileDropdown />}
     </div>
-  )
-}
+  );
+};
 
 const WalletItem = ({
   wallet,
   isActive,
 }: {
-  wallet: string
-  isActive?: boolean
+  wallet: string;
+  isActive?: boolean;
 }) => {
-  const { disconnect } = useWalletConnection()
+  const { disconnect } = useWalletConnection();
 
   return (
     <div
@@ -78,7 +87,9 @@ const WalletItem = ({
           (isActive ? "bg-white" : "bg-gray90") + " w-2 h-2 rounded-full"
         }
       />
-      <span className="ml-3">{shortenAddress(wallet)}</span>
+      <span className={`ml-3 ${NotoSansMono.className}`}>
+        {shortenAddress(wallet)}
+      </span>
       <Image
         src="/assets/images/navbar/copy.svg"
         width={12}
@@ -103,19 +114,19 @@ const WalletItem = ({
         </button>
       )}
     </div>
-  )
-}
+  );
+};
 
 const ProfileDropdown = () => {
-  const { userProfile } = useUserProfileContext()
+  const { userProfile } = useUserProfileContext();
 
-  const { connection } = useUserWalletProvider()
+  const { connection } = useUserWalletProvider();
 
   const onLogout = () => {
-    localStorage.setItem("userToken", "")
+    localStorage.setItem("userToken", "");
 
-    window.location.reload()
-  }
+    window.location.reload();
+  };
   // #4BF2A200, #A89FE7AD, #A958A9, #DD40CD00
   return (
     <div className="absolute bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-10 top-full mt-2">
@@ -124,13 +135,17 @@ const ProfileDropdown = () => {
           className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}
         >
           <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
-            <img
+            <Image
               className="absolute inset-0 -z-10"
               src="/assets/images/navbar/logout-button.svg"
-              alt=""
+              alt="logout"
+              width={147}
+              height={28}
             />
             <p className="mb-1 font-semibold">@ {userProfile?.username}</p>
-            <img
+            <Image
+              width={12}
+              height={10}
               src="/assets/images/navbar/arrow-right.svg"
               className="ml-auto mr-6 mb-1"
               alt="arrow-right"
@@ -156,20 +171,22 @@ const ProfileDropdown = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const RenderNavbarWalletAddress = () => {
-  const { setIsWalletPromptOpen } = useGlobalContext()
-  const { userProfile } = useUserProfileContext()
+  const { setIsWalletPromptOpen } = useGlobalContext();
+  const { userProfile } = useUserProfileContext();
 
   const EVMWallet = userProfile?.wallets.find(
     (wallet) => wallet.walletType === "EVM"
-  )
+  );
 
-  const { connection } = useUserWalletProvider()
+  const { connection } = useUserWalletProvider();
 
-  let address = connection.isConnected ? connection.address : EVMWallet?.address
+  let address = connection.isConnected
+    ? connection.address
+    : EVMWallet?.address;
 
   if (!address)
     return (
@@ -180,25 +197,25 @@ export const RenderNavbarWalletAddress = () => {
       >
         Connect Wallet
       </button>
-    )
+    );
 
   return (
     <>
       <button
         data-testid="wallet-address"
-        className={`btn btn--sm btn--address ${
+        className={`btn ${NotoSansMono.className} btn--sm btn--address ${
           connection.isConnected && "btn--address--active"
         } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {
-          if (connection.isConnected) return
-          e.stopPropagation()
-          setIsWalletPromptOpen(true)
+          if (connection.isConnected) return;
+          e.stopPropagation();
+          setIsWalletPromptOpen(true);
         }}
       >
         {shortenAddress(address)}
       </button>
     </>
-  )
-}
+  );
+};
 
-export default UserAuthStatus
+export default UserAuthStatus;
