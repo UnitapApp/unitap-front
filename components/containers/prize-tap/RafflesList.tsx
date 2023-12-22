@@ -18,6 +18,7 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
+import { LINEA_RAFFLE_PK } from "@/constants";
 
 export const Action = styled.div`
   display: flex;
@@ -77,7 +78,8 @@ const RafflesList = () => {
 const RaffleCardWrapper: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
   props
 ) => {
-  if (props.raffle.pk === 4) return <LineaRaffleCard {...props} />;
+  if (props.raffle.pk === LINEA_RAFFLE_PK)
+    return <LineaRaffleCard {...props} />;
 
   return <RaffleCard {...props} />;
 };
@@ -401,7 +403,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   >
                     {" "}
                     <div className="relative w-full">
-                      <p> Enroll</p>{" "}
+                      <p className="text-transparent bg-clip-text bg-g-primary">
+                        Enroll
+                      </p>{" "}
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
@@ -442,16 +446,17 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   </div>
                   <EnrolledButton
                     disabled={true}
-                    className="min-w-[552px] md:!w-[352px] !w-full"
+                    className="min-w-[552px]  md:!w-[352px] !w-full"
                     height="48px"
                     $fontSize="14px"
                   >
-                    {" "}
                     <div className="relative w-full">
-                      <p> Enrolled</p>{" "}
+                      <span className="text-transparent bg-clip-text bg-g-primary">
+                        Enrolled
+                      </span>{" "}
                       <Icon
-                        className="absolute  right-0 top-[-2px]"
-                        iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                        className="absolute right-0 top-[-2px]"
+                        iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
                         width="27px"
                         height="24px"
                       />

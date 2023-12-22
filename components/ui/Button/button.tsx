@@ -392,7 +392,7 @@ export const PrizeTapCard = styled(PrimaryOutlinedButton)`
 
 export const EnrolledButton = tw(
   PrimaryOutlinedButton
-)`font-semibold text-clip before:bg-g-primary-2 `;
+)`text-left !font-semibold text-clip bg-gray60 border-2 border-[#322837]`;
 
 // p {
 //     background: ${DV.bgGradient.primary_2} !important;
