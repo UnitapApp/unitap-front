@@ -390,16 +390,15 @@ export const PrizeTapCard = styled(PrimaryOutlinedButton)`
   }
 `;
 
-export const EnrolledButton = styled(PrimaryOutlinedButton)`
-  width: 220px;
-  font-weight: 600;
+export const EnrolledButton = tw(
+  PrimaryOutlinedButton
+)`font-semibold text-clip before:bg-g-primary-2 `;
 
-  p {
-    background: ${DV.bgGradient.primary_2};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-`;
+// p {
+//     background: ${DV.bgGradient.primary_2} !important;
+//     -webkit-background-clip: text !important;
+//     -webkit-text-fill-color: transparent !important;
+//   }
 
 export const ClaimAndEnrollButton = styled(PrimaryOutlinedButton)`
   width: 220px;

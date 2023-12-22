@@ -1,14 +1,14 @@
-import { defineConfig } from "@wagmi/cli"
-import { etherscan, react } from "@wagmi/cli/plugins"
-import { erc20ABI } from "wagmi"
-import { mainnet } from "wagmi/chains"
-import UnitapPass from "@/abis/UnitapPass.json"
-import UnitapPassMain from "@/abis/UnitapPassMain.json"
-import UnitapEVMTokenTap from "@/abis/UnitapEVMTokenTap.json"
-import AutoFund from "@/abis/AutoFund.json"
-import UnitapPassBatchSaleMain from "@/abis/UnitapPassBatchSaleMain.json"
-import PrizeTap from "@/abis/UnitapPrizeTap.json"
-import PrizeTap721 from "@/abis/UnitapPrizeTap721.json"
+import { defineConfig } from "@wagmi/cli";
+import { etherscan, react } from "@wagmi/cli/plugins";
+import { erc20ABI } from "wagmi";
+import { mainnet } from "wagmi/chains";
+import UnitapPass from "@/abis/UnitapPass.json";
+import UnitapPassMain from "@/abis/UnitapPassMain.json";
+import UnitapEVMTokenTap from "@/abis/UnitapEVMTokenTap.json";
+import AutoFund from "@/abis/AutoFund.json";
+import UnitapPassBatchSaleMain from "@/abis/UnitapPassBatchSaleMain.json";
+import PrizeTap from "@/abis/UnitapPrizeTap.json";
+import PrizeTap721 from "@/abis/UnitapPrizeTap721.json";
 
 export default defineConfig({
   out: "types/abis/contracts.ts",
@@ -34,6 +34,7 @@ export default defineConfig({
     {
       name: "AutoFund",
       abi: AutoFund as any,
+      address: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
     },
     {
       name: "UnitapPassBatchSale",
@@ -42,11 +43,13 @@ export default defineConfig({
     },
     {
       name: "PrizeTap",
-      abi: PrizeTap,
+      abi: PrizeTap as any,
+      address: "0x246BE35A5128A74c1729cCfB66B0892A534b6017",
     },
     {
       name: "PrizeTap721",
-      abi: PrizeTap721,
+      abi: PrizeTap721 as any,
+      address: "0xEaA0E528a24617B98C18A140f6Ec08241B2eB7c4",
     },
   ],
   plugins: [
@@ -57,4 +60,4 @@ export default defineConfig({
     }),
     react(),
   ],
-})
+});

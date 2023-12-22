@@ -54,18 +54,20 @@ const SelectChainModal = ({
         height="20px"
       />
       <div className="chainlist-container overflow-y-auto max-h-[50vh] styled-scroll pr-1">
-        {chainList.map((chain) => (
-          <ChainItem
-            data-testid={`select-chain-modal-item-${chain.pk}`}
-            key={chain.chainId}
-            chain={chain}
-            selected={selectedChain?.chainId === chain.chainId}
-            onClick={() => {
-              setSelectedChain(chain);
-              closeModalHandler();
-            }}
-          />
-        ))}
+        {chainList
+          .filter((item) => item.chainType === ChainType.EVM)
+          .map((chain) => (
+            <ChainItem
+              data-testid={`select-chain-modal-item-${chain.pk}`}
+              key={chain.chainId}
+              chain={chain}
+              selected={selectedChain?.chainId === chain.chainId}
+              onClick={() => {
+                setSelectedChain(chain);
+                closeModalHandler();
+              }}
+            />
+          ))}
       </div>
     </SelectChainModalWrapper>
   );
