@@ -84,13 +84,31 @@ const OnBoardProcess = () => {
 
     if (!element) return;
 
+    const highlightElement = document.createElement("div");
+
     window.scrollTo({
       top: element.offsetTop - offset,
       behavior: "smooth",
     });
 
     const onScrollEnd = () => {
-      element?.classList.add("bg-g-primary", "relative", "z-50");
+      element?.classList.add("overflow-hidden", "relative", "z-50");
+
+      const diagonalLength = Math.sqrt(
+        Math.pow(element.clientWidth, 2) + Math.pow(element.clientHeight, 2)
+      );
+
+      // highlightElement.style.width = `${diagonalLength}px`;
+      // highlightElement.style.height = `${diagonalLength}px`;
+      highlightElement.style.inset = `-${diagonalLength / 2}px`;
+
+      highlightElement.classList.add(
+        "absolute",
+        "bg-g-primary",
+        "animate-spin-slow"
+      );
+
+      element.appendChild(highlightElement);
     };
 
     if (
@@ -104,6 +122,7 @@ const OnBoardProcess = () => {
     return () => {
       document.removeEventListener("scrollend", onScrollEnd);
       element?.classList.remove("bg-g-primary", "relative", "z-50");
+      element.removeChild(highlightElement);
     };
   }, [step, showIntro, currentState, userProfile]);
 
@@ -128,16 +147,16 @@ const OnBoardProcess = () => {
   return (
     <div
       className={
-        "z-20 inset-0 flex flex-col items-center justify-center " +
+        "z-20 inset-0 flex flex-col px-2 items-center backdrop-blur-sm justify-center " +
         (showIntro ? "fixed animate-fade-in" : "hidden")
       }
     >
-      <div className="absolute inset-0 -z-10 bg-gray10 opacity-40"></div>
+      <div className="absolute inset-0 -z-10 bg-gray10 opacity-80"></div>
 
       <div
-        className={`w-[900px] transition-all relative z-80 border-2 border-gray70 rounded-2xl shadow-lg overflow-hidden ${
+        className={`w-[900px] max-w-full mt-52 lg:mt-5 transition-all relative z-80 border border-gray70 rounded-2xl shadow-lg overflow-hidden ${
           currentState.position && currentState.position === "above"
-            ? "mt-52 translate-y-1/2"
+            ? "lg:mt-52 translate-y-1/2"
             : ""
         }`}
       >

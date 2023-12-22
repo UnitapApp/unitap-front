@@ -51,7 +51,7 @@ export const UserAuthStatus = () => {
       >
         <div
           onClick={setDropDownActive.bind(null, !dropDownActive)}
-          className="cursor-pointer pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
+          className="cursor-pointer relative z-20 pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
         >
           <span className="ml-2 hidden md:block text-sm">
             @ {userProfile?.username}

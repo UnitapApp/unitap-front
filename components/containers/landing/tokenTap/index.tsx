@@ -22,7 +22,7 @@ const TokenTapLanding = async () => {
           icon={"tokentap-icon.svg"}
           iconSize={"w-8"}
           className={
-            "h-full after:bg-tokentap-texture hover:bg-gray00 cursor-pointer flex-1 "
+            "h-full after:bg-tokentap-texture relative z-20 hover:bg-gray00 cursor-pointer flex-1 "
           }
           title={"Token Tap"}
           buttonTitle={"Beta"}
