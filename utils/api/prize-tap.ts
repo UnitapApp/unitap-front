@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 import { EnrollmentRaffleApi, EnrollmentSignature, Prize } from "@/types";
 
 export async function getRafflesListAPI(token: string | undefined) {

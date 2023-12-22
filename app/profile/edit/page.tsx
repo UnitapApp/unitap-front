@@ -11,6 +11,7 @@ import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { Address, isAddressEqual } from "viem";
 import { Noto_Sans_Mono } from "next/font/google";
+import { useWalletManagementContext } from "@/context/walletProvider";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -66,6 +67,8 @@ const EditPage = () => {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { setIsAddModalOpen } = useWalletManagementContext();
 
   const onSubmit = async () => {
     if (!userToken) return;
@@ -157,6 +160,7 @@ const EditPage = () => {
                 />
               ))}
             <button
+              onClick={() => setIsAddModalOpen(true)}
               className="px-5 py-5 flex items-center rounded-xl border-2 border-gray70"
               type="button"
             >

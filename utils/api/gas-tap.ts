@@ -1,5 +1,5 @@
 import { Settings } from "@/types";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 import { Chain, ClaimReceipt } from "@/types/gas-tap";
 
 export async function getWeeklyChainClaimLimitAPI() {

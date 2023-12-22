@@ -1,9 +1,3 @@
-import axios from "axios";
-
-export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
-
 export * from "./auth";
 export * from "./gas-tap";
 export * from "./landing";

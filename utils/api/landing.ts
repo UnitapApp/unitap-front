@@ -1,4 +1,4 @@
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 
 export async function countUsersAPI() {
   const response = await axiosInstance.get<{ count: number }>(

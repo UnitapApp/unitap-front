@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import Modal from "@/components/ui/Modal/modal"
-import { useGlobalContext } from "@/context/globalProvider"
-import { useWalletAccount } from "@/utils/wallet"
-import { useEffect, useMemo, useState } from "react"
-import WalletPrompt from "./walletPrompt"
-import WalletConnecting from "./walletConnecting"
+import Modal from "@/components/ui/Modal/modal";
+import { useGlobalContext } from "@/context/globalProvider";
+import { useWalletAccount } from "@/utils/wallet";
+import { useEffect, useMemo, useState } from "react";
+import WalletPrompt from "./walletPrompt";
+import WalletConnecting from "./walletConnecting";
 
 export enum ConnectionProvider {
   Metamask,
@@ -15,7 +15,7 @@ export enum ConnectionProvider {
 const WalletModalBody = () => {
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
     ConnectionProvider.Metamask
-  )
+  );
 
   const currentWallet = useMemo(() => {
     if (walletProvider === ConnectionProvider.Metamask) {
@@ -23,17 +23,17 @@ const WalletModalBody = () => {
         imageUrl: "/assets/images/modal/metamask-icon.svg",
         label: "Metamask",
         loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
-      }
+      };
     }
 
     return {
       imageUrl: "/assets/images/modal/walletconnect-icon.svg",
       label: "WalletConnect",
       loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
-    }
-  }, [walletProvider])
+    };
+  }, [walletProvider]);
 
-  const { isConnecting } = useWalletAccount()
+  const { isConnecting } = useWalletAccount();
 
   if (isConnecting) {
     return (
@@ -42,20 +42,20 @@ const WalletModalBody = () => {
         label={currentWallet.label}
         loadingImage={currentWallet.loadingImage}
       />
-    )
+    );
   }
 
-  return <WalletPrompt setWalletProvider={setWalletProvider} />
-}
+  return <WalletPrompt setWalletProvider={setWalletProvider} />;
+};
 
 export const ConnectWalletModal = () => {
-  const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext()
+  const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext();
 
-  const { isConnected } = useWalletAccount()
+  const { isConnected } = useWalletAccount();
 
   useEffect(() => {
-    if (isConnected) setIsWalletPromptOpen(false)
-  }, [isConnected])
+    if (isConnected) setIsWalletPromptOpen(false);
+  }, [isConnected, setIsWalletPromptOpen]);
 
   return (
     <Modal
@@ -68,5 +68,5 @@ export const ConnectWalletModal = () => {
         <WalletModalBody />
       </div>
     </Modal>
-  )
-}
+  );
+};

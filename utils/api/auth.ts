@@ -1,5 +1,5 @@
 import { UserProfile } from "@/types";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 
 export async function getUserProfile(address: string, signature: string) {
   const response = await axiosInstance.post<UserProfile>(

@@ -1,10 +1,10 @@
-import Icon from "@/components/ui/Icon"
-import { FC } from "react"
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
 
-const WalletConnecting: FC<{
-  imageUrl: string
-  label?: string
-  loadingImage: string
+export const WalletConnecting: FC<{
+  imageUrl: string;
+  label?: string;
+  loadingImage: string;
 }> = ({ imageUrl, label, loadingImage }) => {
   return (
     <div className="text-center">
@@ -25,7 +25,7 @@ const WalletConnecting: FC<{
         process.
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default WalletConnecting
+export default WalletConnecting;
