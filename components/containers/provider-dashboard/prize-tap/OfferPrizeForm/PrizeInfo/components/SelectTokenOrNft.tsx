@@ -350,7 +350,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
                 <p>Number of Nfts</p>
               </div>
-              <div className="w-full max-w-[254px] overflow-hidden px-2">
+              <div className="w-full max-w-[254px] overflow-hidden px-2 h-full">
                 <input
                   disabled={
                     isShowingDetails ||
@@ -362,7 +362,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   name="NumberOfNfts"
                   placeholder="Number Of Nfts"
                   value={numberOfNfts}
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full h-full"
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]"
