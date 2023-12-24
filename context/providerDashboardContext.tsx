@@ -432,7 +432,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
-    if (isShowingDetails) return;
+    // if (isShowingDetails) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -929,6 +929,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setIsShowingDetails(false);
     setPage(0);
     setData(formInitialData);
+    handleSetEnrollDuration(1);
     setChainName("");
     setSelectedChain(null);
     setCreteRaffleResponse(null);
@@ -1066,6 +1067,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       )
     );
     setReverseConstrain(raffle.reversedConstraints);
+    handleSetEnrollDuration(-1);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {

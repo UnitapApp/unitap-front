@@ -10,8 +10,12 @@ interface ManualDurationProp {
 }
 
 const ManualDuration = ({ showErrors }: ManualDurationProp) => {
-  const { data, enrollmentDurations, handleSetEnrollDuration } =
-    usePrizeOfferFormContext();
+  const {
+    data,
+    enrollmentDurations,
+    handleSetEnrollDuration,
+    isShowingDetails,
+  } = usePrizeOfferFormContext();
 
   return (
     <div className="w-full text-gray100">
@@ -20,7 +24,10 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
         {enrollmentDurations.map((item) => (
           <div
             key={item.id}
-            onClick={() => handleSetEnrollDuration(item.id)}
+            onClick={() => {
+              if (isShowingDetails) return;
+              handleSetEnrollDuration(item.id);
+            }}
             className={`w-full h-full flex justify-center items-center enrollment-duration cursor-pointer  border-r-2 border-gray50 ${
               item.selected ? "text-white bg-gray40" : ""
             } `}

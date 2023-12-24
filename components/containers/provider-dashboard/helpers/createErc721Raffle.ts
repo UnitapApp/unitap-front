@@ -98,7 +98,7 @@ export const createErc721Raffle = async (
     start_at: startAt(data.startTimeStamp),
 		nftIds: data.nftTokenIds.length > 1 ?  data.nftTokenIds.join(',') : data.nftTokenIds[0],
     isPrizeNft: true,
-    winnersCount: data.winnersCount,
+    winnersCount: data.nftTokenIds.length,
     discord_url:discord,
 		twitter_url:twitter,
 		creator_url:creatorUrl,
