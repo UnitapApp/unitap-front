@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ErrorProps, ProviderFormPaginationProp } from "@/types";
 import StartDateComp from "./components/StartDateComp";
-import EndDateComp from "./components/EndDateComp";
 import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
 import Pagination from "../../pagination";

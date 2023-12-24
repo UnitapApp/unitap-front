@@ -29,21 +29,21 @@ export const socialMediaDescription = {
 const contactFields: ContactField[] = [
   {
     name: "creatorUrl",
-    placeholder: "https://www.example.com (will be shown on card)",
+    placeholder: "https://www.example.com (Optional)",
     icon: "/assets/images/provider-dashboard/creatorUrl.svg",
     require: false,
     baseUrl: "",
   },
   {
     name: "twitter",
-    placeholder: "@providerUsername (will be shown on card)",
+    placeholder: "@providerUsername",
     icon: "/assets/images/provider-dashboard/twitter.svg",
     require: true,
     baseUrl: "https://twitter.com/",
   },
   {
     name: "discord",
-    placeholder: "@providerUsername (will be shown on card)",
+    placeholder: "@providerUsername (Optional)",
     icon: "/assets/images/provider-dashboard/discord.svg",
     require: false,
     baseUrl: "https://discord.com/",
@@ -57,7 +57,7 @@ const contactFields: ContactField[] = [
   },
   {
     name: "telegram",
-    placeholder: "@yourTelegramHandle",
+    placeholder: "@yourTelegramHandle (Optional)",
     icon: "/assets/images/provider-dashboard/telegram.svg",
     require: false,
     baseUrl: "https://t.me/",

@@ -2,7 +2,6 @@
 
 import { ErrorProps } from "@/types";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import Icon from "@/components/ui/Icon";
 import DisplaySelectedDate from "./DisplaySelectedDate";
 import EndDateComp from "./EndDateComp";
 
@@ -30,7 +29,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           </div>
         ))}
       </div>
-      <div className="text-[14px] flex items-center justify-between mt-2">
+      <div className="text-[14px] grid gap-4 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
         <div className="text-gray100  cursor-pointer underline w-full">
           <EndDateComp showErrors={showErrors} />
         </div>
