@@ -676,6 +676,16 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     }
 
+    if (!endTimeStamp) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.required;
+    }
+
+    if (endTimeStamp && startTimeStamp && endTimeStamp <= startTimeStamp) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    }
+
     if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
       errorObject.maximumLimitationStatus = false;
       errorObject.maximumLimitationMessage = errorMessages.required;

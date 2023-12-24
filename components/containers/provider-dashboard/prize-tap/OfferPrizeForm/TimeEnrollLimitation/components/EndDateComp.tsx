@@ -46,13 +46,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
 
   return (
     <div className="relative w-full">
-      <div
-        className={`flex  ${
-          showErrors && showErrors.endDateStatusMessage
-            ? "border-error"
-            : "border-gray50"
-        } `}
-      >
+      <div className={`flex`}>
         <DatePicker
           disabled={!data.startTimeStamp || isShowingDetails}
           style={{
@@ -84,11 +78,6 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           className="rmdp-mobile animate-fadeIn"
         />
       </div>
-      {showErrors && showErrors.endDateStatus == false && (
-        <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute left-1">
-          {showErrors && showErrors.endDateStatusMessage}
-        </p>
-      )}
     </div>
   );
 };

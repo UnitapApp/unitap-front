@@ -4,7 +4,11 @@ import React from "react";
 const DisplaySelectedDate = () => {
   const { data } = usePrizeOfferFormContext();
   return (
-    <div className="text-gray100">
+    <div
+      className={`${
+        data.startTimeStamp >= data.endTimeStamp ? "text-error" : "text-gray100"
+      }`}
+    >
       Raffle Time:{" "}
       {(Number(new Date(data.endTimeStamp * 1000).getDate()) < 10
         ? "0" + new Date(data.endTimeStamp * 1000).getDate()
