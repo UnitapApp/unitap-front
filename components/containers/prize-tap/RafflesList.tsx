@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/Button/button";
 import styled from "styled-components";
 import { DV } from "@/components/ui/designVariables";
-import { getTxUrl, shortenAddress } from "@/utils";
 import Tooltip from "@/components/ui/Tooltip";
 import { numberWithCommas } from "@/utils/numbers";
 import { LineaRaffleCard } from "./Linea";
@@ -19,7 +18,6 @@ import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
-import { isAddressEqual } from "viem";
 
 export const Action = styled.div`
   display: flex;
@@ -106,7 +104,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     maxNumberOfEntries,
     isPrizeNft,
     userEntry,
-    winnerEntry,
     prizeSymbol,
     decimals,
     prizeAmount,
@@ -134,14 +131,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   useEffect(() => {
     setStarted(new Date(startAt) < new Date());
   }, [new Date()]);
-
-  const getWinnerWallet = () => {
-    if (!winnerEntry) return;
-    let wallet = winnerEntry.userProfile.wallets.filter(
-      (item) => item.walletType === "EVM"
-    );
-    return wallet[0].address;
-  };
 
   let tokenImgLink: string | undefined = tokenUri
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
@@ -266,61 +255,63 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               {description}
             </p>
 
-            {!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
-              <span className="text-xs mb-3">
-                <div
-                  className={`flex items-center flex-wrap text-xs gap-2 text-white`}
-                >
-                  {(showAllPermissions
-                    ? raffle.constraints
-                    : raffle.constraints
-                        .filter((permission) => permission.type === "VER")
-                        .slice(0, 6)
-                  ).map((permission, key) => (
-                    <Tooltip
-                      onClick={openEnrollModal.bind(null, raffle, "Verify")}
-                      className={
-                        "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
-                      }
-                      data-testid={`token-verification-${raffle.id}-${permission.name}`}
-                      key={key}
-                      text={permission.description}
-                    >
-                      <div className="flex items-center gap-3">
-                        {permission.title}
-                      </div>
-                    </Tooltip>
-                  ))}
+            {!winnersEntry.length &&
+              !userEntry?.txHash &&
+              !raffle.isExpired && (
+                <span className="text-xs mb-3">
+                  <div
+                    className={`flex items-center flex-wrap text-xs gap-2 text-white`}
+                  >
+                    {(showAllPermissions
+                      ? raffle.constraints
+                      : raffle.constraints
+                          .filter((permission) => permission.type === "VER")
+                          .slice(0, 6)
+                    ).map((permission, key) => (
+                      <Tooltip
+                        onClick={openEnrollModal.bind(null, raffle, "Verify")}
+                        className={
+                          "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
+                        }
+                        data-testid={`token-verification-${raffle.id}-${permission.name}`}
+                        key={key}
+                        text={permission.description}
+                      >
+                        <div className="flex items-center gap-3">
+                          {permission.title}
+                        </div>
+                      </Tooltip>
+                    ))}
 
-                  {raffle.constraints.length > 6 && (
-                    <button
-                      onClick={setShowAllPermissions.bind(
-                        null,
-                        !showAllPermissions
-                      )}
-                      className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
-                    >
-                      <span>
-                        {showAllPermissions ? "Show less" : "Show more"}
-                      </span>
-                      <Image
-                        width={12}
-                        height={7}
-                        alt="angle down"
-                        src="/assets/images/token-tap/angle-down.svg"
-                        className={`ml-2 ${
-                          showAllPermissions ? "rotate-180" : ""
-                        } transition-transform`}
-                      />
-                    </button>
-                  )}
-                </div>
-              </span>
-            )}
+                    {raffle.constraints.length > 6 && (
+                      <button
+                        onClick={setShowAllPermissions.bind(
+                          null,
+                          !showAllPermissions
+                        )}
+                        className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+                      >
+                        <span>
+                          {showAllPermissions ? "Show less" : "Show more"}
+                        </span>
+                        <Image
+                          width={12}
+                          height={7}
+                          alt="angle down"
+                          src="/assets/images/token-tap/angle-down.svg"
+                          className={`ml-2 ${
+                            showAllPermissions ? "rotate-180" : ""
+                          } transition-transform`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </span>
+              )}
 
             <Action className={"w-full sm:w-auto items-center sm:items-end "}>
-              {(isExpired && !winnerEntry && !userEntry?.txHash) ||
-              (!winnerEntry &&
+              {(isExpired && !winnersEntry.length && !userEntry?.txHash) ||
+              (!winnersEntry.length &&
                 !userEntry?.txHash &&
                 maxNumberOfEntries === numberOfOnchainEntries) ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
@@ -373,7 +364,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </ClaimAndEnrollButton>
                 </span>
-              ) : !winnerEntry && !userEntry?.txHash ? (
+              ) : !winnersEntry.length && !userEntry?.txHash ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
@@ -472,36 +463,51 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   </EnrolledButton>
                 </span>
               ) : winnersEntry && !userClaimEntry ? (
-                <span className="winner overflow-hidden font-medium md:leading-[normal] leading-[15px] winner-box-bg flex h-[70px] md:h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
-                  <p className="text-[10px] text-white flex-1 pl-5 md:flex md:shrink-0 font-medium">
-                    Raffle is done, check the winners here.
-                  </p>
-                  <Icon
-                    className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
-                    iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-                    width="215px"
-                    height="215px"
-                  />
+                <div className="flex w-full flex-1 items-center gap-4">
+                  <span className="overflow-hidden font-medium md:leading-[normal] leading-[15px] flex h-[70px] md:h-[48px] w-full items-center bg-gray10 py-1 rounded-xl align-center justify-between">
+                    <p className="text-[10px] ml-4 text-gray100">
+                      {maxNumberOfEntries >= 1_000_000_000
+                        ? `${numberWithCommas(
+                            numberOfOnchainEntries
+                          )} people enrolled`
+                        : !isRemainingPercentLessThanTen
+                        ? `
+													${numberOfOnchainEntries} / ${numberWithCommas(
+                            maxNumberOfEntries
+                          )} people enrolled`
+                        : `${numberWithCommas(
+                            maxNumberOfEntries
+                          )} people enrolled`}
+                    </p>
+                    <Icon
+                      className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
+                      iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
+                      width="215px"
+                      height="215px"
+                    />
+                  </span>
 
-                  <ClaimPrizeButton
+                  <ClaimAndEnrollButton
                     height="48px"
                     $fontSize="14px"
-                    className="claimed-prize"
+                    className="min-w-[552px]  md:!w-[352px] !w-full"
                     onClick={() => openEnrollModal(raffle, "Winners")}
                   >
-                    <div className="relative w-full text-gray10">
-                      <p> Check Winners </p>{" "}
+                    <div className="relative w-full">
+                      <span className="text-transparent bg-clip-text bg-g-primary">
+                        Check Winner Wallets
+                      </span>
                     </div>
-                  </ClaimPrizeButton>
-                </span>
-              ) : winnerEntry &&
+                  </ClaimAndEnrollButton>
+                </div>
+              ) : !!winnersEntry.length &&
                 !!userClaimEntry &&
                 !userClaimEntry.claimingPrizeTx ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{winnerEntry?.userProfile?.username} !
-                      claim your prize now.
+                      Congratulations @{userProfile?.username} ! claim your
+                      prize now.
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px] mr-[-20px]"
@@ -527,7 +533,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{winnerEntry?.userProfile?.username}!
+                      Congratulations @{userProfile?.username}!
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px]"
