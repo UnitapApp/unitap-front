@@ -358,8 +358,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     isShowingDetails ||
                     !data.selectedChain ||
                     nftContractStatus.checking ||
-                    !isRightChain ||
-                    data.nftTokenIds.length > 0
+                    !isRightChain
                   }
                   name="NumberOfNfts"
                   placeholder="Number Of Nfts"
