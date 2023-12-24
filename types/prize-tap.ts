@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { Chain, PK, Permission, UserProfile } from ".";
 
 export type LineaRaffleEntry = {
@@ -42,6 +43,7 @@ export type Prize = {
   prizeName: string;
   prizeSymbol: string;
   winnerEntry: WinnerEntry;
+  winnerEntries: WinnerEntry[];
   startAt: string;
   maxMultiplier: number;
   prizeAsset?: string;
@@ -56,7 +58,7 @@ export type WinnerEntry = {
   raffle: userRaffle;
   txHash: string;
   userProfile: UserProfile;
-  wallet: string;
+  wallet: Address;
 };
 
 export type EnrollPayload = {

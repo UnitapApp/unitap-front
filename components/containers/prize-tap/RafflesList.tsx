@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
+import { isAddressEqual } from "viem";
 
 export const Action = styled.div`
   display: flex;
@@ -110,6 +111,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     decimals,
     prizeAmount,
     creatorProfile,
+    winnerEntries: winnersEntry,
   } = raffle;
 
   const creator = creatorName || creatorProfile?.username;
@@ -124,9 +126,15 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const [start, setStarted] = useState<boolean>(true);
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
+  const userClaimEntry = useMemo(
+    () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
+    [userProfile, winnersEntry]
+  );
+
   useEffect(() => {
     setStarted(new Date(startAt) < new Date());
   }, [new Date()]);
+
   const getWinnerWallet = () => {
     if (!winnerEntry) return;
     let wallet = winnerEntry.userProfile.wallets.filter(
@@ -415,7 +423,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </ClaimAndEnrollButton>
                 </span>
-              ) : !winnerEntry && userEntry?.txHash ? (
+              ) : !winnersEntry && userEntry?.txHash ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
@@ -463,40 +471,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </EnrolledButton>
                 </span>
-              ) : winnerEntry &&
-                winnerEntry?.userProfile.pk !== userProfile?.pk ? (
+              ) : winnersEntry && !userClaimEntry ? (
                 <span className="winner overflow-hidden font-medium md:leading-[normal] leading-[15px] winner-box-bg flex h-[70px] md:h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
-                  <p className="text-[10px] text-white pl-5 md:flex md:shrink-0 font-medium">
-                    Congratulations to{" "}
-                    <span className="mx-0 md:mx-1 font-normal">
-                      {" "}
-                      <span className="font-semibold">
-                        {"@" + winnerEntry?.userProfile?.username + " "}
-                      </span>{" "}
-                      (
-                      <span>
-                        {shortenAddress(getWinnerWallet())}) wallet address
-                      </span>
-                    </span>{" "}
-                    for being the winner !
-                    {winnerEntry!.claimingPrizeTx && (
-                      <span
-                        className="flex md:ml-2 cursor-pointer"
-                        onClick={() =>
-                          window.open(
-                            getTxUrl(chain, winnerEntry!.claimingPrizeTx),
-                            "_blank"
-                          )
-                        }
-                      >
-                        View on Explorer
-                        <Icon
-                          className="ml-2"
-                          iconSrc="assets/images/prize-tap/ic_link_white.svg"
-                          hoverable={true}
-                        />
-                      </span>
-                    )}
+                  <p className="text-[10px] text-white flex-1 pl-5 md:flex md:shrink-0 font-medium">
+                    Raffle is done, check the winners here.
                   </p>
                   <Icon
                     className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
@@ -504,10 +482,21 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     width="215px"
                     height="215px"
                   />
+
+                  <ClaimPrizeButton
+                    height="48px"
+                    $fontSize="14px"
+                    className="claimed-prize"
+                    onClick={() => openEnrollModal(raffle, "Winners")}
+                  >
+                    <div className="relative w-full text-gray10">
+                      <p> Check Winners </p>{" "}
+                    </div>
+                  </ClaimPrizeButton>
                 </span>
               ) : winnerEntry &&
-                winnerEntry?.userProfile.pk === userProfile?.pk &&
-                !userEntry?.claimingPrizeTx ? (
+                !!userClaimEntry &&
+                !userClaimEntry.claimingPrizeTx ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
