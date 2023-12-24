@@ -42,11 +42,18 @@ export async function sponsorAPI(address: string) {
 export async function setWalletAPI(
   token: string,
   wallet: string,
-  walletType: string
+  walletType: string,
+  message: string,
+  signedMessage: string
 ) {
   const response = await axiosInstance.post(
-    "/api/auth/user/set-wallet/",
-    { walletType: walletType, address: wallet },
+    "/api/auth/user/wallets/",
+    {
+      walletType: walletType,
+      address: wallet,
+      signature: signedMessage,
+      message,
+    },
     {
       headers: {
         Authorization: `Token ${token}`,

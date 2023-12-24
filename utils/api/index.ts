@@ -9,5 +9,7 @@ export const serverFetch = async (url: string) => {
     cache: "no-store",
   });
 
+  // console.log(await res.clone().text());
+
   return await res.json();
 };

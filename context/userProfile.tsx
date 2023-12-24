@@ -16,7 +16,6 @@ import { ErrorsContext } from "./errorsProvider";
 import {
   getRemainingClaimsAPI,
   getWeeklyChainClaimLimitAPI,
-  setWalletAPI,
 } from "@/utils/api";
 import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
@@ -39,6 +38,7 @@ export const UserProfileContext = createContext<
     isGasTapAvailable: boolean;
     updateUsername: (username: string) => void;
     deleteWallet: (address: Address) => Promise<void>;
+    addNewWallet: (address: Address, pk: number) => void;
   }
 >({
   userProfile: null,
@@ -53,6 +53,7 @@ export const UserProfileContext = createContext<
   userToken: null,
   setNonEVMWalletAddress: NullCallback,
   updateUsername: NullCallback,
+  addNewWallet: NullCallback,
   deleteWallet: async () => {},
 });
 
@@ -102,6 +103,23 @@ export const UserContextProvider: FC<
       .finally(() => setLoading(false));
   };
 
+  const addNewWallet = (address: Address, pk: number) => {
+    if (!userProfile) return;
+
+    if (
+      userProfile.wallets.find((item) => isAddressEqual(item.address, address))
+    )
+      return;
+
+    userProfile.wallets.push({
+      walletType: "EVM",
+      pk,
+      address,
+    });
+
+    setUserProfile({ ...userProfile });
+  };
+
   useEffect(() => {
     const getUserProfileWithToken = async () => {
       setUserProfileLoading(true);
@@ -121,18 +139,18 @@ export const UserContextProvider: FC<
     }
   }, [userToken, userProfile, setUserProfile]);
 
-  useEffect(() => {
-    if (!address || !userProfile) return;
+  // useEffect(() => {
+  //   if (!address || !userProfile) return;
 
-    if (
-      userProfile.wallets.find(
-        (item) => item.walletType === "EVM" && item.address === address
-      )
-    )
-      return;
+  //   if (
+  //     userProfile.wallets.find(
+  //       (item) => item.walletType === "EVM" && item.address === address
+  //     )
+  //   )
+  //     return;
 
-    setWalletAPI(userToken!, address, "EVM");
-  }, [address, userProfile, userToken]);
+  //   setWalletAPI(userToken!, address, "EVM");
+  // }, [address, userProfile, userToken]);
 
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
@@ -182,6 +200,7 @@ export const UserContextProvider: FC<
         setNonEVMWalletAddress,
         updateUsername,
         deleteWallet,
+        addNewWallet,
       }}
     >
       {children}

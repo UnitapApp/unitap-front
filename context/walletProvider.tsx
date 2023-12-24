@@ -15,9 +15,13 @@ import { useDisconnect } from "wagmi";
 export const WalletManagementContext = createContext<{
   isAddModalOpen: boolean;
   setIsAddModalOpen: (value: boolean) => void;
+  addModalState: string;
+  setAddModalState: (value: string) => void;
 }>({
   isAddModalOpen: false,
   setIsAddModalOpen: NullCallback,
+  setAddModalState: NullCallback,
+  addModalState: "",
 });
 
 export const useWalletManagementContext = () =>
@@ -25,11 +29,15 @@ export const useWalletManagementContext = () =>
 
 const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addModalState, setAddModalState] = useState("");
 
   const { disconnect } = useDisconnect();
 
   useEffect(() => {
-    if (isAddModalOpen) disconnect();
+    if (isAddModalOpen) {
+      disconnect();
+      setAddModalState("idle");
+    }
   }, [disconnect, isAddModalOpen]);
 
   return (
@@ -37,6 +45,8 @@ const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         isAddModalOpen,
         setIsAddModalOpen,
+        addModalState,
+        setAddModalState,
       }}
     >
       {children}
