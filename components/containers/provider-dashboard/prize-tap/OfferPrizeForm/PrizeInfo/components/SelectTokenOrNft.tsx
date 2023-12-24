@@ -149,94 +149,96 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
           </div>
 
-          <div
-            className={`relative border p-5 rounded-2xl ${
-              showErrors &&
-              (!data.tokenAmount ||
-                !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
-                !insufficientBalance)
-                ? "border-error"
-                : "border-gray30"
-            }`}
-          >
+          <div className="relative">
             <div
-              className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border-gray50 border rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              className={`relative border p-5 rounded-2xl ${
+                showErrors &&
+                (!data.tokenAmount ||
+                  !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
+                  !insufficientBalance)
+                  ? "border-error"
+                  : "border-gray30"
+              }`}
             >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
-                Number of Winners
+              <div
+                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border-gray50 border rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              >
+                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                  Number of Winners
+                </div>
+                <input
+                  name="winnersCount"
+                  value={data.winnersCount}
+                  className="provider-dashboard-input"
+                  type="text"
+                  inputMode="numeric"
+                  onChange={handleChange}
+                  min={1}
+                  max={500}
+                  disabled={
+                    isShowingDetails ||
+                    data.isNft ||
+                    tokenContractStatus.checking ||
+                    (!tokenContractStatus.isValid && !data.isNativeToken) ||
+                    !data.tokenContractAddress
+                  }
+                  step={1}
+                  pattern="[0-9]"
+                />
               </div>
-              <input
-                name="winnersCount"
-                value={data.winnersCount}
-                className="provider-dashboard-input"
-                type="text"
-                inputMode="numeric"
-                onChange={handleChange}
-                min={1}
-                max={500}
-                disabled={
-                  isShowingDetails ||
-                  data.isNft ||
-                  tokenContractStatus.checking ||
-                  (!tokenContractStatus.isValid && !data.isNativeToken) ||
-                  !data.tokenContractAddress
-                }
-                step={1}
-                pattern="[0-9]"
+              <Icon
+                iconSrc="/assets/images/provider-dashboard/cross.png"
+                height="16px"
+                width="16px"
+                className="py-2"
               />
-            </div>
-            <Icon
-              iconSrc="/assets/images/provider-dashboard/cross.png"
-              height="16px"
-              width="16px"
-              className="py-2"
-            />
-            <div
-              className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
-            >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
-                <p>Amount Per Winner</p>
+              <div
+                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              >
+                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                  <p>Amount Per Winner</p>
+                </div>
+                <input
+                  disabled={
+                    !data.selectedChain ||
+                    isShowingDetails ||
+                    tokenContractStatus.checking ||
+                    (!tokenContractStatus.isValid && !data.isNativeToken) ||
+                    !data.tokenContractAddress
+                  }
+                  onChange={handleChange}
+                  value={data.tokenAmount}
+                  name="tokenAmount"
+                  className="provider-dashboard-input"
+                  type="number"
+                  min={0}
+                />
               </div>
-              <input
-                disabled={
-                  !data.selectedChain ||
-                  isShowingDetails ||
-                  tokenContractStatus.checking ||
-                  (!tokenContractStatus.isValid && !data.isNativeToken) ||
-                  !data.tokenContractAddress
-                }
-                onChange={handleChange}
-                value={data.tokenAmount}
-                name="tokenAmount"
-                className="provider-dashboard-input"
-                type="number"
-                min={0}
+              <Icon
+                iconSrc="/assets/images/provider-dashboard/equal.svg"
+                height="16px"
+                width="16px"
+                className="py-2"
               />
-            </div>
-            <Icon
-              iconSrc="/assets/images/provider-dashboard/equal.svg"
-              height="16px"
-              width="16px"
-              className="py-2"
-            />
-            <div
-              className={`flex gap-2 text-gray80 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
-            >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
-                <p>Total Amount</p>
+              <div
+                className={`flex gap-2 text-gray80 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              >
+                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                  <p>Total Amount</p>
+                </div>
+                <input
+                  disabled={true}
+                  value={data.totalAmount}
+                  name="totalAmount"
+                  className="provider-dashboard-input"
+                  type="number"
+                />
               </div>
-              <input
-                disabled={true}
-                value={data.totalAmount}
-                name="totalAmount"
-                className="provider-dashboard-input"
-                type="number"
-              />
             </div>
             {showErrors &&
               !data.isNft &&
               !(Number(data.tokenAmount) * Number(data.winnersCount)) && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   Required
                 </p>
               )}
@@ -244,7 +246,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               !data.isNft &&
               Number(data.winnersCount) > 500 &&
               data.tokenContractAddress && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   The maximum number of winners is 500.
                 </p>
               )}
@@ -254,7 +256,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               Number(data.winnersCount) <= 500 &&
               data.winnersCount &&
               Number(data.totalAmount) > 0 && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   Insufficient Balance
                 </p>
               )}
