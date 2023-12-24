@@ -11,7 +11,6 @@ import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { ZERO_ADDRESS } from "@/constants";
-import { useEffect } from "react";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -25,6 +24,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     insufficientBalance,
     tokenContractStatus,
     nftContractStatus,
+    numberOfNfts,
+    setNumberOfNfts,
   } = usePrizeOfferFormContext();
 
   return (
@@ -148,16 +149,18 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
           </div>
 
-          <div className="relative">
+          <div
+            className={`relative border p-5 rounded-2xl ${
+              showErrors &&
+              (!data.tokenAmount ||
+                !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
+                !insufficientBalance)
+                ? "border-error"
+                : "border-gray30"
+            }`}
+          >
             <div
-              className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
-                (showErrors && !data.tokenAmount) ||
-                (showErrors &&
-                  !(Number(data.tokenAmount) * Number(data.winnersCount))) ||
-                (showErrors && !insufficientBalance)
-                  ? "border-error"
-                  : "border-gray50 "
-              } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+              className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border-gray50 border rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
             >
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                 Number of Winners
@@ -181,8 +184,18 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 step={1}
                 pattern="[0-9]"
               />
+            </div>
+            <Icon
+              iconSrc="/assets/images/provider-dashboard/cross.png"
+              height="16px"
+              width="16px"
+              className="py-2"
+            />
+            <div
+              className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+            >
               <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
-                <p>Amount per user</p>
+                <p>Amount Per Winner</p>
               </div>
               <input
                 disabled={
@@ -190,7 +203,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   isShowingDetails ||
                   tokenContractStatus.checking ||
                   (!tokenContractStatus.isValid && !data.isNativeToken) ||
-                  !data.winnersCount ||
                   !data.tokenContractAddress
                 }
                 onChange={handleChange}
@@ -201,35 +213,48 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 min={0}
               />
             </div>
-            {data.winnersCount && data.tokenAmount && (
-              <p className="text-gray100 text-[10px] mt-[2px] m-0 p-0 absolute right-1">
-                Total amount: {data.totalAmount}
-              </p>
-            )}
+            <Icon
+              iconSrc="/assets/images/provider-dashboard/equal.svg"
+              height="16px"
+              width="16px"
+              className="py-2"
+            />
+            <div
+              className={`flex gap-2 text-gray80 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+            >
+              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                <p>Total Amount</p>
+              </div>
+              <input
+                disabled={true}
+                value={data.totalAmount}
+                name="totalAmount"
+                className="provider-dashboard-input"
+                type="number"
+              />
+            </div>
             {showErrors &&
               !data.isNft &&
               !(Number(data.tokenAmount) * Number(data.winnersCount)) && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
                   Required
                 </p>
               )}
-
             {showErrors &&
               !data.isNft &&
               Number(data.winnersCount) > 500 &&
               data.tokenContractAddress && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
                   The maximum number of winners is 500.
                 </p>
               )}
-
             {showErrors &&
               !insufficientBalance &&
               Number(data.totalAmount) > 0 &&
               Number(data.winnersCount) <= 500 &&
               data.winnersCount &&
               Number(data.totalAmount) > 0 && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-1">
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute left-5">
                   Insufficient Balance
                 </p>
               )}
@@ -260,7 +285,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     !data.selectedChain ||
                     nftContractStatus.checking ||
                     !isRightChain ||
-                    isShowingDetails ||
                     data.nftTokenIds.length > 0
                   }
                   name="nftContractAddress"
@@ -313,8 +337,56 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </p>
               )}
           </div>
+
+          <div className="relative">
+            <div
+              className={`
+							 flex text-gray80 text-[12px] bg-gray40 border ${
+                 showErrors && data.nftTokenIds.length != Number(numberOfNfts)
+                   ? "border-error"
+                   : "border-gray50"
+               } rounded-xl h-[43px]  max-w-[452px] overflow-hidden items-center justify-between pr-4`}
+            >
+              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
+                <p>Number of Nfts</p>
+              </div>
+              <div className="w-full max-w-[254px] overflow-hidden px-2">
+                <input
+                  disabled={
+                    isShowingDetails ||
+                    !data.selectedChain ||
+                    nftContractStatus.checking ||
+                    !isRightChain ||
+                    data.nftTokenIds.length > 0
+                  }
+                  name="NumberOfNfts"
+                  placeholder="Number Of Nfts"
+                  value={numberOfNfts}
+                  className="provider-dashboard-input w-full "
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]"
+                  onChange={(e) =>
+                    setNumberOfNfts(e.target.value.replace(/[^0-9]/g, ""))
+                  }
+                />
+              </div>
+              <div>
+                <Icon
+                  iconSrc="/assets/images/provider-dashboard/exclamation.svg"
+                  width="20px"
+                  height="20px"
+                />
+              </div>
+            </div>
+            {showErrors && data.nftTokenIds.length != Number(numberOfNfts) && (
+              <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                Number of NFTs are not equal with Number of NFts you added.
+              </p>
+            )}
+          </div>
           {data.nftTokenIds.length > 0 ? (
-            <div className="flex justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">
+            <div className="flex relative justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">
               <div className="text-white text-[12px]">
                 <p>{data.nftTokenIds.length} NFT ID added</p>
                 <div className="flex text-gray90 text-[10px]">
@@ -342,9 +414,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           ) : (
             <div className="relative mt-[4px]">
               <div
-                onClick={() => openAddNftIdListModal()}
+                onClick={() => {
+                  if (!numberOfNfts) return;
+                  openAddNftIdListModal();
+                }}
                 className={`flex text-white text-[12px] ${
-                  !nftContractStatus.isValid
+                  !nftContractStatus.isValid || !numberOfNfts
                     ? "opacity-[0.4]"
                     : "cursor-pointer"
                 } ${

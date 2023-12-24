@@ -13,7 +13,6 @@ export type ProviderDashboardFormDataProp = {
   selectedChain: any | null;
   startTimeStamp: any;
   endTimeStamp: any;
-  limitEnrollPeopleCheck: boolean;
   maxNumberOfEntries: string | null;
   email: string | null;
   twitter: string | null;
@@ -23,7 +22,6 @@ export type ProviderDashboardFormDataProp = {
   necessaryInfo: string | null;
   satisfy: string;
   allowListPrivate: boolean;
-  setDuration: boolean;
   numberOfDuration: number;
   durationUnitTime: string;
   NftSatisfy: boolean;
@@ -166,4 +164,18 @@ export interface DisplayStepsProps {
   selectStepImage: string;
   passedStepImage: string;
   garyImage: string;
+}
+
+export interface NftRangeProps {
+  from: string;
+  to: string;
+}
+
+export interface EnrollmentDurationsProps {
+  id: number;
+  name: string;
+  selected: boolean;
+  time: string | null;
+  value: number;
+  status: string
 }

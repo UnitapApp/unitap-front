@@ -6,7 +6,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-
+import "react-multi-date-picker/styles/layouts/mobile.css";
 const Input = styled.input``;
 
 interface StartDateCompProp {

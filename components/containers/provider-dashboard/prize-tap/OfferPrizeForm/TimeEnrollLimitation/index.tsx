@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ErrorProps, ProviderFormPaginationProp } from "@/types";
 import StartDateComp from "./components/StartDateComp";
-import SetDuration from "./components/SetDuration";
 import EndDateComp from "./components/EndDateComp";
 import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
@@ -21,8 +20,7 @@ const TimeEnrollLimitation = ({
   handleChangeFormPagePrev,
   handleChangeFormPageNext,
 }: ProviderFormPaginationProp) => {
-  const { page, canGoStepThree, setDuration, isShowingDetails } =
-    usePrizeOfferFormContext();
+  const { page, canGoStepThree, isShowingDetails } = usePrizeOfferFormContext();
   const [showErrors, setShowErrors] = useState<ErrorProps | null>(null);
   const [fadeClass, setFadeClass] = useState("");
 
@@ -59,12 +57,7 @@ const TimeEnrollLimitation = ({
         className={`flex flex-col min-h-[340px] gap-5 w-full items-center max-w-[452px] mb-[84px]`}
       >
         <StartDateComp showErrors={showErrors} />
-        <SetDuration />
-        {!setDuration ? (
-          <EndDateComp showErrors={showErrors} />
-        ) : (
-          <ManualDuration showErrors={showErrors} />
-        )}
+        <ManualDuration showErrors={showErrors} />
         <PeopleLimitation showErrors={showErrors} />
       </div>
       <Pagination
