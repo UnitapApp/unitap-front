@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { getUserHistory } from "@/utils/serverApis";
+import RenderProfileUsername from "@/components/containers/profile/renderProfileUsername";
 
 const Profile = async () => {
   const cookieStore = cookies();
@@ -26,7 +27,7 @@ const Profile = async () => {
             />
 
             <div>
-              <h5>@CNA</h5>
+              <RenderProfileUsername />
 
               <div className="mt-5 text-gray80">??? XP</div>
             </div>
