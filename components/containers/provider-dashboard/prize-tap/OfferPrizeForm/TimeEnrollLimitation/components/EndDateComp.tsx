@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/layouts/mobile.css";
-import styled from "styled-components";
 import { ErrorProps } from "@/types";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 

@@ -432,6 +432,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
+    if (isShowingDetails) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -1157,8 +1158,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (data.startTimeStamp) {
       let selectedDuration: EnrollmentDurationsProps =
         enrollmentDurations.filter((item) => item.selected == true)[0];
-
-      console.log(selectedDuration);
       if (!selectedDuration) return;
       if (selectedDuration.status == "week") {
         newEndTimeStamp =
