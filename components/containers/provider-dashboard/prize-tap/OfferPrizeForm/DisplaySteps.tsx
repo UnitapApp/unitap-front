@@ -62,7 +62,7 @@ const DisplaySteps = ({ page }: DisplayStepsProp) => {
           {index < 5 && (
             <div
               className={`absolute w-[2px] left-3 top-7 bottom-[-4.6em] ${
-                index < page ? "bg-[#274641]" : "bg-gray70"
+                index < page ? "bg-dark-space-green" : "bg-gray70"
               }  top-0`}
             ></div>
           )}
