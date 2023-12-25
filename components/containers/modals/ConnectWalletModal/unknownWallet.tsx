@@ -39,9 +39,9 @@ const UnknownWalletBody: FC<{
 
       <ClaimButton
         onClick={() => setWalletState(WalletState.SignMessage)}
-        className="!w-full"
+        className="!w-full before:!inset-[1px]"
       >
-        <p className="font-semibold">Register as New User</p>
+        <p className="font-bold text-base">Register as New User</p>
       </ClaimButton>
     </div>
   );

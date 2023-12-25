@@ -51,9 +51,7 @@ const WalletConnecting: FC<{
 
     if (!address) return;
 
-    signMessageAsync({
-      message,
-    }).catch((err) => setError(err.message));
+    signMessageAsync().catch((err) => setError(err.message));
 
     isMounted.current = true;
 
