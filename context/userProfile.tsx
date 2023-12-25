@@ -21,6 +21,7 @@ import {
 import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
+import { NullCallback } from "@/utils";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
@@ -28,6 +29,7 @@ export const UserProfileContext = createContext<
     refreshUserProfile:
       | ((address: string, signature: string) => Promise<void>)
       | null;
+    onWalletLogin: (userToken: string, userProfile: UserProfile) => void;
     loading: boolean;
     remainingClaims: number | null;
     userProfileLoading: boolean;
@@ -35,6 +37,7 @@ export const UserProfileContext = createContext<
     setNonEVMWalletAddress: (address: string) => void;
     userToken: string | null;
     isGasTapAvailable: boolean;
+    updateUsername: (username: string) => void;
   }
 >({
   userProfile: null,
@@ -48,6 +51,8 @@ export const UserProfileContext = createContext<
   nonEVMWalletAddress: "",
   userToken: null,
   setNonEVMWalletAddress: () => {},
+  onWalletLogin: NullCallback,
+  updateUsername: NullCallback,
 });
 
 export const UserContextProvider: FC<
@@ -67,6 +72,18 @@ export const UserContextProvider: FC<
 
   const [weeklyClaimSettings, setWeeklyClaimSettings] =
     useState<Settings>(settings);
+
+  const onWalletLogin = (userToken: string, userProfile: UserProfile) => {
+    setUserProfile(userProfile);
+    setToken(userToken);
+  };
+
+  const updateUsername = (username: string) => {
+    setUserProfile({
+      ...userProfile!,
+      username,
+    });
+  };
 
   const refreshUserProfile = async (address: string, signature: string) => {
     setLoading(true);
@@ -117,7 +134,7 @@ export const UserContextProvider: FC<
       return;
 
     setWalletAPI(userToken!, address, "EVM");
-  }, [address, userProfile]);
+  }, [address, userProfile, userToken]);
 
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
@@ -147,6 +164,7 @@ export const UserContextProvider: FC<
     <UserProfileContext.Provider
       value={{
         userProfile,
+        onWalletLogin,
         isGasTapAvailable: weeklyClaimSettings.isGasTapAvailable,
         refreshUserProfile,
         loading,
@@ -158,6 +176,7 @@ export const UserContextProvider: FC<
         userProfileLoading,
         nonEVMWalletAddress,
         setNonEVMWalletAddress,
+        updateUsername,
       }}
     >
       {children}

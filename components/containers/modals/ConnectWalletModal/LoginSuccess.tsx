@@ -1,12 +1,13 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
+import { useUserProfileContext } from "@/context/userProfile";
 import { useWalletAccount } from "@/utils/wallet";
 
 const LoginSuccessBody = () => {
-  const { connector } = useWalletAccount();
+  const { connector, address } = useWalletAccount();
 
-  console.log(connector?.id);
+  const { userProfile } = useUserProfileContext();
 
   return (
     <div className="text-sm text-center w-full">
@@ -16,7 +17,7 @@ const LoginSuccessBody = () => {
         Logged in Successfully!
       </div>
       <p className="mt-2 mb-16 text-gray100">
-        Hii, welcome back @karim_baqeri :)
+        Hii, welcome back @{userProfile?.username} :)
       </p>
     </div>
   );

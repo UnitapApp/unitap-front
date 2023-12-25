@@ -1,8 +1,9 @@
 import Icon from "@/components/ui/Icon";
-import { useWalletConnection } from "@/utils/wallet";
+import { useWalletAccount, useWalletConnection } from "@/utils/wallet";
 import Link from "next/link";
-import { FC, MouseEventHandler } from "react";
-import { ConnectionProvider } from ".";
+import { FC, MouseEventHandler, useEffect } from "react";
+import { ConnectionProvider, WalletState } from ".";
+import { checkUserExists } from "@/utils/api";
 
 export const WalletProviderButton: FC<{
   className?: string;
@@ -33,9 +34,24 @@ export const WalletProviderButton: FC<{
 };
 
 const WalletPrompt: FC<{
+  setIsNewUser: (isNewUser: boolean) => void;
   setWalletProvider: (provider: ConnectionProvider) => void;
-}> = ({ setWalletProvider }) => {
-  const { connect, connectors } = useWalletConnection();
+  setWalletState: (state: WalletState) => void;
+}> = ({ setWalletProvider, setWalletState, setIsNewUser }) => {
+  const { connect, connectors, isSuccess, isLoading } = useWalletConnection();
+
+  const { address } = useWalletAccount();
+
+  useEffect(() => {
+    if (!address) return;
+
+    checkUserExists(address).then((exists) => {
+      setIsNewUser(!exists);
+      setWalletState(
+        exists ? WalletState.SignMessage : WalletState.UnknownWallet
+      );
+    });
+  }, [address, setIsNewUser, setWalletState]);
 
   return (
     <>

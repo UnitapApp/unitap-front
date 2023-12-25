@@ -1,7 +1,16 @@
+"use client";
+
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
+import { useUserProfileContext } from "@/context/userProfile";
+import { shortenAddress } from "@/utils";
+import { useWalletAccount } from "@/utils/wallet";
 
 const AddNewWalletSuccess = () => {
+  const { userProfile } = useUserProfileContext();
+
+  const { address } = useWalletAccount();
+
   return (
     <>
       <Icon iconSrc="/assets/images/modal/space-like.svg" alt="unitap like" />
@@ -11,8 +20,8 @@ const AddNewWalletSuccess = () => {
       </div>
 
       <p className="mt-3 text-sm text-center text-gray100">
-        Welcome Back @karim_baqeri. Now you can go to your profile and add
-        0x2377...49s2 to your account.
+        Welcome Back @{userProfile?.username}. Now you can go to your profile
+        and add {shortenAddress(address)} to your account.
       </p>
 
       <ClaimButton

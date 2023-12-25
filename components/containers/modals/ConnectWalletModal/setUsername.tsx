@@ -1,8 +1,46 @@
+"use client";
+
 import { ClaimButton } from "@/components/ui/Button/button";
 import Input from "@/components/ui/input";
 import Image from "next/image";
+import { FC, useMemo, useState } from "react";
+import { ConnectionProvider, WalletState, getWalletProviderInfo } from ".";
+import WalletConnecting from "./walletConnecting";
+import { loginOrRegister, setUsernameApi } from "@/utils/api";
+import { useWalletAccount } from "@/utils/wallet";
+import { ethers } from "ethers";
+import { useDisconnect, useSignMessage } from "wagmi";
+import { useUserProfileContext } from "@/context/userProfile";
+import { AxiosError } from "axios";
 
-const SetUsernameBody = () => {
+const SetUsernameBody: FC<{
+  walletProvider: ConnectionProvider;
+  setWalletState: (state: WalletState) => void;
+}> = ({ setWalletState }) => {
+  const { address } = useWalletAccount();
+  const { userToken, updateUsername } = useUserProfileContext();
+
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const onSubmit = async () => {
+    if (!address || !userToken) return;
+
+    setError("");
+    setLoading(true);
+    try {
+      await setUsernameApi(username, userToken);
+      updateUsername(username);
+      setWalletState(WalletState.AddWalletSuccess);
+    } catch (e) {
+      if (!(e instanceof AxiosError) || !e.response) return;
+      setError(e.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="text-center w-full">
       <Image
@@ -19,10 +57,14 @@ const SetUsernameBody = () => {
 
       <div className={`search-input mt-5 relative bg-gray60 rounded-2xl`}>
         <Input
-          className="text-gray100 !m-0 placeholder:text-gray90 !bg-gray60 border-gray70 border-2 rounded-2xl"
+          className={`text-gray100 !m-0 placeholder:text-gray90 !bg-gray60 border-gray70 border-2 rounded-2xl ${
+            error ? "border-error" : "border-gray70"
+          }`}
           width="100%"
           fontSize="14px"
           placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           pl={2}
           p={2}
           mb={0}
@@ -31,12 +73,16 @@ const SetUsernameBody = () => {
           @
         </span>
       </div>
+      {!!error && <p className="text-xs pl-2 text-error">{error}</p>}
 
       <ClaimButton
-        // onClick={handleHaveBrightIdClicked}
-        className="!w-full mt-10"
+        onClick={onSubmit}
+        className="!w-full mt-10 disabled:opacity-60"
+        disabled={loading}
       >
-        <p className="font-semibold">Start the Journey</p>
+        <p className="font-semibold">
+          {loading ? "Loading..." : "Start the Journey"}
+        </p>
       </ClaimButton>
     </div>
   );

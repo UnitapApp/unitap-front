@@ -1,17 +1,36 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { ConnectionProvider, WalletState } from ".";
 import { WalletProviderButton } from "./walletPrompt";
-import { useWalletConnection } from "@/utils/wallet";
+import { useWalletAccount, useWalletConnection } from "@/utils/wallet";
 import Image from "next/image";
+import { useDisconnect } from "wagmi";
+import { checkUserExists } from "@/utils/api";
 
 const AddNewWalletBody: FC<{
   setWalletProvider: (provider: ConnectionProvider) => void;
   setWalletState: (state: WalletState) => void;
 }> = ({ setWalletProvider, setWalletState }) => {
-  const { connect, connectors } = useWalletConnection();
+  const { connect, connectors, isSuccess } = useWalletConnection();
+  const { disconnect } = useDisconnect();
+
+  const { address } = useWalletAccount();
+
+  useEffect(() => {
+    if (disconnect) disconnect();
+  }, [disconnect]);
+
+  useEffect(() => {
+    if (!isSuccess || !address) return;
+
+    checkUserExists(address).then((exists) => {
+      setWalletState(
+        exists ? WalletState.SignMessage : WalletState.AddWalletFailed
+      );
+    });
+  }, [address, isSuccess, setWalletState]);
 
   return (
     <div className="text-center">

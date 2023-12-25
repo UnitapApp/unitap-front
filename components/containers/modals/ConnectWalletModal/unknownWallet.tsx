@@ -32,13 +32,13 @@ const UnknownWalletBody: FC<{
 
       <WhiteOutlinedButton
         className="mb-4 !border-1 !font-semibold mt-5 !w-full bg-gray10"
-        onClick={() => setWalletState(WalletState.LoggedIn)}
+        onClick={() => setWalletState(WalletState.AddNewWallet)}
       >
         Add Wallet to an Existing Account
       </WhiteOutlinedButton>
 
       <ClaimButton
-        onClick={() => setWalletState(WalletState.AddNewWallet)}
+        onClick={() => setWalletState(WalletState.SignMessage)}
         className="!w-full"
       >
         <p className="font-semibold">Register as New User</p>

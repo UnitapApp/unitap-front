@@ -17,12 +17,30 @@ export enum ConnectionProvider {
   Walletconnect,
 }
 
+export const getWalletProviderInfo = (provider: ConnectionProvider) => {
+  if (provider === ConnectionProvider.Metamask) {
+    return {
+      imageUrl: "/assets/images/modal/metamask-icon.svg",
+      label: "Metamask",
+      loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
+    };
+  }
+
+  return {
+    imageUrl: "/assets/images/modal/walletconnect-icon.svg",
+    label: "WalletConnect",
+    loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
+  };
+};
+
 export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
     WalletState.Prompt
   );
+
+  const [isNewUser, setIsNewUser] = useState(false);
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
     ConnectionProvider.Metamask
@@ -49,14 +67,22 @@ export const RenderWalletBody: FC<{
   }, [setWalletTitle, walletState]);
 
   if (walletState === WalletState.Prompt)
-    return <WalletPrompt setWalletProvider={setWalletProvider} />;
+    return (
+      <WalletPrompt
+        setWalletState={setWalletState}
+        setIsNewUser={setIsNewUser}
+        setWalletProvider={setWalletProvider}
+      />
+    );
 
   if (walletState === WalletState.SignMessage)
     return (
       <WalletConnecting
+        isNewUser={isNewUser}
         imageUrl={currentWallet.imageUrl}
         label={currentWallet.label}
         loadingImage={currentWallet.loadingImage}
+        setWalletState={setWalletState}
       />
     );
 
@@ -73,13 +99,19 @@ export const RenderWalletBody: FC<{
 
   if (walletState === WalletState.LoggedIn) return <LoginSuccessBody />;
 
-  if (walletState === WalletState.SetUsername) return <SetUsernameBody />;
+  if (walletState === WalletState.SetUsername)
+    return (
+      <SetUsernameBody
+        setWalletState={setWalletState}
+        walletProvider={walletProvider}
+      />
+    );
 
   if (walletState === WalletState.AddWalletSuccess)
     return <AddNewWalletSuccess />;
 
   if (walletState === WalletState.AddWalletFailed)
-    return <AddNewWalletFailed />;
+    return <AddNewWalletFailed setWalletState={setWalletState} />;
 };
 
 export enum WalletState {

@@ -1,7 +1,12 @@
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import { WalletState } from ".";
+import { useDisconnect } from "wagmi";
 
-const AddNewWalletFailed = () => {
+const AddNewWalletFailed: FC<{
+  setWalletState: (state: WalletState) => void;
+}> = ({ setWalletState }) => {
   return (
     <>
       <Icon iconSrc="/assets/images/modal/unitap-error.svg" alt="error" />
@@ -14,7 +19,12 @@ const AddNewWalletFailed = () => {
         There seems to be no Unitap account with the wallet (0x8753...34h6).
       </p>
 
-      <ClaimButton className="!w-full mt-8">
+      <ClaimButton
+        onClick={() => {
+          setWalletState(WalletState.UnknownWallet);
+        }}
+        className="!w-full mt-8"
+      >
         <p className="font-semibold">Go Back</p>
       </ClaimButton>
     </>
