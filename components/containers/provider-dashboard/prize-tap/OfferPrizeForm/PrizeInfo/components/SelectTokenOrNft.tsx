@@ -11,6 +11,7 @@ import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { ZERO_ADDRESS } from "@/constants";
+import { useState } from "react";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,6 +29,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     setNumberOfNfts,
   } = usePrizeOfferFormContext();
 
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   return (
     <div
       className={
@@ -341,6 +343,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           </div>
 
           <div className="relative">
+            <div className={`tooltip ${showTooltip ? "flex" : "hidden"}`}>
+              <div className="absolute flex items-center justify-center -right-6 z-100 rounded-sm -top-4 w-[100px] h-[20px] text-xs bg-gray100">
+                tooltip message
+              </div>
+              <div className="absolute w-[5px] h-[5px] right-6 rotate-45 top-[1px]  bg-green-100"></div>
+            </div>
             <div
               className={`
 							 flex text-gray80 text-[12px] bg-gray40 border ${
@@ -372,11 +380,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   }
                 />
               </div>
-              <div>
+              <div className="min-w-[20px] relative">
                 <Icon
                   iconSrc="/assets/images/provider-dashboard/exclamation.svg"
-                  width="20px"
-                  height="20px"
+                  className="cursor-pointer"
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
                 />
               </div>
             </div>
