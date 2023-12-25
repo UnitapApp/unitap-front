@@ -3,13 +3,10 @@
 import { ClaimButton } from "@/components/ui/Button/button";
 import Input from "@/components/ui/input";
 import Image from "next/image";
-import { FC, useMemo, useState } from "react";
-import { ConnectionProvider, WalletState, getWalletProviderInfo } from ".";
-import WalletConnecting from "./walletConnecting";
-import { loginOrRegister, setUsernameApi } from "@/utils/api";
+import { FC, useState } from "react";
+import { ConnectionProvider, WalletState } from ".";
+import { setUsernameApi } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
-import { ethers } from "ethers";
-import { useDisconnect, useSignMessage } from "wagmi";
 import { useUserProfileContext } from "@/context/userProfile";
 import { AxiosError } from "axios";
 
@@ -32,7 +29,7 @@ const SetUsernameBody: FC<{
     try {
       await setUsernameApi(username, userToken);
       updateUsername(username);
-      setWalletState(WalletState.AddWalletSuccess);
+      setWalletState(WalletState.LoggedIn);
     } catch (e) {
       if (!(e instanceof AxiosError) || !e.response) return;
       setError(e.response.data.message);
