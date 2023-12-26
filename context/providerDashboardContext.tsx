@@ -432,7 +432,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
-    // if (isShowingDetails) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -1021,6 +1020,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleShowUserDetails = async (raffle: UserRafflesProps) => {
+    console.log(Date.parse(raffle.deadline) / 1000, raffle.deadline);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
@@ -1166,7 +1166,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   }, [updateChainList]);
 
   useEffect(() => {
+    if (isShowingDetails) return;
     let newEndTimeStamp: any;
+
     if (data.startTimeStamp) {
       let selectedDuration: EnrollmentDurationsProps =
         enrollmentDurations.filter((item) => item.selected == true)[0];
