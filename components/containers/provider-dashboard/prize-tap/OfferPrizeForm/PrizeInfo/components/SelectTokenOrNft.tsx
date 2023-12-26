@@ -157,7 +157,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 showErrors &&
                 (!data.tokenAmount ||
                   !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
-                  !insufficientBalance)
+                  !insufficientBalance ||
+                  Number(data.totalAmount) <= 0)
                   ? "border-error"
                   : "border-gray30"
               }`}
@@ -237,6 +238,14 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
             </div>
+            {Number(data.totalAmount) < 0 &&
+              !data.isNft &&
+              data.winnersCount &&
+              data.tokenAmount && (
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
+                  Invalid amount
+                </p>
+              )}
             {showErrors &&
               !data.isNft &&
               !(Number(data.tokenAmount) * Number(data.winnersCount)) && (

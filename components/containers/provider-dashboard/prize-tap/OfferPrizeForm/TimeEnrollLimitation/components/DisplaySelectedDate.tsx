@@ -5,7 +5,7 @@ const DisplaySelectedDate = () => {
   const { data } = usePrizeOfferFormContext();
   return (
     <div
-      className={`${
+      className={`w-full ${
         data.startTimeStamp >= data.endTimeStamp ? "text-error" : "text-gray100"
       }`}
     >

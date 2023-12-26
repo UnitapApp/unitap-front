@@ -36,11 +36,11 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           </div>
         ))}
       </div>
-      <div className="text-[14px] grid gap-4 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
+      <div className="text-[14px] grid gap-11 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
         <div className="text-gray100  cursor-pointer underline w-full">
           <EndDateComp showErrors={showErrors} />
         </div>
-        <div className="w-full ">
+        <div className="w-full">
           {data.startTimeStamp && <DisplaySelectedDate />}
           {data.startTimeStamp >= data.endTimeStamp && (
             <p className="text-error text-[11px] m-0 p-0 -mt-1 absolute ">

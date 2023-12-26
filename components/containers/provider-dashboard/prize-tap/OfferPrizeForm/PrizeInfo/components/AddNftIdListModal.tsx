@@ -244,7 +244,8 @@ const AddNftIdListModalModalBody = () => {
             <p className="text-xs text-gray80 -mb-2">
               Upload from file, only .txt or .csv{" "}
               <a
-                href="http://localhost:3000/src/constants/nftListSample/sample.csv"
+                href="/nftListSample/sample.csv"
+                target="_blank"
                 className="cursor-pointer"
               >
                 (Download Sample)

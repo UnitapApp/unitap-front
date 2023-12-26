@@ -43,7 +43,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
           <Link href="/">
             <BackToHomeButton
               height="32px"
-              className="!w-full mt-10 max-w-[100px]"
+              className="!w-full mt-10 text-xs max-w-[120px]"
               $fontSize="10px"
             >
               <p>Back to Home</p>

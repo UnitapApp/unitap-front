@@ -74,7 +74,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           }}
           onChange={changeTime}
           value={endDate}
-          minDate={Date.now()}
+          // minDate={Date.now()}
           className="rmdp-mobile animate-fadeIn"
         />
       </div>
