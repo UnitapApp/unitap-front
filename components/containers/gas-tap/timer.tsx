@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import { diffToNextMonth } from "@/utils/time"
+import { diffToNextMonday, diffToNextMonth } from "@/utils/time";
 
 const Timer = () => {
-  const [now, setNow] = useState(new Date())
-  const [days, setDays] = useState("00")
-  const [hours, setHours] = useState("00")
-  const [minutes, setMinutes] = useState("00")
-  const [seconds, setSeconds] = useState("00")
+  const [now, setNow] = useState(new Date());
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
 
   useEffect(() => {
-    const diff = diffToNextMonth(now)
-    setSeconds(diff.seconds)
-    setMinutes(diff.minutes)
-    setHours(diff.hours)
-    setDays(diff.days)
-  }, [now])
+    const diff = diffToNextMonday(now);
+    setSeconds(diff.seconds);
+    setMinutes(diff.minutes);
+    setHours(diff.hours);
+    setDays(diff.days);
+  }, [now]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className="timer-wrapper flex flex-col mt-2 items-center absolute bottom-0 left-1/2 -translate-x-1/2 bg-gray20 py-2 px-4 rounded-t-2xl">
@@ -38,7 +38,7 @@ const Timer = () => {
         </p>
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default Timer
+export default Timer;

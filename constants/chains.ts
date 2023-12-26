@@ -11,7 +11,20 @@ import {
   meter,
   zetachainAthensTestnet,
   scroll,
+  xdc,
+  arbitrum,
+  telos,
+  harmonyOne,
+  celo,
+  opBNBTestnet,
+  linea,
+  lineaTestnet,
+  arbitrumNova,
+  scrollSepolia,
+  Chain,
+  opBNB,
 } from "viem/chains";
+
 import { mainnet, sepolia } from "wagmi";
 
 const IDChain = {
@@ -46,22 +59,49 @@ const Optimism = {
     etherscan: { name: "etherscan", url: "https://optimistic.etherscan.io" },
     default: { name: "etherscan", url: "https://optimistic.etherscan.io" },
   },
-
-  // explorerUrl: "https://optimistic.etherscan.io/",
-  // rpcUrl: "https://rpc.ankr.com/optimism",
-  // logoUrl:
-  //   "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
-  // modalUrl:
-  //   "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
-  // gasImageUrl:
-  //   "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
-  // maxClaimAmount: 50000000000000.0,
-  // isTestnet: false,
-  // tokentapContractAddress: "0x54a839FF128DC1891a03d7a81724bD5D51A5902b",
-  // chainType: "EVM",
-  // blockScanAddress:
-  //   "https://optimistic.etherscan.io/address/0xb3A97684Eb67182BAa7994b226e6315196D8b364",
 };
+
+export const kccMainnet = {
+  id: 321,
+  network: "kcc-mainnet",
+  name: "KuCoin Community Chain",
+  nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
+  rpcUrls: {
+    bscscan: {
+      http: ["https://rpc-mainnet.kcc.network"],
+      webSocket: ["wss://rpc-mainnet.kcc.network"],
+    },
+    kccscan: {
+      http: ["https://explorer.kcc.io/en/rpc"],
+      webSocket: ["wss://explorer.kcc.io/en/rpc"],
+    },
+    default: {
+      http: ["https://rpc-mainnet.kcc.network"],
+    },
+    public: {
+      http: ["https://rpc-mainnet.kcc.network"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "KCCScan",
+      url: "https://explorer.kcc.io/en",
+    },
+  },
+  // contracts: {
+  //   kccRegistrar: {
+  //     address: "0x0000000000000000000000000000000000000000",
+  //   },
+  //   kccResolver: {
+  //     address: "0x0000000000000000000000000000000000000000",
+  //     blockCreated: 0, // Replace with the actual block number when deployed
+  //   },
+  //   multicall: {
+  //     address: "0x0000000000000000000000000000000000000000",
+  //     blockCreated: 0, // Replace with the actual block number when deployed
+  //   },
+  // },
+} satisfies Chain;
 
 export const supportedChains = [
   sepolia,
@@ -80,6 +120,18 @@ export const supportedChains = [
   meter,
   zetachainAthensTestnet,
   scroll,
+  xdc,
+  arbitrum,
+  telos,
+  harmonyOne,
+  celo,
+  opBNBTestnet,
+  linea,
+  lineaTestnet,
+  arbitrumNova,
+  scrollSepolia,
+  kccMainnet,
+  opBNB,
 ];
 
 /**

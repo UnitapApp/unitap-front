@@ -1,29 +1,30 @@
-"use client"
+"use client";
 
-import { Prize } from "@/types"
-import { FC } from "react"
-import RafflePermissions from "../../permissions"
-import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style"
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { shortenAddress } from "@/utils"
-import Link from "next/link"
-import WalletAddress from "../wallet-address"
-import { usePrizeTapContext } from "@/context/prizeTapProvider"
-import { Text } from "@/components/ui/text.style"
-import { useWalletAccount } from "@/utils/wallet"
+import { Prize } from "@/types";
+import { FC } from "react";
+import RafflePermissions from "../../permissions";
+import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style";
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { shortenAddress } from "@/utils";
+import Link from "next/link";
+import WalletAddress from "../wallet-address";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
+import { Text } from "@/components/ui/text.style";
+import { useWalletAccount } from "@/utils/wallet";
+import WinnersModal from "../winnersModal";
 
 const InitialBody: FC<{
-  raffle: Prize
-  method: string
+  raffle: Prize;
+  method: string;
 }> = ({ method, raffle }) => {
-  const { address, isConnected } = useWalletAccount()
+  const { address, isConnected } = useWalletAccount();
 
   const tokenImgLink: string = raffle.isPrizeNft
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
         Number(raffle.tokenUri.split("/")[3]) + 1
       }.png`
-    : ""
+    : "";
 
   const {
     claimOrEnrollWalletResponse,
@@ -32,10 +33,14 @@ const InitialBody: FC<{
     claimOrEnrollLoading,
     closeEnrollModal,
     handleClaimPrize,
-  } = usePrizeTapContext()
+  } = usePrizeTapContext();
 
   if (method === "Verify") {
-    return <RafflePermissions raffle={raffle} />
+    return <RafflePermissions raffle={raffle} />;
+  }
+
+  if (method === "Winners") {
+    return <WinnersModal />;
   }
 
   if (method === "Enroll") {
@@ -70,7 +75,7 @@ const InitialBody: FC<{
             If you do not have sufficient gas, please visit{" "}
             <Link
               className="text-blue-500"
-              href={"/gas-tap?hc=" + raffle.chain.chainName}
+              href={"/gastap?hc=" + raffle.chain.chainName}
             >
               Gas Tap
             </Link>
@@ -113,7 +118,7 @@ const InitialBody: FC<{
           </ClaimButton>
         )}
       </>
-    )
+    );
   }
 
   return (
@@ -162,7 +167,7 @@ const InitialBody: FC<{
         )}
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default InitialBody
+export default InitialBody;
