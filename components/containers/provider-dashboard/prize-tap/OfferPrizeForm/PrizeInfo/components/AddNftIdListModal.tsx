@@ -63,7 +63,6 @@ const AddNftIdListModalModalBody = () => {
 
   const handleChangeTextarea = (e: string) => {
     setError(null);
-    console.log(!textAreaData);
     setTextAreaData(e);
     setNftIds(polishText(e));
   };
@@ -99,11 +98,11 @@ const AddNftIdListModalModalBody = () => {
   };
 
   useEffect(() => {
-    if (uploadedFile && data.nftTokenIds) {
-      setNftIds(data.nftTokenIds);
-    }
+    // if (uploadedFile && data.nftTokenIds) {
+    //   setNftIds(data.nftTokenIds);
+    // }
 
-    if (!uploadedFile && data.nftTokenIds) {
+    if (!uploadedFile && data.nftTokenIds && !(nftRange.to && nftRange.from)) {
       const arrToStr = data.nftTokenIds.join("\n");
       setTextAreaData(arrToStr);
       setNftIds(polishText(arrToStr));
