@@ -432,6 +432,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
+    if (!data.startTimeStamp) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -1020,7 +1021,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleShowUserDetails = async (raffle: UserRafflesProps) => {
-    console.log(Date.parse(raffle.deadline) / 1000, raffle.deadline);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
