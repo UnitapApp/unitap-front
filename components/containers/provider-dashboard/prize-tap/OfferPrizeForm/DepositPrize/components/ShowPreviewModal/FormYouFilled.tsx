@@ -87,7 +87,7 @@ const FormYouFilled = ({ data }: Prop) => {
                     className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-[10px] rounded"
                     key={index}
                   >
-                    {item.title}
+                    {item.isNotSatisfy && "Not "} {item.title}
                   </div>
                 );
               })
