@@ -92,8 +92,8 @@ const InformationVerification = () => {
             </div>
             <div className="mt-10">
               <p>
-                your request is rejected. send your request again and we will
-                check it again or contact us via this email address:
+                Send your request again and we will check it again or contact us
+                via this email address:
               </p>
               <div className="flex gap-1 items-center justify-center">
                 <a
