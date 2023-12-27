@@ -99,9 +99,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
   const { writeAsync } = useContractWrite({
     account: address,
-    address: selectedRaffleForEnroll?.isPrizeNft
-      ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-      : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
     functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
     chainId: Number(selectedRaffleForEnroll?.chain.chainId),
     abi: prizeTapABI,
