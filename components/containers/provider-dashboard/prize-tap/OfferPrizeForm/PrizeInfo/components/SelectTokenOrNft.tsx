@@ -403,8 +403,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
             </div>
-            {showErrors &&
-              data.nftTokenIds.length > 0 &&
+            {data.nftTokenIds.length > 0 &&
               data.nftTokenIds.length != Number(numberOfNfts) && (
                 <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
                   Number of NFTs are not equal with Number of NFts you added.

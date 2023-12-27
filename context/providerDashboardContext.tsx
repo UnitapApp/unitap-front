@@ -1102,7 +1102,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (isShowingDetails) return;
     setUploadedFile(null);
     setNftRange({ from: "", to: "" });
-    setData((prev) => ({ ...prev, nftTokenIds: [], nftContractAddress: "" }));
+    setData((prev) => ({ ...prev, nftTokenIds: [] }));
   };
 
   useEffect(() => {
