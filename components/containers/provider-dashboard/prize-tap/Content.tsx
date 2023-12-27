@@ -156,7 +156,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                   Spots Left
                 </p>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="/assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"

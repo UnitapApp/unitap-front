@@ -46,7 +46,7 @@ const TokenTapContent = () => {
             </div>
             <Icon
               className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
-              iconSrc="../assets/images/provider-dashboard/token-bg.png"
+              iconSrc="/assets/images/provider-dashboard/token-bg.png"
             />
           </div>
           <div className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]">
@@ -60,7 +60,7 @@ const TokenTapContent = () => {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="36px"
                   height="36px"
                 />
@@ -81,7 +81,7 @@ const TokenTapContent = () => {
                   on Bitcoin Lightning
                 </div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="14px"
                   height="14px"
                 />
@@ -89,7 +89,7 @@ const TokenTapContent = () => {
               <div className="flex items-center gap-3">
                 <div className="text-gray80 text-[10px]">non-Repeatable</div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/reload.svg"
+                  iconSrc="/assets/images/provider-dashboard/reload.svg"
                   width="14px"
                   height="14px"
                 />
@@ -113,7 +113,7 @@ const TokenTapContent = () => {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="36px"
                   height="36px"
                 />
@@ -134,7 +134,7 @@ const TokenTapContent = () => {
                   on Bitcoin Lightning
                 </div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="14px"
                   height="14px"
                 />
@@ -142,7 +142,7 @@ const TokenTapContent = () => {
               <div className="flex items-center gap-3">
                 <div className="text-gray80 text-[10px]">non-Repeatable</div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/reload.svg"
+                  iconSrc="/assets/images/provider-dashboard/reload.svg"
                   width="14px"
                   height="14px"
                 />
@@ -165,7 +165,7 @@ const TokenTapContent = () => {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="36px"
                   height="36px"
                 />
@@ -186,7 +186,7 @@ const TokenTapContent = () => {
                   on Bitcoin Lightning
                 </div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
                   width="14px"
                   height="14px"
                 />
@@ -194,7 +194,7 @@ const TokenTapContent = () => {
               <div className="flex items-center gap-3">
                 <div className="text-gray80 text-[10px]">non-Repeatable</div>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/reload.svg"
+                  iconSrc="/assets/images/provider-dashboard/reload.svg"
                   width="14px"
                   height="14px"
                 />
