@@ -179,3 +179,8 @@ export interface EnrollmentDurationsProps {
   value: number;
   status: string
 }
+
+export interface UploadedFileProps {
+  fileName: string;
+  fileContent: any
+}

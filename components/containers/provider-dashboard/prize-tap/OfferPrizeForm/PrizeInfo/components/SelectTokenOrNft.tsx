@@ -154,11 +154,14 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`relative border p-5 rounded-2xl ${
-                showErrors &&
-                (!data.tokenAmount ||
-                  !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
-                  !insufficientBalance ||
-                  Number(data.totalAmount) <= 0)
+                (Number(data.tokenAmount) &&
+                  Number(data.winnersCount) &&
+                  Number(data.totalAmount) < 0) ||
+                (showErrors &&
+                  (!data.tokenAmount ||
+                    !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
+                    !insufficientBalance ||
+                    Number(data.totalAmount) <= 0))
                   ? "border-error"
                   : "border-gray30"
               }`}
@@ -361,7 +364,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             <div
               className={`
 							 flex text-gray80 text-[12px] bg-gray40 border ${
-                 showErrors && data.nftTokenIds.length != Number(numberOfNfts)
+                 data.nftTokenIds.length > 0 &&
+                 data.nftTokenIds.length != Number(numberOfNfts)
                    ? "border-error"
                    : "border-gray50"
                } rounded-xl h-[43px]  max-w-[452px] overflow-hidden items-center justify-between pr-4`}
@@ -375,7 +379,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     isShowingDetails ||
                     !data.selectedChain ||
                     nftContractStatus.checking ||
-                    !isRightChain
+                    !isRightChain ||
+                    !data.nftContractAddress
                   }
                   name="NumberOfNfts"
                   placeholder="Number Of Nfts"
@@ -398,11 +403,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
             </div>
-            {showErrors && data.nftTokenIds.length != Number(numberOfNfts) && (
-              <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
-                Number of NFTs are not equal with Number of NFts you added.
-              </p>
-            )}
+            {showErrors &&
+              data.nftTokenIds.length > 0 &&
+              data.nftTokenIds.length != Number(numberOfNfts) && (
+                <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                  Number of NFTs are not equal with Number of NFts you added.
+                </p>
+              )}
           </div>
           {data.nftTokenIds.length > 0 ? (
             <div className="flex relative justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">

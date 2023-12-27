@@ -10,6 +10,7 @@ import {
   NftRangeProps,
   NftStatusProp,
   ProviderDashboardFormDataProp,
+  UploadedFileProps,
   UserRafflesProps,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
@@ -215,7 +216,7 @@ export const ProviderDashboardContext = createContext<{
   handleShowUserDetails: (raffle: UserRafflesProps) => void;
   handleAddNftToData: (nftIds: string[]) => void;
   setUploadedFile: (file: any) => void;
-  uploadedFile: any;
+  uploadedFile: UploadedFileProps | null;
   isShowingDetails: boolean;
   handleCheckOwnerOfNfts: (nftIds: string[]) => Promise<boolean>;
   nftStatus: NftStatusProp[];
@@ -304,7 +305,7 @@ export const ProviderDashboardContext = createContext<{
   handleShowUserDetails: NullCallback,
   handleAddNftToData: NullCallback,
   setUploadedFile: NullCallback,
-  uploadedFile: null,
+  uploadedFile: { fileName: "", fileContent: null },
   isShowingDetails: false,
   handleCheckOwnerOfNfts: async () => false,
   nftStatus: [],
@@ -404,7 +405,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
     useState<UserRafflesProps | null>(null);
 
-  const [uploadedFile, setUploadedFile] = useState<any | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
+    null
+  );
   const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
 
@@ -577,6 +580,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       setData((prev) => ({
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
+      }));
+    } else {
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(0).toFixed(),
       }));
     }
   }, [data.tokenAmount, data.winnersCount]);
