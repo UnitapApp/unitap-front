@@ -63,7 +63,7 @@ const AddNftIdListModalModalBody = () => {
 
   const handleChangeTextarea = (e: string) => {
     setError(null);
-
+    console.log(!textAreaData);
     setTextAreaData(e);
     setNftIds(polishText(e));
   };
@@ -260,7 +260,7 @@ const AddNftIdListModalModalBody = () => {
                     !!nftRange.to
                   }
                   placeholder={`... or paste ID, each one in a new line \n 1 \n 2 \n 3 `}
-                  className={`w-[100%] flex bg-gray40 h-[143px] p-2 text-gray100 nftIdTextarea pl-3 border-none outline-none ${
+                  className={`w-[100%] flex bg-gray40 h-[142px] p-2 text-gray100 nftIdTextarea pl-3 border-none outline-none ${
                     !nftContractStatus.isValid ||
                     !!uploadedFile ||
                     !!nftRange.from ||
@@ -384,8 +384,9 @@ const AddNftIdListModalModalBody = () => {
               !nftContractStatus.isValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||
-              Number(nftRange.to) <= Number(nftRange.from) ||
-              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                Number(nftRange.to) <= Number(nftRange.from)) ||
+              (selectedTab == tabsName.PASTE_IDS && nftIds.length == 0) ||
               (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
                 ? "opacity-[.8] text-gray80"
                 : "text-white cursor-pointer"
@@ -394,8 +395,9 @@ const AddNftIdListModalModalBody = () => {
               !nftContractStatus.isValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||
-              Number(nftRange.to) <= Number(nftRange.from) ||
-              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                Number(nftRange.to) <= Number(nftRange.from)) ||
+              (selectedTab == tabsName.PASTE_IDS && nftIds.length == 0) ||
               (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
             }
           >
