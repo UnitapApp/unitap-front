@@ -385,7 +385,7 @@ const AddNftIdListModalModalBody = () => {
                 (!nftRange.to || !nftRange.from)) ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 Number(nftRange.to) <= Number(nftRange.from)) ||
-              (selectedTab == tabsName.PASTE_IDS && nftIds.length == 0) ||
+              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
               (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
                 ? "opacity-[.8] text-gray80"
                 : "text-white cursor-pointer"
@@ -396,7 +396,7 @@ const AddNftIdListModalModalBody = () => {
                 (!nftRange.to || !nftRange.from)) ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 Number(nftRange.to) <= Number(nftRange.from)) ||
-              (selectedTab == tabsName.PASTE_IDS && nftIds.length == 0) ||
+              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
               (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
             }
           >
