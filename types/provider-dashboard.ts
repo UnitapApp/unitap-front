@@ -1,5 +1,6 @@
 import { UserProfile } from "./auth";
 import { Chain } from "./gas-tap";
+import { WinnerEntry } from "./prize-tap";
 
 export type ProviderDashboardFormDataProp = {
   provider: string | null;
@@ -71,13 +72,13 @@ export interface ConstraintParamValues {
   pk: number;
   values: Record<number, string | number | boolean> | null;
   title: string;
-  isNotSatisfy: boolean
+  isNotSatisfy: boolean;
 }
 
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints:  ConstraintParamValues[];
+  constraints: ConstraintParamValues[];
   contract: string;
   createdAt: string;
   creatorAddress: string;
@@ -115,7 +116,7 @@ export interface UserRafflesProps {
   emailUrl: string | null;
   txHash: string | null;
   userEntry: string | null;
-  winnerEntry: string | null;
+  winnerEntries: WinnerEntry[] | null;
   winnersCount: number;
   necessaryInformation: string | null;
 }
@@ -156,7 +157,6 @@ export interface ContractStatus {
   canDisplayStatus: boolean;
 }
 
-
 export interface DisplayStepsProps {
   id: number;
   name: string;
@@ -177,10 +177,10 @@ export interface EnrollmentDurationsProps {
   selected: boolean;
   time: string | null;
   value: number;
-  status: string
+  status: string;
 }
 
 export interface UploadedFileProps {
   fileName: string;
-  fileContent: any
+  fileContent: any;
 }

@@ -17,6 +17,7 @@ import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";
 import OfferPrizeForm from "./OfferPrizeForm";
+import WinnersModal from "./Modals/winnersModal";
 
 interface PrizeCardProp {
   prize: UserRafflesProps;
@@ -33,7 +34,7 @@ enum RaffleStatus {
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
-  const { handleCheckForReason, handleShowUserDetails } =
+  const { handleCheckForReason, handleShowUserDetails, handleWinnersResult } =
     usePrizeOfferFormContext();
   const diff = new Date(prize.deadline).getTime() - new Date().getTime();
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -184,7 +185,10 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                 {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
               </p>
             </div>
-            <div className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center">
+            <div
+              onClick={() => handleWinnersResult(prize)}
+              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
+            >
               <p>Check Enrolled Wallets & Winners</p>
             </div>
           </div>
@@ -285,6 +289,7 @@ const PrizeTapContent = () => {
     <div>
       {!selectNewOffer && (
         <div>
+          <WinnersModal />
           <div className="flex flex-col md:flex-row  items-center justify-between ">
             <SearchInput
               className="w-full md:w-1/3"

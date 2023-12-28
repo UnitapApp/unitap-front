@@ -240,6 +240,8 @@ export const ProviderDashboardContext = createContext<{
   setNumberOfNfts: (number: string) => void;
   handleSetEnrollDuration: (id: number) => void;
   enrollmentDurations: EnrollmentDurationsProps[];
+  handleWinnersResult: (raffle: UserRafflesProps | null) => void;
+  winnersResultRaffle: UserRafflesProps | null;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -337,6 +339,8 @@ export const ProviderDashboardContext = createContext<{
   setNumberOfNfts: NullCallback,
   enrollmentDurations: enrollmentDurationsInit,
   handleSetEnrollDuration: NullCallback,
+  handleWinnersResult: NullCallback,
+  winnersResultRaffle: null,
 });
 
 const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
@@ -403,6 +407,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
+    useState<UserRafflesProps | null>(null);
+
+  const [winnersResultRaffle, setWinnersResultRaffle] =
     useState<UserRafflesProps | null>(null);
 
   const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
@@ -1299,6 +1306,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         setNumberOfNfts,
         enrollmentDurations,
         handleSetEnrollDuration,
+        winnersResultRaffle,
+        handleWinnersResult: setWinnersResultRaffle,
       }}
     >
       {children}
