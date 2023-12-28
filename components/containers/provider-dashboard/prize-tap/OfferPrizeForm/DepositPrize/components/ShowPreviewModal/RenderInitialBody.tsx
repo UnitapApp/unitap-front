@@ -14,7 +14,7 @@ const RenderInitialBody = ({ data }: Prop) => {
     usePrizeOfferFormContext();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col select-none">
       <div className="text-gray100 text-[14px] ">
         This is how your card will appear. If you are sure of the accuracy of
         the form you filled out, please submit your contribution.
