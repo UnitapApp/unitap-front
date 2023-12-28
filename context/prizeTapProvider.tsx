@@ -167,7 +167,11 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setClaimOrEnrollSignatureLoading(false);
     }
 
-    return { ...response, multiplier: userEntry?.multiplier };
+    return {
+      result: response?.result,
+      multiplier: userEntry?.multiplier,
+      userEntry,
+    };
   }, [method, selectedRaffleForEnroll, userToken]);
 
   const claimOrEnroll = useCallback(async () => {
@@ -177,14 +181,15 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const claimMethod = method;
 
-    const id = selectedRaffleForEnroll?.userEntry?.pk;
-
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
     const setClaimHashId = selectedRaffleForEnroll?.pk;
 
     const enrollOrClaimPayload = await getSignature();
 
+    const id = enrollOrClaimPayload?.userEntry?.pk;
+
+    console.log(id);
     setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
