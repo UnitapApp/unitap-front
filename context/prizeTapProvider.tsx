@@ -154,6 +154,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       raffleEntryId = enrollInApi.signature.pk;
     } else {
       raffleEntryId = selectedRaffleForEnroll?.userEntry.pk;
+      userEntry = selectedRaffleForEnroll.userEntry;
     }
 
     let response;
@@ -188,7 +189,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     if (claimMethod !== "Claim") {
       args.push(
-        selectedRaffleForEnroll?.userEntry?.multiplier,
+        enrollOrClaimPayload?.multiplier,
         enrollOrClaimPayload?.result?.reqId,
         {
           signature: enrollOrClaimPayload?.result?.signatures[0].signature,
