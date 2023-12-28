@@ -18,6 +18,7 @@ import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
+import { shortenAddress } from "@/utils";
 
 export const Action = styled.div`
   display: flex;
@@ -510,8 +511,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{userProfile?.username} ! claim your
-                      prize now.
+                      Congratulations @
+                      {userProfile?.username ||
+                        shortenAddress(userProfile?.wallets?.[0].address)}{" "}
+                      ! claim your prize now.
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px] mr-[-20px]"
@@ -537,7 +540,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{userProfile?.username}!
+                      Congratulations @
+                      {userProfile?.username ||
+                        shortenAddress(userProfile?.wallets?.[0].address)}
+                      !
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px]"
