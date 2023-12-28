@@ -6,7 +6,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-
+import "react-multi-date-picker/styles/layouts/mobile.css";
 const Input = styled.input``;
 
 interface StartDateCompProp {
@@ -62,7 +62,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           name="startTime"
           format="DD/MM/YYYY - hh:mm A"
           inputClass="custom-input"
-          plugins={[<TimePicker position="bottom" hideSeconds />]}
+          plugins={[<TimePicker key={0} position="bottom" hideSeconds />]}
           render={
             <Input
               className="date-picker-input"
@@ -73,12 +73,12 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           }
           onChange={timeChange}
           value={startDate}
-          minDate={Date.now()}
+          minDate={Date.now() - 1000 * 60 * 60}
           className="rmdp-mobile  animate-fadeIn"
         />
       </div>
       {showErrors && showErrors.startDateStatus == false && (
-        <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+        <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute">
           {showErrors && showErrors.statDateStatusMessage}
         </p>
       )}

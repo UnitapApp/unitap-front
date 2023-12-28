@@ -23,13 +23,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to bottom,
-    #4bf2a2 -4.66%,
-    #a89fe7 56.06%,
-    #e1c4f4 73.07%,
-    #dd40cd 111.44%
-  );
+  // background: linear-gradient(
+  //   to bottom,
+  //   #4bf2a2 -4.66%,
+  //   #a89fe7 56.06%,
+  //   #e1c4f4 73.07%,
+  //   #dd40cd 111.44%
+  // );
+  @apply bg-gray60;
   border-radius: 6px;
 }
 
@@ -225,6 +226,7 @@ input[type="number"] {
   border: 2px solid #1e1e2c !important;
   max-width: 325px;
 }
+
 
 .setOpacity {
   opacity: 0.3;

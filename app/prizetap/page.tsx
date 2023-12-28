@@ -1,10 +1,10 @@
-import { BrightConnectionModal } from "@/components/containers/modals"
-import LineaCheckWalletsModal from "@/components/containers/prize-tap/Linea/LineaCheckWalletsModal"
-import LineaWinnersModal from "@/components/containers/prize-tap/Linea/LineaWinnersModal"
-import EnrollModal from "@/components/containers/prize-tap/Modals/enroll-modal"
-import RafflesList from "@/components/containers/prize-tap/RafflesList"
-import Header from "@/components/containers/prize-tap/header"
-import { FC } from "react"
+import { BrightConnectionModal } from "@/components/containers/modals";
+import LineaCheckWalletsModal from "@/components/containers/prize-tap/Linea/LineaCheckWalletsModal";
+import LineaWinnersModal from "@/components/containers/prize-tap/Linea/LineaWinnersModal";
+import EnrollModal from "@/components/containers/prize-tap/Modals/enroll-modal";
+import RafflesList from "@/components/containers/prize-tap/RafflesList";
+import Header from "@/components/containers/prize-tap/header";
+import { FC } from "react";
 
 const PrizeTapPage: FC = () => {
   return (
@@ -16,7 +16,7 @@ const PrizeTapPage: FC = () => {
       <EnrollModal />
       <BrightConnectionModal />
     </>
-  )
-}
+  );
+};
 
-export default PrizeTapPage
+export default PrizeTapPage;

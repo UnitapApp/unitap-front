@@ -17,6 +17,7 @@
     "@metamask/logo": "^3.1.2",
     "@uniswap/sdk-core": "^4.0.9",
     "axios": "^1.5.1",
+    "big.js": "^6.2.1",
     "bigint-buffer": "^1.1.5",
     "bignumber.js": "^9.1.2",
     "cypress": "^13.4.0",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.7.0",
+    "@types/big.js": "^6.2.2",
     "@types/bn.js": "^5.1.5",
     "@types/node": "latest",
     "@types/react": "latest",

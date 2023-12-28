@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -67,6 +67,7 @@ const config: Config = {
         "disabled-text": "#939393",
         "secondary-text": "#997EA4",
         warn: "#F16E35",
+        warning2: "#877A74",
       },
 
       borderWidth: {
@@ -101,6 +102,8 @@ const config: Config = {
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)",
+        "g-primary-2":
+          "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
           "linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)",
       },
@@ -130,14 +133,20 @@ const config: Config = {
         },
 				blinking: {
 					'50%': { opacity: '.3'},
-				}
+				},
+        fadeInOut: {
+          '0%': { opacity: '1' },
+          '50%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
         flip: "flip 0.5s ease-in ",
         rocket: "rocket 1500ms infinite  alternate;",
         fadeIn: 'fadeIn 0.8s ease-in-out',
-				blinking: 'blinking 2.2s step-start 0s infinite'
+				blinking: 'blinking 2.2s step-start 0s infinite',
+        fadeInOut: 'fadeIn 0.8s ease-in-out',
       },
       transitionProperty: {
         height: "height",
@@ -149,5 +158,5 @@ const config: Config = {
       },
     },
   },
-}
-export default config
+};
+export default config;

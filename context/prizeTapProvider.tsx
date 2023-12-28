@@ -99,7 +99,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
   const { writeAsync } = useContractWrite({
     account: address,
-    address: selectedRaffleForEnroll?.contract as Address,
     functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
     chainId: Number(selectedRaffleForEnroll?.chain.chainId),
     abi: prizeTapABI,

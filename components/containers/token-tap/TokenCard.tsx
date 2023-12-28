@@ -170,7 +170,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     <ClaimedButton
                       data-testid={`chain-claimed-${token.id}`}
                       $mlAuto
-                      $icon="../assets/images/landing/tokentap-icon.png"
+                      $icon="/assets/images/landing/tokentap-icon.png"
                       $iconWidth={24}
                       $iconHeight={24}
                       onClick={() => openClaimModal(token)}
@@ -196,7 +196,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   <ClaimedButton
                     data-testid={`chain-claimed-${token.id}`}
                     $mlAuto
-                    $icon="../assets/images/claim/claimedIcon.svg"
+                    $icon="/assets/images/claim/claimedIcon.svg"
                     $iconWidth={24}
                     $iconHeight={20}
                     onClick={() => openClaimModal(token)}

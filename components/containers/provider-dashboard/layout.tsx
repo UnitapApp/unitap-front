@@ -43,7 +43,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
           <Link href="/">
             <BackToHomeButton
               height="32px"
-              className="!w-full mt-10 max-w-[100px]"
+              className="!w-full mt-10 text-xs max-w-[120px]"
               $fontSize="10px"
             >
               <p>Back to Home</p>
@@ -58,12 +58,11 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 const ProviderTabs: FC = () => {
   const pathname = usePathname();
 
-  const borderPosition =
-    pathname === RoutePath.PROVIDER_GASTAP
-      ? "after:left-0"
-      : pathname == RoutePath.PROVIDER_TOKENTAP
-      ? "after:left-[33.33%]"
-      : "after:left-[67%]";
+  const borderPosition = pathname.includes(RoutePath.PROVIDER_GASTAP)
+    ? "after:left-0"
+    : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
+    ? "after:left-[33.33%]"
+    : "after:left-[67%]";
 
   return (
     <div

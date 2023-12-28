@@ -20,7 +20,6 @@ export const PrimaryBackToHomedButton = styled(Button)`
 `;
 
 export const BackToHomeButton = styled(PrimaryBackToHomedButton)`
-  width: 100px;
   font-weight: 500;
   border-radius: 8px;
   &:not(:disabled) p {
@@ -507,10 +506,7 @@ export const ProviderDashboardButton = styled(PrimaryOutlinedButtonDashboard)`
 `;
 
 export const PrimaryOutlinedButtonDashboardSubmit = styled(Button)`
-  /* border: 1px solid ${DV.colors.primary}; */
-  color: ${({ disabled }) => (disabled ? "#C0AFC7" : "white")};
-  background: ${({ disabled }) =>
-    disabled ? "#C0AFC7" : DV.bgGradient.primary};
+  background: ${DV.bgGradient.primary};
   position: relative;
   z-index: 1;
 
@@ -530,6 +526,7 @@ export const ProviderDashboardButtonSubmit = styled(
   PrimaryOutlinedButtonDashboardSubmit
 )`
   font-weight: 700;
+  width: 100%;
   white-space: nowrap;
   &:not(:disabled) p {
     background: ${DV.bgGradient.primary};
@@ -537,19 +534,13 @@ export const ProviderDashboardButtonSubmit = styled(
     -webkit-text-fill-color: transparent;
   }
 
-  ::before {
-    // background: ${DV.colors.gray50} !important;
-  }
-
   &:disabled {
-    opacity: 0.6;
-
-    background: ${DV.colors.gary50};
+    opacity: 0.5;
 
     p {
-      -webkit-background-clip: none !important;
-      -webkit-text-fill-color: none !important;
-      color: ${DV.colors.gray10};
+      background: ${DV.bgGradient.primary};
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
     }
 
     ::before {

@@ -115,6 +115,8 @@ const PrizeInfo = ({
           )}
         </section>
 
+        <SelectChainDropDown showErrors={showErrors} />
+        <SelectTokenOrNft showErrors={showErrors} isRightChain={isRightChain} />
         <section className="w-full relative">
           <div
             className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
@@ -143,9 +145,6 @@ const PrizeInfo = ({
             </p>
           )}
         </section>
-
-        <SelectChainDropDown showErrors={showErrors} />
-        <SelectTokenOrNft showErrors={showErrors} isRightChain={isRightChain} />
       </div>
       {address && !isRightChain && data.selectedChain ? (
         <ClaimButton

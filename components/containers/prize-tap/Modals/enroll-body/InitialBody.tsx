@@ -12,6 +12,7 @@ import WalletAddress from "../wallet-address";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { Text } from "@/components/ui/text.style";
 import { useWalletAccount } from "@/utils/wallet";
+import WinnersModal from "../winnersModal";
 
 const InitialBody: FC<{
   raffle: Prize;
@@ -36,6 +37,10 @@ const InitialBody: FC<{
 
   if (method === "Verify") {
     return <RafflePermissions raffle={raffle} />;
+  }
+
+  if (method === "Winners") {
+    return <WinnersModal />;
   }
 
   if (method === "Enroll") {

@@ -5,9 +5,12 @@ import {
   ConstraintParamValues,
   ConstraintProps,
   ContractStatus,
+  EnrollmentDurationsProps,
   ErrorObjectProp,
+  NftRangeProps,
   NftStatusProp,
   ProviderDashboardFormDataProp,
+  UploadedFileProps,
   UserRafflesProps,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
@@ -47,7 +50,8 @@ import { approveErc20Token } from "@/components/containers/provider-dashboard/he
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
-
+import Big from "big.js";
+import { NullCallback } from "@/utils";
 const formInitialData: ProviderDashboardFormDataProp = {
   provider: "",
   description: "",
@@ -60,7 +64,6 @@ const formInitialData: ProviderDashboardFormDataProp = {
   selectedChain: null,
   startTimeStamp: null,
   endTimeStamp: null,
-  limitEnrollPeopleCheck: false,
   maxNumberOfEntries: null,
   email: "",
   twitter: "",
@@ -70,7 +73,6 @@ const formInitialData: ProviderDashboardFormDataProp = {
   necessaryInfo: "",
   satisfy: "satisfyAll",
   allowListPrivate: false,
-  setDuration: false,
   numberOfDuration: 0,
   durationUnitTime: "Month",
   NftSatisfy: false,
@@ -86,6 +88,41 @@ const formInitialData: ProviderDashboardFormDataProp = {
   winnersCount: 1,
   totalAmount: "",
 };
+
+const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
+  {
+    id: 0,
+    name: "1 Week",
+    selected: false,
+    time: null,
+    value: 1,
+    status: "week",
+  },
+  {
+    id: 1,
+    name: "1 Month",
+    selected: true,
+    time: null,
+    value: 1,
+    status: "month",
+  },
+  {
+    id: 2,
+    name: "3 Month",
+    selected: false,
+    time: null,
+    value: 3,
+    status: "month",
+  },
+  {
+    id: 3,
+    name: "6 Month",
+    selected: false,
+    time: null,
+    value: 6,
+    status: "month",
+  },
+];
 
 const title = {
   0: "Prize Info",
@@ -114,7 +151,6 @@ export const ProviderDashboardContext = createContext<{
   title: any;
   handleChange: (e: any) => void;
   handleSelectTokenOrNft: (e: boolean) => void;
-  handleSelectLimitEnrollPeopleCheck: () => void;
   openRequirementModal: () => void;
   openAddNftIdListModal: () => void;
   closeRequirementModal: () => void;
@@ -142,9 +178,6 @@ export const ProviderDashboardContext = createContext<{
   canGoStepTwo: () => boolean;
   canGoStepThree: () => void;
   canGoStepFive: () => boolean;
-  setDuration: boolean;
-  handleSetDuration: (e: boolean) => void;
-  handleSelectDurationUnitTime: (unit: string) => void;
   selectNewOffer: boolean;
   handleSelectNewOffer: (select: boolean) => void;
   handleGOToDashboard: () => void;
@@ -168,7 +201,6 @@ export const ProviderDashboardContext = createContext<{
   createRaffleResponse: any | null;
   createRaffleLoading: boolean;
   handleSetCreateRaffleLoading: () => void;
-  isNftContractAddressValid: boolean;
   handleSetDate: (timeStamp: number, label: string) => void;
   handleApproveErc20Token: () => void;
   isErc20Approved: boolean;
@@ -184,7 +216,7 @@ export const ProviderDashboardContext = createContext<{
   handleShowUserDetails: (raffle: UserRafflesProps) => void;
   handleAddNftToData: (nftIds: string[]) => void;
   setUploadedFile: (file: any) => void;
-  uploadedFile: any;
+  uploadedFile: UploadedFileProps | null;
   isShowingDetails: boolean;
   handleCheckOwnerOfNfts: (nftIds: string[]) => Promise<boolean>;
   nftStatus: NftStatusProp[];
@@ -201,81 +233,83 @@ export const ProviderDashboardContext = createContext<{
   };
   tokenContractStatus: ContractStatus;
   nftContractStatus: ContractStatus;
+  nftRange: NftRangeProps;
+  setNftStatus: (e: NftStatusProp[]) => void;
+  setNftRange: (e: any) => void;
+  numberOfNfts: string;
+  setNumberOfNfts: (number: string) => void;
+  handleSetEnrollDuration: (id: number) => void;
+  enrollmentDurations: EnrollmentDurationsProps[];
 }>({
   page: 0,
-  setPage: () => {},
+  setPage: NullCallback,
   data: formInitialData,
   selectedConstrains: null,
   title: {
     ...title,
   },
-  handleChange: () => {},
-  handleSelectTokenOrNft: () => {},
-  handleSelectLimitEnrollPeopleCheck: () => {},
-  closeRequirementModal: () => {},
-  closeAddNftIdListModal: () => {},
-  closeCreateRaffleModal: () => {},
-  openRequirementModal: () => {},
-  openAddNftIdListModal: () => {},
-  openCreteRaffleModal: () => {},
-  handleSelectConstraint: () => {},
+  handleChange: NullCallback,
+  handleSelectTokenOrNft: NullCallback,
+  closeRequirementModal: NullCallback,
+  closeAddNftIdListModal: NullCallback,
+  closeCreateRaffleModal: NullCallback,
+  openRequirementModal: NullCallback,
+  openAddNftIdListModal: NullCallback,
+  openCreteRaffleModal: NullCallback,
+  handleSelectConstraint: NullCallback,
   isModalOpen: false,
   selectedConstraintTitle: null,
-  handleBackToRequirementModal: () => {},
+  handleBackToRequirementModal: NullCallback,
   chainList: [],
   selectedChain: null,
-  setSelectedChain: () => {},
+  setSelectedChain: NullCallback,
   chainName: "",
-  handleSearchChain: () => {},
-  setChainName: () => {},
+  handleSearchChain: NullCallback,
+  setChainName: NullCallback,
   filterChainList: [],
-  setSearchPhrase: () => {},
-  handleSelectChain: () => {},
-  handleSelectSatisfy: () => {},
+  setSearchPhrase: NullCallback,
+  handleSelectChain: NullCallback,
+  handleSelectSatisfy: NullCallback,
   allowListPrivate: false,
-  handleSelectAllowListPrivate: () => {},
+  handleSelectAllowListPrivate: NullCallback,
   canGoStepTwo: () => false,
-  canGoStepThree: () => {},
+  canGoStepThree: NullCallback,
   canGoStepFive: () => false,
-  setDuration: false,
-  handleSetDuration: () => {},
-  handleSelectDurationUnitTime: () => {},
-  openShowPreviewModal: () => {},
-  closeShowPreviewModal: () => {},
+  openShowPreviewModal: NullCallback,
+  closeShowPreviewModal: NullCallback,
   selectNewOffer: false,
-  handleSelectNewOffer: () => {},
-  handleGOToDashboard: () => {},
-  insertRequirement: () => {},
+  handleSelectNewOffer: NullCallback,
+  handleGOToDashboard: NullCallback,
+  insertRequirement: NullCallback,
   requirementList: [],
-  deleteRequirement: () => {},
-  updateRequirement: () => {},
-  handleSelectNativeToken: () => {},
-  handleCreateRaffle: () => {},
+  deleteRequirement: NullCallback,
+  updateRequirement: NullCallback,
+  handleSelectNativeToken: NullCallback,
+  handleCreateRaffle: NullCallback,
   isCreateRaffleModalOpen: false,
   createRaffleResponse: null,
   createRaffleLoading: false,
-  handleSetCreateRaffleLoading: () => {},
-  isNftContractAddressValid: false,
-  handleSetDate: () => {},
-  handleApproveErc20Token: () => {},
+  handleSetCreateRaffleLoading: NullCallback,
+  handleSetDate: NullCallback,
+  handleApproveErc20Token: NullCallback,
   isErc20Approved: false,
   approveLoading: false,
   constraintsList: [],
   isApprovedAll: false,
-  handleApproveErc721Token: () => {},
+  handleApproveErc721Token: NullCallback,
   userRaffles: [],
   userRafflesLoading: false,
-  handleGetConstraints: () => {},
-  updateChainList: () => {},
-  handleCheckForReason: () => {},
-  handleShowUserDetails: () => {},
-  handleAddNftToData: () => {},
-  setUploadedFile: () => {},
-  uploadedFile: null,
+  handleGetConstraints: NullCallback,
+  updateChainList: NullCallback,
+  handleCheckForReason: NullCallback,
+  handleShowUserDetails: NullCallback,
+  handleAddNftToData: NullCallback,
+  setUploadedFile: NullCallback,
+  uploadedFile: { fileName: "", fileContent: null },
   isShowingDetails: false,
   handleCheckOwnerOfNfts: async () => false,
   nftStatus: [],
-  handleClearNfts: () => {},
+  handleClearNfts: NullCallback,
   selectedRaffleForCheckReason: null,
   insufficientBalance: false,
   userBalance: null,
@@ -296,6 +330,13 @@ export const ProviderDashboardContext = createContext<{
     isValid: false,
     canDisplayStatus: false,
   },
+  setNftStatus: NullCallback,
+  nftRange: { from: "", to: "" },
+  setNftRange: NullCallback,
+  numberOfNfts: "",
+  setNumberOfNfts: NullCallback,
+  enrollmentDurations: enrollmentDurationsInit,
+  handleSetEnrollDuration: NullCallback,
 });
 
 const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
@@ -364,10 +405,15 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
     useState<UserRafflesProps | null>(null);
 
-  const [uploadedFile, setUploadedFile] = useState<any | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
+    null
+  );
   const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
-  const [setDuration, setSetDuration] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
+
+  const [nftRange, setNftRange] = useState({ from: "", to: "" });
+
+  const [numberOfNfts, setNumberOfNfts] = useState<string>("");
 
   const [reverseConstraint, setReverseConstrain] = useState<string | null>(
     null
@@ -384,12 +430,20 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     telegram: true,
   });
 
-  // validation states
-  const [isTokenContractAddressValid, setIsTokenContractAddressValid] =
-    useState<boolean>(false);
+  const [enrollmentDurations, setEnrollmentDurations] = useState(
+    enrollmentDurationsInit
+  );
 
-  const [isNftContractAddressValid, setIsNftContractAddressValid] =
-    useState<boolean>(false);
+  const handleSetEnrollDuration = (id: number) => {
+    if (!data.startTimeStamp) return;
+    setEnrollmentDurations(
+      enrollmentDurations.map((item) =>
+        item.id == id
+          ? { ...item, selected: true }
+          : { ...item, selected: false }
+      )
+    );
+  };
 
   const [constraintsList, setConstraintsList] = useState<ConstraintProps[]>([]);
 
@@ -443,11 +497,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     });
 
     setRequirementList(newItem);
-  };
-
-  const handleSetDuration = (e: boolean) => {
-    if (isShowingDetails) return;
-    setSetDuration(e);
   };
 
   const isValidContractAddress = useCallback(
@@ -528,7 +577,15 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       const totalAmount = fromWei(
         toWei(data.tokenAmount) * Number(data.winnersCount)
       );
-      setData((prev) => ({ ...prev, totalAmount: totalAmount }));
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(totalAmount).toFixed(),
+      }));
+    } else {
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(0).toFixed(),
+      }));
     }
   }, [data.tokenAmount, data.winnersCount]);
 
@@ -578,7 +635,13 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     const checkNft = () => {
       if (!data.isNft) return true;
       const isValid = nftContractStatus.isValid;
-      return !!(nftContractAddress && nftTokenIds.length >= 1 && isValid);
+      const isEqual = Number(numberOfNfts) === data.nftTokenIds.length;
+      return !!(
+        nftContractAddress &&
+        nftTokenIds.length >= 1 &&
+        isValid &&
+        isEqual
+      );
     };
 
     return !!(
@@ -604,86 +667,75 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       numberOfWinnersMessage: null,
     };
 
-    // const { startTimeStamp, endTimeStamp } = data;
-    // if (!startTimeStamp) {
-    //   errorObject.startDateStatus = false;
-    //   errorObject.statDateStatusMessage = errorMessages.required;
-    // }
-    // const sevenDaysLaterAfterNow: Date = new Date(
-    //   Date.now() + 7 * 24 * 60 * 60 * 1000
-    // );
-    // const sevenDaysLaterAfterNowTimeStamp = Math.round(
-    //   sevenDaysLaterAfterNow.getTime() / 1000
-    // );
+    const { startTimeStamp, endTimeStamp } = data;
+    if (!startTimeStamp) {
+      errorObject.startDateStatus = false;
+      errorObject.statDateStatusMessage = errorMessages.required;
+    }
+    const sevenDaysLaterAfterNow: Date = new Date(
+      Date.now() + 7 * 24 * 60 * 60 * 1000
+    );
+    const sevenDaysLaterAfterNowTimeStamp = Math.round(
+      sevenDaysLaterAfterNow.getTime() / 1000
+    );
 
     // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
     //   errorObject.startDateStatus = false;
     //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     // }
-    // if (!setDuration && !endTimeStamp) {
+
+    if (!endTimeStamp) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.required;
+    }
+
+    // if (endTimeStamp && startTimeStamp && endTimeStamp <= startTimeStamp) {
     //   errorObject.endDateStatus = false;
-    //   errorObject.endDateStatusMessage = errorMessages.required;
+    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
     // }
 
-    // if (!setDuration && endTimeStamp && startTimeStamp) {
-    //   if (endTimeStamp <= startTimeStamp) {
-    //     errorObject.endDateStatus = false;
-    //     errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-    //   }
-    // }
+    if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
+      errorObject.maximumLimitationStatus = false;
+      errorObject.maximumLimitationMessage = errorMessages.required;
+    }
 
-    // if (setDuration && !data.numberOfDuration) {
-    //   errorObject.numberOfDurationStatus = false;
-    //   errorObject.numberOfDurationMessage = errorMessages.required;
-    // }
+    if (
+      data.winnersCount &&
+      Math.floor(data.winnersCount) != data.winnersCount
+    ) {
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    }
 
-    // if (data.limitEnrollPeopleCheck && !data.maxNumberOfEntries) {
-    //   errorObject.maximumLimitationStatus = false;
-    //   errorObject.maximumLimitationMessage = errorMessages.required;
-    // }
+    if (data.winnersCount && data.winnersCount <= 0) {
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
+    }
 
-    // if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
-    //   errorObject.maximumLimitationStatus = false;
-    //   errorObject.maximumLimitationMessage = errorMessages.required;
-    // }
+    if (!data.winnersCount) {
+      errorObject.numberOfWinnersStatus = false;
+      errorObject.numberOfWinnersMessage = errorMessages.required;
+    }
 
-    // if (
-    //   data.winnersCount &&
-    //   Math.floor(data.winnersCount) != data.winnersCount
-    // ) {
-    //   errorObject.numberOfWinnersStatus = false;
-    //   errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    // }
-
-    // if (data.winnersCount && data.winnersCount <= 0) {
-    //   errorObject.numberOfWinnersStatus = false;
-    //   errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    // }
-
-    // if (!data.winnersCount) {
-    //   errorObject.numberOfWinnersStatus = false;
-    //   errorObject.numberOfWinnersMessage = errorMessages.required;
-    // }
-
-    // if (data.limitEnrollPeopleCheck && Number(data.maxNumberOfEntries) > 0) {
-    //   if (
-    //     (data.isNft &&
-    //       Number(data.maxNumberOfEntries) <= data.nftTokenIds.length) ||
-    //     (!data.isNft &&
-    //       Number(data.maxNumberOfEntries) <= Number(data.winnersCount))
-    //   ) {
-    //     errorObject.maximumLimitationStatus = false;
-    //     errorObject.maximumLimitationMessage = (
-    //       <p>
-    //         The maximum number of enrollees cannot be less than or equal to the
-    //         number of winners.
-    //         <br />
-    //         Number of winners:{" "}
-    //         {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
-    //       </p>
-    //     );
-    //   }
-    // }
+    if (Number(data.maxNumberOfEntries) > 0) {
+      if (
+        (data.isNft &&
+          Number(data.maxNumberOfEntries) <= data.nftTokenIds.length) ||
+        (!data.isNft &&
+          Number(data.maxNumberOfEntries) <= Number(data.winnersCount))
+      ) {
+        errorObject.maximumLimitationStatus = false;
+        errorObject.maximumLimitationMessage = (
+          <p>
+            The maximum number of enrollees cannot be less than or equal to the
+            number of winners.
+            <br />
+            Number of winners:{" "}
+            {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
+          </p>
+        );
+      }
+    }
 
     return errorObject;
   };
@@ -735,13 +787,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     }));
   };
 
-  const handleSelectDurationUnitTime = (unit: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      ["durationUnitTime"]: unit,
-    }));
-  };
-
   const handleSelectAllowListPrivate = () => {
     setAllowListPrivate(!allowListPrivate);
   };
@@ -756,7 +801,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const handleGetUserRaffles = useCallback(async () => {
     if (!userToken) return;
-    setUserRafflesLoading(true);
     refController.current = new AbortController();
     try {
       const raffles = await getUserRaffles(
@@ -805,15 +849,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (constraintsList.length != 0) return;
     const res = await getConstraintsApi();
     setConstraintsList(res);
-  };
-
-  const handleSelectLimitEnrollPeopleCheck = () => {
-    if (isShowingDetails) return true;
-    setData((prevData) => ({
-      ...prevData,
-      limitEnrollPeopleCheck: !data.limitEnrollPeopleCheck,
-      maxNumberOfEntries: null,
-    }));
   };
 
   const handleChange = (e: {
@@ -902,6 +937,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setIsShowingDetails(false);
     setPage(0);
     setData(formInitialData);
+    handleSetEnrollDuration(1);
     setChainName("");
     setSelectedChain(null);
     setCreteRaffleResponse(null);
@@ -1001,7 +1037,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       description: raffle.description,
       isNft: raffle.isPrizeNft,
       isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
-      tokenAmount: fromWei(raffle.prizeAmount, raffle.decimals),
+      tokenAmount: new Big(
+        fromWei(raffle.prizeAmount, raffle.decimals)
+      ).toFixed(),
       tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
       nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,
@@ -1037,6 +1075,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       )
     );
     setReverseConstrain(raffle.reversedConstraints);
+    handleSetEnrollDuration(-1);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
@@ -1062,12 +1101,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const handleClearNfts = () => {
     if (isShowingDetails) return;
     setUploadedFile(null);
-    setData((prev) => ({ ...prev, nftTokenIds: [], nftContractAddress: "" }));
+    setNftRange({ from: "", to: "" });
+    setData((prev) => ({ ...prev, nftTokenIds: [] }));
   };
 
   useEffect(() => {
     if (isShowingDetails || !data.tokenContractAddress || data.isNft) return;
-    console.log("+-+-+");
     if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
       handleSetContractStatus(false, true, false, true);
       return;
@@ -1135,22 +1174,24 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   }, [updateChainList]);
 
   useEffect(() => {
+    if (isShowingDetails) return;
     let newEndTimeStamp: any;
-    if (setDuration && data.startTimeStamp && data.numberOfDuration > 0) {
-      if (data.durationUnitTime == "Day") {
+
+    if (data.startTimeStamp) {
+      let selectedDuration: EnrollmentDurationsProps =
+        enrollmentDurations.filter((item) => item.selected == true)[0];
+      if (!selectedDuration) return;
+      if (selectedDuration.status == "week") {
         newEndTimeStamp =
-          data.startTimeStamp + data.numberOfDuration * 24 * 60 * 60;
+          data.startTimeStamp + selectedDuration.value * 7 * 24 * 60 * 60;
       }
-      if (data.durationUnitTime == "Week") {
-        newEndTimeStamp =
-          data.startTimeStamp + data.numberOfDuration * 7 * 24 * 60 * 60;
-      }
-      if (data.durationUnitTime == "Month") {
+
+      if (selectedDuration.status == "month") {
         const currentDate = new Date(data.startTimeStamp * 1000);
 
         newEndTimeStamp = Math.round(
           currentDate.setMonth(
-            Number(currentDate.getMonth()) + Number(data.numberOfDuration)
+            Number(currentDate.getMonth()) + selectedDuration.value
           ) / 1000
         );
       }
@@ -1161,21 +1202,18 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         ["endTimeStamp"]: newEndTimeStamp,
       }));
     }
-  }, [
-    setDuration,
-    data.durationUnitTime,
-    data.numberOfDuration,
-    setData,
-    data.startTimeStamp,
-  ]);
+  }, [enrollmentDurations, data.startTimeStamp]);
 
   useRefreshWithInitial(
     () => {
-      if (userRaffles.length > 0) return;
-      handleGetUserRaffles();
+      // if (userRaffles.length > 0) return;
+      setUserRafflesLoading(true);
+      setTimeout(() => {
+        handleGetUserRaffles();
+      }, 5000);
     },
     FAST_INTERVAL,
-    [handleGetUserRaffles, userToken, userRaffles]
+    []
   );
 
   return (
@@ -1187,7 +1225,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         title,
         handleChange,
         handleSelectTokenOrNft,
-        handleSelectLimitEnrollPeopleCheck,
         openRequirementModal,
         closeRequirementModal,
         openAddNftIdListModal,
@@ -1212,9 +1249,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         canGoStepTwo,
         canGoStepThree,
         canGoStepFive,
-        setDuration,
-        handleSetDuration,
-        handleSelectDurationUnitTime,
         closeShowPreviewModal,
         openShowPreviewModal,
         selectNewOffer,
@@ -1232,7 +1266,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         createRaffleResponse,
         createRaffleLoading,
         handleSetCreateRaffleLoading,
-        isNftContractAddressValid,
         handleSetDate,
         handleApproveErc20Token,
         isErc20Approved,
@@ -1259,6 +1292,13 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         userBalance: userBalance?.formatted.toString() ?? null,
         tokenContractStatus,
         nftContractStatus,
+        setNftStatus,
+        nftRange,
+        setNftRange,
+        numberOfNfts,
+        setNumberOfNfts,
+        enrollmentDurations,
+        handleSetEnrollDuration,
       }}
     >
       {children}

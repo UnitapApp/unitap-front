@@ -45,8 +45,8 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
     params: ConstraintParams[];
   }
 
-  const handleSelectNotSatisfy = () => {
-    setIsNotSatisfy((prev) => !prev);
+  const handleSelectNotSatisfy = (isSatisfy: boolean) => {
+    setIsNotSatisfy(isSatisfy);
   };
 
   const CreateParams = ({ params }: CreateParamsProps) => {
@@ -60,30 +60,36 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
         onClick={handleBackToRequirementModal}
       >
         <Icon
-          iconSrc="../assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer z-[999999]"
         />
       </div>
       <CreateParams params={constraint.params} />
-      <div className="mb-5">{constraint.description}</div>
-      <div className="">
+      <div className="w-full flex gap-4 h-[32px] mb-2">
         <div
-          onClick={handleSelectNotSatisfy}
-          className="flex items-center gap-1 cursor-pointer max-w-[125px]"
+          onClick={() => handleSelectNotSatisfy(false)}
+          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
         >
-          <Icon
-            iconSrc={
-              isNotSatisfy
-                ? "../assets/images/provider-dashboard/check-true.svg"
-                : "../assets/images/provider-dashboard/checkbox.svg"
-            }
-            className="mt-[-2px]"
-            height="15px"
-            width="15px"
-          />
-          <p className="p-0 m-0">Should not satisfy</p>
+          <div
+            className={`${
+              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
+            } absolute w-full h-full`}
+          ></div>
+          <p className="absolute text-white">Should satisfy</p>
+        </div>
+        <div
+          onClick={() => handleSelectNotSatisfy(true)}
+          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
+        >
+          <div
+            className={`${
+              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
+            } absolute w-full h-full `}
+          ></div>
+          <p className="absolute text-white">Should not satisfy</p>
         </div>
       </div>
+      <div className="mb-5">{constraint.description}</div>
       <div
         onClick={handleAddRequirement}
         className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"

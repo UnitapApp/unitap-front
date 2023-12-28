@@ -87,7 +87,7 @@ const FormYouFilled = ({ data }: Prop) => {
                     className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-[10px] rounded"
                     key={index}
                   >
-                    {item.title}
+                    {item.isNotSatisfy && "Not "} {item.title}
                   </div>
                 );
               })
@@ -106,20 +106,18 @@ const FormYouFilled = ({ data }: Prop) => {
                 FinishTime={new Date(data.endTimeStamp * 1000).toString()}
               />
             </div>
-            <ProviderDashboardButtonSubmit
-              $fontSize="14px"
-              $width="200px"
-              height="38px"
-            >
-              <p>Enroll</p>
-              <div className="absolute right-3">
-                <Icon
-                  width="20px"
-                  height="20px"
-                  iconSrc="/assets/images/prize-tap/header-prize-logo.svg"
-                />
-              </div>
-            </ProviderDashboardButtonSubmit>
+            <div className="w-[200px]">
+              <ProviderDashboardButtonSubmit $fontSize="12px" height="38px">
+                <p>Enroll</p>
+                <div className="absolute right-3">
+                  <Icon
+                    width="20px"
+                    height="20px"
+                    iconSrc="/assets/images/prize-tap/header-prize-logo.svg"
+                  />
+                </div>
+              </ProviderDashboardButtonSubmit>
+            </div>
           </span>
         </Action>
       </div>

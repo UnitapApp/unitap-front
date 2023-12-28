@@ -29,6 +29,7 @@ enum RaffleStatus {
   FINISHED = "Finished",
   REJECTED = "REJECTED",
   ALL = "all",
+  WS = "WS",
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
@@ -69,7 +70,8 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-            prize.status === RaffleStatus.VERIFIED &&
+            (prize.status === RaffleStatus.VERIFIED ||
+              prize.status === RaffleStatus.WS) &&
             diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
@@ -98,14 +100,6 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             by {prize.creatorName}
           </div>
         </div>
-        {prize.numberOfOnchainEntries ? (
-          <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
-            {prize.numberOfOnchainEntries}{" "}
-            {prize.status === RaffleStatus.FINISHED
-              ? " Spots Enrolled"
-              : " Spots Left"}
-          </div>
-        ) : null}
         {prize.status === RaffleStatus.REJECTED ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             <ProviderDashboardButtonCheck
@@ -128,12 +122,21 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             new Date(prize.startAt) > new Date() &&
             new Date(prize.deadline) < new Date()) ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+            {prize.numberOfOnchainEntries ? (
+              <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+                {prize.numberOfOnchainEntries}{" "}
+                {prize.status === RaffleStatus.FINISHED
+                  ? " Spots Enrolled"
+                  : " Spots Left"}
+              </div>
+            ) : null}
+            <p className="text-white text-[8px] font-medium mb-2 ml-1">
               {Date.now() < new Date(prize.startAt).getTime()
                 ? "Starts in:"
                 : "Ends in:"}
             </p>
-            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+
+            <div className="bg-gray50 px-5 rounded-xl">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -153,7 +156,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                   Spots Left
                 </p>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="/assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"
@@ -163,10 +166,10 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : diff > 0 && prize.status == RaffleStatus.VERIFIED ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+            <p className="text-white text-[8px] font-medium mb-2 ml-1">
               Starts in:
             </p>
-            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+            <div className="bg-gray50 px-5 rounded-xl">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -175,14 +178,15 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
-              in
-            </p>
-            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
-              <ProviderDashboardCardTimer
-                startTime={prize.startAt}
-                FinishTime={prize.deadline}
-              />
+            <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+              <p>
+                {prize.numberOfOnchainEntries > 1
+                  ? prize.numberOfOnchainEntries + " Spots Enrolled"
+                  : prize.numberOfOnchainEntries + " Spot Enrolled"}
+              </p>
+            </div>
+            <div className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center">
+              <p>Check Enrolled Wallets & Winners</p>
             </div>
           </div>
         )}
@@ -364,7 +368,7 @@ const PrizeTapContent = () => {
             </div>
           )}
           {filteredRaffles?.length == 0 && !userRafflesLoading && (
-            <div className="flex items-center justify-center mt-5 text-gray100">
+            <div className="flex items-center justify-center mt-5 text-gray100 animate-fadeInOut">
               No items found
             </div>
           )}
