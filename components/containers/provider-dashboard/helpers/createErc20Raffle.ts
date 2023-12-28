@@ -102,7 +102,7 @@ export const createErc20Raffle = async (
   const constraints = requirementList.map((item) => item.pk);
   const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
   const raffleData = {
-    name: data.provider,
+    name: prizeName,
     description: data.description,
     contract: raffleContractAddress,
     creator_name: data.provider,

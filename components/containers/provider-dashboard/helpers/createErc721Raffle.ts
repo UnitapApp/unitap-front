@@ -80,7 +80,7 @@ export const createErc721Raffle = async (
   if (!data.nftTokenIds) return;
 
   const raffleData = {
-    name: data.provider,
+    name: prizeName,
     description: data.description,
     contract: raffleContractAddress,
     creator_name: data.provider,

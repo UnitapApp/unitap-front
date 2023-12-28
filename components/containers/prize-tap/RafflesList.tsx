@@ -98,6 +98,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     startAt,
     deadline,
     name,
+    prizeName,
     chain,
     isExpired,
     numberOfOnchainEntries,
@@ -212,7 +213,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 className="prize-card__title cursor-pointer text-white text-sm"
                 onClick={onPrizeClick}
               >
-                {name}
+                {prizeName}
               </p>
               <div className="prize-card__links flex gap-4">
                 {twitterUrl && (
