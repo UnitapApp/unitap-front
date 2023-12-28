@@ -417,7 +417,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </ClaimAndEnrollButton>
                 </span>
-              ) : !winnersEntry && userEntry?.txHash ? (
+              ) : !winnersEntry.length && userEntry?.txHash ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
