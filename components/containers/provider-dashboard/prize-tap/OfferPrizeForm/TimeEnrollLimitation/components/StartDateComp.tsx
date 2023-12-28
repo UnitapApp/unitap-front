@@ -21,6 +21,9 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     if (data.startTimeStamp) {
       setStartDate(data.startTimeStamp * 1000);
     }
+    // else {
+    //   setStartDate(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    // }
   }, []);
 
   const handleChange = () => {};
@@ -73,7 +76,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           }
           onChange={timeChange}
           value={startDate}
-          minDate={Date.now() - 1000 * 60 * 60}
+          // minDate={Date.now() + 7 * 24 * 60 * 59.9 * 1000}
           className="rmdp-mobile  animate-fadeIn"
         />
       </div>

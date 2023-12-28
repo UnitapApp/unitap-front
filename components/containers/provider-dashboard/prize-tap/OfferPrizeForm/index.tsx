@@ -43,7 +43,7 @@ const OfferPrizeForm = () => {
   const { page, display, prevPage } = usePagination();
 
   return (
-    <div className="flex flex-col md:flex-row gap-5">
+    <div className="flex flex-col md:flex-row gap-5 select-none">
       <DisplaySteps page={page} />
       <div className="offerPrize-form relative bg-gray20 w-full rounded-xl py-[4em] min-h-[504px] flex flex-col items-center px-5">
         {page >= 1 && page < 5 && (

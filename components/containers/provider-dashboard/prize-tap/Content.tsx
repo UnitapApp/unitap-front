@@ -180,9 +180,8 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <p>
-                {prize.numberOfOnchainEntries > 1
-                  ? prize.numberOfOnchainEntries + " Spots Enrolled"
-                  : prize.numberOfOnchainEntries + " Spot Enrolled"}
+                {prize.numberOfOnchainEntries}{" "}
+                {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
               </p>
             </div>
             <div className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center">
