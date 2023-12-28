@@ -3,10 +3,10 @@
 import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { loginOrRegister, setWalletAPI } from "@/utils/api";
-import { useWalletAccount } from "@/utils/wallet";
+import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { ethers } from "ethers";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useSignMessage } from "wagmi";
+import { useSignMessage, useSignTypedData } from "wagmi";
 import { WalletState } from ".";
 import { ClaimButton } from "@/components/ui/Button/button";
 
@@ -20,6 +20,8 @@ const WalletConnecting: FC<{
 }> = ({ imageUrl, label, loadingImage, setWalletState, isNewUser }) => {
   const { address, connector } = useWalletAccount();
   const [error, setError] = useState("");
+
+  const { chain } = useWalletNetwork();
 
   const { userToken, userProfile, onWalletLogin } = useUserProfileContext();
 
@@ -41,8 +43,20 @@ const WalletConnecting: FC<{
     setWalletState(isNewUser ? WalletState.SetUsername : WalletState.LoggedIn);
   };
 
-  const { isError, signMessageAsync } = useSignMessage({
-    message,
+  const { isError, signTypedDataAsync } = useSignTypedData({
+    message: {
+      message,
+    },
+    primaryType: "content",
+    domain: {
+      name: "https://unitap.app",
+      version: "1",
+      chainId: chain?.id,
+      verifyingContract: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+    },
+    types: {
+      content: [{ name: "message", type: "string" }],
+    },
     onSuccess,
   });
 
@@ -51,12 +65,12 @@ const WalletConnecting: FC<{
 
     if (!address) return;
 
-    signMessageAsync().catch((err) => setError(err.message));
+    signTypedDataAsync().catch((err) => setError(err.message));
 
     isMounted.current = true;
 
     return () => {};
-  }, [address, message, signMessageAsync]);
+  }, [address, message, signTypedDataAsync]);
 
   if (error)
     return (
