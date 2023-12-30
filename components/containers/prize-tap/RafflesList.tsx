@@ -112,6 +112,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     creatorProfile,
     winnerEntries: winnersEntry,
     reversedConstraints,
+    winnersCount,
   } = raffle;
 
   const creator = creatorName || creatorProfile?.username;
@@ -216,14 +217,19 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 : "bg-gray30 border-2 border-gray40"
             } rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
           >
-            <span className="flex justify-between w-full mb-1">
+            <span className="flex items-center w-full mb-1">
               <p
-                className="prize-card__title cursor-pointer text-white text-sm"
+                className="w-28 cursor-pointer text-white text-sm"
                 onClick={onPrizeClick}
               >
                 {prizeName}
               </p>
-              <div className="prize-card__links flex gap-4">
+              {winnersCount > 1 && (
+                <small className="rounded-xl ml-5 font-semibold text-xs p-1 px-2 bg-gray10 text-gray100">
+                  {winnersCount}x Winners
+                </small>
+              )}
+              <div className="ml-auto flex gap-4">
                 {twitterUrl && (
                   <Icon
                     iconSrc="assets/images/prize-tap/twitter-logo.svg"
