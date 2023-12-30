@@ -92,18 +92,17 @@ const DepositPrize = ({
         <DisplaySelectedTokenOrNft data={data} />
         <ShowPreviewModal />
       </div>
-
       {isShowingDetails ? (
         <Pagination
           handleChangeFormPagePrev={handleChangeFormPagePrev}
           handleNextPage={handleNextPage}
           page={page}
         />
-      ) : !approve && !isShowingDetails ? (
+      ) : !approve || !isShowingDetails ? (
         <ProviderDashboardButtonSubmit
           $width="100%"
-          height="43px"
-          className="max-w-[452px] mt-[1px]"
+          height="42px"
+          className="max-w-[452px] mt-[2px]"
           onClick={
             data.isNft && !isApprovedAll
               ? handleApproveErc721Token

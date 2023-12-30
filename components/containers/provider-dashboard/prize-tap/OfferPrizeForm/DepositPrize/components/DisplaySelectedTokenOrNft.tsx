@@ -29,7 +29,13 @@ const DisplaySelectedTokenOrNft = ({ data }: Prop) => {
           </div>
           <div className="flex items-center px-5 justify-between w-full">
             <div>
-              {data.nftTokenIds.length} {data.nftName}
+              <div>
+                {data.nftTokenIds.length} {data.nftName}{" "}
+                {data.nftTokenIds.length > 1 ? "NFTs" : "NFT"}
+              </div>
+              <div className="text-gray90 text-[10px]">
+                {data.nftTokenIds.join(", ")}
+              </div>
             </div>
             <div>
               {" "}

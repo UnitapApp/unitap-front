@@ -526,6 +526,7 @@ export const ProviderDashboardButtonSubmit = styled(
   PrimaryOutlinedButtonDashboardSubmit
 )`
   font-weight: 700;
+  font-size: 14px;
   width: 100%;
   white-space: nowrap;
   &:not(:disabled) p {
