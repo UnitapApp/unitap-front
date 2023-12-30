@@ -1,5 +1,5 @@
 import PrizeTapProvider from "@/context/prizeTapProvider";
-import { getRafflesListAPI } from "@/utils/api";
+import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
 import { Metadata } from "next";
 import { FC, PropsWithChildren } from "react";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const PrizeTapLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const raffles = await getRafflesListAPI(undefined);
+  const raffles = await getRafflesServerSideListAPI();
 
   return <PrizeTapProvider raffles={raffles}>{children}</PrizeTapProvider>;
 };

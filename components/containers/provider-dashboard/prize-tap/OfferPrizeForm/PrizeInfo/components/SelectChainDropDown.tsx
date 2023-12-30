@@ -26,14 +26,14 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
     isShowingDetails,
   } = usePrizeOfferFormContext();
 
-  const ref = useRef<HTMLDivElement>(null);
-
   const handleSearch = (e: any) => {
     setShowItems(true);
     handleSearchChain(e);
   };
 
   const [showItems, setShowItems] = useState(false);
+
+  const ref = useRef<HTMLDivElement>(null);
 
   useOutsideClick(ref, () => {
     if (showItems) setShowItems(false);
