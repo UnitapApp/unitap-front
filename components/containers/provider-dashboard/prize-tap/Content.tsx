@@ -125,7 +125,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             {prize.numberOfOnchainEntries ? (
               <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
-                {prize.numberOfOnchainEntries}{" "}
+                {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
                 {prize.status === RaffleStatus.FINISHED
                   ? " Spots Enrolled"
                   : " Spots Left"}
