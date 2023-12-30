@@ -37,7 +37,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             Sign up first!
           </p>
           <p className="text-gray100">
-            If you have account log in to have access to provider dashboard!
+            If you have account log in to have access to Contribution Hub!
           </p>
 
           <Link href="/">
