@@ -4,9 +4,9 @@ import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { loginOrRegister, setWalletAPI } from "@/utils/api";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
-import { ethers, utils } from "ethers";
+import { ethers } from "ethers";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useSignMessage, useSignTypedData } from "wagmi";
+import { useSignTypedData } from "wagmi";
 import { WalletState } from ".";
 import { ClaimButton } from "@/components/ui/Button/button";
 
@@ -49,9 +49,11 @@ const WalletConnecting: FC<{
   const onSuccess = async (hashed: string) => {
     if (!address) return;
 
-    console.log(utils.verifyMessage(messageData, hashed));
-
-    const res = await loginOrRegister(address, hashed, messageData);
+    const res = await loginOrRegister(
+      address,
+      hashed,
+      JSON.stringify(variables?.message)
+    );
 
     onWalletLogin(res.token, res);
 
@@ -66,6 +68,7 @@ const WalletConnecting: FC<{
       IssuedAt: now,
     },
     primaryType: "Unitap",
+    account: address,
     domain: {
       name: "Unitap Connect",
       version: "1",
