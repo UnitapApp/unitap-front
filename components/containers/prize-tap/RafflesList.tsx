@@ -336,9 +336,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
-                        {maxNumberOfEntries > 1_000_000_000
+                        {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              maxNumberOfEntries
+                              numberOfOnchainEntries
                             )} people enrolled`
                           : !isRemainingPercentLessThanTen
                           ? `
