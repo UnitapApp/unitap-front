@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { loginOrRegister, setWalletAPI } from "@/utils/api";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSignMessage, useSignTypedData } from "wagmi";
 import { WalletState } from ".";
@@ -25,10 +25,23 @@ const WalletConnecting: FC<{
 
   const { userToken, userProfile, onWalletLogin } = useUserProfileContext();
 
+  const [now, setNow] = useState(new Date().toISOString());
+
   const message = useMemo(
     () => ethers.utils.hexlify(ethers.utils.randomBytes(32)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [error]
+  );
+
+  const messageData = useMemo(
+    () =>
+      JSON.stringify({
+        message,
+        URI: "https://unitap.app",
+        Version: "1",
+        IssuedAt: now,
+      }),
+    [message, now]
   );
 
   const isMounted = useRef(false);
@@ -36,26 +49,36 @@ const WalletConnecting: FC<{
   const onSuccess = async (hashed: string) => {
     if (!address) return;
 
-    const res = await loginOrRegister(address, hashed, message);
+    console.log(utils.verifyMessage(messageData, hashed));
+
+    const res = await loginOrRegister(address, hashed, messageData);
 
     onWalletLogin(res.token, res);
 
     setWalletState(isNewUser ? WalletState.SetUsername : WalletState.LoggedIn);
   };
 
-  const { isError, signTypedDataAsync } = useSignTypedData({
+  const { isError, signTypedDataAsync, variables } = useSignTypedData({
     message: {
       message,
+      URI: "https://unitap.app",
+      Version: "1",
+      IssuedAt: now,
     },
-    primaryType: "content",
+    primaryType: "Unitap",
     domain: {
-      name: "https://unitap.app",
+      name: "Unitap Connect",
       version: "1",
-      chainId: chain?.id,
-      verifyingContract: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      chainId: 1,
+      verifyingContract: "0x0000000000000000000000000000000000000000",
     },
     types: {
-      content: [{ name: "message", type: "string" }],
+      Unitap: [
+        { name: "message", type: "string" },
+        { name: "URI", type: "string" },
+        { name: "Version", type: "string" },
+        { name: "IssuedAt", type: "string" },
+      ],
     },
     onSuccess,
   });
@@ -86,6 +109,7 @@ const WalletConnecting: FC<{
 
           <ClaimButton
             onClick={() => {
+              setNow(new Date().toISOString());
               isMounted.current = false;
               setError("");
             }}
