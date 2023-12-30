@@ -14,28 +14,38 @@ const steps = [
     title: "Profile Drop down",
     description:
       "Where you can go to your own profile or check your credits in GasTap, TokenTap or PrizeTap.",
+    insetY: 270,
+    insetX: 30,
   },
   {
     id: "gastap",
     title: "Gas Tap",
     description: "Claim gas fees for any reason and make transactions easily",
+    insetY: 170,
+    insetX: 150,
   },
   {
     id: "tokentap",
     title: "Token Tap",
     description:
       "Where everyone can claim any kind of tokens such as community tokens, NFT, UBI token.",
+    insetY: 170,
+    insetX: 150,
   },
   {
     id: "prizetap",
     title: "Prize Tap",
     description: "Where everyone has chances to win larger prizes.",
+    insetY: 170,
+    insetX: 150,
   },
   {
     id: "learntap",
     title: "Learn Tap",
     description: "Where users can learn to use web3 technologies.",
     position: "above",
+    insetY: 1000,
+    insetX: 30,
   },
 ];
 
@@ -100,7 +110,10 @@ const OnBoardProcess = () => {
 
       // highlightElement.style.width = `${diagonalLength}px`;
       // highlightElement.style.height = `${diagonalLength}px`;
-      highlightElement.style.inset = `-${diagonalLength / 2}px`;
+      highlightElement.style.top = `-${currentState.insetY / 2}px`;
+      highlightElement.style.bottom = `-${currentState.insetY / 2}px`;
+      highlightElement.style.left = `-${currentState.insetX / 2}px`;
+      highlightElement.style.right = `-${currentState.insetX / 2}px`;
 
       highlightElement.classList.add(
         "absolute",
@@ -122,7 +135,11 @@ const OnBoardProcess = () => {
     return () => {
       document.removeEventListener("scrollend", onScrollEnd);
       element?.classList.remove("bg-g-primary", "relative", "z-50");
-      element.removeChild(highlightElement);
+      try {
+        element?.removeChild(highlightElement);
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, [step, showIntro, currentState, userProfile]);
 
