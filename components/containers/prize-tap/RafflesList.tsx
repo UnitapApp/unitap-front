@@ -20,6 +20,8 @@ import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
 import { shortenAddress } from "@/utils";
 
+import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
+
 export const Action = styled.div`
   display: flex;
 
@@ -568,9 +570,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       height="215px"
                     />
                   </div>
-                  <div className="claimed-prize md:!w-[352px] !w-full">
+                  <div
+                    className={`${Styles["claimed-prize"]} md:!w-[352px] !w-full`}
+                  >
                     <div className="relative">
-                      <p>Claimed</p>
+                      <p className="!font-semibold">Claimed</p>
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
