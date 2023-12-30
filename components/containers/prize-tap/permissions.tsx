@@ -1,37 +1,44 @@
-import { usePrizeTapContext } from "@/context/prizeTapProvider"
-import { useUserProfileContext } from "@/context/userProfile"
-import { getRaffleConstraintsVerifications } from "@/utils/api"
-import { ClaimAndEnrollButton } from "@/components/ui/Button/button"
-import Tooltip from "@/components/ui/Tooltip"
-import { FC, useEffect, useState } from "react"
-import { Permission, Prize } from "@/types"
+"use client";
+
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import { getRaffleConstraintsVerifications } from "@/utils/api";
+import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
+import Tooltip from "@/components/ui/Tooltip";
+import { FC, useEffect, useMemo, useState } from "react";
+import { Permission, Prize } from "@/types";
 
 const tokenImgLink = (tokenUri: string) =>
   tokenUri
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
         Number(tokenUri.split("/")[3]) + 1
       }.png`
-    : undefined
+    : undefined;
 
 const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
-  const { userToken } = useUserProfileContext()
-  const [loading, setLoading] = useState(false)
-  const { openEnrollModal } = usePrizeTapContext()
+  const { userToken } = useUserProfileContext();
+  const [loading, setLoading] = useState(false);
+  const { openEnrollModal, selectedRaffleForEnroll } = usePrizeTapContext();
+
+  const reversedConstraints = useMemo(
+    () => selectedRaffleForEnroll?.reversedConstraints.split(","),
+    [selectedRaffleForEnroll?.reversedConstraints]
+  );
 
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
-  >([])
+  >([]);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     if (!userToken) {
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     }
 
     getRaffleConstraintsVerifications(raffle.pk, userToken)
       .then((res) => {
-        SetPermissions(res.constraints)
+        SetPermissions(res.constraints);
       })
       .catch(() => {
         SetPermissions(
@@ -39,10 +46,10 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
             ...constraint,
             isVerified: false,
           }))
-        )
+        );
       })
-      .finally(() => setLoading(false))
-  }, [userToken, raffle.constraints, raffle.pk, SetPermissions])
+      .finally(() => setLoading(false));
+  }, [userToken, raffle.constraints, raffle.pk, SetPermissions]);
 
   return (
     <div className="w-full">
@@ -92,6 +99,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                         : "/assets/images/token-tap/not-verified.svg"
                     }
                   />
+                  {reversedConstraints?.includes(permission.pk.toString()) &&
+                    "Not "}
                   {permission.title}
                 </div>
               </Tooltip>
@@ -121,7 +130,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default RafflePermissions
+export default RafflePermissions;
