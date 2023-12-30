@@ -4,9 +4,9 @@ import { useWalletManagementContext } from "@/context/walletProvider";
 import { WalletProviderButton } from "../modals/ConnectWalletModal/walletPrompt";
 import { useWalletAccount, useWalletConnection } from "@/utils/wallet";
 import { useUserProfileContext } from "@/context/userProfile";
-import { useSignMessage } from "wagmi";
+import { useDisconnect, useSignMessage } from "wagmi";
 import { ethers } from "ethers";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import WalletConnecting from "../modals/ConnectWalletModal/walletConnecting";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { setWalletAPI } from "@/utils/api";
@@ -49,7 +49,13 @@ const AddWalletModal = () => {
 export const AddWalletPrompt = () => {
   const { connect, connectors, isSuccess } = useWalletConnection();
 
-  if (isSuccess) return <WalletVerify />;
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    setIsConnected(isSuccess);
+  }, [isSuccess]);
+
+  if (isConnected) return <WalletVerify setIsConnected={setIsConnected} />;
 
   return (
     <>
@@ -89,10 +95,14 @@ export const AddWalletPrompt = () => {
   );
 };
 
-const WalletVerify = () => {
+const WalletVerify: FC<{ setIsConnected: (arg: boolean) => void }> = ({
+  setIsConnected,
+}) => {
   const { address, connector } = useWalletAccount();
   const [error, setError] = useState("");
   const { setAddModalState } = useWalletManagementContext();
+
+  const { disconnect } = useDisconnect();
 
   const { userToken, addNewWallet, userProfile } = useUserProfileContext();
 
@@ -148,6 +158,7 @@ const WalletVerify = () => {
       setError(
         "This wallet is already added to your account, please enter a different wallet"
       );
+
       return;
     }
 
@@ -178,6 +189,10 @@ const WalletVerify = () => {
 
           <ClaimButton
             onClick={() => {
+              if (error.startsWith("This wallet is already added")) {
+                disconnect();
+                setIsConnected(false);
+              }
               isMounted.current = false;
               setError("");
             }}
