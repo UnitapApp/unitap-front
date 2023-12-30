@@ -92,13 +92,14 @@ const DepositPrize = ({
         <DisplaySelectedTokenOrNft data={data} />
         <ShowPreviewModal />
       </div>
+
       {isShowingDetails ? (
         <Pagination
           handleChangeFormPagePrev={handleChangeFormPagePrev}
           handleNextPage={handleNextPage}
           page={page}
         />
-      ) : !approve || !isShowingDetails ? (
+      ) : !approve && !isShowingDetails ? (
         <ProviderDashboardButtonSubmit
           $width="100%"
           height="42px"
