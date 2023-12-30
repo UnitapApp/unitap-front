@@ -354,7 +354,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
           </div>
 
-          <div className="relative">
+          <div className="relative mt-1">
             <div className={`tooltip ${showTooltip ? "flex" : "hidden"}`}>
               <div className="absolute flex items-center justify-center -right-6 z-100 rounded-sm -top-4 w-[100px] h-[20px] text-xs bg-gray100">
                 tooltip message

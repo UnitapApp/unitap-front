@@ -222,6 +222,7 @@ const PrizeTapContent = () => {
   const handleSelectFilter = (filter: string) => {
     setSelectedFilter(filter);
   };
+
   useEffect(() => {
     if (selectedFilter == RaffleStatus.ONGOING) {
       setFilteredRaffle(
