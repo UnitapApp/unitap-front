@@ -3,8 +3,9 @@
 import Icon from "@/components/ui/Icon";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { useUserProfileContext } from "@/context/userProfile";
+import { useOutsideClick } from "@/utils/hooks/dom";
 import { useWalletAccount } from "@/utils/wallet";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Prop {
   showErrors: boolean;
@@ -25,12 +26,18 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
     isShowingDetails,
   } = usePrizeOfferFormContext();
 
+  const ref = useRef<HTMLDivElement>(null);
+
   const handleSearch = (e: any) => {
     setShowItems(true);
     handleSearchChain(e);
   };
 
   const [showItems, setShowItems] = useState(false);
+
+  useOutsideClick(ref, () => {
+    if (showItems) setShowItems(false);
+  });
 
   const handleSetShowItems = () => {
     if (isShowingDetails) return;
@@ -39,7 +46,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
 
   return (
     <div className="w-full relative">
-      <div className="w-full relative cursor-pointer">
+      <div ref={ref} className="w-full relative cursor-pointer">
         <div
           onClick={handleSetShowItems}
           className="w-full flex items-center px-5 bg-gray40 border border-gray50 rounded-xl h-[43px]"
