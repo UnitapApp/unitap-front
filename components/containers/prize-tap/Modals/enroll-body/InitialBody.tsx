@@ -92,8 +92,9 @@ const InitialBody: FC<{
           <ClaimButton
             onClick={() => handleEnroll()}
             $width="100%"
+            disabled={claimOrEnrollLoading}
             $fontSize="16px"
-            className="!w-full"
+            className="!w-full disabled:opacity-60"
             data-testid={`chain-claim-action-${raffle.chain.pk}`}
           >
             {claimOrEnrollLoading ? (
