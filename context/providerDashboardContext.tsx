@@ -1039,7 +1039,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
-      provider: raffle.name,
+      provider: raffle.creatorName,
       selectedChain: raffle.chain,
       description: raffle.description,
       isNft: raffle.isPrizeNft,
