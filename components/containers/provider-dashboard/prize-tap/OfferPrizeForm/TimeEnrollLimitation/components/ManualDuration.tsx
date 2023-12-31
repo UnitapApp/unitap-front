@@ -25,7 +25,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           <div
             key={item.id}
             onClick={() => {
-              if (isShowingDetails) return;
+              if (isShowingDetails || !data.startTimeStamp) return;
               handleSetEnrollDuration(item.id);
             }}
             className={`w-full h-full flex justify-center items-center enrollment-duration cursor-pointer  border-r-2 border-gray50 ${
