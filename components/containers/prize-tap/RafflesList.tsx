@@ -18,9 +18,10 @@ import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
-import { shortenAddress } from "@/utils";
+import { getAssetUrl, shortenAddress } from "@/utils";
 
 import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
+import { zeroAddress } from "viem";
 
 export const Action = styled.div`
   display: flex;
@@ -153,9 +154,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     ? imageUrl
       ? imageUrl
       : tokenImgLink
-    : `https://etherscan.io/address/${raffle.prizeAsset}`;
+    : getAssetUrl(chain, raffle.prizeAsset!);
 
   const onPrizeClick = () => {
+    if (raffle.prizeAsset == zeroAddress) return;
     if (prizeLink) window.open(prizeLink, "_blank");
   };
 
@@ -221,7 +223,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
           >
             <span className="flex items-center w-full mb-1">
               <p
-                className="w-28 cursor-pointer text-white text-sm"
+                className="cursor-pointer text-white text-sm"
                 onClick={onPrizeClick}
               >
                 {prizeName}
@@ -344,9 +346,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
-                        {maxNumberOfEntries > 1_000_000_000
+                        {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              maxNumberOfEntries
+                              numberOfOnchainEntries
                             )} people enrolled`
                           : !isRemainingPercentLessThanTen
                           ? `

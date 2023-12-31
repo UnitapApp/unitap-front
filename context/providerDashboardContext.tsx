@@ -442,7 +442,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
-    if (!data.startTimeStamp) return;
+    // if (!data.startTimeStamp) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id

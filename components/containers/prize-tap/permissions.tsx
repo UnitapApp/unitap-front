@@ -54,7 +54,13 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   return (
     <div className="w-full">
       <div className="mb-20 text-center relative">
-        <div className="bg-[url('/assets/images/prize-tap/nft-cover.svg')] bg-cover rounded-lg w-64 h-40 mx-auto" />
+        <div
+          className={`${
+            raffle.isPrizeNft
+              ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
+              : "bg-[url('/assets/images/prize-tap/cover.svg')]"
+          } bg-cover rounded-lg w-64 h-40 mx-auto`}
+        />
         <img
           src={raffle.imageUrl ?? tokenImgLink(raffle.tokenUri)}
           className="absolute left-1/2 -translate-x-1/2 top-5"

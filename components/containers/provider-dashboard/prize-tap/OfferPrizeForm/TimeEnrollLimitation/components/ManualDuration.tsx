@@ -25,7 +25,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           <div
             key={item.id}
             onClick={() => {
-              if (isShowingDetails) return;
+              if (isShowingDetails || !data.startTimeStamp) return;
               handleSetEnrollDuration(item.id);
             }}
             className={`w-full h-full flex justify-center items-center enrollment-duration cursor-pointer  border-r-2 border-gray50 ${
@@ -42,7 +42,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
         </div>
         <div className="w-full">
           {data.startTimeStamp && <DisplaySelectedDate />}
-          {data.startTimeStamp >= data.endTimeStamp && (
+          {data.startTimeStamp >= data.endTimeStamp && data.startTimeStamp && (
             <p className="text-error text-[11px] m-0 p-0 -mt-1 absolute ">
               {showErrors && showErrors.endDateStatusMessage}
             </p>

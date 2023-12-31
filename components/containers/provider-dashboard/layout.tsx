@@ -37,7 +37,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             Sign up first!
           </p>
           <p className="text-gray100">
-            If you have account log in to have access to provider dashboard!
+            If you have account log in to have access to Contribution Hub!
           </p>
 
           <Link href="/">
@@ -91,7 +91,8 @@ const ProviderTabs: FC = () => {
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_PRIZETAP
+          pathname === RoutePath.PROVIDER_PRIZETAP ||
+          pathname == RoutePath.PROVIDERDASHBOARD
             ? " text-white opacity-1"
             : "opacity-[0.2]"
         }`}
