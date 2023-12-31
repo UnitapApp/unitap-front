@@ -1215,9 +1215,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     () => {
       // if (userRaffles.length > 0) return;
       setUserRafflesLoading(true);
-      setTimeout(() => {
-        handleGetUserRaffles();
-      }, 5000);
+      handleGetUserRaffles();
     },
     FAST_INTERVAL,
     []

@@ -189,7 +189,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               onClick={() => handleWinnersResult(prize)}
               className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
             >
-              <p>Check Enrolled Wallets & Winners</p>
+              <p>Check Winner Wallets</p>
             </div>
           </div>
         )}

@@ -49,6 +49,7 @@ export type Prize = {
   prizeAsset?: string;
   status: "PENDING" | "REJECTED" | string;
   reversedConstraints: string;
+  winnersCount: number;
 };
 
 export type WinnerEntry = {
