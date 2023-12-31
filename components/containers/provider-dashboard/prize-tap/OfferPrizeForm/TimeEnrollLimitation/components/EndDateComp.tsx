@@ -38,7 +38,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
     setEndDate(e);
   };
 
-  const timePriceClick = (openCalendar: any) => {
+  const timePickerClick = (openCalendar: any) => {
     if (isShowingDetails) return;
     openCalendar();
     handleSetEnrollDuration(-1);
@@ -66,7 +66,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
             return (
               <p
                 className="select-not"
-                onClick={() => timePriceClick(openCalendar)}
+                onClick={() => timePickerClick(openCalendar)}
               >
                 or Select Date & Time Manually
               </p>
