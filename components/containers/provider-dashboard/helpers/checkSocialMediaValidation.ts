@@ -10,7 +10,7 @@ const checkTwitterVAlidation = (username: string) => {
 
 const checkDiscordValidation = (username: string) => {
   const usernameRegex =
-    /^(?!discordtag|everyone|here)(?!@|#|:|```).{2,32}#\d{4}$/;
+    /^.{3,32}[0-9]$/;
   return !!username.match(usernameRegex);
 };
 
@@ -44,7 +44,7 @@ export const checkSocialMediaValidation = (
     ? checkTwitterVAlidation(twitter.replace("@", ""))
     : false;
   const urlValidation = creatorUrl
-    ? checkUrlValidation(creatorUrl.replace("@", ""))
+    ? checkUrlValidation(creatorUrl)
     : true;
   const discordValidation = discord
     ? checkDiscordValidation(discord.replace("@", ""))
