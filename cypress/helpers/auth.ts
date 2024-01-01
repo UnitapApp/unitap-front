@@ -13,6 +13,30 @@ export const setupGetUserProfileVerified = () => {
 
   cy.intercept(
     {
+      url: "/api/gastap/user/remainig-claims",
+      method: "GET",
+    },
+    (req) => {
+      req.reply({
+        totalRoundClaimsRemaining: 5,
+      });
+    }
+  );
+
+  cy.intercept(
+    {
+      url: "/api/auth/user/set-wallet",
+      method: "POST",
+    },
+    (req) => {
+      req.reply({
+        pk: 1,
+      });
+    }
+  );
+
+  cy.intercept(
+    {
       method: "GET",
       url: "/api/gastap/settings",
     },
