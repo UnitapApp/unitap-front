@@ -36,8 +36,10 @@ const NewAddedConstraint = ({ requirement }: Props) => {
       <div className="bg-gray50 h-[44px] rounded-xl flex justify-between  items-center px-4 border-2 border-gray60">
         <div className="flex items-center gap-2">
           {constraint?.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
+          <p className={!isNotSatisfy ? "text-dark-space-green" : "text-error"}>
+            {isNotSatisfy ? "Should not satisfy" : "Should satisfy"}
+          </p>
           <p>{constraint.title} requirement</p>
-          <p>{isNotSatisfy && "Not satisfy"}</p>
         </div>
         <div className="flex items-center gap-3">
           <div

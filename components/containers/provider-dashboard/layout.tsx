@@ -8,7 +8,6 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { useWalletAccount } from "@/utils/wallet";
 import { BackToHomeButton } from "./Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {

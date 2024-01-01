@@ -29,7 +29,7 @@ export const socialMediaDescription = {
 const contactFields: ContactField[] = [
   {
     name: "creatorUrl",
-    placeholder: "https://www.example.com (Optional)",
+    placeholder: "www.example.com (Optional)",
     icon: "/assets/images/provider-dashboard/creatorUrl.svg",
     require: false,
     baseUrl: "",
