@@ -11,7 +11,7 @@ workflows:
       - cypress/install:
           executor: cypress-latest
           install-command: "yarn install --frozen-lockfile"
-          build: "yarn build"
+          build: "yarn build-test"
       - cypress/run:
           executor: cypress-latest
           requires:
