@@ -12,6 +12,7 @@ export * from "./prize-tap";
 export * from "./provider-dashboard";
 
 export const serverFetch = async (url: string) => {
+  console.log(process.env);
   const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {
     cache: "no-store",
   });

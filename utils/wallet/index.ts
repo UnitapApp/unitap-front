@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { Chain, ChainType } from "@/types"
-import { useEffect, useState } from "react"
-import { Client } from "viem"
+import { Chain, ChainType } from "@/types";
+import { useEffect, useState } from "react";
+import { Address, Client } from "viem";
 import {
   PublicClient,
   useAccount,
@@ -12,24 +12,24 @@ import {
   useNetwork,
   usePublicClient,
   useWalletClient,
-} from "wagmi"
-import { GetWalletClientResult } from "wagmi/actions"
+} from "wagmi";
+import { GetWalletClientResult } from "wagmi/actions";
 
 export const useWalletAccount = () => {
-  return useAccount()
-}
+  return useAccount();
+};
 
 export const useWalletNetwork = () => {
-  return useNetwork()
-}
+  return useNetwork();
+};
 
 export const useNetworkSwitcher = () => {
-  const { chain } = useNetwork()
-  const { connector } = useAccount()
+  const { chain } = useNetwork();
+  const { connector } = useAccount();
 
-  const signer = useWalletSigner()
+  const signer = useWalletSigner();
 
-  const [provider, setProvider] = useState<Client | undefined>(undefined)
+  const [provider, setProvider] = useState<Client | undefined>(undefined);
 
   const addAndSwitchChain = (chain: Chain) => {
     signer?.addChain?.({
@@ -57,48 +57,48 @@ export const useNetworkSwitcher = () => {
           public: { http: [chain.rpcUrl] },
         },
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    if (!connector) return
+    if (!connector) return;
 
     connector.getWalletClient().then((provider) => {
-      setProvider(provider)
-    })
-  }, [connector])
+      setProvider(provider);
+    });
+  }, [connector]);
 
   return {
     selectedNetwork: chain,
     switchChain: (chainId: number) => connector?.switchChain?.(chainId),
     addAndSwitchChain,
-  }
-}
+  };
+};
 
 export const useAccountBalance = (account?: string, chainId?: number) =>
   useBalance({
-    address: account as `0x{string}`,
+    address: account as Address,
     chainId,
-  })
+  });
 
 export const useProvider: () =>
   | PublicClient
   | GetWalletClientResult
   | undefined = () => {
-  const { isConnected } = useWalletAccount()
+  const { isConnected } = useWalletAccount();
 
-  const walletProvider = useWalletClient()
-  const publicProvider = usePublicClient()
+  const walletProvider = useWalletClient();
+  const publicProvider = usePublicClient();
 
-  return isConnected ? walletProvider.data : publicProvider
-}
+  return isConnected ? walletProvider.data : publicProvider;
+};
 
 export const useWeb3 = () => {
-  const provider = useProvider()
+  const provider = useProvider();
 
-  const network = useWalletNetwork()
+  const network = useWalletNetwork();
 
-  const account = useWalletAccount()
+  const account = useWalletAccount();
 
   return {
     address: account.address,
@@ -106,19 +106,19 @@ export const useWeb3 = () => {
     chainId: network.chain?.id,
     chain: network.chain,
     provider,
-  }
-}
+  };
+};
 
 export class WalletProvider {
   constructor(private provider: PublicClient) {}
 }
 
 export const useUserWalletProvider = () => {
-  const network = useWalletNetwork()
+  const network = useWalletNetwork();
 
-  const account = useWalletAccount()
+  const account = useWalletAccount();
 
-  const walletProvider = useWalletClient()
+  const walletProvider = useWalletClient();
 
   return {
     connection: {
@@ -135,13 +135,13 @@ export const useUserWalletProvider = () => {
       isAvailable: walletProvider.isSuccess,
       result: walletProvider.data,
     },
-  }
-}
+  };
+};
 
 export const useWalletConnection = () => {
-  const { connect, isLoading, connectors, isSuccess } = useConnect()
+  const { connect, isLoading, connectors, isSuccess } = useConnect();
 
-  const { disconnect, isLoading: isDisconnectLoading } = useDisconnect()
+  const { disconnect, isLoading: isDisconnectLoading } = useDisconnect();
 
   return {
     connect,
@@ -150,57 +150,57 @@ export const useWalletConnection = () => {
     isSuccess,
     disconnect,
     isDisconnectLoading,
-  }
-}
+  };
+};
 
 export type EstimateGasProps = {
-  from: string
-  to: string
-  value?: bigint
-  data?: string
-}
+  from: string;
+  to: string;
+  value?: bigint;
+  data?: string;
+};
 
 export const estimateGas = (
   provider: PublicClient,
   { from, to, value, data }: EstimateGasProps
 ) => {
   return provider.estimateGas({
-    account: from as `0x{string}`,
-    to: to as `0x{string}`,
+    account: from as Address,
+    to: to as Address,
     value,
-    data: data as `0x{string}`,
-  })
-}
+    data: data as Address,
+  });
+};
 
 export const callProvider = (
   provider: PublicClient,
   { from, to, value, data }: EstimateGasProps
 ) => {
   return provider.call({
-    account: from as `0x{string}`,
-    to: to as `0x{string}`,
+    account: from as Address,
+    to: to as Address,
     value,
-    data: data as `0x{string}`,
-  })
-}
+    data: data as Address,
+  });
+};
 
 export const useWalletSigner = () => {
-  return useWalletClient().data
-}
+  return useWalletClient().data;
+};
 
 export const useWalletBalance = ({
   address,
   chainId,
 }: {
-  address: any
-  chainId: number | undefined
+  address: any;
+  chainId: number | undefined;
 }) => {
-  return useBalance({ address, chainId })
-}
+  return useBalance({ address, chainId });
+};
 
 export const useWalletProvider = (props?: { chainId?: number }) => {
-  return usePublicClient(props)
-}
+  return usePublicClient(props);
+};
 
 export default function getCorrectAddress(chain: Chain, address: string) {
   if (chain.chainName === "XDC" && chain.chainType === ChainType.NONEVMXDC) {
@@ -209,8 +209,8 @@ export default function getCorrectAddress(chain: Chain, address: string) {
       (address.slice(0, 2) !== "0X" &&
         (address.slice(0, 3) === "xdc" || address.slice(0, 3) === "XDC"))
     ) {
-      return "0x" + address.slice(3, address.length)
+      return "0x" + address.slice(3, address.length);
     }
   }
-  return address
+  return address;
 }
