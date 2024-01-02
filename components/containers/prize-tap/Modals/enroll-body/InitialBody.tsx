@@ -20,11 +20,11 @@ const InitialBody: FC<{
 }> = ({ method, raffle }) => {
   const { address, isConnected } = useWalletAccount();
 
-  const tokenImgLink: string = raffle.isPrizeNft
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(raffle.tokenUri.split("/")[3]) + 1
-      }.png`
-    : "";
+  // const tokenImgLink: string = raffle.isPrizeNft
+  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+  //       Number(raffle.tokenUri.split("/")[3]) + 1
+  //     }.png`
+  //   : "";
 
   const {
     claimOrEnrollWalletResponse,
@@ -51,7 +51,7 @@ const InitialBody: FC<{
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={raffle.isPrizeNft ? tokenImgLink : raffle.imageUrl}
+            iconSrc={raffle.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -129,7 +129,7 @@ const InitialBody: FC<{
           className="chain-logo z-10 mt-14 mb-10"
           width="auto"
           height="110px"
-          iconSrc={raffle.isPrizeNft ? tokenImgLink : raffle.imageUrl}
+          iconSrc={raffle.imageUrl}
           alt=""
         />
       </DropIconWrapper>

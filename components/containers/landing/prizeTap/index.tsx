@@ -6,14 +6,14 @@ import { RaffleCardTimerLandingPage } from "./raffleTimer";
 import { serverFetch } from "@/utils/api";
 import { Prize } from "@/types";
 
-const nftImage = (tokenUri: string | undefined | null) => {
-  let tokenImgLink: string | undefined = tokenUri
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(tokenUri.split("/")[3]) + 1
-      }.png`
-    : undefined;
-  return tokenImgLink;
-};
+// const nftImage = (tokenUri: string | undefined | null) => {
+//   let tokenImgLink: string | undefined = tokenUri
+//     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+//         Number(tokenUri.split("/")[3]) + 1
+//       }.png`
+//     : undefined;
+//   return tokenImgLink;
+// };
 
 const PrizeTapLanding: FC = async () => {
   const rafflesList: Prize[] = (
@@ -66,7 +66,7 @@ const PrizeTapLanding: FC = async () => {
                         <img
                           width="62px"
                           height="63px"
-                          src={raffle.imageUrl || nftImage(raffle.tokenUri)}
+                          src={raffle.imageUrl}
                           alt={raffle.name}
                         />
                       </span>

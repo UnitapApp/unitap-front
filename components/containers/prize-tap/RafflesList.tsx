@@ -116,14 +116,13 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     winnerEntries: winnersEntry,
     reversedConstraints,
     winnersCount,
+    status,
   } = raffle;
 
   const creator = creatorName || creatorProfile?.username;
 
   const { openEnrollModal } = usePrizeTapContext();
   const { userProfile } = useUserProfileContext();
-
-  const calculateClaimAmount = prizeAmount / 10 ** decimals;
   const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
   const isRemainingPercentLessThanTen =
     remainingPeople < (maxNumberOfEntries / 100) * 10;
@@ -144,17 +143,13 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     setStarted(new Date(startAt) < new Date());
   }, [new Date()]);
 
-  let tokenImgLink: string | undefined = tokenUri
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(tokenUri.split("/")[3]) + 1
-      }.png`
-    : undefined;
+  // let tokenImgLink: string | undefined = tokenUri
+  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+  //       Number(tokenUri.split("/")[3]) + 1
+  //     }.png`
+  //   : undefined;
 
-  const prizeLink = isPrizeNft
-    ? imageUrl
-      ? imageUrl
-      : tokenImgLink
-    : getAssetUrl(chain, raffle.prizeAsset!);
+  const prizeLink = getAssetUrl(chain, raffle.prizeAsset!);
 
   const onPrizeClick = () => {
     if (raffle.prizeAsset == zeroAddress) return;
@@ -183,10 +178,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   : "bg-gray30 border-2 border-gray40"
               } justify-center items-center p-5 rounded-xl`}
             >
-              {(imageUrl || tokenImgLink) && (
+              {imageUrl && (
                 <img
                   onClick={onPrizeClick}
-                  src={imageUrl ? imageUrl : tokenImgLink}
+                  src={imageUrl}
                   alt={name}
                   width={!isPrizeNft ? "168px" : ""}
                   className={`${!isPrizeNft ? "ml-1" : ""} cursor-pointer mb-2`}
@@ -474,10 +469,19 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     height="48px"
                     $fontSize="14px"
                   >
-                    <div className="relative w-full">
-                      <span className="text-transparent bg-clip-text bg-g-primary">
-                        Enrolled
-                      </span>{" "}
+                    <div className="relative w-full flex">
+                      <span
+                        className={`${
+                          !winnersEntry.length &&
+                          new Date(deadline) < new Date()
+                            ? "text-[14px]"
+                            : ""
+                        } text-transparent bg-clip-text bg-g-primary`}
+                      >
+                        {!winnersEntry.length && new Date(deadline) < new Date()
+                          ? "Determining the winners"
+                          : "Enrolled"}
+                      </span>
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"

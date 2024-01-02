@@ -8,12 +8,12 @@ import Tooltip from "@/components/ui/Tooltip";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Permission, Prize } from "@/types";
 
-const tokenImgLink = (tokenUri: string) =>
-  tokenUri
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(tokenUri.split("/")[3]) + 1
-      }.png`
-    : undefined;
+// const tokenImgLink = (tokenUri: string) =>
+//   tokenUri
+//     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+//         Number(tokenUri.split("/")[3]) + 1
+//       }.png`
+//     : undefined;
 
 const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   const { userToken } = useUserProfileContext();
@@ -62,7 +62,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           } bg-cover rounded-lg w-64 h-40 mx-auto`}
         />
         <img
-          src={raffle.imageUrl ?? tokenImgLink(raffle.tokenUri)}
+          src={raffle.imageUrl}
           className="absolute left-1/2 -translate-x-1/2 top-5"
           alt={raffle.name}
           width={168}
