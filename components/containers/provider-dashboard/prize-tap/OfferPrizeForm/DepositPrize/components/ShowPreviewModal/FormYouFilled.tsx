@@ -31,7 +31,7 @@ const FormYouFilled = ({ data }: Prop) => {
     <div
       className={`flex ${
         data.isNft ? "prize-card-bg-1" : "prize-card-bg-2"
-      } min-w-[348px] select-not flex-col lg:flex-row gap-4 mt-5 overflow-hidden overflow-x-scroll cursor-pointer styled-scroll pb-8`}
+      } min-w-[348px] select-not flex-row gap-4 mt-5 overflow-hidden overflow-x-scroll cursor-pointer styled-scroll pb-8`}
     >
       <div className="bg-gray30 border border-gray40 rounded-md min-w-[208px] min-h-[208px] max-h-[208px] relative flex justify-center">
         <div
@@ -98,8 +98,8 @@ const FormYouFilled = ({ data }: Prop) => {
             requirementList.length == 0 ? "mt-10" : ""
           }`}
         >
-          <span className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 ">
-            <div className="flex flex-col md:flex-row gap-4 justify-between w-full lg:min-w-[450px] items-center bg-gray40 px-5 h-full py-1 rounded-xl">
+          <span className="flex flex-row items-center justify-between w-full gap-4 ">
+            <div className="flex flex-row gap-4 justify-between w-full  items-center bg-gray40 px-5 h-full py-1 rounded-xl">
               <p className="text-[12px] text-gray100">0 people enrolled</p>
               <RaffleCardTimerSubmitContribution
                 startTime={new Date(data.startTimeStamp * 1000).toString()}
