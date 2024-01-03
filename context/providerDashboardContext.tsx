@@ -101,7 +101,7 @@ const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
   {
     id: 1,
     name: "2 Week",
-    selected: true,
+    selected: false,
     time: null,
     value: 2,
     status: "week",
@@ -242,6 +242,8 @@ export const ProviderDashboardContext = createContext<{
   enrollmentDurations: EnrollmentDurationsProps[];
   handleWinnersResult: (raffle: UserRafflesProps | null) => void;
   winnersResultRaffle: UserRafflesProps | null;
+  endDateState: any;
+  setEndDateState: (date: any) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -341,6 +343,8 @@ export const ProviderDashboardContext = createContext<{
   handleSetEnrollDuration: NullCallback,
   handleWinnersResult: NullCallback,
   winnersResultRaffle: null,
+  endDateState: null,
+  setEndDateState: NullCallback,
 });
 
 const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
@@ -368,6 +372,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
 
   const [allowListPrivate, setAllowListPrivate] = useState<boolean>(false);
+
+  const [endDateState, setEndDateState] = useState<any>(null);
 
   const [tokenContractStatus, setTokenContractStatus] =
     useState<ContractStatus>({
@@ -680,7 +686,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       errorObject.statDateStatusMessage = errorMessages.required;
     }
     const sevenDaysLaterAfterNow: Date = new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
+      Date.now() + 7 * 24 * 60 * 59 * 1000
     );
     const sevenDaysLaterAfterNowTimeStamp = Math.round(
       sevenDaysLaterAfterNow.getTime() / 1000
@@ -691,12 +697,17 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     // }
 
-    if (!endTimeStamp) {
-      errorObject.endDateStatus = false;
-      errorObject.endDateStatusMessage = errorMessages.required;
-    }
+    // if (!endTimeStamp) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.required;
+    // }
 
-    // if (endTimeStamp && startTimeStamp && endTimeStamp <= startTimeStamp) {
+    // if (
+    //   endTimeStamp &&
+    //   startTimeStamp &&
+    //   (endTimeStamp <= startTimeStamp ||
+    //     endTimeStamp - startTimeStamp < 60 * 60)
+    // ) {
     //   errorObject.endDateStatus = false;
     //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
     // }
@@ -750,9 +761,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
     const { email, twitter, creatorUrl, discord, telegram } = data;
-    if (!email || !twitter) {
-      return false;
-    }
+    // if (!email || !twitter) {
+    //   return false;
+    // }
     const {
       urlValidation,
       twitterValidation,
@@ -1306,6 +1317,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         handleSetEnrollDuration,
         winnersResultRaffle,
         handleWinnersResult: setWinnersResultRaffle,
+        endDateState,
+        setEndDateState,
       }}
     >
       {children}
