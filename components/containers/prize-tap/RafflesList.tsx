@@ -114,7 +114,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     prizeAmount,
     creatorProfile,
     winnerEntries: winnersEntry,
-    reversedConstraints,
+
     winnersCount,
     status,
   } = raffle;
@@ -132,11 +132,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const userClaimEntry = useMemo(
     () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
     [userProfile, winnersEntry]
-  );
-
-  const reversedConstraintsList = useMemo(
-    () => reversedConstraints.split(","),
-    [reversedConstraints]
   );
 
   useEffect(() => {
@@ -292,12 +287,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         }
                         data-testid={`token-verification-${raffle.id}-${permission.name}`}
                         key={key}
-                        text={permission.description}
+                        text={
+                          permission.isReversed
+                            ? permission.negativeDescription
+                            : permission.description
+                        }
                       >
                         <div className="flex items-center gap-3">
-                          {reversedConstraintsList.includes(
-                            permission.pk.toString()
-                          ) && "Not "}
+                          {permission.isReversed && "Not "}
                           {permission.title}
                         </div>
                       </Tooltip>

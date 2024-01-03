@@ -19,12 +19,6 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   const { userToken } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
   const { openEnrollModal, selectedRaffleForEnroll } = usePrizeTapContext();
-
-  const reversedConstraints = useMemo(
-    () => selectedRaffleForEnroll?.reversedConstraints.split(","),
-    [selectedRaffleForEnroll?.reversedConstraints]
-  );
-
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
   >([]);
@@ -36,8 +30,10 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
       return;
     }
 
+    console.log(raffle.constraints);
     getRaffleConstraintsVerifications(raffle.pk, userToken)
       .then((res) => {
+        console.log(res.constraints);
         SetPermissions(res.constraints);
       })
       .catch(() => {
@@ -95,7 +91,11 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 }
                 data-testid={`token-verification-modal-${raffle.pk}-${permission.name}`}
                 key={key}
-                text={permission.description}
+                text={
+                  permission.isReversed
+                    ? permission.negativeDescription
+                    : permission.description
+                }
               >
                 <div className="flex items-center gap-1">
                   <img
@@ -105,8 +105,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                         : "/assets/images/token-tap/not-verified.svg"
                     }
                   />
-                  {reversedConstraints?.includes(permission.pk.toString()) &&
-                    "Not "}
+                  {permission.isReversed && "Not "}
                   {permission.title}
                 </div>
               </Tooltip>
