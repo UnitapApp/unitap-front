@@ -32,6 +32,7 @@ export enum BrightIdModalState {
 }
 
 export type Permission = {
+  isReversed: boolean;
   id: PK;
   pk: PK;
   name: string;
@@ -39,6 +40,8 @@ export type Permission = {
   resourcetype: string;
   type: "TIME" | "VER";
   title?: string;
+  negativeDescription: string | null;
+
 };
 
 export enum PermissionType {

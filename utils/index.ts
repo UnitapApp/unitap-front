@@ -32,7 +32,7 @@ export function getTxUrl(chain: Chain, txHash: string) {
 export function getAssetUrl(chain: Chain, address: string) {
   let explorerUrl = chain.explorerUrl
   explorerUrl = explorerUrl.endsWith("/") ? explorerUrl : `${explorerUrl}/`
-  return `${explorerUrl}/address/${address}`
+  return `${explorerUrl}address/${address}`
 }
 
 export function formatChainId(chainId: string) {

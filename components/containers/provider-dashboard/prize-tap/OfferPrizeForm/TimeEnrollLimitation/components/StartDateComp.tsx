@@ -16,14 +16,15 @@ interface StartDateCompProp {
 const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   const { data, handleSetDate, isShowingDetails } = usePrizeOfferFormContext();
   const [startDate, setStartDate] = useState<any>();
+  const [minDate, setMinDate] = useState<any>();
 
   useEffect(() => {
     if (data.startTimeStamp) {
       setStartDate(data.startTimeStamp * 1000);
     }
-    // else {
-    //   setStartDate(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    // }
+
+    setMinDate(Date.now());
+    // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
   const handleChange = () => {};
@@ -76,7 +77,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           }
           onChange={timeChange}
           value={startDate}
-          // minDate={Date.now() + 7 * 24 * 60 * 59.9 * 1000}
+          minDate={minDate}
           className="rmdp-mobile  animate-fadeIn"
         />
       </div>

@@ -42,11 +42,14 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
         </div>
         <div className="w-full">
           {data.startTimeStamp && <DisplaySelectedDate />}
-          {data.startTimeStamp >= data.endTimeStamp && data.startTimeStamp && (
-            <p className="text-error text-[11px] m-0 p-0 -mt-1 absolute ">
-              {showErrors && showErrors.endDateStatusMessage}
-            </p>
-          )}
+          {data.startTimeStamp &&
+            data.endTimeStamp &&
+            (data.startTimeStamp >= data.endTimeStamp ||
+              data.endTimeStamp - data.startTimeStamp < 60 * 60) && (
+              <p className="text-error text-[11px] m-0 p-0 -mt-1 absolute ">
+                The end time cannot be less than the start time.
+              </p>
+            )}
         </div>
       </div>
     </div>

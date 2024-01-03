@@ -8,23 +8,17 @@ import Tooltip from "@/components/ui/Tooltip";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Permission, Prize } from "@/types";
 
-const tokenImgLink = (tokenUri: string) =>
-  tokenUri
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(tokenUri.split("/")[3]) + 1
-      }.png`
-    : undefined;
+// const tokenImgLink = (tokenUri: string) =>
+//   tokenUri
+//     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+//         Number(tokenUri.split("/")[3]) + 1
+//       }.png`
+//     : undefined;
 
 const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   const { userToken } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
   const { openEnrollModal, selectedRaffleForEnroll } = usePrizeTapContext();
-
-  const reversedConstraints = useMemo(
-    () => selectedRaffleForEnroll?.reversedConstraints.split(","),
-    [selectedRaffleForEnroll?.reversedConstraints]
-  );
-
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
   >([]);
@@ -36,8 +30,10 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
       return;
     }
 
+    console.log(raffle.constraints);
     getRaffleConstraintsVerifications(raffle.pk, userToken)
       .then((res) => {
+        console.log(res.constraints);
         SetPermissions(res.constraints);
       })
       .catch(() => {
@@ -62,7 +58,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           } bg-cover rounded-lg w-64 h-40 mx-auto`}
         />
         <img
-          src={raffle.imageUrl ?? tokenImgLink(raffle.tokenUri)}
+          src={raffle.imageUrl}
           className="absolute left-1/2 -translate-x-1/2 top-5"
           alt={raffle.name}
           width={168}
@@ -95,7 +91,11 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 }
                 data-testid={`token-verification-modal-${raffle.pk}-${permission.name}`}
                 key={key}
-                text={permission.description}
+                text={
+                  permission.isReversed
+                    ? permission.negativeDescription
+                    : permission.description
+                }
               >
                 <div className="flex items-center gap-1">
                   <img
@@ -105,8 +105,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                         : "/assets/images/token-tap/not-verified.svg"
                     }
                   />
-                  {reversedConstraints?.includes(permission.pk.toString()) &&
-                    "Not "}
+                  {permission.isReversed && "Not "}
                   {permission.title}
                 </div>
               </Tooltip>

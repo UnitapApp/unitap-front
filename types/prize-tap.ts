@@ -48,7 +48,6 @@ export type Prize = {
   maxMultiplier: number;
   prizeAsset?: string;
   status: "PENDING" | "REJECTED" | string;
-  reversedConstraints: string;
   winnersCount: number;
 };
 

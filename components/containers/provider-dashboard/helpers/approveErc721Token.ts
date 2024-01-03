@@ -57,7 +57,7 @@ export const approveErc721Token = async (
   if (!provider || !signer) return;
 
   const contract = getContract({
-    abi: erc20ABI,
+    abi: erc721ABI,
     address: data.nftContractAddress as Address,
     publicClient: provider,
   });
