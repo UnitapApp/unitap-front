@@ -12,21 +12,23 @@ interface EndDateCompProp {
 }
 
 const EndDateComp = ({ showErrors }: EndDateCompProp) => {
-  const { data, handleSetDate, isShowingDetails, handleSetEnrollDuration } =
-    usePrizeOfferFormContext();
+  const {
+    data,
+    handleSetDate,
+    isShowingDetails,
+    handleSetEnrollDuration,
+    endDateState,
+    setEndDateState,
+  } = usePrizeOfferFormContext();
   const [endDate, setEndDate] = useState<any>();
+  const [minDate, setMinDate] = useState<any>();
 
-  useEffect(() => {
-    if (data.endTimeStamp) {
-      setEndDate(data.endTimeStamp * 1000);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (data.startTimeStamp) {
-      setEndDate(data.endTimeStamp * 1000);
-    }
-  }, [data.startTimeStamp, data.endTimeStamp]);
+  // useEffect(() => {
+  //   // if (endDateState) {
+  //   //   setEndDate(endDateState);
+  //   // }
+  //   setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
+  // }, []);
 
   const changeTime = (e: any) => {
     if (e?.unix) {
@@ -35,6 +37,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
         "endTime"
       );
     }
+    setEndDateState(e);
     setEndDate(e);
   };
 
@@ -74,10 +77,13 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           }}
           onChange={changeTime}
           value={endDate}
-          minDate={Date.now() - 1000 * 60 * 60}
+          minDate={minDate}
           className="rmdp-mobile animate-fadeIn"
         />
       </div>
+      <p className="text-error text-[11px] m-0 p-0 -mt-[.5px] absolute ">
+        {showErrors && !data.endTimeStamp && showErrors.endDateStatusMessage}
+      </p>
     </div>
   );
 };
