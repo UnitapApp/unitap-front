@@ -81,8 +81,8 @@ export const createErc20Raffle = async (
     ? data.maxNumberOfEntries
     : "1000000000";
   const prizeName = data.isNativeToken
-    ? data.totalAmount + " " + data.selectedChain.symbol
-    : data.totalAmount + " " + data.tokenSymbol;
+    ? data.tokenAmount + " " + data.selectedChain.symbol
+    : data.tokenAmount + " " + data.tokenSymbol;
   const prizeSymbol = data.isNativeToken
     ? data.selectedChain.symbol
     : data.tokenSymbol;
@@ -102,7 +102,7 @@ export const createErc20Raffle = async (
   const constraints = requirementList.map((item) => item.pk);
   const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
   const raffleData = {
-    name: data.provider,
+    name: prizeName,
     description: data.description,
     contract: raffleContractAddress,
     creator_name: data.provider,

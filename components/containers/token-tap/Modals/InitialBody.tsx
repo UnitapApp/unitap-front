@@ -1,28 +1,28 @@
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { shortenAddress } from "@/utils"
-import Link from "next/link"
-import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style"
-import WalletAddress from "../../gas-tap/Modals/ClaimModal/walletAddress"
-import { Text } from "@/components/ui/text.style"
-import { useWalletAccount } from "@/utils/wallet"
-import { FC } from "react"
-import { Token } from "@/types"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { shortenAddress } from "@/utils";
+import Link from "next/link";
+import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style";
+import WalletAddress from "../../gas-tap/Modals/ClaimModal/walletAddress";
+import { Text } from "@/components/ui/text.style";
+import { useWalletAccount } from "@/utils/wallet";
+import { FC } from "react";
+import { Token } from "@/types";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
 
 const InitialBody: FC<{
-  token: Token
+  token: Token;
 }> = ({ token }) => {
-  const { isConnected, address } = useWalletAccount()
+  const { isConnected, address } = useWalletAccount();
 
   const {
     handleClaimToken,
     claimTokenLoading,
     claimTokenResponse,
     claimTokenSignatureLoading,
-  } = useTokenTapContext()
+  } = useTokenTapContext();
 
-  const calculateClaimAmount = token.amount / 10 ** token.chain.decimals
+  const calculateClaimAmount = token.amount / 10 ** token.chain.decimals;
 
   return (
     <>
@@ -55,7 +55,7 @@ const InitialBody: FC<{
             If you do not have sufficient gas, please visit{" "}
             <Link
               className="text-blue-500"
-              href={"/gas-tap?hc=" + token.chain.chainName}
+              href={"/gastap?hc=" + token.chain.chainName}
             >
               Gas Tap
             </Link>
@@ -89,7 +89,7 @@ const InitialBody: FC<{
         )}
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default InitialBody
+export default InitialBody;

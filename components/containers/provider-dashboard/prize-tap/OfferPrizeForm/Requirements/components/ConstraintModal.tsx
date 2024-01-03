@@ -68,19 +68,25 @@ const ConstraintModal = ({ constraint }: CreateModalParam) => {
       <div className="w-full flex gap-4 h-[32px] mb-2">
         <div
           onClick={() => handleSelectNotSatisfy(false)}
-          className={`${
-            !isNotSatisfy ? "bg-gray50 text-white" : "bg-gray40 text-gray100"
-          } w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-[14px]`}
+          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
         >
-          Should satisfy
+          <div
+            className={`${
+              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
+            } absolute w-full h-full`}
+          ></div>
+          <p className="absolute text-white">Should satisfy</p>
         </div>
         <div
           onClick={() => handleSelectNotSatisfy(true)}
-          className={`${
-            isNotSatisfy ? "bg-gray50 text-white" : "bg-gray40 text-gray100"
-          } w-full flex items-center justify-center rounded-lg h-full cursor-pointer`}
+          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
         >
-          Should not satisfy
+          <div
+            className={`${
+              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
+            } absolute w-full h-full `}
+          ></div>
+          <p className="absolute text-white">Should not satisfy</p>
         </div>
       </div>
       <div className="mb-5">{constraint.description}</div>

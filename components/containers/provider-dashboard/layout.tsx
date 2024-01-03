@@ -8,7 +8,6 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { useWalletAccount } from "@/utils/wallet";
 import { BackToHomeButton } from "./Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
@@ -37,13 +36,13 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             Sign up first!
           </p>
           <p className="text-gray100">
-            If you have account log in to have access to provider dashboard!
+            If you have account log in to have access to Contribution Hub!
           </p>
 
           <Link href="/">
             <BackToHomeButton
               height="32px"
-              className="!w-full mt-10 max-w-[100px]"
+              className="!w-full mt-10 text-xs max-w-[120px]"
               $fontSize="10px"
             >
               <p>Back to Home</p>
@@ -91,7 +90,8 @@ const ProviderTabs: FC = () => {
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_PRIZETAP
+          pathname === RoutePath.PROVIDER_PRIZETAP ||
+          pathname == RoutePath.PROVIDERDASHBOARD
             ? " text-white opacity-1"
             : "opacity-[0.2]"
         }`}

@@ -50,7 +50,7 @@ const SearchInput = ({
     const queryParam = params.get("query") ?? params.get("q");
     if (queryParam) {
       setSearchPhraseInput(queryParam);
-      // handleSetSearchPhrase(queryParam);
+      handleSetSearchPhrase(queryParam);
       // changeSearchPhrase!(queryParam);
     }
   }, [params, pathname]);

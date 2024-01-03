@@ -88,7 +88,7 @@ const SuccessBody: FC<{
               fontSize="14"
               $textAlign="center"
             >
-              Congratulations, @{raffle.winnerEntry?.userProfile?.username} on
+              Congratulations, @{raffle.userEntry?.userProfile?.username} on
               your grand prize win!
             </Text>
           </span>

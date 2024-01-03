@@ -96,6 +96,8 @@ export const UserContextProvider: FC<
         const userProfileWithToken: UserProfile =
           await getUserProfileWithTokenAPI(userToken!);
         setUserProfile(userProfileWithToken);
+
+        document.cookie = `userToken=${userToken!}`;
       } finally {
         setUserProfileLoading(false);
       }

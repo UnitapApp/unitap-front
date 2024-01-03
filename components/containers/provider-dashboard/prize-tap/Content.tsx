@@ -17,6 +17,7 @@ import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";
 import OfferPrizeForm from "./OfferPrizeForm";
+import WinnersModal from "./Modals/winnersModal";
 
 interface PrizeCardProp {
   prize: UserRafflesProps;
@@ -33,7 +34,7 @@ enum RaffleStatus {
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
-  const { handleCheckForReason, handleShowUserDetails } =
+  const { handleCheckForReason, handleShowUserDetails, handleWinnersResult } =
     usePrizeOfferFormContext();
   const diff = new Date(prize.deadline).getTime() - new Date().getTime();
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -124,19 +125,19 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             {prize.numberOfOnchainEntries ? (
               <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
-                {prize.numberOfOnchainEntries}{" "}
+                {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
                 {prize.status === RaffleStatus.FINISHED
                   ? " Spots Enrolled"
                   : " Spots Left"}
               </div>
             ) : null}
-            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+            <p className="text-white text-[8px] font-medium mb-2 ml-1">
               {Date.now() < new Date(prize.startAt).getTime()
                 ? "Starts in:"
                 : "Ends in:"}
             </p>
 
-            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+            <div className="bg-gray50 px-5 rounded-xl">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -156,7 +157,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                   Spots Left
                 </p>
                 <Icon
-                  iconSrc="../assets/images/provider-dashboard/info-circle.svg"
+                  iconSrc="/assets/images/provider-dashboard/info-circle.svg"
                   width="16px"
                   height="16px"
                   className="absolute right-3 top-[2px]"
@@ -166,10 +167,10 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : diff > 0 && prize.status == RaffleStatus.VERIFIED ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white font-medium text-[8px] font-medium mb-2 ml-1">
+            <p className="text-white text-[8px] font-medium mb-2 ml-1">
               Starts in:
             </p>
-            <div className="bg-gray50 rounded-xl px-5 rounded-xl">
+            <div className="bg-gray50 px-5 rounded-xl">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -179,10 +180,16 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
         ) : (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
-              <p>{prize.numberOfOnchainEntries} Spots Enrolled</p>
+              <p>
+                {prize.numberOfOnchainEntries}{" "}
+                {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
+              </p>
             </div>
-            <div className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center">
-              <p>Check Enrolled Wallets & Winners</p>
+            <div
+              onClick={() => handleWinnersResult(prize)}
+              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
+            >
+              <p>Check Winner Wallets</p>
             </div>
           </div>
         )}
@@ -215,6 +222,7 @@ const PrizeTapContent = () => {
   const handleSelectFilter = (filter: string) => {
     setSelectedFilter(filter);
   };
+
   useEffect(() => {
     if (selectedFilter == RaffleStatus.ONGOING) {
       setFilteredRaffle(
@@ -282,6 +290,7 @@ const PrizeTapContent = () => {
     <div>
       {!selectNewOffer && (
         <div>
+          <WinnersModal />
           <div className="flex flex-col md:flex-row  items-center justify-between ">
             <SearchInput
               className="w-full md:w-1/3"

@@ -87,8 +87,15 @@ export const useGasTapContext = () => useContext(GasTapContext);
 export const GasTapProvider: FC<
   {
     chains: Chain[];
+    claimReceiptInitial: ClaimReceipt[];
+    oneTimeClaimedGasListInitial: ClaimReceipt[];
   } & PropsWithChildren
-> = ({ children, chains }) => {
+> = ({
+  children,
+  chains,
+  claimReceiptInitial,
+  oneTimeClaimedGasListInitial,
+}) => {
   const [chainList, setChainList] = useState(chains);
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
   const [isNonEvmActive, setIsNonEvmActive] = useState<boolean>(false);
@@ -102,15 +109,15 @@ export const GasTapProvider: FC<
 
   const [oneTimeClaimedGasList, setOneTimeClaimedGasList] = useState<
     ClaimReceipt[]
-  >([]);
+  >(oneTimeClaimedGasListInitial);
 
   const [claimLoading, setClaimLoading] = useState(false);
 
   const { userProfile, userToken } = useUserProfileContext();
 
-  const [activeClaimHistory, setActiveClaimHistory] = useState<ClaimReceipt[]>(
-    []
-  );
+  const [activeClaimHistory, setActiveClaimHistory] =
+    useState<ClaimReceipt[]>(claimReceiptInitial);
+
   const [isHighGasFeeModalOpen, setIsHighGasFeeModalOpen] = useState(false);
   const changeIsHighGasFeeModalOpen = useCallback((isOpen: boolean) => {
     setIsHighGasFeeModalOpen(isOpen);
@@ -155,6 +162,7 @@ export const GasTapProvider: FC<
     if (userToken && userProfile) {
       try {
         const newClaimHistory = await getActiveClaimHistory(userToken);
+
         setActiveClaimHistory(newClaimHistory);
       } catch (e) {}
     }
@@ -186,24 +194,23 @@ export const GasTapProvider: FC<
     [chainList, isConnected, setIsWalletPromptOpen]
   );
 
-  const claimNonEVM = async (
-    chain: Chain,
-    address: string,
-    userToken: string
-  ) => {
-    try {
-      let correctAddress = getCorrectAddress(chain, address);
-      await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
+  const claimNonEVM = useCallback(
+    async (chain: Chain, address: string, userToken: string) => {
+      try {
+        let correctAddress = getCorrectAddress(chain, address);
+        await claimMaxNonEVMAPI(userToken, chain.pk, correctAddress);
 
-      await updateActiveClaimHistory();
-    } catch (ex) {
-      await updateActiveClaimHistory();
-    } finally {
-      setTimeout(() => {
-        setClaimLoading(false);
-      }, 1000);
-    }
-  };
+        await updateActiveClaimHistory();
+      } catch (ex) {
+        await updateActiveClaimHistory();
+      } finally {
+        setTimeout(() => {
+          setClaimLoading(false);
+        }, 1000);
+      }
+    },
+    [updateActiveClaimHistory]
+  );
 
   const claim = useCallback(
     async (claimChainPk: number, address?: string) => {
@@ -255,16 +262,17 @@ export const GasTapProvider: FC<
 
   useFastRefresh(() => {
     updateChainList();
+    updateActiveClaimHistory();
+    updateOneTimeClaimedList();
   }, [updateChainList]);
 
-  useRefreshWithInitial(
-    () => {
-      updateActiveClaimHistory();
-      updateOneTimeClaimedList();
-    },
-    FAST_INTERVAL,
-    [updateActiveClaimHistory, userToken]
-  );
+  // useRefreshWithInitial(
+  //   () => {
+
+  //   },
+  //   FAST_INTERVAL,
+  //   [updateActiveClaimHistory, userToken]
+  // );
 
   useEffect(() => {
     if (activeChain) {

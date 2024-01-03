@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import { useEffect, useState } from "react"
-import { ClaimReceiptState } from "@/types"
-import { diffToNextMonth } from "@/utils/time"
-import { useGasTapContext } from "@/context/gasTapProvider"
+import Icon from "@/components/ui/Icon";
+import { useEffect, useState } from "react";
+import { ClaimReceiptState } from "@/types";
+import { diffToNextMonday } from "@/utils/time";
+import { useGasTapContext } from "@/context/gasTapProvider";
 
 const ClaimNotAvailable = () => {
-  const { activeClaimHistory } = useGasTapContext()
+  const { activeClaimHistory } = useGasTapContext();
 
-  const [now, setNow] = useState(new Date())
-  const [days, setDays] = useState("00")
-  const [hours, setHours] = useState("00")
-  const [minutes, setMinutes] = useState("00")
-  const [seconds, setSeconds] = useState("00")
-
-  useEffect(() => {
-    const diff = diffToNextMonth(now)
-    setSeconds(diff.seconds)
-    setMinutes(diff.minutes)
-    setHours(diff.hours)
-    setDays(diff.days)
-  }, [now])
+  const [now, setNow] = useState(new Date());
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000)
+    const diff = diffToNextMonday(now);
+    setSeconds(diff.seconds);
+    setMinutes(diff.minutes);
+    setHours(diff.hours);
+    setDays(diff.days);
+  }, [now]);
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className="flex text-white flex-col items-center justify-center w-full pt-2">
@@ -46,7 +46,7 @@ const ClaimNotAvailable = () => {
                 width="36px"
                 height="40px"
               />
-            )
+            );
           })}
       </div>
       <div className="mt-7 text-center text-gray">
@@ -60,7 +60,7 @@ const ClaimNotAvailable = () => {
         </span>
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default ClaimNotAvailable
+export default ClaimNotAvailable;

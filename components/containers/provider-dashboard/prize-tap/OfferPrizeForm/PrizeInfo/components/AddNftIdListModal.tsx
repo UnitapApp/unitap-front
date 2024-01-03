@@ -63,7 +63,6 @@ const AddNftIdListModalModalBody = () => {
 
   const handleChangeTextarea = (e: string) => {
     setError(null);
-
     setTextAreaData(e);
     setNftIds(polishText(e));
   };
@@ -99,11 +98,11 @@ const AddNftIdListModalModalBody = () => {
   };
 
   useEffect(() => {
-    if (uploadedFile && data.nftTokenIds) {
-      setNftIds(data.nftTokenIds);
-    }
+    // if (uploadedFile && data.nftTokenIds) {
+    //   setNftIds(data.nftTokenIds);
+    // }
 
-    if (!uploadedFile && data.nftTokenIds) {
+    if (!uploadedFile && data.nftTokenIds && !(nftRange.to && nftRange.from)) {
       const arrToStr = data.nftTokenIds.join("\n");
       setTextAreaData(arrToStr);
       setNftIds(polishText(arrToStr));
@@ -152,7 +151,6 @@ const AddNftIdListModalModalBody = () => {
     }
     const res = checkNftList(nftIds);
     const duplicateElement = toFindDuplicates(nftIds);
-    console.log(res, duplicateElement);
     setInvalidInput(!res || duplicateElement.length > 0);
     if (!res || duplicateElement.length > 0) {
       setError("Invalid input");
@@ -170,6 +168,12 @@ const AddNftIdListModalModalBody = () => {
       handleAddNftToData(nftIds);
       closeAddNftIdListModal();
     }
+  };
+
+  const handleClearUploadedFile = () => {
+    setNftStatus([]);
+    setNftIds([]);
+    setUploadedFile(null);
   };
 
   const getAddNftIdListModalModalBody = () => {
@@ -203,6 +207,7 @@ const AddNftIdListModalModalBody = () => {
                   className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray80"
                   onChange={(e) => handleChangeRange(e.target.value, "from")}
                   value={nftRange.from}
+                  disabled={!!uploadedFile || !!textAreaData}
                 />
               </div>
               <div className="flex rounded-xl h-[43px] items-center bg-gray40 border border-gray40 overflow-hidden">
@@ -217,6 +222,7 @@ const AddNftIdListModalModalBody = () => {
                   className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray80"
                   onChange={(e) => handleChangeRange(e.target.value, "to")}
                   value={nftRange.to}
+                  disabled={!!uploadedFile || !!textAreaData}
                 />
               </div>
               {!!Number(nftRange.to) &&
@@ -225,67 +231,16 @@ const AddNftIdListModalModalBody = () => {
                     Invalid range
                   </p>
                 )}
-              {error && !uploadedFile && !invalidInput ? (
+              {error &&
+              !uploadedFile &&
+              !invalidInput &&
+              !(Number(nftRange.from) >= Number(nftRange.to)) ? (
                 <p className="absolute -bottom-4 left-0` text-[10px] text-error">
-                  {error}
-                </p>
-              ) : null}
-              {error && uploadedFile && invalidInput ? (
-                <p className="absolute -bottom-4 left-0 text-[10px] text-error">
                   {error}
                 </p>
               ) : null}
             </div>
           </section>
-        )}
-
-        {selectedTab == tabsName.UPLOAD_FILE && (
-          <div>
-            <p className="text-xs text-gray80 -mb-2">
-              Upload from file, only .txt or .csv{" "}
-              <a
-                href="http://localhost:3000/src/constants/nftListSample/sample.csv"
-                className="cursor-pointer"
-              >
-                (Download Sample)
-              </a>
-            </p>
-            <div className="min-h-[128px]">
-              <div
-                className={` flex relative text-gray80 text-[12px] bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
-                  textAreaData ? "opacity-[.5]" : ""
-                }`}
-              >
-                <div className="flex  w-full gap-1 items-center pl-3 ">
-                  <Icon
-                    width="16px"
-                    height="16px"
-                    iconSrc="/assets/images/provider-dashboard/upload.svg"
-                    className="-mt-1"
-                  />
-                  <div className="w-full relative mt-0">
-                    <input
-                      disabled={!nftContractStatus.isValid || !!textAreaData}
-                      type="file"
-                      className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
-                      onChange={(e) => handleChangeUploadedFile(e)}
-                      accept=".csv, .txt"
-                    />
-                  </div>
-                  {error && !uploadedFile && !invalidInput ? (
-                    <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
-                      {error}
-                    </p>
-                  ) : null}
-                  {error && uploadedFile && invalidInput ? (
-                    <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
-                      {error}
-                    </p>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div>
         )}
 
         {selectedTab === tabsName.PASTE_IDS && (
@@ -331,6 +286,78 @@ const AddNftIdListModalModalBody = () => {
           </div>
         )}
 
+        {selectedTab == tabsName.UPLOAD_FILE && (
+          <div className="h-[148px]">
+            <p className="text-xs text-gray80 -mb-2">
+              Upload from file, only .txt or .csv{" "}
+              <a
+                href="/nftListSample/sample.csv"
+                target="_blank"
+                className="cursor-pointer"
+              >
+                (Download Sample)
+              </a>
+            </p>
+            <div>
+              <div
+                className={` flex relative text-gray80 text-[12px] bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
+                  textAreaData || nftRange.to || nftRange.from
+                    ? "opacity-[.5]"
+                    : ""
+                }`}
+              >
+                {!uploadedFile ? (
+                  <div className="flex  w-full gap-1 items-center pl-3 ">
+                    <Icon
+                      width="16px"
+                      height="16px"
+                      iconSrc="/assets/images/provider-dashboard/upload.svg"
+                      className="-mt-1"
+                    />
+                    <div className="w-full relative mt-0">
+                      <input
+                        disabled={
+                          !nftContractStatus.isValid ||
+                          !!textAreaData ||
+                          !!nftRange.from ||
+                          !!nftRange.to
+                        }
+                        type="file"
+                        className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
+                        onChange={(e) => handleChangeUploadedFile(e)}
+                        accept=".csv, .txt"
+                      />
+                    </div>
+
+                    {error && !uploadedFile && !invalidInput ? (
+                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                        {error}
+                      </p>
+                    ) : null}
+                    {error && uploadedFile && invalidInput ? (
+                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                        {error}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="flex  w-full gap-1 items-center pl-3 justify-between pr-3">
+                    <p className="text-gray100">
+                      file name: {uploadedFile.fileName}
+                    </p>
+                    <button
+                      onClick={handleClearUploadedFile}
+                      className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
+                    >
+                      Reset Uploaded file
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="relative">
           {checkingNft && (
             <div className="absolute flex items-center">
@@ -343,18 +370,38 @@ const AddNftIdListModalModalBody = () => {
             </div>
           )}
           <p className="absolute left-0 text-error text-[12px]">
-            {nftStatus.length > 0 && "Invalid NFT ID is entered"}
+            {nftStatus.length > 0 && "Invalid NFT IDs is entered"}
           </p>
-          <div
+
+          {error && !!uploadedFile && nftIds.length > 0 && (
+            <p className="absolute left-0 text-error text-[12px]">{error}</p>
+          )}
+
+          <button
             onClick={handleAddNft}
-            className={`flex cursor-pointer w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
-              !nftContractStatus.isValid
+            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
+              !nftContractStatus.isValid ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                (!nftRange.to || !nftRange.from)) ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                Number(nftRange.to) <= Number(nftRange.from)) ||
+              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
+              (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
                 ? "opacity-[.8] text-gray80"
-                : "text-white"
+                : "text-white cursor-pointer"
             } `}
+            disabled={
+              !nftContractStatus.isValid ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                (!nftRange.to || !nftRange.from)) ||
+              (selectedTab == tabsName.CHOOSE_RANGE &&
+                Number(nftRange.to) <= Number(nftRange.from)) ||
+              (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
+              (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
+            }
           >
-            <button disabled={!nftContractStatus.isValid}>Add NFT</button>
-          </div>
+            Add NFT
+          </button>
         </div>
       </div>
     );

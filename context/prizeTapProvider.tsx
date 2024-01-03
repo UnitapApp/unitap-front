@@ -99,10 +99,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
   const { writeAsync } = useContractWrite({
     account: address,
-    address: selectedRaffleForEnroll?.contract as Address,
     functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
     chainId: Number(selectedRaffleForEnroll?.chain.chainId),
     abi: prizeTapABI,
+    address: selectedRaffleForEnroll?.isPrizeNft
+      ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
+      : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
   });
 
   const getRafflesList = useCallback(async () => {
@@ -152,6 +154,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       raffleEntryId = enrollInApi.signature.pk;
     } else {
       raffleEntryId = selectedRaffleForEnroll?.userEntry.pk;
+      userEntry = selectedRaffleForEnroll.userEntry;
     }
 
     let response;
@@ -164,7 +167,11 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setClaimOrEnrollSignatureLoading(false);
     }
 
-    return { ...response, multiplier: userEntry?.multiplier };
+    return {
+      result: response?.result,
+      multiplier: userEntry?.multiplier,
+      userEntry,
+    };
   }, [method, selectedRaffleForEnroll, userToken]);
 
   const claimOrEnroll = useCallback(async () => {
@@ -174,19 +181,20 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const claimMethod = method;
 
-    const id = selectedRaffleForEnroll?.userEntry?.pk;
-
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
     const setClaimHashId = selectedRaffleForEnroll?.pk;
 
     const enrollOrClaimPayload = await getSignature();
 
+    const id = enrollOrClaimPayload?.userEntry?.pk;
+
+    console.log(id);
     setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
       args.push(
-        selectedRaffleForEnroll?.userEntry?.multiplier,
+        enrollOrClaimPayload?.multiplier,
         enrollOrClaimPayload?.result?.reqId,
         {
           signature: enrollOrClaimPayload?.result?.signatures[0].signature,

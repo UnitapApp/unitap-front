@@ -20,7 +20,6 @@ export const PrimaryBackToHomedButton = styled(Button)`
 `;
 
 export const BackToHomeButton = styled(PrimaryBackToHomedButton)`
-  width: 100px;
   font-weight: 500;
   border-radius: 8px;
   &:not(:disabled) p {
@@ -527,6 +526,8 @@ export const ProviderDashboardButtonSubmit = styled(
   PrimaryOutlinedButtonDashboardSubmit
 )`
   font-weight: 700;
+  font-size: 14px;
+  width: 100%;
   white-space: nowrap;
   &:not(:disabled) p {
     background: ${DV.bgGradient.primary};

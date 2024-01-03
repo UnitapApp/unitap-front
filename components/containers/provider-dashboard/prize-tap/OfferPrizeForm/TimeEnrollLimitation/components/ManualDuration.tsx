@@ -2,7 +2,6 @@
 
 import { ErrorProps } from "@/types";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import Icon from "@/components/ui/Icon";
 import DisplaySelectedDate from "./DisplaySelectedDate";
 import EndDateComp from "./EndDateComp";
 
@@ -11,8 +10,12 @@ interface ManualDurationProp {
 }
 
 const ManualDuration = ({ showErrors }: ManualDurationProp) => {
-  const { data, enrollmentDurations, handleSetEnrollDuration } =
-    usePrizeOfferFormContext();
+  const {
+    data,
+    enrollmentDurations,
+    handleSetEnrollDuration,
+    isShowingDetails,
+  } = usePrizeOfferFormContext();
 
   return (
     <div className="w-full text-gray100">
@@ -21,7 +24,10 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
         {enrollmentDurations.map((item) => (
           <div
             key={item.id}
-            onClick={() => handleSetEnrollDuration(item.id)}
+            onClick={() => {
+              if (isShowingDetails || !data.startTimeStamp) return;
+              handleSetEnrollDuration(item.id);
+            }}
             className={`w-full h-full flex justify-center items-center enrollment-duration cursor-pointer  border-r-2 border-gray50 ${
               item.selected ? "text-white bg-gray40" : ""
             } `}
@@ -30,12 +36,20 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           </div>
         ))}
       </div>
-      <div className="text-[14px] flex items-center justify-between mt-2">
+      <div className="text-[14px] grid gap-11 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
         <div className="text-gray100  cursor-pointer underline w-full">
           <EndDateComp showErrors={showErrors} />
         </div>
-        <div className="w-full ">
+        <div className="w-full">
           {data.startTimeStamp && <DisplaySelectedDate />}
+          {data.startTimeStamp &&
+            data.endTimeStamp &&
+            (data.startTimeStamp >= data.endTimeStamp ||
+              data.endTimeStamp - data.startTimeStamp < 60 * 60) && (
+              <p className="text-error text-[11px] m-0 p-0 -mt-1 absolute ">
+                The end time cannot be less than the start time.
+              </p>
+            )}
         </div>
       </div>
     </div>

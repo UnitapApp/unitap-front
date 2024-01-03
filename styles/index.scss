@@ -23,13 +23,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to bottom,
-    #4bf2a2 -4.66%,
-    #a89fe7 56.06%,
-    #e1c4f4 73.07%,
-    #dd40cd 111.44%
-  );
+  // background: linear-gradient(
+  //   to bottom,
+  //   #4bf2a2 -4.66%,
+  //   #a89fe7 56.06%,
+  //   #e1c4f4 73.07%,
+  //   #dd40cd 111.44%
+  // );
+  @apply bg-gray60;
   border-radius: 6px;
 }
 
@@ -148,6 +149,13 @@ input[type="number"] {
   border-radius: 16px !important;
 }
 
+
+.rmdp-today > span {
+  background: #242431 !important;
+  border: 2px solid #67677b;
+  color: #b5b5c6 !important;
+}
+
 .rmdp-selected > span {
   background: #4ce6a1 !important;
   color: #161623 !important;
@@ -156,12 +164,6 @@ input[type="number"] {
 .rmdp-selected > span:hover {
   background: #4ce6a1 !important;
   color: #161623 !important;
-}
-
-.rmdp-today > span {
-  background: #242431 !important;
-  border: 2px solid #67677b;
-  color: #b5b5c6 !important;
 }
 
 .rmdp-time-picker input {

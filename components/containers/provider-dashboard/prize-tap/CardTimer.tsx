@@ -1,6 +1,5 @@
 "use client";
 
-import { useFastRefresh } from "@/utils/hooks/refresh";
 import { useState, useEffect, useMemo } from "react";
 
 type RaffleCardTimerProps = {

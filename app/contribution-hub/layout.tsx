@@ -5,9 +5,8 @@ import { FC, PropsWithChildren } from "react";
 import "./styles.scss";
 
 export const metadata: Metadata = {
-  title: "Unitap | Provider Dashboard 🖥️",
-  description:
-    "If you have account log in to have access to provider dashboard",
+  title: "Unitap | Contribution Hub 🖥️",
+  description: "If you have account log in to have access to Contribution Hub",
 };
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {

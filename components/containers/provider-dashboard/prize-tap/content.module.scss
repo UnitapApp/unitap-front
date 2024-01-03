@@ -126,7 +126,7 @@
 }
 
 .claimed-prize {
-  p {
+  > div {
     background: linear-gradient(
       91.35deg,
       #4bf2a2 0.66%,
@@ -136,13 +136,14 @@
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 14px;
-    font-weight: 600;
+    // font-size: 14px;
+    // font-weight: 600;
     margin-left: 10px;
   }
+
   @apply bg-g-primary relative z-10 before:content-[''];
   @apply before:block before:rounded-lg before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)];
-  @apply text-white text-[14px];
+  @apply text-white;
   @apply p-3 rounded-[10px];
 }
 
@@ -297,6 +298,7 @@
 .rmdp-selected > span {
   background: #4ce6a1 !important;
   color: #161623 !important;
+  z-index: 1000000 !important;
 }
 
 .rmdp-selected > span:hover {
@@ -305,9 +307,9 @@
 }
 
 .rmdp-today > span {
-  background: #242431 !important;
-  border: 2px solid #67677b;
-  color: #b5b5c6 !important;
+  // background: #242431 !important;
+  // border: 2px solid #67677b;
+  // color: #b5b5c6 !important;
 }
 
 .rmdp-time-picker input {
@@ -338,8 +340,6 @@
   color: white !important;
   font-weight: 600;
 }
-
-
 
 .rmdp-action-buttons {
   border-top: none !important;

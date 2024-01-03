@@ -10,6 +10,7 @@ import {
   NftRangeProps,
   NftStatusProp,
   ProviderDashboardFormDataProp,
+  UploadedFileProps,
   UserRafflesProps,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
@@ -99,26 +100,26 @@ const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
   },
   {
     id: 1,
+    name: "2 Week",
+    selected: false,
+    time: null,
+    value: 2,
+    status: "week",
+  },
+  {
+    id: 2,
     name: "1 Month",
-    selected: true,
+    selected: false,
     time: null,
     value: 1,
     status: "month",
   },
   {
-    id: 2,
-    name: "3 Month",
-    selected: false,
-    time: null,
-    value: 3,
-    status: "month",
-  },
-  {
     id: 3,
-    name: "6 Month",
+    name: "2 Month",
     selected: false,
     time: null,
-    value: 6,
+    value: 2,
     status: "month",
   },
 ];
@@ -215,7 +216,7 @@ export const ProviderDashboardContext = createContext<{
   handleShowUserDetails: (raffle: UserRafflesProps) => void;
   handleAddNftToData: (nftIds: string[]) => void;
   setUploadedFile: (file: any) => void;
-  uploadedFile: any;
+  uploadedFile: UploadedFileProps | null;
   isShowingDetails: boolean;
   handleCheckOwnerOfNfts: (nftIds: string[]) => Promise<boolean>;
   nftStatus: NftStatusProp[];
@@ -239,6 +240,10 @@ export const ProviderDashboardContext = createContext<{
   setNumberOfNfts: (number: string) => void;
   handleSetEnrollDuration: (id: number) => void;
   enrollmentDurations: EnrollmentDurationsProps[];
+  handleWinnersResult: (raffle: UserRafflesProps | null) => void;
+  winnersResultRaffle: UserRafflesProps | null;
+  endDateState: any;
+  setEndDateState: (date: any) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -304,7 +309,7 @@ export const ProviderDashboardContext = createContext<{
   handleShowUserDetails: NullCallback,
   handleAddNftToData: NullCallback,
   setUploadedFile: NullCallback,
-  uploadedFile: null,
+  uploadedFile: { fileName: "", fileContent: null },
   isShowingDetails: false,
   handleCheckOwnerOfNfts: async () => false,
   nftStatus: [],
@@ -336,6 +341,10 @@ export const ProviderDashboardContext = createContext<{
   setNumberOfNfts: NullCallback,
   enrollmentDurations: enrollmentDurationsInit,
   handleSetEnrollDuration: NullCallback,
+  handleWinnersResult: NullCallback,
+  winnersResultRaffle: null,
+  endDateState: null,
+  setEndDateState: NullCallback,
 });
 
 const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
@@ -363,6 +372,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
 
   const [allowListPrivate, setAllowListPrivate] = useState<boolean>(false);
+
+  const [endDateState, setEndDateState] = useState<any>(null);
 
   const [tokenContractStatus, setTokenContractStatus] =
     useState<ContractStatus>({
@@ -404,7 +415,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
     useState<UserRafflesProps | null>(null);
 
-  const [uploadedFile, setUploadedFile] = useState<any | null>(null);
+  const [winnersResultRaffle, setWinnersResultRaffle] =
+    useState<UserRafflesProps | null>(null);
+
+  const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
+    null
+  );
   const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
 
@@ -432,7 +448,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const handleSetEnrollDuration = (id: number) => {
-    if (isShowingDetails) return;
+    // if (!data.startTimeStamp) return;
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -578,6 +594,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
+    } else {
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(0).toFixed(),
+      }));
     }
   }, [data.tokenAmount, data.winnersCount]);
 
@@ -665,16 +686,31 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       errorObject.statDateStatusMessage = errorMessages.required;
     }
     const sevenDaysLaterAfterNow: Date = new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
+      Date.now() + 7 * 24 * 60 * 59 * 1000
     );
     const sevenDaysLaterAfterNowTimeStamp = Math.round(
       sevenDaysLaterAfterNow.getTime() / 1000
     );
 
-    if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
-      errorObject.startDateStatus = false;
-      errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
-    }
+    // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
+    //   errorObject.startDateStatus = false;
+    //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
+    // }
+
+    // if (!endTimeStamp) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.required;
+    // }
+
+    // if (
+    //   endTimeStamp &&
+    //   startTimeStamp &&
+    //   (endTimeStamp <= startTimeStamp ||
+    //     endTimeStamp - startTimeStamp < 60 * 60)
+    // ) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    // }
 
     if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
       errorObject.maximumLimitationStatus = false;
@@ -725,9 +761,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
     const { email, twitter, creatorUrl, discord, telegram } = data;
-    if (!email || !twitter) {
-      return false;
-    }
+    // if (!email || !twitter) {
+    //   return false;
+    // }
     const {
       urlValidation,
       twitterValidation,
@@ -919,6 +955,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setIsShowingDetails(false);
     setPage(0);
     setData(formInitialData);
+    handleSetEnrollDuration(1);
     setChainName("");
     setSelectedChain(null);
     setCreteRaffleResponse(null);
@@ -1013,7 +1050,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
-      provider: raffle.name,
+      provider: raffle.creatorName,
       selectedChain: raffle.chain,
       description: raffle.description,
       isNft: raffle.isPrizeNft,
@@ -1056,6 +1093,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       )
     );
     setReverseConstrain(raffle.reversedConstraints);
+    handleSetEnrollDuration(-1);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
@@ -1082,7 +1120,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (isShowingDetails) return;
     setUploadedFile(null);
     setNftRange({ from: "", to: "" });
-    setData((prev) => ({ ...prev, nftTokenIds: [], nftContractAddress: "" }));
+    setData((prev) => ({ ...prev, nftTokenIds: [] }));
   };
 
   useEffect(() => {
@@ -1154,7 +1192,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   }, [updateChainList]);
 
   useEffect(() => {
+    if (isShowingDetails) return;
     let newEndTimeStamp: any;
+
     if (data.startTimeStamp) {
       let selectedDuration: EnrollmentDurationsProps =
         enrollmentDurations.filter((item) => item.selected == true)[0];
@@ -1186,9 +1226,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     () => {
       // if (userRaffles.length > 0) return;
       setUserRafflesLoading(true);
-      setTimeout(() => {
-        handleGetUserRaffles();
-      }, 5000);
+      handleGetUserRaffles();
     },
     FAST_INTERVAL,
     []
@@ -1277,6 +1315,10 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         setNumberOfNfts,
         enrollmentDurations,
         handleSetEnrollDuration,
+        winnersResultRaffle,
+        handleWinnersResult: setWinnersResultRaffle,
+        endDateState,
+        setEndDateState,
       }}
     >
       {children}

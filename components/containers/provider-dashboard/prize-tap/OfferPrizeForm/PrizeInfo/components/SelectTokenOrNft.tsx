@@ -11,6 +11,7 @@ import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { ZERO_ADDRESS } from "@/constants";
+import { useState } from "react";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,6 +29,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     setNumberOfNfts,
   } = usePrizeOfferFormContext();
 
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   return (
     <div
       className={
@@ -152,10 +154,14 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`relative border p-5 rounded-2xl ${
-                showErrors &&
-                (!data.tokenAmount ||
-                  !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
-                  !insufficientBalance)
+                (Number(data.tokenAmount) &&
+                  Number(data.winnersCount) &&
+                  Number(data.totalAmount) < 0) ||
+                (showErrors &&
+                  (!data.tokenAmount ||
+                    !(Number(data.tokenAmount) * Number(data.winnersCount)) ||
+                    !insufficientBalance ||
+                    Number(data.totalAmount) <= 0))
                   ? "border-error"
                   : "border-gray30"
               }`}
@@ -235,6 +241,14 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
             </div>
+            {Number(data.totalAmount) < 0 &&
+              !data.isNft &&
+              data.winnersCount &&
+              data.tokenAmount && (
+                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
+                  Invalid amount
+                </p>
+              )}
             {showErrors &&
               !data.isNft &&
               !(Number(data.tokenAmount) * Number(data.winnersCount)) && (
@@ -245,7 +259,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             {showErrors &&
               !data.isNft &&
               Number(data.winnersCount) > 500 &&
-              data.tokenContractAddress && (
+              data.tokenContractAddress &&
+              data.tokenAmount && (
                 <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   The maximum number of winners is 500.
                 </p>
@@ -340,11 +355,18 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
           </div>
 
-          <div className="relative">
+          <div className="relative mt-1">
+            <div className={`tooltip ${showTooltip ? "flex" : "hidden"}`}>
+              <div className="absolute flex items-center justify-center -right-6 z-100 rounded-sm -top-4 w-[100px] h-[20px] text-xs bg-gray100">
+                tooltip message
+              </div>
+              <div className="absolute w-[5px] h-[5px] right-6 rotate-45 top-[1px]  bg-green-100"></div>
+            </div>
             <div
               className={`
 							 flex text-gray80 text-[12px] bg-gray40 border ${
-                 showErrors && data.nftTokenIds.length != Number(numberOfNfts)
+                 data.nftTokenIds.length > 0 &&
+                 data.nftTokenIds.length != Number(numberOfNfts)
                    ? "border-error"
                    : "border-gray50"
                } rounded-xl h-[43px]  max-w-[452px] overflow-hidden items-center justify-between pr-4`}
@@ -359,7 +381,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     !data.selectedChain ||
                     nftContractStatus.checking ||
                     !isRightChain ||
-                    data.nftTokenIds.length > 0
+                    !data.nftContractAddress
                   }
                   name="NumberOfNfts"
                   placeholder="Number Of Nfts"
@@ -373,19 +395,21 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   }
                 />
               </div>
-              <div>
+              <div className="min-w-[20px] relative">
                 <Icon
                   iconSrc="/assets/images/provider-dashboard/exclamation.svg"
-                  width="20px"
-                  height="20px"
+                  className="cursor-pointer"
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
                 />
               </div>
             </div>
-            {showErrors && data.nftTokenIds.length != Number(numberOfNfts) && (
-              <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
-                Number of NFTs are not equal with Number of NFts you added.
-              </p>
-            )}
+            {data.nftTokenIds.length > 0 &&
+              data.nftTokenIds.length != Number(numberOfNfts) && (
+                <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                  Number of NFTs are not equal with Number of NFts you added.
+                </p>
+              )}
           </div>
           {data.nftTokenIds.length > 0 ? (
             <div className="flex relative justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">
