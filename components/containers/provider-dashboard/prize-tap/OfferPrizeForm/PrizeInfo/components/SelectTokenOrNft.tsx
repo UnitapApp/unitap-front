@@ -259,7 +259,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             {showErrors &&
               !data.isNft &&
               Number(data.winnersCount) > 500 &&
-              data.tokenContractAddress && (
+              data.tokenContractAddress &&
+              data.tokenAmount && (
                 <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   The maximum number of winners is 500.
                 </p>
