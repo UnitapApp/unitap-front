@@ -36,23 +36,23 @@ const contactFields: ContactField[] = [
   },
   {
     name: "twitter",
-    placeholder: "@providerUsername",
+    placeholder: "@providerUsername (Optional)",
     icon: "/assets/images/provider-dashboard/twitter.svg",
-    require: true,
+    require: false,
     baseUrl: "https://twitter.com/",
   },
   {
     name: "discord",
-    placeholder: "@providerUsername (Optional)",
+    placeholder: "Discord link (Optional)",
     icon: "/assets/images/provider-dashboard/discord.svg",
     require: false,
     baseUrl: "https://discord.com/",
   },
   {
     name: "email",
-    placeholder: "example@email.com",
+    placeholder: "example@email.com (Optional)",
     icon: "/assets/images/provider-dashboard/email.svg",
-    require: true,
+    require: false,
     baseUrl: "",
   },
   {
