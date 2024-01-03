@@ -7,6 +7,14 @@ import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { ProviderDashboardButtonSubmit } from "@/components/containers/provider-dashboard/Buttons";
 import RaffleCardTimerSubmitContribution from "./RaffleCardTimerSubmitContribution";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+  PromiseLikeOfReactNode,
+  Key,
+} from "react";
 
 const Action = styled.div`
 	display: flex;
@@ -24,8 +32,8 @@ const FormYouFilled = ({ data }: Prop) => {
   const prizeName = data.isNft
     ? data.nftName
     : data.isNativeToken
-    ? data.totalAmount + " " + data.selectedChain.symbol
-    : data.totalAmount + " " + data.tokenSymbol;
+    ? data.tokenAmount + " " + data.selectedChain.symbol
+    : data.tokenAmount + " " + data.tokenSymbol;
 
   return (
     <div
@@ -63,13 +71,29 @@ const FormYouFilled = ({ data }: Prop) => {
           <p>{prizeName}</p>
           <div className="flex gap-2">
             {data.twitter ? (
-              <Icon iconSrc="/assets/images/provider-dashboard/twitter.svg" />
+              <Icon
+                onClick={() =>
+                  window.open(
+                    "https://twitter.com/" + data.twitter!.replace("@", ""),
+                    "_blank"
+                  )
+                }
+                iconSrc="/assets/images/provider-dashboard/twitter.svg"
+              />
             ) : null}
             {data.discord ? (
-              <Icon iconSrc="/assets/images/provider-dashboard/discord.svg" />
+              <Icon
+                onClick={() => window.open(data.discord!, "_blank")}
+                iconSrc="/assets/images/provider-dashboard/discord.svg"
+              />
             ) : null}
             {data.creatorUrl ? (
-              <Icon iconSrc="/assets/images/provider-dashboard/creatorUrl.svg" />
+              <Icon
+                onClick={() =>
+                  window.open("https://" + data.creatorUrl!, "_blank")
+                }
+                iconSrc="/assets/images/provider-dashboard/creatorUrl.svg"
+              />
             ) : null}
           </div>
         </div>
