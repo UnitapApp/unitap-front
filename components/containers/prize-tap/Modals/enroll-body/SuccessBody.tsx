@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/text.style";
 import { getTxUrl } from "@/utils";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import Icon from "@/components/ui/Icon";
+import Styles from "../../../provider-dashboard/prize-tap/content.module.scss";
 
 const SuccessBody: FC<{
   raffle: Prize;
@@ -43,7 +44,7 @@ const SuccessBody: FC<{
     <>
       {method === "Claim" ? (
         <div>
-          <div className="prize-success-stroke">
+          <div className={Styles["prize-success-stroke"]}>
             {!raffle.isPrizeNft ? (
               <h1
                 data-heading={calculateClaimAmount + " " + raffle.prizeSymbol}
