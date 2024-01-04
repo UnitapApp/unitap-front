@@ -65,16 +65,6 @@ const RenderInitialBody = ({ data }: Prop) => {
         >
           Switch Network
         </ProviderDashboardButtonSubmit>
-      ) : address && !isRightChain && !data.selectedChain ? (
-        <ProviderDashboardButtonSubmit
-          height="2.8rem"
-          className="!w-full  text-white max-w-[452px] "
-          $fontSize="14px"
-          data-testid="fund-action"
-          disabled={true}
-        >
-          Please select chain
-        </ProviderDashboardButtonSubmit>
       ) : !address ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
