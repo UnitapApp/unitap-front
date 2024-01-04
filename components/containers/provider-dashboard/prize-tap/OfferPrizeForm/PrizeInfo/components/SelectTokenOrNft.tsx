@@ -155,7 +155,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             <div
               className={`relative border p-5 rounded-2xl ${
                 !insufficientBalance ||
-                Number(data.winnersCount) > 500 ||
+                (Number(data.tokenAmount) &&
+                  Number(data.winnersCount) &&
+                  Number(data.winnersCount) > 500) ||
                 (Number(data.tokenAmount) &&
                   Number(data.winnersCount) &&
                   Number(data.totalAmount) < 0) ||
