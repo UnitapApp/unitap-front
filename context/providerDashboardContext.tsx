@@ -650,7 +650,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         nftContractAddress &&
         nftTokenIds.length >= 1 &&
         isValid &&
-        isEqual
+        isEqual &&
+        isMaxNumberTrue
       );
     };
 
@@ -694,10 +695,10 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     // }
 
-    // if (!endTimeStamp) {
-    //   errorObject.endDateStatus = false;
-    //   errorObject.endDateStatusMessage = errorMessages.required;
-    // }
+    if (!endTimeStamp) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.required;
+    }
 
     // if (
     //   endTimeStamp &&
