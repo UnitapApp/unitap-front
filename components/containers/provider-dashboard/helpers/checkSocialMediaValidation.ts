@@ -39,7 +39,7 @@ export const checkSocialMediaValidation = (
   email: string | null,
   telegram: string | null
 ) => {
-  const emailValidation = email ? validateEmail(email) : true;
+  const emailValidation = email ? validateEmail(email) : false;
   const twitterValidation = twitter
     ? checkTwitterVAlidation(twitter.replace("@", ""))
     : true;

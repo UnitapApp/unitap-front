@@ -759,9 +759,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
     const { email, twitter, creatorUrl, discord, telegram } = data;
-    // if (!email || !twitter) {
-    //   return false;
-    // }
+    if (!email) {
+      return false;
+    }
     const {
       urlValidation,
       twitterValidation,

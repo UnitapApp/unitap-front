@@ -50,9 +50,9 @@ const contactFields: ContactField[] = [
   },
   {
     name: "email",
-    placeholder: "example@email.com (Optional)",
+    placeholder: "example@email.com",
     icon: "/assets/images/provider-dashboard/email.svg",
-    require: false,
+    require: true,
     baseUrl: "",
   },
   {
