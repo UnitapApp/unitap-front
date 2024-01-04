@@ -154,6 +154,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`relative border p-5 rounded-2xl ${
+                !insufficientBalance ||
+                Number(data.winnersCount) > 500 ||
                 (Number(data.tokenAmount) &&
                   Number(data.winnersCount) &&
                   Number(data.totalAmount) < 0) ||
@@ -256,17 +258,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   Required
                 </p>
               )}
-            {showErrors &&
-              !data.isNft &&
+            {!data.isNft &&
               Number(data.winnersCount) > 500 &&
               data.tokenContractAddress &&
-              data.tokenAmount && (
+              Number(data.tokenAmount) > 0 &&
+              Number(data.totalAmount) > 0 && (
                 <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
                   The maximum number of winners is 500.
                 </p>
               )}
-            {showErrors &&
-              !insufficientBalance &&
+            {!insufficientBalance &&
               Number(data.totalAmount) > 0 &&
               Number(data.winnersCount) <= 500 &&
               data.winnersCount &&
@@ -365,8 +366,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             <div
               className={`
 							 flex text-gray80 text-[12px] bg-gray40 border ${
-                 data.nftTokenIds.length > 0 &&
-                 data.nftTokenIds.length != Number(numberOfNfts)
+                 Number(numberOfNfts) > 500 ||
+                 (data.nftTokenIds.length > 0 &&
+                   data.nftTokenIds.length != Number(numberOfNfts))
                    ? "border-error"
                    : "border-gray50"
                } rounded-xl h-[43px]  max-w-[452px] overflow-hidden items-center justify-between pr-4`}
@@ -403,6 +405,11 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   onMouseLeave={() => setShowTooltip(false)}
                 />
               </div>
+              {Number(numberOfNfts) > 500 && (
+                <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                  Maximum is 500
+                </p>
+              )}
             </div>
             {data.nftTokenIds.length > 0 &&
               data.nftTokenIds.length != Number(numberOfNfts) && (
@@ -445,7 +452,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   openAddNftIdListModal();
                 }}
                 className={`flex text-white text-[12px] ${
-                  !nftContractStatus.isValid || !numberOfNfts
+                  !nftContractStatus.isValid ||
+                  !numberOfNfts ||
+                  Number(numberOfNfts) > 500
                     ? "opacity-[0.4]"
                     : "cursor-pointer"
                 } ${
