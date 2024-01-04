@@ -2,15 +2,17 @@
 
 import Icon from "@/components/ui/Icon";
 import { useMemo, useState } from "react";
-import { useWalletAccount } from "@/utils/wallet";
+import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { shortenAddress } from "@/utils";
 import UButton from "@/components/ui/Button/UButton";
 import { WinnerEntry } from "@/types";
-import { Address, isAddressEqual } from "viem";
+import { Address, isAddressEqual, getContract } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { WalletWinner } from "@/components/containers/prize-tap/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
+import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
+import { readContracts } from "wagmi";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -31,6 +33,44 @@ const WinnersModalBody = () => {
 
   const { setIsWalletPromptOpen } = useGlobalContext();
 
+  const provider = useWalletProvider();
+
+  // const exportEnrollmentWallets = async () => {
+  //   const wallets: string[] = [];
+  //   const isNft = winnersResultRaffle!.isPrizeNft;
+  //   const raffleId = Number(winnersResultRaffle!.raffleId);
+  //   const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
+  //   console.log(winnersResultRaffle!.contract);
+
+  //   const data = await readContracts({
+  //     contracts: [
+  //       {
+  //         abi: isNft ? prizeTap721ABI : prizeTapABI,
+  //         address: winnersResultRaffle!.contract as Address,
+  //         functionName: "getParticipants",
+  //         args: [BigInt(raffleId), 1n, 1n],
+  //       },
+  //     ],
+  //   });
+
+  //   console.log(data[0].result);
+
+  //   const contract = getContract({
+  //     abi: isNft ? prizeTap721ABI : prizeTapABI,
+  //     address: winnersResultRaffle!.contract as Address,
+  //     publicClient: provider,
+  //   });
+
+  //   if (!contract) return;
+
+  //   Promise.all([
+  //     contract.read.getParticipants([BigInt(raffleId), 1n, 1n]),
+  //   ]).then(([r1]) => {
+  //     console.log(r1);
+  //   });
+  // };
+
+  // exportEnrollmentWallets();
   const enrollment = useMemo(
     () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
     [winnersResultRaffle, address]
