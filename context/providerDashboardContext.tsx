@@ -428,10 +428,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const [numberOfNfts, setNumberOfNfts] = useState<string>("");
 
-  const [reverseConstraint, setReverseConstrain] = useState<string | null>(
-    null
-  );
-
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);
 
@@ -649,6 +645,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       if (!data.isNft) return true;
       const isValid = nftContractStatus.isValid;
       const isEqual = Number(numberOfNfts) === data.nftTokenIds.length;
+      const isMaxNumberTrue = Number(numberOfNfts) <= 500;
       return !!(
         nftContractAddress &&
         nftTokenIds.length >= 1 &&
@@ -939,6 +936,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     !isShowingDetails &&
       data.nftContractAddress &&
       nftContractStatus.isValid &&
+      Number(numberOfNfts) <= 500 &&
       setIsModalOpen(true);
   };
 
@@ -1036,6 +1034,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         name,
         title,
         isNotSatisfy,
+        isReversed: isNotSatisfy,
       },
     ]);
   };
@@ -1087,12 +1086,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setConstraintsList(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
-        raffle.reversedConstraints?.includes(constraint.pk.toString())
+        constraint.isReversed
           ? { ...constraint, isNotSatisfy: true }
           : { ...constraint, isNotSatisfy: false }
       )
     );
-    setReverseConstrain(raffle.reversedConstraints);
     handleSetEnrollDuration(-1);
   };
 
