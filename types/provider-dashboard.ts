@@ -65,6 +65,8 @@ export interface ConstraintProps {
   title: string;
   type: string;
   iconUrl: string | null;
+  // isReversed: boolean;
+  // negativeDescription: string | null;
 }
 
 export interface ConstraintParamValues {
@@ -73,6 +75,7 @@ export interface ConstraintParamValues {
   values: Record<number, string | number | boolean> | null;
   title: string;
   isNotSatisfy: boolean;
+  isReversed: boolean;
 }
 
 export interface UserRafflesProps {
