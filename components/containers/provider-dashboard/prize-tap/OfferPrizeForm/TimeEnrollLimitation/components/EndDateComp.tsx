@@ -23,12 +23,13 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
   const [endDate, setEndDate] = useState<any>();
   const [minDate, setMinDate] = useState<any>();
 
-  // useEffect(() => {
-  //   // if (endDateState) {
-  //   //   setEndDate(endDateState);
-  //   // }
-  //   setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
-  // }, []);
+  useEffect(() => {
+    // if (endDateState) {
+    //   setEndDate(endDateState);
+    // }
+    // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
+    setMinDate(Date.now());
+  }, []);
 
   const changeTime = (e: any) => {
     if (e?.unix) {
