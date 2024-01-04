@@ -5,10 +5,16 @@ import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
 import Pagination from "../../pagination";
 import CreateRaffleModal from "../../CreateRaffleModal";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardButtonSubmit } from "../../../Buttons";
+import {
+  useNetworkSwitcher,
+  useWalletAccount,
+  useWalletNetwork,
+} from "@/utils/wallet";
+import { useGlobalContext } from "@/context/globalProvider";
 
 export const DepositDescription = {
   id: 4,
@@ -59,6 +65,37 @@ const DepositPrize = ({
     }
   };
 
+  const { address, isConnected } = useWalletAccount();
+  const { chain } = useWalletNetwork();
+
+  const chainId = chain?.id;
+  const { switchChain } = useNetworkSwitcher();
+  const { setIsWalletPromptOpen } = useGlobalContext();
+
+  const isRightChain = useMemo(() => {
+    if (!isConnected || !chainId || !data.selectedChain) return false;
+    return chainId === Number(data.selectedChain.chainId);
+  }, [data.selectedChain, isConnected, chainId]);
+  const handleCheckConnection = useCallback(async () => {
+    if (!isConnected) {
+      setIsWalletPromptOpen(true);
+      return;
+    }
+    if (!chainId || !data.selectedChain || !address) return;
+    if (!isRightChain) {
+      await switchChain(Number(data.selectedChain.chainId));
+      return;
+    }
+  }, [
+    isConnected,
+    chainId,
+    data.selectedChain,
+    address,
+    isRightChain,
+    switchChain,
+    setIsWalletPromptOpen,
+  ]);
+
   const approve = data.isNativeToken
     ? true
     : data.isNft
@@ -99,6 +136,23 @@ const DepositPrize = ({
           handleNextPage={handleNextPage}
           page={page}
         />
+      ) : address && !isRightChain && data.selectedChain ? (
+        <ProviderDashboardButtonSubmit
+          onClick={handleCheckConnection}
+          className="text-[14px] max-w-[452px] mt-[2px]"
+          data-testid="fund-action"
+        >
+          Switch Network
+        </ProviderDashboardButtonSubmit>
+      ) : !address ? (
+        <ProviderDashboardButtonSubmit
+          onClick={handleCheckConnection}
+          className="!w-full  text-white max-w-[452px] "
+          $fontSize="14px"
+          data-testid="fund-action"
+        >
+          Connect Wallet
+        </ProviderDashboardButtonSubmit>
       ) : !approve && !isShowingDetails ? (
         <ProviderDashboardButtonSubmit
           $width="100%"
