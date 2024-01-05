@@ -262,7 +262,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
             {!data.isNft &&
               Number(data.winnersCount) > 500 &&
-              data.tokenContractAddress &&
               Number(data.tokenAmount) > 0 &&
               Number(data.totalAmount) > 0 && (
                 <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
