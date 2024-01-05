@@ -45,7 +45,7 @@ const WinnersModal = () => {
         );
 
     return items ?? [];
-  }, [searchPhraseInput]);
+  }, [searchPhraseInput, selectedRaffleForEnroll?.winnerEntries]);
 
   if (!selectedRaffleForEnroll) return null;
 
