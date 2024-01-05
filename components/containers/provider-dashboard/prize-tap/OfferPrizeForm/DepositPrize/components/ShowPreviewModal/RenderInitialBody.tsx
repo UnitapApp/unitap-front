@@ -57,39 +57,51 @@ const RenderInitialBody = ({ data }: Prop) => {
       </div>
       <FormYouFilled data={data} />
       {address && !isRightChain && data.selectedChain ? (
-        <ProviderDashboardButtonSubmit
-          onClick={handleCheckConnection}
-          $width="100%"
-          className="text-[14px] md:text-[12px] lg:text-[14px] mt-10"
-          data-testid="fund-action"
-        >
-          Switch Network
-        </ProviderDashboardButtonSubmit>
+        <div className="w-full flex items-end justify-end">
+          <div className="w-[200px]">
+            <ProviderDashboardButtonSubmit
+              onClick={handleCheckConnection}
+              $width="100%"
+              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              data-testid="fund-action"
+            >
+              Switch Network
+            </ProviderDashboardButtonSubmit>
+          </div>
+        </div>
       ) : !address ? (
-        <ProviderDashboardButtonSubmit
-          onClick={handleCheckConnection}
-          height="2.8rem"
-          className="!w-full  text-white max-w-[452px] "
-          $fontSize="14px"
-          data-testid="fund-action"
-        >
-          Connect Wallet
-        </ProviderDashboardButtonSubmit>
+        <div className="w-full flex items-end justify-end">
+          <div className="w-[200px]">
+            <ProviderDashboardButtonSubmit
+              onClick={handleCheckConnection}
+              height="2.8rem"
+              className="!w-full  text-white max-w-[452px] "
+              $fontSize="14px"
+              data-testid="fund-action"
+            >
+              Connect Wallet
+            </ProviderDashboardButtonSubmit>
+          </div>
+        </div>
       ) : (
-        <ProviderDashboardButtonSubmit
-          onClick={handleCreateRaffle}
-          $width="100%"
-          className="text-[14px] md:text-[12px] lg:text-[14px] mt-10"
-          disabled={createRaffleLoading}
-        >
-          {createRaffleLoading ? (
-            <p>Submit Contribution...</p>
-          ) : createRaffleResponse?.state === "Retry" ? (
-            <p>Retry</p>
-          ) : (
-            <p>Submit Contribution</p>
-          )}
-        </ProviderDashboardButtonSubmit>
+        <div className="w-full flex items-end justify-end">
+          <div className="w-[200px]">
+            <ProviderDashboardButtonSubmit
+              onClick={handleCreateRaffle}
+              $width="100%"
+              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              disabled={createRaffleLoading}
+            >
+              {createRaffleLoading ? (
+                <p>Submit Contribution...</p>
+              ) : createRaffleResponse?.state === "Retry" ? (
+                <p>Retry</p>
+              ) : (
+                <p>Submit Contribution</p>
+              )}
+            </ProviderDashboardButtonSubmit>
+          </div>
+        </div>
       )}
     </div>
   );

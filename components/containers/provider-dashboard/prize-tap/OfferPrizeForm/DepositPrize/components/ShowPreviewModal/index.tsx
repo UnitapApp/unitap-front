@@ -30,7 +30,7 @@ const ShowPreviewModal = () => {
       <Modal
         // $backgroundColor="bg-gray20"
         title="Form you Filled"
-        size="medium"
+        size="large"
         closeModalHandler={closeShowPreviewModal}
         isOpen={isOpen}
         className="provider-dashboard__modal"
