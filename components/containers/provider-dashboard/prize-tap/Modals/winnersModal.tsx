@@ -1,7 +1,7 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { shortenAddress } from "@/utils";
 import UButton from "@/components/ui/Button/UButton";
@@ -15,17 +15,18 @@ import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
 
 export const getRaffleEntry = (
-  entryWallets: WinnerEntry[],
+  entryWallets: Address[],
   userWallet?: Address
 ) => {
   return (
     !!userWallet &&
-    entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
+    entryWallets.find((entry) => isAddressEqual(entry, userWallet))
   );
 };
 
 const WinnersModalBody = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
+  const [winnersList, setWinnersList] = useState<Address[]>([]);
 
   const { winnersResultRaffle } = usePrizeOfferFormContext();
 
@@ -33,47 +34,56 @@ const WinnersModalBody = () => {
 
   const { setIsWalletPromptOpen } = useGlobalContext();
 
-  const provider = useWalletProvider();
+  const exportEnrollmentWallets = useCallback(async () => {
+    const isNft = winnersResultRaffle!.isPrizeNft;
+    const raffleId = Number(winnersResultRaffle!.raffleId);
+    const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
+    // console.log(winnersResultRaffle!.contract);
 
-  // const exportEnrollmentWallets = async () => {
-  //   const wallets: string[] = [];
-  //   const isNft = winnersResultRaffle!.isPrizeNft;
-  //   const raffleId = Number(winnersResultRaffle!.raffleId);
-  //   const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
-  //   console.log(winnersResultRaffle!.contract);
+    // const data = await provider.readContract({
+    //   abi: (isNft ? prizeTap721ABI : prizeTapABI) as any,
+    //   address: winnersResultRaffle!.contract as Address,
+    //   functionName: "getParticipants",
+    //   args: [BigInt(raffleId), 1n, 1n],
+    // });
 
-  //   const data = await readContracts({
-  //     contracts: [
-  //       {
-  //         abi: isNft ? prizeTap721ABI : prizeTapABI,
-  //         address: winnersResultRaffle!.contract as Address,
-  //         functionName: "getParticipants",
-  //         args: [BigInt(raffleId), 1n, 1n],
-  //       },
-  //     ],
-  //   });
+    const contracts = [];
 
-  //   console.log(data[0].result);
+    for (let i = 0; i <= entriesNumber / 100; i++) {
+      contracts.push({
+        abi: isNft ? prizeTap721ABI : prizeTapABI,
+        address: winnersResultRaffle!.contract as Address,
+        functionName: "getParticipants",
+        args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
 
-  //   const contract = getContract({
-  //     abi: isNft ? prizeTap721ABI : prizeTapABI,
-  //     address: winnersResultRaffle!.contract as Address,
-  //     publicClient: provider,
-  //   });
+        chainId: Number(winnersResultRaffle?.chain.chainId ?? 1),
+      });
+    }
 
-  //   if (!contract) return;
+    const data = await readContracts({
+      contracts,
+    });
 
-  //   Promise.all([
-  //     contract.read.getParticipants([BigInt(raffleId), 1n, 1n]),
-  //   ]).then(([r1]) => {
-  //     console.log(r1);
-  //   });
-  // };
+    setWinnersList((data.map((item) => item.result) as any).flat(2));
+    // const contract = getContract({
+    //   abi: isNft ? prizeTap721ABI : prizeTapABI,
+    //   address: winnersResultRaffle!.contract as Address,
+    //   publicClient: provider,
+    // });
+
+    // if (!contract) return;
+
+    // Promise.all([
+    //   contract.read.getParticipants([BigInt(raffleId), 1n, 1n]),
+    // ]).then(([r1]) => {
+    //   console.log(r1);
+    // });
+  }, [winnersResultRaffle]);
 
   // exportEnrollmentWallets();
   const enrollment = useMemo(
-    () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
-    [winnersResultRaffle, address]
+    () => getRaffleEntry(winnersList, address),
+    [winnersList, address]
   );
 
   const userEnrollments = useMemo(() => {
@@ -87,6 +97,10 @@ const WinnersModalBody = () => {
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);
+
+  useEffect(() => {
+    exportEnrollmentWallets();
+  }, [exportEnrollmentWallets]);
 
   if (!winnersResultRaffle) return null;
 
@@ -109,12 +123,12 @@ const WinnersModalBody = () => {
       </div>
 
       <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
-        {userEnrollments.map((item, key) => (
+        {winnersList.map((item, key) => (
           <WalletWinner
-            id={item.pk}
-            walletAddress={item.wallet}
+            id={key}
+            walletAddress={item}
             isWinner
-            claimTx={item.txHash}
+            claimTx={""}
             key={key}
             raffle={winnersResultRaffle.pk}
           />
@@ -140,7 +154,7 @@ const WinnersModalBody = () => {
           </div>
         ) : enrollment ? (
           <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
-            {shortenAddress(enrollment.wallet)}
+            {shortenAddress(enrollment)}
 
             <button className="ml-auto text-xs border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
               Winner <span className="ml-1">&#x1F604;&#xfe0f;</span>
