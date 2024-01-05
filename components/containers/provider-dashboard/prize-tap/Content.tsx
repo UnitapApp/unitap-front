@@ -220,6 +220,7 @@ const PrizeTapContent = () => {
   const [filteredRaffles, setFilteredRaffle] = useState<UserRafflesProps[]>([]);
 
   const handleSelectFilter = (filter: string) => {
+    setFilteredRaffle([]);
     setSelectedFilter(filter);
   };
 
