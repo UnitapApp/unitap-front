@@ -19,14 +19,15 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
     handleSetEnrollDuration,
     endDateState,
     setEndDateState,
+    enrollmentDurations,
   } = usePrizeOfferFormContext();
   const [endDate, setEndDate] = useState<any>();
   const [minDate, setMinDate] = useState<any>();
 
   useEffect(() => {
-    // if (endDateState) {
-    //   setEndDate(endDateState);
-    // }
+    if (endDateState) {
+      setEndDate(endDateState);
+    }
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
     setMinDate(Date.now());
   }, []);
@@ -41,6 +42,14 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
     setEndDateState(e);
     setEndDate(e);
   };
+
+  useEffect(() => {
+    const checkList = enrollmentDurations.filter((item) => item.selected);
+    if (checkList.length) {
+      setEndDateState(null);
+      setEndDate(null);
+    }
+  }, [enrollmentDurations]);
 
   const timePickerClick = (openCalendar: any) => {
     if (isShowingDetails) return;
