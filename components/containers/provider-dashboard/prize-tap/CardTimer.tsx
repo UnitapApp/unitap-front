@@ -90,7 +90,10 @@ export const ProviderDashboardCardTimer = ({
             <p className="prize-card__timer-item-label text-gray90">s</p>
           </div>
         </div>
-      ) : deadline.getTime() - now.getTime() > 0 ? (
+      ) : (deadline.getTime() - now.getTime() > 0 && Number(days) > 0) ||
+        Number(minutes) > 0 ||
+        Number(hours) > 0 ||
+        Number(seconds) > 0 ? (
         <div className="text-[10px] text-warn mt-[65px]">
           Ends in {hours} hours and {minutes} minutes and {seconds} seconds.
         </div>

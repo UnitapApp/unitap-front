@@ -219,7 +219,11 @@ const PrizeTapContent = () => {
 
   const [filteredRaffles, setFilteredRaffle] = useState<UserRafflesProps[]>([]);
 
+  const [changeFilterLoading, setChangeFilterLoading] = useState(false);
+
   const handleSelectFilter = (filter: string) => {
+    if (filter == selectedFilter) return;
+    setChangeFilterLoading(true);
     setFilteredRaffle([]);
     setSelectedFilter(filter);
   };
@@ -237,6 +241,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      setChangeFilterLoading(false);
       return;
     }
 
@@ -252,6 +257,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      setChangeFilterLoading(false);
       return;
     }
 
@@ -266,6 +272,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      setChangeFilterLoading(false);
       return;
     }
 
@@ -283,6 +290,7 @@ const PrizeTapContent = () => {
               item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
         )
       );
+      setChangeFilterLoading(false);
       return;
     }
   }, [selectedFilter, userRaffles, searchPhrase]);
@@ -366,6 +374,13 @@ const PrizeTapContent = () => {
               </div>
             </div>
           </div>
+          {changeFilterLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+          )}
           {filteredRaffles && filteredRaffles.length > 0 && (
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredRaffles.map((item, index) => (
@@ -378,15 +393,15 @@ const PrizeTapContent = () => {
               No items found
             </div>
           )}
-          {filteredRaffles.length == 0 &&
-            userRafflesLoading &&
-            selectedFilter == RaffleStatus.ALL && (
+          {changeFilterLoading ||
+            filteredRaffles.length == 0 ||
+            (userRafflesLoading && selectedFilter == RaffleStatus.ALL && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
                 <Skeleton />
                 <Skeleton />
                 <Skeleton />
               </div>
-            )}
+            ))}
         </div>
       )}
 
