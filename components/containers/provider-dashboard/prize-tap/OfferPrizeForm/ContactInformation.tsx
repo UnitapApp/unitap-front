@@ -131,7 +131,7 @@ const ContactInformation = ({
         <section>
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
+            className="text-white text-[12px] focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}
