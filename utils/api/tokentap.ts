@@ -1,4 +1,4 @@
-import { ClaimTokenResponse, ClaimedToken, Token } from "@/types/token-tap";
+import { ClaimTokenResponse, ClaimedToken, Token } from "@/types/tokentap";
 import { axiosInstance } from "./base";
 
 export async function getTokensListAPI() {

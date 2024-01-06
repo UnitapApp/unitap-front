@@ -1,6 +1,6 @@
 import { UserProfile } from "./auth";
-import { Chain } from "./gas-tap";
-import { WinnerEntry } from "./prize-tap";
+import { Chain } from "./gastap";
+import { WinnerEntry } from "./prizetap";
 
 export type ProviderDashboardFormDataProp = {
   provider: string | null;

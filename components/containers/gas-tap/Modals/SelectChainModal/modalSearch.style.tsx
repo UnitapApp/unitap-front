@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import styled from "styled-components"
-import { DV } from "@/components/ui/designVariables"
+import styled from "styled-components";
+import { DV } from "@/components/ui/designVariables";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  width?: string
-  fontSize?: string
-  mb?: number
+  $width?: string;
+  fontSize?: string;
+  mb?: number;
 }
 
 export const ModalSearch = styled.input<InputProps>`
@@ -15,4 +15,4 @@ export const ModalSearch = styled.input<InputProps>`
   ::-ms-input-placeholder {
     color: ${DV.colors.gray};
   }
-`
+`;

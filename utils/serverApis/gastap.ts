@@ -1,4 +1,5 @@
-import { ClaimReceipt } from "@/types";
+import { ClaimReceipt, Faucet } from "@/types";
+import { convertFaucetToChain } from "../api";
 
 export const getFaucetListServer = async () => {
   const chainsApi = await fetch(
@@ -8,9 +9,9 @@ export const getFaucetListServer = async () => {
     }
   );
 
-  console.log(chainsApi.status);
+  const data = await chainsApi.json();
 
-  return chainsApi.json();
+  return data.map((item: Faucet) => convertFaucetToChain(item));
 };
 
 export const getClaimedReceiptsServer = async (token?: string) => {

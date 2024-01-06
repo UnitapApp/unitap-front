@@ -18,7 +18,7 @@ import {
   getClaimedTokensListAPI,
   getTokensListAPI,
   updateClaimFinished,
-} from "@/utils/api/token-tap";
+} from "@/utils/api/tokentap";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { unitapEvmTokenTapABI } from "@/types/abis/contracts";

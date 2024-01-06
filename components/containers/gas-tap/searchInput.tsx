@@ -64,16 +64,16 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     >
       <Input
         data-testid="search-box"
-        icon="search.png"
-        width="100%"
-        fontSize="12px"
-        iconWidth="20px"
-        iconHeight="20px"
+        $icon="search.png"
+        $width="100%"
+        $fontSize="12px"
+        $iconWidth="20px"
+        $iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Chain name, Currency, ID"
-        pl={7}
-        p={1.5}
+        $pl={7}
+        $p={1.5}
         className="mb-0"
         $backgroundColor="black1"
       ></Input>

@@ -1,8 +1,8 @@
 export * from "./auth";
-export * from "./gas-tap";
+export * from "./gastap";
 export * from "./landing";
-export * from "./token-tap";
-export * from "./prize-tap";
+export * from "./tokentap";
+export * from "./prizetap";
 export * from "./provider-dashboard";
 
 export const serverFetch = async (url: string) => {

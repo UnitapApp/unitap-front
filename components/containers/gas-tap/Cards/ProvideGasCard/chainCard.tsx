@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react";
 
-import Icon from "@/components/ui/Icon"
+import Icon from "@/components/ui/Icon";
 
-import { Chain, ChainType } from "@/types"
-import { BigNumber } from "@ethersproject/bignumber"
-import JSBI from "jsbi"
-import { CurrencyAmount } from "@uniswap/sdk-core"
-import { StaticJsonRpcProvider } from "@ethersproject/providers"
-import { Connection, PublicKey } from "@solana/web3.js"
-import { numberWithCommas } from "@/utils/numbers"
-import { useUserWalletProvider } from "@/utils/wallet"
-import { nativeOnChain } from "@/constants/tokens"
+import { Chain, ChainType } from "@/types";
+import { BigNumber } from "@ethersproject/bignumber";
+import JSBI from "jsbi";
+import { CurrencyAmount } from "@uniswap/sdk-core";
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { numberWithCommas } from "@/utils/numbers";
+import { useUserWalletProvider } from "@/utils/wallet";
+import { nativeOnChain } from "@/constants/tokens";
 
 interface props {
-  chain: Chain
+  chain: Chain;
 }
 
 const ChainCard = ({ chain }: props) => {
   const [fundManagerBalance, setFundManagerBalance] = useState<
     BigNumber | string | null
-  >(null)
+  >(null);
 
   useEffect(() => {
-    if (!chain) return
+    if (!chain) return;
     const fetchBalance = async () => {
       try {
         if (chain.chainType === ChainType.SOLANA) {
@@ -34,31 +34,31 @@ const ChainCard = ({ chain }: props) => {
                 ? "get-solana-testnet-balance"
                 : "get-solana-balance"
             }`
-          ).then((res) => res.json())
+          ).then((res) => res.json());
 
-          setFundManagerBalance(result.balance?.toString())
-        } else {
-          const provider = new StaticJsonRpcProvider(chain.rpcUrl)
-          const balance = await provider.getBalance(chain.fundManagerAddress)
-          setFundManagerBalance(balance)
+          setFundManagerBalance(result.balance?.toString());
+        } else if (chain.rpcUrl) {
+          const provider = new StaticJsonRpcProvider(chain.rpcUrl);
+          const balance = await provider.getBalance(chain.fundManagerAddress);
+          setFundManagerBalance(balance);
         }
       } catch (error) {
-        console.warn(error)
+        console.warn(error);
       }
-    }
+    };
 
-    fetchBalance()
-  }, [chain])
+    fetchBalance();
+  }, [chain]);
 
   const fundManagerBalanceAmount = useMemo(() => {
     if (!fundManagerBalance || typeof fundManagerBalance === "string")
-      return null
-    const amount = JSBI.BigInt(fundManagerBalance.toString())
+      return null;
+    const amount = JSBI.BigInt(fundManagerBalance.toString());
     return CurrencyAmount.fromRawAmount(
       nativeOnChain(Number(chain.chainId)),
       amount
-    )
-  }, [chain.chainId, fundManagerBalance])
+    );
+  }, [chain.chainId, fundManagerBalance]);
 
   return (
     <div className="chain px-5 py-4 flex flex-col h-28 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
@@ -84,7 +84,7 @@ const ChainCard = ({ chain }: props) => {
         </span>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default ChainCard
+export default ChainCard;

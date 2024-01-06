@@ -15,6 +15,35 @@ export enum ChainType {
   ALL = "ALL",
 }
 
+export type Faucet = {
+  pk: number;
+  chain: ChainApi;
+  fundManagerAddress: string;
+  gasImageUrl: string;
+  maxClaimAmount: number;
+  totalClaims: number;
+  totalClaimsThisRound: number;
+  tokentapContractAddress: string | null;
+  needsFunding: boolean;
+  blockScanAddress: string;
+  isOneTimeClaim: boolean;
+};
+
+export type ChainApi = {
+  pk: number;
+  chainName: string;
+  chainId: string;
+  nativeCurrencyName: string;
+  symbol: string;
+  decimals: number;
+  explorerUrl: string;
+  rpcUrl: string;
+  logoUrl: string;
+  modalUrl: string;
+  isTestnet: boolean;
+  chainType: string;
+};
+
 export type Chain = {
   pk: PK;
   chainName: string;
@@ -26,8 +55,6 @@ export type Chain = {
   explorerUrl: string;
   rpcUrl: string;
   maxClaimAmount: number;
-  claimed: string | number;
-  unclaimed: string | number;
   decimals: number;
   fundManagerAddress: string;
   totalClaims: number;

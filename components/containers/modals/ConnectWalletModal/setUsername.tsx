@@ -57,14 +57,14 @@ const SetUsernameBody: FC<{
           className={`text-gray100 !m-0 placeholder:text-gray90 !bg-gray60 border-gray70 border-2 rounded-2xl ${
             error ? "border-error" : "border-gray70"
           }`}
-          width="100%"
-          fontSize="14px"
+          $width="100%"
+          $fontSize="14px"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          pl={2}
-          p={2}
-          mb={0}
+          $pl={2}
+          $p={2}
+          $mb={0}
         ></Input>
         <span className="icon-right text-gray90 absolute right-4 top-1/2 -translate-y-1/2 z-10">
           @

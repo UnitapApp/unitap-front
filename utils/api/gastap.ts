@@ -1,6 +1,13 @@
 import { Settings } from "@/types";
 import { axiosInstance } from "./base";
-import { Chain, ClaimReceipt } from "@/types/gas-tap";
+import { Chain, ClaimReceipt, Faucet } from "@/types/gastap";
+
+export const convertFaucetToChain = (faucet: Faucet) => {
+  return {
+    ...faucet,
+    ...faucet.chain,
+  } as Chain;
+};
 
 export async function getWeeklyChainClaimLimitAPI() {
   const response = await axiosInstance.get<Settings>("/api/gastap/settings/");
@@ -20,8 +27,10 @@ export async function getRemainingClaimsAPI(token: string) {
 }
 
 export async function getChainList() {
-  const response = await axiosInstance.get<Chain[]>("/api/gastap/faucet/list/");
-  return response.data;
+  const response = await axiosInstance.get<Faucet[]>(
+    "/api/gastap/faucet/list/"
+  );
+  return response.data.map((item) => convertFaucetToChain(item));
 }
 
 export async function getOneTimeClaimedChainList(token: string) {

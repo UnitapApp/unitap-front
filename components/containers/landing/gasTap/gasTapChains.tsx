@@ -1,7 +1,7 @@
 "use client";
 
 import { UserProfileContext } from "@/context/userProfile";
-import { Chain } from "@/types/gas-tap";
+import { Chain } from "@/types/gastap";
 import { sortChainListByTotalClaimWeekly } from "@/utils/chain";
 import { FC, useContext, useMemo } from "react";
 import Widget from "../widget";

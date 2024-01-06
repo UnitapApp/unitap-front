@@ -1,5 +1,5 @@
 import { numberWithCommas } from "@/utils";
-import { getTokensListAPI } from "@/utils/api/token-tap";
+import { getTokensListAPI } from "@/utils/api/tokentap";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
 import Widget from "../widget";
