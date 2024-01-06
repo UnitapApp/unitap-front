@@ -184,13 +184,27 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         if (!claimId) claimId = res!.id;
 
+        console.log({
+          abi: unitapEvmTokenTapABI,
+          account: address,
+          address: contractAddress,
+          functionName: "claimToken",
+          args: [
+            txPayload.userWalletAddress,
+            txPayload.token,
+            BigInt(txPayload.amount),
+            txPayload.nonce,
+            txPayload.signature,
+          ],
+        });
+
         const contractGas = await provider.estimateContractGas({
           abi: unitapEvmTokenTapABI,
           account: address,
           address: contractAddress,
           functionName: "claimToken",
           args: [
-            txPayload.user,
+            txPayload.userWalletAddress,
             txPayload.token,
             BigInt(txPayload.amount),
             txPayload.nonce,
@@ -200,7 +214,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         const claimRes = await writeAsync?.({
           args: [
-            txPayload.user,
+            txPayload.userWalletAddress,
             txPayload.token,
             BigInt(txPayload.amount),
             txPayload.nonce,

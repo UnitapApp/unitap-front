@@ -4,8 +4,8 @@ import { Chain, ClaimReceipt, Faucet } from "@/types/gastap";
 
 export const convertFaucetToChain = (faucet: Faucet) => {
   return {
-    ...faucet,
     ...faucet.chain,
+    ...faucet,
   } as Chain;
 };
 
@@ -56,7 +56,10 @@ export async function getActiveClaimHistory(token: string) {
     }
   );
 
-  return response.data;
+  return response.data.map((item) => ({
+    ...item,
+    chain: convertFaucetToChain((item as any).faucet),
+  }));
 }
 
 export async function claimMax(
@@ -65,7 +68,7 @@ export async function claimMax(
   address: string
 ) {
   const response = await axiosInstance.post<ClaimReceipt>(
-    `/api/gastap/chain/${chainPk}/claim-max/`,
+    `/api/gastap/faucet/${chainPk}/claim-max/`,
     {
       address,
     },
@@ -75,7 +78,10 @@ export async function claimMax(
       },
     }
   );
-  return response.data;
+  return {
+    ...response.data,
+    chain: convertFaucetToChain((response.data as any).faucet),
+  };
 }
 
 export async function claimMaxNonEVMAPI(

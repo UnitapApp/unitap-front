@@ -36,7 +36,7 @@ export type ClaimedToken = {
 };
 
 export type TokenClaimPayload = {
-  user: `0x{string}`;
+  userWalletAddress: `0x{string}`;
   amount: number;
   nonce: number;
   signature: `0x{string}`;
