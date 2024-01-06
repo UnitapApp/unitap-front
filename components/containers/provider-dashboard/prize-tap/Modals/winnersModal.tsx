@@ -1,7 +1,7 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { shortenAddress } from "@/utils";
 import UButton from "@/components/ui/Button/UButton";
@@ -14,18 +14,19 @@ import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
 
-export const getRaffleEntry = (
-  entryWallets: WinnerEntry[],
-  userWallet?: Address
-) => {
-  return (
-    !!userWallet &&
-    entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
-  );
-};
+// export const getRaffleEntry = (
+//   entryWallets: WinnerEntry[],
+//   userWallet?: Address
+// ) => {
+//   return (
+//     !!userWallet &&
+//     entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
+//   );
+// };
 
 const WinnersModalBody = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
+  const [enrollmentWallets, setEnrollmentWallets] = useState<Address[]>([]);
 
   const { winnersResultRaffle } = usePrizeOfferFormContext();
 
@@ -33,48 +34,33 @@ const WinnersModalBody = () => {
 
   const { setIsWalletPromptOpen } = useGlobalContext();
 
-  const provider = useWalletProvider();
+  const exportEnrollmentWallets = useCallback(async () => {
+    const isNft = winnersResultRaffle!.isPrizeNft;
+    const raffleId = Number(winnersResultRaffle!.raffleId);
+    const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
+    const contracts = [];
 
-  // const exportEnrollmentWallets = async () => {
-  //   const wallets: string[] = [];
-  //   const isNft = winnersResultRaffle!.isPrizeNft;
-  //   const raffleId = Number(winnersResultRaffle!.raffleId);
-  //   const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
-  //   console.log(winnersResultRaffle!.contract);
+    for (let i = 0; i <= entriesNumber / 100; i++) {
+      contracts.push({
+        abi: isNft ? prizeTap721ABI : prizeTapABI,
+        address: winnersResultRaffle!.contract as Address,
+        functionName: "getParticipants",
+        args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
+        chainId: Number(winnersResultRaffle?.chain.chainId ?? 1),
+      });
+    }
 
-  //   const data = await readContracts({
-  //     contracts: [
-  //       {
-  //         abi: isNft ? prizeTap721ABI : prizeTapABI,
-  //         address: winnersResultRaffle!.contract as Address,
-  //         functionName: "getParticipants",
-  //         args: [BigInt(raffleId), 1n, 1n],
-  //       },
-  //     ],
-  //   });
+    const data = await readContracts({
+      contracts,
+    });
 
-  //   console.log(data[0].result);
+    setEnrollmentWallets((data.map((item) => item.result) as any).flat(2));
+  }, [winnersResultRaffle]);
 
-  //   const contract = getContract({
-  //     abi: isNft ? prizeTap721ABI : prizeTapABI,
-  //     address: winnersResultRaffle!.contract as Address,
-  //     publicClient: provider,
-  //   });
-
-  //   if (!contract) return;
-
-  //   Promise.all([
-  //     contract.read.getParticipants([BigInt(raffleId), 1n, 1n]),
-  //   ]).then(([r1]) => {
-  //     console.log(r1);
-  //   });
-  // };
-
-  // exportEnrollmentWallets();
-  const enrollment = useMemo(
-    () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
-    [winnersResultRaffle, address]
-  );
+  // const enrollment = useMemo(
+  //   () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
+  //   [winnersResultRaffle, address]
+  // );
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput
@@ -87,6 +73,10 @@ const WinnersModalBody = () => {
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);
+
+  useEffect(() => {
+    exportEnrollmentWallets();
+  }, [exportEnrollmentWallets]);
 
   if (!winnersResultRaffle) return null;
 
@@ -125,7 +115,8 @@ const WinnersModalBody = () => {
         )}
       </div>
       <div className="w-full">
-        {!isConnected ? (
+        <button>export</button>
+        {/* {!isConnected ? (
           <div className="flex px-5 py-3 border-2 border-gray70 rounded-xl mt-5 bg-gray20 items-center text-white">
             <p className="text-gray80 text-base">0xYour...Wallet</p>
             <UButton
@@ -154,7 +145,7 @@ const WinnersModalBody = () => {
               Not a Winner &#x1F61F;
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );
