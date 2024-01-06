@@ -11,6 +11,7 @@ import { useGlobalContext } from "@/context/globalProvider";
 import Styles from "./auth.module.scss";
 
 import { Noto_Sans_Mono } from "next/font/google";
+import Link from "next/link";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -31,15 +32,12 @@ export const UserAuthStatus = () => {
   return (
     <div ref={divRef} className="md:relative ml-5">
       <div className={`ml-5 p-[1px] rounded-lg mr-3`} id="profile-dropdown">
-        <div
-          onClick={() => {
-            if (!userProfile) return;
-            setDropDownActive(!dropDownActive);
-          }}
-          className="cursor-pointer flex rounded-lg h-9 items-center justify-between bg-gray40"
-        >
+        <div className="cursor-pointer flex rounded-lg h-9 items-center justify-between bg-gray40">
           <div
-            onClick={setDropDownActive.bind(null, !dropDownActive)}
+            onClick={() => {
+              if (!userProfile) return;
+              setDropDownActive(!dropDownActive);
+            }}
             className="cursor-pointer relative z-20 pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
           >
             <span className="ml-2 hidden md:block text-sm">
@@ -81,20 +79,27 @@ const WalletItem = ({
       <span className={`ml-3 ${NotoSansMono.className}`}>
         {shortenAddress(wallet)}
       </span>
+      {/* TODO: add tooltip for copying success */}
       <Image
+        onClick={() => navigator.clipboard.writeText(wallet)}
         src="/assets/images/navbar/copy.svg"
         width={12}
         height={14}
-        className="ml-3"
+        className="ml-3 cursor-pointer"
         alt="copy"
       />
-      <Image
-        width={8}
-        height={8}
-        src="/assets/images/navbar/link.svg"
+      <Link
         className="ml-4"
-        alt="link"
-      />
+        href={`https://debank.com/profile/${wallet}`}
+        target="_blank"
+      >
+        <Image
+          width={8}
+          height={8}
+          src="/assets/images/navbar/link.svg"
+          alt="link"
+        />
+      </Link>
     </div>
   );
 };
