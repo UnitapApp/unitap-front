@@ -44,8 +44,8 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
   };
 
   useEffect(() => {
-    const checkList = enrollmentDurations.filter((item) => item.selected);
-    if (checkList.length) {
+    const checkList = enrollmentDurations.find((item) => item.selected);
+    if (checkList) {
       setEndDateState(null);
       setEndDate(null);
     }
