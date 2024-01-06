@@ -74,8 +74,6 @@ const WalletItem = ({
   wallet: string;
   isActive?: boolean;
 }) => {
-  const { disconnect } = useWalletConnection();
-
   return (
     <div
       className={
@@ -105,15 +103,6 @@ const WalletItem = ({
         className="ml-4"
         alt="link"
       />
-
-      {isActive && (
-        <button
-          onClick={() => disconnect()}
-          className="ml-auto bg-gray50 rounded-lg px-5 py-1"
-        >
-          Disconnect
-        </button>
-      )}
     </div>
   );
 };
