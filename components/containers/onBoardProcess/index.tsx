@@ -14,14 +14,14 @@ const steps = [
     title: "Profile Drop down",
     description:
       "Where you can go to your own profile or check your credits in GasTap, TokenTap or PrizeTap.",
-    insetY: 270,
+    insetY: 290,
     insetX: 30,
   },
   {
     id: "gastap",
     title: "Gas Tap",
     description: "Claim gas fees for any reason and make transactions easily",
-    insetY: 170,
+    insetY: 220,
     insetX: 150,
   },
   {
@@ -29,14 +29,14 @@ const steps = [
     title: "Token Tap",
     description:
       "Where everyone can claim any kind of tokens such as community tokens, NFT, UBI token.",
-    insetY: 170,
+    insetY: 220,
     insetX: 150,
   },
   {
     id: "prizetap",
     title: "Prize Tap",
     description: "Where everyone has chances to win larger prizes.",
-    insetY: 170,
+    insetY: 220,
     insetX: 150,
   },
   {
@@ -171,9 +171,9 @@ const OnBoardProcess = () => {
       <div className="absolute inset-0 -z-10 bg-gray10 opacity-80"></div>
 
       <div
-        className={`w-[900px] max-w-full mt-52 lg:mt-5 transition-all relative z-80 border border-gray70 rounded-2xl shadow-lg overflow-hidden ${
+        className={`w-[900px] max-w-full mt-52 lg:mt-8 transition-all relative z-80 border border-gray70 rounded-2xl shadow-lg overflow-hidden ${
           currentState.position && currentState.position === "above"
-            ? "lg:mt-52 translate-y-1/2"
+            ? "lg:-mt-72 -translate-y-1/2"
             : ""
         }`}
       >

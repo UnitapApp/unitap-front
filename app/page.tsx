@@ -4,9 +4,9 @@ import PrizeTapLanding from "@/components/containers/landing/prizeTap";
 import LandingStats from "@/components/containers/landing/stats";
 import TokenTapLanding from "@/components/containers/landing/tokenTap";
 import OnBoardProcess from "@/components/containers/onBoardProcess";
-import { serverFetch } from "@/utils/api";
 
 import RoutePath from "@/utils/routes";
+import { getFaucetListServer } from "@/utils/serverApis";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,7 @@ const UnitapPass = dynamic(
 );
 
 export default async function Home() {
-  const chains = await serverFetch("/api/gastap/chain/list/");
+  const chains = await getFaucetListServer();
 
   return (
     <div className="flex flex-col gap-6">
