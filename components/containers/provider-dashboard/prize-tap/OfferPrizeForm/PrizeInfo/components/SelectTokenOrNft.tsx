@@ -154,7 +154,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`relative border p-5 rounded-2xl ${
-                !insufficientBalance ||
+                (!isShowingDetails && !insufficientBalance) ||
                 (Number(data.tokenAmount) &&
                   Number(data.winnersCount) &&
                   Number(data.winnersCount) > 500) ||
@@ -268,7 +268,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   The maximum number of winners is 500.
                 </p>
               )}
-            {!insufficientBalance &&
+            {!isShowingDetails &&
+              !insufficientBalance &&
               Number(data.totalAmount) > 0 &&
               Number(data.winnersCount) <= 500 &&
               data.winnersCount &&

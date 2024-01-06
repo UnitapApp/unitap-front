@@ -14,19 +14,19 @@ import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
 
-export const getRaffleEntry = (
-  entryWallets: Address[],
-  userWallet?: Address
-) => {
-  return (
-    !!userWallet &&
-    entryWallets.find((entry) => isAddressEqual(entry, userWallet))
-  );
-};
+// export const getRaffleEntry = (
+//   entryWallets: WinnerEntry[],
+//   userWallet?: Address
+// ) => {
+//   return (
+//     !!userWallet &&
+//     entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
+//   );
+// };
 
 const WinnersModalBody = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
-  const [winnersList, setWinnersList] = useState<Address[]>([]);
+  const [enrollmentWallets, setEnrollmentWallets] = useState<Address[]>([]);
 
   const { winnersResultRaffle } = usePrizeOfferFormContext();
 
@@ -38,15 +38,6 @@ const WinnersModalBody = () => {
     const isNft = winnersResultRaffle!.isPrizeNft;
     const raffleId = Number(winnersResultRaffle!.raffleId);
     const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
-    // console.log(winnersResultRaffle!.contract);
-
-    // const data = await provider.readContract({
-    //   abi: (isNft ? prizeTap721ABI : prizeTapABI) as any,
-    //   address: winnersResultRaffle!.contract as Address,
-    //   functionName: "getParticipants",
-    //   args: [BigInt(raffleId), 1n, 1n],
-    // });
-
     const contracts = [];
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
@@ -55,7 +46,6 @@ const WinnersModalBody = () => {
         address: winnersResultRaffle!.contract as Address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
-
         chainId: Number(winnersResultRaffle?.chain.chainId ?? 1),
       });
     }
@@ -64,27 +54,13 @@ const WinnersModalBody = () => {
       contracts,
     });
 
-    setWinnersList((data.map((item) => item.result) as any).flat(2));
-    // const contract = getContract({
-    //   abi: isNft ? prizeTap721ABI : prizeTapABI,
-    //   address: winnersResultRaffle!.contract as Address,
-    //   publicClient: provider,
-    // });
-
-    // if (!contract) return;
-
-    // Promise.all([
-    //   contract.read.getParticipants([BigInt(raffleId), 1n, 1n]),
-    // ]).then(([r1]) => {
-    //   console.log(r1);
-    // });
+    setEnrollmentWallets((data.map((item) => item.result) as any).flat(2));
   }, [winnersResultRaffle]);
 
-  // exportEnrollmentWallets();
-  const enrollment = useMemo(
-    () => getRaffleEntry(winnersList, address),
-    [winnersList, address]
-  );
+  // const enrollment = useMemo(
+  //   () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
+  //   [winnersResultRaffle, address]
+  // );
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput
@@ -123,12 +99,12 @@ const WinnersModalBody = () => {
       </div>
 
       <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
-        {winnersList.map((item, key) => (
+        {userEnrollments.map((item, key) => (
           <WalletWinner
-            id={key}
-            walletAddress={item}
+            id={item.pk}
+            walletAddress={item.wallet}
             isWinner
-            claimTx={""}
+            claimTx={item.txHash}
             key={key}
             raffle={winnersResultRaffle.pk}
           />
@@ -139,7 +115,8 @@ const WinnersModalBody = () => {
         )}
       </div>
       <div className="w-full">
-        {!isConnected ? (
+        <button>export</button>
+        {/* {!isConnected ? (
           <div className="flex px-5 py-3 border-2 border-gray70 rounded-xl mt-5 bg-gray20 items-center text-white">
             <p className="text-gray80 text-base">0xYour...Wallet</p>
             <UButton
@@ -154,7 +131,7 @@ const WinnersModalBody = () => {
           </div>
         ) : enrollment ? (
           <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
-            {shortenAddress(enrollment)}
+            {shortenAddress(enrollment.wallet)}
 
             <button className="ml-auto text-xs border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
               Winner <span className="ml-1">&#x1F604;&#xfe0f;</span>
@@ -168,7 +145,7 @@ const WinnersModalBody = () => {
               Not a Winner &#x1F61F;
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );
