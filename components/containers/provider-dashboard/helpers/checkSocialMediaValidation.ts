@@ -39,25 +39,25 @@ export const checkSocialMediaValidation = (
   email: string | null,
   telegram: string | null
 ) => {
-  const emailValidation = email ? validateEmail(email) : false;
+  const isEmailVerified = email ? validateEmail(email) : false;
   const twitterValidation = twitter
     ? checkTwitterVAlidation(twitter.replace("@", ""))
     : true;
-  const urlValidation = creatorUrl
+  const isUrlVerified = creatorUrl
     ? checkUrlValidation(creatorUrl)
     : true;
-  const discordValidation = discord
+  const isDiscordVerified = discord
     ? checkDiscordValidation(discord.replace("@", ""))
     : true;
-  const telegramValidation = telegram
+  const isTelegramVerified = telegram
     ? checkTelegramValidation(telegram.replace("@", ""))
     : true;
 
   return {
-    urlValidation,
+    isUrlVerified,
     twitterValidation,
-    discordValidation,
-    emailValidation,
-    telegramValidation,
+    isDiscordVerified,
+    isEmailVerified,
+    isTelegramVerified,
   };
 };
