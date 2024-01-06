@@ -41,12 +41,7 @@ const ChainList = () => {
 
         return 0;
       }),
-    [
-      activeClaimHistory,
-      chainListSearchResult,
-      highlightedChain,
-      oneTimeClaimedGasList,
-    ]
+    [chainListSearchResult, highlightedChain]
   );
 
   useEffect(() => {
@@ -87,7 +82,7 @@ const ChainList = () => {
             Gas Tap is not available right now
           </div>
         )}
-        {chainListSearchResult.length === 0 && chainList.length && (
+        {chainListSearchResult.length === 0 && !!chainList.length && (
           <EmptyChainListCard />
         )}
       </div>

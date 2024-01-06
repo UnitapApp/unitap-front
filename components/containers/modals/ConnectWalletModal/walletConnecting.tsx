@@ -37,7 +37,35 @@ const WalletConnecting: FC<{
     const res = await loginOrRegister(
       address,
       hashed,
-      JSON.stringify(variables)
+      JSON.stringify({
+        message: {
+          message: "Unitap Sign In",
+          URI: "https://unitap.app",
+          IssuedAt: now,
+        },
+        primaryType: "Unitap",
+        account: address,
+        domain: {
+          name: "Unitap Connect",
+          version: "1",
+          chainId: chainId ?? 1,
+          verifyingContract: "0x0000000000000000000000000000000000000000",
+        },
+        types: {
+          EIP712Domain: [
+            { name: "name", type: "string" },
+            { name: "version", type: "string" },
+            { name: "chainId", type: "uint256" },
+            { name: "verifyingContract", type: "address" },
+          ],
+          Unitap: [
+            { name: "message", type: "string" },
+            { name: "URI", type: "string" },
+            { name: "IssuedAt", type: "string" },
+          ],
+        },
+        onSuccess,
+      })
     );
 
     onWalletLogin(res.token, res);

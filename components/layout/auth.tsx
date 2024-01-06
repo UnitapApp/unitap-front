@@ -49,7 +49,7 @@ export const UserAuthStatus = () => {
           @ {userProfile?.username}
         </span>
 
-        <span className="text-gray90 hidden md:block ml-8 mr-2">level: ? </span>
+        <span className="text-gray90 hidden md:block ml-8 mr-5">level: ? </span>
         <RenderNavbarWalletAddress />
       </div>
 
