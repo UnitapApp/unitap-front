@@ -1,9 +1,10 @@
+import { Address } from "viem";
 import { PK } from ".";
 
 type UserWallet = {
   walletType: string;
   pk: number;
-  address: string;
+  address: Address;
 };
 
 export type UserProfile = {
@@ -41,7 +42,6 @@ export type Permission = {
   type: "TIME" | "VER";
   title?: string;
   negativeDescription: string | null;
-
 };
 
 export enum PermissionType {

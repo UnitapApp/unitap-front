@@ -2,10 +2,9 @@
 
 import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
-import { loginOrRegister, setWalletAPI } from "@/utils/api";
+import { loginOrRegister } from "@/utils/api";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
-import { ethers } from "ethers";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useSignTypedData } from "wagmi";
 import { WalletState } from ".";
 import { ClaimButton } from "@/components/ui/Button/button";

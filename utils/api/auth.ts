@@ -1,5 +1,5 @@
 import { UserProfile } from "@/types";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 
 export async function getUserProfile(address: string, signature: string) {
   const response = await axiosInstance.post<UserProfile>(
@@ -70,11 +70,18 @@ export async function sponsorAPI(address: string) {
 export async function setWalletAPI(
   token: string,
   wallet: string,
-  walletType: string
+  walletType: string,
+  message: string,
+  signedMessage: string
 ) {
   const response = await axiosInstance.post(
-    "/api/auth/user/set-wallet/",
-    { walletType: walletType, address: wallet },
+    "/api/auth/user/wallets/",
+    {
+      walletType: walletType,
+      address: wallet,
+      signature: signedMessage,
+      message,
+    },
     {
       headers: {
         Authorization: `Token ${token}`,
@@ -98,4 +105,11 @@ export const setUsernameApi = async (username: string, userToken: string) => {
   );
 
   return response.data;
+};
+
+export const deleteWalletApi = async (
+  userToken: string,
+  walletType: string
+) => {
+  const response = await axiosInstance.get("/api/auth/user/delete-wallet");
 };

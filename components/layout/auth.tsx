@@ -10,6 +10,15 @@ import { useGlobalContext } from "@/context/globalProvider";
 
 import Styles from "./auth.module.scss";
 
+import { Noto_Sans_Mono } from "next/font/google";
+
+const NotoSansMono = Noto_Sans_Mono({
+  weight: ["400", "500"],
+  display: "swap",
+  adjustFontFallback: false,
+  subsets: ["latin"],
+});
+
 const RenderNavbarLoginBrightIdButton = () => {
   const { openBrightIdModal } = useGlobalContext();
   const { userProfileLoading } = useUserProfileContext();
@@ -79,7 +88,9 @@ const WalletItem = ({
           (isActive ? "bg-white" : "bg-gray90") + " w-2 h-2 rounded-full"
         }
       />
-      <span className="ml-3">{shortenAddress(wallet)}</span>
+      <span className={`ml-3 ${NotoSansMono.className}`}>
+        {shortenAddress(wallet)}
+      </span>
       <Image
         src="/assets/images/navbar/copy.svg"
         width={12}
@@ -125,13 +136,17 @@ const ProfileDropdown = () => {
           className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}
         >
           <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
-            <img
+            <Image
               className="absolute inset-0 -z-10"
               src="/assets/images/navbar/logout-button.svg"
-              alt=""
+              alt="logout"
+              width={147}
+              height={28}
             />
             <p className="mb-1 font-semibold">@ {userProfile?.username}</p>
-            <img
+            <Image
+              width={12}
+              height={10}
               src="/assets/images/navbar/arrow-right.svg"
               className="ml-auto mr-6 mb-1"
               alt="arrow-right"
@@ -170,7 +185,9 @@ export const RenderNavbarWalletAddress = () => {
 
   const { connection } = useUserWalletProvider();
 
-  let address = EVMWallet?.address;
+  let address = connection.isConnected
+    ? connection.address
+    : EVMWallet?.address;
 
   if (!address)
     return (
@@ -187,7 +204,9 @@ export const RenderNavbarWalletAddress = () => {
     <>
       <button
         data-testid="wallet-address"
-        className={`btn btn--sm btn--address ${
+        className={`btn ${
+          NotoSansMono.className
+        } btn--sm btn--address tracking-wider !font-[500] ${
           connection.isConnected && "btn--address--active"
         } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {
