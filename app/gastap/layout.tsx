@@ -4,16 +4,12 @@ import { FC, PropsWithChildren } from "react";
 import { cookies } from "next/headers";
 import {
   getClaimedReceiptsServer,
+  getFaucetListServer,
   getOneTimeClaimedReceiptsServer,
 } from "@/utils/serverApis";
 
 const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const chainsApi = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/chain/list/",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+  const chainsApi = await getFaucetListServer();
 
   const cookieStore = cookies();
 

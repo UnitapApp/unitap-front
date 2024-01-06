@@ -20,7 +20,7 @@ export async function getRemainingClaimsAPI(token: string) {
 }
 
 export async function getChainList() {
-  const response = await axiosInstance.get<Chain[]>("/api/gastap/chain/list/");
+  const response = await axiosInstance.get<Chain[]>("/api/gastap/faucet/list/");
   return response.data;
 }
 

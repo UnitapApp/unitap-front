@@ -1,5 +1,18 @@
 import { ClaimReceipt } from "@/types";
 
+export const getFaucetListServer = async () => {
+  const chainsApi = await fetch(
+    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/faucet/list/",
+    {
+      cache: "no-store",
+    }
+  );
+
+  console.log(chainsApi.status);
+
+  return chainsApi.json();
+};
+
 export const getClaimedReceiptsServer = async (token?: string) => {
   if (!token) return [];
 
