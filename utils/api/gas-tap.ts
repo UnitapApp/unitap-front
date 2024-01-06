@@ -50,10 +50,16 @@ export async function getActiveClaimHistory(token: string) {
   return response.data;
 }
 
-export async function claimMax(token: string, chainPk: number) {
+export async function claimMax(
+  token: string,
+  chainPk: number,
+  address: string
+) {
   const response = await axiosInstance.post<ClaimReceipt>(
     `/api/gastap/chain/${chainPk}/claim-max/`,
-    null,
+    {
+      address,
+    },
     {
       headers: {
         Authorization: `Token ${token}`,

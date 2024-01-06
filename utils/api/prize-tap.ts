@@ -58,10 +58,16 @@ export async function updateClaimPrizeFinished(
   return response.data;
 }
 
-export async function getEnrollmentApi(token: string, raffleID: number) {
+export async function getEnrollmentApi(
+  token: string,
+  raffleID: number,
+  address: string
+) {
   const response = await axiosInstance.post<EnrollmentRaffleApi>(
     `/api/prizetap/raffle-enrollment/${raffleID}/`,
-    null,
+    {
+      userWalletAddress: address,
+    },
     {
       headers: {
         Authorization: `Token ${token}`,

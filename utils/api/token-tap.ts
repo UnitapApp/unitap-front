@@ -23,11 +23,14 @@ export async function getClaimedTokensListAPI(token: string) {
 export async function claimTokenAPI(
   token: string,
   tokenId: number,
+  address: string,
   body?: any
 ) {
   const response = await axiosInstance.post<ClaimTokenResponse>(
     `/api/tokentap/token-distribution/${tokenId}/claim/`,
-    body ?? {},
+    body
+      ? { ...body, userWalletAddress: address }
+      : { userWalletAddress: address },
     {
       headers: {
         Authorization: `Token ${token}`,

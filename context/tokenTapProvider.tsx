@@ -137,7 +137,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
   const claimToken = useCallback(
     async (token: Token, body?: any) => {
-      if (!userToken) return;
+      if (!userToken || !address) return;
       reset();
       // refetch()
 
@@ -146,7 +146,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       let response;
 
       try {
-        response = await claimTokenAPI(userToken, token.id, body);
+        response = await claimTokenAPI(userToken, token.id, address, body);
       } finally {
         setClaimTokenSignatureLoading(false);
       }
@@ -157,6 +157,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       userToken,
       reset,
       // refetch,
+      address,
       setClaimTokenSignatureLoading,
     ]
   );
