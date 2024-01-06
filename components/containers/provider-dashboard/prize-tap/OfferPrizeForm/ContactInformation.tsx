@@ -13,7 +13,7 @@ interface ContactField {
   name: keyof ProviderDashboardFormDataProp;
   placeholder: string;
   icon: string;
-  require: boolean;
+  required: boolean;
   baseUrl: string;
 }
 
@@ -31,35 +31,35 @@ const contactFields: ContactField[] = [
     name: "creatorUrl",
     placeholder: "www.example.com (Optional)",
     icon: "/assets/images/provider-dashboard/creatorUrl.svg",
-    require: false,
+    required: false,
     baseUrl: "",
   },
   {
     name: "twitter",
     placeholder: "@providerUsername (Optional)",
     icon: "/assets/images/provider-dashboard/twitter.svg",
-    require: false,
+    required: false,
     baseUrl: "https://twitter.com/",
   },
   {
     name: "discord",
     placeholder: "Discord link (Optional)",
     icon: "/assets/images/provider-dashboard/discord.svg",
-    require: false,
+    required: false,
     baseUrl: "https://discord.com/",
   },
   {
     name: "email",
-    placeholder: "example@email.com (Optional)",
+    placeholder: "example@email.com",
     icon: "/assets/images/provider-dashboard/email.svg",
-    require: false,
+    required: true,
     baseUrl: "",
   },
   {
     name: "telegram",
     placeholder: "@yourTelegramHandle (Optional)",
     icon: "/assets/images/provider-dashboard/telegram.svg",
-    require: false,
+    required: false,
     baseUrl: "https://t.me/",
   },
 ];
@@ -92,7 +92,7 @@ const ContactInformation = ({
             <section className="relative" key={index}>
               <div
                 className={`flex gap-5 overflow-hidden text-gray80 text-[12px] bg-gray40 border ${
-                  (field.require && showErrors && !data[field.name]) ||
+                  (field.required && showErrors && !data[field.name]) ||
                   (showErrors &&
                     data[field.name] &&
                     !(socialMediaValidation as any)[field.name])
@@ -113,7 +113,7 @@ const ContactInformation = ({
                   disabled={isShowingDetails}
                 />
               </div>
-              {field.require && showErrors && !data[field.name] && (
+              {field.required && showErrors && !data[field.name] && (
                 <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
                   Required
                 </p>
@@ -131,7 +131,7 @@ const ContactInformation = ({
         <section>
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
+            className="text-white text-[12px] focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}

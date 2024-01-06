@@ -36,7 +36,7 @@ import {
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
-import { isAddress } from "viem";
+import { isAddress, zeroAddress } from "viem";
 import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
 import {
   getConstraintsApi,
@@ -445,6 +445,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const handleSetEnrollDuration = (id: number) => {
     // if (!data.startTimeStamp) return;
+    if (id >= 0) {
+    }
+
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
         item.id == id
@@ -579,7 +582,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
               Number(data.userTokenBalance)
       );
     }
-  }, [data.tokenAmount, data.tokenContractAddress, data.winnersCount]);
+  }, [
+    data.tokenAmount,
+    data.tokenContractAddress,
+    data.winnersCount,
+    data.userTokenBalance,
+  ]);
 
   useEffect(() => {
     if (data.tokenAmount && data.winnersCount) {
@@ -759,15 +767,15 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
     const { email, twitter, creatorUrl, discord, telegram } = data;
-    // if (!email || !twitter) {
-    //   return false;
-    // }
+    if (!email) {
+      return false;
+    }
     const {
-      urlValidation,
-      twitterValidation,
-      discordValidation,
-      emailValidation,
-      telegramValidation,
+      isUrlVerified,
+      isTwitterVerified,
+      isDiscordVerified,
+      isEmailVerified,
+      isTelegramVerified,
     } = checkSocialMediaValidation(
       creatorUrl,
       twitter,
@@ -776,18 +784,18 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       telegram
     );
     setSocialMediaValidation({
-      creatorUrl: urlValidation,
-      twitter: twitterValidation,
-      discord: discordValidation,
-      email: emailValidation,
-      telegram: telegramValidation,
+      creatorUrl: isUrlVerified,
+      twitter: isTwitterVerified,
+      discord: isDiscordVerified,
+      email: isEmailVerified,
+      telegram: isTelegramVerified,
     });
     return !!(
-      urlValidation &&
-      twitterValidation &&
-      discordValidation &&
-      emailValidation &&
-      telegramValidation
+      isUrlVerified &&
+      isTwitterVerified &&
+      isDiscordVerified &&
+      isEmailVerified &&
+      isTelegramVerified
     );
   };
 
@@ -1163,6 +1171,13 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (isShowingDetails || !data.tokenContractAddress) return;
+    if (
+      !data.tokenContractAddress ||
+      data.tokenContractAddress == zeroAddress
+    ) {
+      setData((prev) => ({ ...prev, userTokenBalance: undefined }));
+      return;
+    }
     if (data.totalAmount && data.tokenContractAddress != ZERO_ADDRESS) {
       const debounce = setTimeout(() => {
         checkContractInfo();
