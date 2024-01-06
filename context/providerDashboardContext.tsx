@@ -771,11 +771,11 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       return false;
     }
     const {
-      urlValidation,
-      twitterValidation,
-      discordValidation,
-      emailValidation,
-      telegramValidation,
+      isUrlVerified,
+      isTwitterVerified,
+      isDiscordVerified,
+      isEmailVerified,
+      isTelegramVerified,
     } = checkSocialMediaValidation(
       creatorUrl,
       twitter,
@@ -784,18 +784,18 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
       telegram
     );
     setSocialMediaValidation({
-      creatorUrl: urlValidation,
-      twitter: twitterValidation,
-      discord: discordValidation,
-      email: emailValidation,
-      telegram: telegramValidation,
+      creatorUrl: isUrlVerified,
+      twitter: isTwitterVerified,
+      discord: isDiscordVerified,
+      email: isEmailVerified,
+      telegram: isTelegramVerified,
     });
     return !!(
-      urlValidation &&
-      twitterValidation &&
-      discordValidation &&
-      emailValidation &&
-      telegramValidation
+      isUrlVerified &&
+      isTwitterVerified &&
+      isDiscordVerified &&
+      isEmailVerified &&
+      isTelegramVerified
     );
   };
 
