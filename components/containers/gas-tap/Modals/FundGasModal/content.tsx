@@ -3,17 +3,13 @@ import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { Chain, ChainType } from "@/types";
 import { getChainIcon } from "@/utils/chain";
-import {
-  USER_DENIED_REQUEST_ERROR_CODE,
-  calculateGasMargin,
-} from "@/utils/web3";
+import { USER_DENIED_REQUEST_ERROR_CODE } from "@/utils/web3";
 import { parseToLamports } from "@/utils/numbers";
 import {
   estimateGas,
   useNetworkSwitcher,
   useWalletAccount,
   useWalletBalance,
-  useWalletConnection,
   useWalletNetwork,
   useWalletProvider,
   useWalletSigner,
@@ -27,6 +23,7 @@ import SelectChainModal from "../SelectChainModal";
 import FundTransactionModal from "../FundTransactionModal";
 import { parseEther } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
+import Image from "next/image";
 
 const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const { chainList: originalChainList } = useGasTapContext();
@@ -41,8 +38,6 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const { chain } = useWalletNetwork();
 
   const chainId = chain?.id;
-
-  const { connect: tryActivation } = useWalletConnection();
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
 
@@ -131,7 +126,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     const chainPk = selectedChain.pk;
 
     let tx = {
-      to: selectedChain.fundManagerAddress as any,
+      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834" as any,
       value: BigInt(
         selectedChain.symbol === "SOL"
           ? parseToLamports(fundAmount)
@@ -143,7 +138,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
     const estimatedGas = await estimateGas(provider, {
       from: address,
-      to: selectedChain.fundManagerAddress,
+      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
       value: BigInt(tx.value),
     }).catch((err: any) => {
       return err;
@@ -187,9 +182,11 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     isRightChain,
     fundAmount,
     provider,
-    tryActivation,
+    signer,
+    setIsWalletPromptOpen,
     switchChain,
     handleTransactionError,
+    userToken,
   ]);
 
   const closeModalHandler = () => {
@@ -210,7 +207,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
   useEffect(() => {
     balance.refetch();
-  }, [isRightChain, address, provider]);
+  }, [isRightChain, address, provider, balance]);
 
   return (
     <div className="flex justify-center">
@@ -227,9 +224,11 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
         ></SelectChainModal>
       </Modal>
       <div className="rounded-xl py-6 px-4 z-0">
-        <img
+        <Image
+          width={661}
+          height={665}
           alt="gas fee planet"
-          src="./assets/images/fund/provide-gas-fee-planet.svg"
+          src="/assets/images/fund/provide-gas-fee-planet.svg"
           className="absolute -left-64 -top-16 scale-150 -z-10"
         />
         <span className="z-100 w-full">
@@ -270,7 +269,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                 <span className="w-8 h-8 rounded-full bg-gray50"></span>
               )}
               <Icon
-                iconSrc="assets/images/fund/arrow-down.png"
+                iconSrc="/assets/images/fund/arrow-down.png"
                 width="14px"
                 height="auto"
               />

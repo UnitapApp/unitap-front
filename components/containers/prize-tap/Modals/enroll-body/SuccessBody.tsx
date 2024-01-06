@@ -1,19 +1,20 @@
-"use client"
+"use client";
 
-import { Prize } from "@/types"
-import { FC } from "react"
-import { Text } from "@/components/ui/text.style"
-import { getTxUrl } from "@/utils"
-import { usePrizeTapContext } from "@/context/prizeTapProvider"
-import Icon from "@/components/ui/Icon"
+import { Prize } from "@/types";
+import { FC } from "react";
+import { Text } from "@/components/ui/text.style";
+import { getTxUrl } from "@/utils";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
+import Icon from "@/components/ui/Icon";
+import Styles from "../../../provider-dashboard/prize-tap/content.module.scss";
 
 const SuccessBody: FC<{
-  raffle: Prize
-  method: string
+  raffle: Prize;
+  method: string;
 }> = ({ raffle, method }) => {
-  const calculateClaimAmount = raffle.prizeAmount / 10 ** raffle.decimals
+  const calculateClaimAmount = raffle.prizeAmount / 10 ** raffle.decimals;
 
-  const { claimOrEnrollWalletResponse } = usePrizeTapContext()
+  const { claimOrEnrollWalletResponse } = usePrizeTapContext();
 
   const handleShareClaimTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -23,9 +24,9 @@ const SuccessBody: FC<{
         .split("/")
         .at(-1)}) 
 				Try your luck to win valuable prizes at `
-    )}&url=${encodeURIComponent("unitap.app/prize-tap")}`
-    window.open(twitterUrl, "_blank")
-  }
+    )}&url=${encodeURIComponent("unitap.app/prize-tap")}`;
+    window.open(twitterUrl, "_blank");
+  };
 
   const handleShareEnrollTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -35,15 +36,15 @@ const SuccessBody: FC<{
         .split("/")
         .at(-1)}) 💚💜
 					Feeling lucky? 😎 `
-    )}&url=${encodeURIComponent("unitap.app/prize-tap")}`
-    window.open(twitterUrl, "_blank")
-  }
+    )}&url=${encodeURIComponent("unitap.app/prize-tap")}`;
+    window.open(twitterUrl, "_blank");
+  };
 
   return (
     <>
       {method === "Claim" ? (
         <div>
-          <div className="prize-success-stroke">
+          <div className={Styles["prize-success-stroke"]}>
             {!raffle.isPrizeNft ? (
               <h1
                 data-heading={calculateClaimAmount + " " + raffle.prizeSymbol}
@@ -87,7 +88,7 @@ const SuccessBody: FC<{
               fontSize="14"
               $textAlign="center"
             >
-              Congratulations, @{raffle.winnerEntry?.userProfile?.username} on
+              Congratulations, @{raffle.userEntry?.userProfile?.username} on
               your grand prize win!
             </Text>
           </span>
@@ -181,7 +182,7 @@ const SuccessBody: FC<{
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default SuccessBody
+export default SuccessBody;

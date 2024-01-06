@@ -100,3 +100,16 @@ export async function submitDonationTxHash(
 
   return response.data;
 }
+
+export async function getUserDonation(token: string, page = 1) {
+  const response = await axiosInstance.get(
+    `api/v1/user/donation?chain_pk=9&page_size=${page}`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  console.log(response.data);
+}

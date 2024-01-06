@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Spaceman } from "@/constants/spaceman"
-import Icon from "@/components/ui/Icon"
-import { APIErrorsSource } from "@/types"
-import { ErrorsContext } from "@/context/errorsProvider"
-import { ModalWrapper, ModalContent, ModalChildrenWrapper } from "./modal.style"
+import * as React from "react";
+import { Spaceman } from "@/constants/spaceman";
+import Icon from "@/components/ui/Icon";
+import { APIErrorsSource } from "@/types";
+import { ErrorsContext } from "@/context/errorsProvider";
+import {
+  ModalWrapper,
+  ModalContent,
+  ModalChildrenWrapper,
+} from "./modal.style";
 
 type props = {
-  title?: string
-  titleLeft?: string
-  className?: string
-  isOpen: boolean
-  spaceman?: Spaceman
-  children: React.ReactNode
-  size?: "small" | "medium" | "large"
-  closeModalHandler: () => void
-  errorSource?: APIErrorsSource
-}
+  title?: string;
+  titleLeft?: string;
+  className?: string;
+  isOpen: boolean;
+  spaceman?: Spaceman;
+  children: React.ReactNode;
+  size?: "small" | "medium" | "large";
+  closeModalHandler: () => void;
+  errorSource?: APIErrorsSource;
+};
 
 const Modal = ({
   title,
@@ -29,7 +33,7 @@ const Modal = ({
   size,
   errorSource,
 }: props) => {
-  const { getError } = React.useContext(ErrorsContext)
+  const { getError } = React.useContext(ErrorsContext);
 
   return (
     <>
@@ -40,7 +44,11 @@ const Modal = ({
           data-testid="modal-wrapper"
         >
           <ModalContent
-            className={`bg-gray30 rounded-2xl border-2 border-gray80 ${
+            className={`${
+              className === "provider-dashboard__modal"
+                ? "bg-gray20"
+                : "bg-gray30"
+            } rounded-2xl border-2 border-gray80 ${
               errorSource && getError(errorSource) ? "!border-error " : ""
             }`}
             onClick={(e) => e.stopPropagation()}
@@ -65,11 +73,15 @@ const Modal = ({
                 className="close ml-auto cursor-pointer"
                 data-testid="close-modal"
               >
-                <Icon iconSrc="assets/images/modal/exit.svg" />
+                <Icon iconSrc="/assets/images/modal/exit.svg" />
               </span>
             </div>
             <ModalChildrenWrapper
-              className="bg-gray30 max-h-[70vh] !rounded-none styled-scroll"
+              className={`${
+                className === "provider-dashboard__modal"
+                  ? "bg-gray20"
+                  : "bg-gray30"
+              } max-h-[70vh] !rounded-none styled-scroll`}
               size={size}
             >
               {children}
@@ -78,7 +90,7 @@ const Modal = ({
         </ModalWrapper>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

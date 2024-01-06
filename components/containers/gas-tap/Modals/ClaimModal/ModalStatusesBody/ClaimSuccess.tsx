@@ -18,7 +18,7 @@ const ClaimSuccessBody: FC<{
         chain.symbol
       } on ${chain.chainName} from @Unitap_app 🔥\nClaim yours:`
     )}&url=${encodeURIComponent(
-      "unitap.app/gas-tap?hc=" + encodeURIComponent(chain.chainName)
+      "unitap.app/gastap?hc=" + encodeURIComponent(chain.chainName)
     )}`;
     window.open(twitterUrl, "_blank");
   };

@@ -1,27 +1,27 @@
-import { PK } from "."
+import { PK } from ".";
 
 type UserWallet = {
-  walletType: string
-  pk: number
-  address: string
-}
+  walletType: string;
+  pk: number;
+  address: string;
+};
 
 export type UserProfile = {
-  isMeetVerified: boolean
-  isAuraVerified: boolean
-  initial_context_id: string
-  token: string
-  pk: PK
-  wallets: UserWallet[]
-  username: string
-}
+  isMeetVerified: boolean;
+  isAuraVerified: boolean;
+  initial_context_id: string;
+  token: string;
+  pk: PK;
+  wallets: UserWallet[];
+  username: string;
+};
 
 export type Settings = {
-  gastapRoundClaimLimit: number
-  tokentapRoundClaimLimit: number
-  prizetapRoundClaimLimit: number
-  isGasTapAvailable: boolean
-}
+  gastapRoundClaimLimit: number;
+  tokentapRoundClaimLimit: number;
+  prizetapRoundClaimLimit: number;
+  isGasTapAvailable: boolean;
+};
 
 export enum BrightIdModalState {
   CLOSED = "0",
@@ -32,13 +32,17 @@ export enum BrightIdModalState {
 }
 
 export type Permission = {
-  id: PK
-  name: string
-  description: string
-  resourcetype: string
-  type: "TIME" | "VER"
-  title?: string
-}
+  isReversed: boolean;
+  id: PK;
+  pk: PK;
+  name: string;
+  description: string;
+  resourcetype: string;
+  type: "TIME" | "VER";
+  title?: string;
+  negativeDescription: string | null;
+
+};
 
 export enum PermissionType {
   BRIGHTID = "BrightID Meet Verification",
