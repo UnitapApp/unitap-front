@@ -105,15 +105,9 @@ const WalletItem = ({
 };
 
 const ProfileDropdown = () => {
-  const { userProfile } = useUserProfileContext();
+  const { userProfile, logout } = useUserProfileContext();
 
   const { connection } = useUserWalletProvider();
-
-  const onLogout = () => {
-    localStorage.setItem("userToken", "");
-
-    window.location.reload();
-  };
 
   return (
     <div className="absolute bg-gradient-to-l cursor-default from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-20 top-full mt-2">
@@ -129,7 +123,9 @@ const ProfileDropdown = () => {
               width={147}
               height={28}
             />
-            <p className="mb-1 font-semibold">@ {userProfile?.username}</p>
+            <Link href="/profile" className="mb-1 font-semibold">
+              @ {userProfile?.username}
+            </Link>
             <Image
               width={12}
               height={10}
@@ -140,14 +136,14 @@ const ProfileDropdown = () => {
           </button>
 
           <button
-            onClick={onLogout}
+            onClick={() => logout()}
             className="rounded-lg relative text-xs z-10 px-5 py-2"
           >
             <div className="absolute rounded-lg -z-10 inset-0 bg-gray20 opacity-50" />
             Log Out
           </button>
         </div>
-        <div className="px-4 overflow-y-auto h-[194px]">
+        <div className="px-4 overflow-y-auto h-[194px] flex flex-col">
           {userProfile?.wallets.map((wallet, key) => (
             <WalletItem
               wallet={wallet.address}
@@ -155,6 +151,9 @@ const ProfileDropdown = () => {
               key={key}
             />
           ))}
+          <button className="bg-gray60 mt-auto w-full rounded-lg py-2">
+            Add New Wallet
+          </button>
         </div>
       </div>
     </div>
@@ -175,7 +174,7 @@ export const RenderNavbarWalletAddress = () => {
     ? connection.address
     : EVMWallet?.address;
 
-  if (!address)
+  if (!userProfile || !address)
     return (
       <button
         data-testid="wallet-connect"

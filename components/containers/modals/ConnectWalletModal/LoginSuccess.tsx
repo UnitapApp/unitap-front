@@ -4,17 +4,31 @@ import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useWalletAccount } from "@/utils/wallet";
 import { ConnectionProvider, getWalletProviderInfo } from ".";
+import { useEffect } from "react";
+import { shortenAddress } from "@/utils";
+import { useGlobalContext } from "@/context/globalProvider";
 
 const LoginSuccessBody = () => {
   const { connector, address } = useWalletAccount();
 
   const { userProfile } = useUserProfileContext();
+  const { setIsWalletPromptOpen, isWalletPromptOpen } = useGlobalContext();
 
   const walletInfo = getWalletProviderInfo(
     connector?.id === "injected"
       ? ConnectionProvider.Metamask
       : ConnectionProvider.Walletconnect
   );
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsWalletPromptOpen(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [setIsWalletPromptOpen]);
 
   return (
     <div className="text-sm text-center w-full">
@@ -46,7 +60,8 @@ const LoginSuccessBody = () => {
         Logged in Successfully!
       </div>
       <p className="mt-2 mb-16 text-gray100">
-        Hii, welcome back @{userProfile?.username} :{")"}
+        Hii, welcome back @{userProfile?.username ?? shortenAddress(address)} :
+        {")"}
       </p>
     </div>
   );

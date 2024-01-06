@@ -42,6 +42,7 @@ export const UserProfileContext = createContext<
     setHoldUserLogout: (arg: boolean) => void;
     deleteWallet: (address: Address) => Promise<void>;
     addNewWallet: (address: Address, pk: number) => void;
+    logout: Function;
   }
 >({
   userProfile: null,
@@ -61,6 +62,7 @@ export const UserProfileContext = createContext<
   updateUsername: NullCallback,
   addNewWallet: NullCallback,
   deleteWallet: async () => {},
+  logout: NullCallback,
 });
 
 export const UserContextProvider: FC<
@@ -153,19 +155,6 @@ export const UserContextProvider: FC<
     }
   }, [userToken, userProfile, setUserProfile]);
 
-  // useEffect(() => {
-  //   if (!address || !userProfile) return;
-
-  //   if (
-  //     userProfile.wallets.find(
-  //       (item) => item.walletType === "EVM" && item.address === address
-  //     )
-  //   )
-  //     return;
-
-  //   setWalletAPI(userToken!, address, "EVM");
-  // }, [address, userProfile, userToken]);
-
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
     setWeeklyClaimSettings(res);
@@ -197,9 +186,17 @@ export const UserContextProvider: FC<
     [userToken && userProfile]
   );
 
+  const logout = () => {
+    localStorage.removeItem("userToken");
+    document.cookie = "userToken=;";
+    setUserProfile(null);
+    setToken("");
+  };
+
   useEffect(() => {
     if (holdUserLogout || isConnected || !userToken) return;
     localStorage.removeItem("userToken");
+    document.cookie = "userToken=;";
     setUserProfile(null);
     setToken("");
   }, [userToken, setToken, isConnected, holdUserLogout]);
@@ -225,6 +222,7 @@ export const UserContextProvider: FC<
         setHoldUserLogout,
         deleteWallet,
         addNewWallet,
+        logout,
       }}
     >
       {children}

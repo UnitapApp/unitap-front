@@ -37,19 +37,26 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
         {shortenAddress(address)}
       </p>
       <Image
+        onClick={() => navigator.clipboard.writeText(address)}
         src="/assets/images/navbar/copy.svg"
         width={12}
         height={14}
         className="ml-3 cursor-pointer"
         alt="copy"
       />
-      <Image
-        width={8}
-        height={8}
-        src="/assets/images/navbar/link.svg"
+      <Link
         className="ml-4"
-        alt="link"
-      />
+        href={`https://debank.com/profile/${address}`}
+        target="_blank"
+      >
+        <Image
+          width={8}
+          height={8}
+          src="/assets/images/navbar/link.svg"
+          className="ml-4"
+          alt="link"
+        />
+      </Link>
       <Image
         width={16}
         height={18}

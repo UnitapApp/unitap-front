@@ -2,14 +2,27 @@
 
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
+import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { shortenAddress } from "@/utils";
 import { useWalletAccount } from "@/utils/wallet";
+import { useEffect } from "react";
 
 const AddNewWalletSuccess = () => {
   const { userProfile } = useUserProfileContext();
+  const { setIsWalletPromptOpen, isWalletPromptOpen } = useGlobalContext();
 
   const { address } = useWalletAccount();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsWalletPromptOpen(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [setIsWalletPromptOpen]);
 
   return (
     <>
