@@ -19,23 +19,6 @@ const NotoSansMono = Noto_Sans_Mono({
   subsets: ["latin"],
 });
 
-const RenderNavbarLoginBrightIdButton = () => {
-  const { openBrightIdModal } = useGlobalContext();
-  const { userProfileLoading } = useUserProfileContext();
-
-  return (
-    <>
-      <button
-        className="btn btn--sm btn--bright ml-6 !w-36 h-[28px] !py-0 align-baseline"
-        data-testid="brightid-show-modal"
-        onClick={() => !userProfileLoading && openBrightIdModal()}
-      >
-        {userProfileLoading ? "Connecting..." : "Connect BrightID"}
-      </button>
-    </>
-  );
-};
-
 export const UserAuthStatus = () => {
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -52,17 +35,25 @@ export const UserAuthStatus = () => {
           if (!userProfile) return;
           setDropDownActive(!dropDownActive);
         }}
+        id="profile-dropdown"
         className="cursor-pointer ml-5 flex rounded-lg h-9 items-center justify-between bg-gray40 pr-0.5 pl-2 mr-3"
       >
-        <span className="ml-2 hidden md:block text-sm">
-          @ {userProfile?.username}
-        </span>
+        <div
+          onClick={setDropDownActive.bind(null, !dropDownActive)}
+          className="cursor-pointer relative z-20 pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
+        >
+          <span className="ml-2 hidden md:block text-sm">
+            @ {userProfile?.username}
+          </span>
 
-        <span className="text-gray90 hidden md:block ml-8 mr-5">level: ? </span>
-        <RenderNavbarWalletAddress />
+          <span className="text-gray90 hidden md:block ml-8 mr-5">
+            level: ?{" "}
+          </span>
+          <RenderNavbarWalletAddress />
+        </div>
+
+        {dropDownActive && <ProfileDropdown />}
       </div>
-
-      {dropDownActive && <ProfileDropdown />}
     </div>
   );
 };
@@ -117,9 +108,9 @@ const ProfileDropdown = () => {
 
     window.location.reload();
   };
-  // #4BF2A200, #A89FE7AD, #A958A9, #DD40CD00
+
   return (
-    <div className="absolute bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-10 top-full mt-2">
+    <div className="absolute bg-gradient-to-l cursor-default from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-20 top-full mt-2">
       <div className="h-[260px] rounded-xl bg-gray30 w-full  md:w-[385px] max-w-full">
         <div
           className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}

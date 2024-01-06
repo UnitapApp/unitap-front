@@ -3,6 +3,7 @@ import LearnTapLanding from "@/components/containers/landing/learnTap";
 import PrizeTapLanding from "@/components/containers/landing/prizeTap";
 import LandingStats from "@/components/containers/landing/stats";
 import TokenTapLanding from "@/components/containers/landing/tokenTap";
+import OnBoardProcess from "@/components/containers/onBoardProcess";
 import { serverFetch } from "@/utils/api";
 
 import RoutePath from "@/utils/routes";
@@ -56,6 +57,8 @@ export default async function Home() {
       <LandingStats chains={chains} />
 
       <Footer />
+
+      <OnBoardProcess />
     </div>
   );
 }
