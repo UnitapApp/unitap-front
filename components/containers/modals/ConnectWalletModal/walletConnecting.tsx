@@ -23,26 +23,11 @@ const WalletConnecting: FC<{
 
   const { chain } = useWalletNetwork();
 
+  const chainId = chain?.id;
+
   const { userToken, userProfile, onWalletLogin } = useUserProfileContext();
 
   const [now, setNow] = useState(new Date().toISOString());
-
-  const message = useMemo(
-    () => ethers.utils.hexlify(ethers.utils.randomBytes(32)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [error]
-  );
-
-  const messageData = useMemo(
-    () =>
-      JSON.stringify({
-        message,
-        URI: "https://unitap.app",
-        Version: "1",
-        IssuedAt: now,
-      }),
-    [message, now]
-  );
 
   const isMounted = useRef(false);
 
@@ -52,7 +37,7 @@ const WalletConnecting: FC<{
     const res = await loginOrRegister(
       address,
       hashed,
-      JSON.stringify(variables?.message)
+      JSON.stringify(variables)
     );
 
     onWalletLogin(res.token, res);
@@ -62,9 +47,8 @@ const WalletConnecting: FC<{
 
   const { isError, signTypedDataAsync, variables } = useSignTypedData({
     message: {
-      message,
+      message: "Unitap Sign In",
       URI: "https://unitap.app",
-      Version: "1",
       IssuedAt: now,
     },
     primaryType: "Unitap",
@@ -72,14 +56,13 @@ const WalletConnecting: FC<{
     domain: {
       name: "Unitap Connect",
       version: "1",
-      chainId: 1,
+      chainId: chainId ?? 1,
       verifyingContract: "0x0000000000000000000000000000000000000000",
     },
     types: {
       Unitap: [
         { name: "message", type: "string" },
         { name: "URI", type: "string" },
-        { name: "Version", type: "string" },
         { name: "IssuedAt", type: "string" },
       ],
     },
@@ -96,7 +79,7 @@ const WalletConnecting: FC<{
     isMounted.current = true;
 
     return () => {};
-  }, [address, message, signTypedDataAsync]);
+  }, [address, signTypedDataAsync]);
 
   if (error)
     return (

@@ -38,6 +38,8 @@ export const UserProfileContext = createContext<
     userToken: string | null;
     isGasTapAvailable: boolean;
     updateUsername: (username: string) => void;
+    holdUserLogout: boolean;
+    setHoldUserLogout: (arg: boolean) => void;
   }
 >({
   userProfile: null,
@@ -53,6 +55,8 @@ export const UserProfileContext = createContext<
   setNonEVMWalletAddress: () => {},
   onWalletLogin: NullCallback,
   updateUsername: NullCallback,
+  holdUserLogout: false,
+  setHoldUserLogout: NullCallback,
 });
 
 export const UserContextProvider: FC<
@@ -61,8 +65,9 @@ export const UserContextProvider: FC<
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useLocalStorageState("userToken");
+  const [holdUserLogout, setHoldUserLogout] = useState(false);
 
-  const { address } = useWalletAccount();
+  const { address, isConnected } = useWalletAccount();
 
   const { addError } = useContext(ErrorsContext);
 
@@ -160,6 +165,13 @@ export const UserContextProvider: FC<
     [userToken && userProfile]
   );
 
+  useEffect(() => {
+    if (holdUserLogout || isConnected || !userToken) return;
+    localStorage.removeItem("userToken");
+    setUserProfile(null);
+    setToken("");
+  }, [userToken, setToken, isConnected, holdUserLogout]);
+
   return (
     <UserProfileContext.Provider
       value={{
@@ -177,6 +189,8 @@ export const UserContextProvider: FC<
         nonEVMWalletAddress,
         setNonEVMWalletAddress,
         updateUsername,
+        holdUserLogout,
+        setHoldUserLogout,
       }}
     >
       {children}
