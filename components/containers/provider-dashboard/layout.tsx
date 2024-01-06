@@ -73,7 +73,8 @@ const ProviderTabs: FC = () => {
             ? " text-white"
             : "opacity-[0.2]"
         }`}
-        href={RoutePath.PROVIDER_GASTAP}
+        // href={RoutePath.PROVIDER_GASTAP}
+        href={"#"}
       >
         Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>
@@ -83,7 +84,8 @@ const ProviderTabs: FC = () => {
             ? " text-white"
             : "opacity-[0.2]"
         }`}
-        href={RoutePath.PROVIDER_TOKENTAP}
+        // href={RoutePath.PROVIDER_TOKENTAP}
+        href={"#"}
       >
         Token Tap{" "}
         <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
