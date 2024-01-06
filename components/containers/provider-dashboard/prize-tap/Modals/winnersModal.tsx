@@ -2,37 +2,19 @@
 
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
-import { shortenAddress } from "@/utils";
-import UButton from "@/components/ui/Button/UButton";
-import { WinnerEntry } from "@/types";
-import { Address, isAddressEqual, getContract } from "viem";
-import { useGlobalContext } from "@/context/globalProvider";
+import { Address } from "viem";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { WalletWinner } from "@/components/containers/prize-tap/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
-
-// export const getRaffleEntry = (
-//   entryWallets: WinnerEntry[],
-//   userWallet?: Address
-// ) => {
-//   return (
-//     !!userWallet &&
-//     entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
-//   );
-// };
+import { CSVLink } from "react-csv";
 
 const WinnersModalBody = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
-  const [enrollmentWallets, setEnrollmentWallets] = useState<Address[]>([]);
+  const [enrollmentWallets, setEnrollmentWallets] = useState<[]>([]);
 
   const { winnersResultRaffle } = usePrizeOfferFormContext();
-
-  const { address, isConnected } = useWalletAccount();
-
-  const { setIsWalletPromptOpen } = useGlobalContext();
 
   const exportEnrollmentWallets = useCallback(async () => {
     const isNft = winnersResultRaffle!.isPrizeNft;
@@ -54,13 +36,15 @@ const WinnersModalBody = () => {
       contracts,
     });
 
-    setEnrollmentWallets((data.map((item) => item.result) as any).flat(2));
+    const allWallet = (data.map((item) => item.result) as any)
+      .flat(2)
+      .map((item: string) => {
+        return {
+          wallet: item,
+        };
+      });
+    setEnrollmentWallets(allWallet);
   }, [winnersResultRaffle]);
-
-  // const enrollment = useMemo(
-  //   () => getRaffleEntry(winnersResultRaffle!.winnerEntries ?? [], address),
-  //   [winnersResultRaffle, address]
-  // );
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput
@@ -114,38 +98,15 @@ const WinnersModalBody = () => {
           <p className="text-white">No users found</p>
         )}
       </div>
-      <div className="w-full">
-        <button>export</button>
-        {/* {!isConnected ? (
-          <div className="flex px-5 py-3 border-2 border-gray70 rounded-xl mt-5 bg-gray20 items-center text-white">
-            <p className="text-gray80 text-base">0xYour...Wallet</p>
-            <UButton
-              onClick={() => setIsWalletPromptOpen(true)}
-              size="small"
-              className="gradient-outline-button text-xs ml-auto font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"
-            >
-              <p className="bg-clip-text bg-g-primary text-transparent">
-                Connect Wallet
-              </p>
-            </UButton>
-          </div>
-        ) : enrollment ? (
-          <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
-            {shortenAddress(enrollment.wallet)}
-
-            <button className="ml-auto text-xs border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
-              Winner <span className="ml-1">&#x1F604;&#xfe0f;</span>
-            </button>
-          </div>
-        ) : (
-          <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
-            {shortenAddress(address) ?? ""}
-
-            <button className="ml-auto text-xs border-[#A13744] border rounded-lg bg-[#2C2228] px-4 text-error flex items-center gap-1 py-1">
-              Not a Winner &#x1F61F;
-            </button>
-          </div>
-        )} */}
+      <div className="w-full flex justify-end">
+        <CSVLink
+          className="bg-gray40 rounded-lg p-2 border border-gray50 hover:bg-gray50"
+          filename={`${winnersResultRaffle.prizeName}_raffleEntry_wallets.csv`}
+          data={enrollmentWallets}
+          target="_blank"
+        >
+          export
+        </CSVLink>
       </div>
     </>
   );
@@ -159,6 +120,7 @@ const WinnersModal = () => {
     <Modal
       isOpen={!!winnersResultRaffle}
       closeModalHandler={() => handleWinnersResult(null)}
+      className="provider-dashboard__modal"
     >
       <WinnersModalBody />
     </Modal>
