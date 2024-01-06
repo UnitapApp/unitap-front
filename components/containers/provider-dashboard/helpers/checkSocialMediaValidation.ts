@@ -40,7 +40,7 @@ export const checkSocialMediaValidation = (
   telegram: string | null
 ) => {
   const isEmailVerified = email ? validateEmail(email) : false;
-  const twitterValidation = twitter
+  const isTwitterVerified = twitter
     ? checkTwitterVAlidation(twitter.replace("@", ""))
     : true;
   const isUrlVerified = creatorUrl
@@ -55,7 +55,7 @@ export const checkSocialMediaValidation = (
 
   return {
     isUrlVerified,
-    twitterValidation,
+    isTwitterVerified,
     isDiscordVerified,
     isEmailVerified,
     isTelegramVerified,
