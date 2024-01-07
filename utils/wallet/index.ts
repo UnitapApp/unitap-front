@@ -145,8 +145,9 @@ export const useWalletConnection = () => {
 
   const onConnect = async (args?: Partial<ConnectArgs> | undefined) => {
     if (
-      args?.connector?.id === "injected" ||
-      args?.connector?.id === "metamask"
+      (args?.connector?.id === "injected" ||
+        args?.connector?.id === "metamask") &&
+      (window as any).ethereum.selectedAddress
     ) {
       await (window as any).ethereum.request({
         method: "eth_requestAccounts",

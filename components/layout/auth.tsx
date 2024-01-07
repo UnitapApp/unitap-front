@@ -12,6 +12,7 @@ import Styles from "./auth.module.scss";
 
 import { Noto_Sans_Mono } from "next/font/google";
 import Link from "next/link";
+import { useWalletManagementContext } from "@/context/walletProvider";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -105,9 +106,12 @@ const WalletItem = ({
 };
 
 const ProfileDropdown = () => {
-  const { userProfile, logout } = useUserProfileContext();
+  const { userProfile, logout, setHoldUserLogout } = useUserProfileContext();
 
   const { connection } = useUserWalletProvider();
+
+  const { setIsAddModalOpen, setDuplicateWalletRaiseError } =
+    useWalletManagementContext();
 
   return (
     <div className="absolute bg-gradient-to-l cursor-default from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-20 top-full mt-2">
@@ -151,7 +155,14 @@ const ProfileDropdown = () => {
               key={key}
             />
           ))}
-          <button className="bg-gray60 mt-auto w-full rounded-lg py-2">
+          <button
+            onClick={() => {
+              setIsAddModalOpen(true);
+              setDuplicateWalletRaiseError(false);
+              setHoldUserLogout(true);
+            }}
+            className="bg-gray60 mt-auto w-full rounded-lg py-2"
+          >
             Add Or Switch Wallet
           </button>
         </div>

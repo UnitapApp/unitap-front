@@ -76,7 +76,8 @@ const EditPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { setIsAddModalOpen } = useWalletManagementContext();
+  const { setIsAddModalOpen, setDuplicateWalletRaiseError } =
+    useWalletManagementContext();
 
   const onSubmit = async () => {
     if (!userToken) return;
@@ -171,6 +172,7 @@ const EditPage = () => {
               onClick={() => {
                 setHoldUserLogout(true);
                 setIsAddModalOpen(true);
+                setDuplicateWalletRaiseError(true);
               }}
               className="px-5 py-5 flex items-center rounded-xl border-2 border-gray70"
               type="button"

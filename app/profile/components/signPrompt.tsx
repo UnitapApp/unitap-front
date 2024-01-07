@@ -10,6 +10,7 @@ import { ClaimButton } from "@/components/ui/Button/button";
 import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
 import { isAddressEqual } from "viem";
 import { AxiosError } from "axios";
+import { useWalletManagementContext } from "@/context/walletProvider";
 
 const SignPrompt: FC<{
   imageUrl: string;
@@ -37,6 +38,8 @@ const SignPrompt: FC<{
   const chainId = chain?.id;
 
   const { userToken, userProfile, addNewWallet } = useUserProfileContext();
+
+  const { duplicateWalletRaiseError } = useWalletManagementContext();
 
   const [now, setNow] = useState(new Date().toISOString());
 
@@ -118,9 +121,13 @@ const SignPrompt: FC<{
         isAddressEqual(item.address, address!)
       )
     ) {
-      setError(
-        "This wallet is already added to your account, please enter a different wallet"
-      );
+      if (duplicateWalletRaiseError) {
+        setError(
+          "This wallet is already added to your account, please enter a different wallet"
+        );
+      } else {
+        setAddModalState("complete");
+      }
 
       return;
     }
@@ -137,7 +144,14 @@ const SignPrompt: FC<{
     isMounted.current = true;
 
     return () => {};
-  }, [address, setError, signTypedDataAsync, userProfile?.wallets]);
+  }, [
+    address,
+    duplicateWalletRaiseError,
+    setAddModalState,
+    setError,
+    signTypedDataAsync,
+    userProfile?.wallets,
+  ]);
 
   const isWalletDuplicateError = error.startsWith(
     "This wallet is already added"
