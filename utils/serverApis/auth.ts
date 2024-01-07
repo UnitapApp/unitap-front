@@ -7,7 +7,9 @@ export const getUserHistory = async (token?: string) => {
         Authorization: `token ${token}`,
       },
     }
-  ).then((res) => res.json());
+  );
 
-  return res as { gasClaim: number; tokenClaim: number; raffleWin: number };
+  const data = await res.json();
+
+  return data as { gasClaim: number; tokenClaim: number; raffleWin: number };
 };

@@ -38,7 +38,7 @@ const GasTapLandingWidget: FC<{
             "gradient-outline-button before:inset-[2px] text-gray100"
           }
         >
-          <div className="relative">
+          <div className="relative h-full">
             <div className={isGasTapAvailable ? "" : "blur-md"}>
               {sortedChainList.length > 0 && (
                 <>
@@ -75,8 +75,8 @@ const GasTapLandingWidget: FC<{
                 </>
               )}
             </div>
+            {isGasTapAvailable || <NotAvailableTap />}
           </div>
-          {isGasTapAvailable || <NotAvailableTap />}
         </Widget>
       </Link>
     </>

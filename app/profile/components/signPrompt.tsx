@@ -7,7 +7,7 @@ import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { FC, useEffect, useRef, useState } from "react";
 import { useSignTypedData } from "wagmi";
 import { ClaimButton } from "@/components/ui/Button/button";
-import { WalletState } from "../modals/ConnectWalletModal";
+import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
 import { isAddressEqual } from "viem";
 
 const SignPrompt: FC<{

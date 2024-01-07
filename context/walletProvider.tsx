@@ -1,6 +1,6 @@
 "use client";
 
-import AddWalletModal from "@/components/containers/profile/addWalletModal";
+import AddWalletModal from "@/app/profile/components/addWalletModal";
 import { NullCallback } from "@/utils";
 import {
   FC,
@@ -10,18 +10,21 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useDisconnect } from "wagmi";
 
 export const WalletManagementContext = createContext<{
   isAddModalOpen: boolean;
   setIsAddModalOpen: (value: boolean) => void;
   addModalState: string;
   setAddModalState: (value: string) => void;
+  duplicateWalletRaiseError: boolean;
+  setDuplicateWalletRaiseError: (arg: boolean) => void;
 }>({
   isAddModalOpen: false,
   setIsAddModalOpen: NullCallback,
   setAddModalState: NullCallback,
   addModalState: "",
+  duplicateWalletRaiseError: false,
+  setDuplicateWalletRaiseError: NullCallback,
 });
 
 export const useWalletManagementContext = () =>
@@ -30,6 +33,8 @@ export const useWalletManagementContext = () =>
 const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addModalState, setAddModalState] = useState("");
+  const [duplicateWalletRaiseError, setDuplicateWalletRaiseError] =
+    useState(false);
 
   useEffect(() => {
     if (isAddModalOpen) {
@@ -44,6 +49,8 @@ const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         setIsAddModalOpen,
         addModalState,
         setAddModalState,
+        duplicateWalletRaiseError,
+        setDuplicateWalletRaiseError,
       }}
     >
       {children}

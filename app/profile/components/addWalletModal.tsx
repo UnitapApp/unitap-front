@@ -3,12 +3,12 @@
 import Icon from "@/components/ui/Icon";
 import Modal from "@/components/ui/Modal/modal";
 import { useWalletManagementContext } from "@/context/walletProvider";
-import { WalletProviderButton } from "../modals/ConnectWalletModal/walletPrompt";
+import { WalletProviderButton } from "../../../components/containers/modals/ConnectWalletModal/walletPrompt";
 import { useWalletAccount, useWalletConnection } from "@/utils/wallet";
 import { useDisconnect } from "wagmi";
 import { FC, useEffect, useMemo, useState } from "react";
 import SignPrompt from "./signPrompt";
-import { WalletState } from "../modals/ConnectWalletModal";
+import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
 
 const AddWalletModal = () => {
   const { isAddModalOpen, setIsAddModalOpen, addModalState } =

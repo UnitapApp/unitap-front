@@ -67,7 +67,7 @@ const WalletItem = ({
   return (
     <div
       className={
-        "flex hover:text-white text-sm my-5 items-center " +
+        "flex hover:text-white text-sm my-2 items-center " +
         (isActive ? "text-white" : "text-gray90")
       }
     >
@@ -115,25 +115,25 @@ const ProfileDropdown = () => {
         <div
           className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}
         >
-          <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
-            <Image
-              className="absolute inset-0 -z-10"
-              src="/assets/images/navbar/logout-button.svg"
-              alt="logout"
-              width={147}
-              height={28}
-            />
-            <Link href="/profile" className="mb-1 font-semibold">
+          <Link href="/profile" className="mb-1 font-semibold">
+            <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
+              <Image
+                className="absolute inset-0 -z-10"
+                src="/assets/images/navbar/logout-button.svg"
+                alt="logout"
+                width={147}
+                height={28}
+              />
               @ {userProfile?.username}
-            </Link>
-            <Image
-              width={12}
-              height={10}
-              src="/assets/images/navbar/arrow-right.svg"
-              className="ml-auto mr-6 mb-1"
-              alt="arrow-right"
-            />
-          </button>
+              <Image
+                width={12}
+                height={10}
+                src="/assets/images/navbar/arrow-right.svg"
+                className="ml-auto mr-6 mb-1"
+                alt="arrow-right"
+              />
+            </button>
+          </Link>
 
           <button
             onClick={() => logout()}

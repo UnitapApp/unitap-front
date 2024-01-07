@@ -51,7 +51,7 @@ const steps = [
 
 const OnBoardProcess = () => {
   const { userProfile } = useUserProfileContext();
-  const { brightidModalStatus } = useGlobalContext();
+  const { brightidModalStatus, isWalletPromptOpen } = useGlobalContext();
 
   const [showIntro, setShowIntro] = useState(false);
   const [step, setStep] = useState(0);
@@ -144,7 +144,11 @@ const OnBoardProcess = () => {
   }, [step, showIntro, currentState, userProfile]);
 
   useEffect(() => {
-    if (!userProfile || brightidModalStatus !== BrightIdModalState.CLOSED)
+    if (
+      !userProfile ||
+      brightidModalStatus !== BrightIdModalState.CLOSED ||
+      isWalletPromptOpen
+    )
       return;
     const showTutorial = cookies["tutorial"];
 
@@ -157,7 +161,7 @@ const OnBoardProcess = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [cookies, pathname, userProfile, brightidModalStatus]);
+  }, [cookies, pathname, userProfile, brightidModalStatus, isWalletPromptOpen]);
 
   if (!currentState) return null;
 
@@ -173,7 +177,7 @@ const OnBoardProcess = () => {
       <div
         className={`w-[900px] max-w-full mt-52 lg:mt-8 transition-all relative z-80 border border-gray70 rounded-2xl shadow-lg overflow-hidden ${
           currentState.position && currentState.position === "above"
-            ? "lg:-mt-72 -translate-y-1/2"
+            ? "lg:!-mt-72 !-translate-y-1/2"
             : ""
         }`}
       >

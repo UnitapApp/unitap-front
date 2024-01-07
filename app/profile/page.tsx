@@ -1,11 +1,11 @@
-import UnitapPass from "@/components/containers/profile/unitapPass";
+import UnitapPass from "@/app/profile/components/unitapPass";
 import Icon from "@/components/ui/Icon";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { getUserHistory } from "@/utils/serverApis";
-import RenderProfileUsername from "@/components/containers/profile/renderProfileUsername";
+import RenderProfileUsername from "@/app/profile/components/renderProfileUsername";
 
 const Profile = async () => {
   const cookieStore = cookies();

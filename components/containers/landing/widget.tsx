@@ -84,7 +84,7 @@ const Widget = (props: WidgetProps) => {
             </p>
           )}
         </section>
-        <main className={"relative z-10"}>{children}</main>
+        <main className={"relative h-full z-10"}>{children}</main>
       </div>
     </div>
   );
