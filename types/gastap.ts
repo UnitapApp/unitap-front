@@ -47,6 +47,7 @@ export type ChainApi = {
 export type Chain = {
   pk: PK;
   chainName: string;
+  chainPk: PK;
   nativeCurrencyName: string;
   symbol: string;
   chainId: string;
@@ -103,4 +104,9 @@ export enum ClaimNonEVMModalState {
 export type ClaimBoxStateContainer = {
   status: ClaimBoxState;
   lastFailPk: number | null;
+};
+
+export type FuelChampion = {
+  faucetPk: string;
+  username: string;
 };

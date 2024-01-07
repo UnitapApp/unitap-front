@@ -1,11 +1,12 @@
 import { Settings } from "@/types";
 import { axiosInstance } from "./base";
-import { Chain, ClaimReceipt, Faucet } from "@/types/gastap";
+import { Chain, ClaimReceipt, Faucet, FuelChampion } from "@/types/gastap";
 
 export const convertFaucetToChain = (faucet: Faucet) => {
   return {
     ...faucet.chain,
     ...faucet,
+    chainPk: faucet.chain.pk,
   } as Chain;
 };
 
@@ -133,4 +134,12 @@ export async function getUserDonation(token: string, page = 1) {
   );
 
   console.log(response.data);
+}
+
+export async function getFuelChampionList() {
+  const response = await axiosInstance.get<FuelChampion[]>(
+    "/api/gastap/fuel-champion"
+  );
+
+  return response.data;
 }

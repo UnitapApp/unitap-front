@@ -42,8 +42,12 @@ export const AddMetamaskButton = styled(SecondaryButton)`
 `;
 
 const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
-  const { openClaimModal, activeClaimHistory, oneTimeClaimedGasList } =
-    useGasTapContext();
+  const {
+    openClaimModal,
+    activeClaimHistory,
+    oneTimeClaimedGasList,
+    fuelChampionObj,
+  } = useGasTapContext();
 
   const isOneTimeCollected = useMemo(
     () =>
@@ -108,7 +112,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             >
               {chain.chainName}
             </p>
-            <img
+            <Image
+              width={8}
+              height={8}
               className="arrow-icon mt-1 ml-1.5 w-2 h-2"
               src="/assets/images/arrow-icon.svg"
               alt="arrow"
@@ -229,7 +235,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
+          } w-full gap-2 md:gap-0 h-11 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
         >
           <div
             className={`${
@@ -241,6 +247,19 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             </p>
             <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
               {chain.symbol}
+            </p>
+          </div>
+
+          <div
+            className={`${
+              isHighlighted ? "bg-transparent" : "bg-gray30"
+            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+          >
+            <p className="chain-card__info__title text-sm text-gray90">
+              Fuel Champion:{" "}
+            </p>
+            <p className="chain-card__info__value text-sm text-white ml-1.5">
+              {!!fuelChampionObj[chain.pk] && `@${fuelChampionObj[chain.pk]}`}
             </p>
           </div>
           <Tooltip

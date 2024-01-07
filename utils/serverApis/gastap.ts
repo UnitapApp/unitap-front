@@ -1,4 +1,4 @@
-import { ClaimReceipt, Faucet } from "@/types";
+import { ClaimReceipt, Faucet, FuelChampion } from "@/types";
 import { convertFaucetToChain } from "../api";
 
 export const getFaucetListServer = async () => {
@@ -52,3 +52,14 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
 
   return res as ClaimReceipt[];
 };
+
+export async function getFuelChampionListServerSide() {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/fuel-champion",
+    {
+      cache: "no-store",
+    }
+  ).then((res) => res.json());
+
+  return response as FuelChampion[];
+}

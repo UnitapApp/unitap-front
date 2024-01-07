@@ -9,6 +9,7 @@ import {
   Chain,
   ClaimBoxStateContainer,
   ClaimReceiptState,
+  FuelChampion,
 } from "@/types";
 import { EmptyCallback } from "@/utils";
 import {
@@ -27,6 +28,7 @@ import {
   claimMaxNonEVMAPI,
   getActiveClaimHistory,
   getChainList,
+  getFuelChampionList,
   getOneTimeClaimedChainList,
 } from "@/utils/api";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
@@ -57,6 +59,7 @@ export const GasTapContext = createContext<{
   isHighGasFeeModalOpen: boolean;
   changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
   oneTimeClaimedGasList: ClaimReceipt[];
+  fuelChampionObj: { [key: string]: string };
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -80,6 +83,7 @@ export const GasTapContext = createContext<{
   isNonEvmActive: true,
   changeIsHighGasFeeModalOpen: EmptyCallback,
   oneTimeClaimedGasList: [],
+  fuelChampionObj: {},
 });
 
 export const useGasTapContext = () => useContext(GasTapContext);
@@ -89,12 +93,14 @@ export const GasTapProvider: FC<
     chains: Chain[];
     claimReceiptInitial: ClaimReceipt[];
     oneTimeClaimedGasListInitial: ClaimReceipt[];
+    fuelChampionList: FuelChampion[];
   } & PropsWithChildren
 > = ({
   children,
   chains,
   claimReceiptInitial,
   oneTimeClaimedGasListInitial,
+  fuelChampionList: fuelChampionListInitial,
 }) => {
   const [chainList, setChainList] = useState(chains);
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
@@ -106,6 +112,13 @@ export const GasTapProvider: FC<
     status: ClaimBoxState.CLOSED,
     lastFailPk: null,
   });
+  const [fuelChampionList, setFuelChampionList] = useState(
+    fuelChampionListInitial.reduce((prev, curr) => {
+      prev[curr.faucetPk] = curr.username;
+
+      return prev;
+    }, {} as { [key: string]: string })
+  );
 
   const [oneTimeClaimedGasList, setOneTimeClaimedGasList] = useState<
     ClaimReceipt[]
@@ -145,6 +158,18 @@ export const GasTapProvider: FC<
       const newChainList = await getChainList();
       setChainList(newChainList);
     } catch (e) {}
+  }, []);
+
+  const updateFuelChampionList = useCallback(async () => {
+    const fuelChampionList = await getFuelChampionList();
+
+    setFuelChampionList(
+      fuelChampionList.reduce((prev, curr) => {
+        prev[curr.faucetPk] = curr.username;
+
+        return prev;
+      }, {} as { [key: string]: string })
+    );
   }, []);
 
   const updateOneTimeClaimedList = async () => {
@@ -250,12 +275,14 @@ export const GasTapProvider: FC<
     },
     [
       userToken,
-      updateActiveClaimHistory,
-      activeClaimReceipt,
       claimLoading,
       isNonEvmActive,
-      chainList,
+      activeClaimReceipt,
+      userProfile?.wallets,
+      userAddress,
       claimNonEVM,
+      chainList,
+      updateActiveClaimHistory,
     ]
   );
 
@@ -268,15 +295,8 @@ export const GasTapProvider: FC<
     updateChainList();
     updateActiveClaimHistory();
     updateOneTimeClaimedList();
+    updateFuelChampionList();
   }, [updateChainList]);
-
-  // useRefreshWithInitial(
-  //   () => {
-
-  //   },
-  //   FAST_INTERVAL,
-  //   [updateActiveClaimHistory, userToken]
-  // );
 
   useEffect(() => {
     if (activeChain) {
@@ -316,6 +336,7 @@ export const GasTapProvider: FC<
         claimLoading,
         claimNonEVM: (chain, address) => claim(chain.pk, address),
         oneTimeClaimedGasList,
+        fuelChampionObj: fuelChampionList,
       }}
     >
       {children}

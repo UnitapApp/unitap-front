@@ -31,14 +31,11 @@ const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addModalState, setAddModalState] = useState("");
 
-  const { disconnect } = useDisconnect();
-
   useEffect(() => {
     if (isAddModalOpen) {
-      disconnect();
       setAddModalState("idle");
     }
-  }, [disconnect, isAddModalOpen]);
+  }, [isAddModalOpen]);
 
   return (
     <WalletManagementContext.Provider

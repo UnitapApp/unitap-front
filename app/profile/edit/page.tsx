@@ -69,7 +69,8 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
 };
 
 const EditPage = () => {
-  const { userProfile, updateUsername, userToken } = useUserProfileContext();
+  const { userProfile, updateUsername, userToken, setHoldUserLogout } =
+    useUserProfileContext();
   const { address } = useWalletAccount();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -167,7 +168,10 @@ const EditPage = () => {
                 />
               ))}
             <button
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={() => {
+                setHoldUserLogout(true);
+                setIsAddModalOpen(true);
+              }}
               className="px-5 py-5 flex items-center rounded-xl border-2 border-gray70"
               type="button"
             >
