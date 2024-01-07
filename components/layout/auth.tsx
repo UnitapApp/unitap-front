@@ -143,7 +143,7 @@ const ProfileDropdown = () => {
             Log Out
           </button>
         </div>
-        <div className="px-4 overflow-y-auto h-[194px] flex flex-col">
+        <div className="px-2 overflow-y-auto h-[194px] flex flex-col">
           {userProfile?.wallets.map((wallet, key) => (
             <WalletItem
               wallet={wallet.address}
@@ -152,7 +152,7 @@ const ProfileDropdown = () => {
             />
           ))}
           <button className="bg-gray60 mt-auto w-full rounded-lg py-2">
-            Add New Wallet
+            Add Or Switch Wallet
           </button>
         </div>
       </div>
