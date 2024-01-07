@@ -16,7 +16,7 @@ export const approveErc721TokenCallback = async (
   provider: PublicClient,
   signer: GetWalletClientResult
 ) => {
-  console.log(erc721Contract.address, spenderAddress, address)
+  console.log(erc721Contract.address, spenderAddress, address);
   const gasEstimate = await provider.estimateContractGas({
     abi: erc721ABI,
     address: erc721Contract.address,
@@ -27,7 +27,7 @@ export const approveErc721TokenCallback = async (
 
   const response = await signer?.writeContract({
     abi: erc721ABI,
-    address:  erc721Contract.address,
+    address: erc721Contract.address,
     account: address,
     functionName: "setApprovalForAll",
     args: [spenderAddress, true],
@@ -67,7 +67,7 @@ export const approveErc721Token = async (
     const response = await approveErc721TokenCallback(
       address,
       contract,
-      data.selectedChain.erc20PrizetapAddr,
+      data.selectedChain.erc721PrizetapAddr,
       data.nftContractAddress as Address,
       provider,
       signer
