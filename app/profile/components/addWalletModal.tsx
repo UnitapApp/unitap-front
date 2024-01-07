@@ -9,22 +9,19 @@ import { useDisconnect } from "wagmi";
 import { FC, useEffect, useMemo, useState } from "react";
 import SignPrompt from "./signPrompt";
 import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
+import { useUserProfileContext } from "@/context/userProfile";
 
 const AddWalletModal = () => {
   const { isAddModalOpen, setIsAddModalOpen, addModalState } =
     useWalletManagementContext();
 
+  const { setHoldUserLogout } = useUserProfileContext();
+
   useEffect(() => {
-    if (addModalState) return;
+    if (isAddModalOpen) return;
 
-    let timeout = setTimeout(() => {
-      setIsAddModalOpen(false);
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [addModalState, setIsAddModalOpen]);
+    setHoldUserLogout(false);
+  }, [isAddModalOpen, setHoldUserLogout]);
 
   return (
     <Modal

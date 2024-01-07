@@ -9,6 +9,7 @@ import { useSignTypedData } from "wagmi";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
 import { isAddressEqual } from "viem";
+import { AxiosError } from "axios";
 
 const SignPrompt: FC<{
   imageUrl: string;
@@ -124,7 +125,14 @@ const SignPrompt: FC<{
       return;
     }
 
-    signTypedDataAsync().catch((err) => setError(err.message));
+    signTypedDataAsync().catch((err) => {
+      if (err instanceof AxiosError) {
+        const error = err.response?.data;
+        setError(error.address?.[0] ?? error.message?.[0] ?? err.message);
+      } else {
+        setError(err.message);
+      }
+    });
 
     isMounted.current = true;
 
@@ -153,9 +161,7 @@ const SignPrompt: FC<{
 
           <ClaimButton
             onClick={() => {
-              if (isWalletDuplicateError) {
-                setIsConnected(false);
-              }
+              setIsConnected(false);
               setNow(new Date().toISOString());
               isMounted.current = false;
               setError("");

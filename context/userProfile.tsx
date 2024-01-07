@@ -194,12 +194,21 @@ export const UserContextProvider: FC<
   };
 
   useEffect(() => {
-    if (holdUserLogout || isConnected || !userToken) return;
+    if (holdUserLogout || !userToken || !userProfile) return;
+
+    if (
+      isConnected &&
+      userProfile.wallets.find((wallet) =>
+        isAddressEqual(wallet.address, address!)
+      )
+    )
+      return;
+
     localStorage.removeItem("userToken");
     document.cookie = "userToken=;";
     setUserProfile(null);
     setToken("");
-  }, [userToken, setToken, isConnected, holdUserLogout]);
+  }, [userToken, setToken, isConnected, holdUserLogout, userProfile, address]);
 
   return (
     <UserProfileContext.Provider
