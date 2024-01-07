@@ -235,7 +235,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 h-11 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
+          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
         >
           <div
             className={`${
@@ -256,9 +256,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
-              Fuel Champion:{" "}
+              Fuel Champion{" "}
             </p>
-            <p className="chain-card__info__value text-sm text-white ml-1.5">
+            <p className="text-sm font-normal text-white ml-1.5">
               {!!fuelChampionObj[chain.pk] && `@${fuelChampionObj[chain.pk]}`}
             </p>
           </div>

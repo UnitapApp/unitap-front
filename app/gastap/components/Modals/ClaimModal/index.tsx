@@ -24,6 +24,7 @@ import { shortenAddress } from "@/utils";
 import ClaimNotAvailable from "../ClaimNotRemaining";
 import { useWalletAccount } from "@/utils/wallet";
 import Modal from "@/components/ui/Modal/modal";
+import Image from "next/image";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const { address, isConnected } = useWalletAccount();
@@ -100,12 +101,16 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           alt=""
         />
       </DropIconWrapper>
-      <Text width="100%" fontSize="14">
-        Wallet Address
-      </Text>
-      <WalletAddress fontSize="12">
-        {isConnected ? shortenAddress(address) : ""}
-      </WalletAddress>
+      <button className="bg-gray50 font-semibold text-gray100 mb-10 text-base rounded-xl w-full flex items-center p-4">
+        Selected Wallet: {shortenAddress(address)}
+        <Image
+          className="ml-auto"
+          src="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          alt="angle down"
+          width={14}
+          height={8}
+        />
+      </button>
       <ClaimButton
         onClick={() => claim(chain.pk)}
         $width="100%"
