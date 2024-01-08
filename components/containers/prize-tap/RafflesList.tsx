@@ -420,9 +420,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     {" "}
                     <div className="relative w-full">
                       <p className="text-transparent bg-clip-text bg-g-primary">
-                        {!winnersEntry.length && new Date(deadline) < new Date()
-                          ? "Deciding the winners"
-                          : "Enroll"}
+                        Enroll
                       </p>{" "}
                       <Icon
                         className="absolute right-0 top-[-2px]"
@@ -478,7 +476,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         } text-transparent bg-clip-text bg-g-primary`}
                       >
                         {!winnersEntry.length && new Date(deadline) < new Date()
-                          ? "Deciding the winners"
+                          ? "Raffle is being processed"
                           : "Enrolled"}
                       </span>
                       <Icon
