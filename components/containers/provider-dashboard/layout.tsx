@@ -93,7 +93,10 @@ const ProviderTabs: FC = () => {
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
           pathname === RoutePath.PROVIDER_PRIZETAP ||
-          pathname == RoutePath.PROVIDERDASHBOARD
+          pathname == RoutePath.PROVIDERDASHBOARD ||
+          pathname == RoutePath.PROVIDER_PRIZETAP_CREATE ||
+          pathname.includes(RoutePath.PROVIDER_PRIZETAP_DETAILS) ||
+          pathname.includes(RoutePath.PROVIDER_PRIZETAP_VERIFICATION)
             ? " text-white opacity-1"
             : "opacity-[0.2]"
         }`}
