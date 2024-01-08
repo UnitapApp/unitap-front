@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { FC } from "react"
-import { DropIconWrapper } from "../claimModal.style"
-import { useGlobalContext } from "@/context/globalProvider"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import { DropIconWrapper } from "../../../../../../components/containers/modals/claimModal.style";
+import { useGlobalContext } from "@/context/globalProvider";
 
 const BrightIdNotConnectedBody: FC<{ iconSrc: string; chainPk: number }> = ({
   iconSrc,
   chainPk,
 }) => {
-  const { openBrightIdModal } = useGlobalContext()
+  const { openBrightIdModal } = useGlobalContext();
 
   return (
     <>
@@ -37,7 +37,7 @@ const BrightIdNotConnectedBody: FC<{ iconSrc: string; chainPk: number }> = ({
         <p>Connect BrightID</p>
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default BrightIdNotConnectedBody
+export default BrightIdNotConnectedBody;

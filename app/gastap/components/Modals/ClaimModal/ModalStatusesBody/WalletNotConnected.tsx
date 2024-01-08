@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import { FC, useRef, useEffect } from "react"
-import { DropIconWrapper } from "../claimModal.style"
+import { ClaimButton } from "@/components/ui/Button/button";
+import { FC, useRef, useEffect } from "react";
+import { DropIconWrapper } from "../../../../../../components/containers/modals/claimModal.style";
 
 // @ts-ignore
-import ModelViewer from "@metamask/logo"
+import ModelViewer from "@metamask/logo";
 
 const WalletNotConnectedBody: FC<{ chainPk: number }> = ({ chainPk }) => {
-  const metamaskLogo = useRef<HTMLDivElement>(null)
+  const metamaskLogo = useRef<HTMLDivElement>(null);
 
   // const { tryActivation } = useWalletActivation();
 
   useEffect(() => {
-    if (!metamaskLogo.current) return
+    if (!metamaskLogo.current) return;
 
     const viewer = ModelViewer({
       pxNotRatio: true,
@@ -21,16 +21,16 @@ const WalletNotConnectedBody: FC<{ chainPk: number }> = ({ chainPk }) => {
       height: 200,
       followMouse: true,
       slowDrift: false,
-    })
+    });
 
-    metamaskLogo.current.innerHTML = ""
+    metamaskLogo.current.innerHTML = "";
 
-    metamaskLogo.current.appendChild(viewer.container)
+    metamaskLogo.current.appendChild(viewer.container);
 
     return () => {
-      viewer.stopAnimation()
-    }
-  }, [metamaskLogo])
+      viewer.stopAnimation();
+    };
+  }, [metamaskLogo]);
 
   return (
     <>
@@ -71,7 +71,7 @@ const WalletNotConnectedBody: FC<{ chainPk: number }> = ({ chainPk }) => {
         <p>Connect Wallet</p>
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default WalletNotConnectedBody
+export default WalletNotConnectedBody;

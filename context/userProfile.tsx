@@ -22,6 +22,7 @@ import { IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
 import { NullCallback } from "@/utils";
 import { Address, isAddressEqual } from "viem";
+import { useDisconnect } from "wagmi";
 
 export const UserProfileContext = createContext<
   Partial<Settings> & {
@@ -74,6 +75,7 @@ export const UserContextProvider: FC<
   const [holdUserLogout, setHoldUserLogout] = useState(false);
 
   const { address, isConnected } = useWalletAccount();
+  const { disconnect } = useDisconnect();
 
   const { addError } = useContext(ErrorsContext);
 
@@ -187,6 +189,7 @@ export const UserContextProvider: FC<
   );
 
   const logout = () => {
+    disconnect?.();
     localStorage.removeItem("userToken");
     document.cookie = "userToken=;";
     setUserProfile(null);
@@ -204,11 +207,20 @@ export const UserContextProvider: FC<
     )
       return;
 
+    disconnect?.();
     localStorage.removeItem("userToken");
     document.cookie = "userToken=;";
     setUserProfile(null);
     setToken("");
-  }, [userToken, setToken, isConnected, holdUserLogout, userProfile, address]);
+  }, [
+    userToken,
+    setToken,
+    isConnected,
+    holdUserLogout,
+    userProfile,
+    address,
+    disconnect,
+  ]);
 
   return (
     <UserProfileContext.Provider

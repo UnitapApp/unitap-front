@@ -70,7 +70,7 @@ const SetUsernameBody: FC<{
           @
         </span>
       </div>
-      {!!error && <p className="text-xs pl-2 text-error">{error}</p>}
+      {!!error && <p className="text-xs text-left pl-2 text-error">{error}</p>}
 
       <ClaimButton
         onClick={onSubmit}

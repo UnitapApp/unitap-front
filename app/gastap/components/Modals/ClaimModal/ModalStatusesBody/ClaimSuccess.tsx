@@ -5,7 +5,7 @@ import { FC } from "react";
 import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types";
 import { getChainClaimIcon, getTxUrl } from "@/utils/chain";
 import { formatWeiBalance } from "@/utils/numbers";
-import { DropIconWrapper } from "../claimModal.style";
+import { DropIconWrapper } from "../../../../../../components/containers/modals/claimModal.style";
 import { Text } from "@/components/ui/text.style";
 
 const ClaimSuccessBody: FC<{

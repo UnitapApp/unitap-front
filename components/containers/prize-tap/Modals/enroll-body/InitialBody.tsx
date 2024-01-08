@@ -3,7 +3,6 @@
 import { Prize } from "@/types";
 import { FC } from "react";
 import RafflePermissions from "../../permissions";
-import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style";
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { shortenAddress } from "@/utils";
@@ -13,6 +12,7 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { Text } from "@/components/ui/text.style";
 import { useWalletAccount } from "@/utils/wallet";
 import WinnersModal from "../winnersModal";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const InitialBody: FC<{
   raffle: Prize;

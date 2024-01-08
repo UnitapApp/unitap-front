@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { FC } from "react"
-import { Chain } from "@/types"
-import { getChainClaimIcon } from "@/utils/chain"
-import { DropIconWrapper } from "../claimModal.style"
-import { Text } from "@/components/ui/text.style"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import { Chain } from "@/types";
+import { getChainClaimIcon } from "@/utils/chain";
+import { DropIconWrapper } from "../../../../../../components/containers/modals/claimModal.style";
+import { Text } from "@/components/ui/text.style";
 
 const ClaimFailedBody: FC<{
-  chain: Chain
-  claimLoading: boolean
-  claim: (chainPK: number) => void
+  chain: Chain;
+  claimLoading: boolean;
+  claim: (chainPK: number) => void;
 }> = ({ chain, claim, claimLoading }) => {
   return (
     <>
@@ -60,7 +60,7 @@ const ClaimFailedBody: FC<{
         {claimLoading ? <p>Claiming...</p> : <p>Try Again</p>}
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default ClaimFailedBody
+export default ClaimFailedBody;

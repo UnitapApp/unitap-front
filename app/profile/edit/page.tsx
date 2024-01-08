@@ -26,6 +26,18 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
 }) => {
   const { deleteWallet } = useUserProfileContext();
 
+  const [copyMessage, setCopyMessage] = useState("");
+
+  const copyToClipboard = (address: string) => {
+    navigator.clipboard.writeText(address);
+
+    setCopyMessage("Copied");
+
+    setTimeout(() => {
+      if (setCopyMessage) setCopyMessage("");
+    }, 3000);
+  };
+
   return (
     <div className="p-4 flex bg-gray40 border-2 items-center border-gray50 rounded-xl">
       <span
@@ -36,14 +48,22 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
       <p className={`ml-5 text-sm ${NotoSansMono.className}`}>
         {shortenAddress(address)}
       </p>
-      <Image
-        onClick={() => navigator.clipboard.writeText(address)}
-        src="/assets/images/navbar/copy.svg"
-        width={12}
-        height={14}
-        className="ml-3 cursor-pointer"
-        alt="copy"
-      />
+      <div className="ml-4 relative">
+        {copyMessage && (
+          <div className="absolute top-1/2 translate-y-1/2 mb-3 w-16 left-1/2 -translate-x-1/2 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+            {copyMessage}
+          </div>
+        )}
+        <Image
+          onClick={() => copyToClipboard(address)}
+          src="/assets/images/navbar/copy.svg"
+          width={12}
+          height={14}
+          className="cursor-pointer"
+          alt="copy"
+        />
+      </div>
+
       <Link
         className="ml-4"
         href={`https://debank.com/profile/${address}`}
@@ -53,7 +73,6 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
           width={8}
           height={8}
           src="/assets/images/navbar/link.svg"
-          className="ml-4"
           alt="link"
         />
       </Link>

@@ -97,7 +97,8 @@ export const RenderWalletBody: FC<{
       />
     );
 
-  if (walletState === WalletState.LoggedIn) return <LoginSuccessBody />;
+  if (walletState === WalletState.LoggedIn)
+    return <LoginSuccessBody isNewUser={isNewUser} />;
 
   if (walletState === WalletState.SetUsername)
     return (

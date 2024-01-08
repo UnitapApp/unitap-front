@@ -17,7 +17,7 @@ import {
 } from "./ModalStatusesBody";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { DropIconWrapper } from "./claimModal.style";
+import { DropIconWrapper } from "../../../../../components/containers/modals/claimModal.style";
 import WalletAddress from "./walletAddress";
 import { useGlobalContext } from "@/context/globalProvider";
 import { shortenAddress } from "@/utils";

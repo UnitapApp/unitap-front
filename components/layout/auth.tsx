@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet";
@@ -51,7 +51,9 @@ export const UserAuthStatus = () => {
             <RenderNavbarWalletAddress />
           </div>
 
-          {dropDownActive && <ProfileDropdown />}
+          {dropDownActive && (
+            <ProfileDropdown setDropDownActive={setDropDownActive} />
+          )}
         </div>
       </div>
     </div>
@@ -65,6 +67,18 @@ const WalletItem = ({
   wallet: string;
   isActive?: boolean;
 }) => {
+  const [copyMessage, setCopyMessage] = useState("");
+
+  const copyToClipboard = (address: string) => {
+    navigator.clipboard.writeText(address);
+
+    setCopyMessage("Copied");
+
+    setTimeout(() => {
+      if (setCopyMessage) setCopyMessage("");
+    }, 3000);
+  };
+
   return (
     <div
       className={
@@ -80,15 +94,22 @@ const WalletItem = ({
       <span className={`ml-3 ${NotoSansMono.className}`}>
         {shortenAddress(wallet)}
       </span>
-      {/* TODO: add tooltip for copying success */}
-      <Image
-        onClick={() => navigator.clipboard.writeText(wallet)}
-        src="/assets/images/navbar/copy.svg"
-        width={12}
-        height={14}
-        className="ml-3 cursor-pointer"
-        alt="copy"
-      />
+      <div className="relative">
+        {copyMessage && (
+          <div className="absolute top-1/2 translate-y-1/2 mb-3 w-16 left-1/2 -translate-x-1/2 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+            {copyMessage}
+          </div>
+        )}
+        <Image
+          onClick={() => copyToClipboard(wallet)}
+          src="/assets/images/navbar/copy.svg"
+          width={12}
+          height={14}
+          className="ml-3 cursor-pointer"
+          alt="copy"
+        />
+      </div>
+
       <Link
         className="ml-4"
         href={`https://debank.com/profile/${wallet}`}
@@ -105,7 +126,9 @@ const WalletItem = ({
   );
 };
 
-const ProfileDropdown = () => {
+const ProfileDropdown: FC<{
+  setDropDownActive: (isActive: boolean) => void;
+}> = ({ setDropDownActive }) => {
   const { userProfile, logout, setHoldUserLogout } = useUserProfileContext();
 
   const { connection } = useUserWalletProvider();
@@ -119,7 +142,13 @@ const ProfileDropdown = () => {
         <div
           className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}
         >
-          <Link href="/profile" className="mb-1 font-semibold">
+          <Link
+            onClick={() => {
+              setDropDownActive(false);
+            }}
+            href="/profile"
+            className="mb-1 font-semibold"
+          >
             <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
               <Image
                 className="absolute inset-0 -z-10"
@@ -140,7 +169,10 @@ const ProfileDropdown = () => {
           </Link>
 
           <button
-            onClick={() => logout()}
+            onClick={() => {
+              setDropDownActive(false);
+              logout();
+            }}
             className="rounded-lg relative text-xs z-10 px-5 py-2"
           >
             <div className="absolute rounded-lg -z-10 inset-0 bg-gray20 opacity-50" />
@@ -157,6 +189,7 @@ const ProfileDropdown = () => {
           ))}
           <button
             onClick={() => {
+              setDropDownActive(false);
               setIsAddModalOpen(true);
               setDuplicateWalletRaiseError(false);
               setHoldUserLogout(true);

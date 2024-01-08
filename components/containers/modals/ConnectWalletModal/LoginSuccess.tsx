@@ -4,11 +4,11 @@ import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useWalletAccount } from "@/utils/wallet";
 import { ConnectionProvider, getWalletProviderInfo } from ".";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { shortenAddress } from "@/utils";
 import { useGlobalContext } from "@/context/globalProvider";
 
-const LoginSuccessBody = () => {
+const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
   const { connector, address } = useWalletAccount();
 
   const { userProfile } = useUserProfileContext();
@@ -60,8 +60,8 @@ const LoginSuccessBody = () => {
         Logged in Successfully!
       </div>
       <p className="mt-2 mb-16 text-gray100">
-        Hii, welcome back @{userProfile?.username ?? shortenAddress(address)} :
-        {")"}
+        Hii, {isNewUser ? "welcome" : "welcome back"} @
+        {userProfile?.username ?? shortenAddress(address)} :{")"}
       </p>
     </div>
   );
