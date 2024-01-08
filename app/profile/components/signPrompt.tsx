@@ -2,13 +2,13 @@
 
 import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
-import { loginOrRegister, setWalletAPI } from "@/utils/api";
+import { checkUserExists, loginOrRegister, setWalletAPI } from "@/utils/api";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { FC, useEffect, useRef, useState } from "react";
 import { useSignTypedData } from "wagmi";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
-import { isAddressEqual } from "viem";
+import { Address, isAddressEqual } from "viem";
 import { AxiosError } from "axios";
 import { useWalletManagementContext } from "@/context/walletProvider";
 
@@ -42,6 +42,9 @@ const SignPrompt: FC<{
   const { duplicateWalletRaiseError } = useWalletManagementContext();
 
   const [now, setNow] = useState(new Date().toISOString());
+
+  const [lastCheckDuplicateWallet, setLastCheckDuplicateWallet] =
+    useState<Address | null>(null);
 
   const isMounted = useRef(false);
 
@@ -112,9 +115,38 @@ const SignPrompt: FC<{
   });
 
   useEffect(() => {
+    if (!address) return;
+
+    if (
+      userProfile?.wallets.find((item) =>
+        isAddressEqual(item.address, address!)
+      )
+    ) {
+      setLastCheckDuplicateWallet(address);
+      return;
+    }
+
+    checkUserExists(address).then((res) => {
+      if (res) {
+        setError(
+          "This wallet is already added to another account, please enter a different wallet"
+        );
+      } else {
+        setLastCheckDuplicateWallet(address);
+      }
+    });
+  }, [address, setError, userProfile?.wallets]);
+
+  useEffect(() => {
     if (isMounted.current) return;
 
     if (!address) return;
+
+    if (
+      !lastCheckDuplicateWallet ||
+      !isAddressEqual(address, lastCheckDuplicateWallet)
+    )
+      return;
 
     if (
       userProfile?.wallets.find((item) =>
@@ -147,6 +179,7 @@ const SignPrompt: FC<{
   }, [
     address,
     duplicateWalletRaiseError,
+    lastCheckDuplicateWallet,
     setAddModalState,
     setError,
     signTypedDataAsync,
