@@ -4,9 +4,9 @@ import { FC, PropsWithChildren } from "react";
 
 const ProviderDashboardPrizeTapLayout: FC = ({}) => {
   return (
-    <ProviderDashboard>
-      <PrizeTapContent />
-    </ProviderDashboard>
+    // <ProviderDashboard>
+    <PrizeTapContent />
+    // </ProviderDashboard>
   );
 };
 
