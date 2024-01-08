@@ -20,6 +20,22 @@ export async function createUserProfile(address: string) {
   return response.data;
 }
 
+export async function checkUsernameValid(username: string, token: string) {
+  const response = await axiosInstance.post<{ exists: boolean }>(
+    "/api/auth/user/check-username/",
+    {
+      username,
+    },
+    {
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
 export async function checkUserExists(walletAddress: string): Promise<boolean> {
   const response = await axiosInstance.post<{ exists: boolean }>(
     "/api/auth/user/check-exists/",

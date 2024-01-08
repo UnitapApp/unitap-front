@@ -3,9 +3,9 @@
 import { ClaimButton } from "@/components/ui/Button/button";
 import Input from "@/components/ui/input";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ConnectionProvider, WalletState } from ".";
-import { setUsernameApi } from "@/utils/api";
+import { checkUsernameValid, setUsernameApi } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
 import { useUserProfileContext } from "@/context/userProfile";
 import { AxiosError } from "axios";
@@ -15,7 +15,7 @@ const SetUsernameBody: FC<{
   setWalletState: (state: WalletState) => void;
 }> = ({ setWalletState }) => {
   const { address } = useWalletAccount();
-  const { userToken, updateUsername } = useUserProfileContext();
+  const { userToken, updateUsername, userProfile } = useUserProfileContext();
 
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +37,28 @@ const SetUsernameBody: FC<{
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (!userToken || username === userProfile?.username) return;
+      setLoading(true);
+      checkUsernameValid(username, userToken)
+        .catch((err) => {
+          if (err instanceof AxiosError) {
+            setError(
+              err.response?.data.message || err.response?.data.username?.[0]
+            );
+            return;
+          }
+
+          setError(err.message);
+        })
+        .finally(() => setLoading(false));
+    }, 300);
+
+    setError("");
+    return () => clearTimeout(timerId);
+  }, [userProfile?.username, userToken, username]);
 
   return (
     <div className="text-center w-full">

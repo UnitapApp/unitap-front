@@ -3,7 +3,7 @@
 import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { shortenAddress } from "@/utils";
-import { setUsernameApi } from "@/utils/api";
+import { checkUsernameValid, setUsernameApi } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
 import { AxiosError } from "axios";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { FC, useEffect, useState } from "react";
 import { Address, isAddressEqual } from "viem";
 import { Noto_Sans_Mono } from "next/font/google";
 import { useWalletManagementContext } from "@/context/walletProvider";
+import LoadingSpinner from "@/components/ui/loadingSpinner";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -120,8 +121,26 @@ const EditPage = () => {
   }, [userProfile?.username]);
 
   useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (!userToken || username === userProfile?.username) return;
+      setLoading(true);
+      checkUsernameValid(username, userToken)
+        .catch((err) => {
+          if (err instanceof AxiosError) {
+            setError(
+              err.response?.data.message || err.response?.data.username?.[0]
+            );
+            return;
+          }
+
+          setError(err.message);
+        })
+        .finally(() => setLoading(false));
+    }, 300);
+
     setError("");
-  }, [username]);
+    return () => clearTimeout(timerId);
+  }, [userProfile?.username, userToken, username]);
 
   return (
     <div>
@@ -156,10 +175,12 @@ const EditPage = () => {
               onClick={onSubmit}
               className="absolute right-3 disabled:opacity-60 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] rounded-lg px-3 py-1"
             >
-              {loading ? "Loading" : "Save"}
+              {loading ? <LoadingSpinner /> : "Save"}
             </button>
           </div>
-          {!!error && <p className="text-xs pl-2 text-error">{error}</p>}
+          {!!error && (
+            <p className="text-xs pl-2 w-[250px] text-error">{error}</p>
+          )}
         </div>
       </div>
 
