@@ -37,9 +37,8 @@ export async function getProviderDashboardValidChain() {
   return response.data.data;
 }
 
-export async function getUserRaffles(token: string, signal: any) {
+export async function getUserRaffles(token: string) {
   const response = await axiosInstance.get(`/api/prizetap/get-user-raffles/`, {
-    signal,
     headers: {
       Authorization: `Token ${token}`,
     },
