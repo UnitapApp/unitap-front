@@ -3,18 +3,20 @@
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address } from "viem";
-import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { WalletWinner } from "@/components/containers/prize-tap/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
 import { CSVLink } from "react-csv";
+import { UserRafflesProps } from "@/types";
 
-const WinnersModalBody = () => {
+interface Props {
+  winnersResultRaffle: UserRafflesProps | null;
+}
+
+const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
   const [enrollmentWallets, setEnrollmentWallets] = useState<[]>([]);
-
-  const { winnersResultRaffle } = usePrizeOfferFormContext();
 
   const exportEnrollmentWallets = useCallback(async () => {
     const isNft = winnersResultRaffle!.isPrizeNft;
@@ -65,8 +67,20 @@ const WinnersModalBody = () => {
   if (!winnersResultRaffle) return null;
 
   return (
-    <>
-      <p className="text-xs w-full px-4 text-gray90">Winners</p>
+    <div>
+      <div className="sm:flex sm:flex-row items-center sm:justify-between w-full px-1  mt-2 mb-2">
+        <p className="text-xs  text-gray90">Winners</p>
+        {!!winnersResultRaffle.numberOfOnchainEntries && (
+          <CSVLink
+            className="text-gray90 bg-none text-xs m-0 p-0 w-full underline max-w-[204px]"
+            filename={`${winnersResultRaffle.prizeName}_raffleEntry_wallets.csv`}
+            data={enrollmentWallets}
+            target="_blank"
+          >
+            Export Enrolled People List (CSV file)
+          </CSVLink>
+        )}
+      </div>
       <div className="flex bg-gray50 p-4 py-3.5 border-2 rounded-xl !border-gray30 items-center w-full mt-1">
         <Icon
           className="mr-5"
@@ -98,31 +112,26 @@ const WinnersModalBody = () => {
           <p className="text-white">No users found</p>
         )}
       </div>
-      <div className="w-full flex justify-end">
-        <CSVLink
-          className="bg-gray40 rounded-lg p-2 border border-gray50 hover:bg-gray50"
-          filename={`${winnersResultRaffle.prizeName}_raffleEntry_wallets.csv`}
-          data={enrollmentWallets}
-          target="_blank"
-        >
-          export
-        </CSVLink>
-      </div>
-    </>
+    </div>
   );
 };
 
-const WinnersModal = () => {
-  const { winnersResultRaffle, handleWinnersResult } =
-    usePrizeOfferFormContext();
+interface ModalProps {
+  winnersResultRaffle: UserRafflesProps | null;
+  handleWinnersResult: (raffle: UserRafflesProps | null) => void;
+}
 
+const WinnersModal = ({
+  winnersResultRaffle,
+  handleWinnersResult,
+}: ModalProps) => {
   return (
     <Modal
       isOpen={!!winnersResultRaffle}
       closeModalHandler={() => handleWinnersResult(null)}
       className="provider-dashboard__modal"
     >
-      <WinnersModalBody />
+      <WinnersModalBody winnersResultRaffle={winnersResultRaffle} />
     </Modal>
   );
 };
