@@ -1,7 +1,7 @@
 "use client";
 
 import { UserRafflesProps } from "@/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Icon from "@/components/ui/Icon";
 import {
   ProviderDashboardButton,
@@ -12,12 +12,18 @@ import {
   ProviderDashboardButtonShowDetails,
 } from "../Buttons";
 import SearchInput from "./SearchInput";
-import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
+// import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";
-import OfferPrizeForm from "./OfferPrizeForm";
+// import OfferPrizeForm from "./OfferPrizeForm";
 import WinnersModal from "./Modals/winnersModal";
+import RoutePath from "@/utils/routes";
+import Link from "next/link";
+import { useUserProfileContext } from "@/context/userProfile";
+import { getUserRaffles } from "@/utils/api";
+import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { FAST_INTERVAL } from "@/constants";
 
 interface PrizeCardProp {
   prize: UserRafflesProps;
@@ -34,12 +40,23 @@ enum RaffleStatus {
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
-  const { handleCheckForReason, handleShowUserDetails, handleWinnersResult } =
-    usePrizeOfferFormContext();
+  // const { handleCheckForReason } = usePrizeOfferFormContext();
+
+  const [winnersResultRaffle, setWinnersResultRaffle] =
+    useState<UserRafflesProps | null>(null);
+
+  const handleWinnersResult = (raffle: UserRafflesProps | null) => {
+    setWinnersResultRaffle(raffle);
+  };
+
   const diff = new Date(prize.deadline).getTime() - new Date().getTime();
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
+    <div className="bg-gray30 border-2 animate-fadeIn border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
+      <WinnersModal
+        handleWinnersResult={handleWinnersResult}
+        winnersResultRaffle={winnersResultRaffle}
+      />
       <div className="providePrize-item-container">
         <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
           <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md">
@@ -102,22 +119,25 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         </div>
         {prize.status === RaffleStatus.REJECTED ? (
-          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
+          <Link
+            className="absolute bottom-3 right-4 left-4"
+            href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
+          >
             <ProviderDashboardButtonCheck
-              onClick={() => handleCheckForReason(prize)}
+            // onClick={() => handleCheckForReason(prize)}
             >
               Check For Reasons
             </ProviderDashboardButtonCheck>
-          </div>
+          </Link>
         ) : prize.status === RaffleStatus.PENDING ? (
-          <div
-            className="providePrize_timer absolute bottom-3 right-4 left-4"
-            onClick={() => handleShowUserDetails(prize)}
+          <Link
+            className="absolute bottom-3 right-4 left-4"
+            href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
           >
             <ProviderDashboardButtonShowDetails>
               Show Details
             </ProviderDashboardButtonShowDetails>
-          </div>
+          </Link>
         ) : day >= 1 ||
           (prize.status == RaffleStatus.VERIFIED &&
             new Date(prize.startAt) > new Date() &&
@@ -189,7 +209,12 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               onClick={() => handleWinnersResult(prize)}
               className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
             >
-              <p>Check Winner Wallets</p>
+              <p>
+                {prize.numberOfOnchainEntries >= 1 &&
+                !prize.winnerEntries?.length
+                  ? "Raffle is being processed"
+                  : "Check Winner Wallets"}
+              </p>
             </div>
           </div>
         )}
@@ -199,12 +224,37 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
 };
 
 const PrizeTapContent = () => {
-  const {
-    selectNewOffer,
-    handleSelectNewOffer,
-    userRaffles,
-    userRafflesLoading,
-  } = usePrizeOfferFormContext();
+  // const {
+  //   selectNewOffer,
+  //   handleSelectNewOffer,
+  //   userRaffles,
+  //   userRafflesLoading,
+  //   isShowingDetails,
+  // } = usePrizeOfferFormContext();
+  const { userToken } = useUserProfileContext();
+  const [userRafflesLoading, setUserRafflesLoading] = useState(false);
+  const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
+
+  const handleGetUserRaffles = useCallback(async () => {
+    if (!userToken) return;
+    try {
+      const raffles = await getUserRaffles(userToken);
+      setUserRaffles(raffles);
+      setUserRafflesLoading(false);
+    } catch (e: any) {
+      setUserRafflesLoading(false);
+    }
+  }, [userToken]);
+
+  useRefreshWithInitial(
+    () => {
+      setUserRafflesLoading(true);
+      handleGetUserRaffles();
+    },
+    FAST_INTERVAL,
+    []
+  );
+
   const [selectedFilter, setSelectedFilter] = useState<string>(
     RaffleStatus.ALL
   );
@@ -289,109 +339,104 @@ const PrizeTapContent = () => {
   }, [selectedFilter, userRaffles, searchPhrase]);
 
   return (
-    <div>
-      {!selectNewOffer && (
-        <div>
-          <WinnersModal />
-          <div className="flex flex-col md:flex-row  items-center justify-between ">
-            <SearchInput
-              className="w-full md:w-1/3"
-              handleSetSearchPhrase={handleSetSearchPhrase}
-            />
-            <div
-              className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
-            >
-              <div
-                className={`${
-                  RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
-                }`}
-                onClick={() => handleSelectFilter(RaffleStatus.ALL)}
-              >
-                All
-              </div>
-              <div
-                className={`${
-                  RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
-                }`}
-                onClick={() => handleSelectFilter(RaffleStatus.ONGOING)}
-              >
-                ongoing
-              </div>
-              <div
-                className={`${
-                  RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
-                }`}
-                onClick={() => handleSelectFilter(RaffleStatus.VERIFIED)}
-              >
-                verified
-              </div>
-              <div
-                className={`${
-                  RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
-                }`}
-                onClick={() => handleSelectFilter(RaffleStatus.REJECTED)}
-              >
-                rejected
-              </div>
-              <div
-                className={`${
-                  RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
-                }`}
-                onClick={() => handleSelectFilter(RaffleStatus.FINISHED)}
-              >
-                finished
-              </div>
-            </div>
-          </div>
+    <div className="min-h-[600px]">
+      <div>
+        <div className="flex flex-col md:flex-row  items-center justify-between ">
+          <SearchInput
+            className="w-full md:w-1/3"
+            handleSetSearchPhrase={handleSetSearchPhrase}
+          />
           <div
-            className={`${Styles.refillToken} h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center`}
+            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
           >
-            <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
-              <div className="flex items-center relative">
-                <div>
-                  <p className="text-[16px] font-semibold">Offer a New Prize</p>{" "}
-                  <p className="text-[14px] text-gray100">
-                    Here you can provide an NFT or Token for Prize Tap.
-                  </p>
-                </div>
-                <Icon
-                  className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
-                  iconSrc="/assets/images/provider-dashboard/prize-bg.png"
-                />
-              </div>
-              <div
-                onClick={() => handleSelectNewOffer(true)}
-                className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
-              >
-                + Provide a New Prize
-              </div>
+            <div
+              className={`${
+                RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
+              }`}
+              onClick={() => handleSelectFilter(RaffleStatus.ALL)}
+            >
+              All
+            </div>
+            <div
+              className={`${
+                RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
+              }`}
+              onClick={() => handleSelectFilter(RaffleStatus.ONGOING)}
+            >
+              ongoing
+            </div>
+            <div
+              className={`${
+                RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
+              }`}
+              onClick={() => handleSelectFilter(RaffleStatus.VERIFIED)}
+            >
+              verified
+            </div>
+            <div
+              className={`${
+                RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
+              }`}
+              onClick={() => handleSelectFilter(RaffleStatus.REJECTED)}
+            >
+              rejected
+            </div>
+            <div
+              className={`${
+                RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
+              }`}
+              onClick={() => handleSelectFilter(RaffleStatus.FINISHED)}
+            >
+              finished
             </div>
           </div>
-          {filteredRaffles && filteredRaffles.length > 0 && (
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredRaffles.map((item, index) => (
-                <PrizeCard key={index} prize={item} />
-              ))}
-            </div>
-          )}
-          {filteredRaffles?.length == 0 && !userRafflesLoading && (
-            <div className="flex items-center justify-center mt-5 text-gray100 animate-fadeInOut">
-              No items found
-            </div>
-          )}
-          {filteredRaffles.length == 0 &&
-            userRafflesLoading &&
-            selectedFilter == RaffleStatus.ALL && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-              </div>
-            )}
         </div>
-      )}
-
-      {selectNewOffer && <OfferPrizeForm />}
+        <div
+          className={`${Styles.refillToken} h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center`}
+        >
+          <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
+            <div className="flex items-center relative">
+              <div>
+                <p className="text-[16px] font-semibold">Offer a New Prize</p>{" "}
+                <p className="text-[14px] text-gray100">
+                  Here you can provide an NFT or Token for Prize Tap.
+                </p>
+              </div>
+              <Icon
+                className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
+                iconSrc="/assets/images/provider-dashboard/prize-bg.png"
+              />
+            </div>
+            <Link
+              href={RoutePath.PROVIDER_PRIZETAP_CREATE}
+              className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
+            >
+              + Provide a New Prize
+            </Link>
+          </div>
+        </div>
+        {filteredRaffles && filteredRaffles.length > 0 && (
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredRaffles.map((item, index) => (
+              <PrizeCard key={index} prize={item} />
+            ))}
+          </div>
+        )}
+        {filteredRaffles?.length == 0 && !userRafflesLoading && (
+          <div className="flex items-center justify-center mt-5 text-gray100 animate-fadeInOut">
+            No items found
+          </div>
+        )}
+        {filteredRaffles.length == 0 &&
+          userRafflesLoading &&
+          selectedFilter == RaffleStatus.ALL && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+          )}
+      </div>
     </div>
   );
 };

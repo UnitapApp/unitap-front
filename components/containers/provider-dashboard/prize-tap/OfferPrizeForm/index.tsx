@@ -9,6 +9,10 @@ import InformationVerification from "./InformationVerification";
 import DisplaySteps from "./DisplaySteps";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
+import { useCallback, useEffect, useState } from "react";
+import router from "next/router";
+import { useUserProfileContext } from "@/context/userProfile";
+import { getUserRaffles } from "@/utils/api";
 
 export const usePagination = () => {
   const { page, setPage } = usePrizeOfferFormContext();
@@ -39,8 +43,24 @@ const getForm = (page: number) =>
     InformationVerification,
   ][page];
 
-const OfferPrizeForm = () => {
+interface FromProp {
+  detailRafflePk?: string | undefined;
+  verificationRafflePK?: string | undefined;
+}
+
+const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
   const { page, display, prevPage } = usePagination();
+
+  const { userRaffle, handleCheckForReason, handleShowUserDetails } =
+    usePrizeOfferFormContext();
+
+  useEffect(() => {
+    if (!userRaffle) {
+      return;
+    }
+    if (detailRafflePk) handleShowUserDetails(userRaffle);
+    if (verificationRafflePK) handleCheckForReason(userRaffle);
+  }, [detailRafflePk, userRaffle]);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 select-none">

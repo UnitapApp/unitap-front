@@ -3,6 +3,8 @@
 import Icon from "@/components/ui/Icon";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardGoToDashBoard } from "../../Buttons";
+import Link from "next/link";
+import RoutePath from "@/utils/routes";
 
 export const InformationVerificationDes = {
   id: 5,
@@ -14,7 +16,7 @@ export const InformationVerificationDes = {
 };
 
 const InformationVerification = () => {
-  const { handleGOToDashboard, selectedRaffleForCheckReason } =
+  const { selectedRaffleForCheckReason } =
     usePrizeOfferFormContext();
   return (
     <div className="flex flex-col gap-5 w-full max-w-[452px] text-gray100 font-medium text-[12px] text-center animate-fadeIn">
@@ -109,14 +111,15 @@ const InformationVerification = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-col lg:flex-row w-full max-w-[452px] mt-[111px] items-center">
-        <ProviderDashboardGoToDashBoard
-          onClick={handleGOToDashboard}
-          className="opacity-[.2]"
-        >
+      <Link
+        // onClick={handleGOToDashboard}
+        href={RoutePath.PROVIDER_PRIZETAP}
+        className="flex flex-col lg:flex-row w-full max-w-[452px] mt-[111px] items-center"
+      >
+        <ProviderDashboardGoToDashBoard className="opacity-[.2]">
           Go To Dashboard
         </ProviderDashboardGoToDashBoard>
-      </div>
+      </Link>
     </div>
   );
 };

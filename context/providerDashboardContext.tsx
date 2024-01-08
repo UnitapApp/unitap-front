@@ -9,6 +9,7 @@ import {
   ErrorObjectProp,
   NftRangeProps,
   NftStatusProp,
+  Prize,
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
@@ -23,7 +24,7 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
+  // useRef,
   useState,
 } from "react";
 import { useUserProfileContext } from "./userProfile";
@@ -41,14 +42,14 @@ import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
 import {
   getConstraintsApi,
   getProviderDashboardValidChain,
-  getUserRaffles,
+  // getUserRaffles,
 } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
 import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
 import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
-import { useRefreshWithInitial } from "@/utils/hooks/refresh";
+// import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
 import Big from "big.js";
 import { NullCallback } from "@/utils";
@@ -180,7 +181,7 @@ export const ProviderDashboardContext = createContext<{
   canGoStepFive: () => boolean;
   selectNewOffer: boolean;
   handleSelectNewOffer: (select: boolean) => void;
-  handleGOToDashboard: () => void;
+  // handleGOToDashboard: () => void;
   insertRequirement: (
     requirement: ConstraintParamValues | null,
     id: number,
@@ -208,8 +209,8 @@ export const ProviderDashboardContext = createContext<{
   approveLoading: boolean;
   constraintsList: ConstraintProps[];
   handleApproveErc721Token: () => void;
-  userRaffles: UserRafflesProps[];
-  userRafflesLoading: boolean;
+  // userRaffles: UserRafflesProps[];
+  // userRafflesLoading: boolean;
   handleGetConstraints: () => void;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserRafflesProps) => void;
@@ -244,6 +245,7 @@ export const ProviderDashboardContext = createContext<{
   winnersResultRaffle: UserRafflesProps | null;
   endDateState: any;
   setEndDateState: (date: any) => void;
+  userRaffle: UserRafflesProps | undefined;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -283,7 +285,7 @@ export const ProviderDashboardContext = createContext<{
   closeShowPreviewModal: NullCallback,
   selectNewOffer: false,
   handleSelectNewOffer: NullCallback,
-  handleGOToDashboard: NullCallback,
+  // handleGOToDashboard: NullCallback,
   insertRequirement: NullCallback,
   requirementList: [],
   deleteRequirement: NullCallback,
@@ -301,8 +303,8 @@ export const ProviderDashboardContext = createContext<{
   constraintsList: [],
   isApprovedAll: false,
   handleApproveErc721Token: NullCallback,
-  userRaffles: [],
-  userRafflesLoading: false,
+  // userRaffles: [],
+  // userRafflesLoading: false,
   handleGetConstraints: NullCallback,
   updateChainList: NullCallback,
   handleCheckForReason: NullCallback,
@@ -345,9 +347,12 @@ export const ProviderDashboardContext = createContext<{
   winnersResultRaffle: null,
   endDateState: null,
   setEndDateState: NullCallback,
+  userRaffle: {} as any,
 });
 
-const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
+const ProviderDashboard: FC<
+  PropsWithChildren & { rafflesInitial?: UserRafflesProps }
+> = ({ children, rafflesInitial }) => {
   const [requirementList, setRequirementList] = useState<
     ConstraintParamValues[]
   >([]);
@@ -397,7 +402,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   const [createRaffleLoading, setCreateRaffleLoading] =
     useState<boolean>(false);
 
-  const [userRafflesLoading, setUserRafflesLoading] = useState<boolean>(false);
+  // const [userRafflesLoading, setUserRafflesLoading] = useState<boolean>(false);
 
   const [isApprovedAll, setIsApprovedAll] = useState<boolean>(false);
 
@@ -408,7 +413,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     string | null
   >(null);
 
-  const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
+  const [userRaffle, setUserRaffle] = useState<UserRafflesProps | undefined>(
+    rafflesInitial
+  );
 
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
@@ -474,7 +481,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     if (!address || !userBalance?.value) return;
   }, [chain, address, data.selectedChain]);
 
-  const refController = useRef<any>();
+  // const refController = useRef<any>();
 
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
@@ -533,7 +540,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         provider,
         setData,
         setIsErc20Approved,
-        handleSetContractStatus
+        handleSetContractStatus,
+        setInsufficientBalance
       );
     }
 
@@ -572,14 +580,12 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!data.tokenAmount) setInsufficientBalance(true);
-    else {
+    if (!data.tokenAmount || !data.tokenContractAddress)
+      setInsufficientBalance(true);
+    if (data.isNativeToken) {
       setInsufficientBalance(
-        data.isNativeToken
-          ? Number(data.tokenAmount) * Number(data.winnersCount) <
-              Number(userBalance?.formatted)
-          : Number(data.tokenAmount) * Number(data.winnersCount) <
-              Number(data.userTokenBalance)
+        Number(data.tokenAmount) * Number(data.winnersCount) <
+          Number(userBalance?.formatted)
       );
     }
   }, [
@@ -591,9 +597,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (data.tokenAmount && data.winnersCount) {
-      const totalAmount = fromWei(
-        toWei(data.tokenAmount) * Number(data.winnersCount)
-      );
+      const totalAmount = Number.isSafeInteger(Number(data.tokenAmount))
+        ? Number(data.tokenAmount) * Number(data.winnersCount)
+        : fromWei(toWei(data.tokenAmount) * Number(data.winnersCount));
       setData((prev) => ({
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
@@ -823,24 +829,24 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     }));
   };
 
-  const handleGetUserRaffles = useCallback(async () => {
-    if (!userToken) return;
-    refController.current = new AbortController();
-    try {
-      const raffles = await getUserRaffles(
-        userToken,
-        refController.current.signal
-      );
-      refController.current = null;
-      setUserRaffles(raffles);
-      setUserRafflesLoading(false);
-    } catch (e: any) {
-      if (e?.message !== "canceled" || !e?.message) {
-        console.log(e);
-      }
-      setUserRafflesLoading(false);
-    }
-  }, [userToken]);
+  // const handleGetUserRaffles = useCallback(async () => {
+  //   if (!userToken) return;
+  //   refController.current = new AbortController();
+  //   try {
+  //     const raffles = await getUserRaffles(
+  //       userToken,
+  //       refController.current.signal
+  //     );
+  //     refController.current = null;
+  //     setUserRaffles(raffles);
+  //     setUserRafflesLoading(false);
+  //   } catch (e: any) {
+  //     if (e?.message !== "canceled" || !e?.message) {
+  //       console.log(e);
+  //     }
+  //     setUserRafflesLoading(false);
+  //   }
+  // }, [userToken]);
 
   const updateChainList = useCallback(async () => {
     try {
@@ -957,19 +963,19 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     setIsModalOpen(true);
   };
 
-  const handleGOToDashboard = () => {
-    setSelectNewOffer(false);
-    setIsShowingDetails(false);
-    setPage(0);
-    setData(formInitialData);
-    handleSetEnrollDuration(1);
-    setChainName("");
-    setSelectedChain(null);
-    setCreteRaffleResponse(null);
-    setRequirementList([]);
-    setIsModalOpen(false);
-    setSelectedRaffleForCheckReason(null);
-  };
+  // const handleGOToDashboard = () => {
+  //   setSelectNewOffer(false);
+  //   setIsShowingDetails(false);
+  //   setPage(0);
+  //   setData(formInitialData);
+  //   handleSetEnrollDuration(1);
+  //   setChainName("");
+  //   setSelectedChain(null);
+  //   setCreteRaffleResponse(null);
+  //   setRequirementList([]);
+  //   setIsModalOpen(false);
+  //   setSelectedRaffleForCheckReason(null);
+  // };
 
   const handleApproveErc20Token = () => {
     if (!provider || !address || !signer) return;
@@ -1050,7 +1056,6 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
 
   const handleCheckForReason = (raffle: UserRafflesProps) => {
     setPage(5);
-    setSelectNewOffer(true);
     setSelectedRaffleForCheckReason(raffle);
   };
 
@@ -1187,9 +1192,9 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [data.totalAmount, data.tokenContractAddress]);
 
-  useEffect(() => {
-    return () => refController.current?.abort();
-  }, []);
+  // useEffect(() => {
+  //   return () => refController.current?.abort();
+  // }, []);
 
   useEffect(() => {
     if (selectedChain) {
@@ -1236,15 +1241,15 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [enrollmentDurations, data.startTimeStamp]);
 
-  useRefreshWithInitial(
-    () => {
-      // if (userRaffles.length > 0) return;
-      setUserRafflesLoading(true);
-      handleGetUserRaffles();
-    },
-    FAST_INTERVAL,
-    []
-  );
+  // useRefreshWithInitial(
+  //   () => {
+  //     // if (userRaffles.length > 0) return;
+  //     setUserRafflesLoading(true);
+  //     handleGetUserRaffles();
+  //   },
+  //   FAST_INTERVAL,
+  //   []
+  // );
 
   return (
     <ProviderDashboardContext.Provider
@@ -1283,7 +1288,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         openShowPreviewModal,
         selectNewOffer,
         handleSelectNewOffer,
-        handleGOToDashboard,
+        // handleGOToDashboard,
         insertRequirement,
         requirementList,
         deleteRequirement,
@@ -1303,8 +1308,8 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         constraintsList,
         isApprovedAll,
         handleApproveErc721Token,
-        userRaffles,
-        userRafflesLoading,
+        // userRaffles,
+        // userRafflesLoading,
         handleGetConstraints,
         updateChainList,
         handleCheckForReason,
@@ -1333,6 +1338,7 @@ const ProviderDashboard: FC<PropsWithChildren> = ({ children }) => {
         handleWinnersResult: setWinnersResultRaffle,
         endDateState,
         setEndDateState,
+        userRaffle,
       }}
     >
       {children}
