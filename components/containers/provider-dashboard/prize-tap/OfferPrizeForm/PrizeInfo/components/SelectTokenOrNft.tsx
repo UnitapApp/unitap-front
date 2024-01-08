@@ -168,6 +168,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     Number(data.totalAmount) <= 0))
                   ? "border-error"
                   : "border-gray30"
+              } ${
+                (!data.tokenContractAddress || !tokenContractStatus.isValid) &&
+                "opacity-[.4]"
               }`}
             >
               <div
