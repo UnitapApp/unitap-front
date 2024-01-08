@@ -35,7 +35,7 @@ export async function getChainList() {
 }
 
 export async function getOneTimeClaimedChainList(token: string) {
-  const response = await axiosInstance.get(
+  const response = await axiosInstance.get<ClaimReceipt[]>(
     "/api/gastap/user/one-time-claims/",
     {
       headers: {
@@ -44,7 +44,10 @@ export async function getOneTimeClaimedChainList(token: string) {
     }
   );
 
-  return response.data;
+  return response.data.map((item) => ({
+    ...item,
+    chain: convertFaucetToChain((item as any).faucet),
+  }));
 }
 
 export async function getActiveClaimHistory(token: string) {

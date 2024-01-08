@@ -50,7 +50,10 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
 
   if (!Array.isArray(res)) return [];
 
-  return res as ClaimReceipt[];
+  return res.map((item) => ({
+    ...item,
+    chain: convertFaucetToChain((item as any).faucet),
+  })) as ClaimReceipt[];
 };
 
 export async function getFuelChampionListServerSide() {
