@@ -476,7 +476,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         } text-transparent bg-clip-text bg-g-primary`}
                       >
                         {!winnersEntry.length && new Date(deadline) < new Date()
-                          ? "Deciding the winners"
+                          ? "Raffle is being processed"
                           : "Enrolled"}
                       </span>
                       <Icon
