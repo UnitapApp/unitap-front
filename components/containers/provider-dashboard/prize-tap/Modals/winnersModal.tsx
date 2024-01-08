@@ -64,6 +64,10 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     exportEnrollmentWallets();
   }, [exportEnrollmentWallets]);
 
+  useEffect(() => {
+    exportEnrollmentWallets();
+  }, [exportEnrollmentWallets]);
+
   if (!winnersResultRaffle) return null;
 
   return (

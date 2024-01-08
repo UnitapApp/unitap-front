@@ -26,7 +26,7 @@ export const approveErc721TokenCallback = async (
 
   const response = await signer?.writeContract({
     abi: erc721ABI,
-    address:  erc721Contract.address,
+    address: erc721Contract.address,
     account: address,
     functionName: "setApprovalForAll",
     args: [spenderAddress, true],

@@ -612,46 +612,51 @@ export const RaffleCardTimer = ({
   const [seconds, setSeconds] = useState("00");
   const [start, setStarted] = useState<boolean>(true);
 
-  useEffect(() => {
-    setStarted(new Date(startTime) < new Date());
-  }, [new Date()]);
+  const startTimeDate = useMemo(() => new Date(startTime), [startTime]);
 
-  let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
-  let FinishTimeDate = useMemo(
+  const FinishTimeDate = useMemo(
     () => new Date(start ? FinishTime : new Date()),
-    [FinishTime]
+    [FinishTime, start]
   );
 
-  let deadline = useMemo(
+  const deadline = useMemo(
     () =>
       startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate,
     [startTimeDate, FinishTimeDate, now]
   );
 
   useEffect(() => {
-    // calculate time difference between now and deadline
     const diff = deadline.getTime() - now.getTime();
     if (diff <= 0) {
+      setDays("00");
+      setHours("00");
+      setMinutes("00");
+      setSeconds("00");
+
       return;
     }
     // time calculations for days, hours, minutes and seconds
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const newDays = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    // set the state with the time difference
+
     setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
     setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
     setHours(hours < 10 ? `0${hours}` : hours.toString());
-    setDays(days < 10 ? `0${days}` : days.toString());
+    setDays(newDays < 10 ? `0${newDays}` : newDays.toString());
   }, [now, deadline]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
+    const interval = setInterval(() => {
+      setStarted(new Date(startTime) < new Date());
+      setNow(new Date());
+    }, 1000);
+
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [startTime]);
 
   return (
     <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
