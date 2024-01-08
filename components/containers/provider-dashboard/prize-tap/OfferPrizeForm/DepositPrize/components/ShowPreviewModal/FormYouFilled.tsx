@@ -35,6 +35,8 @@ const FormYouFilled = ({ data }: Prop) => {
     ? data.tokenAmount + " " + data.selectedChain.symbol
     : data.tokenAmount + " " + data.tokenSymbol;
 
+  const winnersCount = data.isNft ? data.nftTokenIds.length : data.winnersCount;
+
   return (
     <div
       className={`flex ${
@@ -68,7 +70,14 @@ const FormYouFilled = ({ data }: Prop) => {
       </div>
       <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-[14px] text-white p-4">
         <div className="flex justify-between">
-          <p>{prizeName}</p>
+          <div className="flex items-center">
+            <p>{prizeName}</p>
+            {winnersCount > 1 && (
+              <p className="rounded-xl ml-5 font-semibold text-xs p-1 px-2 bg-gray10 text-gray100">
+                {winnersCount + "x winners"}
+              </p>
+            )}
+          </div>
           <div className="flex gap-2">
             {data.twitter ? (
               <Icon
