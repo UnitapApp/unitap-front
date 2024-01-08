@@ -10,6 +10,7 @@ export const getErc20TokenContract = async (
   setData: any,
   setIsErc20Approved: any,
   handleSetContractStatus: any,
+  setInsufficientBalance: any
 ) => {
   if (!provider || !address) return;
 
@@ -46,6 +47,11 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
+    setInsufficientBalance(
+
+        Number(data.tokenAmount) * Number(data.winnersCount) <
+            Number(r4?.toString())
+    );
     setIsErc20Approved(
       Number(fromWei(r5.toString(), r3)) != 0 &&
         Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
