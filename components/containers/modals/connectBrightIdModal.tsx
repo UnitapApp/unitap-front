@@ -1,38 +1,41 @@
-"use client"
+"use client";
 
-import { Text } from "@/components/ui/text.style"
+import { Text } from "@/components/ui/text.style";
 
-import { ClaimButton, WhiteOutlinedButton } from "@/components/ui/Button/button"
+import {
+  ClaimButton,
+  WhiteOutlinedButton,
+} from "@/components/ui/Button/button";
 
-import { BrightIdModalState } from "@/types"
-import BrightStatusModal from "./brightStatusModal"
+import { BrightIdModalState } from "@/types";
+import BrightStatusModal from "./brightStatusModal";
 
-import Icon from "@/components/ui/Icon"
-import { useUserProfileContext } from "@/context/userProfile"
-import { useGlobalContext } from "@/context/globalProvider"
-import Modal from "@/components/ui/Modal/modal"
+import Icon from "@/components/ui/Icon";
+import { useUserProfileContext } from "@/context/userProfile";
+import { useGlobalContext } from "@/context/globalProvider";
+import Modal from "@/components/ui/Modal/modal";
 
 const ConnectBrightIdModalContent = () => {
-  const { userProfile, loading } = useUserProfileContext()
-  const tried = false
+  const { userProfile, loading } = useUserProfileContext();
+  const tried = false;
   const {
     closeBrightIdModal,
     openHaveBrightIdAccountModal,
     openBrightIdConnectionModal,
-  } = useGlobalContext()
+  } = useGlobalContext();
 
   const handleHaveBrightIdClicked = () => {
-    closeBrightIdModal()
-    openHaveBrightIdAccountModal()
-  }
+    closeBrightIdModal();
+    openHaveBrightIdAccountModal();
+  };
 
   const handleBrightIdConnectClicked = () => {
-    closeBrightIdModal()
-    openBrightIdConnectionModal()
-  }
+    closeBrightIdModal();
+    openBrightIdConnectionModal();
+  };
 
   if (userProfile?.isMeetVerified) {
-    return <BrightStatusModal success={true}></BrightStatusModal>
+    return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
   return (
@@ -43,7 +46,7 @@ const ConnectBrightIdModalContent = () => {
       <Icon
         data-testid="brightid-logo"
         className="bright-logo !w-4/12 z-10 mb-5"
-        iconSrc="assets/images/modal/bright-id-logo.svg"
+        iconSrc="/assets/images/modal/bright-id-logo.svg"
       />
       <p className="text-sm font-bold text-white mb-2">Login with BrightID</p>
       <p className="text-xs font-medium text-gray100 mb-5 text-center px-4 leading-6">
@@ -73,11 +76,11 @@ const ConnectBrightIdModalContent = () => {
         you can create a BrightID account and get verified in 2 simple steps
       </p>
     </div>
-  )
-}
+  );
+};
 
 const ConnectBrightIdModal = () => {
-  const { brightidModalStatus, closeBrightIdModal } = useGlobalContext()
+  const { brightidModalStatus, closeBrightIdModal } = useGlobalContext();
 
   return (
     <Modal
@@ -88,7 +91,7 @@ const ConnectBrightIdModal = () => {
     >
       <ConnectBrightIdModalContent />
     </Modal>
-  )
-}
+  );
+};
 
-export default ConnectBrightIdModal
+export default ConnectBrightIdModal;

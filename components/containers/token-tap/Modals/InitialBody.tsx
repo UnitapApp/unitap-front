@@ -2,13 +2,13 @@ import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { shortenAddress } from "@/utils";
 import Link from "next/link";
-import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style";
-import WalletAddress from "../../gas-tap/Modals/ClaimModal/walletAddress";
 import { Text } from "@/components/ui/text.style";
 import { useWalletAccount } from "@/utils/wallet";
 import { FC } from "react";
 import { Token } from "@/types";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { DropIconWrapper } from "../../modals/claimModal.style";
+import WalletAddress from "../../prize-tap/Modals/wallet-address";
 
 const InitialBody: FC<{
   token: Token;

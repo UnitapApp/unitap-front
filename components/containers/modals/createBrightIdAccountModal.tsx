@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { HaveBrightIdAccountModalState } from "@/types"
-import Icon from "@/components/ui/Icon"
-import { useGlobalContext } from "@/context/globalProvider"
-import Modal from "@/components/ui/Modal/modal"
+import { HaveBrightIdAccountModalState } from "@/types";
+import Icon from "@/components/ui/Icon";
+import { useGlobalContext } from "@/context/globalProvider";
+import Modal from "@/components/ui/Modal/modal";
 
 const CreateBrightIdAccountModalContent = () => {
   return (
@@ -14,7 +14,7 @@ const CreateBrightIdAccountModalContent = () => {
       <Icon
         data-testid="brightid-logo"
         className="bright-id-logo z-10 mb-5"
-        iconSrc="assets/images/modal/bright-id-flat-logo.svg"
+        iconSrc="/assets/images/modal/bright-id-flat-logo.svg"
       />
       <p className="text-sm text-gray100 mb-6 mr-auto">
         Create a BrightID account easily by following this steps:
@@ -31,7 +31,7 @@ const CreateBrightIdAccountModalContent = () => {
             )
           }
           className="cursor-pointer"
-          iconSrc="assets/images/modal/google-play.svg"
+          iconSrc="/assets/images/modal/google-play.svg"
           height="48px"
           width="auto"
         />
@@ -43,7 +43,7 @@ const CreateBrightIdAccountModalContent = () => {
             )
           }
           className="cursor-pointer"
-          iconSrc="assets/images/modal/app-store.svg"
+          iconSrc="/assets/images/modal/app-store.svg"
           height="48px"
           width="auto"
         />
@@ -63,12 +63,12 @@ const CreateBrightIdAccountModalContent = () => {
         then come back and connect your BrightID to enjoy Unitap
       </p>
     </div>
-  )
-}
+  );
+};
 
 const CreateBrightIdAccountModal = () => {
   const { closeHaveBrightIdAccountModal, haveBrightIdAccountModalStatus } =
-    useGlobalContext()
+    useGlobalContext();
 
   return (
     <Modal
@@ -81,7 +81,7 @@ const CreateBrightIdAccountModal = () => {
     >
       <CreateBrightIdAccountModalContent />
     </Modal>
-  )
-}
+  );
+};
 
-export default CreateBrightIdAccountModal
+export default CreateBrightIdAccountModal;
