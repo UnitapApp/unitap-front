@@ -1,31 +1,31 @@
-"use client";
+"use client"
 
-import Icon from "@/components/ui/Icon";
-import { Token } from "@/types";
-import { FC } from "react";
-import { Text } from "@/components/ui/text.style";
-import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import Icon from "@/components/ui/Icon"
+import { Token } from "@/types"
+import { FC } from "react"
+import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style"
+import { Text } from "@/components/ui/text.style"
+import { useTokenTapContext } from "@/context/tokenTapProvider"
 
 const SuccessBody: FC<{
-  token: Token;
+  token: Token
 }> = ({ token }) => {
-  const calculateClaimAmount = token.amount / 10 ** token.chain.decimals;
+  const calculateClaimAmount = token.amount / 10 ** token.chain.decimals
 
-  const { claimedTokensList, claimTokenResponse } = useTokenTapContext();
+  const { claimedTokensList, claimTokenResponse } = useTokenTapContext()
 
   const collectedToken = claimedTokensList.find(
     (item) => item.tokenDistribution.id === token.id
-  );
+  )
 
   const handleClick = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       `I've just claimed ${calculateClaimAmount} ${token?.token} from @Unitap_app 🔥\nClaim yours:`
     )}&url=${encodeURIComponent(
       "unitap.app/token-tap?hc=" + encodeURIComponent(token.token)
-    )}`;
-    window.open(twitterUrl, "_blank");
-  };
+    )}`
+    window.open(twitterUrl, "_blank")
+  }
 
   return (
     <>
@@ -90,7 +90,7 @@ const SuccessBody: FC<{
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SuccessBody;
+export default SuccessBody

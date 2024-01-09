@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import styled from "styled-components/";
-import { DV } from "@/components/ui/designVariables";
+import styled from "styled-components/"
+import { DV } from "@/components/ui/designVariables"
 
 interface props {
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large"
 }
 
 export const ModalWrapper = styled.div<props>`
@@ -20,15 +20,15 @@ export const ModalWrapper = styled.div<props>`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 export const ModalContent = styled.div<props>`
   ${({ size }) =>
     size === "small"
       ? `width: min(420px, 90%);`
       : size === "large"
-      ? `width: min(800px, 80%);`
-      : `width: min(500px, 80%);`}
+      ? `width: min(1000px, 90%);`
+      : `width: min(500px, 90%);`}
   margin: 0 5%;
   position: relative;
   padding: ${DV.sizes.basePadding * 2}px;
@@ -36,9 +36,9 @@ export const ModalContent = styled.div<props>`
   z-index: -2;
 
 }
-`;
+`
 
 export const ModalChildrenWrapper = styled.div<props>`
   border-radius: ${DV.sizes.baseRadius * 2}px;
   z-index: 10;
-`;
+`

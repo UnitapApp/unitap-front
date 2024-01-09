@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
-import { ClaimButton } from "@/components/ui/Button/button";
-import Icon from "@/components/ui/Icon";
-import { Prize } from "@/types";
-import { useNetworkSwitcher } from "@/utils/wallet";
-import { FC } from "react";
+import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style"
+import { ClaimButton } from "@/components/ui/Button/button"
+import Icon from "@/components/ui/Icon"
+import { Prize } from "@/types"
+import { useNetworkSwitcher } from "@/utils/wallet"
+import { FC } from "react"
 
 const WrongNetworkBody: FC<{
-  raffle: Prize;
+  raffle: Prize
 }> = ({ raffle }) => {
-  // const tokenImgLink: string = raffle.isPrizeNft
-  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-  //       Number(raffle.tokenUri.split("/")[3]) + 1
-  //     }.png`
-  //   : ""
+  const tokenImgLink: string = raffle.isPrizeNft
+    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+        Number(raffle.tokenUri.split("/")[3]) + 1
+      }.png`
+    : ""
 
-  const { switchChain } = useNetworkSwitcher();
+  const { switchChain } = useNetworkSwitcher()
 
   return (
     <>
@@ -25,7 +25,7 @@ const WrongNetworkBody: FC<{
           className="chain-logo z-10 mt-14 mb-10"
           width="auto"
           height="110px"
-          iconSrc={raffle!.imageUrl}
+          iconSrc={raffle!.isPrizeNft ? tokenImgLink : raffle!.imageUrl}
           alt=""
         />
       </DropIconWrapper>
@@ -44,7 +44,7 @@ const WrongNetworkBody: FC<{
         <p>Switch Network</p>
       </ClaimButton>
     </>
-  );
-};
+  )
+}
 
-export default WrongNetworkBody;
+export default WrongNetworkBody

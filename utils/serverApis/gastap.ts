@@ -1,18 +1,4 @@
-import { ClaimReceipt, Faucet, FuelChampion } from "@/types";
-import { convertFaucetToChain } from "../api";
-
-export const getFaucetListServer = async () => {
-  const chainsApi = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/faucet/list/",
-    {
-      cache: "no-store",
-    }
-  );
-
-  const data = await chainsApi.json();
-
-  return data.map((item: Faucet) => convertFaucetToChain(item));
-};
+import { ClaimReceipt } from "@/types";
 
 export const getClaimedReceiptsServer = async (token?: string) => {
   if (!token) return [];
@@ -29,10 +15,7 @@ export const getClaimedReceiptsServer = async (token?: string) => {
 
   if (!Array.isArray(res)) return [];
 
-  return res.map((item) => ({
-    ...item,
-    chain: convertFaucetToChain((item as any).faucet),
-  }));
+  return res as ClaimReceipt[];
 };
 
 export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
@@ -50,19 +33,5 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
 
   if (!Array.isArray(res)) return [];
 
-  return res.map((item) => ({
-    ...item,
-    chain: convertFaucetToChain((item as any).faucet),
-  })) as ClaimReceipt[];
+  return res as ClaimReceipt[];
 };
-
-export async function getFuelChampionListServerSide() {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/fuel-champion",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
-
-  return response as FuelChampion[];
-}

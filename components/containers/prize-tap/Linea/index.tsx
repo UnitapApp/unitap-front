@@ -1,16 +1,16 @@
-import { FC, useState, useEffect, useMemo } from "react";
-import { Prize } from "@/types";
-import { Action, RaffleCardTimer } from "../RafflesList";
-import { LineaRaffleEntry } from "@/types";
-import { getLineaRaffleEntries } from "@/utils/api";
-import CheckCircleImage from "./check-circle.svg";
-import { numberWithCommas } from "@/utils/numbers";
-import { usePrizeTapContext } from "@/context/prizeTapProvider";
-import { useSlowRefresh } from "@/utils/hooks/refresh";
-import Icon from "@/components/ui/Icon";
-import Tooltip from "@/components/ui/Tooltip";
-import { Button, ClaimAndEnrollButton } from "@/components/ui/Button/button";
-import Image from "next/image";
+import { FC, useState, useEffect, useMemo } from "react"
+import { Prize } from "@/types"
+import { Action, RaffleCardTimer } from "../RafflesList"
+import { LineaRaffleEntry } from "@/types"
+import { getLineaRaffleEntries } from "@/utils/api"
+import CheckCircleImage from "./check-circle.svg"
+import { numberWithCommas } from "@/utils/numbers"
+import { usePrizeTapContext } from "@/context/prizeTapProvider"
+import { useSlowRefresh } from "@/utils/hooks/refresh"
+import Icon from "@/components/ui/Icon"
+import Tooltip from "@/components/ui/Tooltip"
+import { Button, ClaimAndEnrollButton } from "@/components/ui/Button/button"
+import Image from "next/image"
 
 export const getUserEntry = (
   entryWallets: LineaRaffleEntry[],
@@ -23,12 +23,12 @@ export const getUserEntry = (
         entry.walletAddress.toLocaleLowerCase() ===
         userWallet.toLocaleLowerCase()
     )
-  );
-};
+  )
+}
 
 export const LineaRaffleCard: FC<{
-  raffle: Prize;
-  isHighlighted?: boolean;
+  raffle: Prize
+  isHighlighted?: boolean
 }> = ({ raffle, isHighlighted }) => {
   const {
     imageUrl,
@@ -49,9 +49,9 @@ export const LineaRaffleCard: FC<{
     winnerEntry,
     creatorProfile,
     maxMultiplier,
-  } = raffle;
+  } = raffle
 
-  const creator = creatorName || creatorProfile?.username;
+  const creator = creatorName || creatorProfile?.username
 
   const {
     openEnrollModal,
@@ -59,44 +59,44 @@ export const LineaRaffleCard: FC<{
     setIsLineaWinnersOpen,
     lineaEnrolledUsers,
     setLineaEnrolledUsers,
-  } = usePrizeTapContext();
+  } = usePrizeTapContext()
 
-  const [start, setStarted] = useState<boolean>(true);
-  const [showAllPermissions, setShowAllPermissions] = useState(false);
+  const [start, setStarted] = useState<boolean>(true)
+  const [showAllPermissions, setShowAllPermissions] = useState(false)
 
   const isEnded =
-    (new Date().getTime() - new Date(deadline).getTime()) / (1000 * 60) > 0;
+    (new Date().getTime() - new Date(deadline).getTime()) / (1000 * 60) > 0
 
   const firstWinner = useMemo(
     () => lineaEnrolledUsers.find((entry) => entry.isWinner),
     [lineaEnrolledUsers]
-  );
+  )
 
   useEffect(() => {
-    setStarted(new Date(startAt) < new Date());
-  }, [new Date()]);
+    setStarted(new Date(startAt) < new Date())
+  }, [new Date()])
 
   useSlowRefresh(() => {
     getLineaRaffleEntries().then((res) => {
-      setLineaEnrolledUsers(res);
-    });
-  }, [getLineaRaffleEntries, setLineaEnrolledUsers]);
+      setLineaEnrolledUsers(res)
+    })
+  }, [getLineaRaffleEntries, setLineaEnrolledUsers])
 
   const tokenImgLink: string | undefined = tokenUri
     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
         Number(tokenUri.split("/")[3]) + 1
       }.png`
-    : undefined;
+    : undefined
 
   const prizeLink = isPrizeNft
     ? imageUrl
       ? imageUrl
       : tokenImgLink
-    : `https://etherscan.io/address/${raffle.prizeAsset}`;
+    : `https://etherscan.io/address/${raffle.prizeAsset}`
 
   const onPrizeClick = () => {
-    if (prizeLink) window.open(prizeLink, "_blank");
-  };
+    if (prizeLink) window.open(prizeLink, "_blank")
+  }
 
   return (
     <>
@@ -126,7 +126,7 @@ export const LineaRaffleCard: FC<{
                 />
               </div>
             </div>
-            <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
+            <div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
               <p className="text-gray100 text-[10px] p-1">on</p>
               <img
                 src="/assets/images/prize-tap/linea.svg"
@@ -370,5 +370,5 @@ export const LineaRaffleCard: FC<{
         </div>
       </div>
     </>
-  );
-};
+  )
+}

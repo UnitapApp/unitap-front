@@ -18,13 +18,13 @@ import {
   getClaimedTokensListAPI,
   getTokensListAPI,
   updateClaimFinished,
-} from "@/utils/api/tokentap";
+} from "@/utils/api/token-tap";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { unitapEvmTokenTapABI } from "@/types/abis/contracts";
 import { waitForTransaction } from "wagmi/actions";
 import { useGlobalContext } from "./globalProvider";
-import { FAST_INTERVAL, tokenTapContractAddressList } from "@/constants";
+import { FAST_INTERVAL } from "@/constants";
 import { Address, TransactionExecutionError } from "viem";
 
 export const TokenTapContext = createContext<{
@@ -107,9 +107,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     {
       abi: unitapEvmTokenTapABI,
       account: address,
-      address: selectedTokenForClaim
-        ? tokenTapContractAddressList[selectedTokenForClaim.token]
-        : undefined,
+      address: selectedTokenForClaim?.contract as Address,
       functionName: "claimToken",
     }
   );
@@ -137,7 +135,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
   const claimToken = useCallback(
     async (token: Token, body?: any) => {
-      if (!userToken || !address) return;
+      if (!userToken) return;
       reset();
       // refetch()
 
@@ -146,7 +144,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       let response;
 
       try {
-        response = await claimTokenAPI(userToken, token.id, address, body);
+        response = await claimTokenAPI(userToken, token.id, body);
       } finally {
         setClaimTokenSignatureLoading(false);
       }
@@ -157,110 +155,83 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       userToken,
       reset,
       // refetch,
-      address,
       setClaimTokenSignatureLoading,
     ]
   );
 
-  const claimWithWallet = useCallback(
-    async (claimTokenPayload?: TokenClaimPayload, claimId?: number) => {
-      if (!userToken || !selectedTokenForClaim) return;
+  const claimWithWallet = async (
+    claimTokenPayload?: TokenClaimPayload,
+    claimId?: number
+  ) => {
+    if (!userToken) return;
 
-      const contractAddress =
-        tokenTapContractAddressList[selectedTokenForClaim.token];
+    const chainId = Number(selectedTokenForClaim!.chain.chainId);
+    setLoading(true);
+    try {
+      const res = await claimToken(selectedTokenForClaim!);
 
-      if (!contractAddress) return;
+      const txPayload = res?.payload ?? claimTokenPayload;
 
-      const chainId = Number(selectedTokenForClaim.chain.chainId);
-      setLoading(true);
-      try {
-        const res = await claimToken(selectedTokenForClaim);
-
-        const txPayload = res?.payload ?? claimTokenPayload;
-
-        if (!txPayload || !address || !chainId) {
-          return;
-        }
-
-        if (!claimId) claimId = res!.id;
-
-        console.log({
-          abi: unitapEvmTokenTapABI,
-          account: address,
-          address: contractAddress,
-          functionName: "claimToken",
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
-        });
-
-        const contractGas = await provider.estimateContractGas({
-          abi: unitapEvmTokenTapABI,
-          account: address,
-          address: contractAddress,
-          functionName: "claimToken",
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
-        });
-
-        const claimRes = await writeAsync?.({
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
-          value: 0n,
-          gas: contractGas,
-        });
-
-        if (claimRes) {
-          await waitForTransaction({
-            hash: claimRes.hash,
-            confirmations: 1,
-            chainId,
-          }).then(async (res) => {
-            setClaimTokenResponse({
-              success: true,
-              state: "Done",
-              txHash: res.transactionHash,
-              message: "Token claimed successfully.",
-            });
-            await updateClaimFinished(userToken, claimId!, res.transactionHash);
-          });
-        }
-      } catch (e: any) {
-        const error: TransactionExecutionError = e;
-        setClaimTokenResponse({
-          success: false,
-          state: "Retry",
-          message: error.shortMessage,
-        });
-        console.log(error.cause, error.details, error.shortMessage);
-      } finally {
-        setClaimingTokenPk(null);
-        setLoading(false);
+      if (!txPayload || !address || !chainId) {
+        return;
       }
-    },
-    [
-      address,
-      claimToken,
-      provider,
-      selectedTokenForClaim,
-      userToken,
-      writeAsync,
-    ]
-  );
+
+      if (!claimId) claimId = res!.id;
+
+      const contractGas = await provider.estimateContractGas({
+        abi: unitapEvmTokenTapABI,
+        account: address,
+        address: selectedTokenForClaim?.contract as Address,
+        functionName: "claimToken",
+        args: [
+          txPayload.user,
+          txPayload.token,
+          BigInt(txPayload.amount),
+          txPayload.nonce,
+          txPayload.signature,
+        ],
+      });
+
+      const claimRes = await writeAsync?.({
+        args: [
+          txPayload.user,
+          txPayload.token,
+          BigInt(txPayload.amount),
+          txPayload.nonce,
+          txPayload.signature,
+        ],
+        value: 0n,
+        gas: contractGas,
+      });
+
+      if (claimRes) {
+        await waitForTransaction({
+          hash: claimRes.hash,
+          confirmations: 1,
+          chainId,
+        }).then(async (res) => {
+          setClaimTokenResponse({
+            success: true,
+            state: "Done",
+            txHash: res.transactionHash,
+            message: "Token claimed successfully.",
+          });
+          await updateClaimFinished(userToken, claimId!, res.transactionHash);
+        });
+      }
+    } catch (e: any) {
+      const error: TransactionExecutionError = e;
+      setClaimTokenResponse({
+        success: false,
+        state: "Retry",
+        message: error.shortMessage,
+      });
+      console.log(error.cause, error.details, error.shortMessage);
+    } finally {
+      setClaimingTokenPk(null);
+      setLoading(false);
+    }
+  };
 
   const handleClaimToken = useCallback(async () => {
     if (!selectedTokenForClaim || isLoading) return;
@@ -283,7 +254,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       setClaimTokenResponse(null);
       setSelectedTokenForClaim(token);
     },
-    [isConnected, setIsWalletPromptOpen]
+    [setSelectedTokenForClaim, setClaimTokenResponse, isConnected]
   );
 
   const closeClaimModal = useCallback(() => {

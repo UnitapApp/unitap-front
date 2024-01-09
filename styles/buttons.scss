@@ -83,7 +83,7 @@
     @apply bg-gray00 text-white;
 
     &::before {
-      @apply w-1.5 h-[6px] rounded-3xl bg-error inline-block -ml-1 mr-4 mb-[1px];
+      @apply w-1.5 h-[6px] rounded-3xl bg-error inline-block -ml-4 mr-4 mb-[1px];
       content: "";
     }
 

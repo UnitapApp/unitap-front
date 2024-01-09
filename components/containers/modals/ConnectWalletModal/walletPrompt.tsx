@@ -1,16 +1,15 @@
-import Icon from "@/components/ui/Icon";
-import { useWalletAccount, useWalletConnection } from "@/utils/wallet";
-import Link from "next/link";
-import { FC, MouseEventHandler, useEffect } from "react";
-import { ConnectionProvider, WalletState } from ".";
-import { checkUserExists } from "@/utils/api";
+import Icon from "@/components/ui/Icon"
+import { useWalletConnection } from "@/utils/wallet"
+import Link from "next/link"
+import { FC, MouseEventHandler } from "react"
+import { ConnectionProvider } from "."
 
-export const WalletProviderButton: FC<{
-  className?: string;
-  backgroundImage: string;
-  imageIcon: string;
-  label: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+const WalletProviderButton: FC<{
+  className?: string
+  backgroundImage: string
+  imageIcon: string
+  label: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }> = ({ backgroundImage, imageIcon, label, className, onClick }) => {
   return (
     <button
@@ -30,28 +29,13 @@ export const WalletProviderButton: FC<{
         <Icon className="ml-auto" iconSrc={backgroundImage} />
       </div>
     </button>
-  );
-};
+  )
+}
 
 const WalletPrompt: FC<{
-  setIsNewUser: (isNewUser: boolean) => void;
-  setWalletProvider: (provider: ConnectionProvider) => void;
-  setWalletState: (state: WalletState) => void;
-}> = ({ setWalletProvider, setWalletState, setIsNewUser }) => {
-  const { connect, connectors, isSuccess, isLoading } = useWalletConnection();
-
-  const { address } = useWalletAccount();
-
-  useEffect(() => {
-    if (!address) return;
-
-    checkUserExists(address).then((exists) => {
-      setIsNewUser(!exists);
-      setWalletState(
-        exists ? WalletState.SignMessage : WalletState.UnknownWallet
-      );
-    });
-  }, [address, setIsNewUser, setWalletState]);
+  setWalletProvider: (provider: ConnectionProvider) => void
+}> = ({ setWalletProvider }) => {
+  const { connect, connectors } = useWalletConnection()
 
   return (
     <>
@@ -67,26 +51,26 @@ const WalletPrompt: FC<{
         imageIcon="/assets/images/modal/metamask-icon.svg"
         backgroundImage="/assets/images/modal/metamask-bg.svg"
         onClick={() => {
-          setWalletProvider(ConnectionProvider.Metamask);
+          setWalletProvider(ConnectionProvider.Metamask)
           connect({
             connector: connectors.find(
               (connector) => connector.id === "injected"
             ),
-          });
+          })
         }}
       />
       <WalletProviderButton
-        className="from-[#16436f] mt-3"
+        className="from-[#3396FF] mt-3"
         label="WalletConnect"
         backgroundImage="/assets/images/modal/walletconnect-bg.svg"
         imageIcon="/assets/images/modal/walletconnect-icon.svg"
         onClick={() => {
-          setWalletProvider(ConnectionProvider.Walletconnect);
+          setWalletProvider(ConnectionProvider.Walletconnect)
           connect({
             connector: connectors.find(
               (connector) => connector.id === "walletConnect"
             ),
-          });
+          })
         }}
       />
       <div className="mt-10 text-sm flex items-center text-gray100">
@@ -114,7 +98,7 @@ const WalletPrompt: FC<{
         </Link>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default WalletPrompt;
+export default WalletPrompt

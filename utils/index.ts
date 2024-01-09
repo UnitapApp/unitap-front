@@ -29,12 +29,6 @@ export function getTxUrl(chain: Chain, txHash: string) {
   return `${explorerUrl}tx/${txHash}`
 }
 
-export function getAssetUrl(chain: Chain, address: string) {
-  let explorerUrl = chain.explorerUrl
-  explorerUrl = explorerUrl.endsWith("/") ? explorerUrl : `${explorerUrl}/`
-  return `${explorerUrl}address/${address}`
-}
-
 export function formatChainId(chainId: string) {
   return BigInt(chainId).toString(16)
 }

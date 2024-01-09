@@ -44,11 +44,7 @@ const Modal = ({
           data-testid="modal-wrapper"
         >
           <ModalContent
-            className={`${
-              className === "provider-dashboard__modal"
-                ? "bg-gray20"
-                : "bg-gray30"
-            } rounded-2xl border-2 border-gray80 ${
+            className={`bg-gray30 rounded-2xl border-2 border-gray80 ${
               errorSource && getError(errorSource) ? "!border-error " : ""
             }`}
             onClick={(e) => e.stopPropagation()}
@@ -77,11 +73,7 @@ const Modal = ({
               </span>
             </div>
             <ModalChildrenWrapper
-              className={`${
-                className === "provider-dashboard__modal"
-                  ? "bg-gray20"
-                  : "bg-gray30"
-              } max-h-[70vh] !rounded-none styled-scroll`}
+              className="bg-gray30 max-h-[70vh] !rounded-none styled-scroll"
               size={size}
             >
               {children}

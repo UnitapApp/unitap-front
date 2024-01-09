@@ -1,6 +1,5 @@
-import Image from "next/image";
-import Filters from "./components/filters";
-import SearchInput from "./components/searchInput";
+import Filters from "@/components/containers/gas-tap/filters"
+import SearchInput from "@/components/containers/gas-tap/searchInput"
 
 const GasTapLoading = () => {
   return (
@@ -13,12 +12,10 @@ const GasTapLoading = () => {
 
         <div className="flex flex-wrap justify-center md:justify-start mt-2">
           <div className="claim-stat__claimed rounded-lg bg-gray70 py-[2px] px-3 items-start h-14 flex gap-x-3">
-            <Image
-              width={252}
-              height={48}
+            <img
               className="w-full"
               src="/assets/images/gas-tap/dabe-loading.svg"
-              alt="faucet loading"
+              alt="loading"
             />
           </div>
         </div>
@@ -33,8 +30,8 @@ const GasTapLoading = () => {
         <GasCardLoading key={key} />
       ))}
     </div>
-  );
-};
+  )
+}
 
 const GasCardLoading = () => {
   return (
@@ -68,7 +65,7 @@ const GasCardLoading = () => {
 
       <div className="absolute w-96 h-[500px] animate-skeleton -top-40 z-10 opacity-20 rotate-[21.574deg] blur-2xl bg-[#797992]"></div>
     </div>
-  );
-};
+  )
+}
 
-export default GasTapLoading;
+export default GasTapLoading

@@ -6,22 +6,17 @@ import { RaffleCardTimerLandingPage } from "./raffleTimer";
 import { serverFetch } from "@/utils/api";
 import { Prize } from "@/types";
 
-// const nftImage = (tokenUri: string | undefined | null) => {
-//   let tokenImgLink: string | undefined = tokenUri
-//     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-//         Number(tokenUri.split("/")[3]) + 1
-//       }.png`
-//     : undefined;
-//   return tokenImgLink;
-// };
+const nftImage = (tokenUri: string | undefined | null) => {
+  let tokenImgLink: string | undefined = tokenUri
+    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+        Number(tokenUri.split("/")[3]) + 1
+      }.png`
+    : undefined;
+  return tokenImgLink;
+};
 
 const PrizeTapLanding: FC = async () => {
-  const rafflesList: Prize[] = (
-    await serverFetch("/api/prizetap/raffle-list/")
-  ).filter(
-    (raffle: Prize) =>
-      raffle.status !== "PENDING" && raffle.status !== "REJECTED"
-  );
+  const rafflesList: Prize[] = await serverFetch("/api/prizetap/raffle-list/");
 
   const validRaffles = rafflesList.sort(
     (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
@@ -37,7 +32,6 @@ const PrizeTapLanding: FC = async () => {
     <section className={"flex--1"}>
       <Link className={"flex--1"} href={RoutePath.PRIZE}>
         <Widget
-          id="prizetap"
           description={
             availableRaffles.length === 0
               ? "No raffles are live on Prize Tap"
@@ -45,9 +39,7 @@ const PrizeTapLanding: FC = async () => {
               ? "1 raffle is live on Prize Tap"
               : availableRaffles.length + " Raffles are live on PrizeTap..."
           }
-          className={
-            "h-full after:w-full after:-top-8 relative z-20 hover:bg-gray00"
-          }
+          className={"h-full after:w-full after:-top-8 hover:bg-gray00"}
           icon={"/prizetap-icon.png"}
           iconSize={"w-8 h-7"}
           title={"Prize Tap"}
@@ -69,7 +61,7 @@ const PrizeTapLanding: FC = async () => {
                         <img
                           width="62px"
                           height="63px"
-                          src={raffle.imageUrl}
+                          src={raffle.imageUrl || nftImage(raffle.tokenUri)}
                           alt={raffle.name}
                         />
                       </span>

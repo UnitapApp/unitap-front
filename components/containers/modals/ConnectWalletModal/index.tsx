@@ -1,50 +1,21 @@
-"use client";
+"use client"
 
-import Modal from "@/components/ui/Modal/modal";
-import { useGlobalContext } from "@/context/globalProvider";
-import { FC, useEffect, useMemo, useState } from "react";
-import WalletPrompt from "./walletPrompt";
-import WalletConnecting from "./walletConnecting";
-import UnknownWalletBody from "./unknownWallet";
-import AddNewWalletBody from "./addNewWallet";
-import SetUsernameBody from "./setUsername";
-import AddNewWalletSuccess from "./addNewWalletSuccess";
-import AddNewWalletFailed from "./addNewWalletFailed";
-import LoginSuccessBody from "./LoginSuccess";
+import Modal from "@/components/ui/Modal/modal"
+import { useGlobalContext } from "@/context/globalProvider"
+import { useWalletAccount } from "@/utils/wallet"
+import { useEffect, useMemo, useState } from "react"
+import WalletPrompt from "./walletPrompt"
+import WalletConnecting from "./walletConnecting"
 
 export enum ConnectionProvider {
   Metamask,
   Walletconnect,
 }
 
-export const getWalletProviderInfo = (provider: ConnectionProvider) => {
-  if (provider === ConnectionProvider.Metamask) {
-    return {
-      imageUrl: "/assets/images/modal/metamask-icon.svg",
-      label: "Metamask",
-      loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
-    };
-  }
-
-  return {
-    imageUrl: "/assets/images/modal/walletconnect-icon.svg",
-    label: "WalletConnect",
-    loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
-  };
-};
-
-export const RenderWalletBody: FC<{
-  setWalletTitle: (title: string) => void;
-}> = ({ setWalletTitle }) => {
-  const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.Prompt
-  );
-
-  const [isNewUser, setIsNewUser] = useState(false);
-
+const WalletModalBody = () => {
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
     ConnectionProvider.Metamask
-  );
+  )
 
   const currentWallet = useMemo(() => {
     if (walletProvider === ConnectionProvider.Metamask) {
@@ -52,111 +23,50 @@ export const RenderWalletBody: FC<{
         imageUrl: "/assets/images/modal/metamask-icon.svg",
         label: "Metamask",
         loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
-      };
+      }
     }
 
     return {
       imageUrl: "/assets/images/modal/walletconnect-icon.svg",
       label: "WalletConnect",
       loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
-    };
-  }, [walletProvider]);
+    }
+  }, [walletProvider])
 
-  useEffect(() => {
-    setWalletTitle(walletStateTitles[walletState]);
-  }, [setWalletTitle, walletState]);
+  const { isConnecting } = useWalletAccount()
 
-  if (walletState === WalletState.Prompt)
-    return (
-      <WalletPrompt
-        setWalletState={setWalletState}
-        setIsNewUser={setIsNewUser}
-        setWalletProvider={setWalletProvider}
-      />
-    );
-
-  if (walletState === WalletState.SignMessage)
+  if (isConnecting) {
     return (
       <WalletConnecting
-        isNewUser={isNewUser}
         imageUrl={currentWallet.imageUrl}
         label={currentWallet.label}
         loadingImage={currentWallet.loadingImage}
-        setWalletState={setWalletState}
       />
-    );
+    )
+  }
 
-  if (walletState === WalletState.UnknownWallet)
-    return <UnknownWalletBody setWalletState={setWalletState} />;
-
-  if (walletState === WalletState.AddNewWallet)
-    return (
-      <AddNewWalletBody
-        setWalletState={setWalletState}
-        setWalletProvider={setWalletProvider}
-      />
-    );
-
-  if (walletState === WalletState.LoggedIn)
-    return <LoginSuccessBody isNewUser={isNewUser} />;
-
-  if (walletState === WalletState.SetUsername)
-    return (
-      <SetUsernameBody
-        setWalletState={setWalletState}
-        walletProvider={walletProvider}
-      />
-    );
-
-  if (walletState === WalletState.AddWalletSuccess)
-    return <AddNewWalletSuccess />;
-
-  if (walletState === WalletState.AddWalletFailed)
-    return <AddNewWalletFailed setWalletState={setWalletState} />;
-};
-
-export enum WalletState {
-  Prompt,
-  SignMessage,
-  MetamaskSignMessage,
-  WalletConnectSignMessage,
-  SetUsername,
-  LoggedIn,
-  UnknownWallet,
-  AddNewWallet,
-  AddWalletFailed,
-  AddWalletSuccess,
+  return <WalletPrompt setWalletProvider={setWalletProvider} />
 }
 
-const walletStateTitles = {
-  [WalletState.Prompt]: "Conenct Wallet",
-  [WalletState.SignMessage]: "Conenct Wallet",
-  [WalletState.MetamaskSignMessage]: "Connect Metamask",
-  [WalletState.WalletConnectSignMessage]: "Connect WalletConnect",
-  [WalletState.LoggedIn]: "Conenct Wallet",
-  [WalletState.UnknownWallet]: "Select Wallet State",
-  [WalletState.AddNewWallet]: "Add Wallet to an Existing Account",
-  [WalletState.SetUsername]: "Register",
-  [WalletState.AddWalletFailed]: "Conenct Wallet",
-  [WalletState.AddWalletSuccess]: "Adding wallet",
-};
-
 export const ConnectWalletModal = () => {
-  const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext();
-  const [title, setTitle] = useState(walletStateTitles[WalletState.Prompt]);
+  const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext()
 
-  const setWalletTitle = (title: string) => setTitle(title);
+  const { isConnected } = useWalletAccount()
+
+  useEffect(() => {
+    if (isConnected) setIsWalletPromptOpen(false)
+  }, [isConnected])
 
   return (
     <Modal
-      title={title}
+      title="Connect Wallet"
       size="small"
       isOpen={isWalletPromptOpen}
       closeModalHandler={() => setIsWalletPromptOpen(false)}
     >
       <div className="flex flex-col items-center justify-center pt-12">
-        <RenderWalletBody setWalletTitle={setWalletTitle} />
+        <WalletModalBody />
       </div>
     </Modal>
-  );
-};
+  )
+}

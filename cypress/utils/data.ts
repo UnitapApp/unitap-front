@@ -4,30 +4,30 @@ import {
   ClaimReceipt,
   ClaimReceiptState,
   PK,
-} from "../../types";
+} from "../../types"
 
-import { shortenAddress } from "../../utils";
-import { Wallet } from "@ethersproject/wallet";
+import { shortenAddress } from "../../utils"
+import { Wallet } from "@ethersproject/wallet"
 
 // todo: figure out how env vars actually work in CI
 // const TEST_PRIVATE_KEY = Cypress.env('INTEGRATION_TEST_PRIVATE_KEY')
 export const TEST_PRIVATE_KEY =
-  "0xe580410d7c37d26c6ad1a837bbae46bc27f9066a466fb3a66e770523b4666d19";
+  "0xe580410d7c37d26c6ad1a837bbae46bc27f9066a466fb3a66e770523b4666d19"
 export const TEST_PRIVATE_KEY_2 =
-  "44e229c344b78a83ebe4cbd9e8c4c368f07471465f686a33d0a6e7d9e9cf2449";
+  "44e229c344b78a83ebe4cbd9e8c4c368f07471465f686a33d0a6e7d9e9cf2449"
 
 export const SIGNED_MESSAGE =
-  "0xa2162955fbfbac44ad895441a3501465861435d6615053a64fc9622d98061f1556e47c6655d0ea02df00ed6f6050298eea381b4c46f8148ecb617b32695bdc451c";
+  "0xa2162955fbfbac44ad895441a3501465861435d6615053a64fc9622d98061f1556e47c6655d0ea02df00ed6f6050298eea381b4c46f8148ecb617b32695bdc451c"
 
 // address of the above key
-export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address;
-export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2).address;
+export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address
+export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2).address
 
 export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(
   TEST_ADDRESS_NEVER_USE
-);
+)
 
-export const SAMPLE_ERROR_MESSAGE = "An error occurred";
+export const SAMPLE_ERROR_MESSAGE = "An error occurred"
 
 export const chainList: Partial<Chain>[] = [
   {
@@ -44,6 +44,8 @@ export const chainList: Partial<Chain>[] = [
     modalUrl:
       "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_xdai.jpg&w=32&q=75",
     maxClaimAmount: 10000000000000000,
+    claimed: "N/A",
+    unclaimed: "N/A",
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
     totalClaims: 2000,
     totalClaimsThisRound: 10,
@@ -63,6 +65,8 @@ export const chainList: Partial<Chain>[] = [
     logoUrl: "https://explorer.idchain.one/images/idchain-plain.svg",
     modalUrl: "https://explorer.idchain.one/images/idchain-plain.svg",
     maxClaimAmount: 1000,
+    claimed: "N/A",
+    unclaimed: "N/A",
     fundManagerAddress: TEST_ADDRESS_NEVER_USE_2,
     totalClaims: 2000,
     totalClaimsThisRound: 10,
@@ -70,7 +74,7 @@ export const chainList: Partial<Chain>[] = [
     isTestnet: false,
     chainType: "EVM",
   },
-];
+]
 
 export const chainListAuthenticatedClaimedFirst = [
   {
@@ -102,7 +106,7 @@ export const chainListAuthenticatedClaimedFirst = [
     claimed: 0,
     unclaimed: 1000,
   },
-];
+]
 
 export const chainListAuthenticatedClaimed = [
   {
@@ -134,7 +138,7 @@ export const chainListAuthenticatedClaimed = [
     claimed: 1000,
     unclaimed: 0,
   },
-];
+]
 
 export const userProfileNotVerified = {
   address: TEST_ADDRESS_NEVER_USE,
@@ -144,19 +148,19 @@ export const userProfileNotVerified = {
   verificationUrl:
     "https://app.brightid.org/link-verification/GasFaucet/948347ac-d66e-410a-b389-a3d797633a23",
   wallets: [],
-};
+}
 
 export const userProfileVerified = {
   ...userProfileNotVerified,
   isAuraVerified: true,
   isMeetVerified: true,
   verificationStatus: BrightIdVerificationStatus.VERIFIED,
-};
+}
 
 export const userMeetNotVerified = {
   ...userProfileVerified,
   isMeetVerified: false,
-};
+}
 
 export const claimMaxResponse: Omit<ClaimReceipt, "chain"> & { chain: number } =
   {
@@ -168,9 +172,9 @@ export const claimMaxResponse: Omit<ClaimReceipt, "chain"> & { chain: number } =
     // amount: BigInt('10000000000000000'),
     amount: 100000000,
     status: ClaimReceiptState.PENDING,
-  };
+  }
 
-export const emptyClaimHistoryResponse: ClaimReceipt[] = [];
+export const emptyClaimHistoryResponse: ClaimReceipt[] = []
 
 export const createClaimHistory: (
   chainPk: number,
@@ -181,9 +185,9 @@ export const createClaimHistory: (
   claimStatus,
   pk
 ) => {
-  const date = new Date();
+  const date = new Date()
   // const claimAmount: BigInt = BigInt('10000000000000000');
-  const claimAmount = 10000000;
+  const claimAmount = 10000000
 
   return {
     pk: pk as PK,
@@ -192,39 +196,39 @@ export const createClaimHistory: (
     datetime: date.toString(),
     amount: claimAmount,
     status: claimStatus,
-  };
-};
+  }
+}
 
 export const getClaimHistoryRespondPending = (chainPk: number) => {
-  const pk = 1023;
-  return [createClaimHistory(chainPk, ClaimReceiptState.PENDING, pk)];
-};
+  const pk = 1023
+  return [createClaimHistory(chainPk, ClaimReceiptState.PENDING, pk)]
+}
 export const getClaimHistoryRespondSuccessful = (chainPk: number) => {
-  const pk = 1023;
-  return [createClaimHistory(chainPk, ClaimReceiptState.VERIFIED, pk)];
-};
+  const pk = 1023
+  return [createClaimHistory(chainPk, ClaimReceiptState.VERIFIED, pk)]
+}
 export const getClaimHistoryRespondFailed = (chainPk: number) => {
-  const pk = 1023;
-  return [createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk)];
-};
+  const pk = 1023
+  return [createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk)]
+}
 export const getClaimHistoryRespondPendingAfterFail = (chainPk: number) => {
-  const pk = 1023;
+  const pk = 1023
   return [
     createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
     createClaimHistory(chainPk, ClaimReceiptState.PENDING, pk + 1),
-  ];
-};
+  ]
+}
 export const getClaimHistoryRespondSuccessfullAfterFail = (chainPk: number) => {
-  const pk = 1023;
+  const pk = 1023
   return [
     createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
     createClaimHistory(chainPk, ClaimReceiptState.VERIFIED, pk + 1),
-  ];
-};
+  ]
+}
 export const getClaimHistoryRespondFailAfterFail = (chainPk: number) => {
-  const pk = 1023;
+  const pk = 1023
   return [
     createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk),
     createClaimHistory(chainPk, ClaimReceiptState.REJECTED, pk + 1),
-  ];
-};
+  ]
+}

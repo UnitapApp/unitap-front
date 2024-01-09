@@ -41,14 +41,12 @@ export default async function RootLayout({
         <WagmiConfig config={config}>
           <UnitapProvider>
             <StyledJsxRegistry>
-              <div id="app">
-                <Header />
-                <main className="px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-14 max-w-screen-2xl m-auto flex flex-col w-full min-h-[calc(100vh_-_130px)]">
-                  {children}
-                </main>
+              <Header />
+              <main className="px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-14 max-w-screen-2xl m-auto flex flex-col w-full min-h-[calc(100vh_-_130px)]">
+                {children}
+              </main>
 
-                <Footer />
-              </div>
+              <Footer />
 
               <ConnectBrightIdModal />
               <BrightConnectionModal />

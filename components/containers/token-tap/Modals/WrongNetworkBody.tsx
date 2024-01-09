@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { ClaimButton } from "@/components/ui/Button/button";
-import Icon from "@/components/ui/Icon";
-import { FC } from "react";
-import { Chain } from "@/types";
-import { useNetworkSwitcher } from "@/utils/wallet";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import { ClaimButton } from "@/components/ui/Button/button"
+import Icon from "@/components/ui/Icon"
+import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style"
+import { FC } from "react"
+import { Chain } from "@/types"
+import { useNetworkSwitcher } from "@/utils/wallet"
 
 const WrongNetworkBody: FC<{
-  imageUrl: string;
-  chain: Chain;
+  imageUrl: string
+  chain: Chain
 }> = ({ chain, imageUrl }) => {
-  const { switchChain } = useNetworkSwitcher();
+  const { switchChain } = useNetworkSwitcher()
 
   return (
     <>
@@ -39,7 +39,7 @@ const WrongNetworkBody: FC<{
         <p>Switch Network</p>
       </ClaimButton>
     </>
-  );
-};
+  )
+}
 
-export default WrongNetworkBody;
+export default WrongNetworkBody

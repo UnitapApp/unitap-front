@@ -39,7 +39,7 @@ const config: Config = {
         gray30: "#1B1B29",
         gray40: "#1E1E2C",
         gray50: "#212130",
-        gray60: "#242431",
+        gray60: "#24242F",
         gray70: "#303043",
         gray80: "#4C4C5C",
         gray90: "#67677B",
@@ -98,14 +98,10 @@ const config: Config = {
         "donate-texture-s": "url('/assets/images/donate/donate-texture.svg')",
         "donate-texture-p": "url('/assets/images/donate/donate-texture.png')",
         "stats-texture": "url('/assets/images/landing/stats-texture.png')",
-        "soft-primary":
-          "linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.50) 33.85%, rgba(27, 27, 41, 0.50) 63.02%, rgba(77, 52, 81, 0.60) 100%)",
         "g-twitter":
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)",
-        "g-primary-2":
-          "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
           "linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)",
       },
@@ -129,26 +125,11 @@ const config: Config = {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(-15px)" },
         },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-				blinking: {
-					'50%': { opacity: '.3'},
-				},
-        fadeInOut: {
-          '0%': { opacity: '1' },
-          '50%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        }
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
         flip: "flip 0.5s ease-in ",
         rocket: "rocket 1500ms infinite  alternate;",
-        fadeIn: 'fadeIn 0.8s ease-in-out',
-				blinking: 'blinking 2s step-start 0s infinite',
-        fadeInOut: 'fadeIn 0.8s ease-in-out',
       },
       transitionProperty: {
         height: "height",

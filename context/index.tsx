@@ -3,7 +3,6 @@ import { ErrorsProvider } from "./errorsProvider";
 import { GlobalContextProvider } from "./globalProvider";
 import { UserContextProvider } from "./userProfile";
 import { Settings } from "@/types";
-import WalletProvider from "./walletProvider";
 
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const settings: Settings = await fetch(
@@ -15,7 +14,7 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
     <ErrorsProvider>
       <GlobalContextProvider>
         <UserContextProvider settings={settings}>
-          <WalletProvider>{children}</WalletProvider>
+          {children}
         </UserContextProvider>
       </GlobalContextProvider>
     </ErrorsProvider>

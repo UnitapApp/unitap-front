@@ -1,50 +1,49 @@
-"use client";
+"use client"
 
-import Collapse from "@/components/containers/pass/Collapse";
-import NFTTimer from "@/components/containers/pass/nftTimer";
-import Header from "@/components/containers/pass/Header";
-import RoutePath from "@/utils/routes";
-import Link from "next/link";
-import { useState, useMemo, useEffect } from "react";
-import dynamic from "next/dynamic";
-import Image from "next/image";
+import Collapse from "@/components/containers/pass/Collapse"
+import NFTTimer from "@/components/containers/pass/nftTimer"
+import Header from "@/components/containers/pass/Header"
+import RoutePath from "@/utils/routes"
+import Link from "next/link"
+import { useState, useMemo, useEffect } from "react"
+import dynamic from "next/dynamic"
 
 const MintNFTCard = dynamic(
   () => import("@/components/containers/pass/mintNftCard"),
   { ssr: false }
-);
+)
 
 const NftPass = () => {
-  const [isPreLaunch, setIsPreLaunch] = useState(false);
+  const [isPreLaunch, setIsPreLaunch] = useState(false)
 
-  const [countClicked, setCountClicked] = useState(0);
+  const [countClicked, setCountClicked] = useState(0)
 
-  const deadline = useMemo(() => new Date("January 12, 2023 16:00:00 UTC"), []);
+  const deadline = useMemo(() => new Date("January 12, 2023 16:00:00 UTC"), [])
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (deadline.getTime() < Date.now()) {
-        setIsPreLaunch(false);
+        setIsPreLaunch(false)
       }
-    }, 1000);
+    }, 1000)
 
-    return () => clearInterval(timer);
-  }, [deadline]);
+    return () => clearInterval(timer)
+  }, [deadline])
 
   const handleNFTClicked = () => {
-    setCountClicked(countClicked + 1);
+    setCountClicked(countClicked + 1)
     if (countClicked > 10) {
-      setIsPreLaunch(false);
+      setIsPreLaunch(false)
     }
-  };
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCountClicked(0);
-    }, 1000);
+      setCountClicked(0)
+    }, 1000)
 
-    return () => clearTimeout(timer);
-  }, [countClicked]);
+    return () => clearTimeout(timer)
+  }, [countClicked])
 
   return (
     <div className="m-auto flex flex-col justify-center items-center w-full">
@@ -68,12 +67,9 @@ const NftPass = () => {
               >
                 Prize Tap
               </Link>
-              <Image
-                width={28}
-                height={24}
+              <img
                 className="h-4 w-auto !inline"
-                src="/assets/images/about/prize-tap-icon.svg"
-                alt="prize-tap"
+                src="assets/images/about/prize-tap-icon.svg"
               />{" "}
               . Each Unitap Pass you hold will increase your chances of winning
               all future Prize Taps.
@@ -188,7 +184,7 @@ const NftPass = () => {
         </>
       </Collapse>
     </div>
-  );
-};
+  )
+}
 
-export default NftPass;
+export default NftPass
