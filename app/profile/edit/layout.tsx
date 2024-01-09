@@ -1,7 +1,14 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 
-const ProfileEditLayout: FC<PropsWithChildren> = ({ children }) => {
-  return <>{children}</>;
+const ProfileEditLayout: FC<
+  PropsWithChildren & { socialAccounts: ReactNode }
+> = ({ children, socialAccounts }) => {
+  return (
+    <>
+      {children}
+      {socialAccounts}
+    </>
+  );
 };
 
 export default ProfileEditLayout;

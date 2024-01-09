@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import { Text } from "@/components/ui/text.style"
-import { LightOutlinedButtonNew } from "../../ui/Button/button"
+import Icon from "@/components/ui/Icon";
+import { Text } from "@/components/ui/text.style";
+import { LightOutlinedButtonNew } from "../../ui/Button/button";
 
 const BrightStatusModal = ({ success }: { success: boolean }) => {
   function successState() {
     return (
       <div className="bright-connection-modal flex flex-col items-center justify-center pt-2">
-        <Icon iconSrc="./assets/images/modal/bright-icon.svg" mb={2}></Icon>
+        <Icon iconSrc="/assets/images/modal/bright-icon.svg" mb={2}></Icon>
         <Icon
-          iconSrc="./assets/images/modal/bright-success-icon.svg"
+          iconSrc="/assets/images/modal/bright-success-icon.svg"
           mb={2}
           ml={-1.5}
         ></Icon>
@@ -27,7 +27,7 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
           Your BrightID connected Successfully
         </Text>
       </div>
-    )
+    );
   }
 
   function failedState() {
@@ -40,7 +40,7 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
           <Icon
             data-testid="brightid-logo"
             className="bright-logo !w-4/12 z-10 mb-5"
-            iconSrc="assets/images/modal/bright-id-logo-checked.svg"
+            iconSrc="/assets/images/modal/bright-id-logo-checked.svg"
           />
           <p className="text-sm font-bold text-error mb-2">
             You are not verified on BrightID
@@ -60,11 +60,11 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
               Verify on BrightID{" "}
               <Icon
                 className="cursor-pointer arrow-icon mt-0.5 ml-1.5 w-2"
-                iconSrc="assets/images/arrow-icon.svg"
+                iconSrc="/assets/images/arrow-icon.svg"
               />
             </LightOutlinedButtonNew>
             <Icon
-              iconSrc="assets/images/modal/bright-id-check.svg"
+              iconSrc="/assets/images/modal/bright-id-check.svg"
               className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"
             />
           </span>
@@ -78,10 +78,10 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
           </p>
         </div>
       </>
-    )
+    );
   }
 
-  return <div>{success ? successState() : failedState()}</div>
-}
+  return <div>{success ? successState() : failedState()}</div>;
+};
 
-export default BrightStatusModal
+export default BrightStatusModal;

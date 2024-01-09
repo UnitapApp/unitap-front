@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style"
-import { FC } from "react"
-import { useGlobalContext } from "@/context/globalProvider"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import { useGlobalContext } from "@/context/globalProvider";
+import { DropIconWrapper } from "../../modals/claimModal.style";
 
 const BrightNotConnectedBody: FC<{
-  chainPk: number
-  imageUrl: string
+  chainPk: number;
+  imageUrl: string;
 }> = ({ chainPk, imageUrl }) => {
-  const { openBrightIdModal } = useGlobalContext()
+  const { openBrightIdModal } = useGlobalContext();
   return (
     <>
       <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
@@ -36,7 +36,7 @@ const BrightNotConnectedBody: FC<{
         <p>Connect BrightID</p>
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default BrightNotConnectedBody
+export default BrightNotConnectedBody;

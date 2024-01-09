@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
-import { DropIconWrapper } from "../../gas-tap/Modals/ClaimModal/claimModal.style"
-import { Text } from "@/components/ui/text.style"
-import { FC } from "react"
-import { Token } from "@/types"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
+import { Text } from "@/components/ui/text.style";
+import { FC } from "react";
+import { Token } from "@/types";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { DropIconWrapper } from "../../modals/claimModal.style";
 
 const MaxedOutBody: FC<{
-  token: Token
+  token: Token;
 }> = ({ token }) => {
-  const { closeClaimModal } = useTokenTapContext()
+  const { closeClaimModal } = useTokenTapContext();
 
   return (
     <>
@@ -46,7 +46,7 @@ const MaxedOutBody: FC<{
         <p>Close</p>
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default MaxedOutBody
+export default MaxedOutBody;

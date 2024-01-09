@@ -106,7 +106,7 @@ const Profile = async () => {
   );
 };
 
-export const Cart: FC<{ title: string; image: string; amount: number }> = ({
+const Cart: FC<{ title: string; image: string; amount: number }> = ({
   amount,
   image,
   title,
@@ -128,7 +128,7 @@ export const Cart: FC<{ title: string; image: string; amount: number }> = ({
   );
 };
 
-export const SeasonMission: FC<{
+const SeasonMission: FC<{
   title: string;
   xp: number;
   className?: string;

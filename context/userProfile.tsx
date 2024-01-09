@@ -44,6 +44,7 @@ export const UserProfileContext = createContext<
     deleteWallet: (address: Address) => Promise<void>;
     addNewWallet: (address: Address, pk: number) => void;
     logout: Function;
+    updateProfile: (arg: UserProfile) => void;
   }
 >({
   userProfile: null,
@@ -64,6 +65,7 @@ export const UserProfileContext = createContext<
   addNewWallet: NullCallback,
   deleteWallet: async () => {},
   logout: NullCallback,
+  updateProfile: NullCallback,
 });
 
 export const UserContextProvider: FC<
@@ -239,6 +241,7 @@ export const UserContextProvider: FC<
         nonEVMWalletAddress,
         setNonEVMWalletAddress,
         updateUsername,
+        updateProfile: (userProfile) => setUserProfile(userProfile),
         holdUserLogout,
         setHoldUserLogout,
         deleteWallet,

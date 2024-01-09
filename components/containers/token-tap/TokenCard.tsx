@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/Button/button";
 import { useWalletAccount } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { AddMetamaskButton } from "../gas-tap/Cards/Chainlist/ChainCard";
 import Markdown from "./Markdown";
 import Image from "next/image";
+import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
