@@ -1,7 +1,11 @@
 "use client";
 
 import { APIErrorsSource, Settings, UserProfile } from "@/types";
-import { getUserProfile, getUserProfileWithTokenAPI } from "@/utils/api/auth";
+import {
+  deleteWalletApi,
+  getUserProfile,
+  getUserProfileWithTokenAPI,
+} from "@/utils/api/auth";
 import useLocalStorageState from "@/utils/hooks";
 import { AxiosError } from "axios";
 import {
@@ -170,10 +174,20 @@ export const UserContextProvider: FC<
   };
 
   const deleteWallet = async (address: Address) => {
-    if (!userProfile) return;
-    const selectedWallet = userProfile.wallets.findIndex((wallet) =>
+    if (!userProfile || !userToken) return;
+    const selectedWalletIndex = userProfile.wallets.findIndex((wallet) =>
       isAddressEqual(wallet.address, address)
     );
+
+    const selectedWallet = userProfile.wallets[selectedWalletIndex];
+
+    if (!selectedWallet) return;
+
+    await deleteWalletApi(userToken, selectedWallet?.pk);
+
+    userProfile.wallets.splice(selectedWalletIndex, 1);
+
+    setUserProfile({ ...userProfile });
   };
 
   useMediumRefresh(getWeeklyChainClaimLimit, [getWeeklyChainClaimLimit]);

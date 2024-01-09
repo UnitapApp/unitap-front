@@ -21,10 +21,11 @@ const NotoSansMono = Noto_Sans_Mono({
   subsets: ["latin"],
 });
 
-export const Wallet: FC<{ address: string; isActive: boolean }> = ({
-  address,
-  isActive,
-}) => {
+export const Wallet: FC<{
+  address: string;
+  isActive: boolean;
+  isDeleteAllowed: boolean;
+}> = ({ address, isActive, isDeleteAllowed }) => {
   const { deleteWallet } = useUserProfileContext();
 
   const [copyMessage, setCopyMessage] = useState("");
@@ -77,13 +78,16 @@ export const Wallet: FC<{ address: string; isActive: boolean }> = ({
           alt="link"
         />
       </Link>
-      <Image
-        width={16}
-        height={18}
-        src="/assets/images/up-profile/trashcan.svg"
-        className="ml-auto opacity-70 cursor-pointer hover:opacity-100"
-        alt="delete"
-      />
+      {isDeleteAllowed && (
+        <Image
+          onClick={() => deleteWallet(address as Address)}
+          width={16}
+          height={18}
+          src="/assets/images/up-profile/trashcan.svg"
+          className="ml-auto opacity-70 cursor-pointer hover:opacity-100"
+          alt="delete"
+        />
+      )}
     </div>
   );
 };
@@ -206,6 +210,7 @@ const EditPage = () => {
                       wallet.address as Address
                     )
                   }
+                  isDeleteAllowed={userProfile.wallets.length > 1}
                 />
               ))}
             <button

@@ -123,9 +123,15 @@ export const setUsernameApi = async (username: string, userToken: string) => {
   return response.data;
 };
 
-export const deleteWalletApi = async (
-  userToken: string,
-  walletType: string
-) => {
-  const response = await axiosInstance.get("/api/auth/user/delete-wallet");
+export const deleteWalletApi = async (userToken: string, walletId: number) => {
+  const response = await axiosInstance.delete(
+    "/api/auth/user/wallets/" + walletId,
+    {
+      headers: {
+        Authorization: `token ${userToken}`,
+      },
+    }
+  );
+
+  return response.data;
 };
