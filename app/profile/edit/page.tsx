@@ -126,7 +126,7 @@ const EditPage = () => {
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      if (!userToken || username === userProfile?.username) return;
+      if (!userToken || username === userProfile?.username || !username) return;
       setLoading(true);
       checkUsernameValid(username, userToken)
         .catch((err) => {
@@ -175,7 +175,12 @@ const EditPage = () => {
               }`}
             />
             <button
-              disabled={username === userProfile?.username || loading}
+              disabled={
+                username === userProfile?.username ||
+                loading ||
+                !username ||
+                !!error
+              }
               onClick={onSubmit}
               className="absolute right-3 disabled:opacity-60 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] rounded-lg px-3 py-1"
             >

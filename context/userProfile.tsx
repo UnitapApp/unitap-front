@@ -206,7 +206,7 @@ export const UserContextProvider: FC<
 
   const logout = () => {
     disconnect?.();
-    localStorage.removeItem("userToken");
+    localStorage.clear();
     document.cookie = "userToken=;";
     setUserProfile(null);
     setToken("");

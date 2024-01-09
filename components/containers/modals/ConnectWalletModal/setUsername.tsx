@@ -40,7 +40,7 @@ const SetUsernameBody: FC<{
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      if (!userToken || username === userProfile?.username) return;
+      if (!userToken || username === userProfile?.username || !username) return;
       setLoading(true);
       checkUsernameValid(username, userToken)
         .catch((err) => {
@@ -97,7 +97,7 @@ const SetUsernameBody: FC<{
       <ClaimButton
         onClick={onSubmit}
         className="!w-full mt-10 disabled:opacity-60"
-        disabled={loading}
+        disabled={loading || !username || !!error}
       >
         <p className="font-semibold">
           {loading ? "Loading..." : "Start the Journey"}
