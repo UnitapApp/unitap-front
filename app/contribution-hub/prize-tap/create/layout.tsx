@@ -4,11 +4,7 @@ import { FC, PropsWithChildren } from "react";
 const ProviderDashboardPrizeTapLayout: FC<PropsWithChildren> = ({
   children,
 }) => {
-  return (
-    // <ProviderDashboardGasTapContextProvider>
-    <ProviderDashboard>{children}</ProviderDashboard>
-    // </ProviderDashboardGasTapContextProvider>
-  );
+  return <ProviderDashboard>{children}</ProviderDashboard>;
 };
 
 export default ProviderDashboardPrizeTapLayout;
