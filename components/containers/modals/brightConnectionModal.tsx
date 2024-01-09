@@ -76,7 +76,7 @@ const BrightConnectionModalBody = () => {
         userToken
       );
 
-      updateProfile(profile);
+      updateProfile({ ...userProfile!, isMeetVerified: true });
     } catch (e) {
     } finally {
       setLoading(false);
@@ -85,9 +85,10 @@ const BrightConnectionModalBody = () => {
     loading,
     keys?.address,
     signedPrivateKey,
-    deleteError,
     userToken,
+    deleteError,
     updateProfile,
+    userProfile,
   ]);
 
   if (userProfile?.isMeetVerified) {
