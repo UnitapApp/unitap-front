@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import Header from "./Header";
 import { usePathname } from "next/navigation";
 import RoutePath from "@/utils/routes";
@@ -57,6 +57,22 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 const ProviderTabs: FC = () => {
   const pathname = usePathname();
 
+  const [isCurrentPathValid, setIsCurrentPathValid] = useState(false);
+
+  useEffect(() => {
+    const validPaths = [
+      RoutePath.PROVIDER_PRIZETAP,
+      RoutePath.PROVIDERDASHBOARD,
+      RoutePath.PROVIDER_PRIZETAP_CREATE,
+      RoutePath.PROVIDER_PRIZETAP_DETAILS,
+      RoutePath.PROVIDER_PRIZETAP_VERIFICATION,
+    ];
+
+    setIsCurrentPathValid(
+      validPaths.some((path) => pathname === path || pathname.includes(path))
+    );
+  }, [pathname]);
+
   const borderPosition = pathname.includes(RoutePath.PROVIDER_GASTAP)
     ? "after:left-0"
     : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
@@ -92,13 +108,7 @@ const ProviderTabs: FC = () => {
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_PRIZETAP ||
-          pathname == RoutePath.PROVIDERDASHBOARD ||
-          pathname == RoutePath.PROVIDER_PRIZETAP_CREATE ||
-          pathname.includes(RoutePath.PROVIDER_PRIZETAP_DETAILS) ||
-          pathname.includes(RoutePath.PROVIDER_PRIZETAP_VERIFICATION)
-            ? " text-white opacity-1"
-            : "opacity-[0.2]"
+          isCurrentPathValid ? " text-white opacity-1" : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_PRIZETAP}
       >
