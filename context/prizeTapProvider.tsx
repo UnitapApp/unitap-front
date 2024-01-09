@@ -121,7 +121,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     if (
       !selectedRaffleForEnroll ||
       selectedRaffleForEnroll.isExpired ||
-      !userToken
+      !userToken ||
+      !address
     )
       return;
 
@@ -144,7 +145,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     if (!selectedRaffleForEnroll?.userEntry) {
       const enrollInApi = await getEnrollmentApi(
         userToken,
-        selectedRaffleForEnroll.pk
+        selectedRaffleForEnroll.pk,
+        address
       );
       setSelectedRaffleForEnroll({
         ...selectedRaffleForEnroll,
@@ -262,7 +264,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setMethod(method);
       setSelectedRaffleForEnroll(raffle);
     },
-    [setSelectedRaffleForEnroll, isConnected, setClaimOrEnrollWalletResponse]
+    [isConnected, setIsWalletPromptOpen]
   );
 
   const closeEnrollModal = useCallback(() => {

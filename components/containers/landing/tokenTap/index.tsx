@@ -1,27 +1,28 @@
-import { numberWithCommas } from "@/utils"
-import { getTokensListAPI } from "@/utils/api/token-tap"
-import RoutePath from "@/utils/routes"
-import Link from "next/link"
-import Widget from "../widget"
-import { serverFetch } from "@/utils/api"
-import { Token } from "@/types"
+import { numberWithCommas } from "@/utils";
+import { getTokensListAPI } from "@/utils/api/tokentap";
+import RoutePath from "@/utils/routes";
+import Link from "next/link";
+import Widget from "../widget";
+import { serverFetch } from "@/utils/api";
+import { Token } from "@/types";
 
 const TokenTapLanding = async () => {
   const tokensList: Token[] = await serverFetch(
     "/api/tokentap/token-distribution-list/"
-  )
+  );
 
   return (
     <section className={"flex--1"}>
       <Link className={"flex--1"} href={RoutePath.TOKEN}>
         <Widget
+          id="tokentap"
           description={
             "Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens"
           }
           icon={"tokentap-icon.svg"}
           iconSize={"w-8"}
           className={
-            "h-full after:bg-tokentap-texture hover:bg-gray00 cursor-pointer flex-1 "
+            "h-full after:bg-tokentap-texture relative z-20 hover:bg-gray00 cursor-pointer flex-1 "
           }
           title={"Token Tap"}
           buttonTitle={"Beta"}
@@ -54,7 +55,7 @@ const TokenTapLanding = async () => {
         </Widget>
       </Link>
     </section>
-  )
-}
+  );
+};
 
-export default TokenTapLanding
+export default TokenTapLanding;

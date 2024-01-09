@@ -4,16 +4,15 @@ import { FC, PropsWithChildren } from "react";
 import { cookies } from "next/headers";
 import {
   getClaimedReceiptsServer,
+  getFaucetListServer,
+  getFuelChampionListServerSide,
   getOneTimeClaimedReceiptsServer,
 } from "@/utils/serverApis";
 
 const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const chainsApi = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/chain/list/",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+  const chainsApi = await getFaucetListServer();
+
+  const fuelChampionList = await getFuelChampionListServerSide();
 
   const cookieStore = cookies();
 
@@ -31,6 +30,7 @@ const GasTapLayout: FC<PropsWithChildren> = async ({ children }) => {
     <GasTapProvider
       claimReceiptInitial={claimedChains}
       oneTimeClaimedGasListInitial={oneTimeClaimedChains}
+      fuelChampionList={fuelChampionList}
       chains={chains}
     >
       {children}

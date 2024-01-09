@@ -1,6 +1,6 @@
 "use client";
 
-import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { Prize } from "@/types";
