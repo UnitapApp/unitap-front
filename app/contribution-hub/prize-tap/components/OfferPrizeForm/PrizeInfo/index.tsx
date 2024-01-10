@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { ProviderFormPaginationProp } from "@/types";
 import SelectChainDropDown from "./components/SelectChainDropDown";
 import Pagination from "@/app/contribution-hub/pagination";
@@ -14,16 +13,6 @@ import {
 } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
 import { ClaimButton } from "@/components/ui/Button/button";
-
-export const PrizeInfoDescription = {
-  id: 0,
-  prevIcon:
-    "/assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
-  activeIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.png",
-  nextIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.svg",
-  title: "Prize info",
-  description: "Your prize information",
-};
 
 const PrizeInfo = ({
   handleChangeFormPagePrev,
@@ -97,7 +86,7 @@ const PrizeInfo = ({
               showErrors && !data.provider ? "border-error" : "border-gray50 "
             } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
           >
-            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center ">
+            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-gray100">
               <p>Provider</p>
             </div>
             <input
@@ -119,7 +108,9 @@ const PrizeInfo = ({
         </section>
 
         <SelectChainDropDown showErrors={showErrors} />
+
         <SelectTokenOrNft showErrors={showErrors} isRightChain={isRightChain} />
+
         <section className="w-full relative">
           <div
             className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
@@ -149,6 +140,7 @@ const PrizeInfo = ({
           )}
         </section>
       </div>
+
       {address && !isRightChain && data.selectedChain ? (
         <ClaimButton
           onClick={handleCheckConnection}
@@ -185,7 +177,7 @@ const PrizeInfo = ({
           handleNextPage={handleNextPage}
           page={page}
           isDisabled={
-            nftContractStatus.checking || tokenContractStatus.checking
+            tokenContractStatus.checking || nftContractStatus.checking
           }
         />
       )}

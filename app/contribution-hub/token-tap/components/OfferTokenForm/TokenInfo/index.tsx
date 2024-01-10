@@ -25,7 +25,10 @@ const TokenInfo = ({
     canGoStepTwo,
     updateChainList,
     isShowingDetails,
+    tokenContractStatus,
+    nftContractStatus,
   } = useTokenTapFromContext();
+
   const [showErrors, setShowErrors] = useState<boolean>(false);
   const { address, isConnected } = useWalletAccount();
   const { chain } = useWalletNetwork();
@@ -68,6 +71,7 @@ const TokenInfo = ({
   useEffect(() => {
     updateChainList();
   }, []);
+
   return (
     <div
       className={`flex flex-col justify-center w-full items-center animate-fadeIn`}
@@ -105,7 +109,9 @@ const TokenInfo = ({
         </section>
 
         <SelectChainDropDown showErrors={showErrors} />
+
         <SelectTokenOrNft showErrors={showErrors} isRightChain={isRightChain} />
+
         <section className="w-full relative">
           <div
             className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
@@ -135,6 +141,7 @@ const TokenInfo = ({
           )}
         </section>
       </div>
+
       {address && !isRightChain && data.selectedChain ? (
         <ClaimButton
           onClick={handleCheckConnection}
@@ -170,6 +177,9 @@ const TokenInfo = ({
           handleChangeFormPagePrev={handleChangeFormPagePrev}
           handleNextPage={handleNextPage}
           page={page}
+          isDisabled={
+            tokenContractStatus.checking || nftContractStatus.checking
+          }
         />
       )}
     </div>

@@ -5,6 +5,7 @@ import {
   ConstraintParamValues,
   ConstraintProps,
   ContractStatus,
+  ContractValidationStatus,
   EnrollmentDurationsProps,
   ErrorObjectProp,
   NftRangeProps,
@@ -37,7 +38,7 @@ import {
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
-import { FAST_INTERVAL, ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS } from "@/constants";
 import { getConstraintsApi, getProviderDashboardValidChain } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
@@ -311,12 +312,12 @@ export const TokenTapContext = createContext<{
   },
   tokenContractStatus: {
     checking: false,
-    isValid: false,
+    isValid: ContractValidationStatus.Empty,
     canDisplayStatus: false,
   },
   nftContractStatus: {
     checking: false,
-    isValid: false,
+    isValid: ContractValidationStatus.Empty,
     canDisplayStatus: false,
   },
   setNftStatus: NullCallback,
@@ -366,13 +367,13 @@ const TokenTapProvider: FC<
   const [tokenContractStatus, setTokenContractStatus] =
     useState<ContractStatus>({
       checking: false,
-      isValid: "empty",
+      isValid: ContractValidationStatus.Empty,
       canDisplayStatus: false,
     });
 
   const [nftContractStatus, setNftContractStatus] = useState<ContractStatus>({
     checking: false,
-    isValid: false,
+    isValid: ContractValidationStatus.Empty,
     canDisplayStatus: false,
   });
 
@@ -457,10 +458,6 @@ const TokenTapProvider: FC<
     chainId: chain?.id,
   });
 
-  useEffect(() => {
-    if (!address || !userBalance?.value) return;
-  }, [chain, address, data.selectedChain]);
-
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
       chain.chainName
@@ -468,8 +465,6 @@ const TokenTapProvider: FC<
         .includes(searchPhrase.toLocaleLowerCase())
     );
   }, [chainList, searchPhrase]);
-
-  const chainId = chain?.id;
 
   const deleteRequirement = (id: number) => {
     setRequirementList((prev) => prev.filter((item) => item.pk != id));
@@ -529,7 +524,7 @@ const TokenTapProvider: FC<
         provider,
         setData,
         setIsApprovedAll,
-        handleSetContractStatus
+        setNftContractStatus
       );
     }
   }, [address, data, provider]);
@@ -541,31 +536,22 @@ const TokenTapProvider: FC<
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
         checkContractInfo();
+      } else {
+        data.isNft
+          ? setNftContractStatus((prev) => ({
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
+          : setTokenContractStatus((prev) => ({
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
-      // else {
-      //   data.isNft
-      //     ? handleSetContractStatus(true, false, false, true)
-      //     : handleSetContractStatus(false, false, false, true);
-      // }
     },
     [checkContractInfo, data.isNft, isValidContractAddress]
   );
-
-  // const checkContractAddress = useCallback(
-  //   async (contractAddress: string) => {
-  //     const step1Check = isAddress(contractAddress);
-  //     const step2Check = await isValidContractAddress(contractAddress);
-  //     const isValid = !!(step1Check && step2Check);
-  //     if (isValid) {
-  //       checkContractInfo();
-  //     } else {
-  //       data.isNft
-  //         ? handleSetContractStatus(true, false, false, true)
-  //         : handleSetContractStatus(false, false, false, true);
-  //     }
-  //   },
-  //   [checkContractInfo, data.isNft, isValidContractAddress]
-  // );
 
   const handleSetDate = (timeStamp: number, label: string) => {
     label == "startTime"
@@ -573,94 +559,38 @@ const TokenTapProvider: FC<
       : setData((prevData) => ({ ...prevData, endTimeStamp: timeStamp }));
   };
 
-  // useEffect(() => {
-  //   if (!data.tokenAmount || !data.tokenContractAddress)
-  //     setInsufficientBalance(true);
-  //   if (data.isNativeToken) {
-  //     setInsufficientBalance(
-  //       Number(data.tokenAmount) * Number(data.winnersCount) <
-  //         Number(userBalance?.formatted)
-  //     );
-  //   }
-  // }, [
-  //   data.tokenAmount,
-  //   data.tokenContractAddress,
-  //   data.winnersCount,
-  //   data.userTokenBalance,
-  // ]);
-
-  useEffect(() => {
-    if (data.tokenAmount && data.winnersCount) {
-      const totalAmount = Number.isSafeInteger(Number(data.tokenAmount))
-        ? Number(data.tokenAmount) * Number(data.winnersCount)
-        : fromWei(toWei(data.tokenAmount) * Number(data.winnersCount));
-      setData((prev) => ({
-        ...prev,
-        totalAmount: new Big(totalAmount).toFixed(),
-      }));
-    } else {
-      setData((prev) => ({
-        ...prev,
-        totalAmount: new Big(0).toFixed(),
-      }));
-    }
-  }, [data.tokenAmount, data.winnersCount]);
-
   const canGoStepTwo = () => {
     if (isShowingDetails) return true;
     const {
       provider,
       description,
       selectedChain,
-      tokenAmount,
       nftContractAddress,
-      isNativeToken,
       tokenContractAddress,
       nftTokenIds,
-      userTokenBalance,
       winnersCount,
+      totalAmount,
     } = data;
 
     const checkToken = () => {
       if (data.isNft) return true;
-      const total = Number(tokenAmount) * Number(winnersCount);
-      if (
-        !data.totalAmount ||
-        Number(data.tokenAmount) <= 0 ||
-        !data.winnersCount ||
-        total <= 0
-      )
-        return false;
-      let balance: boolean = !data.isNativeToken
-        ? total <= Number(userTokenBalance)
-        : total < Number(userBalance?.formatted);
-      setInsufficientBalance(balance);
       const isValid =
-        tokenContractAddress == ZERO_ADDRESS
-          ? true
-          : tokenContractStatus.isValid;
-      if (
-        !isValid ||
-        !balance ||
-        (!isNativeToken && !tokenContractAddress) ||
-        Number(winnersCount) > 500
-      )
-        return false;
-      return true;
+        !insufficientBalance &&
+        tokenContractStatus.isValid === ContractValidationStatus.Valid &&
+        tokenContractAddress &&
+        Number(winnersCount) <= 500 &&
+        Number(totalAmount) > 0;
+      return isValid;
     };
 
     const checkNft = () => {
       if (!data.isNft) return true;
-      const isValid = nftContractStatus.isValid;
-      const isEqual = Number(numberOfNfts) === data.nftTokenIds.length;
-      const isMaxNumberTrue = Number(numberOfNfts) <= 500;
-      return !!(
-        nftContractAddress &&
-        nftTokenIds.length >= 1 &&
-        isValid &&
-        isEqual &&
-        isMaxNumberTrue
-      );
+      const isValid =
+        nftContractStatus.isValid === ContractValidationStatus.Valid &&
+        Number(numberOfNfts) === data.nftTokenIds.length &&
+        Number(numberOfNfts) <= 500 &&
+        nftTokenIds.length >= 1;
+      return !!isValid;
     };
 
     return !!(
@@ -799,43 +729,80 @@ const TokenTapProvider: FC<
     );
   };
 
+  //check NFT contract address
+  useEffect(() => {
+    if (
+      isShowingDetails ||
+      !data.isNft ||
+      data.nftContractAddress === zeroAddress
+    )
+      return;
+    if (!data.nftContractAddress) {
+      setIsApprovedAll(false);
+      setNftContractStatus((prev) => ({
+        ...prev,
+        isValid: ContractValidationStatus.Empty,
+        checking: false,
+      }));
+      setInsufficientBalance(false);
+      return;
+    } else {
+      setNftContractStatus((prev) => ({
+        ...prev,
+        isValid: ContractValidationStatus.Empty,
+        checking: true,
+      }));
+      checkContractAddress(data.nftContractAddress);
+    }
+  }, [data.isNft, data.nftContractAddress, isShowingDetails]);
+
+  //check token contract address
   useEffect(() => {
     if (isShowingDetails || data.isNft) return;
     if (!data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
-        isValid: "empty",
+        isValid: ContractValidationStatus.Empty,
         checking: false,
       }));
-
+      setInsufficientBalance(false);
       return;
     }
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
         ...prev,
-        isValid: true,
+        isValid: ContractValidationStatus.Valid,
         checking: false,
       }));
     } else {
       setTokenContractStatus((prev) => ({
         ...prev,
-        isValid: false,
+        isValid: ContractValidationStatus.Empty,
         checking: true,
       }));
       checkContractAddress(data.tokenContractAddress);
     }
   }, [data.isNft, data.tokenContractAddress, isShowingDetails]);
 
+  // set Insufficient balance
   useEffect(() => {
-    if (isShowingDetails || !data.tokenContractAddress) return;
-    console.log(data.totalAmount, userBalance?.formatted, data.isNativeToken);
-    if (data.totalAmount && data.tokenContractAddress) {
+    if (
+      isShowingDetails ||
+      !data.tokenContractAddress ||
+      tokenContractStatus.isValid === ContractValidationStatus.NotValid
+    )
+      return;
+    if (
+      data.totalAmount &&
+      data.tokenContractAddress &&
+      tokenContractStatus.isValid === ContractValidationStatus.Valid
+    ) {
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : data.totalAmount >= data.userTokenBalance!
+          : Number(data.totalAmount) >= Number(data.userTokenBalance!)
       );
     }
   }, [
@@ -845,7 +812,26 @@ const TokenTapProvider: FC<
     userBalance,
     isShowingDetails,
     data.isNativeToken,
+    tokenContractStatus.isValid,
   ]);
+
+  //set total amount
+  useEffect(() => {
+    if (data.tokenAmount && data.winnersCount) {
+      const totalAmount = Number.isSafeInteger(Number(data.tokenAmount))
+        ? Number(data.tokenAmount) * Number(data.winnersCount)
+        : fromWei(toWei(data.tokenAmount) * Number(data.winnersCount));
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(totalAmount).toFixed(),
+      }));
+    } else {
+      setData((prev) => ({
+        ...prev,
+        totalAmount: new Big(0).toFixed(),
+      }));
+    }
+  }, [data.tokenAmount, data.winnersCount]);
 
   const handleSelectNativeToken = (e: boolean) => {
     if (!data.selectedChain || isShowingDetails || !address) return;
@@ -906,16 +892,10 @@ const TokenTapProvider: FC<
         telegram: true,
       });
     }
-
-    // name == "tokenContractAddress" &&
-    //   handleSetContractStatus(false, false, false, false);
-    // name == "nftContractAddress" &&
-    //   handleSetContractStatus(true, false, false, false);
-
     let value = type == "checkbox" ? e.target.checked : e.target.value;
-    if (name == "provider" && value.length > 30) return;
-    if (name == "description" && value.length > 100) return;
-    if (name == "winnersCount" || name == "maxNumberOfEntries") {
+    if (name === "provider" && value.length > 30) return;
+    if (name === "description" && value.length > 100) return;
+    if (name === "winnersCount" || name === "maxNumberOfEntries") {
       value = value.replace(/[^0-9]/g, "");
     }
     setData((prevData) => ({
@@ -960,7 +940,7 @@ const TokenTapProvider: FC<
   const openAddNftIdListModal = () => {
     !isShowingDetails &&
       data.nftContractAddress &&
-      nftContractStatus.isValid &&
+      nftContractStatus.isValid === ContractValidationStatus.Valid &&
       Number(numberOfNfts) <= 500 &&
       setIsModalOpen(true);
   };
@@ -1090,9 +1070,9 @@ const TokenTapProvider: FC<
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
-    raffle.isPrizeNft
-      ? handleSetContractStatus(true, true, false, true)
-      : handleSetContractStatus(false, true, false, true);
+    // raffle.isPrizeNft
+    //   ? handleSetContractStatus(true, true, false, true)
+    //   : handleSetContractStatus(false, true, false, true);
     setConstraintsList(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
@@ -1130,63 +1110,6 @@ const TokenTapProvider: FC<
     setNftRange({ from: "", to: "" });
     setData((prev) => ({ ...prev, nftTokenIds: [] }));
   };
-
-  // useEffect(() => {
-  //   if (isShowingDetails || !data.tokenContractAddress || data.isNft) return;
-  //   if (!data.isNft && data.tokenContractAddress == ZERO_ADDRESS) {
-  //     handleSetContractStatus(false, true, false, true);
-  //     return;
-  //   }
-  //   handleSetContractStatus(false, false, true, false);
-  //   checkContractAddress(data.tokenContractAddress);
-  // }, [data.tokenContractAddress, chainId, data.isNft]);
-
-  const handleSetContractStatus = (
-    isNft: boolean,
-    isValid: boolean,
-    checking: boolean,
-    display: boolean
-  ) => {
-    !isNft &&
-      setTokenContractStatus((prev) => ({
-        ...prev,
-        isValid: isValid,
-        checking: checking,
-        canDisplayStatus: display,
-      }));
-
-    isNft &&
-      setNftContractStatus((prev) => ({
-        ...prev,
-        isValid: isValid,
-        checking: checking,
-        canDisplayStatus: display,
-      }));
-  };
-
-  // useEffect(() => {
-  //   if (isShowingDetails || !data.nftContractAddress || !data.isNft) return;
-  //   handleSetContractStatus(true, false, true, false);
-  //   checkContractAddress(data.nftContractAddress);
-  // }, [data.nftContractAddress, chainId, data.isNft]);
-
-  // useEffect(() => {
-  //   if (isShowingDetails || !data.tokenContractAddress) return;
-  //   if (
-  //     !data.tokenContractAddress ||
-  //     data.tokenContractAddress == zeroAddress
-  //   ) {
-  //     setData((prev) => ({ ...prev, userTokenBalance: undefined }));
-  //     return;
-  //   }
-  //   if (data.totalAmount && data.tokenContractAddress != ZERO_ADDRESS) {
-  //     const debounce = setTimeout(() => {
-  //       checkContractInfo();
-  //     }, 700);
-
-  //     return () => clearTimeout(debounce);
-  //   }
-  // }, [data.totalAmount, data.tokenContractAddress]);
 
   useEffect(() => {
     if (selectedChain) {

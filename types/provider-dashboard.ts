@@ -153,9 +153,13 @@ export type ErrorObjectProp = {
   numberOfWinnersMessage: null | string;
 };
 
+export enum ContractValidationStatus {
+  Valid, NotValid, Empty
+}
+
 export interface ContractStatus {
   checking: boolean;
-  isValid: boolean | 'empty';
+  isValid: ContractValidationStatus;
   canDisplayStatus: boolean;
 }
 

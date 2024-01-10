@@ -1,4 +1,4 @@
-import { ProviderDashboardFormDataProp } from "@/types";
+import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
 import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
 import { PublicClient, erc20ABI } from "wagmi";
@@ -27,7 +27,7 @@ export const getErc20TokenContract = async (
     setTokenContractStatus((prev: any) => (
       {
         ...prev,
-        isValid: false,
+        isValid: ContractValidationStatus.NotValid,
         checking: false,
       }
     ))
@@ -58,7 +58,7 @@ export const getErc20TokenContract = async (
     );
 
     setTokenContractStatus((prev: any) => ({...prev,
-      isValid: true,
+      isValid: ContractValidationStatus.Valid,
       checking: false,}))
   });
 };

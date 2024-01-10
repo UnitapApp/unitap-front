@@ -4,6 +4,7 @@ import Icon from "@/components/ui/Icon";
 import Modal from "@/components/ui/Modal/modal";
 import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
+import { ContractValidationStatus } from "@/types";
 import { useEffect, useMemo, useState } from "react";
 import Lottie from "react-lottie";
 
@@ -33,6 +34,17 @@ const AddNftIdListModalModalBody = () => {
     { name: tabsName.PASTE_IDS, disabled: false },
     { name: tabsName.UPLOAD_FILE, disabled: false },
   ];
+
+  const isTextAriaDisabled =
+    nftContractStatus.isValid === ContractValidationStatus.NotValid ||
+    !!uploadedFile ||
+    !!nftRange.from ||
+    !!nftRange.to;
+
+  const isUploadedFileDisabled =
+    nftContractStatus.isValid === ContractValidationStatus.NotValid ||
+    !!nftRange.from ||
+    !!nftRange.to;
 
   const [nftIds, setNftIds] = useState<string[]>([]);
 
@@ -204,7 +216,7 @@ const AddNftIdListModalModalBody = () => {
                   inputMode="numeric"
                   pattern="[0-9]"
                   step={1}
-                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray80"
+                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray100"
                   onChange={(e) => handleChangeRange(e.target.value, "from")}
                   value={nftRange.from}
                   disabled={!!uploadedFile || !!textAreaData}
@@ -219,7 +231,7 @@ const AddNftIdListModalModalBody = () => {
                   inputMode="numeric"
                   pattern="[0-9]"
                   step={1}
-                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray80"
+                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray100"
                   onChange={(e) => handleChangeRange(e.target.value, "to")}
                   value={nftRange.to}
                   disabled={!!uploadedFile || !!textAreaData}
@@ -252,20 +264,10 @@ const AddNftIdListModalModalBody = () => {
             >
               <div className="w-full ">
                 <textarea
-                  disabled={
-                    !nftContractStatus.isValid ||
-                    !!uploadedFile ||
-                    !!nftRange.from ||
-                    !!nftRange.to
-                  }
+                  disabled={isTextAriaDisabled}
                   placeholder={`... or paste ID, each one in a new line \n 1 \n 2 \n 3 `}
                   className={`w-[100%] flex bg-gray40 h-[142px] p-2 text-gray100 nftIdTextarea pl-3 border-none outline-none ${
-                    !nftContractStatus.isValid ||
-                    !!uploadedFile ||
-                    !!nftRange.from ||
-                    !!nftRange.to
-                      ? "opacity-50"
-                      : "opacity-100"
+                    isTextAriaDisabled ? "opacity-50" : "opacity-100"
                   }`}
                   onChange={(e) => handleChangeTextarea(e.target.value)}
                   value={textAreaData ?? ""}
@@ -316,12 +318,7 @@ const AddNftIdListModalModalBody = () => {
                     />
                     <div className="w-full relative mt-0">
                       <input
-                        disabled={
-                          !nftContractStatus.isValid ||
-                          !!textAreaData ||
-                          !!nftRange.from ||
-                          !!nftRange.to
-                        }
+                        disabled={isUploadedFileDisabled || !!textAreaData}
                         type="file"
                         className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
                         onChange={(e) => handleChangeUploadedFile(e)}
@@ -380,7 +377,7 @@ const AddNftIdListModalModalBody = () => {
           <button
             onClick={handleAddNft}
             className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
-              !nftContractStatus.isValid ||
+              nftContractStatus.isValid === ContractValidationStatus.NotValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
@@ -391,7 +388,7 @@ const AddNftIdListModalModalBody = () => {
                 : "text-white cursor-pointer"
             } `}
             disabled={
-              !nftContractStatus.isValid ||
+              nftContractStatus.isValid === ContractValidationStatus.NotValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
