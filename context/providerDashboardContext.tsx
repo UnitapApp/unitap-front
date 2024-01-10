@@ -73,7 +73,6 @@ const formInitialData: ProviderDashboardFormDataProp = {
   creatorUrl: "",
   necessaryInfo: "",
   satisfy: "satisfyAll",
-  allowListPrivate: false,
   numberOfDuration: 0,
   durationUnitTime: "Month",
   NftSatisfy: false,
@@ -173,9 +172,6 @@ export const ProviderDashboardContext = createContext<{
   filterChainList: Chain[];
   setSearchPhrase: (e: string) => void;
   handleSelectChain: (chain: Chain) => void;
-  handleSelectSatisfy: (satisfy: string) => void;
-  allowListPrivate: boolean;
-  handleSelectAllowListPrivate: () => void;
   canGoStepTwo: () => boolean;
   canGoStepThree: () => void;
   canGoStepFive: () => boolean;
@@ -275,9 +271,6 @@ export const ProviderDashboardContext = createContext<{
   filterChainList: [],
   setSearchPhrase: NullCallback,
   handleSelectChain: NullCallback,
-  handleSelectSatisfy: NullCallback,
-  allowListPrivate: false,
-  handleSelectAllowListPrivate: NullCallback,
   canGoStepTwo: () => false,
   canGoStepThree: NullCallback,
   canGoStepFive: () => false,
@@ -375,8 +368,6 @@ const ProviderDashboard: FC<
   const [chainList, setChainList] = useState<Chain[]>([]);
 
   const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
-
-  const [allowListPrivate, setAllowListPrivate] = useState<boolean>(false);
 
   const [endDateState, setEndDateState] = useState<any>(null);
 
@@ -817,10 +808,6 @@ const ProviderDashboard: FC<
     }));
   };
 
-  const handleSelectAllowListPrivate = () => {
-    setAllowListPrivate(!allowListPrivate);
-  };
-
   const handleSelectTokenOrNft = (e: boolean) => {
     if (!data.selectedChain || isShowingDetails) return;
     setData((prevData) => ({
@@ -866,13 +853,6 @@ const ProviderDashboard: FC<
     setSelectedChain(chain);
     setChainName(chain.chainName);
     setSearchPhrase("");
-  };
-
-  const handleSelectSatisfy = (satisfy: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      ["satisfy"]: satisfy,
-    }));
   };
 
   const handleGetConstraints = async () => {
@@ -1278,9 +1258,6 @@ const ProviderDashboard: FC<
         filterChainList,
         setSearchPhrase,
         handleSelectChain,
-        handleSelectSatisfy,
-        allowListPrivate,
-        handleSelectAllowListPrivate,
         canGoStepTwo,
         canGoStepThree,
         canGoStepFive,

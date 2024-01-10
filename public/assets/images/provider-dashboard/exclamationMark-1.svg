@@ -1,0 +1,39 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="16" height="16" fill="#151515"/>
+<g id="TokenTap Provider Dashboard">
+<path d="M-4342 -1274C-4342 -1275.1 -4341.1 -1276 -4340 -1276H7946C7947.1 -1276 7948 -1275.1 7948 -1274V3436C7948 3437.1 7947.1 3438 7946 3438H-4340C-4341.1 3438 -4342 3437.1 -4342 3436V-1274Z" fill="#404040"/>
+<path d="M-4340 -1275H7946V-1277H-4340V-1275ZM7947 -1274V3436H7949V-1274H7947ZM7946 3437H-4340V3439H7946V3437ZM-4341 3436V-1274H-4343V3436H-4341ZM-4340 3437C-4340.55 3437 -4341 3436.55 -4341 3436H-4343C-4343 3437.66 -4341.66 3439 -4340 3439V3437ZM7947 3436C7947 3436.55 7946.55 3437 7946 3437V3439C7947.66 3439 7949 3437.66 7949 3436H7947ZM7946 -1275C7946.55 -1275 7947 -1274.55 7947 -1274H7949C7949 -1275.66 7947.66 -1277 7946 -1277V-1275ZM-4340 -1277C-4341.66 -1277 -4343 -1275.66 -4343 -1274H-4341C-4341 -1274.55 -4340.55 -1275 -4340 -1275V-1277Z" fill="white" fill-opacity="0.1"/>
+<g id="offer prize3" clip-path="url(#clip0_6001_4739)">
+<rect width="1440" height="1392" transform="translate(-691 -428)" fill="#10101B"/>
+<g id="Group 3689">
+<g id="Frame 4054">
+<g id="Frame 4052">
+<rect x="-72" y="-50" width="596" height="604" rx="16" fill="#161623"/>
+<g id="Frame 3576">
+<g id="Frame 4051">
+<g id="Frame 4049">
+<g id="Token Contract Addess States">
+<g id="vuesax/linear/info-circle">
+<g id="info-circle">
+<path id="Vector" d="M7.99967 14.6654C11.6663 14.6654 14.6663 11.6654 14.6663 7.9987C14.6663 4.33203 11.6663 1.33203 7.99967 1.33203C4.33301 1.33203 1.33301 4.33203 1.33301 7.9987C1.33301 11.6654 4.33301 14.6654 7.99967 14.6654Z" stroke="#B5B5C6" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Group 4113">
+<path id="Vector_2" d="M8 5H8.00599" stroke="#B5B5C6" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M8 7.66797V11.0013" stroke="#B5B5C6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_6001_4739">
+<rect width="1440" height="1392" fill="white" transform="translate(-691 -428)"/>
+</clipPath>
+</defs>
+</svg>

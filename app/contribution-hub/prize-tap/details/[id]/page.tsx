@@ -1,5 +1,6 @@
 "use client";
-import OfferPrizeForm from "@/components/containers/provider-dashboard/prize-tap/OfferPrizeForm";
+import OfferPrizeForm from "../../components/OfferPrizeForm";
+
 import { useParams } from "next/navigation";
 
 const Page = () => {

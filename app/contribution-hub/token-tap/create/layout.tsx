@@ -1,22 +1,10 @@
-"use client";
+import TokenTapProvider from "@/context/providerDashboardTokenTapContext";
+import { FC, PropsWithChildren } from "react";
 
-import DisplaySteps from "@/components/containers/provider-dashboard/prize-tap/OfferPrizeForm/DisplaySteps";
-import { tokenTapCreateRouteSteps } from "@/constants/providerDashboard";
-import ProviderDashboardTokenTapProvider from "@/context/providerDashboardTokenTapContext";
-import { usePathname } from "next/navigation";
-import { FC, PropsWithChildren, createContext, useState } from "react";
-
-const ProviderTokenTapCreate: FC<PropsWithChildren> = ({ children }) => {
-  const pathname = usePathname();
-
-  return (
-    <ProviderDashboardTokenTapProvider>
-      <div className="flex flex-col md:flex-row gap-5">
-        <DisplaySteps page={tokenTapCreateRouteSteps[pathname]} />
-        {children}
-      </div>
-    </ProviderDashboardTokenTapProvider>
-  );
+const ProviderDashboardPrizeTapLayout: FC<PropsWithChildren> = ({
+  children,
+}) => {
+  return <TokenTapProvider>{children}</TokenTapProvider>;
 };
 
-export default ProviderTokenTapCreate;
+export default ProviderDashboardPrizeTapLayout;

@@ -8,7 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "./Buttons";
+import { BackToHomeButton } from "../../../app/contribution-hub/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
@@ -57,22 +57,6 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 const ProviderTabs: FC = () => {
   const pathname = usePathname();
 
-  const [isCurrentPathValid, setIsCurrentPathValid] = useState(false);
-
-  useEffect(() => {
-    const validPaths = [
-      RoutePath.PROVIDER_PRIZETAP,
-      RoutePath.PROVIDERDASHBOARD,
-      RoutePath.PROVIDER_PRIZETAP_CREATE,
-      RoutePath.PROVIDER_PRIZETAP_DETAILS,
-      RoutePath.PROVIDER_PRIZETAP_VERIFICATION,
-    ];
-
-    setIsCurrentPathValid(
-      validPaths.some((path) => pathname === path || pathname.includes(path))
-    );
-  }, [pathname]);
-
   const borderPosition = pathname.includes(RoutePath.PROVIDER_GASTAP)
     ? "after:left-0"
     : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
@@ -96,19 +80,20 @@ const ProviderTabs: FC = () => {
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_TOKENTAP
-            ? " text-white"
-            : "opacity-[0.2]"
+          pathname.includes("token-tap") ? " text-white" : "opacity-[0.2]"
         }`}
-        // href={RoutePath.PROVIDER_TOKENTAP}
-        href={"#"}
+        href={RoutePath.PROVIDER_TOKENTAP}
+        // href={"#"}
       >
         Token Tap{" "}
         <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          isCurrentPathValid ? " text-white opacity-1" : "opacity-[0.2]"
+          RoutePath.PROVIDERDASHBOARD == pathname ||
+          pathname.includes("prize-tap")
+            ? " text-white opacity-1"
+            : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_PRIZETAP}
       >

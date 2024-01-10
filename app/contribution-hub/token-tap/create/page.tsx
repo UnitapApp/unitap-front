@@ -1,11 +1,13 @@
 "use client";
 
-const CreateNewToken = () => {
+import OfferTokenForm from "../components/OfferTokenForm";
+
+const Page = () => {
   return (
     <div>
-      <div>salam</div>
+      <OfferTokenForm />
     </div>
   );
 };
 
-export default CreateNewToken;
+export default Page;

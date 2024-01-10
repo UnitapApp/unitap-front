@@ -9,8 +9,7 @@ export const getErc20TokenContract = async (
   provider: PublicClient,
   setData: any,
   setIsErc20Approved: any,
-  handleSetContractStatus: any,
-  setInsufficientBalance: any
+  setTokenContractStatus: any,
 ) => {
   if (!provider || !address) return;
 
@@ -25,10 +24,16 @@ export const getErc20TokenContract = async (
   try {
     await contract.read.decimals();
   } catch (e) {
-    handleSetContractStatus(false, false, false, true)
+    setTokenContractStatus((prev: any) => (
+      {
+        ...prev,
+        isValid: false,
+        checking: false,
+      }
+    ))
+    setIsErc20Approved(false)
     return;
   }
-
 
   Promise.all([
     contract.read.name(),
@@ -47,16 +52,13 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-    setInsufficientBalance(
-
-        Number(data.tokenAmount) * Number(data.winnersCount) <
-            Number(r4?.toString())
-    );
     setIsErc20Approved(
       Number(fromWei(r5.toString(), r3)) != 0 &&
         Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
     );
 
-    handleSetContractStatus(false, true, false, true);
+    setTokenContractStatus((prev: any) => ({...prev,
+      isValid: true,
+      checking: false,}))
   });
 };

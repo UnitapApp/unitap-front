@@ -1,11 +1,8 @@
 "use client";
 
-import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ConstraintParamValues } from "@/types";
 
-const useAddRequirement = () => {
-  const { handleBackToRequirementModal, insertRequirement, updateRequirement } =
-    usePrizeOfferFormContext();
+const useAddRequirement = (handleBackToRequirementModal: any, insertRequirement:any, updateRequirement:any) => {
   const addRequirements = (
     existRequirement: any,
     params: ConstraintParamValues | null,

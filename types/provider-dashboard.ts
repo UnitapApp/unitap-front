@@ -22,7 +22,6 @@ export type ProviderDashboardFormDataProp = {
   creatorUrl: string | null;
   necessaryInfo: string | null;
   satisfy: string;
-  allowListPrivate: boolean;
   numberOfDuration: number;
   durationUnitTime: string;
   NftSatisfy: boolean;
@@ -156,18 +155,19 @@ export type ErrorObjectProp = {
 
 export interface ContractStatus {
   checking: boolean;
-  isValid: boolean;
+  isValid: boolean | 'empty';
   canDisplayStatus: boolean;
 }
 
 export interface DisplayStepsProps {
   id: number;
-  name: string;
-  des: string;
-  selectStepImage: string;
-  passedStepImage: string;
-  garyImage: string;
+  prevIcon: string;
+  activeIcon: string;
+  nextIcon: string;
+  title: string;
+  description: string;
 }
+
 
 export interface NftRangeProps {
   from: string;
@@ -186,4 +186,13 @@ export interface EnrollmentDurationsProps {
 export interface UploadedFileProps {
   fileName: string;
   fileContent: any;
+}
+
+
+export interface ContactField {
+  name: keyof ProviderDashboardFormDataProp;
+  placeholder: string;
+  icon: string;
+  required: boolean;
+  baseUrl: string;
 }
