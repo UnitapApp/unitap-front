@@ -1,41 +1,42 @@
-import { useCallback, useMemo, useState } from "react"
-import { ClaimButton } from "@/components/ui/Button/button"
+import { useCallback, useMemo, useState } from "react";
+import { ClaimButton } from "@/components/ui/Button/button";
 
-import Icon from "@/components/ui/Icon"
+import Icon from "@/components/ui/Icon";
 import {
   unitapPassBatchSaleABI,
   useUnitapPassBatchSaleBatchSize,
   useUnitapPassBatchSaleBatchSoldCount,
   useUnitapPassBatchSalePrice,
-} from "@/types/abis/contracts"
+} from "@/types/abis/contracts";
 import {
   UNITAP_PASS_BATCH_SALE_ADDRESS,
   getSupportedChainId,
-} from "@/constants"
+} from "@/constants";
 import {
   useAccountBalance,
   useNetworkSwitcher,
   useWalletAccount,
-} from "@/utils/wallet"
-import { SupportedChainId } from "@/constants/chains"
-import { mainnet, useContractReads, useContractWrite } from "wagmi"
-import { goerli } from "viem/chains"
-import { CurrencyAmount } from "@uniswap/sdk-core"
-import { nativeOnChain } from "@/constants/tokens"
-import { useGlobalContext } from "@/context/globalProvider"
+} from "@/utils/wallet";
+import { SupportedChainId } from "@/constants/chains";
+import { mainnet, useContractReads, useContractWrite } from "wagmi";
+import { goerli } from "viem/chains";
+import { CurrencyAmount } from "@uniswap/sdk-core";
+import { nativeOnChain } from "@/constants/tokens";
+import { useGlobalContext } from "@/context/globalProvider";
+import Image from "next/image";
 
 export const unitCost = (unitCount: number | bigint, decimals: number) =>
-  BigInt(unitCount) * BigInt(10) ** BigInt(decimals)
+  BigInt(unitCount) * BigInt(10) ** BigInt(decimals);
 
 export const costToUnit = (price: bigint, decimals: bigint) =>
-  price / BigInt(10) ** decimals
+  price / BigInt(10) ** decimals;
 
-const supportedChainId = getSupportedChainId()
+const supportedChainId = getSupportedChainId();
 
-const saleAddress = UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]
+const saleAddress = UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId];
 
 const MintNFTCard = () => {
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(1);
 
   const { data: contractsRes, isLoading: isContractLoading } = useContractReads(
     {
@@ -61,7 +62,7 @@ const MintNFTCard = () => {
         },
       ],
     }
-  )
+  );
 
   const remainingCount = useMemo(
     () =>
@@ -70,43 +71,43 @@ const MintNFTCard = () => {
           ((contractsRes[0].result as number) ?? 0)
         : undefined,
     [contractsRes]
-  )
+  );
 
-  const { setIsWalletPromptOpen } = useGlobalContext()
+  const { setIsWalletPromptOpen } = useGlobalContext();
 
   const { selectedNetwork, switchChain: addAndSwitchToChain } =
-    useNetworkSwitcher()
+    useNetworkSwitcher();
 
-  const { isConnected, address } = useWalletAccount()
+  const { isConnected, address } = useWalletAccount();
 
-  const { data: accountBalance } = useAccountBalance(address, supportedChainId)
+  const { data: accountBalance } = useAccountBalance(address, supportedChainId);
 
-  const chainId = selectedNetwork?.id
+  const chainId = selectedNetwork?.id;
 
   const isRightChain = useMemo(() => {
-    if (!chainId) return false
-    return chainId === supportedChainId
-  }, [chainId])
+    if (!chainId) return false;
+    return chainId === supportedChainId;
+  }, [chainId]);
 
   const priceAmount = useMemo(() => {
     const chain =
-      supportedChainId === SupportedChainId.MAINNET ? mainnet : goerli
+      supportedChainId === SupportedChainId.MAINNET ? mainnet : goerli;
 
-    if (!contractsRes?.[1].result) return undefined
+    if (!contractsRes?.[1].result) return undefined;
 
     return CurrencyAmount.fromRawAmount(
       nativeOnChain(chain.id),
       contractsRes[1].result.toString()
-    )
-  }, [contractsRes])
+    );
+  }, [contractsRes]);
 
   const totalPriceAmount = useMemo(() => {
-    if (!priceAmount) return undefined
+    if (!priceAmount) return undefined;
 
-    return priceAmount.multiply(count)
-  }, [count, priceAmount])
+    return priceAmount.multiply(count);
+  }, [count, priceAmount]);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const { write, data, isLoading, isSuccess, isError, error, reset, isIdle } =
     useContractWrite({
@@ -115,50 +116,50 @@ const MintNFTCard = () => {
       functionName: "multiMint",
       chainId: supportedChainId,
       address: UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId],
-    })
+    });
 
   const chainScanLink = useMemo(() => {
     if (data?.hash) {
       if (chainId === SupportedChainId.MAINNET) {
-        return `https://etherscan.io/tx/${data.hash}`
+        return `https://etherscan.io/tx/${data.hash}`;
       } else if (chainId === SupportedChainId.GOERLI) {
-        return `https://goerli.etherscan.io/tx/${data.hash}`
+        return `https://goerli.etherscan.io/tx/${data.hash}`;
       }
     }
-  }, [chainId, data?.hash])
+  }, [chainId, data?.hash]);
 
   const switchNetwork = () => {
     if (supportedChainId === SupportedChainId.MAINNET) {
-      addAndSwitchToChain(SupportedChainId.MAINNET)
+      addAndSwitchToChain(SupportedChainId.MAINNET);
     } else if (supportedChainId === SupportedChainId.GOERLI) {
-      addAndSwitchToChain(SupportedChainId.GOERLI)
+      addAndSwitchToChain(SupportedChainId.GOERLI);
     }
-  }
+  };
 
   const sufficientAmount = useMemo(() => {
     if (supportedChainId === SupportedChainId.MAINNET) {
       return (
         unitCost(1, mainnet.nativeCurrency.decimals) * BigInt(count) <=
         (accountBalance?.value ?? BigInt(0))
-      )
+      );
     } else if (supportedChainId === SupportedChainId.GOERLI) {
       return (
         unitCost(1, goerli.nativeCurrency.decimals) * BigInt(count) <=
         (accountBalance?.value ?? BigInt(0))
-      )
+      );
     }
 
-    return false
-  }, [count, accountBalance])
+    return false;
+  }, [count, accountBalance]);
 
   const mintPass = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
+    if (loading) return;
+    setLoading(true);
 
     write({
       args: [count, address!],
       value: BigInt(contractsRes?.[1].result! as number) * BigInt(count),
-    })
+    });
 
     // try {
     //   const tx = await mintPassCallback?.()
@@ -183,7 +184,7 @@ const MintNFTCard = () => {
     //   console.log("mint failed")
     //   console.log(e)
     // }
-  }, [loading])
+  }, [loading]);
 
   return (
     <div className="mint-nft-card h-full flex flex-col justify-between ">
@@ -231,11 +232,11 @@ const MintNFTCard = () => {
             </p>
           )}
           {isSuccess || isError ? (
-            <ClaimButton onClick={reset} height="48px" $width="100% !important">
+            <ClaimButton onClick={reset} height="48px" className="!w-full">
               <p>Done</p>
             </ClaimButton>
           ) : (
-            <ClaimButton height="48px" $width="100% !important" disabled>
+            <ClaimButton height="48px" className="!w-full" disabled>
               <p>Pending</p>
             </ClaimButton>
           )}
@@ -249,11 +250,13 @@ const MintNFTCard = () => {
                 <span className="text-white flex">
                   {" "}
                   ETH{" "}
-                  <img
+                  <Image
+                    width={10}
+                    height={16}
                     className={"w-2.5 h-auto ml-2"}
-                    src={"assets/images/nft/eth-icon.svg"}
-                    alt={""}
-                  />{" "}
+                    src={"/assets/images/nft/eth-icon.svg"}
+                    alt={"ethereum"}
+                  />
                 </span>
               </p>
               <p className="text-gray100">
@@ -359,7 +362,7 @@ const MintNFTCard = () => {
                   <ClaimButton
                     onClick={mintPass}
                     height="48px"
-                    $width="100% !important"
+                    className="!w-full"
                     disabled={isLoading}
                   >
                     <p>{isLoading ? "Contract Loading" : "Mint Unitap Pass"}</p>
@@ -374,7 +377,7 @@ const MintNFTCard = () => {
               <ClaimButton
                 onClick={switchNetwork}
                 height="48px"
-                $width="100% !important"
+                className="!w-full"
               >
                 <p>Switch Network</p>
               </ClaimButton>
@@ -383,7 +386,7 @@ const MintNFTCard = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default MintNFTCard
+export default MintNFTCard;

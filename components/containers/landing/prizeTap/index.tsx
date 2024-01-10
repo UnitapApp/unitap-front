@@ -37,6 +37,7 @@ const PrizeTapLanding: FC = async () => {
     <section className={"flex--1"}>
       <Link className={"flex--1"} href={RoutePath.PRIZE}>
         <Widget
+          id="prizetap"
           description={
             availableRaffles.length === 0
               ? "No raffles are live on Prize Tap"
@@ -44,7 +45,9 @@ const PrizeTapLanding: FC = async () => {
               ? "1 raffle is live on Prize Tap"
               : availableRaffles.length + " Raffles are live on PrizeTap..."
           }
-          className={"h-full after:w-full after:-top-8 hover:bg-gray00"}
+          className={
+            "h-full after:w-full after:-top-8 relative z-20 hover:bg-gray00"
+          }
           icon={"/prizetap-icon.png"}
           iconSize={"w-8 h-7"}
           title={"Prize Tap"}

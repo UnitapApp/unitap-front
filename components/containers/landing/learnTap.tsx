@@ -1,4 +1,4 @@
-import UButton from "@/components/ui/Button/UButton"
+import UButton from "@/components/ui/Button/UButton";
 
 const learnTap = {
   name: "Learn Tap",
@@ -6,12 +6,12 @@ const learnTap = {
   description: "Where users can learn to use web3 technologies",
   class: "bg-learntap-texture",
   iconSize: "w-6",
-}
+};
 
 const LearnTapLanding = () => {
   return (
-    <section id="learn-tap">
-      <div className="flex flex-col justify-between uni-card bg-learntap-texture bg-cover h-40">
+    <section className="p-[1px] rounded-2xl" id="learntap">
+      <div className="flex relative z-20 flex-col justify-between uni-card bg-learntap-texture bg-cover h-40">
         <section className="sm:flex items-center justify-center flex-col p-4 h-full">
           <header className={`flex gap-4 items-center justify-between h-10`}>
             <div
@@ -46,7 +46,7 @@ const LearnTapLanding = () => {
         </section>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default LearnTapLanding
+export default LearnTapLanding;

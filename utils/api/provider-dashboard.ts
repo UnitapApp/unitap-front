@@ -1,5 +1,5 @@
 import { ConstraintProps } from "@/types";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 
 export async function createRaffleApi(token: string, raffleData: any) {
   const response = await axiosInstance.post<any>(

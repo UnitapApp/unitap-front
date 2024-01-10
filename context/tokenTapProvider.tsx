@@ -18,7 +18,7 @@ import {
   getClaimedTokensListAPI,
   getTokensListAPI,
   updateClaimFinished,
-} from "@/utils/api/token-tap";
+} from "@/utils/api/tokentap";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { unitapEvmTokenTapABI } from "@/types/abis/contracts";
@@ -137,7 +137,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
   const claimToken = useCallback(
     async (token: Token, body?: any) => {
-      if (!userToken) return;
+      if (!userToken || !address) return;
       reset();
       // refetch()
 
@@ -146,7 +146,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       let response;
 
       try {
-        response = await claimTokenAPI(userToken, token.id, body);
+        response = await claimTokenAPI(userToken, token.id, address, body);
       } finally {
         setClaimTokenSignatureLoading(false);
       }
@@ -157,6 +157,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       userToken,
       reset,
       // refetch,
+      address,
       setClaimTokenSignatureLoading,
     ]
   );
@@ -183,13 +184,27 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         if (!claimId) claimId = res!.id;
 
+        console.log({
+          abi: unitapEvmTokenTapABI,
+          account: address,
+          address: contractAddress,
+          functionName: "claimToken",
+          args: [
+            txPayload.userWalletAddress,
+            txPayload.token,
+            BigInt(txPayload.amount),
+            txPayload.nonce,
+            txPayload.signature,
+          ],
+        });
+
         const contractGas = await provider.estimateContractGas({
           abi: unitapEvmTokenTapABI,
           account: address,
           address: contractAddress,
           functionName: "claimToken",
           args: [
-            txPayload.user,
+            txPayload.userWalletAddress,
             txPayload.token,
             BigInt(txPayload.amount),
             txPayload.nonce,
@@ -199,7 +214,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         const claimRes = await writeAsync?.({
           args: [
-            txPayload.user,
+            txPayload.userWalletAddress,
             txPayload.token,
             BigInt(txPayload.amount),
             txPayload.nonce,

@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/Icon";
+import Image from "next/image";
 
 const PrizeTapLoading = () => {
   return (
@@ -11,7 +12,9 @@ const PrizeTapLoading = () => {
 
         <div className="flex flex-wrap justify-center md:justify-start mt-2">
           <div className="rounded-lg bg-gray70 py-[2px] px-3 items-center h-14 flex gap-x-3">
-            <img
+            <Image
+              width={37}
+              height={33}
               className="w-full"
               src="/assets/images/prize-tap/daimond-ticket.svg"
               alt="loading"

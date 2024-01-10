@@ -39,7 +39,7 @@ const config: Config = {
         gray30: "#1B1B29",
         gray40: "#1E1E2C",
         gray50: "#212130",
-        gray60: "#24242F",
+        gray60: "#242431",
         gray70: "#303043",
         gray80: "#4C4C5C",
         gray90: "#67677B",
@@ -98,6 +98,8 @@ const config: Config = {
         "donate-texture-s": "url('/assets/images/donate/donate-texture.svg')",
         "donate-texture-p": "url('/assets/images/donate/donate-texture.png')",
         "stats-texture": "url('/assets/images/landing/stats-texture.png')",
+        "soft-primary":
+          "linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.50) 33.85%, rgba(27, 27, 41, 0.50) 63.02%, rgba(77, 52, 81, 0.60) 100%)",
         "g-twitter":
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":

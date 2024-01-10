@@ -1,7 +1,7 @@
 "use client";
 
 import { UserProfileContext } from "@/context/userProfile";
-import { Chain } from "@/types/gas-tap";
+import { Chain } from "@/types/gastap";
 import { sortChainListByTotalClaimWeekly } from "@/utils/chain";
 import { FC, useContext, useMemo } from "react";
 import Widget from "../widget";
@@ -27,9 +27,10 @@ const GasTapLandingWidget: FC<{
         <Widget
           description={"Enjoy surfing Web3 without the worry of gas fees"}
           icon={"gastap-icon.svg"}
+          id="gastap"
           iconSize={"w-7"}
           className={
-            "after:bg-gastap-texture hover:bg-gray00 cursor-pointer h-full"
+            "after:bg-gastap-texture hover:bg-gray00 relative z-20 cursor-pointer h-full"
           }
           title={"Gas Tap"}
           buttonTitle={"Go to Tap"}
@@ -37,7 +38,7 @@ const GasTapLandingWidget: FC<{
             "gradient-outline-button before:inset-[2px] text-gray100"
           }
         >
-          <div className="relative">
+          <div className="relative h-full">
             <div className={isGasTapAvailable ? "" : "blur-md"}>
               {sortedChainList.length > 0 && (
                 <>
@@ -74,8 +75,8 @@ const GasTapLandingWidget: FC<{
                 </>
               )}
             </div>
+            {isGasTapAvailable || <NotAvailableTap />}
           </div>
-          {isGasTapAvailable || <NotAvailableTap />}
         </Widget>
       </Link>
     </>
