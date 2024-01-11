@@ -225,13 +225,6 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
 };
 
 const PrizeTapContent = () => {
-  // const {
-  //   selectNewOffer,
-  //   handleSelectNewOffer,
-  //   userRaffles,
-  //   userRafflesLoading,
-  //   isShowingDetails,
-  // } = usePrizeOfferFormContext();
   const { userToken } = useUserProfileContext();
   const [userRafflesLoading, setUserRafflesLoading] = useState(false);
   const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
