@@ -1037,6 +1037,7 @@ const ProviderDashboard: FC<
   };
 
   const handleShowUserDetails = async (raffle: UserRafflesProps) => {
+    console.log(raffle);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
@@ -1071,9 +1072,9 @@ const ProviderDashboard: FC<
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
-    // raffle.isPrizeNft
-    //   ? handleSetContractStatus(true, true, false, true)
-    //   : handleSetContractStatus(false, true, false, true);
+    setNumberOfNfts(
+      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
+    );
     setConstraintsList(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>

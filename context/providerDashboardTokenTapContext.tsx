@@ -1070,9 +1070,9 @@ const TokenTapProvider: FC<
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
-    // raffle.isPrizeNft
-    //   ? handleSetContractStatus(true, true, false, true)
-    //   : handleSetContractStatus(false, true, false, true);
+    setNumberOfNfts(
+      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
+    );
     setConstraintsList(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
