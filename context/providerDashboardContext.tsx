@@ -1037,7 +1037,6 @@ const ProviderDashboard: FC<
   };
 
   const handleShowUserDetails = async (raffle: UserRafflesProps) => {
-    console.log(raffle);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
