@@ -9,6 +9,7 @@ enum RoutePath {
   NFT = "/pass",
   PROVIDERDASHBOARD = "/contribution-hub",
   PROVIDER_GASTAP = "/contribution-hub/gas-tap",
+  PROVIDER_GASTAP_CREATE = "/contribution-hub/gas-tap/create",
   PROVIDER_TOKENTAP = "/contribution-hub/token-tap",
   PROVIDER_TOKENTAP_CREATE = "/contribution-hub/token-tap/create",
   PROVIDER_PRIZETAP = "/contribution-hub/prize-tap",
