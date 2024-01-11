@@ -86,13 +86,14 @@ const OnBoardProcess = () => {
 
   useEffect(() => {
     if (!showIntro || !currentState || !userProfile) return;
-    document.body.classList.add("overflow-hidden");
 
     const element = document.getElementById(currentState.id);
 
     const offset = 20;
 
     if (!element) return;
+
+    document.body.classList.add("overflow-hidden");
 
     const highlightElement = document.createElement("div");
 

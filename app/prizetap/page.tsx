@@ -6,6 +6,8 @@ import RafflesList from "@/components/containers/prize-tap/RafflesList";
 import Header from "@/components/containers/prize-tap/header";
 import { FC } from "react";
 
+import "./styles.scss";
+
 const PrizeTapPage: FC = () => {
   return (
     <>
