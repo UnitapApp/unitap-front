@@ -1,13 +1,8 @@
-import PrizeTapContent from "@/components/containers/provider-dashboard/prize-tap/Content";
-import ProviderDashboard from "@/context/providerDashboardContext";
-import { FC, PropsWithChildren } from "react";
+import PrizeTapContent from "./prize-tap/components/Content";
+import { FC } from "react";
 
 const ProviderDashboardPrizeTapLayout: FC = ({}) => {
-  return (
-    <ProviderDashboard>
-      <PrizeTapContent />
-    </ProviderDashboard>
-  );
+  return <PrizeTapContent />;
 };
 
 export default ProviderDashboardPrizeTapLayout;

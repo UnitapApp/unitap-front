@@ -16,7 +16,6 @@ export const approveErc721TokenCallback = async (
   provider: PublicClient,
   signer: GetWalletClientResult
 ) => {
-  console.log(erc721Contract.address, spenderAddress, address);
   const gasEstimate = await provider.estimateContractGas({
     abi: erc721ABI,
     address: erc721Contract.address,
@@ -79,6 +78,7 @@ export const approveErc721Token = async (
     return response;
   } catch (e: any) {
     console.log(e);
+    setIsApprovedAll(false);
     setApproveLoading(false);
   }
 };

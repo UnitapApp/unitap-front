@@ -1,4 +1,4 @@
-import { ProviderDashboardFormDataProp } from "@/types";
+import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
 import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
 import { PublicClient, erc20ABI } from "wagmi";
@@ -9,7 +9,7 @@ export const getErc20TokenContract = async (
   provider: PublicClient,
   setData: any,
   setIsErc20Approved: any,
-  handleSetContractStatus: any,
+  setTokenContractStatus: any,
 ) => {
   if (!provider || !address) return;
 
@@ -24,10 +24,16 @@ export const getErc20TokenContract = async (
   try {
     await contract.read.decimals();
   } catch (e) {
-    handleSetContractStatus(false, false, false, true)
+    setTokenContractStatus((prev: any) => (
+      {
+        ...prev,
+        isValid: ContractValidationStatus.NotValid,
+        checking: false,
+      }
+    ))
+    setIsErc20Approved(false)
     return;
   }
-
 
   Promise.all([
     contract.read.name(),
@@ -51,6 +57,8 @@ export const getErc20TokenContract = async (
         Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
     );
 
-    handleSetContractStatus(false, true, false, true);
+    setTokenContractStatus((prev: any) => ({...prev,
+      isValid: ContractValidationStatus.Valid,
+      checking: false,}))
   });
 };

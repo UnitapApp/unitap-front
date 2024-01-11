@@ -1,4 +1,4 @@
-import PrizeTapContent from "@/components/containers/provider-dashboard/prize-tap/Content";
+import PrizeTapContent from "./components/Content";
 
 const Page = () => {
   return (

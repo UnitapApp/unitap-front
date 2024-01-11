@@ -20,7 +20,7 @@ import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
 import { getAssetUrl, shortenAddress } from "@/utils";
 
-import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
+// import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
 import { zeroAddress } from "viem";
 
 export const Action = styled.div`
@@ -573,9 +573,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       height="215px"
                     />
                   </div>
-                  <div
-                    className={`${Styles["claimed-prize"]} md:!w-[352px] !w-full`}
-                  >
+                  <div className="claimed-prize md:!w-[352px] !w-full">
                     <div className="relative">
                       <p className="!font-semibold">Claimed</p>
                       <Icon

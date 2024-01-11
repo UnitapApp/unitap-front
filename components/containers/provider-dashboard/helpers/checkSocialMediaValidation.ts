@@ -9,8 +9,9 @@ const checkTwitterVAlidation = (username: string) => {
 };
 
 const checkDiscordValidation = (username: string) => {
+
   const usernameRegex =
-    /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-z]/;
+    /https:\/\/discord\.com/;
   return !!username.match(usernameRegex);
 };
 

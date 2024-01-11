@@ -148,7 +148,7 @@ const config: Config = {
         rocket: "rocket 1500ms infinite  alternate;",
         fadeIn: 'fadeIn 0.8s ease-in-out',
 				blinking: 'blinking 2s step-start 0s infinite',
-        fadeInOut: 'fadeIn 0.8s ease-in-out',
+        fadeInOut: 'fadeInOut 2s ease-in-out infinite',
       },
       transitionProperty: {
         height: "height",

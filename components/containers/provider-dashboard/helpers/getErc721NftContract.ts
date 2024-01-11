@@ -1,4 +1,4 @@
-import { ProviderDashboardFormDataProp } from "@/types";
+import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
 import { Address, getContract } from "viem";
 import { PublicClient, erc721ABI } from "wagmi";
 
@@ -8,7 +8,7 @@ export const getErc721TokenContract = async (
   provider: PublicClient,
   setData: any,
   setIsApprovedAll: any,
-  handleSetContractStatus: any
+  setNftContractStatus: any
 ) => {
   if (!provider || !address) return;
 
@@ -23,7 +23,13 @@ export const getErc721TokenContract = async (
   try {
     await contract.read.ownerOf([1n]);
   } catch (e) {
-    handleSetContractStatus(true, false, false, true)
+    setNftContractStatus((prev: any) => (
+      {
+        ...prev,
+        isValid: ContractValidationStatus.NotValid,
+        checking: false,
+      }
+    ))
     return;
   }
 
@@ -42,7 +48,9 @@ export const getErc721TokenContract = async (
       nftSymbol: r2,
       userNftBalance: r3?.toString(),
     }));
-    handleSetContractStatus(true, true, false, true)
+    setNftContractStatus((prev: any) => ({...prev,
+      isValid: ContractValidationStatus.Valid,
+      checking: false,}))
     setIsApprovedAll(r5);
   });
 };
