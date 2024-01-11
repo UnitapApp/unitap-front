@@ -17,7 +17,9 @@ export const getRaffleEntry = (
 ) => {
   return (
     !!userWallet &&
-    entryWallets.find((entry) => isAddressEqual(entry.wallet, userWallet))
+    entryWallets.find((entry) =>
+      isAddressEqual(entry.userWalletAddress, userWallet)
+    )
   );
 };
 
@@ -39,7 +41,7 @@ const WinnersModal = () => {
     const items = !searchPhraseInput
       ? selectedRaffleForEnroll?.winnerEntries
       : selectedRaffleForEnroll?.winnerEntries.filter((item) =>
-          item.wallet
+          item.userWalletAddress
             .toLocaleLowerCase()
             .includes(searchPhraseInput.toLocaleLowerCase())
         );
@@ -71,7 +73,7 @@ const WinnersModal = () => {
         {userEnrollments.map((item, key) => (
           <WalletWinner
             id={item.pk}
-            walletAddress={item.wallet}
+            walletAddress={item.userWalletAddress}
             isWinner
             claimTx={item.txHash}
             key={key}
@@ -99,7 +101,7 @@ const WinnersModal = () => {
           </div>
         ) : enrollment ? (
           <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
-            {shortenAddress(enrollment.wallet)}
+            {shortenAddress(enrollment.userWalletAddress)}
 
             <button className="ml-auto text-xs border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1">
               Winner <span className="ml-1">&#x1F604;&#xfe0f;</span>

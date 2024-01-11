@@ -52,7 +52,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     const items = !searchPhraseInput
       ? winnersResultRaffle?.winnerEntries
       : winnersResultRaffle?.winnerEntries?.filter((item) =>
-          item.wallet
+          item.userWalletAddress
             .toLocaleLowerCase()
             .includes(searchPhraseInput.toLocaleLowerCase())
         ) ?? [];
@@ -103,7 +103,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
         {userEnrollments.map((item, key) => (
           <WalletWinner
             id={item.pk}
-            walletAddress={item.wallet}
+            walletAddress={item.userWalletAddress}
             isWinner
             claimTx={item.txHash}
             key={key}

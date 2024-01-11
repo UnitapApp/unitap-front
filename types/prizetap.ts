@@ -59,7 +59,7 @@ export type WinnerEntry = {
   raffle: userRaffle;
   txHash: string;
   userProfile: UserProfile;
-  wallet: Address;
+  userWalletAddress: Address;
 };
 
 export type EnrollPayload = {
