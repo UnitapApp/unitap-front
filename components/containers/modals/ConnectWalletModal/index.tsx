@@ -11,6 +11,7 @@ import SetUsernameBody from "./setUsername";
 import AddNewWalletSuccess from "./addNewWalletSuccess";
 import AddNewWalletFailed from "./addNewWalletFailed";
 import LoginSuccessBody from "./LoginSuccess";
+import { parseCookies } from "@/utils/cookies";
 
 export enum ConnectionProvider {
   Metamask,
@@ -40,6 +41,8 @@ export const RenderWalletBody: FC<{
     WalletState.Prompt
   );
 
+  const cookies = useMemo(() => parseCookies(), []);
+
   const [isNewUser, setIsNewUser] = useState(false);
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
@@ -61,6 +64,12 @@ export const RenderWalletBody: FC<{
       loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
     };
   }, [walletProvider]);
+
+  useEffect(() => {
+    if (cookies["tutorial"] === "false" || !isNewUser) return;
+
+    document.cookie = "tutorial=true;";
+  }, [cookies, isNewUser]);
 
   useEffect(() => {
     setWalletTitle(walletStateTitles[walletState]);
