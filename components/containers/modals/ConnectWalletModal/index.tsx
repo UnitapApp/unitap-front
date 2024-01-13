@@ -12,6 +12,7 @@ import AddNewWalletSuccess from "./addNewWalletSuccess";
 import AddNewWalletFailed from "./addNewWalletFailed";
 import LoginSuccessBody from "./LoginSuccess";
 import { parseCookies } from "@/utils/cookies";
+import { useDisconnect } from "wagmi";
 
 export enum ConnectionProvider {
   Metamask,
@@ -154,13 +155,21 @@ export const ConnectWalletModal = () => {
   const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext();
   const [title, setTitle] = useState(walletStateTitles[WalletState.Prompt]);
 
+  const { disconnect, isLoading } = useDisconnect();
+
   const setWalletTitle = (title: string) => setTitle(title);
+
+  useEffect(() => {
+    if (!isWalletPromptOpen) return;
+
+    disconnect();
+  }, [disconnect, isWalletPromptOpen]);
 
   return (
     <Modal
       title={title}
       size="small"
-      isOpen={isWalletPromptOpen}
+      isOpen={isWalletPromptOpen && !isLoading}
       closeModalHandler={() => setIsWalletPromptOpen(false)}
     >
       <div className="flex flex-col items-center justify-center pt-12">
