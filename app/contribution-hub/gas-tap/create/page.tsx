@@ -1,7 +1,13 @@
 "use client";
 
+import GasTapContent from "../components/Content";
+
 const Page = () => {
-  return <></>;
+  return (
+    <>
+      <GasTapContent />
+    </>
+  );
 };
 
 export default Page;

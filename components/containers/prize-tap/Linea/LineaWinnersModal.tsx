@@ -58,7 +58,7 @@ const LineaWinnersModal: FC<{}> = ({}) => {
         <div className="flex bg-gray50 p-4 py-3.5 border-2 rounded-xl !border-gray30 items-center w-full mt-1">
           <Icon
             className="mr-5"
-            iconSrc="assets/images/modal/search-icon.svg"
+            iconSrc="/assets/images/modal/search-icon.svg"
             width="20px"
             height="20px"
           />
