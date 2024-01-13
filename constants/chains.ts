@@ -23,9 +23,10 @@ import {
   scrollSepolia,
   Chain,
   opBNB,
+  optimism,
+  mainnet,
+  sepolia,
 } from "viem/chains";
-
-import { mainnet, sepolia } from "wagmi";
 
 const IDChain = {
   id: 74,
@@ -42,28 +43,8 @@ const IDChain = {
   },
 };
 
-const Optimism = {
-  id: 10,
-  name: "Optimism",
-  nativeCurrency: {
-    decimals: 18,
-    name: "ETH",
-    symbol: "ETH",
-  },
-  network: "Optimism",
-  rpcUrls: {
-    default: { http: ["https://rpc.ankr.com/optimism"] },
-    public: { http: ["https://rpc.ankr.com/optimism"] },
-  },
-  blockExplorers: {
-    etherscan: { name: "etherscan", url: "https://optimistic.etherscan.io" },
-    default: { name: "etherscan", url: "https://optimistic.etherscan.io" },
-  },
-};
-
 export const kccMainnet = {
   id: 321,
-  network: "kcc-mainnet",
   name: "KuCoin Community Chain",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
@@ -108,15 +89,23 @@ export const supportedChains = [
   mainnet,
   avalanche,
   bsc,
-  polygon,
-  fantom,
+  { ...polygon, name: "Polygon Mainnet" },
+  {
+    ...fantom,
+    name: "Fantom Opera",
+    rpcUrls: {
+      ...fantom.rpcUrls,
+      default: { http: ["https://rpc.ftm.tools"] },
+      public: { http: ["https://rpc.ftm.tools"] },
+    },
+  },
   holesky,
   goerli,
   polygonMumbai,
   bscTestnet,
   gnosis,
   IDChain,
-  Optimism,
+  optimism,
   meter,
   zetachainAthensTestnet,
   scroll,
