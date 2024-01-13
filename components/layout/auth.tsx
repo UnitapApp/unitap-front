@@ -91,7 +91,7 @@ const WalletItem = ({
           (isActive ? "bg-white" : "bg-gray90") + " w-2 h-2 rounded-full"
         }
       />
-      <span className={`ml-3 ${NotoSansMono.className}`}>
+      <span className={`ml-3 font-normal ${NotoSansMono.className}`}>
         {shortenAddress(wallet)}
       </span>
       <div className="relative">
@@ -109,19 +109,6 @@ const WalletItem = ({
           alt="copy"
         />
       </div>
-
-      <Link
-        className="ml-4"
-        href={`https://debank.com/profile/${wallet}`}
-        target="_blank"
-      >
-        <Image
-          width={8}
-          height={8}
-          src="/assets/images/navbar/link.svg"
-          alt="link"
-        />
-      </Link>
     </div>
   );
 };
@@ -235,7 +222,7 @@ export const RenderNavbarWalletAddress = () => {
         data-testid="wallet-address"
         className={`btn ${
           NotoSansMono.className
-        } btn--sm btn--address tracking-wider !font-[500] ${
+        } btn--sm btn--address tracking-wider font-normal ${
           connection.isConnected && "btn--address--active"
         } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {

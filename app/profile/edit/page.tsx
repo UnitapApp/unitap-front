@@ -13,6 +13,7 @@ import { Address, isAddressEqual } from "viem";
 import { Noto_Sans_Mono } from "next/font/google";
 import { useWalletManagementContext } from "@/context/walletProvider";
 import LoadingSpinner from "@/components/ui/loadingSpinner";
+import { useProfileEditContext } from "./layout";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -26,7 +27,7 @@ export const Wallet: FC<{
   isActive: boolean;
   isDeleteAllowed: boolean;
 }> = ({ address, isActive, isDeleteAllowed }) => {
-  const { deleteWallet } = useUserProfileContext();
+  const { setFocusedWalletDeleteAddress } = useProfileEditContext();
 
   const [copyMessage, setCopyMessage] = useState("");
 
@@ -47,7 +48,7 @@ export const Wallet: FC<{
           isActive ? "bg-space-green" : "bg-error"
         }`}
       ></span>
-      <p className={`ml-5 text-sm ${NotoSansMono.className}`}>
+      <p className={`ml-5 text-sm font-normal ${NotoSansMono.className}`}>
         {shortenAddress(address)}
       </p>
       <div className="ml-4 relative">
@@ -66,21 +67,9 @@ export const Wallet: FC<{
         />
       </div>
 
-      <Link
-        className="ml-4"
-        href={`https://debank.com/profile/${address}`}
-        target="_blank"
-      >
-        <Image
-          width={8}
-          height={8}
-          src="/assets/images/navbar/link.svg"
-          alt="link"
-        />
-      </Link>
       {isDeleteAllowed && (
         <Image
-          onClick={() => deleteWallet(address as Address)}
+          onClick={() => setFocusedWalletDeleteAddress(address as Address)}
           width={16}
           height={18}
           src="/assets/images/up-profile/trashcan.svg"

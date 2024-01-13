@@ -33,8 +33,8 @@ const Profile = async () => {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-gray10 p-1 flex items-center">
-            <Icon
+          <div className="rounded-xl bg-gray10 p-1 flex items-center">
+            {/* <Icon
               iconSrc="/assets/images/up-profile/twitter.svg"
               className="mx-2 cursor-pointer"
             />
@@ -45,7 +45,7 @@ const Profile = async () => {
             <Icon
               iconSrc="/assets/images/up-profile/brightid.svg"
               className="mx-2 mr-3 cursor-pointer"
-            />
+            /> */}
             <Link href="/profile/edit">
               <div className="px-10 cursor-pointer rounded-lg text-center bg-gray50 text-sm font-medium py-3">
                 Edit Profile
