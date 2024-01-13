@@ -377,6 +377,8 @@ const TokenTapProvider: FC<
     canDisplayStatus: false,
   });
 
+  const [approveAllowance, setApproveAllowance] = useState<number>(0);
+
   const [insufficientBalance, setInsufficientBalance] =
     useState<boolean>(false);
 
@@ -513,7 +515,8 @@ const TokenTapProvider: FC<
         provider,
         setData,
         setIsErc20Approved,
-        setTokenContractStatus
+        setTokenContractStatus,
+        setApproveAllowance
       );
     }
 
@@ -825,6 +828,7 @@ const TokenTapProvider: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
+      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,

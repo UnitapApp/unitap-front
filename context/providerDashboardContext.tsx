@@ -424,6 +424,8 @@ const ProviderDashboard: FC<
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);
 
+  const [approveAllowance, setApproveAllowance] = useState<number>(0);
+
   const [socialMediaValidation, setSocialMediaValidation] = useState({
     creatorUrl: true,
     twitter: true,
@@ -514,7 +516,8 @@ const ProviderDashboard: FC<
         provider,
         setData,
         setIsErc20Approved,
-        setTokenContractStatus
+        setTokenContractStatus,
+        setApproveAllowance
       );
     }
 
@@ -826,6 +829,7 @@ const ProviderDashboard: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
+      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,
