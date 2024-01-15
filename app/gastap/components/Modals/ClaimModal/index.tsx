@@ -157,9 +157,12 @@ const ClaimModal = () => {
           className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
           data-testid={`chain-claim-modal-${activeChain.pk}`}
         >
-          <div className="my-5 font-semibold text-error text-sm">
-            You need to connect your brightID first before claiming gas
-          </div>
+          {!userProfile?.isMeetVerified ? (
+            <div className="my-5 font-semibold text-error text-sm">
+              You need to connect your brightID first before claiming gas
+            </div>
+          ) : null}
+
           <ClaimModalBody chain={activeChain} />
         </div>
       </Modal>
