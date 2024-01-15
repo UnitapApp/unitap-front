@@ -76,6 +76,7 @@ export { publicClient, webSocketPublicClient };
 
 export const config = createConfig({
   autoConnect: true,
+  ssr: true,
   publicClient,
   webSocketPublicClient,
   connectors: getConnectorProviders(),
