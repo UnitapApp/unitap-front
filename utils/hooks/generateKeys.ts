@@ -46,9 +46,9 @@ const useGenerateKeys = (): {
         const address = wallet.address;
 
         // Store the keys in localStorage
-        localStorage.setItem("privateKey", privateKey);
-        localStorage.setItem("publicKey", publicKey);
-        localStorage.setItem("address", address);
+        // localStorage.setItem("privateKey", privateKey);
+        // localStorage.setItem("publicKey", publicKey);
+        // localStorage.setItem("address", address);
 
         // Update the state with the keys
         setKeys({ privateKey, publicKey, address });

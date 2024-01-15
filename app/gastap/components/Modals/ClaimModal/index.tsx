@@ -131,6 +131,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 const ClaimModal = () => {
   const { closeClaimModal, activeChain, isNonEvmActive } = useGasTapContext();
   const { brightidModalStatus } = useGlobalContext();
+  const { userProfile } = useUserProfileContext();
 
   const isOpen = useMemo(() => {
     return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED;
@@ -141,9 +142,13 @@ const ClaimModal = () => {
   return (
     <>
       <Modal
-        title={`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
-          activeChain.symbol
-        }`}
+        title={
+          userProfile?.isMeetVerified
+            ? `Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
+                activeChain.symbol
+              }`
+            : "Connect BrightID"
+        }
         size="small"
         closeModalHandler={closeClaimModal}
         isOpen={isOpen}
@@ -152,6 +157,9 @@ const ClaimModal = () => {
           className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
           data-testid={`chain-claim-modal-${activeChain.pk}`}
         >
+          <div className="my-5 font-semibold text-error text-sm">
+            You need to connect your brightID first before claiming gas
+          </div>
           <ClaimModalBody chain={activeChain} />
         </div>
       </Modal>
