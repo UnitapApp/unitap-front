@@ -1,14 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import { Text } from "@/components/ui/text.style";
 import Icon from "@/components/ui/Icon";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { BrightIdModalState, Chain, ClaimReceiptState } from "@/types";
 import { getChainClaimIcon } from "@/utils/chain";
 import { formatWeiBalance } from "@/utils/numbers";
 import {
-  BrightIdNotVerifiedBody,
   WalletNotConnectedBody,
   ClaimSuccessBody,
   ClaimPendingBody,
@@ -18,13 +16,13 @@ import {
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { DropIconWrapper } from "../../../../../components/containers/modals/claimModal.style";
-import WalletAddress from "./walletAddress";
 import { useGlobalContext } from "@/context/globalProvider";
 import { shortenAddress } from "@/utils";
 import ClaimNotAvailable from "../ClaimNotRemaining";
 import { useWalletAccount } from "@/utils/wallet";
 import Modal from "@/components/ui/Modal/modal";
 import Image from "next/image";
+import { BrightConnectionModalBody } from "@/components/containers/modals/brightConnectionModal";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const { address, isConnected } = useWalletAccount();
@@ -53,7 +51,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       />
     );
 
-  if (!userProfile.isMeetVerified) return <BrightIdNotVerifiedBody />;
+  if (!userProfile.isMeetVerified) return <BrightConnectionModalBody />;
 
   if (!isConnected) return <WalletNotConnectedBody chainPk={chain.pk} />;
 

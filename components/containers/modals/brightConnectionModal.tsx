@@ -15,13 +15,12 @@ import BrightStatusModal from "./brightStatusModal";
 import Icon from "@/components/ui/Icon";
 import { ConnectBrightIdApi, sponsorAPI } from "@/utils/api";
 import { useUserProfileContext } from "@/context/userProfile";
-import { ErrorsContext } from "@/context/errorsProvider";
 import useGenerateKeys from "@/utils/hooks/generateKeys";
 import { useGlobalContext } from "@/context/globalProvider";
 import Modal from "@/components/ui/Modal/modal";
 import { AxiosError } from "axios";
 
-const BrightConnectionModalBody = () => {
+export const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, updateProfile, userToken } =
     useUserProfileContext();
 
