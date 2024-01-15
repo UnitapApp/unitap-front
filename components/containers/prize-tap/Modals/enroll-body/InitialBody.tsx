@@ -3,7 +3,6 @@
 import { Prize } from "@/types";
 import { FC } from "react";
 import RafflePermissions from "../../permissions";
-import { DropIconWrapper } from "@/components/containers/gas-tap/Modals/ClaimModal/claimModal.style";
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { shortenAddress } from "@/utils";
@@ -12,6 +11,8 @@ import WalletAddress from "../wallet-address";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { Text } from "@/components/ui/text.style";
 import { useWalletAccount } from "@/utils/wallet";
+import WinnersModal from "../winnersModal";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const InitialBody: FC<{
   raffle: Prize;
@@ -19,11 +20,11 @@ const InitialBody: FC<{
 }> = ({ method, raffle }) => {
   const { address, isConnected } = useWalletAccount();
 
-  const tokenImgLink: string = raffle.isPrizeNft
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(raffle.tokenUri.split("/")[3]) + 1
-      }.png`
-    : "";
+  // const tokenImgLink: string = raffle.isPrizeNft
+  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+  //       Number(raffle.tokenUri.split("/")[3]) + 1
+  //     }.png`
+  //   : "";
 
   const {
     claimOrEnrollWalletResponse,
@@ -38,6 +39,10 @@ const InitialBody: FC<{
     return <RafflePermissions raffle={raffle} />;
   }
 
+  if (method === "Winners") {
+    return <WinnersModal />;
+  }
+
   if (method === "Enroll") {
     return (
       <>
@@ -46,7 +51,7 @@ const InitialBody: FC<{
             className="chain-logo z-10 mt-14 mb-10"
             width="auto"
             height="110px"
-            iconSrc={raffle.isPrizeNft ? tokenImgLink : raffle.imageUrl}
+            iconSrc={raffle.imageUrl}
             alt=""
           />
         </DropIconWrapper>
@@ -87,8 +92,9 @@ const InitialBody: FC<{
           <ClaimButton
             onClick={() => handleEnroll()}
             $width="100%"
+            disabled={claimOrEnrollLoading}
             $fontSize="16px"
-            className="!w-full"
+            className="!w-full disabled:opacity-60"
             data-testid={`chain-claim-action-${raffle.chain.pk}`}
           >
             {claimOrEnrollLoading ? (
@@ -123,7 +129,7 @@ const InitialBody: FC<{
           className="chain-logo z-10 mt-14 mb-10"
           width="auto"
           height="110px"
-          iconSrc={raffle.isPrizeNft ? tokenImgLink : raffle.imageUrl}
+          iconSrc={raffle.imageUrl}
           alt=""
         />
       </DropIconWrapper>
@@ -147,6 +153,7 @@ const InitialBody: FC<{
       <ClaimButton
         onClick={() => handleClaimPrize()}
         $width="100%"
+        disabled={claimOrEnrollSignatureLoading || claimOrEnrollLoading}
         $fontSize="16px"
         className="!w-full"
         data-testid={`chain-claim-action-${raffle.chain.pk}`}

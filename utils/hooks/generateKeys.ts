@@ -1,81 +1,81 @@
-"use client"
+"use client";
 
-import { ethers } from "ethers"
-import { useCallback, useEffect, useState } from "react"
+import { ethers } from "ethers";
+import { useCallback, useEffect, useState } from "react";
 
 interface Keys {
-  privateKey: string
-  publicKey: string
-  address: string
+  privateKey: string;
+  publicKey: string;
+  address: string;
 }
 
 const useGenerateKeys = (): {
-  keys: Keys | null
-  isLoading: boolean
-  error: Error | null
-  signPrivateKey: () => Promise<string>
+  keys: Keys | null;
+  isLoading: boolean;
+  error: Error | null;
+  signPrivateKey: () => Promise<string>;
 } => {
-  const [keys, setKeys] = useState<Keys | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [keys, setKeys] = useState<Keys | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const storedPrivateKey = localStorage.getItem("privateKey")
-    const storedPublicKey = localStorage.getItem("publicKey")
-    const storedAddress = localStorage.getItem("address")
+    const storedPrivateKey = localStorage.getItem("privateKey");
+    const storedPublicKey = localStorage.getItem("publicKey");
+    const storedAddress = localStorage.getItem("address");
 
     if (storedPrivateKey && storedPublicKey && storedAddress) {
       setKeys({
         privateKey: storedPrivateKey,
         publicKey: storedPublicKey,
         address: storedAddress,
-      })
-      return
+      });
+      return;
     }
 
     const generateKeys = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
 
         // Generate a random private key
-        const privateKey = ethers.utils.hexlify(ethers.utils.randomBytes(32))
+        const privateKey = ethers.utils.hexlify(ethers.utils.randomBytes(32));
 
         // Derive the public key from the private key
-        const wallet = new ethers.Wallet(privateKey)
-        const publicKey = wallet.publicKey
-        const address = wallet.address
+        const wallet = new ethers.Wallet(privateKey);
+        const publicKey = wallet.publicKey;
+        const address = wallet.address;
 
         // Store the keys in localStorage
-        localStorage.setItem("privateKey", privateKey)
-        localStorage.setItem("publicKey", publicKey)
-        localStorage.setItem("address", address)
+        localStorage.setItem("privateKey", privateKey);
+        localStorage.setItem("publicKey", publicKey);
+        localStorage.setItem("address", address);
 
         // Update the state with the keys
-        setKeys({ privateKey, publicKey, address })
-        setIsLoading(false)
+        setKeys({ privateKey, publicKey, address });
+        setIsLoading(false);
       } catch (error: any) {
-        setError(error)
-        setIsLoading(false)
+        setError(error);
+        setIsLoading(false);
       }
-    }
+    };
 
-    generateKeys()
-  }, [])
+    generateKeys();
+  }, []);
 
   const signPrivateKey = useCallback(async () => {
     if (!keys || !keys.address || !keys.privateKey) {
-      throw new Error("Private key not found")
+      throw new Error("Private key not found");
     }
 
     const provider = new ethers.providers.JsonRpcProvider(
       "https://mainnet.infura.io/v3/709c5809e1864f82ab6175f39d1aa0ba"
-    )
-    const wallet = new ethers.Wallet(keys.privateKey, provider)
+    );
+    const wallet = new ethers.Wallet(keys.privateKey, provider);
 
-    return await wallet.signMessage(keys.address)
-  }, [keys])
+    return await wallet.signMessage(keys.address);
+  }, [keys]);
 
-  return { keys, isLoading, error, signPrivateKey }
-}
+  return { keys, isLoading, error, signPrivateKey };
+};
 
-export default useGenerateKeys
+export default useGenerateKeys;

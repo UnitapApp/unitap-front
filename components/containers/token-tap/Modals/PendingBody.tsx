@@ -1,31 +1,44 @@
-"use client"
+"use client";
 
-import { SecondaryGreenColorButton } from "@/components/ui/Button/button"
-import { Text } from "@/components/ui/text.style"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { FC, useEffect } from "react"
-import lottie from "lottie-web"
-import animation from "@/assets/animations/GasFee-delivery2.json"
+import { SecondaryGreenColorButton } from "@/components/ui/Button/button";
+import { Text } from "@/components/ui/text.style";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { FC, useEffect, useMemo } from "react";
+import lottie from "lottie-web";
+import animation from "@/assets/animations/GasFee-delivery2.json";
 
 const PendingBody: FC<{
-  tokenId: number
+  tokenId: number;
 }> = ({ tokenId }) => {
-  const { closeClaimModal, claimTokenLoading } = useTokenTapContext()
+  const {
+    closeClaimModal,
+    claimTokenLoading,
+    claimedTokensList,
+    selectedTokenForClaim,
+  } = useTokenTapContext();
+
+  const token = useMemo(
+    () =>
+      claimedTokensList.find(
+        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id
+      ),
+    [claimedTokensList, selectedTokenForClaim]
+  );
 
   useEffect(() => {
-    if (claimTokenLoading) {
-      const animationElement = document.querySelector("#animation")
+    if (claimTokenLoading || token?.status === "Pending") {
+      const animationElement = document.querySelector("#animation");
       if (animationElement) {
-        animationElement.innerHTML = ""
+        animationElement.innerHTML = "";
       }
       lottie.loadAnimation({
         container: document.querySelector("#animation") as HTMLInputElement,
         animationData: animation,
         loop: true,
         autoplay: true,
-      })
+      });
     }
-  }, [claimTokenLoading])
+  }, [claimTokenLoading, token?.status]);
 
   return (
     <>
@@ -46,11 +59,11 @@ const PendingBody: FC<{
       >
         The claim transaction will be completed soon
       </Text>
-      <SecondaryGreenColorButton onClick={closeClaimModal} $width={"100%"}>
+      <SecondaryGreenColorButton className="!w-full" onClick={closeClaimModal}>
         Close
       </SecondaryGreenColorButton>
     </>
-  )
-}
+  );
+};
 
-export default PendingBody
+export default PendingBody;

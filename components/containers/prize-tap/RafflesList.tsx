@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/Button/button";
 import styled from "styled-components";
 import { DV } from "@/components/ui/designVariables";
-import { getTxUrl, shortenAddress } from "@/utils";
 import Tooltip from "@/components/ui/Tooltip";
 import { numberWithCommas } from "@/utils/numbers";
 import { LineaRaffleCard } from "./Linea";
@@ -18,6 +17,11 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
+import { LINEA_RAFFLE_PK } from "@/constants";
+import { getAssetUrl, shortenAddress } from "@/utils";
+
+// import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
+import { zeroAddress } from "viem";
 
 export const Action = styled.div`
   display: flex;
@@ -77,7 +81,8 @@ const RafflesList = () => {
 const RaffleCardWrapper: FC<{ raffle: Prize; isHighlighted?: boolean }> = (
   props
 ) => {
-  if (props.raffle.pk === 4) return <LineaRaffleCard {...props} />;
+  if (props.raffle.pk === LINEA_RAFFLE_PK)
+    return <LineaRaffleCard {...props} />;
 
   return <RaffleCard {...props} />;
 };
@@ -97,57 +102,55 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     startAt,
     deadline,
     name,
+    prizeName,
     chain,
     isExpired,
     numberOfOnchainEntries,
     maxNumberOfEntries,
     isPrizeNft,
     userEntry,
-    winnerEntry,
     prizeSymbol,
     decimals,
     prizeAmount,
     creatorProfile,
+    winnerEntries: winnersEntry,
+
+    winnersCount,
+    status,
   } = raffle;
 
   const creator = creatorName || creatorProfile?.username;
 
   const { openEnrollModal } = usePrizeTapContext();
   const { userProfile } = useUserProfileContext();
-
-  const calculateClaimAmount = prizeAmount / 10 ** decimals;
   const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
   const isRemainingPercentLessThanTen =
     remainingPeople < (maxNumberOfEntries / 100) * 10;
   const [start, setStarted] = useState<boolean>(true);
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
+  const userClaimEntry = useMemo(
+    () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
+    [userProfile, winnersEntry]
+  );
+
   useEffect(() => {
     setStarted(new Date(startAt) < new Date());
   }, [new Date()]);
-  const getWinnerWallet = () => {
-    if (!winnerEntry) return;
-    let wallet = winnerEntry.userProfile.wallets.filter(
-      (item) => item.walletType === "EVM"
-    );
-    return wallet[0].address;
-  };
 
-  let tokenImgLink: string | undefined = tokenUri
-    ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-        Number(tokenUri.split("/")[3]) + 1
-      }.png`
-    : undefined;
+  // let tokenImgLink: string | undefined = tokenUri
+  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
+  //       Number(tokenUri.split("/")[3]) + 1
+  //     }.png`
+  //   : undefined;
 
-  const prizeLink = isPrizeNft
-    ? imageUrl
-      ? imageUrl
-      : tokenImgLink
-    : `https://etherscan.io/address/${raffle.prizeAsset}`;
+  const prizeLink = getAssetUrl(chain, raffle.prizeAsset!);
 
   const onPrizeClick = () => {
+    if (raffle.prizeAsset == zeroAddress) return;
     if (prizeLink) window.open(prizeLink, "_blank");
   };
+
   return (
     <div
       className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
@@ -170,10 +173,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   : "bg-gray30 border-2 border-gray40"
               } justify-center items-center p-5 rounded-xl`}
             >
-              {(imageUrl || tokenImgLink) && (
+              {imageUrl && (
                 <img
                   onClick={onPrizeClick}
-                  src={imageUrl ? imageUrl : tokenImgLink}
+                  src={imageUrl}
                   alt={name}
                   width={!isPrizeNft ? "168px" : ""}
                   className={`${!isPrizeNft ? "ml-1" : ""} cursor-pointer mb-2`}
@@ -186,8 +189,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 							)} */}
             </div>
           </div>
-          <div className="absolute bottom-[-10px] left-[40px] rounded-[6px] flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-            <p className="text-gray100 text-[10px] p-1">on {chain.chainName}</p>
+          <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
+            <p className="text-gray100 text-[10px] p-1">
+              {" "}
+              on {chain.chainName}{" "}
+            </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
         </div>
@@ -205,14 +211,19 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 : "bg-gray30 border-2 border-gray40"
             } rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
           >
-            <span className="flex justify-between w-full mb-1">
+            <span className="flex items-center w-full mb-1">
               <p
-                className="prize-card__title cursor-pointer text-white text-sm"
+                className="cursor-pointer text-white text-sm"
                 onClick={onPrizeClick}
               >
-                {name}
+                {prizeName}
               </p>
-              <div className="prize-card__links flex gap-4">
+              {winnersCount > 1 && (
+                <small className="rounded-xl ml-5 font-semibold text-xs p-1 px-2 bg-gray10 text-gray100">
+                  {winnersCount}x Winners
+                </small>
+              )}
+              <div className="ml-auto flex gap-4">
                 {twitterUrl && (
                   <Icon
                     iconSrc="assets/images/prize-tap/twitter-logo.svg"
@@ -256,61 +267,68 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               {description}
             </p>
 
-            {!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
-              <span className="text-xs mb-3">
-                <div
-                  className={`flex items-center flex-wrap text-xs gap-2 text-white`}
-                >
-                  {(showAllPermissions
-                    ? raffle.constraints
-                    : raffle.constraints
-                        .filter((permission) => permission.type === "VER")
-                        .slice(0, 6)
-                  ).map((permission, key) => (
-                    <Tooltip
-                      onClick={openEnrollModal.bind(null, raffle, "Verify")}
-                      className={
-                        "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
-                      }
-                      data-testid={`token-verification-${raffle.id}-${permission.name}`}
-                      key={key}
-                      text={permission.description}
-                    >
-                      <div className="flex items-center gap-3">
-                        {permission.title}
-                      </div>
-                    </Tooltip>
-                  ))}
+            {!winnersEntry.length &&
+              !userEntry?.txHash &&
+              !raffle.isExpired && (
+                <span className="text-xs mb-3">
+                  <div
+                    className={`flex items-center flex-wrap text-xs gap-2 text-white`}
+                  >
+                    {(showAllPermissions
+                      ? raffle.constraints
+                      : raffle.constraints
+                          .filter((permission) => permission.type === "VER")
+                          .slice(0, 6)
+                    ).map((permission, key) => (
+                      <Tooltip
+                        onClick={openEnrollModal.bind(null, raffle, "Verify")}
+                        className={
+                          "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
+                        }
+                        data-testid={`token-verification-${raffle.id}-${permission.name}`}
+                        key={key}
+                        text={
+                          permission.isReversed
+                            ? permission.negativeDescription
+                            : permission.description
+                        }
+                      >
+                        <div className="flex items-center gap-3">
+                          {permission.isReversed && "Not "}
+                          {permission.title}
+                        </div>
+                      </Tooltip>
+                    ))}
 
-                  {raffle.constraints.length > 6 && (
-                    <button
-                      onClick={setShowAllPermissions.bind(
-                        null,
-                        !showAllPermissions
-                      )}
-                      className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
-                    >
-                      <span>
-                        {showAllPermissions ? "Show less" : "Show more"}
-                      </span>
-                      <Image
-                        width={12}
-                        height={7}
-                        alt="angle down"
-                        src="/assets/images/token-tap/angle-down.svg"
-                        className={`ml-2 ${
-                          showAllPermissions ? "rotate-180" : ""
-                        } transition-transform`}
-                      />
-                    </button>
-                  )}
-                </div>
-              </span>
-            )}
+                    {raffle.constraints.length > 6 && (
+                      <button
+                        onClick={setShowAllPermissions.bind(
+                          null,
+                          !showAllPermissions
+                        )}
+                        className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+                      >
+                        <span>
+                          {showAllPermissions ? "Show less" : "Show more"}
+                        </span>
+                        <Image
+                          width={12}
+                          height={7}
+                          alt="angle down"
+                          src="/assets/images/token-tap/angle-down.svg"
+                          className={`ml-2 ${
+                            showAllPermissions ? "rotate-180" : ""
+                          } transition-transform`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </span>
+              )}
 
             <Action className={"w-full sm:w-auto items-center sm:items-end "}>
-              {(isExpired && !winnerEntry && !userEntry?.txHash) ||
-              (!winnerEntry &&
+              {(isExpired && !winnersEntry.length && !userEntry?.txHash) ||
+              (!winnersEntry.length &&
                 !userEntry?.txHash &&
                 maxNumberOfEntries === numberOfOnchainEntries) ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
@@ -320,9 +338,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
                       <p className="text-[10px] text-gray100">
-                        {maxNumberOfEntries > 1_000_000_000
+                        {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              maxNumberOfEntries
+                              numberOfOnchainEntries
                             )} people enrolled`
                           : !isRemainingPercentLessThanTen
                           ? `
@@ -363,7 +381,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </ClaimAndEnrollButton>
                 </span>
-              ) : !winnerEntry && !userEntry?.txHash ? (
+              ) : !winnersEntry.length && !userEntry?.txHash ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
@@ -401,7 +419,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   >
                     {" "}
                     <div className="relative w-full">
-                      <p> Enroll</p>{" "}
+                      <p className="text-transparent bg-clip-text bg-g-primary">
+                        Enroll
+                      </p>{" "}
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
@@ -411,7 +431,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     </div>
                   </ClaimAndEnrollButton>
                 </span>
-              ) : !winnerEntry && userEntry?.txHash ? (
+              ) : !winnersEntry.length && userEntry?.txHash ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
@@ -442,72 +462,80 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   </div>
                   <EnrolledButton
                     disabled={true}
-                    className="min-w-[552px] md:!w-[352px] !w-full"
+                    className="min-w-[552px]  md:!w-[352px] !w-full"
                     height="48px"
                     $fontSize="14px"
                   >
-                    {" "}
-                    <div className="relative w-full">
-                      <p> Enrolled</p>{" "}
+                    <div className="relative w-full flex">
+                      <span
+                        className={`${
+                          !winnersEntry.length &&
+                          new Date(deadline) < new Date()
+                            ? "text-[14px]"
+                            : ""
+                        } text-transparent bg-clip-text bg-g-primary`}
+                      >
+                        {!winnersEntry.length && new Date(deadline) < new Date()
+                          ? "Raffle is being processed"
+                          : "Enrolled"}
+                      </span>
                       <Icon
-                        className="absolute  right-0 top-[-2px]"
-                        iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                        className="absolute right-0 top-[-2px]"
+                        iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
                         width="27px"
                         height="24px"
                       />
                     </div>
                   </EnrolledButton>
                 </span>
-              ) : winnerEntry &&
-                winnerEntry?.userProfile.pk !== userProfile?.pk ? (
-                <span className="winner overflow-hidden font-medium md:leading-[normal] leading-[15px] winner-box-bg flex h-[70px] md:h-[48px] w-full items-center bg-gray40 py-1 rounded-xl align-center justify-between">
-                  <p className="text-[10px] text-white pl-5 md:flex md:shrink-0 font-medium">
-                    Congratulations to{" "}
-                    <span className="mx-0 md:mx-1 font-normal">
-                      {" "}
-                      <span className="font-semibold">
-                        {"@" + winnerEntry?.userProfile?.username + " "}
-                      </span>{" "}
-                      (
-                      <span>
-                        {shortenAddress(getWinnerWallet())}) wallet address
+              ) : winnersEntry && !userClaimEntry ? (
+                <div className="flex w-full flex-1 items-center gap-4">
+                  <span className="overflow-hidden font-medium md:leading-[normal] leading-[15px] flex h-[70px] md:h-[48px] w-full items-center bg-gray10 py-1 rounded-xl align-center justify-between">
+                    <p className="text-[10px] ml-4 text-gray100">
+                      {maxNumberOfEntries >= 1_000_000_000
+                        ? `${numberWithCommas(
+                            numberOfOnchainEntries
+                          )} people enrolled`
+                        : !isRemainingPercentLessThanTen
+                        ? `
+													${numberOfOnchainEntries} / ${numberWithCommas(
+                            maxNumberOfEntries
+                          )} people enrolled`
+                        : `${numberWithCommas(
+                            maxNumberOfEntries
+                          )} people enrolled`}
+                    </p>
+                    <Icon
+                      className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
+                      iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
+                      width="215px"
+                      height="215px"
+                    />
+                  </span>
+
+                  <ClaimAndEnrollButton
+                    height="48px"
+                    $fontSize="14px"
+                    className="min-w-[552px]  md:!w-[352px] !w-full"
+                    onClick={() => openEnrollModal(raffle, "Winners")}
+                  >
+                    <div className="relative w-full">
+                      <span className="text-transparent bg-clip-text bg-g-primary">
+                        Check Winner Wallets
                       </span>
-                    </span>{" "}
-                    for being the winner !
-                    {winnerEntry!.claimingPrizeTx && (
-                      <span
-                        className="flex md:ml-2 cursor-pointer"
-                        onClick={() =>
-                          window.open(
-                            getTxUrl(chain, winnerEntry!.claimingPrizeTx),
-                            "_blank"
-                          )
-                        }
-                      >
-                        View on Explorer
-                        <Icon
-                          className="ml-2"
-                          iconSrc="assets/images/prize-tap/ic_link_white.svg"
-                          hoverable={true}
-                        />
-                      </span>
-                    )}
-                  </p>
-                  <Icon
-                    className="opacity-[.3] mt-[-25px]  md:mt-[-10px] "
-                    iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-                    width="215px"
-                    height="215px"
-                  />
-                </span>
-              ) : winnerEntry &&
-                winnerEntry?.userProfile.pk === userProfile?.pk &&
-                !userEntry?.claimingPrizeTx ? (
+                    </div>
+                  </ClaimAndEnrollButton>
+                </div>
+              ) : !!winnersEntry.length &&
+                !!userClaimEntry &&
+                !userClaimEntry.claimingPrizeTx ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{winnerEntry?.userProfile?.username} !
-                      claim your prize now.
+                      Congratulations @
+                      {userProfile?.username ||
+                        shortenAddress(userProfile?.wallets?.[0].address)}{" "}
+                      ! claim your prize now.
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px] mr-[-20px]"
@@ -533,7 +561,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
                     <p className="text-[10px] text-white">
-                      Congratulations @{winnerEntry?.userProfile?.username}!
+                      Congratulations @
+                      {userProfile?.username ||
+                        shortenAddress(userProfile?.wallets?.[0].address)}
+                      !
                     </p>
                     <Icon
                       className="opacity-[.3] mt-[-10px]"
@@ -544,7 +575,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   </div>
                   <div className="claimed-prize md:!w-[352px] !w-full">
                     <div className="relative">
-                      <p>Claimed</p>
+                      <p className="!font-semibold">Claimed</p>
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
@@ -579,46 +610,51 @@ export const RaffleCardTimer = ({
   const [seconds, setSeconds] = useState("00");
   const [start, setStarted] = useState<boolean>(true);
 
-  useEffect(() => {
-    setStarted(new Date(startTime) < new Date());
-  }, [new Date()]);
+  const startTimeDate = useMemo(() => new Date(startTime), [startTime]);
 
-  let startTimeDate = useMemo(() => new Date(startTime), [startTime]);
-  let FinishTimeDate = useMemo(
+  const FinishTimeDate = useMemo(
     () => new Date(start ? FinishTime : new Date()),
-    [FinishTime]
+    [FinishTime, start]
   );
 
-  let deadline = useMemo(
+  const deadline = useMemo(
     () =>
       startTimeDate.getTime() > now.getTime() ? startTimeDate : FinishTimeDate,
     [startTimeDate, FinishTimeDate, now]
   );
 
   useEffect(() => {
-    // calculate time difference between now and deadline
     const diff = deadline.getTime() - now.getTime();
     if (diff <= 0) {
+      setDays("00");
+      setHours("00");
+      setMinutes("00");
+      setSeconds("00");
+
       return;
     }
     // time calculations for days, hours, minutes and seconds
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const newDays = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    // set the state with the time difference
+
     setSeconds(seconds < 10 ? `0${seconds}` : seconds.toString());
     setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
     setHours(hours < 10 ? `0${hours}` : hours.toString());
-    setDays(days < 10 ? `0${days}` : days.toString());
+    setDays(newDays < 10 ? `0${newDays}` : newDays.toString());
   }, [now, deadline]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
+    const interval = setInterval(() => {
+      setStarted(new Date(startTime) < new Date());
+      setNow(new Date());
+    }, 1000);
+
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [startTime]);
 
   return (
     <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">

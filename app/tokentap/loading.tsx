@@ -1,5 +1,6 @@
-import SearchInput from "@/components/containers/gas-tap/searchInput"
-import Icon from "@/components/ui/Icon"
+import Icon from "@/components/ui/Icon";
+import Image from "next/image";
+import SearchInput from "../gastap/components/searchInput";
 
 const TokenTapLoading = () => {
   return (
@@ -13,7 +14,9 @@ const TokenTapLoading = () => {
 
         <div className="flex justify-center md:justify-start mt-2">
           <div className="claim-stat__claimed rounded-lg bg-gray70 py-[2px] px-3 flex gap-x-3">
-            <img
+            <Image
+              width={156}
+              height={48}
               src="/assets/images/token-tap/coins-loading.svg"
               alt="loading"
             />
@@ -29,8 +32,8 @@ const TokenTapLoading = () => {
         <TokenCardLoading key={key} />
       ))}
     </div>
-  )
-}
+  );
+};
 
 const TokenCardLoading = () => {
   return (
@@ -73,13 +76,13 @@ const TokenCardLoading = () => {
           <div className="ml-auto flex gap-x-6 items-center">
             <Icon
               className="cursor-pointer"
-              iconSrc="assets/images/token-tap/twitter-icon.svg"
+              iconSrc="/assets/images/token-tap/twitter-icon.svg"
               width="auto"
               height="20px"
             />
             <Icon
               className="cursor-pointer"
-              iconSrc="assets/images/token-tap/discord-icon.svg"
+              iconSrc="/assets/images/token-tap/discord-icon.svg"
               width="auto"
               height="20px"
             />
@@ -89,7 +92,7 @@ const TokenCardLoading = () => {
 
       <div className="absolute w-96 h-[500px] animate-skeleton -top-40 z-10 opacity-20 rotate-[21.574deg] blur-2xl bg-[#797992]"></div>
     </div>
-  )
-}
+  );
+};
 
-export default TokenTapLoading
+export default TokenTapLoading;
