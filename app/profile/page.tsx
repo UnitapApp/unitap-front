@@ -6,13 +6,22 @@ import Link from "next/link";
 import { FC } from "react";
 import { getUserHistory } from "@/utils/serverApis";
 import RenderProfileUsername from "@/app/profile/components/renderProfileUsername";
+import { redirect } from "next/navigation";
 
 const Profile = async () => {
   const cookieStore = cookies();
 
   const token = cookieStore.get("userToken");
 
-  const res = await getUserHistory(token?.value);
+  let res: { gasClaim: number; tokenClaim: number; raffleWin: number };
+
+  try {
+    res = await getUserHistory(token?.value);
+
+    if ((res as any).detail === "Invalid token.") redirect("/");
+  } catch (e) {
+    redirect("/");
+  }
 
   return (
     <div>

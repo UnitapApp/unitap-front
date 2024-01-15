@@ -6,6 +6,7 @@ import { Noto_Sans_Mono } from "next/font/google";
 import { useProfileEditContext } from "../layout";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useState } from "react";
+import { shortenAddress } from "@/utils";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
@@ -48,7 +49,7 @@ const DeleteWalletModal = () => {
             NotoSansMono.className
           }
         >
-          0x2377...49s2
+          {shortenAddress(focusedWalletDeleteAddress)}
         </div>
 
         <button

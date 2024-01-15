@@ -204,7 +204,16 @@ const EditPage = () => {
                       wallet.address as Address
                     )
                   }
-                  isDeleteAllowed={userProfile.wallets.length > 1}
+                  isDeleteAllowed={
+                    userProfile.wallets.length > 1 &&
+                    !(
+                      !!address &&
+                      isAddressEqual(
+                        address as Address,
+                        wallet.address as Address
+                      )
+                    )
+                  }
                 />
               ))}
             <button
