@@ -46,6 +46,7 @@ const IDChain = {
 export const kccMainnet = {
   id: 321,
   name: "KuCoin Community Chain",
+  network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
     bscscan: {
@@ -102,7 +103,14 @@ export const supportedChains = [
   holesky,
   goerli,
   polygonMumbai,
-  bscTestnet,
+  {
+    ...bscTestnet,
+    rpcUrls: {
+      ...bscTestnet.rpcUrls,
+      default: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+      public: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+    },
+  },
   gnosis,
   IDChain,
   optimism,
