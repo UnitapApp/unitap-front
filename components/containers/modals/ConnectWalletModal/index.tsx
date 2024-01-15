@@ -42,6 +42,8 @@ export const RenderWalletBody: FC<{
     WalletState.Prompt
   );
 
+  const [previousState, setPreviousState] = useState<WalletState | null>(null);
+
   const cookies = useMemo(() => parseCookies(), []);
 
   const [isNewUser, setIsNewUser] = useState(false);
@@ -66,6 +68,11 @@ export const RenderWalletBody: FC<{
     };
   }, [walletProvider]);
 
+  const setNewWalletState = (state: WalletState) => {
+    setPreviousState(walletState);
+    setWalletState(state);
+  };
+
   useEffect(() => {
     if (cookies["tutorial"] === "false" || !isNewUser) return;
 
@@ -79,7 +86,10 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.Prompt)
     return (
       <WalletPrompt
-        setWalletState={setWalletState}
+        setWalletState={(state) => {
+          setPreviousState(walletState);
+          setWalletState(state);
+        }}
         setIsNewUser={setIsNewUser}
         setWalletProvider={setWalletProvider}
       />
@@ -88,21 +98,22 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.SignMessage)
     return (
       <WalletConnecting
+        previousWalletState={previousState}
         isNewUser={isNewUser}
         imageUrl={currentWallet.imageUrl}
         label={currentWallet.label}
         loadingImage={currentWallet.loadingImage}
-        setWalletState={setWalletState}
+        setWalletState={setNewWalletState}
       />
     );
 
   if (walletState === WalletState.UnknownWallet)
-    return <UnknownWalletBody setWalletState={setWalletState} />;
+    return <UnknownWalletBody setWalletState={setNewWalletState} />;
 
   if (walletState === WalletState.AddNewWallet)
     return (
       <AddNewWalletBody
-        setWalletState={setWalletState}
+        setWalletState={setNewWalletState}
         setWalletProvider={setWalletProvider}
       />
     );
@@ -113,7 +124,7 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.SetUsername)
     return (
       <SetUsernameBody
-        setWalletState={setWalletState}
+        setWalletState={setNewWalletState}
         walletProvider={walletProvider}
       />
     );
@@ -122,7 +133,7 @@ export const RenderWalletBody: FC<{
     return <AddNewWalletSuccess />;
 
   if (walletState === WalletState.AddWalletFailed)
-    return <AddNewWalletFailed setWalletState={setWalletState} />;
+    return <AddNewWalletFailed setWalletState={setNewWalletState} />;
 };
 
 export enum WalletState {
