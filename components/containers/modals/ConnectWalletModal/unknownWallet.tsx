@@ -30,19 +30,19 @@ const UnknownWalletBody: FC<{
         existing account but if you are a new user, you can register as new.
       </p>
 
-      <WhiteOutlinedButton
-        className="mb-4 !border-1 !font-semibold mt-5 !w-full bg-gray10"
-        onClick={() => setWalletState(WalletState.AddNewWallet)}
-      >
-        Add Wallet to an Existing Account
-      </WhiteOutlinedButton>
-
       <ClaimButton
         onClick={() => setWalletState(WalletState.SignMessage)}
-        className="!w-full before:!inset-[1px]"
+        className="!w-full mb-5 mt-5 before:!inset-[1px]"
       >
         <p className="font-bold text-base">Register as New User</p>
       </ClaimButton>
+
+      <p
+        className="underline mb-2 cursor-pointer"
+        onClick={() => setWalletState(WalletState.AddNewWallet)}
+      >
+        Add Wallet to an Existing Account
+      </p>
     </div>
   );
 };
