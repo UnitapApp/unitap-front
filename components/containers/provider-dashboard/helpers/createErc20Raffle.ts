@@ -1,5 +1,5 @@
 import { ZERO_ADDRESS } from "@/constants";
-import { ProviderDashboardFormDataProp, ConstraintParamValues } from "@/types";
+import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
 import { prizeTapABI } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
 import { PublicClient, getContract, parseEther } from "viem";
@@ -70,7 +70,7 @@ export const createErc20Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
   signer: GetWalletClientResult,
-  requirementList: ConstraintParamValues[],
+  requirementList: RequirementProps[],
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
@@ -101,6 +101,7 @@ export const createErc20Raffle = async (
   const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
   const constraints = requirementList.map((item) => item.pk);
   const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
+  const constraint_params = requirementList.filter(item => item.params ).map(item => ({[item.name]: item.params}));
   const raffleData = {
     name: prizeName,
     description: data.description,
@@ -114,7 +115,7 @@ export const createErc20Raffle = async (
     decimals: decimals,
     chain: Number(data.selectedChain.pk),
     constraints,
-    constraint_params: btoa(JSON.stringify({})),
+    constraint_params: btoa(JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})),
     deadline: deadline(data.endTimeStamp),
     max_number_of_entries: maxNumberOfEntries,
     start_at: startAt(data.startTimeStamp),

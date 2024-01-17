@@ -53,14 +53,7 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-
     setApproveAllowance(Number(fromWei(r5.toString(), r3)))
-    // console.log( Number(data.totalAmount), Number(fromWei(r5.toString(), r3)))
-    // setIsErc20Approved(
-    //   Number(fromWei(r5.toString(), r3)) != 0 &&
-    //     Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
-    // );
-
     setTokenContractStatus((prev: any) => ({...prev,
       isValid: ContractValidationStatus.Valid,
       checking: false,}))

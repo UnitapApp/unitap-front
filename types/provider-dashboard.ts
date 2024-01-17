@@ -51,27 +51,23 @@ export type ErrorProps = {
   numberOfWinnersMessage: null | string;
 };
 
-export interface ConstraintParams {
-  id: number;
-}
-
 export interface ConstraintProps {
   description: string | null;
+  explanation: string | null;
+  iconUrl: string | null;
   name: string;
-  params: ConstraintParams[];
+  negativeDescription: string;
+  params: any;
   pk: number;
   response: string | null;
   title: string;
   type: string;
-  iconUrl: string | null;
-  // isReversed: boolean;
-  // negativeDescription: string | null;
 }
 
-export interface ConstraintParamValues {
+export interface RequirementProps {
   name: string;
   pk: number;
-  values: Record<number, string | number | boolean> | null;
+  params: any;
   title: string;
   isNotSatisfy: boolean;
   isReversed: boolean;
@@ -80,7 +76,7 @@ export interface ConstraintParamValues {
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints: ConstraintParamValues[];
+  constraints: RequirementProps[];
   contract: string;
   createdAt: string;
   creatorAddress: string;

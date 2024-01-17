@@ -2,10 +2,10 @@
 
 import Icon from "@/components/ui/Icon";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
-import { ConstraintParamValues } from "@/types";
+import { RequirementProps } from "@/types";
 
 interface Props {
-  requirement: ConstraintParamValues;
+  requirement: RequirementProps;
 }
 
 const NewAddedConstraint = ({ requirement }: Props) => {
@@ -13,22 +13,25 @@ const NewAddedConstraint = ({ requirement }: Props) => {
     handleSelectConstraint,
     openRequirementModal,
     deleteRequirement,
-    constraintsList,
+    constraintsListApi,
     isShowingDetails,
   } = useTokenTapFromContext();
-  const constraint = constraintsList.filter(
+
+  const constraint = constraintsListApi!.find(
     (item) => item.pk == requirement.pk
-  )[0];
+  );
+
   const isNotSatisfy = requirement.isNotSatisfy;
+
   const handleClick = () => {
     if (isShowingDetails) return;
-    handleSelectConstraint(constraint);
+    handleSelectConstraint(constraint!);
     openRequirementModal();
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (pk: number) => {
     if (isShowingDetails) return;
-    deleteRequirement(id);
+    deleteRequirement(pk);
   };
 
   return (
@@ -39,7 +42,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           <p className={!isNotSatisfy ? "text-dark-space-green" : "text-error"}>
             {isNotSatisfy ? "Should not satisfy" : "Should satisfy"}
           </p>
-          <p>{constraint.title} requirement</p>
+          <p>{requirement!.title} requirement</p>
         </div>
         <div className="flex items-center gap-3">
           <div
@@ -50,7 +53,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           </div>
 
           <Icon
-            onClick={() => handleDelete(constraint.pk)}
+            onClick={() => handleDelete(requirement!.pk)}
             className="cursor-pointer"
             iconSrc="/assets/images/modal/exit.svg"
             height="14px"

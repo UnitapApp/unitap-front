@@ -2,7 +2,7 @@
 
 import {
   Chain,
-  ConstraintParamValues,
+  RequirementProps,
   ConstraintProps,
   ContractStatus,
   ContractValidationStatus,
@@ -49,6 +49,7 @@ import { checkNftsAreValid } from "@/components/containers/provider-dashboard/he
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
 import Big from "big.js";
 import { NullCallback } from "@/utils";
+import { isValidContractAddress } from "@/components/containers/provider-dashboard/helpers/isValidContractAddress";
 const formInitialData: ProviderDashboardFormDataProp = {
   provider: "",
   description: "",
@@ -157,7 +158,7 @@ export const TokenTapContext = createContext<{
   handleSelectConstraint: (constraint: ConstraintProps) => void;
   isModalOpen: boolean;
   selectedConstraintTitle: string | null;
-  handleBackToRequirementModal: () => void;
+  handleBackToConstraintListModal: () => void;
   chainList: Chain[];
   selectedChain: Chain | null;
   setSelectedChain: (chain: Chain) => void;
@@ -173,18 +174,18 @@ export const TokenTapContext = createContext<{
   selectNewOffer: boolean;
   handleSelectNewOffer: (select: boolean) => void;
   insertRequirement: (
-    requirement: ConstraintParamValues | null,
-    id: number,
+    pk: number,
     name: string,
     title: string,
-    isNotSatisfy: boolean
+    isNotSatisfy: boolean,
+    requirementValues: any
   ) => void;
-  requirementList: ConstraintParamValues[];
+  requirementList: RequirementProps[];
   deleteRequirement: (id: number) => void;
   updateRequirement: (
-    id: number,
-    requirements: ConstraintParamValues | null,
-    isNotSatisfy: boolean
+    requirement: RequirementProps,
+    isNotSatisfy: boolean,
+    requirementValues: any
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
   handleCreateRaffle: () => void;
@@ -197,9 +198,8 @@ export const TokenTapContext = createContext<{
   isErc20Approved: boolean;
   isApprovedAll: boolean;
   approveLoading: boolean;
-  constraintsList: ConstraintProps[];
+  constraintsListApi: ConstraintProps[] | undefined;
   handleApproveErc721Token: () => void;
-  handleGetConstraints: () => void;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserRafflesProps) => void;
   handleShowUserDetails: (raffle: UserRafflesProps) => void;
@@ -236,6 +236,7 @@ export const TokenTapContext = createContext<{
   userRaffle: UserRafflesProps | undefined;
   handleSetClaimPeriodic: (e: boolean) => void;
   claimPeriodic: boolean;
+  allChainList: Chain[] | undefined;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -255,7 +256,7 @@ export const TokenTapContext = createContext<{
   handleSelectConstraint: NullCallback,
   isModalOpen: false,
   selectedConstraintTitle: null,
-  handleBackToRequirementModal: NullCallback,
+  handleBackToConstraintListModal: NullCallback,
   chainList: [],
   selectedChain: null,
   setSelectedChain: NullCallback,
@@ -286,10 +287,9 @@ export const TokenTapContext = createContext<{
   handleApproveErc20Token: NullCallback,
   isErc20Approved: false,
   approveLoading: false,
-  constraintsList: [],
+  constraintsListApi: [] as any,
   isApprovedAll: false,
   handleApproveErc721Token: NullCallback,
-  handleGetConstraints: NullCallback,
   updateChainList: NullCallback,
   handleCheckForReason: NullCallback,
   handleShowUserDetails: NullCallback,
@@ -334,14 +334,21 @@ export const TokenTapContext = createContext<{
   userRaffle: {} as any,
   claimPeriodic: false,
   handleSetClaimPeriodic: NullCallback,
+  allChainList: [] as any,
 });
 
 const TokenTapProvider: FC<
-  PropsWithChildren & { rafflesInitial?: UserRafflesProps }
-> = ({ children, rafflesInitial }) => {
-  const [requirementList, setRequirementList] = useState<
-    ConstraintParamValues[]
-  >([]);
+  PropsWithChildren & {
+    rafflesInitial?: UserRafflesProps;
+    allChains?: Chain[];
+    constraintListApi?: ConstraintProps[];
+  }
+> = ({ children, rafflesInitial, allChains, constraintListApi }) => {
+  const [requirementList, setRequirementList] = useState<RequirementProps[]>(
+    []
+  );
+
+  const [allChainList] = useState<Chain[] | undefined>(allChains);
 
   const [selectNewOffer, setSelectNewOffer] = useState<boolean>(false);
 
@@ -447,7 +454,9 @@ const TokenTapProvider: FC<
     );
   };
 
-  const [constraintsList, setConstraintsList] = useState<ConstraintProps[]>([]);
+  const [constraintsListApi, setConstraintsListApi] = useState<
+    ConstraintProps[] | undefined
+  >(constraintListApi);
 
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
@@ -477,35 +486,20 @@ const TokenTapProvider: FC<
   };
 
   const updateRequirement = (
-    id: number,
-    requirements: ConstraintParamValues | null,
-    isNotSatisfy: boolean
+    requirement: RequirementProps,
+    isNotSatisfy: boolean,
+    requirementValues: any
   ) => {
-    if (!requirements) return;
-
+    if (!requirement) return;
     const newItem = requirementList.map((item) => {
-      if (item.pk == id) {
-        return { ...requirements, isNotSatisfy };
+      if (item.pk == requirement.pk) {
+        return { ...requirement, isNotSatisfy, params: requirementValues };
       }
       return item;
     });
 
     setRequirementList(newItem);
   };
-
-  const isValidContractAddress = useCallback(
-    async (contractAddress: string) => {
-      try {
-        const res = await provider?.getBytecode({
-          address: contractAddress as any,
-        });
-        return res != "0x";
-      } catch {
-        return false;
-      }
-    },
-    [provider]
-  );
 
   const checkContractInfo = useCallback(async () => {
     if (!data.isNft && provider && address) {
@@ -535,7 +529,10 @@ const TokenTapProvider: FC<
   const checkContractAddress = useCallback(
     async (contractAddress: string) => {
       const step1Check = isAddress(contractAddress);
-      const step2Check = await isValidContractAddress(contractAddress);
+      const step2Check = await isValidContractAddress(
+        contractAddress,
+        provider
+      );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
         checkContractInfo();
@@ -875,12 +872,6 @@ const TokenTapProvider: FC<
     setSearchPhrase("");
   };
 
-  const handleGetConstraints = async () => {
-    if (constraintsList.length != 0) return;
-    const res = await getConstraintsApi();
-    setConstraintsList(res);
-  };
-
   const handleChange = (e: {
     target: { type: any; name: any; checked: any; value: any };
   }) => {
@@ -913,7 +904,7 @@ const TokenTapProvider: FC<
     setSelectedConstrains(constraint);
   };
 
-  const handleBackToRequirementModal = () => {
+  const handleBackToConstraintListModal = () => {
     setSelectedConstrains(null);
     setSelectedConstraintTitle(null);
   };
@@ -1015,20 +1006,20 @@ const TokenTapProvider: FC<
   };
 
   const insertRequirement = (
-    requirement: ConstraintParamValues | null,
-    id: number,
+    pk: number,
     name: string,
     title: string,
-    isNotSatisfy: boolean
+    isNotSatisfy: boolean,
+    requirementValues: any
   ) => {
     setRequirementList([
       ...requirementList,
       {
-        pk: id,
-        values: !requirement ? null : { 1: "", 2: "", 3: "" },
-        name,
-        title,
-        isNotSatisfy,
+        pk: pk,
+        params: requirementValues,
+        name: name,
+        title: title,
+        isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
       },
     ]);
@@ -1077,7 +1068,7 @@ const TokenTapProvider: FC<
     setNumberOfNfts(
       raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
     );
-    setConstraintsList(await getConstraintsApi());
+    setConstraintsListApi(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
         constraint.isReversed
@@ -1177,7 +1168,7 @@ const TokenTapProvider: FC<
         selectedConstrains,
         handleSelectConstraint,
         selectedConstraintTitle,
-        handleBackToRequirementModal,
+        handleBackToConstraintListModal,
         chainList,
         selectedChain,
         setSelectedChain,
@@ -1210,10 +1201,9 @@ const TokenTapProvider: FC<
         handleApproveErc20Token,
         isErc20Approved,
         approveLoading,
-        constraintsList,
+        constraintsListApi,
         isApprovedAll,
         handleApproveErc721Token,
-        handleGetConstraints,
         updateChainList,
         handleCheckForReason,
         handleShowUserDetails,
@@ -1244,6 +1234,7 @@ const TokenTapProvider: FC<
         userRaffle,
         claimPeriodic,
         handleSetClaimPeriodic: setClaimPeriodic,
+        allChainList,
       }}
     >
       {children}

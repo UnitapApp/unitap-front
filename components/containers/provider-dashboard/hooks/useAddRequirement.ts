@@ -1,24 +1,28 @@
 "use client";
 
-import { ConstraintParamValues } from "@/types";
+import { RequirementProps } from "@/types";
 
-const useAddRequirement = (handleBackToRequirementModal: any, insertRequirement:any, updateRequirement:any) => {
+const useAddRequirement = (handleBackToConstraintListModal: any, insertRequirement:any, updateRequirement:any) => {
   const addRequirements = (
-    existRequirement: any,
-    params: ConstraintParamValues | null,
-    id: number,
-    name: string,
+    existRequirement: RequirementProps | null,
+    pk: number,
+    name: string, 
     title: string,
-    isNotSatisfy: boolean
+    isNotSatisfy: boolean,
+    requirementValues: any
   ) => {
-    if (id) {
-      handleBackToRequirementModal();
+      handleBackToConstraintListModal();
       if (!existRequirement) {
-        insertRequirement(params, id, name, title, isNotSatisfy);
+        insertRequirement(pk,
+          name, 
+          title,
+          isNotSatisfy,
+          requirementValues);
       } else {
-        updateRequirement(id, params, isNotSatisfy);
+        updateRequirement(existRequirement,
+          isNotSatisfy,
+          requirementValues);
       }
-    }
   };
   return addRequirements;
 };

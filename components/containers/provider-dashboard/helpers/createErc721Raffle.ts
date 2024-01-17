@@ -1,4 +1,4 @@
-import { ConstraintParamValues, ProviderDashboardFormDataProp } from "@/types";
+import { RequirementProps, ProviderDashboardFormDataProp } from "@/types";
 import { prizeTap721ABI } from "@/types/abis/contracts";
 import {  getContract } from "viem";
 import { PublicClient } from "wagmi";
@@ -59,7 +59,7 @@ export const createErc721Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
   signer: GetWalletClientResult,
-  requirementList: ConstraintParamValues[],
+  requirementList: RequirementProps[],
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
