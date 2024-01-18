@@ -154,7 +154,7 @@ const OnBoardProcess = () => {
     const showTutorial = cookies["tutorial"];
 
     const timeout = setTimeout(() => {
-      if ((!showTutorial || showTutorial === "true") && pathname === "/") {
+      if (showTutorial === "true" && pathname === "/") {
         setShowIntro(true);
       }
     }, 300);

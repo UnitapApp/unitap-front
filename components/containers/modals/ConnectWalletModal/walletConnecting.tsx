@@ -16,7 +16,15 @@ const WalletConnecting: FC<{
   error?: string;
   setWalletState: (state: WalletState) => void;
   isNewUser: boolean;
-}> = ({ imageUrl, label, loadingImage, setWalletState, isNewUser }) => {
+  previousWalletState: WalletState | null;
+}> = ({
+  imageUrl,
+  label,
+  loadingImage,
+  setWalletState,
+  isNewUser,
+  previousWalletState,
+}) => {
   const { address, connector } = useWalletAccount();
   const [error, setError] = useState("");
 
@@ -69,7 +77,13 @@ const WalletConnecting: FC<{
 
     onWalletLogin(res.token, res);
 
-    setWalletState(isNewUser ? WalletState.SetUsername : WalletState.LoggedIn);
+    setWalletState(
+      previousWalletState === WalletState.AddNewWallet
+        ? WalletState.AddWalletSuccess
+        : isNewUser
+        ? WalletState.SetUsername
+        : WalletState.LoggedIn
+    );
   };
 
   const { isError, signTypedDataAsync, variables } = useSignTypedData({

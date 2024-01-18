@@ -74,7 +74,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       : token.amount / 10 ** token.chain.decimals;
 
   const timePermissionVerification = useMemo(
-    () => token.permissions.find((permission) => permission.type === "TIME"),
+    () => token.constraints.find((permission) => permission.type === "TIME"),
     [token]
   );
 
@@ -220,8 +220,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             } pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
           >
             {(showAllPermissions
-              ? token.permissions
-              : token.permissions
+              ? token.constraints
+              : token.constraints
                   .filter((permission) => permission.type === "VER")
                   .slice(0, 6)
             ).map((permission, key) => (
@@ -239,7 +239,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </Tooltip>
             ))}
 
-            {token.permissions.length > 6 && (
+            {token.constraints.length > 6 && (
               <button
                 onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
                 className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"

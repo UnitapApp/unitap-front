@@ -15,18 +15,18 @@ import BrightStatusModal from "./brightStatusModal";
 import Icon from "@/components/ui/Icon";
 import { ConnectBrightIdApi, sponsorAPI } from "@/utils/api";
 import { useUserProfileContext } from "@/context/userProfile";
-import { ErrorsContext } from "@/context/errorsProvider";
 import useGenerateKeys from "@/utils/hooks/generateKeys";
 import { useGlobalContext } from "@/context/globalProvider";
 import Modal from "@/components/ui/Modal/modal";
+import { AxiosError } from "axios";
 
-const BrightConnectionModalBody = () => {
+export const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, updateProfile, userToken } =
     useUserProfileContext();
 
   const [tried] = useState(false);
 
-  const { errors, getError, deleteError } = useContext(ErrorsContext);
+  const [error, setError] = useState("");
 
   const { keys, signPrivateKey } = useGenerateKeys();
 
@@ -35,12 +35,6 @@ const BrightConnectionModalBody = () => {
 
   const [brightIdConnectionError, setBrightIdConnectionError] =
     useState<APIError | null>(null);
-
-  useEffect(() => {
-    setBrightIdConnectionError(
-      getError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR)
-    );
-  }, [errors, getError]);
 
   useEffect(() => {
     if (keys) {
@@ -67,7 +61,7 @@ const BrightConnectionModalBody = () => {
   const refreshConnectionButtonAction = useCallback(async () => {
     if (loading || !keys?.address || !signedPrivateKey || !userToken) return;
 
-    deleteError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR);
+    setError("");
     setLoading(true);
     try {
       const profile = await ConnectBrightIdApi(
@@ -78,6 +72,11 @@ const BrightConnectionModalBody = () => {
 
       updateProfile({ ...userProfile!, isMeetVerified: true });
     } catch (e) {
+      if (e instanceof AxiosError) {
+        setError(e.response?.data.message ?? e.message);
+      } else {
+        setError((e as any).message);
+      }
     } finally {
       setLoading(false);
     }
@@ -86,7 +85,6 @@ const BrightConnectionModalBody = () => {
     keys?.address,
     signedPrivateKey,
     userToken,
-    deleteError,
     updateProfile,
     userProfile,
   ]);
@@ -131,12 +129,9 @@ const BrightConnectionModalBody = () => {
         </p>
       </div>
 
-      {brightIdConnectionError && (
+      {error && (
         <span className="notice flex mb-3">
-          <p className="text-xs text-error font-light text-center">
-            {" "}
-            {brightIdConnectionError.message}{" "}
-          </p>
+          <p className="text-xs text-error font-light text-center"> {error} </p>
         </span>
       )}
       <span className="notice flex mb-3">

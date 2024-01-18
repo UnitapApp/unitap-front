@@ -264,7 +264,11 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           </div>
           <Tooltip
             className={`text-xs !cursor-default py-3 w-full max-w-[180px] ${
-              isHighlighted ? "bg-transparent" : "bg-gray40"
+              isHighlighted
+                ? "bg-transparent"
+                : chain.isOneTimeClaim
+                ? "bg-gray40"
+                : "bg-dark-primary"
             }`}
             withoutImage
             text={
@@ -273,29 +277,25 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 : "You can claim from this tap each round."
             }
           >
-            <div
-              className={`items-center font-semibold px-4 text-secondary-text flex rounded-none justify-between md:justify-center`}
-            >
-              {chain.isOneTimeClaim ? (
-                <>
-                  <p className="flex-1">Single-Claim Tap</p>
-                  <Icon
-                    className="text-white"
-                    ml={4}
-                    iconSrc="/assets/images/gas-tap/claimable-once.svg"
-                  />
-                </>
-              ) : (
-                <>
-                  <p className="flex-1">Periodic Tap</p>
-                  <Icon
-                    className="text-white"
-                    ml={4}
-                    iconSrc="/assets/images/gas-tap/periodic-tap.svg"
-                  />
-                </>
-              )}
-            </div>
+            {chain.isOneTimeClaim ? (
+              <div className="items-center font-semibold px-4 text-secondary-text flex rounded-none justify-between md:justify-center">
+                <p className="flex-1">Single-Claim Tap</p>
+                <Icon
+                  className="text-white"
+                  ml={4}
+                  iconSrc="/assets/images/gas-tap/claimable-once.svg"
+                />
+              </div>
+            ) : (
+              <div className="items-center font-semibold px-4 text-gray100 flex rounded-none justify-between md:justify-center">
+                <p className="flex-1">Periodic Tap</p>
+                <Icon
+                  className="text-white"
+                  ml={4}
+                  iconSrc="/assets/images/gas-tap/periodic-tap.svg"
+                />
+              </div>
+            )}
           </Tooltip>
           <div
             className={`${

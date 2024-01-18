@@ -1,6 +1,6 @@
 import TokenTapProvider from "@/context/tokenTapProvider";
 import { Token } from "@/types";
-import { getTokensListAPI, serverFetch } from "@/utils/api";
+import { serverFetch } from "@/utils/api";
 import { FC, PropsWithChildren } from "react";
 
 const TokenTapLayout: FC<PropsWithChildren> = async ({ children }) => {
@@ -12,4 +12,3 @@ const TokenTapLayout: FC<PropsWithChildren> = async ({ children }) => {
 };
 
 export default TokenTapLayout;
-

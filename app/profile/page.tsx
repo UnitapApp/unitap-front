@@ -6,13 +6,22 @@ import Link from "next/link";
 import { FC } from "react";
 import { getUserHistory } from "@/utils/serverApis";
 import RenderProfileUsername from "@/app/profile/components/renderProfileUsername";
+import { redirect } from "next/navigation";
 
 const Profile = async () => {
   const cookieStore = cookies();
 
   const token = cookieStore.get("userToken");
 
-  const res = await getUserHistory(token?.value);
+  let res: { gasClaim: number; tokenClaim: number; raffleWin: number };
+
+  try {
+    res = await getUserHistory(token?.value);
+
+    if ((res as any).detail === "Invalid token.") redirect("/");
+  } catch (e) {
+    redirect("/");
+  }
 
   return (
     <div>
@@ -33,8 +42,8 @@ const Profile = async () => {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-gray10 p-1 flex items-center">
-            <Icon
+          <div className="rounded-xl bg-gray10 p-1 flex items-center">
+            {/* <Icon
               iconSrc="/assets/images/up-profile/twitter.svg"
               className="mx-2 cursor-pointer"
             />
@@ -45,7 +54,7 @@ const Profile = async () => {
             <Icon
               iconSrc="/assets/images/up-profile/brightid.svg"
               className="mx-2 mr-3 cursor-pointer"
-            />
+            /> */}
             <Link href="/profile/edit">
               <div className="px-10 cursor-pointer rounded-lg text-center bg-gray50 text-sm font-medium py-3">
                 Edit Profile

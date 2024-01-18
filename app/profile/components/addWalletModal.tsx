@@ -12,8 +12,12 @@ import { WalletState } from "../../../components/containers/modals/ConnectWallet
 import { useUserProfileContext } from "@/context/userProfile";
 
 const AddWalletModal = () => {
-  const { isAddModalOpen, setIsAddModalOpen, addModalState } =
-    useWalletManagementContext();
+  const {
+    isAddModalOpen,
+    setIsAddModalOpen,
+    addModalState,
+    duplicateWalletRaiseError,
+  } = useWalletManagementContext();
 
   const { setHoldUserLogout } = useUserProfileContext();
 
@@ -26,7 +30,9 @@ const AddWalletModal = () => {
   return (
     <Modal
       size="small"
-      title="Add New Wallet"
+      title={
+        duplicateWalletRaiseError ? "Add New Wallet" : "Add Or Switch Wallet"
+      }
       closeModalHandler={() => setIsAddModalOpen(false)}
       isOpen={isAddModalOpen}
     >

@@ -38,7 +38,8 @@ const WalletPrompt: FC<{
   setWalletProvider: (provider: ConnectionProvider) => void;
   setWalletState: (state: WalletState) => void;
 }> = ({ setWalletProvider, setWalletState, setIsNewUser }) => {
-  const { connect, connectors, isSuccess, isLoading } = useWalletConnection();
+  const { connect, connectors, disconnect, isSuccess, isLoading } =
+    useWalletConnection();
 
   const { address } = useWalletAccount();
 
@@ -51,7 +52,7 @@ const WalletPrompt: FC<{
         exists ? WalletState.SignMessage : WalletState.UnknownWallet
       );
     });
-  }, [address, setIsNewUser, setWalletState]);
+  }, [address, setIsNewUser, setWalletState, isSuccess, disconnect]);
 
   return (
     <>

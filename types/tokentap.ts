@@ -22,7 +22,7 @@ export type Token = {
   tokenImageUrl?: string;
   contract?: string;
   chain: Chain;
-  permissions: Permission[];
+  constraints: Permission[];
 };
 
 export type ClaimedToken = {

@@ -1,43 +1,43 @@
-"use client"
+"use client";
 
-import { getTokenConstraintsVerifications } from "@/utils/api"
-import { FC, useEffect, useState } from "react"
-import { Permission, Token } from "@/types"
-import { useUserProfileContext } from "@/context/userProfile"
-import Tooltip from "@/components/ui/Tooltip"
-import { ClaimAndEnrollButton } from "@/components/ui/Button/button"
+import { getTokenConstraintsVerifications } from "@/utils/api";
+import { FC, useEffect, useState } from "react";
+import { Permission, Token } from "@/types";
+import { useUserProfileContext } from "@/context/userProfile";
+import Tooltip from "@/components/ui/Tooltip";
+import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 
 const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
   token,
   onClose,
 }) => {
-  const { userToken } = useUserProfileContext()
+  const { userToken } = useUserProfileContext();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
-  >([])
+  >([]);
 
   useEffect(() => {
-    if (!userToken) return
+    if (!userToken) return;
 
-    setLoading(true)
+    setLoading(true);
 
     getTokenConstraintsVerifications(token.id, userToken)
       .then((res) => {
-        SetPermissions(res.constraints)
+        SetPermissions(res.constraints);
       })
       .catch(() => {
         SetPermissions(
-          token.permissions.map((constraint) => ({
+          token.constraints.map((constraint) => ({
             ...constraint,
             isVerified: false,
           }))
-        )
+        );
       })
-      .finally(() => setLoading(false))
-  }, [userToken, token.permissions, token.id, SetPermissions])
+      .finally(() => setLoading(false));
+  }, [userToken, token.constraints, token.id, SetPermissions]);
 
   return (
     <div className="w-full">
@@ -116,7 +116,7 @@ const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TokenPermissions
+export default TokenPermissions;

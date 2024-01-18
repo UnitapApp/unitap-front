@@ -20,18 +20,18 @@ const useGenerateKeys = (): {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const storedPrivateKey = localStorage.getItem("privateKey");
-    const storedPublicKey = localStorage.getItem("publicKey");
-    const storedAddress = localStorage.getItem("address");
+    // const storedPrivateKey = localStorage.getItem("privateKey");
+    // const storedPublicKey = localStorage.getItem("publicKey");
+    // const storedAddress = localStorage.getItem("address");
 
-    if (storedPrivateKey && storedPublicKey && storedAddress) {
-      setKeys({
-        privateKey: storedPrivateKey,
-        publicKey: storedPublicKey,
-        address: storedAddress,
-      });
-      return;
-    }
+    // if (storedPrivateKey && storedPublicKey && storedAddress) {
+    //   setKeys({
+    //     privateKey: storedPrivateKey,
+    //     publicKey: storedPublicKey,
+    //     address: storedAddress,
+    //   });
+    //   return;
+    // }
 
     const generateKeys = async () => {
       try {
@@ -46,9 +46,9 @@ const useGenerateKeys = (): {
         const address = wallet.address;
 
         // Store the keys in localStorage
-        localStorage.setItem("privateKey", privateKey);
-        localStorage.setItem("publicKey", publicKey);
-        localStorage.setItem("address", address);
+        // localStorage.setItem("privateKey", privateKey);
+        // localStorage.setItem("publicKey", publicKey);
+        // localStorage.setItem("address", address);
 
         // Update the state with the keys
         setKeys({ privateKey, publicKey, address });
