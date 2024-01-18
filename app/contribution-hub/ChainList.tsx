@@ -23,7 +23,14 @@ const ChainList = ({
       ["CHAIN"]: chian.pk,
     });
     setShowItems(false);
+    setChainName(chian.chainName);
   };
+
+  const [chainName, setChainName] = useState<string | undefined>();
+
+  const [filterChainName, setFilterChainName] = useState<Chain[] | undefined>(
+    allChainList
+  );
 
   const [showItems, setShowItems] = useState<boolean>(false);
 
@@ -42,19 +49,35 @@ const ChainList = ({
     if (showItems) setShowItems(false);
   });
 
+  const handleSearch = (e: string) => {
+    setSelectedChain(undefined);
+    setChainName(e);
+    setShowItems(true);
+    setFilterChainName(
+      allChainList?.filter(
+        (chain) =>
+          chain.chainName.toLocaleLowerCase().includes(e) ||
+          chain.chainId.includes(e)
+      )
+    );
+  };
+
   return (
     <div className="relative" ref={ref}>
       <div
         onClick={() => setShowItems(!showItems)}
-        className="flex items-center justify-between cursor-pointer h-[43px] bg-gray40 border-gray50 rounded-xl px-3"
+        className="flex items-center gap-2 justify-between cursor-pointer h-[43px] bg-gray40 border-gray50 rounded-xl px-3"
       >
-        {!selectedChain && <p>Please select Chain...</p>}
-        <div className="flex gap-2 items-center">
-          {selectedChain && (
-            <Icon iconSrc={selectedChain.logoUrl} height="24px" width="24px" />
-          )}
-          {selectedChain && <p>{selectedChain.chainName}</p>}
-        </div>
+        {selectedChain && (
+          <Icon iconSrc={selectedChain.logoUrl} height="24px" width="24px" />
+        )}
+        <input
+          className="h-full w-full bg-inherit"
+          placeholder="Please select chain..."
+          value={chainName ?? ""}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+
         <Icon
           iconSrc="/assets/images/fund/arrow-down.png"
           height="8px"
@@ -63,7 +86,7 @@ const ChainList = ({
       </div>
       {showItems && (
         <div className="absolute bg-gray40 z-10 w-full border border-gray50 overflow-x-hidden overflow-y-scroll max-h-[200px] rounded-lg ">
-          {allChainList?.map((chain) => (
+          {filterChainName?.map((chain) => (
             <div
               onClick={() => handleSelectChain(chain)}
               key={chain.chainPk}
