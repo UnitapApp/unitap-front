@@ -1,11 +1,11 @@
 "use client";
 
-import GasTapContent from "../components/Content";
+import ProvideGasFeeContent from "../components/ProvideGasFeeContent";
 
 const Page = () => {
   return (
     <>
-      <GasTapContent />
+      <ProvideGasFeeContent />
     </>
   );
 };

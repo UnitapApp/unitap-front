@@ -1,317 +1,154 @@
-import FundTransactionModal from "@/app/gastap/components/Modals/FundTransactionModal";
-import SelectChainModal from "@/app/gastap/components/Modals/SelectChainModal";
-import { ClaimButton } from "@/components/ui/Button/button";
-import Icon from "@/components/ui/Icon";
-import Modal from "@/components/ui/Modal/modal";
-import { useGasTapContext } from "@/context/gasTapProvider";
-import { useUserProfileContext } from "@/context/userProfile";
-import { Chain, ChainType } from "@/types/gastap";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { parseToLamports } from "@/utils/numbers";
-import { parseEther } from "viem";
-import { submitDonationTxHash } from "@/utils/api";
+"use client";
+
 import {
-  estimateGas,
-  useNetworkSwitcher,
-  useWalletAccount,
-  useWalletBalance,
-  useWalletNetwork,
-  useWalletProvider,
-  useWalletSigner,
-} from "@/utils/wallet";
-import { useGlobalContext } from "@/context/globalProvider";
-import { USER_DENIED_REQUEST_ERROR_CODE } from "@/utils/web3";
-import { getChainIcon } from "@/utils/chain";
+  ProviderDashboardButton,
+  ProviderDashboardButtonSuccess,
+} from "../../Buttons";
+import Icon from "@/components/ui/Icon";
+import SearchInput from "@/app/gastap/components/searchInput";
+import Link from "next/link";
+import RoutePath from "@/utils/routes";
 
-const GasTapContent: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
-  const { chainList: originalChainList } = useGasTapContext();
-
-  const { userToken } = useUserProfileContext();
-  const { isConnected, address } = useWalletAccount();
-  const provider = useWalletProvider();
-  const signer = useWalletSigner();
-  const { chain } = useWalletNetwork();
-  const chainId = chain?.id;
-
-  const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
-  const balance = useWalletBalance({
-    address,
-    chainId: Number(selectedChain?.chainId),
-  });
-
-  const chainList = useMemo(() => {
-    return originalChainList.filter(
-      (chain) => chain.chainType !== ChainType.SOLANA
-    );
-  }, [originalChainList]);
-
-  useEffect(() => {
-    if (chainList.length > 0 && !selectedChain) {
-      if (initialChainId) {
-        const chain = chainList.find(
-          (chain) => chain.pk === Number(initialChainId)
-        );
-        if (chain) {
-          setSelectedChain(chain);
-        }
-      } else {
-        setSelectedChain(chainList[0]);
-      }
-    }
-  }, [chainList, initialChainId, selectedChain]);
-
-  const { switchChain } = useNetworkSwitcher();
-
-  const [fundAmount, setFundAmount] = useState<string>("");
-
-  const [modalState, setModalState] = useState(false);
-  const [fundTransactionError, setFundTransactionError] = useState("");
-  const [txHash, setTxHash] = useState("");
-
-  const isRightChain = useMemo(() => {
-    if (!isConnected || !chainId || !selectedChain) return false;
-    return chainId === Number(selectedChain.chainId);
-  }, [selectedChain, isConnected, chainId]);
-
-  const { setIsWalletPromptOpen } = useGlobalContext();
-
-  const handleTransactionError = useCallback((error: any) => {
-    if (error?.code === USER_DENIED_REQUEST_ERROR_CODE) return;
-    const message = error?.data?.message || error?.error?.message;
-    if (message) {
-      if (message.includes("insufficient funds")) {
-        setFundTransactionError("Error: Insufficient Funds");
-      } else {
-        setFundTransactionError(message);
-      }
-    } else {
-      setFundTransactionError(
-        "Unexpected error. Could not estimate gas for this transaction."
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    setFundAmount("");
-  }, [chainId]);
-
-  const [submittingFundTransaction, setSubmittingFundTransaction] =
-    useState(false);
-
-  const loading = useMemo(() => {
-    if (submittingFundTransaction) return true;
-    if (!isConnected) return false;
-    return !chainId || !selectedChain || !address;
-  }, [address, isConnected, chainId, selectedChain, submittingFundTransaction]);
-
-  const handleSendFunds = useCallback(async () => {
-    if (!isConnected) {
-      setIsWalletPromptOpen(true);
-      return;
-    }
-    if (!chainId || !selectedChain || !address || loading) return;
-    if (!isRightChain) {
-      await switchChain(Number(selectedChain.chainId));
-      return;
-    }
-    if (!Number(fundAmount)) {
-      alert("Enter fund amount");
-      return;
-    }
-
-    if (!provider) return;
-
-    const chainPk = selectedChain.pk;
-
-    let tx = {
-      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834" as any,
-      value: BigInt(
-        selectedChain.symbol === "SOL"
-          ? parseToLamports(fundAmount)
-          : parseEther(fundAmount)
-      ),
-    };
-
-    setSubmittingFundTransaction(true);
-
-    const estimatedGas = await estimateGas(provider, {
-      from: address,
-      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
-      value: BigInt(tx.value),
-    }).catch((err: any) => {
-      return err;
-    });
-
-    console.log(estimateGas);
-
-    if (typeof estimatedGas !== "bigint") {
-      handleTransactionError(estimatedGas);
-      setSubmittingFundTransaction(false);
-      return;
-    }
-
-    signer
-      ?.sendTransaction({
-        ...tx,
-        ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
-        // gasPrice /// TODO add gasPrice based on EIP 1559
-      })
-      .then(async (tx) => {
-        await provider.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 1,
-        });
-        return tx;
-      })
-      .then(async (tx) => {
-        if (userToken) await submitDonationTxHash(tx, chainPk, userToken);
-        setTxHash(tx);
-      })
-      .catch((err) => {
-        handleTransactionError(err);
-      })
-      .finally(() => {
-        setSubmittingFundTransaction(false);
-      });
-  }, [
-    isConnected,
-    chainId,
-    selectedChain,
-    address,
-    loading,
-    isRightChain,
-    fundAmount,
-    provider,
-    signer,
-    setIsWalletPromptOpen,
-    switchChain,
-    handleTransactionError,
-    userToken,
-  ]);
-
-  const closeModalHandler = () => {
-    setFundTransactionError("");
-    setTxHash("");
-    setModalState(false);
-  };
-
-  const fundActionButtonLabel = useMemo(() => {
-    if (!isConnected) {
-      return "Connect Wallet";
-    }
-    if (loading) {
-      return "Loading...";
-    }
-    return !isRightChain ? "Switch Network" : "Submit Contribution";
-  }, [isConnected, isRightChain, loading]);
-
-  useEffect(() => {
-    balance.refetch();
-  }, [isRightChain, address, provider]);
-
+const GasTapContent = () => {
   return (
-    <div className="bg-gray20 select-none rounded-xl p-12 relative h-[10hv] overflow-hidden  text-white flex flex-col items-center text-center">
-      <div className="animate-fadeIn">
-        <div className="absolute top-[-10.5em] left-[-24.5em] z-0">
-          <Icon iconSrc="/assets/images/fund/provide-gas-fee-planet.svg" />
-        </div>
-        <div className="z-10">
-          <Icon iconSrc="/assets/images/provider-dashboard/gasTap/battery.png" />
-        </div>
-        <div className="w-full max-w-[452px] ">
-          <div className="z-10 mt-5 flex flex-col items-center">
-            <p className="text-[14px] font-semibold mb-2">Provide Gas Fee</p>
-            <div className=" flex items-center">
-              <p className="text-xs text-gray100 max-w-[300px]">
-                100% of contributions will fund distributions and transaction
-                costs of the gas tap.
-              </p>
-            </div>
+    <div>
+      <div>
+        <div className="flex flex-col md:flex-row  items-center justify-between ">
+          <SearchInput className="w-full md:w-1/3 st" />
+          <div className="provider-dashboard__status justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div>All</div>
+            <div>ongoing</div>
+            <div>verified</div>
+            <div>rejected</div>
+            <div>finished</div>
           </div>
-
-          <div className="select-box w-full mt-4 min-w-[452px]">
-            <div
-              className="select-box__token flex justify-between px-4 py-2 items-center h-[44px] rounded-[12px] w-full cursor-pointer bg-gray40 border border-gray50 hover:bg-gray60 mb-4"
-              onClick={() => setModalState(true)}
-            >
-              {selectedChain ? (
-                <div className="flex items-center gap-3">
-                  <Icon
-                    iconSrc={getChainIcon(selectedChain)}
-                    width="24px"
-                    height="24px"
-                  />
-                  <p className="select-box__info__coin-symbol text-white text-xs font-semibold">
-                    {selectedChain?.symbol}
-                  </p>
-                </div>
-              ) : (
-                <span className="w-8 h-8 rounded-full bg-gray50"></span>
-              )}
+        </div>
+        <div className="refill-token h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center">
+          <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
+            <div className="flex items-center relative">
+              <div>
+                <p className="text-[16px] font-semibold">
+                  Refill Gas Tap Tokens
+                </p>{" "}
+                <p className="text-[14px] text-gray100">Provide Gas Fee.</p>
+              </div>
               <Icon
-                iconSrc="/assets/images/fund/arrow-down.png"
-                width="14px"
-                height="auto"
+                className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
+                iconSrc="/assets/images/provider-dashboard/gas-bg.png"
+                // height="80px"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40">
-              <div className="select-box__info__amount w-full flex">
-                <input
-                  className="fund-input w-full text-sm bg-transparent text-white"
-                  type="number"
-                  step="0.001"
-                  min="0"
-                  autoFocus={true}
-                  placeholder="Enter Amount"
-                  value={fundAmount}
-                  onChange={(e) => setFundAmount(e.target.value)}
-                />
-                <div
-                  onClick={() => setFundAmount(balance.data?.formatted!)}
-                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-[12px] flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
-                >
-                  Max
+            <Link
+              // onClick={() => handleSelectProvideGasFee(true)}
+              href={RoutePath.PROVIDER_GASTAP_CREATE}
+              className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
+            >
+              + Provide Gas Fee
+            </Link>
+          </div>
+        </div>
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="bg-gray30 border-2 border-gray40 w-full  p-4 rounded-xl">
+            <div className="flex justify-between items-center text-gray90">
+              <div className="flex items-center text-white gap-2 font-medium text-[16px];">
+                <Icon iconSrc="/assets/images/provider-dashboard/ic_polygon.svg" />
+                <p>Polygon</p>
+              </div>
+              <div className="flex gap-2 text-[10px] items-center justify-center">
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  EVM
                 </div>
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  Mainnet
+                </div>
+              </div>
+            </div>
+            <div className="flex mt-4 justify-between items-center">
+              <div className="text-gray90 text-[12px]">
+                <div className="mb-2">
+                  Currency <span className="text-white ml-2"> Matic</span>
+                </div>
+                <div>
+                  Refill Amount <span className="text-white ml-2">2,137</span>
+                </div>
+              </div>
+              <div>
+                <ProviderDashboardButton className="animate-blinking">
+                  <p>Pending...</p>
+                </ProviderDashboardButton>
               </div>
             </div>
           </div>
 
-          <Modal
-            titleLeft="Select Chain"
-            isOpen={modalState}
-            size="medium"
-            closeModalHandler={closeModalHandler}
-          >
-            <SelectChainModal
-              closeModalHandler={closeModalHandler}
-              selectedChain={selectedChain}
-              setSelectedChain={setSelectedChain}
-            ></SelectChainModal>
-          </Modal>
+          <div className="bg-gray30 border-2 border-gray40 w-full  p-4 rounded-xl">
+            <div className="flex justify-between items-center text-gray90">
+              <div className="flex items-center text-white gap-2 font-medium text-[16px];">
+                <Icon iconSrc="/assets/images/provider-dashboard/ic_polygon.svg" />
+                <p>Polygon</p>
+              </div>
+              <div className="flex gap-2 text-[10px] items-center justify-center">
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  EVM
+                </div>
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  Mainnet
+                </div>
+              </div>
+            </div>
+            <div className="flex mt-4 justify-between items-center">
+              <div className="text-gray90 text-[12px]">
+                <div className="mb-2">
+                  Currency <span className="text-white ml-2"> Matic</span>
+                </div>
+                <div>
+                  Refill Amount <span className="text-white ml-2">2,137</span>
+                </div>
+              </div>
+              <div>
+                <ProviderDashboardButtonSuccess
+                  data-testid={`chain-show-claim`}
+                  className="text-sm m-auto"
+                >
+                  <p>Done</p>
+                </ProviderDashboardButtonSuccess>
+              </div>
+            </div>
+          </div>
 
-          <ClaimButton
-            height="3.5rem"
-            className="!w-full mt-5"
-            onClick={handleSendFunds}
-            disabled={!Number(fundAmount) && isRightChain && isConnected}
-            data-testid="fund-action"
-          >
-            {fundActionButtonLabel}
-          </ClaimButton>
-
-          <Modal
-            title="Provide Gas Fee"
-            isOpen={!!fundTransactionError || !!txHash}
-            closeModalHandler={closeModalHandler}
-          >
-            <FundTransactionModal
-              fundAmount={fundAmount}
-              closeModalHandler={closeModalHandler}
-              provideGasFeeError={fundTransactionError}
-              txHash={txHash}
-              selectedChain={selectedChain}
-            />
-          </Modal>
+          <div className="bg-gray30 border-2 border-gray40 w-full  p-4 rounded-xl">
+            <div className="flex justify-between items-center text-gray90">
+              <div className="flex items-center text-white gap-2 font-medium text-[16px];">
+                <Icon iconSrc="/assets/images/provider-dashboard/ic_polygon.svg" />
+                <p>Polygon</p>
+              </div>
+              <div className="flex gap-2 text-[10px] items-center justify-center">
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  EVM
+                </div>
+                <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-[6px]">
+                  Mainnet
+                </div>
+              </div>
+            </div>
+            <div className="flex mt-4 justify-between items-center">
+              <div className="text-gray90 text-[12px]">
+                <div className="mb-2">
+                  Currency <span className="text-white ml-2"> Matic</span>
+                </div>
+                <div>
+                  Refill Amount <span className="text-white ml-2">2,137</span>
+                </div>
+              </div>
+              <div>
+                <ProviderDashboardButtonSuccess
+                  data-testid={`chain-show-claim`}
+                  className="text-sm m-auto"
+                >
+                  <p>Done</p>
+                </ProviderDashboardButtonSuccess>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

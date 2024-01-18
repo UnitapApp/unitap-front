@@ -9,23 +9,25 @@ import {
   getOneTimeClaimedReceiptsServer,
 } from "@/utils/serverApis";
 
-const chainsApi = await getFaucetListServer();
+const ProviderDashboardGasTapLayout: FC<PropsWithChildren> = async ({
+  children,
+}) => {
+  const chainsApi = await getFaucetListServer();
 
-const fuelChampionList = await getFuelChampionListServerSide();
+  const fuelChampionList = await getFuelChampionListServerSide();
 
-const cookieStore = cookies();
+  const cookieStore = cookies();
 
-const token = cookieStore.get("userToken");
+  const token = cookieStore.get("userToken");
 
-const oneTimeClaimedChains = await getOneTimeClaimedReceiptsServer(
-  token?.value
-);
+  const oneTimeClaimedChains = await getOneTimeClaimedReceiptsServer(
+    token?.value
+  );
 
-const claimedChains = await getClaimedReceiptsServer(token?.value);
+  const claimedChains = await getClaimedReceiptsServer(token?.value);
 
-const chains = chainsApi as Array<Chain>;
+  const chains = chainsApi as Array<Chain>;
 
-const ProviderDashboardGasTapLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <GasTapProvider
       claimReceiptInitial={claimedChains}

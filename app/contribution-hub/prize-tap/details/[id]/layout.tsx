@@ -2,7 +2,6 @@ import ProviderDashboard from "@/context/providerDashboardContext";
 import { getUserRaffleListServerSide } from "@/utils/serverApis";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { kill } from "process";
 import { FC, PropsWithChildren } from "react";
 
 const ProviderDashboardPrizeTapLayout: FC<
