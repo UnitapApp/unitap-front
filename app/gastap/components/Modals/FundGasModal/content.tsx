@@ -209,6 +209,14 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     balance.refetch();
   }, [isRightChain, address, provider, balance]);
 
+  const helpAmount =
+    fundAmount && selectedChain
+      ? Math.floor(
+          (Number(fundAmount) * 0.75) /
+            (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals)
+        )
+      : 0;
+
   return (
     <div className="flex justify-center">
       <Modal
@@ -305,6 +313,12 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
               </div>
             </div>
           </div>
+          {!!fundAmount && !!helpAmount && (
+            <div className="mt-2 ml-5 text-sm text-gray90">
+              You will help onboard approximately {helpAmount} users to this
+              network!
+            </div>
+          )}
 
           <ClaimButton
             height="3.5rem"

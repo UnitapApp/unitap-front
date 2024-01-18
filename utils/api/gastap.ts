@@ -114,7 +114,7 @@ export async function submitDonationTxHash(
     "/api/gastap/user/donation/",
     {
       txHash,
-      chainPk,
+      faucetPk: chainPk,
     },
     {
       headers: {
