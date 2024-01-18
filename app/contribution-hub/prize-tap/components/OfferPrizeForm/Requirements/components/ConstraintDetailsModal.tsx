@@ -7,9 +7,9 @@ import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import ChainList from "../../../../../ChainList";
 import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
-import { isValidContractAddress } from "@/components/containers/provider-dashboard/helpers/isValidContractAddress";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress } from "viem";
+import { checkCollectionAddress } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 
 interface CreateModalParam {
   constraint: ConstraintProps;
@@ -27,8 +27,8 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
     requirementList,
     insertRequirement,
     updateRequirement,
+    allChainList,
   } = usePrizeOfferFormContext();
-
   const provider = useWalletProvider();
 
   const addRequirements = useAddRequirement(
@@ -55,11 +55,15 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
     }
   };
 
+  const [errorMessage, setErrorMessage] = useState<string | null>();
+
   useEffect(() => {
     const requirement = requirementList.find(
       (item) => item.pk == constraint.pk
     );
+
     setExistRequirement(requirement ? requirement : null);
+
     if (requirement) {
       setIsNotSatisfy(requirement.isNotSatisfy);
       setRequirementParamsList(requirement.params);
@@ -68,23 +72,44 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
     }
   }, []);
 
-  const handleAddRequirement = async () => {
+  const checkingParamsValidation = async () => {
+    if (!requirementParamsList) return false;
     if (
-      constraint.name === "core.HasNFTVerification" &&
-      !requirementParamsList
+      !requirementParamsList.COLLECTION_ADDRESS ||
+      !requirementParamsList.CHAIN ||
+      !requirementParamsList.MINIMUM
     ) {
-      return;
+      !requirementParamsList.COLLECTION_ADDRESS
+        ? setErrorMessage("Please enter collection address.")
+        : !requirementParamsList.CHAIN
+        ? setErrorMessage("Please select chain.")
+        : setErrorMessage("Please select minimum amount.");
+      return false;
     }
+
+    if (requirementParamsList.COLLECTION_ADDRESS) {
+      const step2Check = isAddress(requirementParamsList.COLLECTION_ADDRESS);
+      const chain = allChainList?.find(
+        (item) => Number(item.pk) === Number(requirementParamsList.CHAIN)
+      );
+
+      if (!chain) return false;
+
+      const res = await checkCollectionAddress(
+        provider,
+        requirementParamsList.COLLECTION_ADDRESS,
+        Number(chain.chainId)
+      );
+
+      (!step2Check || !res) && setErrorMessage("Invalid contract address.");
+      return step2Check && res;
+    }
+  };
+
+  const handleAddRequirement = async () => {
     if (constraint.name === "core.HasNFTVerification") {
-      if (requirementParamsList.COLLECTION_ADDRESS) {
-        const step1Check = await isValidContractAddress(
-          requirementParamsList.COLLECTION_ADDRESS,
-          provider
-        );
-        const step2Check = isAddress(requirementParamsList.COLLECTION_ADDRESS);
-        console.log(step1Check, step2Check);
-        if (!step1Check || !step2Check) return;
-      }
+      const res = await checkingParamsValidation();
+      if (!res) return;
     }
     addRequirements(
       existRequirement,
@@ -101,9 +126,9 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-5 ">
+    <div className="flex flex-col gap-2 mt-5 relative">
       <div
-        className="absolute top-5 cursor-pointer z-[999]"
+        className="absolute -top-14 cursor-pointer z-[999]"
         onClick={handleBackToConstraintListModal}
       >
         <Icon
@@ -140,7 +165,8 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
         setRequirementParamsList={setRequirementParamsList}
         requirementParamsList={requirementParamsList}
       />
-      <div className="mb-5">{constraint.description}</div>
+      <div className="mb-4">{constraint.description}</div>
+      <div className="text-error text-[10px] min-h-[15px]">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
         className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
