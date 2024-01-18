@@ -27,10 +27,10 @@ const GasTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-[16px] font-semibold">Refill Token</p>{" "}
-                <p className="text-[14px] text-gray100">
-                  Here you can provide Gas Fee.
-                </p>
+                <p className="text-[16px] font-semibold">
+                  Refill Gas Tap Tokens
+                </p>{" "}
+                <p className="text-[14px] text-gray100">Provide Gas Fee.</p>
               </div>
               <Icon
                 className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
