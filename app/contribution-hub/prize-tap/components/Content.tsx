@@ -124,9 +124,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             className="absolute bottom-3 right-4 left-4"
             href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
           >
-            <ProviderDashboardButtonCheck
-            // onClick={() => handleCheckForReason(prize)}
-            >
+            <ProviderDashboardButtonCheck>
               Check For Reasons
             </ProviderDashboardButtonCheck>
           </Link>
