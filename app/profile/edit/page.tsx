@@ -88,6 +88,7 @@ const EditPage = () => {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isUserEditEnabled, setIsUserEditEnabled] = useState(false);
 
   const { setIsAddModalOpen, setDuplicateWalletRaiseError } =
     useWalletManagementContext();
@@ -161,19 +162,30 @@ const EditPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               className={`border border-solid w-72 px-4 py-3 rounded-xl bg-gray50 ${
                 error ? "border-error" : "border-gray70"
-              }`}
+              } disabled:opacity-60`}
+              disabled={!isUserEditEnabled}
             />
             <button
               disabled={
-                username === userProfile?.username ||
-                loading ||
-                !username ||
-                !!error
+                isUserEditEnabled
+                  ? username === userProfile?.username ||
+                    loading ||
+                    !username ||
+                    !!error
+                  : false
               }
-              onClick={onSubmit}
+              onClick={
+                isUserEditEnabled ? onSubmit : () => setIsUserEditEnabled(true)
+              }
               className="absolute right-3 disabled:opacity-60 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] rounded-lg px-3 py-1"
             >
-              {loading ? <LoadingSpinner /> : "Save"}
+              {loading ? (
+                <LoadingSpinner />
+              ) : isUserEditEnabled ? (
+                "Save"
+              ) : (
+                "Edit"
+              )}
             </button>
           </div>
           {!!error && (
