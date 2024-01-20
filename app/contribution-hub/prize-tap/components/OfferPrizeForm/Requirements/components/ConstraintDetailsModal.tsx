@@ -10,6 +10,7 @@ import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress } from "viem";
 import { checkCollectionAddress } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
+import CsvFileInput from "./CsvFileInput";
 
 interface CreateModalParam {
   constraint: ConstraintProps;
@@ -184,6 +185,8 @@ const CreateParams = ({
 }: CreateModalParam) => {
   const [reqNftAddress, setReqNftAddress] = useState("");
 
+  console.log(requirementParamsList);
+
   const { allChainList } = usePrizeOfferFormContext();
 
   useEffect(() => {
@@ -200,6 +203,7 @@ const CreateParams = ({
   };
 
   if (constraint.params.length === 0) return;
+
   if (constraint.name === "core.HasNFTVerification") {
     return (
       <div className="flex flex-col gap-3">
@@ -222,6 +226,15 @@ const CreateParams = ({
           requirementParamsList={requirementParamsList}
         />
       </div>
+    );
+  }
+
+  if (constraint.name === "core.AllowListVerification") {
+    return (
+      <CsvFileInput
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+      />
     );
   }
   return <></>;
