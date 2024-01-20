@@ -36,7 +36,7 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
       data.description);
 
   usePreventNavigation(
-    isFormFilled,
+    process.env.NODE_ENV === "development" ? false : isFormFilled,
     "You have unsaved changes. Refreshing the page may result in data loss."
   );
 

@@ -52,14 +52,15 @@ export async function getUserRaffles(token: string) {
   return response.data;
 }
 
-
-
 export const getUserDistributions = async (token: string) => {
-  const response = await axiosInstance.get(`/api/tokentap/token-distribution-list/`, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+  const response = await axiosInstance.get(
+    `/api/tokentap/token-distribution-list/`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
 
   return response.data;
 };
@@ -70,7 +71,6 @@ export async function getConstraintsApi() {
   );
   return response.data;
 }
-
 
 export async function createTokenDistribution(token: string, data: any) {
   const response = await axiosInstance.post<any>(
