@@ -91,7 +91,7 @@ export const createErc20Raffle = async (
     data.tokenAmount,
     data.isNativeToken ? 18 : data.tokenDecimals
   );
-  const twitter = "https://twitter.com/" + data.twitter?.replace("@", "");
+  const twitter = data.twitter ? "https://twitter.com/" + data.twitter?.replace("@", "") : null;
   const discord = data.discord
     ? "https://discord.com/" + data.discord.replace("@", "")
     : null;

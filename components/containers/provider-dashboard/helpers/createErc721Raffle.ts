@@ -72,7 +72,7 @@ export const createErc721Raffle = async (
   const constraints = requirementList.map((item) => item.pk);
   const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
   const prizeName = data.nftName;
-  const twitter = 'https://twitter.com/' + data.twitter?.replace('@', '');
+  const twitter = data.twitter ? "https://twitter.com/" + data.twitter?.replace("@", "") : null;
 	const discord = data.discord ? 'https://discord.com/' + data.discord.replace('@', '') : null;
 	const telegram = data.telegram ? 'https://t.me/' + data.telegram.replace('@', '') : null;
 	const creatorUrl = data.creatorUrl ? 'https://' + data.creatorUrl : null;
