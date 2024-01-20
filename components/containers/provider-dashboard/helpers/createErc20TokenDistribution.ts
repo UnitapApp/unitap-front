@@ -1,9 +1,11 @@
 import { ProviderDashboardFormDataProp, RequirementProps } from "@/types/provider-dashboard";
-import { PublicClient } from "viem";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import { PublicClient, getContract, parseEther } from "viem";
+import { GetWalletClientResult} from "wagmi/dist/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
+import { estimateGas } from "@/utils/wallet";
+
 
 export const createErc20TokenDistribution = async (  data: ProviderDashboardFormDataProp,
   provider: PublicClient,
@@ -13,22 +15,22 @@ export const createErc20TokenDistribution = async (  data: ProviderDashboardForm
   userToken: string,
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any) => {
-		const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
+		// const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
 		const maxNumberOfEntries = data.maxNumberOfEntries
 			? data.maxNumberOfEntries
 			: "1000000000";
 		const prizeName = data.isNativeToken
-			? data.tokenAmount + " " + data.selectedChain.symbol
-			: data.tokenAmount + " " + data.tokenSymbol;
-		const prizeSymbol = data.isNativeToken
-			? data.selectedChain.symbol
-			: data.tokenSymbol;
-		const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
+			?  data.selectedChain.symbol
+			:  data.tokenSymbol;
+		// const prizeSymbol = data.isNativeToken
+		// 	? data.selectedChain.symbol
+		// 	: data.tokenSymbol;
+		// const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
 		const prizeAmount = toWei(
 			data.tokenAmount,
 			data.isNativeToken ? 18 : data.tokenDecimals
 		);
-		const twitter = "https://twitter.com/" + data.twitter?.replace("@", "");
+		const twitter = data.twitter ? "https://twitter.com/" + data.twitter?.replace("@", "") : null;
 		const discord = data.discord
 			? "https://discord.com/" + data.discord.replace("@", "")
 			: null;
@@ -39,6 +41,7 @@ export const createErc20TokenDistribution = async (  data: ProviderDashboardForm
 		const constraints = requirementList.map((item) => item.pk);
 		const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
 		const constraint_params = requirementList.filter(item => item.params ).map(item => ({[item.name]: item.params}));
+		
 		const distributionData = {
 			name: prizeName,
 			distributor: data.provider,
@@ -51,8 +54,8 @@ export const createErc20TokenDistribution = async (  data: ProviderDashboardForm
 			token: prizeName,
 			tokenAddress: data.tokenContractAddress,
 			amount: prizeAmount,
-			chain: 15,
-			contract: '',
+			chain: data.selectedChain.pk,
+			contract: '0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC',
 			constraint_params: btoa(JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})),
 			constraints,
 			reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
@@ -65,57 +68,58 @@ export const createErc20TokenDistribution = async (  data: ProviderDashboardForm
 			// decimals: decimals,
 			// winnersCount: data.winnersCount,
 		};
-	
-		// const raffleContract: any = getContract({
-		// 	address: raffleContractAddress as any,
-		// 	abi: prizeTapABI,
-		// 	publicClient: provider,
-		// });
-	
-	
+
 	
 		try {
 			setCreateRaffleLoading(true);
-	
-			// const response = await createErc20RaffleCallback(
-			// 	address,
-			// 	raffleContract,
-			// 	signer,
-			// 	provider,
-			// 	data.tokenAmount,
-			// 	decimals,
-			// 	data.tokenContractAddress as any,
-			// 	BigInt(maxNumberOfEntries),
-			// 	data.startTimeStamp,
-			// 	data.endTimeStamp,
-			// 	data.isNativeToken,
-			// 	BigInt(data.winnersCount),
-			// 	data.totalAmount
-			// );
-	
-			// if (!response) throw new Error("Contract hash not found");
-	
-			// const transactionInfo = await provider.waitForTransactionReceipt({
-			// 	hash: response,
-			// 	confirmations: 1,
-			// });
-	
+
 			const raffle = await createTokenDistribution(userToken, distributionData);
-	
+
+			console.log(BigInt(parseEther(data.tokenAmount)))
+			let tx = {
+				to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC" as any,
+				value: BigInt(parseEther(data.tokenAmount)
+				),
+			};
+
+
+			const estimatedGas = await estimateGas(provider, {
+				from: address,
+				to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
+				value: BigInt(tx.value),
+			}).catch((err: any) => {
+				return err;
+			});
+
+			
+			const hash = await signer?.sendTransaction(
+				{ ...tx,
+					...(estimatedGas ? { gasLimit: estimatedGas } : {}),
+				}
+			).then(async (tx) => {
+        await provider.waitForTransactionReceipt({
+          hash: tx,
+          confirmations: 1,
+        });
+        return tx;
+      })
+
+			console.log(hash)
+			
 			// if (!raffle.success) {
 			// 	return false;
 			// }
 	
 			// const rafflePk = raffle.data.id;
 	
-			// setCreteRaffleResponse({
-			// 	success: true,
-			// 	state: "Done",
-			// 	txHash: transactionInfo.transactionHash,
-			// 	message: "Created raffle successfully.",
-			// });
+			setCreteRaffleResponse({
+				success: true,
+				state: "Done",
+				txHash: hash,
+				message: "Created raffle successfully.",
+			});
+
 			setCreateRaffleLoading(false);
-			// updateCreateRaffleTx(userToken, rafflePk, transactionInfo.transactionHash);
 		} catch (e: any) {
 			console.log(e);
 			setCreteRaffleResponse({
