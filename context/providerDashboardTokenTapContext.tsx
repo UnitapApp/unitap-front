@@ -10,7 +10,6 @@ import {
   ErrorObjectProp,
   NftRangeProps,
   NftStatusProp,
-  Prize,
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
@@ -39,11 +38,7 @@ import { getErc721TokenContract } from "@/components/containers/provider-dashboa
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
 import { ZERO_ADDRESS } from "@/constants";
-import {
-  getConstraintsApi,
-  getProviderDashboardValidChain,
-  getTokenTapValidChain,
-} from "@/utils/api";
+import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
 import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
@@ -143,6 +138,7 @@ const errorMessages = {
   endLessThanStart: "The end time cannot be less than the start time.",
   invalidInput: "Invalid input",
 };
+
 export const TokenTapContext = createContext<{
   page: number;
   setPage: (page: number) => void;
