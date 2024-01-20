@@ -74,7 +74,8 @@ export const createErc20Raffle = async (
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
-  setCreteRaffleResponse: any
+  setCreteRaffleResponse: any,
+  constraintFiles: any
 ) => {
   const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -99,9 +100,43 @@ export const createErc20Raffle = async (
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
   const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
-  const constraints = requirementList.map((item) => item.pk);
+  const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
   const constraint_params = requirementList.filter(item => item.params ).map(item => ({[item.name]: item.params}));
+
+
+  const formData = new FormData();
+
+  const reversed = reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : ''
+
+
+  for (var i = 0; i < constraints.length; i++) { 
+    formData.append('constraints[]', constraints[i]); 
+  } 
+
+  formData.append('constraintFiles', constraintFiles)
+  formData.append('name', prizeName)
+  formData.append('contract', raffleContractAddress)
+  formData.append('creatorName', data.provider!)
+  formData.append('creatorAddress', address)
+  formData.append('prizeAmount', prizeAmount.toString())
+  formData.append('prizeAsset', data.tokenContractAddress)
+  formData.append('prizeName', prizeName)
+  formData.append('chain', data.selectedChain.pk)
+  // formData.append('constraints', constraints)
+  formData.append('constraintParams',  btoa(JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})))
+  formData.append('deadline', deadline(data.endTimeStamp))
+  formData.append('maxNumberOfEntries', maxNumberOfEntries)
+  formData.append('startAt', startAt(data.startTimeStamp))
+  formData.append('winnersCount', data.winnersCount.toString())
+  formData.append('discordUrl', discord!)
+  formData.append('twitterUrl', twitter!)
+  formData.append('creatorUrl', creatorUrl!)
+  formData.append('telegramUrl', telegram!)
+  formData.append('reversedConstraints', reversed)
+  formData.append('emailUrl', data.email!)
+  formData.append('necessaryInformation', data.necessaryInfo!)
+
   const raffleData = {
     name: prizeName,
     description: data.description,
@@ -114,7 +149,7 @@ export const createErc20Raffle = async (
     prize_symbol: prizeSymbol,
     decimals: decimals,
     chain: Number(data.selectedChain.pk),
-    constraints,
+    constraints:constraints,
     constraint_params: btoa(JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})),
     deadline: deadline(data.endTimeStamp),
     max_number_of_entries: maxNumberOfEntries,
@@ -127,7 +162,16 @@ export const createErc20Raffle = async (
     reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
     email_url: data.email,
     necessary_information: data.necessaryInfo,
+    // constraintFiles:formData
   };
+
+  console.log(constraints)
+  console.log(constraint_params)
+
+  console.log(constraintFiles)
+
+
+  const raffle = await createRaffleApi(userToken, raffleData);
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,

@@ -1,43 +1,64 @@
 "use client";
 import Icon from "@/components/ui/Icon";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Prop {
   requirementParamsList: any;
   setRequirementParamsList: any;
+  setConstraintFiles: any;
+  constraintFiles: [];
 }
 const CsvFileInput = ({
   setRequirementParamsList,
   requirementParamsList,
+  setConstraintFiles,
+  constraintFiles,
 }: Prop) => {
   const [isUploadedFileValid, setIsUploadedFileValid] =
     useState<boolean>(false);
 
+  console.log(constraintFiles);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>();
 
-  const handleClearUploadedFile = () => {
-    setIsUploadedFileValid(false);
-  };
+  useEffect(() => {
+    if (!requirementParamsList) return;
+    if (!requirementParamsList.CSV_FILE) return;
+    setIsUploadedFileValid(true);
+    setUploadedFileName(requirementParamsList.CSV_FILE);
+  }, [requirementParamsList]);
 
   const handleChangeUploadedFile = (e: any) => {
     if (!e.target.files[0]) return;
+    const timeStamp = e.timeStamp.toFixed();
     const file = e.target.files[0];
     const fileName = file.name;
-    const fileSuffix = fileName.slice(
-      fileName.lastIndexOf("."),
-      fileName.length
-    );
+    const lastIndex = fileName.lastIndexOf(".");
+    const newFileName =
+      file.name.slice(0, lastIndex) + timeStamp + file.name.slice(lastIndex);
+    const newFile = new File([file], `${newFileName}`);
+    console.log(newFile);
+    const fileSuffix = fileName.slice(lastIndex, fileName.length);
     if (fileSuffix != ".csv") {
       setIsUploadedFileValid(false);
       return;
     } else {
       setRequirementParamsList({
         ...requirementParamsList,
-        ["CSV_FILE"]: fileName,
+        ["CSV_FILE"]: newFileName,
       });
       setIsUploadedFileValid(true);
       setUploadedFileName(fileName);
+      setConstraintFiles([...constraintFiles, newFile]);
     }
+  };
+
+  const handleClearUploadedFile = () => {
+    setIsUploadedFileValid(false);
+    setUploadedFileName(null);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["CSV_FILE"]: "",
+    });
   };
 
   return (
@@ -67,7 +88,7 @@ const CsvFileInput = ({
             onClick={handleClearUploadedFile}
             className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
           >
-            Reset Uploaded file
+            Reset file
           </button>
         </div>
       )}

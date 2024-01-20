@@ -235,6 +235,8 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: (date: any) => void;
   userRaffle: UserRafflesProps | undefined;
   allChainList: Chain[] | undefined;
+  setConstraintFiles: (data: any) => void;
+  constraintFiles: [];
 }>({
   page: 0,
   setPage: NullCallback,
@@ -331,6 +333,8 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: NullCallback,
   userRaffle: {} as any,
   allChainList: [] as any,
+  setConstraintFiles: NullCallback,
+  constraintFiles: [],
 });
 
 const ProviderDashboard: FC<
@@ -450,6 +454,8 @@ const ProviderDashboard: FC<
   const [constraintsListApi, setConstraintsListApi] = useState<
     ConstraintProps[] | undefined
   >(constraintListApi);
+
+  const [constraintFiles, setConstraintFiles] = useState<any>([]);
 
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
@@ -982,7 +988,8 @@ const ProviderDashboard: FC<
         address,
         userToken,
         setCreateRaffleLoading,
-        setCreteRaffleResponse
+        setCreteRaffleResponse,
+        constraintFiles
       );
     } else {
       createErc721Raffle(
@@ -1226,6 +1233,8 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
+        setConstraintFiles,
+        constraintFiles,
       }}
     >
       {children}

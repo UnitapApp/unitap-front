@@ -107,9 +107,24 @@ const ConstraintDetailsModal = ({ constraint }: DetailsModal) => {
     }
   };
 
+  const checkCsvFileUploadedValidation = () => {
+    console.log(requirementParamsList, requirementParamsList.CSV_FILE);
+    if (!requirementParamsList) return false;
+    if (!requirementParamsList.CSV_FILE) {
+      setErrorMessage("Please upload a csv file.");
+      return false;
+    }
+    return true;
+  };
+
   const handleAddRequirement = async () => {
     if (constraint.name === "core.HasNFTVerification") {
       const res = await checkingParamsValidation();
+      if (!res) return;
+    }
+
+    if (constraint.name === "core.AllowListVerification") {
+      const res = checkCsvFileUploadedValidation();
       if (!res) return;
     }
     addRequirements(
@@ -185,9 +200,8 @@ const CreateParams = ({
 }: CreateModalParam) => {
   const [reqNftAddress, setReqNftAddress] = useState("");
 
-  console.log(requirementParamsList);
-
-  const { allChainList } = usePrizeOfferFormContext();
+  const { allChainList, setConstraintFiles, constraintFiles } =
+    usePrizeOfferFormContext();
 
   useEffect(() => {
     if (!requirementParamsList) return;
@@ -234,6 +248,8 @@ const CreateParams = ({
       <CsvFileInput
         setRequirementParamsList={setRequirementParamsList}
         requirementParamsList={requirementParamsList}
+        setConstraintFiles={setConstraintFiles}
+        constraintFiles={constraintFiles}
       />
     );
   }

@@ -8,7 +8,7 @@ export async function createRaffleApi(token: string, raffleData: any) {
     {
       headers: {
         Authorization: `Token ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
