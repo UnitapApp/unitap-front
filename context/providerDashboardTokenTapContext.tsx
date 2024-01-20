@@ -39,9 +39,13 @@ import { getErc721TokenContract } from "@/components/containers/provider-dashboa
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
 import { ZERO_ADDRESS } from "@/constants";
-import { getConstraintsApi, getProviderDashboardValidChain } from "@/utils/api";
+import {
+  getConstraintsApi,
+  getProviderDashboardValidChain,
+  getTokenTapValidChain,
+} from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
-import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
+import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
 import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
 import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
@@ -854,7 +858,7 @@ const TokenTapProvider: FC<
 
   const updateChainList = useCallback(async () => {
     try {
-      const newChainList = await getProviderDashboardValidChain();
+      const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
     } catch (e) {}
   }, []);
@@ -981,7 +985,7 @@ const TokenTapProvider: FC<
     if (!address || !address || !provider || !userToken || !signer) return;
 
     if (!data.isNft) {
-      createErc20Raffle(
+      createErc20TokenDistribution(
         data,
         provider,
         signer,
