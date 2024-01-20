@@ -196,3 +196,36 @@ export interface ContactField {
   required: boolean;
   baseUrl: string;
 }
+
+
+export interface UserTokenDistribution {
+  id: number;
+  chain: Chain;
+  constraints: RequirementProps[];
+  contract: string;
+  createdAt: string;
+  deadline: string;
+  discordUrl: string;
+  distributor: string;
+  distributorUrl: string;
+  emailUrl: string;
+  imageUrl: string;
+  isActive: boolean;
+  isClaimable: boolean;
+  isExpired: boolean;
+  isMaxedOut : boolean;
+  maxNumberOfClaims: number;
+  name : string;
+  necessaryInformation : string | null;
+  notes: string;
+  numberOfClaims: number;
+  rejectionReason: string | null;
+  startAt: string;
+  status: string;
+  telegramUrl: string | null;
+  token: string;
+  tokenAddress: string;
+  tokenImageUrl: string;
+  totalClaimsSinceLastRound: number;
+  twitterUrl: string | null
+}
