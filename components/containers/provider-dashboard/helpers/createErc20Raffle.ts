@@ -131,7 +131,9 @@ export const createErc20Raffle = async (
     formData.append("constraint_files", constraintFiles[i]);
   }
 
-  formData.append("reversed_constraints", reversed ?? null);
+  if (reversed) {
+    formData.append("reversed_constraints", reversed);
+  }
   formData.append("name", prizeName);
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
