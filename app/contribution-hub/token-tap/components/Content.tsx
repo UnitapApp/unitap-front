@@ -5,6 +5,7 @@ import {
   ProviderDashboardButtonCheck,
   ProviderDashboardButtonRejected,
   ProviderDashboardButtonSuccess,
+  ProviderDashboardButtonVerifying,
 } from "../../Buttons";
 
 import Icon from "@/components/ui/Icon";
@@ -13,12 +14,112 @@ import { ProviderDashboardCardTimer } from "@/app/contribution-hub/prize-tap/com
 import Styles from "./content.module.scss";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
+import { getUserDistributions } from "@/utils/api/provider-dashboard";
+import { useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { FAST_INTERVAL } from "@/constants";
+import { useCallback, useState } from "react";
+import { useUserProfileContext } from "@/context/userProfile";
+import { UserTokenDistribution } from "@/types/provider-dashboard";
+import { CardTimerTokenTap } from "./CardTimerTokenTap";
 
 const handleSetSearchPhrase = () => {};
 
+interface DistributionCardProp {
+  distribution: UserTokenDistribution;
+}
+
+const DistributionCard = ({ distribution }: DistributionCardProp) => {
+  const [finished, setFinished] = useState<boolean>(false);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
+  return (
+    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[264px]">
+      <div className="provideToken-item-container">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <Icon
+              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              width="36px"
+              height="36px"
+            />
+            <p className="text-[14px] font-medium text-white">
+              {distribution.name}
+            </p>
+          </div>
+          <div>
+            {isStarted && !finished && (
+              <ProviderDashboardButton className="animate-blinking">
+                <p>Ongoing...</p>
+              </ProviderDashboardButton>
+            )}
+            {finished && (
+              <div className="bg-gray50 border flex items-center justify-center border-gray70 rounded-md w-[100px] h-6 text-[10px] text-gray100">
+                Finished
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="text-[10px] font-medium mt-2 text-white">
+          Decentralized verification system
+        </div>
+        <div className="flex justify-between my-3">
+          <div className="flex items-center gap-3">
+            <div className="text-gray100 text-[10px]">
+              on {distribution.chain.chainName}
+            </div>
+            <Icon
+              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              width="14px"
+              height="14px"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-gray80 text-[10px]">non-Repeatable</div>
+            <Icon
+              iconSrc="/assets/images/provider-dashboard/reload.svg"
+              width="14px"
+              height="14px"
+            />
+          </div>
+        </div>
+        <div className="provideToken_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center ">
+          30 Spots Left
+        </div>
+        <div className="provideToken_timer absolute bottom-2 right-4 left-4">
+          <CardTimerTokenTap
+            startTime={distribution.startAt}
+            FinishTime={distribution.deadline}
+            finished={finished}
+            setFinished={setFinished}
+            setIsStarted={setIsStarted}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TokenTapContent = () => {
-  const startTime = "20 Januray 2023 12:00 PM UTC";
-  const FinishTime = "30 March 2023 12:00 PM UTC";
+  const [userDistributions, setUserDistributions] = useState<
+    UserTokenDistribution[] | undefined
+  >();
+
+  const { userToken } = useUserProfileContext();
+
+  const handleGetUserDistribution = useCallback(async () => {
+    if (!userToken) return;
+    const res = await getUserDistributions(userToken);
+    console.log(res);
+    setUserDistributions(res);
+  }, [userToken]);
+
+  useRefreshWithInitial(
+    () => {
+      // setUserRafflesLoading(true);
+      handleGetUserDistribution();
+    },
+    FAST_INTERVAL,
+    []
+  );
   return (
     <>
       <div className="flex flex-col md:flex-row items-center justify-between ">
@@ -61,158 +162,10 @@ const TokenTapContent = () => {
         </div>
       </div>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[264px]">
-          <div className="provideToken-item-container">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="36px"
-                  height="36px"
-                />
-                <p className="text-[14px] font-medium text-white">BTC</p>
-              </div>
-              <div>
-                <ProviderDashboardButton className="animate-blinking">
-                  <p>Ongoing...</p>
-                </ProviderDashboardButton>
-              </div>
-            </div>
-            <div className="text-[10px] font-medium mt-2 text-white">
-              Decentralized verification system
-            </div>
-            <div className="flex justify-between my-3">
-              <div className="flex items-center gap-3">
-                <div className="text-gray100 text-[10px]">
-                  on Bitcoin Lightning
-                </div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-gray80 text-[10px]">non-Repeatable</div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/reload.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-            </div>
-            <div className="provideToken_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center ">
-              30 Spots Left
-            </div>
-            <div className="provideToken_timer absolute bottom-2 right-4 left-4">
-              <p className="text-white font-medium text-[8px] mb-2">Ends in:</p>
-              <ProviderDashboardCardTimer
-                startTime={startTime}
-                FinishTime={FinishTime}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[264px]">
-          <div className="provideToken-item-container">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="36px"
-                  height="36px"
-                />
-                <p className="text-[14px] font-medium text-white">BTC</p>
-              </div>
-              <div>
-                <ProviderDashboardButtonSuccess>
-                  Verified
-                </ProviderDashboardButtonSuccess>
-              </div>
-            </div>
-            <div className="text-[10px] font-medium mt-2 text-white">
-              Decentralized verification system
-            </div>
-            <div className="flex justify-between my-3">
-              <div className="flex items-center gap-3">
-                <div className="text-gray100 text-[10px]">
-                  on Bitcoin Lightning
-                </div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-gray80 text-[10px]">non-Repeatable</div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/reload.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-            </div>
-            <div className="provideToken_timer absolute bottom-2 right-4 left-4">
-              <p className="text-white font-medium text-[8px] mb-2">
-                starts in:
-              </p>
-              <ProviderDashboardCardTimer
-                startTime={startTime}
-                FinishTime={FinishTime}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[264px]">
-          <div className="provideToken-item-container">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="36px"
-                  height="36px"
-                />
-                <p className="text-[14px] font-medium text-white">BTC</p>
-              </div>
-              <div>
-                <ProviderDashboardButtonRejected>
-                  Rejected
-                </ProviderDashboardButtonRejected>
-              </div>
-            </div>
-            <div className="text-[10px] font-medium mt-2 text-white">
-              Decentralized verification system
-            </div>
-            <div className="flex justify-between my-3">
-              <div className="flex items-center gap-3">
-                <div className="text-gray100 text-[10px]">
-                  on Bitcoin Lightning
-                </div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-gray80 text-[10px]">non-Repeatable</div>
-                <Icon
-                  iconSrc="/assets/images/provider-dashboard/reload.svg"
-                  width="14px"
-                  height="14px"
-                />
-              </div>
-            </div>
-            <div className="provideToken_timer absolute bottom-2 right-4 left-4">
-              <ProviderDashboardButtonCheck>
-                Check For Reasons
-              </ProviderDashboardButtonCheck>
-            </div>
-          </div>
-        </div>
+        {userDistributions &&
+          userDistributions.map((distribution, index: number) => (
+            <DistributionCard key={index} distribution={distribution} />
+          ))}
       </div>
     </>
   );
