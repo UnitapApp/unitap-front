@@ -106,7 +106,7 @@ const SelectMethodInput = ({
             onChange={(e: any) =>
               setMethodValues({
                 ...methodValues,
-                minimum: e.target.value ?? "",
+                minimum: Number(e.target.value) ?? "",
               })
             }
           />
