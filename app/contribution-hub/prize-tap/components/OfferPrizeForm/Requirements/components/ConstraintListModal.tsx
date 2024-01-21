@@ -1,17 +1,33 @@
 "use client";
 
 import { useMemo } from "react";
-import ConstraintDetailsModal from "./ConstraintDetailsModal";
+import ConstraintDetailsModal from "../../../../../ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
 
 const ModalBody = () => {
-  const { selectedConstrains } = usePrizeOfferFormContext();
+  const {
+    selectedConstrains,
+    handleBackToConstraintListModal,
+    requirementList,
+    insertRequirement,
+    updateRequirement,
+    allChainList,
+  } = usePrizeOfferFormContext();
 
   const getModalBody = () => {
     if (selectedConstrains) {
-      return <ConstraintDetailsModal constraint={selectedConstrains} />;
+      return (
+        <ConstraintDetailsModal
+          constraint={selectedConstrains}
+          handleBackToConstraintListModal={handleBackToConstraintListModal}
+          requirementList={requirementList}
+          insertRequirement={insertRequirement}
+          updateRequirement={updateRequirement}
+          allChainList={allChainList!}
+        />
+      );
     } else {
       return <InitialBody />;
     }
