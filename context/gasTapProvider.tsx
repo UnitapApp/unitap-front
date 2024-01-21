@@ -310,6 +310,21 @@ export const GasTapProvider: FC<
   }, [updateChainList]);
 
   useEffect(() => {
+    if (!userToken || chainList.length) return;
+    updateChainList();
+    updateActiveClaimHistory();
+    updateOneTimeClaimedList();
+    updateFuelChampionList();
+  }, [
+    chainList.length,
+    updateActiveClaimHistory,
+    updateChainList,
+    updateFuelChampionList,
+    updateOneTimeClaimedList,
+    userToken,
+  ]);
+
+  useEffect(() => {
     if (activeChain) {
       setActiveClaimReceipt(
         getActiveClaimReceipt(activeClaimHistory, activeChain, "EVM")

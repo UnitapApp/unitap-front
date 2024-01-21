@@ -1,34 +1,55 @@
-import { cookies } from "next/headers";
-import SocialAccount from "../../components/socialAccount";
-import { getAllConnections } from "@/utils/serverApis";
+"use client";
+
 import { UserConnection } from "@/types";
-import { redirect } from "next/navigation";
+import { NullCallback } from "@/utils";
+import { FC, createContext, useContext, useState } from "react";
+import SocialAccount from "../../components/socialAccount";
+import { useFastRefresh } from "@/utils/hooks/refresh";
+import { getAllConnections } from "@/utils/serverApis";
+import { useUserProfileContext } from "@/context/userProfile";
 
-const SocialAccounts = async () => {
-  const cookiesStore = cookies();
+export const useSocialACcountContext = () => useContext(SocialAccountContext);
 
-  let connections: UserConnection;
+const SocialAccountContext = createContext<{
+  connections: UserConnection;
+  addConnection: (key: string, data: any) => void;
+}>({
+  connections: {},
+  addConnection: NullCallback,
+});
 
-  try {
-    connections = await getAllConnections(cookiesStore.get("userToken")?.value);
-    console.log(cookiesStore.get("userToken"));
-  } catch (e) {
-    redirect("/");
-  }
+const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
+  initialConnections,
+}) => {
+  const [connections, setConnections] = useState(initialConnections);
+
+  const { userToken } = useUserProfileContext();
+
+  useFastRefresh(() => {
+    if (!userToken) return;
+
+    getAllConnections(userToken).then((res) => {
+      setConnections(res);
+    });
+  }, [userToken]);
 
   return (
-    <div className="mt-5 bg-gray20 rounded-xl p-5">
-      <p>Social Accounts </p>
-
+    <SocialAccountContext.Provider
+      value={{
+        connections,
+        addConnection: (key: string, data: any) =>
+          setConnections({ ...connections, [key]: data }),
+      }}
+    >
       <div className="mt-10 grid grid-cols-2 gap-4">
         <SocialAccount
           title={"Bright ID"}
           icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
-          isConnected={!!connections["BrightID"]}
+          isConnected={!connections["BrightID"]}
         />
       </div>
-    </div>
+    </SocialAccountContext.Provider>
   );
 };
 
-export default SocialAccounts;
+export default SocialAccountsPage;
