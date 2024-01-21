@@ -71,6 +71,7 @@ export interface RequirementProps {
   title: string;
   isNotSatisfy: boolean;
   isReversed: boolean;
+  constraintFile?: [];
 }
 
 export interface UserRafflesProps {
