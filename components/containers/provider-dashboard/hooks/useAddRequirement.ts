@@ -2,27 +2,38 @@
 
 import { RequirementProps } from "@/types";
 
-const useAddRequirement = (handleBackToConstraintListModal: any, insertRequirement:any, updateRequirement:any) => {
+const useAddRequirement = (
+  handleBackToConstraintListModal: any,
+  insertRequirement: any,
+  updateRequirement: any
+) => {
   const addRequirements = (
     existRequirement: RequirementProps | null,
     pk: number,
-    name: string, 
+    name: string,
     title: string,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
+    constraintFiles: any
   ) => {
-      handleBackToConstraintListModal();
-      if (!existRequirement) {
-        insertRequirement(pk,
-          name, 
-          title,
-          isNotSatisfy,
-          requirementValues);
-      } else {
-        updateRequirement(existRequirement,
-          isNotSatisfy,
-          requirementValues);
-      }
+    handleBackToConstraintListModal();
+    if (!existRequirement) {
+      insertRequirement(
+        pk,
+        name,
+        title,
+        isNotSatisfy,
+        requirementValues,
+        constraintFiles
+      );
+    } else {
+      updateRequirement(
+        existRequirement,
+        isNotSatisfy,
+        requirementValues,
+        constraintFiles
+      );
+    }
   };
   return addRequirements;
 };

@@ -78,8 +78,7 @@ export const createErc20Raffle = async (
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
-  setCreteRaffleResponse: any,
-  constraintFiles: any
+  setCreteRaffleResponse: any
 ) => {
   const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -110,9 +109,15 @@ export const createErc20Raffle = async (
   const reversed_constraints = requirementList
     .filter((item) => item.isNotSatisfy)
     .map((ids) => ids.pk);
-  const constraint_params = requirementList
-    .filter((item) => item.params)
-    .map((item) => ({ [item.name]: item.params }));
+
+  const constraintFileList: any = requirementList
+    .filter((item) => item.constraintFile)
+    .map((item) => item.constraintFile);
+
+  const constraint_params = requirementList.reduce((obj: any, item: any) => {
+    obj[item.name] = item.params;
+    return obj;
+  }, {});
 
   const formData = new FormData();
 
@@ -127,8 +132,10 @@ export const createErc20Raffle = async (
     formData.append("constraints", constraints[i]);
   }
 
-  for (let i = 0; i < constraintFiles.length; i++) {
-    formData.append("constraint_files", constraintFiles[i]);
+  if (constraintFileList) {
+    for (let i = 0; i < constraintFileList.length; i++) {
+      formData.append("constraint_files", constraintFileList[i]);
+    }
   }
 
   if (reversed) {
@@ -143,12 +150,7 @@ export const createErc20Raffle = async (
   formData.append("prize_asset", data.tokenContractAddress);
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
-  formData.append(
-    "constraint_params",
-    btoa(
-      JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})
-    )
-  );
+  formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
   formData.append("description", data.description ?? "");
   formData.append("prize_symbol", prizeSymbol);
   formData.append("deadline", deadline(data.endTimeStamp));
@@ -161,8 +163,6 @@ export const createErc20Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
-
-  const raffle = await createRaffleApi(userToken, formData);
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
@@ -210,8 +210,14 @@ export const createErc20Raffle = async (
       txHash: transactionInfo.transactionHash,
       message: "Created raffle successfully.",
     });
+
     setCreateRaffleLoading(false);
-    updateCreateRaffleTx(userToken, rafflePk, transactionInfo.transactionHash);
+
+    await updateCreateRaffleTx(
+      userToken,
+      rafflePk,
+      transactionInfo.transactionHash
+    );
   } catch (e: any) {
     console.log(e);
     setCreteRaffleResponse({
