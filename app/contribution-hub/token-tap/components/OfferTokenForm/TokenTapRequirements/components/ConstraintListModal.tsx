@@ -1,17 +1,33 @@
 "use client";
 
-import { useMemo } from "react";
-import ConstraintDetailsModal from "./ConstraintDetailsModal";
+import { useEffect, useMemo } from "react";
+import ConstraintDetailsModal from "@/app/contribution-hub/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
 
 const RequirementModalBody = () => {
-  const { selectedConstrains } = useTokenTapFromContext();
+  const {
+    selectedConstrains,
+    handleBackToConstraintListModal,
+    insertRequirement,
+    updateRequirement,
+    allChainList,
+    requirementList,
+  } = useTokenTapFromContext();
 
   const getRequirementModalBody = () => {
     if (selectedConstrains) {
-      return <ConstraintDetailsModal constraint={selectedConstrains} />;
+      return (
+        <ConstraintDetailsModal
+          constraint={selectedConstrains}
+          handleBackToConstraintListModal={handleBackToConstraintListModal}
+          requirementList={requirementList}
+          insertRequirement={insertRequirement}
+          updateRequirement={updateRequirement}
+          allChainList={allChainList!}
+        />
+      );
     } else {
       return <InitialBody />;
     }
