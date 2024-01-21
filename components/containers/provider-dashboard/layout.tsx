@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren } from "react";
 import Header from "./Header";
 import { usePathname } from "next/navigation";
 import RoutePath from "@/utils/routes";

@@ -100,6 +100,7 @@ const EditPage = () => {
     try {
       await setUsernameApi(username, userToken);
       updateUsername(username);
+      setIsUserEditEnabled(false);
     } catch (e) {
       if (!(e instanceof AxiosError) || !e.response) return;
       setError(e.response.data.message);

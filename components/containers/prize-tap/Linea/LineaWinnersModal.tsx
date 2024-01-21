@@ -124,10 +124,13 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
   return (
     <div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
       <a
+        className="flex items-center"
         target="_blank"
         href={`https://blockscan.com/address/${walletAddress}`}
       >
         {shortenAddress(walletAddress)}
+
+        <Icon iconSrc="/assets/images/arrow-icon.svg" className="ml-3" />
       </a>
 
       {isWinner ? (
