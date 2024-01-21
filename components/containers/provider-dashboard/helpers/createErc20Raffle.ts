@@ -134,6 +134,7 @@ export const createErc20Raffle = async (
   if (reversed) {
     formData.append("reversed_constraints", reversed);
   }
+
   formData.append("name", prizeName);
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
@@ -142,15 +143,12 @@ export const createErc20Raffle = async (
   formData.append("prize_asset", data.tokenContractAddress);
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
-  // formData.append('constraints', constraints)
-
   formData.append(
     "constraint_params",
     btoa(
       JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})
     )
   );
-
   formData.append("description", data.description ?? "");
   formData.append("prize_symbol", prizeSymbol);
   formData.append("deadline", deadline(data.endTimeStamp));
@@ -163,46 +161,6 @@ export const createErc20Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
-
-  // const raffleData = {
-  //   name: prizeName,
-  //   description: data.description,
-  //   contract: raffleContractAddress,
-  //   creator_name: data.provider,
-  //   creator_address: address,
-  //   prize_amount: prizeAmount,
-  //   prize_asset: data.tokenContractAddress,
-  //   prize_name: prizeName,
-  //   prize_symbol: prizeSymbol,
-  //   decimals: decimals,
-  //   chain: Number(data.selectedChain.pk),
-  //   constraints: constraints,
-  //   constraint_params: btoa(
-  //     JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})
-  //   ),
-  //   deadline: deadline(data.endTimeStamp),
-  //   max_number_of_entries: maxNumberOfEntries,
-  //   start_at: startAt(data.startTimeStamp),
-  //   winnersCount: data.winnersCount,
-  //   discord_url: discord,
-  //   twitter_url: twitter,
-  //   creator_url: creatorUrl,
-  //   telegram_url: telegram,
-  //   reversed_constraints:
-  //     reversed_constraints.length > 1
-  //       ? reversed_constraints.join(",")
-  //       : reversed_constraints.length == 1
-  //       ? reversed_constraints[0].toString()
-  //       : undefined,
-  //   email_url: data.email,
-  //   necessary_information: data.necessaryInfo,
-  //   // constraintFiles:formData
-  // };
-
-  console.log(constraints);
-  console.log(constraint_params);
-
-  console.log(constraintFiles);
 
   const raffle = await createRaffleApi(userToken, formData);
 
