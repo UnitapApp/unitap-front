@@ -39,7 +39,6 @@ import { getErc20TokenContract } from "@/components/containers/provider-dashboar
 import { isAddress, zeroAddress } from "viem";
 import { ZERO_ADDRESS } from "@/constants";
 import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
-import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
 import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
 import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
@@ -483,22 +482,6 @@ const TokenTapProvider: FC<
 
   const handleSelectNewOffer = (select: boolean) => {
     setSelectNewOffer(select);
-  };
-
-  const updateRequirement = (
-    requirement: RequirementProps,
-    isNotSatisfy: boolean,
-    requirementValues: any
-  ) => {
-    if (!requirement) return;
-    const newItem = requirementList.map((item) => {
-      if (item.pk == requirement.pk) {
-        return { ...requirement, isNotSatisfy, params: requirementValues };
-      }
-      return item;
-    });
-
-    setRequirementList(newItem);
   };
 
   const checkContractInfo = useCallback(async () => {
@@ -979,30 +962,16 @@ const TokenTapProvider: FC<
 
   const handleCreateRaffle = () => {
     if (!address || !address || !provider || !userToken || !signer) return;
-
-    if (!data.isNft) {
-      createErc20TokenDistribution(
-        data,
-        provider,
-        signer,
-        requirementList,
-        address,
-        userToken,
-        setCreateRaffleLoading,
-        setCreteRaffleResponse
-      );
-    } else {
-      createErc721Raffle(
-        data,
-        provider,
-        signer,
-        requirementList,
-        address,
-        userToken,
-        setCreateRaffleLoading,
-        setCreteRaffleResponse
-      );
-    }
+    createErc20TokenDistribution(
+      data,
+      provider,
+      signer,
+      requirementList,
+      address,
+      userToken,
+      setCreateRaffleLoading,
+      setCreteRaffleResponse
+    );
   };
 
   const insertRequirement = (
@@ -1010,7 +979,8 @@ const TokenTapProvider: FC<
     name: string,
     title: string,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
+    file?: []
   ) => {
     setRequirementList([
       ...requirementList,
@@ -1021,8 +991,31 @@ const TokenTapProvider: FC<
         title: title,
         isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
+        constraintFile: file,
       },
     ]);
+  };
+
+  const updateRequirement = (
+    requirement: RequirementProps,
+    isNotSatisfy: boolean,
+    requirementValues: any,
+    file?: []
+  ) => {
+    if (!requirement) return;
+    const newItem = requirementList.map((item) => {
+      if (item.pk == requirement.pk) {
+        return {
+          ...requirement,
+          isNotSatisfy,
+          params: requirementValues,
+          constraintFile: file,
+        };
+      }
+      return item;
+    });
+
+    setRequirementList(newItem);
   };
 
   const handleCheckForReason = (raffle: UserRafflesProps) => {
