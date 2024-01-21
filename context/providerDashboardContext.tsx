@@ -235,8 +235,6 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: (date: any) => void;
   userRaffle: UserRafflesProps | undefined;
   allChainList: Chain[] | undefined;
-  setConstraintFiles: (data: any) => void;
-  constraintFiles: [];
 }>({
   page: 0,
   setPage: NullCallback,
@@ -333,8 +331,6 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: NullCallback,
   userRaffle: {} as any,
   allChainList: [] as any,
-  setConstraintFiles: NullCallback,
-  constraintFiles: [],
 });
 
 const ProviderDashboard: FC<
@@ -455,8 +451,6 @@ const ProviderDashboard: FC<
     ConstraintProps[] | undefined
   >(constraintListApi);
 
-  const [constraintFiles, setConstraintFiles] = useState<any>([]);
-
   const { userToken } = useUserProfileContext();
   const signer = useWalletSigner();
   const provider = useWalletProvider();
@@ -482,22 +476,6 @@ const ProviderDashboard: FC<
 
   const handleSelectNewOffer = (select: boolean) => {
     setSelectNewOffer(select);
-  };
-
-  const updateRequirement = (
-    requirement: RequirementProps,
-    isNotSatisfy: boolean,
-    requirementValues: any
-  ) => {
-    if (!requirement) return;
-    const newItem = requirementList.map((item) => {
-      if (item.pk == requirement.pk) {
-        return { ...requirement, isNotSatisfy, params: requirementValues };
-      }
-      return item;
-    });
-
-    setRequirementList(newItem);
   };
 
   const checkContractInfo = useCallback(async () => {
@@ -988,8 +966,7 @@ const ProviderDashboard: FC<
         address,
         userToken,
         setCreateRaffleLoading,
-        setCreteRaffleResponse,
-        constraintFiles
+        setCreteRaffleResponse
       );
     } else {
       createErc721Raffle(
@@ -1010,7 +987,8 @@ const ProviderDashboard: FC<
     name: string,
     title: string,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
+    file?: []
   ) => {
     setRequirementList([
       ...requirementList,
@@ -1021,8 +999,30 @@ const ProviderDashboard: FC<
         title: title,
         isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
+        constraintFile: file,
       },
     ]);
+  };
+
+  const updateRequirement = (
+    requirement: RequirementProps,
+    isNotSatisfy: boolean,
+    requirementValues: any,
+    file?: []
+  ) => {
+    if (!requirement) return;
+    const newItem = requirementList.map((item) => {
+      if (item.pk == requirement.pk) {
+        return {
+          ...requirement,
+          isNotSatisfy,
+          params: requirementValues,
+          constraintFile: file,
+        };
+      }
+      return item;
+    });
+    setRequirementList(newItem);
   };
 
   const handleCheckForReason = (raffle: UserRafflesProps) => {
@@ -1233,8 +1233,6 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
-        setConstraintFiles,
-        constraintFiles,
       }}
     >
       {children}
