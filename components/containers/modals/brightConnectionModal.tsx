@@ -19,7 +19,7 @@ import useGenerateKeys from "@/utils/hooks/generateKeys";
 import { useGlobalContext } from "@/context/globalProvider";
 import Modal from "@/components/ui/Modal/modal";
 import { AxiosError } from "axios";
-import { useSocialACcountContext } from "@/app/profile/edit/@socialAccounts/page";
+import { useSocialACcountContext } from "@/context/socialAccountContext";
 
 export const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, updateProfile, userToken } =

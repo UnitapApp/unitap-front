@@ -1,27 +1,17 @@
 "use client";
 
 import { UserConnection } from "@/types";
-import { NullCallback } from "@/utils";
-import { FC, createContext, useContext, useState } from "react";
+import { FC, useState } from "react";
 import SocialAccount from "../../components/socialAccount";
 import { useFastRefresh } from "@/utils/hooks/refresh";
 import { getAllConnections } from "@/utils/serverApis";
 import { useUserProfileContext } from "@/context/userProfile";
-
-export const useSocialACcountContext = () => useContext(SocialAccountContext);
-
-const SocialAccountContext = createContext<{
-  connections: UserConnection;
-  addConnection: (key: string, data: any) => void;
-}>({
-  connections: {},
-  addConnection: NullCallback,
-});
+import { SocialAccountContext } from "@/context/socialAccountContext";
 
 const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
 }) => {
-  const [connections, setConnections] = useState(initialConnections);
+  const [connections, setConnections] = useState(initialConnections ?? []);
 
   const { userToken } = useUserProfileContext();
 
