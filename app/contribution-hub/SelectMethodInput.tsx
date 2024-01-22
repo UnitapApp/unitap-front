@@ -10,11 +10,13 @@ export enum SelectMethod {
 interface Prop {
   setRequirementParamsList: (e: any) => void;
   requirementParamsList: any;
+  isNft: boolean;
 }
 
 const SelectMethodInput = ({
   setRequirementParamsList,
   requirementParamsList,
+  isNft,
 }: Prop) => {
   const [selectedMethod, setSelectedMethod] = useState<string | undefined>();
   const [showItems, setShowItems] = useState<boolean>(false);
@@ -25,13 +27,13 @@ const SelectMethodInput = ({
   };
 
   interface MethodProp {
-    minimum: number;
-    maximum: number;
+    minimum: string;
+    maximum: string;
   }
 
   const [methodValues, setMethodValues] = useState<MethodProp>({
-    minimum: 0,
-    maximum: 0,
+    minimum: "",
+    maximum: "",
   });
 
   const ref = useRef<HTMLDivElement>(null);
@@ -43,12 +45,12 @@ const SelectMethodInput = ({
   const handleChangeMethodValues = (e: string) => {
     const value =
       e === "increase"
-        ? methodValues.minimum! + 1
-        : Math.max(1, methodValues.minimum - 1);
+        ? Number(methodValues.minimum!) + 1
+        : Math.max(0, Number(methodValues.minimum) - 1);
 
     setMethodValues({
       ...methodValues,
-      minimum: value,
+      minimum: value.toString(),
     });
 
     setRequirementParamsList({ ...requirementParamsList, ["MINIMUM"]: value });
@@ -99,14 +101,17 @@ const SelectMethodInput = ({
           <input
             className="bg-inherit h-full px-2 w-full "
             name={SelectMethod.Minimum}
-            type="number"
-            step={1}
+            type={isNft ? "text" : "number"}
+            inputMode="numeric"
+            pattern="[0-9]"
             min={0}
             value={methodValues.minimum}
             onChange={(e: any) =>
               setMethodValues({
                 ...methodValues,
-                minimum: Number(e.target.value) ?? "",
+                minimum: isNft
+                  ? e.target.value.replace(/[^0-9]/g, "")
+                  : e.target.value,
               })
             }
           />
