@@ -16,11 +16,11 @@ const NotFound = () => {
         The page you are looking for cannot be found.
       </p>
       <div className="mt-5">
-        <Link href="/">
+        <a href="/">
           <button className="btn btn--sm btn--primary-light font-semibold tracking-wide">
             Back to Home
           </button>
-        </Link>
+        </a>
       </div>
     </div>
   );

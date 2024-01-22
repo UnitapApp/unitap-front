@@ -315,7 +315,14 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
           </div>
           {!!fundAmount && !!helpAmount && (
             <div className="mt-2 ml-5 text-sm text-gray90">
-              You will help onboard approximately {helpAmount} users to this
+              You will help onboard{" "}
+              <b
+                className="cursor-pointer"
+                title="75% of your donation will be distributed among users. the rest is used for transaction fees. and depending on the network gas fees, the number might not be exact."
+              >
+                approximately
+              </b>{" "}
+              <span className="text-green-500">{helpAmount}</span> users to this
               network!
             </div>
           )}

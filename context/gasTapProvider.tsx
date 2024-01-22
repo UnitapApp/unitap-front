@@ -31,9 +31,8 @@ import {
   getFuelChampionList,
   getOneTimeClaimedChainList,
 } from "@/utils/api";
-import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 import getCorrectAddress, { useWalletAccount } from "@/utils/wallet";
-import { FAST_INTERVAL } from "@/constants";
 import { useGlobalContext } from "./globalProvider";
 
 export const GasTapContext = createContext<{
@@ -308,6 +307,21 @@ export const GasTapProvider: FC<
     updateOneTimeClaimedList();
     updateFuelChampionList();
   }, [updateChainList]);
+
+  useEffect(() => {
+    if (!userToken || chainList.length) return;
+    updateChainList();
+    updateActiveClaimHistory();
+    updateOneTimeClaimedList();
+    updateFuelChampionList();
+  }, [
+    chainList.length,
+    updateActiveClaimHistory,
+    updateChainList,
+    updateFuelChampionList,
+    updateOneTimeClaimedList,
+    userToken,
+  ]);
 
   useEffect(() => {
     if (activeChain) {
