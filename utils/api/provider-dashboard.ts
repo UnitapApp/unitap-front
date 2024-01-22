@@ -85,3 +85,16 @@ export async function createTokenDistribution(token: string, data: any) {
   );
   return response.data;
 }
+
+export const getUserDonations = async (token: string) => {
+  const response = await axiosInstance.get(
+    `/api/gastap/user/donation/?page=1`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
