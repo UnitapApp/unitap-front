@@ -7,7 +7,7 @@ import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/ChainList";
 import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
-import { isAddress } from "viem";
+import { isAddress, zeroAddress } from "viem";
 import { checkCollectionAddress } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
 
@@ -85,11 +85,11 @@ const ConstraintDetailsModal = ({
   const checkingParamsValidation = async () => {
     if (!requirementParamsList) return false;
     if (
-      !requirementParamsList.COLLECTION_ADDRESS ||
+      !requirementParamsList.ADDRESS ||
       !requirementParamsList.CHAIN ||
       !requirementParamsList.MINIMUM
     ) {
-      !requirementParamsList.COLLECTION_ADDRESS
+      !requirementParamsList.ADDRESS
         ? setErrorMessage("Please enter collection address.")
         : !requirementParamsList.CHAIN
         ? setErrorMessage("Please select chain.")
@@ -97,8 +97,8 @@ const ConstraintDetailsModal = ({
       return false;
     }
 
-    if (requirementParamsList.COLLECTION_ADDRESS) {
-      const step2Check = isAddress(requirementParamsList.COLLECTION_ADDRESS);
+    if (requirementParamsList.ADDRESS) {
+      const step2Check = isAddress(requirementParamsList.ADDRESS);
       const chain = allChainList?.find(
         (item) => Number(item.pk) === Number(requirementParamsList.CHAIN)
       );
@@ -107,7 +107,7 @@ const ConstraintDetailsModal = ({
 
       const res = await checkCollectionAddress(
         provider,
-        requirementParamsList.COLLECTION_ADDRESS,
+        requirementParamsList.ADDRESS,
         Number(chain.chainId)
       );
 
@@ -215,24 +215,46 @@ const CreateParams = ({
   setConstraintFile,
   allChainList,
 }: CreateModalParam) => {
-  const [reqNftAddress, setReqNftAddress] = useState("");
+  const [collectionAddress, setCollectionAddress] = useState("");
+  const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(requirementParamsList);
     if (!requirementParamsList) return;
-    setReqNftAddress(requirementParamsList.COLLECTION_ADDRESS);
+    setCollectionAddress(requirementParamsList.ADDRESS);
+    if (requirementParamsList.ADDRESS === zeroAddress) {
+      setIsNativeToken(true);
+    }
   }, [requirementParamsList]);
 
   const handleChangeCollection = (address: string) => {
-    setReqNftAddress(address);
+    console.log(requirementParamsList);
+    setCollectionAddress(address);
     setRequirementParamsList({
       ...requirementParamsList,
-      ["COLLECTION_ADDRESS"]: address,
+      ["ADDRESS"]: address,
     });
   };
 
   if (constraint.params.length === 0) return;
 
-  if (constraint.name === "core.HasNFTVerification") {
+  if (
+    constraint.name === "core.HasNFTVerification" ||
+    constraint.name === "core.HasTokenVerification"
+  ) {
+    const isNft: boolean = constraint.name === "core.HasNFTVerification";
+
+    const handleSelectNativeToken = () => {
+      setIsNativeToken(!isNativeToken);
+      !isNativeToken
+        ? setCollectionAddress(zeroAddress)
+        : setCollectionAddress("");
+      setRequirementParamsList({
+        ...requirementParamsList,
+        ["ADDRESS"]: zeroAddress,
+      });
+    };
+
     return (
       <div className="flex flex-col gap-3">
         <ChainList
@@ -240,18 +262,46 @@ const CreateParams = ({
           requirementParamsList={requirementParamsList}
           allChainList={allChainList}
         />
-        <div className="nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50">
+
+        {!isNft && (
+          <div
+            onClick={handleSelectNativeToken}
+            className="-mb-1 flex gap-2 cursor-pointer items-center mt-2"
+          >
+            <Icon
+              iconSrc={
+                isNativeToken
+                  ? "/assets/images/provider-dashboard/check-true.svg"
+                  : "/assets/images/provider-dashboard/checkbox.svg"
+              }
+            />
+            is native token
+          </div>
+        )}
+
+        <div
+          className={`${
+            isNativeToken ? "opacity-50" : "opacity-1"
+          } nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50`}
+        >
           <input
-            name="nftAddressRequirement"
-            placeholder="Paste NFT address"
+            name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
+            disabled={isNativeToken}
+            placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
             className="bg-inherit w-full h-full"
-            value={reqNftAddress ?? ""}
+            value={
+              collectionAddress && collectionAddress != zeroAddress
+                ? collectionAddress
+                : ""
+            }
             onChange={(e) => handleChangeCollection(e.target.value)}
           />
         </div>
+
         <SelectMethodInput
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
+          isNft={isNft}
         />
       </div>
     );
