@@ -94,7 +94,7 @@ export const BrightConnectionModalBody = () => {
     addConnection,
   ]);
 
-  if (!userProfile?.isMeetVerified) {
+  if (userProfile?.isMeetVerified) {
     return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
