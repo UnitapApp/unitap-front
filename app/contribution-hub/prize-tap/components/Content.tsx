@@ -13,11 +13,9 @@ import {
   ProviderDashboardButtonShowDetails,
 } from "../../Buttons";
 import SearchInput from "./SearchInput";
-// import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";
-// import OfferPrizeForm from "./OfferPrizeForm";
 import WinnersModal from "./Modals/winnersModal";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
@@ -41,8 +39,6 @@ enum RaffleStatus {
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
-  // const { handleCheckForReason } = usePrizeOfferFormContext();
-
   const [winnersResultRaffle, setWinnersResultRaffle] =
     useState<UserRafflesProps | null>(null);
 
