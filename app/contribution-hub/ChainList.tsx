@@ -43,6 +43,7 @@ const ChainList = ({
       (item) => item.pk === requirementParamsList.CHAIN
     );
     setSelectedChain(chain);
+    setChainName(chain?.chainName);
   }, [requirementParamsList]);
 
   useOutsideClick(ref, () => {
