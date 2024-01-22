@@ -1,5 +1,5 @@
 import { UserProfile } from "./auth";
-import { Chain } from "./gastap";
+import { Chain, Faucet } from "./gastap";
 import { WinnerEntry } from "./prizetap";
 
 export type ProviderDashboardFormDataProp = {
@@ -151,7 +151,9 @@ export type ErrorObjectProp = {
 };
 
 export enum ContractValidationStatus {
-  Valid, NotValid, Empty
+  Valid,
+  NotValid,
+  Empty,
 }
 
 export interface ContractStatus {
@@ -168,7 +170,6 @@ export interface DisplayStepsProps {
   title: string;
   description: string;
 }
-
 
 export interface NftRangeProps {
   from: string;
@@ -189,7 +190,6 @@ export interface UploadedFileProps {
   fileContent: any;
 }
 
-
 export interface ContactField {
   name: keyof ProviderDashboardFormDataProp;
   placeholder: string;
@@ -197,7 +197,6 @@ export interface ContactField {
   required: boolean;
   baseUrl: string;
 }
-
 
 export interface UserTokenDistribution {
   id: number;
@@ -214,10 +213,10 @@ export interface UserTokenDistribution {
   isActive: boolean;
   isClaimable: boolean;
   isExpired: boolean;
-  isMaxedOut : boolean;
+  isMaxedOut: boolean;
   maxNumberOfClaims: number;
-  name : string;
-  necessaryInformation : string | null;
+  name: string;
+  necessaryInformation: string | null;
   notes: string;
   numberOfClaims: number;
   rejectionReason: string | null;
@@ -228,5 +227,40 @@ export interface UserTokenDistribution {
   tokenAddress: string;
   tokenImageUrl: string;
   totalClaimsSinceLastRound: number;
-  twitterUrl: string | null
+  twitterUrl: string | null;
+}
+
+export interface UserDonation {
+  datetime: string;
+  faucet: Faucet;
+  status: string;
+  totalPrice: null;
+  txHash: string;
+  userProfile: UserProfile;
+  value: string;
+}
+
+export enum MainnetFilters {
+  All = "All",
+  Mainnet = "Mainnet",
+  Testnet = "Testnet",
+}
+
+export enum EvmFilters {
+  All = "All",
+  Evm = "EVM",
+  NonEvm = "NonEvm",
+}
+
+export enum StatusFilters {
+  All = "All",
+  Pending = "Pending",
+  Verified = "Verified",
+  Rejected = "Rejected",
+}
+
+export interface filterProps {
+  statusFilter: StatusFilters;
+  mainnetFilter: MainnetFilters;
+  evmFilter: EvmFilters;
 }
