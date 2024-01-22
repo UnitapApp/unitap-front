@@ -6,7 +6,7 @@ import {
   ProviderDashboardButtonSuccess,
 } from "../../Buttons";
 import Icon from "@/components/ui/Icon";
-import SearchInput from "@/app/gastap/components/searchInput";
+import SearchInput from "../../prize-tap/components/SearchInput";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
 import { useCallback, useEffect, useState } from "react";
@@ -126,9 +126,29 @@ const GasTapContent = () => {
     selectedFilter.mainnetFilter === "All" &&
     selectedFilter.statusFilter === "All";
 
+  const [searchPhrase, setSearchPhrase] = useState<string>("");
+
+  const filterByPhrase = (filteredItem: UserDonation[]) => {
+    if (searchPhrase) {
+      setFilteredItem(
+        filteredItem.filter(
+          (item) =>
+            item.faucet.chain.chainName
+              .toLocaleLowerCase()
+              .includes(searchPhrase.toLocaleLowerCase()) ||
+            item.faucet.chain.chainId.includes(searchPhrase) ||
+            item.value.includes(searchPhrase)
+        )
+      );
+    } else {
+      setFilteredItem(filteredItem);
+    }
+  };
+
   useEffect(() => {
     if (canDisplayAll) {
       setFilteredItem(userDonations);
+      filterByPhrase(userDonations);
       return;
     } else {
       let filteredItem = userDonations.filter((item) =>
@@ -149,9 +169,17 @@ const GasTapContent = () => {
           ? item.faucet.chain.isTestnet === isTestnet
           : item
       );
-      setFilteredItem(filteredItem);
+
+      filterByPhrase(filteredItem);
     }
-  }, [userDonations, selectedFilter, canDisplayAll]);
+  }, [userDonations, selectedFilter, canDisplayAll, searchPhrase]);
+
+  const handleSetSearchPhrase = (str: string) => {
+    const debounce = setTimeout(() => {
+      setSearchPhrase(str);
+    }, 700);
+    return () => clearTimeout(debounce);
+  };
 
   useRefreshWithInitial(
     () => {
@@ -166,7 +194,10 @@ const GasTapContent = () => {
     <div>
       <div>
         <div className="flex flex-col lg:flex-row  items-center gap-2 lg:gap-2 justify-between">
-          <SearchInput className="w-full  sm:max-w-[270px] st" />
+          <SearchInput
+            className="w-full  sm:max-w-[270px] st"
+            handleSetSearchPhrase={handleSetSearchPhrase}
+          />
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-1 w-full sm:w-auto select-none">
             <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
