@@ -54,7 +54,7 @@ export async function getUserRaffles(token: string) {
 
 export const getUserDistributions = async (token: string) => {
   const response = await axiosInstance.get(
-    `/api/tokentap/token-distribution-list/`,
+    `/api/tokentap/user-token-distributions/`,
     {
       headers: {
         Authorization: `Token ${token}`,

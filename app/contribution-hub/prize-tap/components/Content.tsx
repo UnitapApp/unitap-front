@@ -21,7 +21,7 @@ import RoutePath from "@/utils/routes";
 import Link from "next/link";
 import { useUserProfileContext } from "@/context/userProfile";
 import { getUserRaffles } from "@/utils/api";
-import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
 
 interface PrizeCardProp {
