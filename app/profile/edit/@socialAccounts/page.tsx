@@ -35,7 +35,7 @@ const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
         <SocialAccount
           title={"Bright ID"}
           icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
-          isConnected={!connections["BrightID"]}
+          isConnected={!!connections["BrightID"]}
         />
       </div>
     </SocialAccountContext.Provider>
