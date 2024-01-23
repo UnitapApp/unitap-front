@@ -3,7 +3,7 @@
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address } from "viem";
-import { WalletWinner } from "@/app/prizetap/prize-tap/Linea/LineaWinnersModal";
+import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
