@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Solana", "unitap"],
+  "cSpell.words": ["Solana", "unitap", "prizetap", "gastap", "tokentap"],
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
     "typescriptreact": "javascript"
