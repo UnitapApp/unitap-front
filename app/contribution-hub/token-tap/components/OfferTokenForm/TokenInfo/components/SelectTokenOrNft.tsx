@@ -98,7 +98,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           className={`
           ${data.isNft && "text-white font-medium  bg-gray40 border-gray50"}
            flex cursor-pointer items-center justify-center border-l border-l-gray50 w-[50%] h-full`}
-          onClick={() => handleSelectTokenOrNft(true)}
+          // onClick={() => handleSelectTokenOrNft(true)}
         >
           NFT
         </div>
