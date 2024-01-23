@@ -19,6 +19,7 @@ import useGenerateKeys from "@/utils/hooks/generateKeys";
 import { useGlobalContext } from "@/context/globalProvider";
 import Modal from "@/components/ui/Modal/modal";
 import { AxiosError } from "axios";
+import { useSocialACcountContext } from "@/context/socialAccountContext";
 
 export const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, updateProfile, userToken } =
@@ -35,6 +36,8 @@ export const BrightConnectionModalBody = () => {
 
   const [brightIdConnectionError, setBrightIdConnectionError] =
     useState<APIError | null>(null);
+
+  const { addConnection } = useSocialACcountContext();
 
   useEffect(() => {
     if (keys) {
@@ -71,6 +74,7 @@ export const BrightConnectionModalBody = () => {
       );
 
       updateProfile({ ...userProfile!, isMeetVerified: true });
+      addConnection("userProfile", profile);
     } catch (e) {
       if (e instanceof AxiosError) {
         setError(e.response?.data.message ?? e.message);
@@ -87,6 +91,7 @@ export const BrightConnectionModalBody = () => {
     userToken,
     updateProfile,
     userProfile,
+    addConnection,
   ]);
 
   if (userProfile?.isMeetVerified) {
@@ -134,11 +139,14 @@ export const BrightConnectionModalBody = () => {
           <p className="text-xs text-error font-light text-center"> {error} </p>
         </span>
       )}
-      <span className="notice flex mb-3">
-        <Icon className="mr-2" iconSrc="/assets/images/modal/gray-danger.svg" />
-        <p className="text-xs text-gray90 font-light">
-          {" "}
-          Submit Verification after verifing with brighID app.{" "}
+      <span className="flex mb-3">
+        <Icon
+          className="mr-2 mb-3"
+          iconSrc="/assets/images/modal/gray-danger.svg"
+        />
+        <p className="text-xs w-88 text-gray90 font-light">
+          Submit Verification after verifing with brighID app. This might take
+          up to 5 minutes.
         </p>
       </span>
       {refreshUserProfile && (

@@ -10,6 +10,7 @@ import InitialBody from "./enroll-body/InitialBody";
 import BrightNotConnectedBody from "./enroll-body/BrightNotConnectedBody";
 import SuccessBody from "./enroll-body/SuccessBody";
 import WrongNetworkBody from "./enroll-body/WrongNetworkBody";
+import WinnersModal from "./winnersModal";
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
   const { userProfile } = useUserProfileContext();
@@ -20,6 +21,10 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
   const { selectedRaffleForEnroll, method, claimOrEnrollWalletResponse } =
     usePrizeTapContext();
+
+  if (method === "Winners") {
+    return <WinnersModal />;
+  }
 
   if (!selectedRaffleForEnroll) return null;
 

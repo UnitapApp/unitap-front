@@ -61,7 +61,7 @@ const SearchInput = ({
     >
       <Input
         data-testid="search-box"
-        $icon="/search.png"
+        $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
         height="40px"
         $fontSize="12px"

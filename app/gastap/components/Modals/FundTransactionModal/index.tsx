@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { FundTransactionModalWrapper } from "./FundTransactionModal.style"
-import Icon from "@/components/ui/Icon"
-import { Text } from "@/components/ui/text.style"
-import { SecondaryButton } from "@/components/ui/Button/button"
-import { Chain } from "@/types"
-import { formatBalance } from "@/utils/numbers"
-import { getTxUrl } from "@/utils/chain"
+import { FundTransactionModalWrapper } from "./FundTransactionModal.style";
+import Icon from "@/components/ui/Icon";
+import { Text } from "@/components/ui/text.style";
+import { SecondaryButton } from "@/components/ui/Button/button";
+import { Chain } from "@/types";
+import { formatBalance } from "@/utils/numbers";
+import { getTxUrl } from "@/utils/chain";
 
 const FundTransactionModal = ({
   selectedChain,
@@ -15,11 +15,11 @@ const FundTransactionModal = ({
   closeModalHandler,
   fundAmount,
 }: {
-  provideGasFeeError: string
-  txHash: string
-  selectedChain: Chain | null
-  closeModalHandler: () => void
-  fundAmount: string
+  provideGasFeeError: string;
+  txHash: string;
+  selectedChain: Chain | null;
+  closeModalHandler: () => void;
+  fundAmount: string;
 }) => {
   function successful() {
     const handleClick = () => {
@@ -29,9 +29,9 @@ const FundTransactionModal = ({
         } faucet 💚💜\nJoin me in making Web3 more accessible for everyone!\nDonate: `
       )}&url=${encodeURIComponent(
         "unitap.app/fund?chain=" + encodeURIComponent(selectedChain!.pk)
-      )}`
-      window.open(twitterUrl, "_blank")
-    }
+      )}`;
+      window.open(twitterUrl, "_blank");
+    };
     return (
       <>
         <Icon
@@ -61,7 +61,7 @@ const FundTransactionModal = ({
               mb={3}
               $textAlign="center"
               onClick={() => {
-                window.open(getTxUrl(selectedChain, txHash), "_blank")
+                window.open(getTxUrl(selectedChain, txHash), "_blank");
               }}
             >
               View on Explorer
@@ -86,7 +86,7 @@ const FundTransactionModal = ({
           </>
         )}
       </>
-    )
+    );
   }
 
   function failed() {
@@ -94,7 +94,7 @@ const FundTransactionModal = ({
       <>
         <Icon
           mb={3}
-          iconSrc="assets/images/fund/failed-provide-spaceman.svg"
+          iconSrc="/assets/images/fund/failed-provide-spaceman.svg"
         ></Icon>
         <Text
           fontSize="14px"
@@ -114,14 +114,14 @@ const FundTransactionModal = ({
           Try Again
         </SecondaryButton>
       </>
-    )
+    );
   }
 
   return (
     <FundTransactionModalWrapper data-testid="fund-transaction-modal">
       {provideGasFeeError ? failed() : successful()}
     </FundTransactionModalWrapper>
-  )
-}
+  );
+};
 
-export default FundTransactionModal
+export default FundTransactionModal;

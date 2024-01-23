@@ -2,7 +2,7 @@
 
 import Icon from "@/components/ui/Icon";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { WalletWinner } from "../Linea/LineaWinnersModal";
 import { useWalletAccount } from "@/utils/wallet";
 import { shortenAddress } from "@/utils";
@@ -10,6 +10,8 @@ import UButton from "@/components/ui/Button/UButton";
 import { WinnerEntry } from "@/types";
 import { Address, isAddressEqual } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
+import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
+import { readContracts } from "wagmi";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -25,6 +27,9 @@ export const getRaffleEntry = (
 
 const WinnersModal = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
+  const [enrollmentWallets, setEnrollmentWallets] = useState<{
+    [key: string]: true;
+  }>({});
 
   const { selectedRaffleForEnroll } = usePrizeTapContext();
 
@@ -36,6 +41,41 @@ const WinnersModal = () => {
     () => getRaffleEntry(selectedRaffleForEnroll!.winnerEntries, address),
     [selectedRaffleForEnroll, address]
   );
+
+  const fetchEnrollmentWallets = useCallback(async () => {
+    if (!selectedRaffleForEnroll) return [];
+
+    const isNft = selectedRaffleForEnroll.isPrizeNft;
+    const raffleId = Number(selectedRaffleForEnroll.raffleId);
+    const entriesNumber = selectedRaffleForEnroll.numberOfOnchainEntries;
+
+    const contracts = [];
+
+    for (let i = 0; i <= entriesNumber / 100; i++) {
+      contracts.push({
+        abi: isNft ? prizeTap721ABI : prizeTapABI,
+        address: (selectedRaffleForEnroll.isPrizeNft
+          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
+          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994") as Address,
+        functionName: "getParticipants",
+        args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
+        chainId: Number(selectedRaffleForEnroll.chain.chainId ?? 1),
+      });
+    }
+
+    const data = await readContracts({
+      contracts,
+    });
+
+    const allWallet = (data.map((item) => item.result) as any[])
+      .flat(2)
+      .reduce((prev, curr: string) => {
+        prev[curr.toLowerCase()] = true;
+
+        return prev;
+      }, {} as { [key: string]: true });
+    setEnrollmentWallets(allWallet);
+  }, [selectedRaffleForEnroll]);
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput
@@ -49,6 +89,10 @@ const WinnersModal = () => {
     return items ?? [];
   }, [searchPhraseInput, selectedRaffleForEnroll?.winnerEntries]);
 
+  useEffect(() => {
+    fetchEnrollmentWallets();
+  }, [fetchEnrollmentWallets]);
+
   if (!selectedRaffleForEnroll) return null;
 
   return (
@@ -57,7 +101,7 @@ const WinnersModal = () => {
       <div className="flex bg-gray50 p-4 py-3.5 border-2 rounded-xl !border-gray30 items-center w-full mt-1">
         <Icon
           className="mr-5"
-          iconSrc="assets/images/modal/search-icon.svg"
+          iconSrc="/assets/images/modal/search-icon.svg"
           width="20px"
           height="20px"
         />
@@ -107,7 +151,7 @@ const WinnersModal = () => {
               Winner <span className="ml-1">&#x1F604;&#xfe0f;</span>
             </button>
           </div>
-        ) : (
+        ) : !address || !enrollmentWallets[address?.toLowerCase()] ? null : (
           <div className="flex px-5 py-4 rounded-xl mt-5 bg-gray20 items-center text-white">
             {shortenAddress(address) ?? ""}
 

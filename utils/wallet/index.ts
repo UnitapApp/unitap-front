@@ -1,7 +1,7 @@
 "use client";
 
 import { Chain, ChainType } from "@/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Client } from "viem";
 import {
   PublicClient,

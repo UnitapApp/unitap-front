@@ -51,36 +51,33 @@ export type ErrorProps = {
   numberOfWinnersMessage: null | string;
 };
 
-export interface ConstraintParams {
-  id: number;
-}
-
 export interface ConstraintProps {
   description: string | null;
+  explanation: string | null;
+  iconUrl: string | null;
   name: string;
-  params: ConstraintParams[];
+  negativeDescription: string;
+  params: any;
   pk: number;
   response: string | null;
   title: string;
   type: string;
-  iconUrl: string | null;
-  // isReversed: boolean;
-  // negativeDescription: string | null;
 }
 
-export interface ConstraintParamValues {
+export interface RequirementProps {
   name: string;
   pk: number;
-  values: Record<number, string | number | boolean> | null;
+  params: any;
   title: string;
   isNotSatisfy: boolean;
   isReversed: boolean;
+  constraintFile?: [];
 }
 
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints: ConstraintParamValues[];
+  constraints: RequirementProps[];
   contract: string;
   createdAt: string;
   creatorAddress: string;
@@ -199,4 +196,37 @@ export interface ContactField {
   icon: string;
   required: boolean;
   baseUrl: string;
+}
+
+
+export interface UserTokenDistribution {
+  id: number;
+  chain: Chain;
+  constraints: RequirementProps[];
+  contract: string;
+  createdAt: string;
+  deadline: string;
+  discordUrl: string;
+  distributor: string;
+  distributorUrl: string;
+  emailUrl: string;
+  imageUrl: string;
+  isActive: boolean;
+  isClaimable: boolean;
+  isExpired: boolean;
+  isMaxedOut : boolean;
+  maxNumberOfClaims: number;
+  name : string;
+  necessaryInformation : string | null;
+  notes: string;
+  numberOfClaims: number;
+  rejectionReason: string | null;
+  startAt: string;
+  status: string;
+  telegramUrl: string | null;
+  token: string;
+  tokenAddress: string;
+  tokenImageUrl: string;
+  totalClaimsSinceLastRound: number;
+  twitterUrl: string | null
 }

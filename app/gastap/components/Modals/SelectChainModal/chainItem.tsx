@@ -1,47 +1,47 @@
-"use client"
+"use client";
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react";
 
-import Icon from "@/components/ui/Icon"
-import { Chain } from "@/types"
-import { getChainIcon } from "@/utils/chain"
-import { BigNumber } from "@ethersproject/bignumber"
-import JSBI from "jsbi"
-import { CurrencyAmount } from "@uniswap/sdk-core"
-import { StaticJsonRpcProvider } from "@ethersproject/providers"
-import { useWalletProvider } from "@/utils/wallet"
-import { nativeOnChain } from "@/constants/tokens"
+import Icon from "@/components/ui/Icon";
+import { Chain } from "@/types";
+import { getChainIcon } from "@/utils/chain";
+import { BigNumber } from "@ethersproject/bignumber";
+import JSBI from "jsbi";
+import { CurrencyAmount } from "@uniswap/sdk-core";
+import { StaticJsonRpcProvider } from "@ethersproject/providers";
+import { useWalletProvider } from "@/utils/wallet";
+import { nativeOnChain } from "@/constants/tokens";
 
 interface ChainItemProps {
-  chain: Chain
-  selected?: boolean
-  onClick: () => void
-  "data-testid"?: string
+  chain: Chain;
+  selected?: boolean;
+  onClick: () => void;
+  "data-testid"?: string;
 }
 
 const ChainItem = (props: ChainItemProps) => {
-  const { selected, chain, onClick } = props
-  const icon = getChainIcon(chain)
-  const provider = useWalletProvider()
+  const { selected, chain, onClick } = props;
+  const icon = getChainIcon(chain);
+  const provider = useWalletProvider();
   const [fundManagerBalance, setFundManagerBalance] =
-    useState<BigNumber | null>(null)
+    useState<BigNumber | null>(null);
 
   useEffect(() => {
     new StaticJsonRpcProvider(chain.rpcUrl)
       ?.getBalance(chain.fundManagerAddress)
       .then((balance) => {
-        setFundManagerBalance(balance)
-      })
-  }, [chain, provider])
+        setFundManagerBalance(balance);
+      });
+  }, [chain, provider]);
 
   const fundManagerBalanceAmount = useMemo(() => {
-    if (!fundManagerBalance) return null
-    const amount = JSBI.BigInt(fundManagerBalance.toString())
+    if (!fundManagerBalance) return null;
+    const amount = JSBI.BigInt(fundManagerBalance.toString());
     return CurrencyAmount.fromRawAmount(
       nativeOnChain(Number(chain.chainId)),
       amount
-    )
-  }, [fundManagerBalance])
+    );
+  }, [fundManagerBalance]);
 
   return (
     <div
@@ -62,13 +62,13 @@ const ChainItem = (props: ChainItemProps) => {
       {selected && (
         <Icon
           className="ml-2"
-          iconSrc="assets/images/modal/check.svg"
+          iconSrc="/assets/images/modal/check.svg"
           width="13px"
           height="auto"
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ChainItem
+export default ChainItem;

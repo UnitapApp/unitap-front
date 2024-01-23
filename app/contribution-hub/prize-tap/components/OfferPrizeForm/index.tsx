@@ -3,12 +3,13 @@
 import DisplaySteps from "../../../DisplaySteps";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePagination } from "@/utils/hooks/contributionPagInation";
 import {
   PrizeTapDisplaySteps,
   prizeTapForms,
 } from "@/app/contribution-hub/constants/forms";
+import { usePreventNavigation } from "@/utils/hooks/refresh";
 
 interface FromProp {
   detailRafflePk?: string | undefined;
@@ -22,7 +23,22 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
     handleShowUserDetails,
     page,
     setPage,
+    data,
   } = usePrizeOfferFormContext();
+
+  const isFormFilled =
+    !detailRafflePk &&
+    !verificationRafflePK &&
+    (data.selectedChain ||
+      data.provider ||
+      data.tokenContractAddress ||
+      data.nftContractAddress ||
+      data.description);
+
+  usePreventNavigation(
+    process.env.NODE_ENV === "development" ? false : isFormFilled,
+    "You have unsaved changes. Refreshing the page may result in data loss."
+  );
 
   const { display, prevPage } = usePagination(page, setPage, prizeTapForms);
 

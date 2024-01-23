@@ -123,7 +123,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
 
             <div
-              className={`flex text-gray80 text-[12px] bg-gray40 border-[1.4px] 
+              className={`flex text-gray100 text-[12px] bg-gray40 border-[1.4px] 
               rounded-xl h-[43px] max-w-[452px] overflow-hidden 
               ${data.isNativeToken ? "opacity-[.5]" : "opacity-1"} 
               ${tokenAddressError ? "border-error" : "border-gray50"}`}
@@ -185,12 +185,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
           <div className="relative total_amount_box">
             <div
-              className={`relative border-2  p-5 rounded-2xl ${
+              className={`relative border  p-5 rounded-2xl ${
                 totalAmountError ? "border-error" : "border-gray50"
               } `}
             >
               <div
-                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border-gray50 border-2 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 text-xs bg-gray40 border-gray50 border rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   Number of Winners
@@ -216,7 +216,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 text-xs bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   <p>Amount Per Winner</p>
@@ -239,7 +239,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray80 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   <p>Total Amount</p>
@@ -277,7 +277,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`
-							 flex text-gray80 text-[12px] bg-gray40 border-[1.4px] ${
+							 flex text-gray100 text-[12px] bg-gray40 border ${
                  nftAddressError ? "border-error" : "border-gray50"
                } ${
                 data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
@@ -340,7 +340,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
             <div
               className={`
-							 flex text-gray80 text-[12px] bg-gray40 border ${
+							 flex text-gray100 text-[12px] bg-gray40 border ${
                  Number(numberOfNfts) > 500 ||
                  (data.nftTokenIds.length > 0 &&
                    data.nftTokenIds.length != Number(numberOfNfts))

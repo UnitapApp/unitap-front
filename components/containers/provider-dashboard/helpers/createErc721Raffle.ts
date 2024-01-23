@@ -1,6 +1,6 @@
-import { ConstraintParamValues, ProviderDashboardFormDataProp } from "@/types";
+import { RequirementProps, ProviderDashboardFormDataProp } from "@/types";
 import { prizeTap721ABI } from "@/types/abis/contracts";
-import {  getContract } from "viem";
+import { getContract } from "viem";
 import { PublicClient } from "wagmi";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
@@ -15,7 +15,7 @@ export const createErc721RaffleCallback = async (
   nftIds: string[],
   maxParticipants: bigint,
   startTime: bigint,
-  endTime: bigint,
+  endTime: bigint
 ) => {
   if (!provider || !signer) return;
 
@@ -26,7 +26,7 @@ export const createErc721RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       currencyAddress,
-      nftIds.map(item => BigInt(item)),
+      nftIds.map((item) => BigInt(item)),
       maxParticipants,
       1n,
       startTime,
@@ -43,7 +43,7 @@ export const createErc721RaffleCallback = async (
     functionName: "createRaffle",
     args: [
       currencyAddress,
-      nftIds.map(item => BigInt(item)),
+      nftIds.map((item) => BigInt(item)),
       maxParticipants,
       1n,
       startTime,
@@ -59,7 +59,7 @@ export const createErc721Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
   signer: GetWalletClientResult,
-  requirementList: ConstraintParamValues[],
+  requirementList: RequirementProps[],
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
@@ -69,53 +69,90 @@ export const createErc721Raffle = async (
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";
-  const constraints = requirementList.map((item) => item.pk);
-  const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
+  const constraints = requirementList.map((item) => item.pk.toString());
+  const reversed_constraints = requirementList
+    .filter((item) => item.isNotSatisfy)
+    .map((ids) => ids.pk);
+
+  const constraintFileList: any = requirementList
+    .filter((item) => item.constraintFile)
+    .map((item) => item.constraintFile);
+
+  const constraint_params = requirementList.reduce((obj: any, item: any) => {
+    obj[item.name] = item.params;
+    return obj;
+  }, {});
+
   const prizeName = data.nftName;
-  const twitter = 'https://twitter.com/' + data.twitter?.replace('@', '');
-	const discord = data.discord ? 'https://discord.com/' + data.discord.replace('@', '') : null;
-	const telegram = data.telegram ? 'https://t.me/' + data.telegram.replace('@', '') : null;
-	const creatorUrl = data.creatorUrl ? 'https://' + data.creatorUrl : null;
+  const twitter = data.twitter
+    ? "https://twitter.com/" + data.twitter?.replace("@", "")
+    : null;
+  const discord = data.discord
+    ? "https://discord.com/" + data.discord.replace("@", "")
+    : null;
+  const telegram = data.telegram
+    ? "https://t.me/" + data.telegram.replace("@", "")
+    : null;
+  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+
+  const reversed =
+    reversed_constraints.length > 1
+      ? reversed_constraints.join(",")
+      : reversed_constraints.length == 1
+      ? reversed_constraints[0].toString()
+      : "";
+
+  const nftIdsToString =
+    data.nftTokenIds.length > 1
+      ? data.nftTokenIds.join(",")
+      : data.nftTokenIds[0];
+
+  const formData = new FormData();
 
   if (!data.nftTokenIds) return;
 
-  const raffleData = {
-    name: prizeName,
-    description: data.description,
-    contract: raffleContractAddress,
-    creator_name: data.provider,
-    prizeAmount: 1,
-    decimals: 18,
-    creator_address: address,
-    prize_asset: data.nftContractAddress,
-    prize_name: prizeName,
-    prize_symbol: data.nftSymbol,
-    chain: Number(data.selectedChain.pk),
-    constraints,
-    constraint_params: btoa(JSON.stringify({})),
-    deadline: deadline(data.endTimeStamp),
-    max_number_of_entries: maxNumberOfEntries,
-    start_at: startAt(data.startTimeStamp),
-		nftIds: data.nftTokenIds.length > 1 ?  data.nftTokenIds.join(',') : data.nftTokenIds[0],
-    isPrizeNft: true,
-    winnersCount: data.nftTokenIds.length,
-    discord_url:discord,
-		twitter_url:twitter,
-		creator_url:creatorUrl,
-		telegram_url: telegram,
-    reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
-		email_url:data.email,
-		necessary_information:data.necessaryInfo
-  };
+  for (let i = 0; i < constraints.length; i++) {
+    formData.append("constraints", constraints[i]);
+  }
 
-    
+  if (constraintFileList) {
+    for (let i = 0; i < constraintFileList.length; i++) {
+      formData.append("constraint_files", constraintFileList[i]);
+    }
+  }
+
+  if (reversed) {
+    formData.append("reversed_constraints", reversed);
+  }
+  formData.append("name", prizeName!);
+  formData.append("description", data.description ?? "");
+  formData.append("contract", raffleContractAddress);
+  formData.append("creator_name", data.provider!);
+  formData.append("prize_amount", "1");
+  formData.append("creator_address", address);
+  formData.append("prize_asset", data.nftContractAddress);
+  formData.append("prize_name", prizeName!);
+  formData.append("prize_symbol", data.nftSymbol!);
+  formData.append("chain", data.selectedChain.pk);
+  formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
+  formData.append("deadline", deadline(data.endTimeStamp));
+  formData.append("max_number_of_entries", maxNumberOfEntries);
+  formData.append("start_at", startAt(data.startTimeStamp));
+  formData.append("nft_ids", nftIdsToString);
+  formData.append("is_prize_nft", "true");
+  formData.append("winners_count", data.nftTokenIds.length.toString());
+  formData.append("discord_url", discord! ?? "");
+  formData.append("twitter_url", twitter! ?? "");
+  formData.append("creator_url", creatorUrl! ?? "");
+  formData.append("telegram_url", telegram! ?? "");
+  formData.append("email_url", data.email!);
+  formData.append("necessary_information", data.necessaryInfo!);
+
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
     abi: prizeTap721ABI,
     publicClient: provider,
   });
-
-
 
   try {
     setCreateRaffleLoading(true);
@@ -128,35 +165,38 @@ export const createErc721Raffle = async (
       data.nftTokenIds,
       BigInt(maxNumberOfEntries),
       data.startTimeStamp,
-      data.endTimeStamp,
+      data.endTimeStamp
     );
 
-      
-  const raffle = await createRaffleApi(userToken, raffleData);
+    if (!response) throw new Error("Contract hash not found");
 
-  if (!raffle.success) {
-    return false;
-  }
-
-  const rafflePk = raffle.data.id;
-
-    if (!response) return;
-
-    await provider.waitForTransactionReceipt({
+    const transactionInfo = await provider.waitForTransactionReceipt({
       hash: response,
       confirmations: 1,
     });
 
+    const raffle = await createRaffleApi(userToken, formData);
+
+    if (!raffle.success) {
+      return false;
+    }
+
+    const rafflePk = raffle.data.id;
+
     setCreteRaffleResponse({
       success: true,
       state: "Done",
-      txHash: response,
+      txHash: transactionInfo.transactionHash,
       message: "Created raffle successfully.",
     });
 
     setCreateRaffleLoading(false);
 
-    await updateCreateRaffleTx(userToken, rafflePk, response);
+    await updateCreateRaffleTx(
+      userToken,
+      rafflePk,
+      transactionInfo.transactionHash
+    );
   } catch (e: any) {
     console.log(e);
     setCreteRaffleResponse({

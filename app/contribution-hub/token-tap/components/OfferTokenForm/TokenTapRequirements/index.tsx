@@ -1,34 +1,17 @@
-import RequirementModal from "./components/RequirementModal";
 import { ProviderFormPaginationProp } from "@/types";
 import NewAddedConstraint from "../NewAddedConstraint";
 import Pagination from "@/app/contribution-hub/pagination";
-import { useEffect } from "react";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
-
-export const RequirementDescription = {
-  id: 2,
-  prevIcon: "/assets/images/provider-dashboard/step-2-green.png",
-  activeIcon: "/assets/images/provider-dashboard/step-2-active.png",
-  nextIcon: "/assets/images/provider-dashboard/step-2-off.png",
-  title: "Requirements",
-  description: "Add requirements for Enrollment",
-};
+import ConstraintListModal from "./components/ConstraintListModal";
 
 const TokenTapRequirements = ({
   handleChangeFormPagePrev,
   handleChangeFormPageNext,
 }: ProviderFormPaginationProp) => {
-  const {
-    openRequirementModal,
-    page,
-    requirementList,
-    handleGetConstraints,
-    isShowingDetails,
-  } = useTokenTapFromContext();
-  useEffect(() => {
-    handleGetConstraints();
-  }, []);
+  const { openRequirementModal, page, requirementList } =
+    useTokenTapFromContext();
+
   return (
     <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
       <div className="text-gray100 min-h-[424px] text-[12px] font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
@@ -50,7 +33,7 @@ const TokenTapRequirements = ({
           <p>Add requirement</p>
         </div>
 
-        <RequirementModal />
+        <ConstraintListModal />
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

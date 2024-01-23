@@ -1,20 +1,17 @@
-import RequirementModal from "./components/RequirementModal";
 import { ProviderFormPaginationProp } from "@/types";
 import NewAddedConstraint from "../NewAddedConstraint";
 import Pagination from "@/app/contribution-hub/pagination";
-import { useEffect } from "react";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
+import ConstraintListModal from "./components/ConstraintListModal";
 
 const Requirements = ({
   handleChangeFormPagePrev,
   handleChangeFormPageNext,
 }: ProviderFormPaginationProp) => {
-  const { openRequirementModal, page, requirementList, handleGetConstraints } =
+  const { openRequirementModal, page, requirementList } =
     usePrizeOfferFormContext();
-  useEffect(() => {
-    handleGetConstraints();
-  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
       <div className="text-gray100 min-h-[424px] text-[12px] font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
@@ -36,7 +33,7 @@ const Requirements = ({
           <p>Add requirement</p>
         </div>
 
-        <RequirementModal />
+        <ConstraintListModal />
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

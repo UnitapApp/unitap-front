@@ -10,6 +10,7 @@ export const getErc20TokenContract = async (
   setData: any,
   setIsErc20Approved: any,
   setTokenContractStatus: any,
+  setApproveAllowance: any,
 ) => {
   if (!provider || !address) return;
 
@@ -52,11 +53,7 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-    setIsErc20Approved(
-      Number(fromWei(r5.toString(), r3)) != 0 &&
-        Number(fromWei(r5.toString(), r3)) >= Number(data.totalAmount)
-    );
-
+    setApproveAllowance(Number(fromWei(r5.toString(), r3)))
     setTokenContractStatus((prev: any) => ({...prev,
       isValid: ContractValidationStatus.Valid,
       checking: false,}))

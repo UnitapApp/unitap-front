@@ -1,5 +1,13 @@
-const Page = () => {
-  return <div>salam</div>
-}
+"use client";
 
-export default Page
+import GasTapContent from "./components/Content";
+
+const Page = () => {
+  return (
+    <>
+      <GasTapContent />
+    </>
+  );
+};
+
+export default Page;
