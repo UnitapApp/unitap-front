@@ -79,7 +79,7 @@ export async function createTokenDistribution(token: string, data: any) {
     {
       headers: {
         Authorization: `Token ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
