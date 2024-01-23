@@ -63,7 +63,7 @@ export const createErc20TokenDistribution = async (
     email_url: data.email,
     telegram_url: telegram,
     token: prizeName,
-    tokenAddress: data.tokenContractAddress,
+    token_address: data.tokenContractAddress,
     amount: prizeAmount,
     chain: data.selectedChain.pk,
     contract: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
