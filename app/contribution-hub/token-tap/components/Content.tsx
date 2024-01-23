@@ -4,35 +4,44 @@ import {
   ProviderDashboardButton,
   ProviderDashboardButtonCheck,
   ProviderDashboardButtonRejected,
+  ProviderDashboardButtonShowDetails,
   ProviderDashboardButtonSuccess,
   ProviderDashboardButtonVerifying,
 } from "../../Buttons";
 
 import Icon from "@/components/ui/Icon";
-import SearchInput from "@/app/contribution-hub/prize-tap/components/SearchInput";
-import { ProviderDashboardCardTimer } from "@/app/contribution-hub/prize-tap/components/CardTimer";
+import SearchInput from "../../prize-tap/components/SearchInput";
 import Styles from "./content.module.scss";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
 import { getUserDistributions } from "@/utils/api/provider-dashboard";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
-
-const handleSetSearchPhrase = () => {};
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
 }
 
+enum Filters {
+  All = "All",
+  Pending = "PENDING",
+  Verified = "VERIFIED",
+  Rejected = "REJECTED",
+  Finished = "Finished",
+}
+
 const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const [finished, setFinished] = useState<boolean>(false);
   const [isStarted, setIsStarted] = useState<boolean>(false);
+  const isStart = new Date(distribution.startAt) < new Date();
+  const isFinished = new Date(distribution.deadline) < new Date();
+  const status = distribution.status;
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[264px]">
+    <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px]">
       <div className="provideToken-item-container">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -41,17 +50,32 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               width="36px"
               height="36px"
             />
-            <p className="text-[14px] font-medium text-white">
+            <p className="text-sm font-medium text-white">
               {distribution.name}
             </p>
           </div>
           <div>
-            {isStarted && !finished && (
+            {status === Filters.Rejected && (
+              <ProviderDashboardButtonRejected>
+                <p>Rejected</p>
+              </ProviderDashboardButtonRejected>
+            )}
+            {status === Filters.Pending && (
+              <ProviderDashboardButtonVerifying>
+                Verifying
+              </ProviderDashboardButtonVerifying>
+            )}
+            {isStart && !isFinished && status == Filters.Verified && (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
             )}
-            {finished && (
+            {!isStart && status == Filters.Verified && (
+              <ProviderDashboardButtonSuccess>
+                <p>Verified</p>
+              </ProviderDashboardButtonSuccess>
+            )}
+            {isFinished && status == Filters.Verified && (
               <div className="bg-gray50 border flex items-center justify-center border-gray70 rounded-md w-[100px] h-6 text-[10px] text-gray100">
                 Finished
               </div>
@@ -73,25 +97,50 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-gray80 text-[10px]">non-Repeatable</div>
+            <div className="text-gray80 text-xs">non-Repeatable</div>
             <Icon
               iconSrc="/assets/images/provider-dashboard/reload.svg"
-              width="14px"
-              height="14px"
+              width="16px"
+              height="16px"
             />
           </div>
         </div>
-        <div className="provideToken_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center ">
-          30 Spots Left
+        <div className="pt-2">
+          {isStart && isFinished && status === Filters.Verified && (
+            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
+              {distribution.numberOfClaims} Spots Enrolled
+            </div>
+          )}
+
+          {isStart && !isFinished && status === Filters.Verified && (
+            <div className="bg-gray50 rounded-xl text-sm font-medium text-white h-[48px]  flex items-center justify-center ">
+              {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
+              Spots left
+            </div>
+          )}
         </div>
-        <div className="provideToken_timer absolute bottom-2 right-4 left-4">
-          <CardTimerTokenTap
-            startTime={distribution.startAt}
-            FinishTime={distribution.deadline}
-            finished={finished}
-            setFinished={setFinished}
-            setIsStarted={setIsStarted}
-          />
+        <div className="absolute bottom-2 right-4 left-4">
+          {status == Filters.Verified && (
+            <CardTimerTokenTap
+              startTime={distribution.startAt}
+              FinishTime={distribution.deadline}
+              finished={finished}
+              setFinished={setFinished}
+              setIsStarted={setIsStarted}
+            />
+          )}
+
+          {status == Filters.Pending && (
+            <ProviderDashboardButtonShowDetails>
+              Show Details
+            </ProviderDashboardButtonShowDetails>
+          )}
+
+          {status === Filters.Rejected && (
+            <ProviderDashboardButtonCheck>
+              Check For Reasons
+            </ProviderDashboardButtonCheck>
+          )}
         </div>
       </div>
     </div>
@@ -99,30 +148,117 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
 };
 
 const TokenTapContent = () => {
-  const [userDistributions, setUserDistributions] = useState<
-    UserTokenDistribution[] | undefined
-  >();
-
   const { userToken } = useUserProfileContext();
+
+  const [userDistributions, setUserDistributions] = useState<
+    UserTokenDistribution[]
+  >([]);
+
+  const [filteredItems, setFilteredItems] = useState<UserTokenDistribution[]>(
+    []
+  );
+
+  const [selectedFilter, setSelectedFilter] = useState<Filters>(Filters.All);
+
+  const handleSelectFilter = (filter: any) => {
+    if (filter == selectedFilter) return;
+    setFilteredItems([]);
+    setSelectedFilter(filter);
+  };
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [searchPhrase, setSearchPhrase] = useState<string>("");
+
+  const handleSetSearchPhrase = (str: string) => {
+    const debounce = setTimeout(() => {
+      setSearchPhrase(str);
+    }, 700);
+    return () => clearTimeout(debounce);
+  };
 
   const handleGetUserDistribution = useCallback(async () => {
     if (!userToken) return;
-    const res = await getUserDistributions(userToken);
-    console.log(res);
-    setUserDistributions(res);
+    try {
+      const distributions = await getUserDistributions(userToken);
+      console.log(distributions);
+      setUserDistributions(distributions);
+      setLoading(false);
+    } catch (e: any) {
+      setLoading(false);
+    }
   }, [userToken]);
+
+  useEffect(() => {
+    if (selectedFilter === Filters.All) {
+      setFilteredItems(userDistributions);
+    }
+
+    if (selectedFilter === Filters.Rejected) {
+      setFilteredItems(
+        userDistributions.filter((item) => item.status === Filters.Rejected)
+      );
+    }
+
+    // this is ongoing filter. we have no pending filter to display
+    if (selectedFilter === Filters.Pending) {
+      setFilteredItems(
+        userDistributions.filter(
+          (item) =>
+            item.status === Filters.Verified &&
+            new Date(item.startAt) < new Date() &&
+            new Date(item.deadline) > new Date()
+        )
+      );
+    }
+
+    if (selectedFilter === Filters.Verified) {
+      setFilteredItems(
+        userDistributions.filter(
+          (item) =>
+            item.status === Filters.Verified &&
+            item.status === Filters.Verified &&
+            new Date(item.startAt) > new Date()
+        )
+      );
+    }
+
+    if (selectedFilter === Filters.Finished) {
+      setFilteredItems(
+        userDistributions.filter(
+          (item) =>
+            item.status === Filters.Verified &&
+            new Date(item.deadline) < new Date()
+        )
+      );
+    }
+    if (searchPhrase) {
+      setFilteredItems(
+        filteredItems.filter(
+          (item) =>
+            item.chain.chainName
+              .toLocaleLowerCase()
+              .includes(searchPhrase.toLocaleLowerCase()) ||
+            item.name
+              .toLocaleLowerCase()
+              .includes(searchPhrase.toLocaleLowerCase()) ||
+            item.chain.chainId.includes(searchPhrase)
+        )
+      );
+    }
+  }, [userDistributions, selectedFilter, searchPhrase]);
 
   useRefreshWithInitial(
     () => {
-      // setUserRafflesLoading(true);
+      setLoading(true);
       handleGetUserDistribution();
     },
     FAST_INTERVAL,
     []
   );
   return (
-    <>
-      <div className="flex flex-col md:flex-row items-center justify-between ">
+    <div>
+      <div className="flex flex-col md:flex-row items-center justify-between select-none">
         <SearchInput
           className="w-full md:w-1/3"
           handleSetSearchPhrase={handleSetSearchPhrase}
@@ -130,11 +266,44 @@ const TokenTapContent = () => {
         <div
           className={`${Styles.provider_dashboard__status} justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
         >
-          <div>All</div>
-          <div>ongoing</div>
-          <div>verified</div>
-          <div>rejected</div>
-          <div>finished</div>
+          <div
+            className={`${selectedFilter === Filters.All && "text-gray100"}`}
+            onClick={() => handleSelectFilter(Filters.All)}
+          >
+            All
+          </div>
+          <div
+            className={`${
+              selectedFilter === Filters.Pending && "text-gray100"
+            }`}
+            onClick={() => handleSelectFilter(Filters.Pending)}
+          >
+            ongoing
+          </div>
+          <div
+            className={`${
+              selectedFilter === Filters.Verified && "text-gray100"
+            }`}
+            onClick={() => handleSelectFilter(Filters.Verified)}
+          >
+            verified
+          </div>
+          <div
+            className={`${
+              selectedFilter === Filters.Rejected && "text-gray100"
+            }`}
+            onClick={() => handleSelectFilter(Filters.Rejected)}
+          >
+            rejected
+          </div>
+          <div
+            className={`${
+              selectedFilter === Filters.Finished && "text-gray100"
+            }`}
+            onClick={() => handleSelectFilter(Filters.Finished)}
+          >
+            finished
+          </div>
         </div>
       </div>
       <div
@@ -161,14 +330,50 @@ const TokenTapContent = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {userDistributions &&
-          userDistributions.map((distribution, index: number) => (
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 min-h-[400px]">
+        {filteredItems.length > 0 &&
+          filteredItems.map((distribution, index: number) => (
             <DistributionCard key={index} distribution={distribution} />
           ))}
       </div>
-    </>
+
+      {loading && filteredItems.length == 0 && (
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+        </div>
+      )}
+
+      {filteredItems.length === 0 && !loading && (
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
+          No items found.
+        </div>
+      )}
+    </div>
   );
 };
 
 export default TokenTapContent;
+
+const Skeleton = () => {
+  return (
+    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
+      <div className="w-full flex items-center justify-between">
+        <div className="flex gap-2 items-center">
+          <div className="min-w-[40px] min-h-[40px] bg-gray50 rounded-[50%]"></div>
+          <div className="min-w-[50px] min-h-[20px] bg-gray50"></div>
+        </div>
+        <div className="min-h-[25px] min-w-[100px] rounded-lg bg-gray50"></div>
+      </div>
+      <div className="min-h-[20px] w-[170px] rounded-md mt-3 bg-gray50"></div>
+      <div className="flex justify-between">
+        <div className="w-[85px] h-[15px] rounded-md mt-3 bg-gray50"></div>
+        <div className="w-[85px] h-[15px] rounded-md mt-3 bg-gray50"></div>
+      </div>
+      <div className="w-full h-[44px] rounded-xl mt-4 bg-gray50"></div>
+      <div className="w-[40px] h-[20px] rounded-xl mt-8 bg-gray50"></div>
+      <div className="w-full h-[50px] rounded-xl mt-3 bg-gray50"></div>
+    </div>
+  );
+};
