@@ -80,7 +80,7 @@ export const CardTimerTokenTap = ({
           : "Starts in"}
         :
       </p>
-      <div className="prize-card__timer bg-gray40 flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
+      <div className="prize-card__timer bg-gray50 flex items-center justify-between rounded-xl gap-4 px-8 py-2">
         <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
           <p className="prize-card__timer-item-value text-white font-semibold">
             {days}
