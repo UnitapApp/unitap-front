@@ -468,7 +468,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         className={`${
                           !winnersEntry.length &&
                           new Date(deadline) < new Date()
-                            ? "text-[14px]"
+                            ? "text-sm"
                             : ""
                         } text-transparent bg-clip-text bg-g-primary`}
                       >

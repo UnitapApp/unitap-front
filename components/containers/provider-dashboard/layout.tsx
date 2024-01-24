@@ -30,7 +30,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             <Icon iconSrc="/assets/images/provider-dashboard/dashboard-login.svg" />
           </div>
           <p
-            className=" text-[14px] font-semibold text-white cursor-pointer"
+            className=" text-sm font-semibold text-white cursor-pointer"
             onClick={openBrightIdModal}
           >
             Sign up first!
