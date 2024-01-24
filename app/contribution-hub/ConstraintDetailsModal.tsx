@@ -207,14 +207,14 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   );
 };
 
-const CreateParams = ({
+const CreateParams: FC<CreateModalParam> = ({
   constraint,
   setRequirementParamsList,
   requirementParamsList,
   constraintFile,
   setConstraintFile,
   allChainList,
-}: CreateModalParam) => {
+}) => {
   const [collectionAddress, setCollectionAddress] = useState("");
   const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
 
@@ -234,7 +234,7 @@ const CreateParams = ({
     });
   };
 
-  if (constraint.params.length === 0) return;
+  if (constraint.params.length === 0) return null;
 
   if (
     constraint.name === "core.HasNFTVerification" ||
@@ -315,6 +315,7 @@ const CreateParams = ({
       />
     );
   }
+
   return <></>;
 };
 
