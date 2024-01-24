@@ -99,10 +99,10 @@ export const createErc20TokenDistribution = async (
   formData.append("contract", "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC");
   formData.append("start_at", startAt(data.startTimeStamp));
   formData.append("deadline", deadline(data.endTimeStamp));
-  formData.append("max_number_of_claims", maxNumberOfEntries);
+  formData.append("max_number_of_claims", data.winnersCount.toString());
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
-  formData.append("number_of_claims", data.winnersCount.toString());
+  // formData.append("number_of_claims", data.winnersCount.toString());
 
   // const distributionData = {
   // name: prizeName,

@@ -937,7 +937,6 @@ const TokenTapProvider: FC<
   };
 
   const handleShowUserDetails = async (raffle: UserTokenDistribution) => {
-    console.log(raffle.tokenAddress);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
@@ -957,7 +956,7 @@ const TokenTapProvider: FC<
         raffle.maxNumberOfClaims != 1000000000
           ? raffle.maxNumberOfClaims.toString()
           : null,
-      winnersCount: raffle.numberOfClaims,
+      winnersCount: raffle.maxNumberOfClaims,
       // nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
       twitter: raffle.twitterUrl,
       discord: raffle.discordUrl,
