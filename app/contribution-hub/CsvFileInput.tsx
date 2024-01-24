@@ -16,8 +16,6 @@ const CsvFileInput = ({
 }: Prop) => {
   const [isUploadedFileValid, setIsUploadedFileValid] =
     useState<boolean>(false);
-
-  console.log(constraintFile);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>();
 
   useEffect(() => {
