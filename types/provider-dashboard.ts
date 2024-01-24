@@ -200,6 +200,7 @@ export interface ContactField {
 
 export interface UserTokenDistribution {
   id: number;
+  amount: string;
   chain: Chain;
   constraints: RequirementProps[];
   contract: string;
