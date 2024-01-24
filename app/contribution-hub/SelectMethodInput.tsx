@@ -7,6 +7,11 @@ export enum SelectMethod {
   Maximum = "Maximum",
 }
 
+interface MethodProp {
+  minimum: string;
+  maximum: string;
+}
+
 interface Prop {
   setRequirementParamsList: (e: any) => void;
   requirementParamsList: any;
@@ -25,11 +30,6 @@ const SelectMethodInput = ({
     setSelectedMethod("Minimum Amount");
     setShowItems(false);
   };
-
-  interface MethodProp {
-    minimum: string;
-    maximum: string;
-  }
 
   const [methodValues, setMethodValues] = useState<MethodProp>({
     minimum: "",
