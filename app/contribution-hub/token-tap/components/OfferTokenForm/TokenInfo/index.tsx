@@ -114,7 +114,7 @@ const TokenInfo = ({
 
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray80 text-xs bg-gray40 border ${
+            className={`flex gap-2 text-gray100 text-xs bg-gray40 border ${
               showErrors && !data.description
                 ? "border-error"
                 : "border-gray50 "
@@ -132,7 +132,7 @@ const TokenInfo = ({
               disabled={isShowingDetails || !address}
               value={data.description ? data.description : ""}
             />
-            <p>{data.description?.length}/100</p>
+            <p className="text-gray80">{data.description?.length}/100</p>
           </div>
           {showErrors && !data.description && (
             <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">

@@ -29,7 +29,7 @@ const tokenDescription = {
   description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait
 	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
 	your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/tokenSelected.svg",
+  icon: "/assets/images/provider-dashboard/deposit-token.png",
 };
 
 const DepositToken = ({

@@ -107,7 +107,7 @@ const TokenTapTimeEnrollLimitation = ({
         </div>
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
-        <PeopleLimitation showErrors={showErrors} />
+        {/* <PeopleLimitation showErrors={showErrors} /> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

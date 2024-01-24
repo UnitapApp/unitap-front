@@ -80,7 +80,17 @@ const ContactInformation = ({
       <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
         {contactFields.map((field, index) => (
           <div key={index}>
-            {index == 3 ? <p className=" mb-2">Contact info</p> : ""}
+            {index == 3 ? (
+              <div className="flex items-center mb-2 gap-2">
+                <p className="">Contact info </p>
+                <div className="bg-gray90 h-[3px] w-[3px] rounded-full"></div>{" "}
+                <span className="text-gray90 text-2xs">
+                  These info will not share with anybody.
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
             <section className="relative" key={index}>
               <div
                 className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
