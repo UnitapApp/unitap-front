@@ -72,7 +72,7 @@ const LineaWinnersModal: FC<{}> = ({}) => {
 
         <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
           {userEnrollments.map((item, key) => (
-            <WalletWinner key={key} {...item} />
+            <LineaWalletWinner key={key} {...item} />
           ))}
 
           {searchPhraseInput && !userEnrollments.length && (
@@ -139,6 +139,51 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
         <a
           target="_blank"
           href={getTxUrl(selectedRaffleForEnroll!.chain, claimingPrizeTx)}
+          className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1 underline"
+        >
+          Claimed
+          <Icon
+            iconSrc="/assets/images/prize-tap/ic_link_green.svg"
+            className="ml-1"
+          />
+          <Icon
+            height="25px"
+            iconSrc="/assets/images/prize-tap/diamond.svg"
+            className="ml-2"
+          />
+        </a>
+      ) : (
+        <span className="bg-gray50 border-2 border-gray70 rounded-lg px-4 py-2 text-xs ml-auto text-gray80">
+          Not Claimed by the winner yet
+        </span>
+      )}
+    </div>
+  );
+};
+
+export const LineaWalletWinner: FC<LineaRaffleEntry> = ({
+  claimTx,
+  walletAddress,
+  isWinner,
+  claimingPrizeTx,
+}) => {
+  const { selectedRaffleForEnroll } = usePrizeTapContext();
+  return (
+    <div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
+      <a
+        className="flex items-center"
+        target="_blank"
+        href={`https://blockscan.com/address/${walletAddress}`}
+      >
+        {shortenAddress(walletAddress)}
+
+        <Icon iconSrc="/assets/images/arrow-icon.svg" className="ml-3" />
+      </a>
+
+      {isWinner ? (
+        <a
+          target="_blank"
+          // href={getTxUrl(selectedRaffleForEnroll!.chain, claimingPrizeTx)}
           className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1 underline"
         >
           Claimed
