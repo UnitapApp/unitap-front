@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { RequirementProps, ConstraintProps, Chain } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
@@ -29,14 +29,14 @@ interface DetailsModal {
   allChainList: Chain[];
 }
 
-const ConstraintDetailsModal = ({
+const ConstraintDetailsModal: FC<DetailsModal> = ({
   constraint,
   handleBackToConstraintListModal,
   requirementList,
   insertRequirement,
   updateRequirement,
   allChainList,
-}: DetailsModal) => {
+}) => {
   const provider = useWalletProvider();
 
   const addRequirements = useAddRequirement(
