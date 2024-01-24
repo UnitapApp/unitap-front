@@ -102,6 +102,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
         {userEnrollments.map((item, key) => (
           <WalletWinner
+            claimingPrizeTx={item.claimingPrizeTx}
             id={item.pk}
             walletAddress={item.userWalletAddress}
             isWinner
