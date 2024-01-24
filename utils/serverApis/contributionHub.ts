@@ -1,4 +1,8 @@
-import { UserRafflesProps, ConstraintProps } from "@/types";
+import {
+  UserRafflesProps,
+  ConstraintProps,
+  UserTokenDistribution,
+} from "@/types";
 
 export const getUserRaffleListServerSide = async (token?: string) => {
   if (!token) return [];
@@ -17,11 +21,11 @@ export const getUserRaffleListServerSide = async (token?: string) => {
   return res as UserRafflesProps[];
 };
 
-
 export const getUserDistributionListServerSide = async (token?: string) => {
   if (!token) return [];
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/tokentap/token-distribution-list/",
+    process.env.NEXT_PUBLIC_API_URL! +
+      "/api/tokentap/user-token-distributions/",
     {
       cache: "no-store",
       headers: {
@@ -32,38 +36,39 @@ export const getUserDistributionListServerSide = async (token?: string) => {
 
   if (!Array.isArray(res)) return [];
 
-  return res as UserRafflesProps[];
+  return res as UserTokenDistribution[];
 };
 
 export const getConstraintListServer = async () => {
   const res = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/prizetap/get-constraints/",
     {
-      cache: "no-store"
+      cache: "no-store",
     }
   ).then((res) => res.json());
 
-  if(!Array.isArray(res)) return [];
+  if (!Array.isArray(res)) return [];
 
-  return res as ConstraintProps[]
-}
+  return res as ConstraintProps[];
+};
 
 export const getTokenTapConstraintListServer = async () => {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/prizetap/get-constraints/",
+    process.env.NEXT_PUBLIC_API_URL! + "/api/tokentap/get-constraints/",
     {
-      cache: "no-store"
+      cache: "no-store",
     }
   ).then((res) => res.json());
 
-  if(!Array.isArray(res)) return [];
+  if (!Array.isArray(res)) return [];
 
-  return res as ConstraintProps[]
-}
+  return res as ConstraintProps[];
+};
 
 export const getUserDonationsServer = async (token?: string) => {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + '/api/gastap/user/donation/?page=1&page_size=2',
+    process.env.NEXT_PUBLIC_API_URL! +
+      "/api/gastap/user/donation/?page=1&page_size=2",
     {
       cache: "no-store",
       headers: {
@@ -71,5 +76,5 @@ export const getUserDonationsServer = async (token?: string) => {
       },
     }
   ).then((res) => res.json());
-  return res
-}
+  return res;
+};
