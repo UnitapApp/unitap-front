@@ -41,7 +41,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const isFinished = new Date(distribution.deadline) < new Date();
   const status = distribution.status;
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px]">
+    <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px] ">
       <div className="provideToken-item-container">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -346,17 +346,19 @@ const TokenTapContent = () => {
           ))}
       </div>
 
-      {loading && filteredItems.length == 0 && (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
-          <Skeleton />
-          <Skeleton />
-          <Skeleton />
-        </div>
-      )}
+      {loading &&
+        filteredItems.length == 0 &&
+        selectedFilter === Filters.All && (
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        )}
 
       {filteredItems.length === 0 && !loading && (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
-          No items found.
+        <div className="text-center animate-fadeIn">
+          <p>No items found.</p>
         </div>
       )}
     </div>
