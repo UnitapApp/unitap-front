@@ -13,6 +13,7 @@ import {
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
+  UserTokenDistribution,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -115,8 +116,8 @@ export const TokenTapContext = createContext<{
   constraintsListApi: ConstraintProps[] | undefined;
   handleApproveErc721Token: () => void;
   updateChainList: () => void;
-  handleCheckForReason: (raffle: UserRafflesProps) => void;
-  handleShowUserDetails: (raffle: UserRafflesProps) => void;
+  handleCheckForReason: (raffle: UserTokenDistribution) => void;
+  handleShowUserDetails: (raffle: UserTokenDistribution) => void;
   handleAddNftToData: (nftIds: string[]) => void;
   setUploadedFile: (file: any) => void;
   uploadedFile: UploadedFileProps | null;
@@ -124,7 +125,7 @@ export const TokenTapContext = createContext<{
   handleCheckOwnerOfNfts: (nftIds: string[]) => Promise<boolean>;
   nftStatus: NftStatusProp[];
   handleClearNfts: () => void;
-  selectedRaffleForCheckReason: UserRafflesProps | null;
+  selectedRaffleForCheckReason: UserTokenDistribution | null;
   insufficientBalance: boolean;
   userBalance: string | null;
   socialMediaValidation: {
@@ -147,7 +148,7 @@ export const TokenTapContext = createContext<{
   winnersResultRaffle: UserRafflesProps | null;
   endDateState: any;
   setEndDateState: (date: any) => void;
-  userRaffle: UserRafflesProps | undefined;
+  userDistribution: UserTokenDistribution | undefined;
   handleSetClaimPeriodic: (e: boolean) => void;
   claimPeriodic: boolean;
   allChainList: Chain[] | undefined;
@@ -242,7 +243,7 @@ export const TokenTapContext = createContext<{
   winnersResultRaffle: null,
   endDateState: null,
   setEndDateState: NullCallback,
-  userRaffle: {} as any,
+  userDistribution: {} as any,
   claimPeriodic: false,
   handleSetClaimPeriodic: NullCallback,
   allChainList: [] as any,
@@ -250,11 +251,11 @@ export const TokenTapContext = createContext<{
 
 const TokenTapProvider: FC<
   PropsWithChildren & {
-    rafflesInitial?: UserRafflesProps;
+    distributionInit?: UserTokenDistribution;
     allChains?: Chain[];
     constraintListApi?: ConstraintProps[];
   }
-> = ({ children, rafflesInitial, allChains, constraintListApi }) => {
+> = ({ children, distributionInit, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
     []
   );
@@ -316,14 +317,14 @@ const TokenTapProvider: FC<
     string | null
   >(null);
 
-  const [userRaffle, setUserRaffle] = useState<UserRafflesProps | undefined>(
-    rafflesInitial
-  );
+  const [userDistribution, setUserDistribution] = useState<
+    UserTokenDistribution | undefined
+  >(distributionInit);
 
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
-    useState<UserRafflesProps | null>(null);
+    useState<UserTokenDistribution | null>(null);
 
   const [winnersResultRaffle, setWinnersResultRaffle] =
     useState<UserRafflesProps | null>(null);
@@ -930,49 +931,49 @@ const TokenTapProvider: FC<
     setRequirementList(newItem);
   };
 
-  const handleCheckForReason = (raffle: UserRafflesProps) => {
+  const handleCheckForReason = (raffle: UserTokenDistribution) => {
     setPage(5);
     setSelectedRaffleForCheckReason(raffle);
   };
 
-  const handleShowUserDetails = async (raffle: UserRafflesProps) => {
+  const handleShowUserDetails = async (raffle: UserTokenDistribution) => {
+    console.log(raffle.tokenAddress);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
-      provider: raffle.creatorName,
+      provider: raffle.distributor,
       selectedChain: raffle.chain,
-      description: raffle.description,
-      isNft: raffle.isPrizeNft,
-      isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
-      tokenAmount: new Big(
-        fromWei(raffle.prizeAmount, raffle.decimals)
-      ).toFixed(),
-      tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
-      nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
+      description: raffle.notes,
+      isNft: false,
+      isNativeToken: raffle.tokenAddress == ZERO_ADDRESS,
+      tokenAmount: new Big(fromWei(raffle.amount, 18)).toFixed(),
+      tokenContractAddress: raffle.tokenAddress,
+      // nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,
       endTimeStamp: Date.parse(raffle.deadline) / 1000,
       limitEnrollPeopleCheck:
-        raffle.maxNumberOfEntries != 1000000000 ? true : false,
+        raffle.maxNumberOfClaims != 1000000000 ? true : false,
       maxNumberOfEntries:
-        raffle.maxNumberOfEntries != 1000000000
-          ? raffle.maxNumberOfEntries.toString()
+        raffle.maxNumberOfClaims != 1000000000
+          ? raffle.maxNumberOfClaims.toString()
           : null,
-      winnersCount: raffle.winnersCount,
-      nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
+      winnersCount: raffle.numberOfClaims,
+      // nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
       twitter: raffle.twitterUrl,
       discord: raffle.discordUrl,
-      creatorUrl: raffle.creatorUrl,
+      creatorUrl: raffle.distributorUrl,
       telegram: raffle.telegramUrl,
       email: raffle.emailUrl,
       necessaryInfo: raffle.necessaryInformation,
-      tokenSymbol: raffle.prizeSymbol,
-      nftName: raffle.prizeName,
+      // tokenSymbol: raffle.prizeSymbol,
+      // nftName: raffle.prizeName,
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
-    setNumberOfNfts(
-      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
-    );
+    setSelectedChain(raffle.chain);
+    // setNumberOfNfts(
+    //   raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
+    // );
     setConstraintsListApi(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
@@ -1135,7 +1136,7 @@ const TokenTapProvider: FC<
         handleWinnersResult: setWinnersResultRaffle,
         endDateState,
         setEndDateState,
-        userRaffle,
+        userDistribution,
         claimPeriodic,
         handleSetClaimPeriodic: setClaimPeriodic,
         allChainList,
