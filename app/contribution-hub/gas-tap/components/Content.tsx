@@ -302,7 +302,7 @@ const GasTapContent = () => {
                 <p className="text-[16px] font-semibold">
                   Refill Gas Tap Tokens
                 </p>{" "}
-                <p className="text-[14px] text-gray100">Provide Gas Fee.</p>
+                <p className="text-sm text-gray100">Provide Gas Fee.</p>
               </div>
               <Icon
                 className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"

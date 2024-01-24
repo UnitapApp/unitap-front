@@ -81,7 +81,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
         </div>
         <div>
           <div className="providePrize_stats flex justify-between my-2">
-            <div className={"text-white text-[14px] font-medium"}>
+            <div className={"text-white text-sm font-medium"}>
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
@@ -139,7 +139,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             new Date(prize.deadline) < new Date()) ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             {prize.numberOfOnchainEntries ? (
-              <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+              <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
                 {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
                 {prize.status === RaffleStatus.FINISHED
                   ? " Spots Enrolled"
@@ -165,7 +165,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               startTime={prize.startAt}
               FinishTime={prize.deadline}
             />
-            <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+            <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <div className="relative w-full text-center">
                 <p>
                   {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
@@ -194,7 +194,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+            <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <p>
                 {prize.numberOfOnchainEntries}{" "}
                 {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
@@ -386,7 +386,7 @@ const PrizeTapContent = () => {
             <div className="flex items-center relative">
               <div>
                 <p className="text-[16px] font-semibold">Offer a New Prize</p>{" "}
-                <p className="text-[14px] text-gray100">
+                <p className="text-sm text-gray100">
                   Here you can provide an NFT or Token for Prize Tap.
                 </p>
               </div>
@@ -439,8 +439,8 @@ const Skeleton = () => {
           </div>
           <div>
             <div className="providePrize_stats flex justify-between my-2">
-              <div className="text-white text-[14px] font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
-              <div className="text-white text-[14px] font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
+              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
+              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
             </div>
             <div className="providePrize_creator text-[12px] text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
           </div>

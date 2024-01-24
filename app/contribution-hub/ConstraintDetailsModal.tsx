@@ -199,7 +199,7 @@ const ConstraintDetailsModal = ({
       <div className="text-error text-2xs min-h-[15px]">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
-        className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
+        className="flex cursor-pointer  bg-gray40 text-sm font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
       >
         Add Requirement
       </div>

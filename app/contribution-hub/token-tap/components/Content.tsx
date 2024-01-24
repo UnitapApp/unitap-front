@@ -76,18 +76,18 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               </ProviderDashboardButtonSuccess>
             )}
             {isFinished && status == Filters.Verified && (
-              <div className="bg-gray50 border flex items-center justify-center border-gray70 rounded-md w-[100px] h-6 text-[10px] text-gray100">
+              <div className="bg-gray50 border flex items-center justify-center border-gray70 rounded-md w-[100px] h-6 text-2xs text-gray100">
                 Finished
               </div>
             )}
           </div>
         </div>
-        <div className="text-[10px] font-medium mt-2 text-white">
+        <div className="text-2xs font-medium mt-2 text-white">
           Decentralized verification system
         </div>
         <div className="flex justify-between my-3">
           <div className="flex items-center gap-3">
-            <div className="text-gray100 text-[10px]">
+            <div className="text-gray100 text-2xs">
               on {distribution.chain.chainName}
             </div>
             <Icon
@@ -131,16 +131,26 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           )}
 
           {status == Filters.Pending && (
-            <ProviderDashboardButtonShowDetails>
-              Show Details
-            </ProviderDashboardButtonShowDetails>
+            <Link
+              href={RoutePath.PROVIDER_TOKENTAP_DETAILS + "/" + distribution.id}
+            >
+              <ProviderDashboardButtonShowDetails>
+                Show Detailssss
+              </ProviderDashboardButtonShowDetails>
+            </Link>
           )}
 
-          {status === Filters.Rejected && (
-            <ProviderDashboardButtonCheck>
-              Check For Reasons
-            </ProviderDashboardButtonCheck>
-          )}
+          <Link
+            href={
+              RoutePath.PROVIDER_TOKENTAP_VERIFICATION + "/" + distribution.id
+            }
+          >
+            {status === Filters.Rejected && (
+              <ProviderDashboardButtonCheck>
+                Check For Reasons
+              </ProviderDashboardButtonCheck>
+            )}
+          </Link>
         </div>
       </div>
     </div>
@@ -181,7 +191,6 @@ const TokenTapContent = () => {
     if (!userToken) return;
     try {
       const distributions = await getUserDistributions(userToken);
-      console.log(distributions);
       setUserDistributions(distributions);
       setLoading(false);
     } catch (e: any) {
@@ -330,7 +339,7 @@ const TokenTapContent = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 min-h-[400px]">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredItems.length > 0 &&
           filteredItems.map((distribution, index: number) => (
             <DistributionCard key={index} distribution={distribution} />
@@ -338,7 +347,7 @@ const TokenTapContent = () => {
       </div>
 
       {loading && filteredItems.length == 0 && (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
           <Skeleton />
           <Skeleton />
           <Skeleton />

@@ -222,7 +222,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
         </div>
         <div className="w-full max-w-[452px] ">
           <div className="z-10 mt-5 flex flex-col items-center">
-            <p className="text-[14px] font-semibold mb-2">Provide Gas Fee</p>
+            <p className="text-sm font-semibold mb-2">Provide Gas Fee</p>
             <div className=" flex items-center">
               <p className="text-xs text-gray100 max-w-[300px]">
                 100% of contributions will fund distributions and transaction
