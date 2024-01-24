@@ -127,7 +127,7 @@ export const LineaRaffleCard: FC<{
               </div>
             </div>
             <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-              <p className="text-gray100 text-[10px] p-1">on</p>
+              <p className="text-gray100 text-2xs p-1">on</p>
               <img
                 src="/assets/images/prize-tap/linea.svg"
                 className="ml-2"
@@ -286,7 +286,7 @@ export const LineaRaffleCard: FC<{
                   <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                     <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                       <div className="flex flex-col gap-1">
-                        <p className="text-[10px] text-white">
+                        <p className="text-2xs text-white">
                           {start ? "Winners in:" : "Starts in:"}
                         </p>
                       </div>
@@ -321,7 +321,7 @@ export const LineaRaffleCard: FC<{
                   <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
                     <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                       <div className="flex flex-col gap-1">
-                        <p className="text-[10px] text-white">
+                        <p className="text-2xs text-white">
                           {start ? "Winners in:" : "Starts in:"}
                         </p>
                       </div>
@@ -343,7 +343,7 @@ export const LineaRaffleCard: FC<{
                 ) : (
                   <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                     <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-                      <p className="text-[10px] text-white">
+                      <p className="text-2xs text-white">
                         Raffle is done, check the winners:{" "}
                       </p>
                       {/* <Icon

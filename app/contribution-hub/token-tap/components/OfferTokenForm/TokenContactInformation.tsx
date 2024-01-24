@@ -106,14 +106,14 @@ const ContactInformation = ({
                 />
               </div>
               {field.required && showErrors && !data[field.name] && (
-                <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+                <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
                   Required
                 </p>
               )}
               {showErrors &&
                 data[field.name] &&
                 !(socialMediaValidation as any)[field.name] && (
-                  <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+                  <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
                     Invalid input
                   </p>
                 )}

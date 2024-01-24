@@ -47,7 +47,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
         <div className="flex items-center gap-3">
           <div
             onClick={handleClick}
-            className="cursor-pointer flex items-center justify-center p-[2px] text-gray90 text-[10px] w-[60px]  font-semibold bg-gray70 border border-gray80 rounded-lg"
+            className="cursor-pointer flex items-center justify-center p-[2px] text-gray90 text-2xs w-[60px]  font-semibold bg-gray70 border border-gray80 rounded-lg"
           >
             Edit
           </div>

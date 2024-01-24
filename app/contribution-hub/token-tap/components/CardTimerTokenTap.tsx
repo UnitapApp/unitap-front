@@ -81,28 +81,28 @@ export const CardTimerTokenTap = ({
         :
       </p>
       <div className="prize-card__timer bg-gray50 flex items-center justify-between rounded-xl gap-4 px-8 py-2">
-        <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+        <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
           <p className="prize-card__timer-item-value text-white font-semibold">
             {days}
           </p>
           <p className="prize-card__timer-item-label text-gray90">d</p>
         </div>
         <p className="text-sm text-white">:</p>
-        <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+        <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
           <p className="prize-card__timer-item-value text-white font-semibold">
             {hours}
           </p>
           <p className="prize-card__timer-item-label text-gray90">h</p>
         </div>
         <p className="text-sm text-white">:</p>
-        <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+        <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
           <p className="prize-card__timer-item-value text-white font-semibold">
             {minutes}
           </p>
           <p className="prize-card__timer-item-label text-gray90">m</p>
         </div>
         <p className="text-sm text-white">:</p>
-        <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+        <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
           <p className="prize-card__timer-item-value text-white font-semibold">
             {seconds}
           </p>

@@ -31,7 +31,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
         />
       </div>
       {showErrors && !showErrors.maximumLimitationStatus && (
-        <p className="text-error text-[10px] m-0 p-0 absolute mt-1">
+        <p className="text-error text-2xs m-0 p-0 absolute mt-1">
           {showErrors?.maximumLimitationMessage}
         </p>
       )}

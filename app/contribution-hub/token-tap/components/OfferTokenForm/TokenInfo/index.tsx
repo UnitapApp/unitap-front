@@ -102,7 +102,7 @@ const TokenInfo = ({
             <p>{data.provider?.length}/30</p>
           </div>
           {showErrors && !data.provider && (
-            <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
               Required
             </p>
           )}
@@ -135,7 +135,7 @@ const TokenInfo = ({
             <p>{data.description?.length}/100</p>
           </div>
           {showErrors && !data.description && (
-            <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
               Required
             </p>
           )}

@@ -63,7 +63,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               width="15px"
               height="14px"
             />
-            <p className="text-gray100 text-[10px] font-medium">
+            <p className="text-gray100 text-2xs font-medium">
               on {prize.chain.chainName}
             </p>
           </div>
@@ -202,7 +202,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </div>
             <div
               onClick={() => handleWinnersResult(prize)}
-              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
+              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-2xs font-medium text-gray100 h-[48px] flex items-center justify-center"
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&

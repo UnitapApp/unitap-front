@@ -86,7 +86,7 @@ const CsvFileInput = ({
           <p className="text-gray100">file name: {uploadedFileName}</p>
           <button
             onClick={handleClearUploadedFile}
-            className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
+            className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
           >
             Reset file
           </button>

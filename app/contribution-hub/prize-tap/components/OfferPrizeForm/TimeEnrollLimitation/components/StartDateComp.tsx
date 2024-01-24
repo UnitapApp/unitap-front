@@ -82,7 +82,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
         />
       </div>
       {showErrors && showErrors.startDateStatus == false && (
-        <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute">
+        <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute">
           {showErrors && showErrors.statDateStatusMessage}
         </p>
       )}

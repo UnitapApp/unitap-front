@@ -43,7 +43,7 @@ const DonationCard = ({ donation }: DonationProps) => {
             <Icon iconSrc={donation.faucet.gasImageUrl} />
             <p>{donation.faucet.chain.chainName}</p>
           </div>
-          <div className="flex gap-2 text-[10px] items-center justify-center">
+          <div className="flex gap-2 text-2xs items-center justify-center">
             <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-md">
               {donation.faucet.chain.chainType}
             </div>

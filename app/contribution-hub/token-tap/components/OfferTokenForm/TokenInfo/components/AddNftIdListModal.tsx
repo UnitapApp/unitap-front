@@ -239,7 +239,7 @@ const AddNftIdListModalModalBody = () => {
               </div>
               {!!Number(nftRange.to) &&
                 Number(nftRange.from) >= Number(nftRange.to) && (
-                  <p className="absolute -bottom-4 left-0` text-[10px] text-error">
+                  <p className="absolute -bottom-4 left-0` text-2xs text-error">
                     Invalid range
                   </p>
                 )}
@@ -247,7 +247,7 @@ const AddNftIdListModalModalBody = () => {
               !uploadedFile &&
               !invalidInput &&
               !(Number(nftRange.from) >= Number(nftRange.to)) ? (
-                <p className="absolute -bottom-4 left-0` text-[10px] text-error">
+                <p className="absolute -bottom-4 left-0` text-2xs text-error">
                   {error}
                 </p>
               ) : null}
@@ -275,13 +275,13 @@ const AddNftIdListModalModalBody = () => {
               </div>
             </div>
             {error && !textAreaData && !invalidInput ? (
-              <p className="absolute -bottom-4 left-0 text-[10px] text-error">
+              <p className="absolute -bottom-4 left-0 text-2xs text-error">
                 {error}
               </p>
             ) : null}
 
             {error && textAreaData && invalidInput ? (
-              <p className="absolute -bottom-4 left-0 text-[10px] text-error">
+              <p className="absolute -bottom-4 left-0 text-2xs text-error">
                 {error}
               </p>
             ) : null}
@@ -327,12 +327,12 @@ const AddNftIdListModalModalBody = () => {
                     </div>
 
                     {error && !uploadedFile && !invalidInput ? (
-                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                      <p className="absolute bottom-[-17px] left-0 text-2xs text-error">
                         {error}
                       </p>
                     ) : null}
                     {error && uploadedFile && invalidInput ? (
-                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                      <p className="absolute bottom-[-17px] left-0 text-2xs text-error">
                         {error}
                       </p>
                     ) : null}
@@ -344,7 +344,7 @@ const AddNftIdListModalModalBody = () => {
                     </p>
                     <button
                       onClick={handleClearUploadedFile}
-                      className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
+                      className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
                     >
                       Reset Uploaded file
                     </button>

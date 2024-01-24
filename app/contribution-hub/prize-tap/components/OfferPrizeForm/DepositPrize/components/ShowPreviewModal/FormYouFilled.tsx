@@ -49,7 +49,7 @@ const FormYouFilled = ({ data }: Prop) => {
           <p className="mb-8">{prizeName}</p>
         </div>
         <div className="flex items-center bg-gray50 justify-center gap-2 absolute bottom-[-12px] left-7 border border-gray70 rounded-[3px] p-1 min-w-[150px] min-h-[25px]">
-          <p className="text-gray100 text-[10px] font-semibold">
+          <p className="text-gray100 text-2xs font-semibold">
             on{" "}
             {data.selectedChain?.chainName ? data.selectedChain.chainName : ""}
           </p>
@@ -109,7 +109,7 @@ const FormYouFilled = ({ data }: Prop) => {
             ? requirementList.map((item, index) => {
                 return (
                   <div
-                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-[10px] rounded"
+                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
                     key={index}
                   >
                     {item.isNotSatisfy && "Not "} {item.title}

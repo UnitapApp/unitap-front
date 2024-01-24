@@ -160,7 +160,7 @@ const ConstraintDetailsModal = ({
       >
         <Icon
           iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
-          className="cursor-pointer z-[999999]"
+          className="cursor-pointer"
         />
       </div>
       <div className="w-full flex gap-4 h-[32px] mb-2">
@@ -196,7 +196,7 @@ const ConstraintDetailsModal = ({
         allChainList={allChainList}
       />
       <div className="mb-4">{constraint.description}</div>
-      <div className="text-error text-[10px] min-h-[15px]">{errorMessage}</div>
+      <div className="text-error text-2xs min-h-[15px]">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
         className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
@@ -219,7 +219,6 @@ const CreateParams = ({
   const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(requirementParamsList);
     if (!requirementParamsList) return;
     setCollectionAddress(requirementParamsList.ADDRESS);
     if (requirementParamsList.ADDRESS === zeroAddress) {
@@ -228,7 +227,6 @@ const CreateParams = ({
   }, [requirementParamsList]);
 
   const handleChangeCollection = (address: string) => {
-    console.log(requirementParamsList);
     setCollectionAddress(address);
     setRequirementParamsList({
       ...requirementParamsList,
