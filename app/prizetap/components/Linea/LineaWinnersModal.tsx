@@ -120,6 +120,7 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
   claimTx,
   walletAddress,
   isWinner,
+  claimingPrizeTx,
 }) => {
   const { selectedRaffleForEnroll } = usePrizeTapContext();
   return (
@@ -134,10 +135,10 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
         <Icon iconSrc="/assets/images/arrow-icon.svg" className="ml-3" />
       </a>
 
-      {claimTx ? (
+      {claimingPrizeTx ? (
         <a
           target="_blank"
-          href={getTxUrl(selectedRaffleForEnroll!.chain, claimTx)}
+          href={getTxUrl(selectedRaffleForEnroll!.chain, claimingPrizeTx)}
           className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1 underline"
         >
           Claimed

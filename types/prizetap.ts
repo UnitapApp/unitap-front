@@ -7,6 +7,7 @@ export type LineaRaffleEntry = {
   isWinner: boolean;
   claimTx: string;
   raffle: number;
+  claimingPrizeTx: Address | null;
 };
 
 export type Prize = {
@@ -52,7 +53,7 @@ export type Prize = {
 };
 
 export type WinnerEntry = {
-  claimingPrizeTx: string;
+  claimingPrizeTx: Address | null;
   createdAt: string;
   multiplier: number;
   pk: number;

@@ -119,6 +119,7 @@ const WinnersModal = () => {
             id={item.pk}
             walletAddress={item.userWalletAddress}
             isWinner
+            claimingPrizeTx={item.claimingPrizeTx}
             claimTx={item.txHash}
             key={key}
             raffle={selectedRaffleForEnroll.pk}
