@@ -1,3 +1,5 @@
+"use client";
+
 import FundTransactionModal from "@/app/gastap/components/Modals/FundTransactionModal";
 import SelectChainModal from "@/app/gastap/components/Modals/SelectChainModal";
 import { ClaimButton } from "@/components/ui/Button/button";
