@@ -51,7 +51,7 @@ const RenderInitialBody = ({ data }: Prop) => {
   ]);
   return (
     <div className="flex flex-col select-none">
-      <div className="text-gray100 text-[14px] ">
+      <div className="text-gray100 text-sm ">
         This is how your card will appear. If you are sure of the accuracy of
         the form you filled out, please submit your contribution.
       </div>
@@ -62,7 +62,7 @@ const RenderInitialBody = ({ data }: Prop) => {
             <ProviderDashboardButtonSubmit
               onClick={handleCheckConnection}
               $width="100%"
-              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              className="text-sm md:text-[12px] lg:text-sm mt-5"
               data-testid="fund-action"
             >
               Switch Network
@@ -89,7 +89,7 @@ const RenderInitialBody = ({ data }: Prop) => {
             <ProviderDashboardButtonSubmit
               onClick={handleCreateRaffle}
               $width="100%"
-              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              className="text-sm md:text-[12px] lg:text-sm mt-5"
               disabled={createRaffleLoading}
             >
               {createRaffleLoading ? (

@@ -322,7 +322,7 @@ const TokenTapContent = () => {
           <div className="flex items-center relative">
             <div>
               <p className="text-[16px] font-semibold">Offer a New Token</p>{" "}
-              <p className="text-[14px] text-gray100">
+              <p className="text-sm text-gray100">
                 Here you can provide Token for Token Tap.
               </p>
             </div>

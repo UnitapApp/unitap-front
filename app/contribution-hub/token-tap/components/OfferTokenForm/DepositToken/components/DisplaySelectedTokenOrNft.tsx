@@ -7,7 +7,7 @@ interface Prop {
 
 const DisplaySelectedTokenOrNft = ({ data }: Prop) => {
   return (
-    <div className="flex w-full text-white text-[14px] mt-4 ">
+    <div className="flex w-full text-white text-sm mt-4 ">
       {!data.isNft ? (
         <div className=" gap-1 w-full flex bg-gray50 rounded-xl h-[43px] overflow-hidden">
           <div className="flex gap-2 items-center bg-gray30 px-4 min-w-[123px]">

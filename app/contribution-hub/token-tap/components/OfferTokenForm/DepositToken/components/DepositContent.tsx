@@ -11,7 +11,7 @@ const DepositContent = ({ title, description, icon }: DepositContentProp) => {
     <div className="text-center">
       <Icon iconSrc={icon} className="mb-5" />
       <div>
-        <p className="text-[14px] font-semibold text-white">{title}</p>
+        <p className="text-sm font-semibold text-white">{title}</p>
         <p className="text-gray100 text-[12px] mt-2">{description}</p>
       </div>
     </div>

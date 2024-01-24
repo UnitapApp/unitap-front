@@ -22,7 +22,7 @@ const DepositContent = ({
         width={isNFT ? "84x" : "90px"}
       />
       <div>
-        <p className="text-[14px] font-semibold text-white">{title}</p>
+        <p className="text-sm font-semibold text-white">{title}</p>
         <p className="text-gray100 text-[12px] mt-2">{description}</p>
       </div>
     </div>

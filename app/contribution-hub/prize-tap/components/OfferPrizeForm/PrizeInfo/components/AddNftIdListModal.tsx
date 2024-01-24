@@ -376,7 +376,7 @@ const AddNftIdListModalModalBody = () => {
 
           <button
             onClick={handleAddNft}
-            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
+            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-sm font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
               nftContractStatus.isValid === ContractValidationStatus.NotValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||

@@ -60,7 +60,7 @@ const FormYouFilled = ({ data }: Prop) => {
           />
         </div>
       </div>
-      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-[14px] text-white p-4">
+      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-sm text-white p-4">
         <div className="flex justify-between">
           <div className="flex items-center">
             <p>{prizeName}</p>
@@ -101,7 +101,7 @@ const FormYouFilled = ({ data }: Prop) => {
         <div className="text-gray80 text-[16px] mt-1 mb-2">
           by {data.provider}
         </div>
-        <div className="text-[14px] text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
+        <div className="text-sm text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
           {data.description}
         </div>
         <div className="flex gap-2 mb-2 ">

@@ -119,7 +119,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     : "/assets/images/provider-dashboard/check-true.svg"
                 }
               />
-              <p className="text-[14px] text-gray100 ml-1">use native token</p>
+              <p className="text-sm text-gray100 ml-1">use native token</p>
             </div>
 
             <div
