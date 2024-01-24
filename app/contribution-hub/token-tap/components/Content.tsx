@@ -135,7 +135,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               href={RoutePath.PROVIDER_TOKENTAP_DETAILS + "/" + distribution.id}
             >
               <ProviderDashboardButtonShowDetails>
-                Show Detailssss
+                Show Details
               </ProviderDashboardButtonShowDetails>
             </Link>
           )}
