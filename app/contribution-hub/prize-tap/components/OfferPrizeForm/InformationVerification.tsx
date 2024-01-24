@@ -9,7 +9,7 @@ import RoutePath from "@/utils/routes";
 const InformationVerification = () => {
   const { selectedRaffleForCheckReason } = usePrizeOfferFormContext();
   return (
-    <div className="flex flex-col gap-5 w-full max-w-[452px] text-gray100 font-medium text-[12px] text-center animate-fadeIn">
+    <div className="flex flex-col gap-5 w-full max-w-[452px] text-gray100 font-medium text-xs text-center animate-fadeIn">
       <div className="flex flex-col gap-5 min-h-[292px]">
         <Icon iconSrc="/assets/images/provider-dashboard/diamond.png" />
         <div className="flex items-center text-sm justify-center text-white font-semibold gap-2">

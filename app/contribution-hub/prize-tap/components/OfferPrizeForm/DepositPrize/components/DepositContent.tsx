@@ -23,7 +23,7 @@ const DepositContent = ({
       />
       <div>
         <p className="text-sm font-semibold text-white">{title}</p>
-        <p className="text-gray100 text-[12px] mt-2">{description}</p>
+        <p className="text-gray100 text-xs mt-2">{description}</p>
       </div>
     </div>
   );

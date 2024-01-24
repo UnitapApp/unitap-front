@@ -42,13 +42,13 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   return (
     <div className="relative w-full">
       <div
-        className={`flex text-[12px] bg-gray40 border ${
+        className={`flex text-xs bg-gray40 border ${
           showErrors && showErrors.startDateStatus == false
             ? "border-error"
             : "border-gray50"
         } rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
       >
-        <p className="text-gray100 text-[12px] w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
+        <p className="text-gray100 text-xs w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
           Start Date & Time
         </p>
         <DatePicker

@@ -25,7 +25,7 @@ const Pagination = ({
           <ProviderDashboardButtonSubmit
             $width="100%"
             onClick={handleNextPage}
-            className="text-sm md:text-[12px] lg:text-sm mt-[2px]"
+            className="text-sm md:text-xs lg:text-sm mt-[2px]"
           >
             <p>Submit Contribution</p>
           </ProviderDashboardButtonSubmit>

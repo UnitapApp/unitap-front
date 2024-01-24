@@ -98,7 +98,7 @@ const FormYouFilled = ({ data }: Prop) => {
             ) : null}
           </div>
         </div>
-        <div className="text-gray80 text-[16px] mt-1 mb-2">
+        <div className="text-gray80 text-base mt-1 mb-2">
           by {data.provider}
         </div>
         <div className="text-sm text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
@@ -125,7 +125,7 @@ const FormYouFilled = ({ data }: Prop) => {
         >
           <span className="flex flex-row items-center justify-between w-full gap-4 ">
             <div className="flex flex-row gap-4 justify-between w-full  items-center bg-gray40 px-5 h-full py-1 rounded-xl">
-              <p className="text-[12px] text-gray100">0 people enrolled</p>
+              <p className="text-xs text-gray100">0 people enrolled</p>
               <RaffleCardTimerSubmitContribution
                 startTime={new Date(data.startTimeStamp * 1000).toString()}
                 FinishTime={new Date(data.endTimeStamp * 1000).toString()}

@@ -39,7 +39,7 @@ const DonationCard = ({ donation }: DonationProps) => {
     <div>
       <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
         <div className="flex justify-between items-center text-gray90">
-          <div className="flex items-center text-white gap-2 font-medium text-[16px];">
+          <div className="flex items-center text-white gap-2 font-medium text-base;">
             <Icon iconSrc={donation.faucet.gasImageUrl} />
             <p>{donation.faucet.chain.chainName}</p>
           </div>
@@ -53,7 +53,7 @@ const DonationCard = ({ donation }: DonationProps) => {
           </div>
         </div>
         <div className="flex mt-4 justify-between items-center">
-          <div className="text-gray90 text-[12px]">
+          <div className="text-gray90 text-xs">
             <div className="mb-2">
               Currency{" "}
               <span className="text-white ml-2">
@@ -199,7 +199,7 @@ const GasTapContent = () => {
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-1 w-full sm:w-auto select-none">
-            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
                 className={`${
                   selectedFilter.statusFilter == StatusFilters.All &&
@@ -237,7 +237,7 @@ const GasTapContent = () => {
                 rejected
               </div>
             </div>
-            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
                 className={`${
                   selectedFilter.mainnetFilter == MainnetFilters.All &&
@@ -266,7 +266,7 @@ const GasTapContent = () => {
                 Mainnet
               </div>
             </div>
-            <div className="provider-dashboard__status  justify-center md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div className="provider-dashboard__status  justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
                 className={`${
                   selectedFilter.evmFilter == EvmFilters.All && "text-gray100"
@@ -299,9 +299,7 @@ const GasTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-[16px] font-semibold">
-                  Refill Gas Tap Tokens
-                </p>{" "}
+                <p className="text-base font-semibold">Refill Gas Tap Tokens</p>{" "}
                 <p className="text-sm text-gray100">Provide Gas Fee.</p>
               </div>
               <Icon

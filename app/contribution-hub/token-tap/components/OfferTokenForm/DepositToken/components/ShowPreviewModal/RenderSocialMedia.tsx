@@ -10,7 +10,7 @@ interface Prop {
 
 const RenderSocialMedia = ({ data }: Prop) => {
   return (
-    <div className="grid gap-5 text-gray100 text-[12px] grid-cols-[1fr] md:grid-cols-[1fr_1fr]">
+    <div className="grid gap-5 text-gray100 text-xs grid-cols-[1fr] md:grid-cols-[1fr_1fr]">
       {socialMedias.map(
         (item, index) =>
           data[item as keyof ProviderDashboardFormDataProp] && (

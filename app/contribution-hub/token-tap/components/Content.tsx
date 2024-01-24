@@ -273,7 +273,7 @@ const TokenTapContent = () => {
           handleSetSearchPhrase={handleSetSearchPhrase}
         />
         <div
-          className={`${Styles.provider_dashboard__status} justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+          className={`${Styles.provider_dashboard__status} justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
         >
           <div
             className={`${selectedFilter === Filters.All && "text-gray100"}`}
@@ -321,7 +321,7 @@ const TokenTapContent = () => {
         <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
           <div className="flex items-center relative">
             <div>
-              <p className="text-[16px] font-semibold">Offer a New Token</p>{" "}
+              <p className="text-base font-semibold">Offer a New Token</p>{" "}
               <p className="text-sm text-gray100">
                 Here you can provide Token for Token Tap.
               </p>

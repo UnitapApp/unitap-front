@@ -14,7 +14,7 @@ const DisplaySteps = ({ page, displaySteps }: Prop) => {
     >
       {displaySteps.map((item, index) => (
         <div
-          className="flex items-center gap-3 relative text-[12px] text-white"
+          className="flex items-center gap-3 relative text-xs text-white"
           key={index}
         >
           <div className="rounded-full bg-gray30 overflow-hidden w-[26px] h-[26px] z-[1]">

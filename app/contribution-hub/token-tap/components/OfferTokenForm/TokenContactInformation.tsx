@@ -77,13 +77,13 @@ const ContactInformation = ({
           Your website, twitter & discord will be shown on PrizeTap card.
         </p>
       </div>
-      <div className="text-gray100 text-[12px] min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
+      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
         {contactFields.map((field, index) => (
           <div key={index}>
             {index == 3 ? <p className=" mb-2">Contact info</p> : ""}
             <section className="relative" key={index}>
               <div
-                className={`flex gap-5 overflow-hidden text-gray80 text-[12px] bg-gray40 border ${
+                className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
                   (field.required && showErrors && !data[field.name]) ||
                   (showErrors &&
                     data[field.name] &&
@@ -123,7 +123,7 @@ const ContactInformation = ({
         <section>
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-white text-[12px] focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
+            className="text-white text-xs focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}

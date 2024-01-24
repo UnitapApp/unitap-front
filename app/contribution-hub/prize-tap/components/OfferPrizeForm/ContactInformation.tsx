@@ -85,7 +85,7 @@ const ContactInformation = ({
             {index == 3 && <p className="mt-2 mb-3">Contact info</p>}
             <section className="relative" key={index}>
               <div
-                className={`flex gap-5 overflow-hidden text-gray80 text-[12px] bg-gray40 border ${
+                className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
                   index >= 3 ? "mb-2" : ""
                 } ${
                   (field.required && showErrors && !data[field.name]) ||

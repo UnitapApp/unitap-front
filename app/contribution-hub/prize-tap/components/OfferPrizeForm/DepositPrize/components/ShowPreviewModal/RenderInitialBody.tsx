@@ -62,7 +62,7 @@ const RenderInitialBody = ({ data }: Prop) => {
             <ProviderDashboardButtonSubmit
               onClick={handleCheckConnection}
               $width="100%"
-              className="text-sm md:text-[12px] lg:text-sm mt-5"
+              className="text-sm md:text-xs lg:text-sm mt-5"
               data-testid="fund-action"
             >
               Switch Network
@@ -89,7 +89,7 @@ const RenderInitialBody = ({ data }: Prop) => {
             <ProviderDashboardButtonSubmit
               onClick={handleCreateRaffle}
               $width="100%"
-              className="text-sm md:text-[12px] lg:text-sm mt-5"
+              className="text-sm md:text-xs lg:text-sm mt-5"
               disabled={createRaffleLoading}
             >
               {createRaffleLoading ? (

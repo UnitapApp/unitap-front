@@ -8,7 +8,7 @@ interface PeopleLimitationProp {
 const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
   const { data, handleChange, isShowingDetails } = usePrizeOfferFormContext();
   return (
-    <div className="text-gray80 text-[12px] w-full max-w-[452px] relative mt-[-2px] ">
+    <div className="text-gray80 text-xs w-full max-w-[452px] relative mt-[-2px] ">
       <div
         className={`border ${
           showErrors && !showErrors.maximumLimitationStatus

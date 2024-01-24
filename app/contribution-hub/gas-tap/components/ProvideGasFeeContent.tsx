@@ -270,7 +270,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 />
                 <div
                   onClick={() => setFundAmount(balance.data?.formatted!)}
-                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-[12px] flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
+                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-xs flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
                 >
                   Max
                 </div>

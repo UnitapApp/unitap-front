@@ -111,7 +111,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               </ProviderDashboardButtonRejected>
             )}
           </div>
-          <div className="providePrize_creator text-[12px] text-gray90 font-medium">
+          <div className="providePrize_creator text-xs text-gray90 font-medium">
             by {prize.creatorName}
           </div>
         </div>
@@ -335,7 +335,7 @@ const PrizeTapContent = () => {
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div
-            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
           >
             <div
               className={`${
@@ -385,7 +385,7 @@ const PrizeTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-[16px] font-semibold">Offer a New Prize</p>{" "}
+                <p className="text-base font-semibold">Offer a New Prize</p>{" "}
                 <p className="text-sm text-gray100">
                   Here you can provide an NFT or Token for Prize Tap.
                 </p>
@@ -442,7 +442,7 @@ const Skeleton = () => {
               <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
               <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
             </div>
-            <div className="providePrize_creator text-[12px] text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
+            <div className="providePrize_creator text-xs text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
           </div>
 
           <div className="absolute bottom-3 right-4 left-0">

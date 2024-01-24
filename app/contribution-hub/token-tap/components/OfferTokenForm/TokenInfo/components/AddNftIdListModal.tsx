@@ -258,7 +258,7 @@ const AddNftIdListModalModalBody = () => {
         {selectedTab === tabsName.PASTE_IDS && (
           <div className="relative">
             <div
-              className={`flex text-gray80 text-[12px] mt-1  bg-gray40 border border-gray60 rounded-xl w-full  overflow-hidden ${
+              className={`flex text-gray80 text-xs mt-1  bg-gray40 border border-gray60 rounded-xl w-full  overflow-hidden ${
                 uploadedFile ? "opacity-[0.5]" : ""
               }`}
             >
@@ -302,7 +302,7 @@ const AddNftIdListModalModalBody = () => {
             </p>
             <div>
               <div
-                className={` flex relative text-gray80 text-[12px] bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
+                className={` flex relative text-gray80 text-xs bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
                   textAreaData || nftRange.to || nftRange.from
                     ? "opacity-[.5]"
                     : ""
@@ -366,12 +366,12 @@ const AddNftIdListModalModalBody = () => {
               ></Lottie>
             </div>
           )}
-          <p className="absolute left-0 text-error text-[12px]">
+          <p className="absolute left-0 text-error text-xs">
             {nftStatus.length > 0 && "Invalid NFT IDs is entered"}
           </p>
 
           {error && !!uploadedFile && nftIds.length > 0 && (
-            <p className="absolute left-0 text-error text-[12px]">{error}</p>
+            <p className="absolute left-0 text-error text-xs">{error}</p>
           )}
 
           <button
