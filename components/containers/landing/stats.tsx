@@ -1,24 +1,25 @@
-import { countGasClaimedAPI, countUsersAPI } from "@/utils/api"
-import Widget from "./widget"
-import { FC } from "react"
-import { Chain } from "@/types"
+import { countGasClaimedAPI, countUsersAPI } from "@/utils/api";
+import Widget from "./widget";
+import { FC } from "react";
+import { Chain } from "@/types";
+import { numberWithCommas } from "@/utils";
 
 export const getTotalNetworks = (chains: Chain[]) => {
-  return chains.reduce((total, chain) => total + (!chain.isTestnet ? 1 : 0), 0)
-}
+  return chains.reduce((total, chain) => total + (!chain.isTestnet ? 1 : 0), 0);
+};
 
 export const getTotalTestNetworks = (chains: Chain[]) => {
-  return chains.reduce((total, chain) => total + (chain.isTestnet ? 1 : 0), 0)
-}
+  return chains.reduce((total, chain) => total + (chain.isTestnet ? 1 : 0), 0);
+};
 
 const LandingStats: FC<{ chains: Chain[] }> = async ({ chains }) => {
-  const usersCount = await countUsersAPI()
-  const gasClaimedCount = await countGasClaimedAPI()
+  const usersCount = await countUsersAPI();
+  const gasClaimedCount = await countGasClaimedAPI();
 
   const stats = [
     { name: "Main Networks", number: getTotalNetworks(chains) },
     { name: "Test Networks", number: getTotalTestNetworks(chains) },
-  ]
+  ];
 
   return (
     <section id="home-stats" className={"flex gap-4 justify-between"}>
@@ -47,7 +48,7 @@ const LandingStats: FC<{ chains: Chain[] }> = async ({ chains }) => {
             <div key={stat.name} className={"flex flex-col gap-2 items-center"}>
               <p className={"text-xl text-space-green font-semibold"}>
                 {/* {numberWithCommas(typeof stat.number == 'string' ? parseFloat(stat.number) : stat.number)} */}
-                {stat.number}
+                {numberWithCommas(stat.number)}
               </p>
               <p className={"text-gradient-primary text-xs font-medium"}>
                 {stat.name}
@@ -66,7 +67,7 @@ const LandingStats: FC<{ chains: Chain[] }> = async ({ chains }) => {
         </div>
       </Widget>
     </section>
-  )
-}
+  );
+};
 
-export default LandingStats
+export default LandingStats;
