@@ -179,7 +179,7 @@ export const GasTapProvider: FC<
     );
   }, []);
 
-  const updateOneTimeClaimedList = async () => {
+  const updateOneTimeClaimedList = useCallback(async () => {
     if (!userToken) return;
 
     try {
@@ -188,7 +188,7 @@ export const GasTapProvider: FC<
       console.warn("error fetching users claimed list");
       console.error(e);
     }
-  };
+  }, [userToken]);
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (userToken && userProfile) {
@@ -306,7 +306,7 @@ export const GasTapProvider: FC<
     updateActiveClaimHistory();
     updateOneTimeClaimedList();
     updateFuelChampionList();
-  }, [updateChainList]);
+  }, []);
 
   useEffect(() => {
     if (!userToken || chainList.length) return;
