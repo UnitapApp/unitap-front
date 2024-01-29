@@ -208,7 +208,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                 {prize.numberOfOnchainEntries >= 1 &&
                 !prize.winnerEntries?.length
                   ? "Raffle is being processed"
-                  : "Check Winner Wallets"}
+                  : "Check Winners"}
               </p>
             </div>
           </div>

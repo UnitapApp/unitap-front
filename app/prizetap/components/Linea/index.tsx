@@ -359,7 +359,7 @@ export const LineaRaffleCard: FC<{
                       onClick={() => setIsLineaWinnersOpen(true)}
                     >
                       <div className="relative w-full">
-                        <p> Check Winner Wallets </p>{" "}
+                        <p> Check Winners </p>{" "}
                       </div>
                     </Button>
                   </span>

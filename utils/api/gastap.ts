@@ -10,9 +10,34 @@ export const convertFaucetToChain = (faucet: Faucet) => {
   } as Chain;
 };
 
+export const snakeToCamel = (str: string) => {
+  return str.replace(/_([a-z])/g, function (match, group) {
+    return group.toUpperCase();
+  });
+};
+
+export const parseFieldSetting = (value: string) => {
+  if (value === "True") return true;
+  if (value === "False") return false;
+
+  if (!isNaN(value as any)) return Number(value);
+
+  return value;
+};
+
 export async function getWeeklyChainClaimLimitAPI() {
-  const response = await axiosInstance.get<Settings>("/api/gastap/settings/");
-  return response.data;
+  const response = await axiosInstance.get<{ index: string; value: string }[]>(
+    "/api/gastap/settings/"
+  );
+
+  const result: Settings = response.data.reduce((prev, curr) => {
+    (prev as any)[snakeToCamel(curr.index)] = parseFieldSetting(curr.value);
+    return prev;
+  }, {} as Settings);
+
+  console.log(result);
+
+  return result;
 }
 
 export async function getRemainingClaimsAPI(token: string) {

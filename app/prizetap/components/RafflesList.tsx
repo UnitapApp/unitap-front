@@ -518,7 +518,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   >
                     <div className="relative w-full">
                       <span className="text-transparent bg-clip-text bg-g-primary">
-                        Check Winner Wallets
+                        Check Winners
                       </span>
                     </div>
                   </ClaimAndEnrollButton>
