@@ -64,7 +64,6 @@ const SelectMethodInput = ({
       ...methodValues,
       minimum: isNft ? e.replace(/[^0-9]/g, "") : e,
     });
-    console.log(decimals);
     setRequirementParamsList({
       ...requirementParamsList,
       ["MINIMUM"]: isNft
@@ -82,7 +81,6 @@ const SelectMethodInput = ({
 
   useEffect(() => {
     if (!requirement) return;
-    console.log("++++");
     handleSelectMethod();
     setMethodValues({
       ...methodValues,
