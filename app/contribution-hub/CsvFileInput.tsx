@@ -75,7 +75,7 @@ const CsvFileInput = ({
               type="file"
               className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
               onChange={(e) => handleChangeUploadedFile(e)}
-              accept=".csv, .txt"
+              accept=".csv"
             />
           </div>
         </div>
