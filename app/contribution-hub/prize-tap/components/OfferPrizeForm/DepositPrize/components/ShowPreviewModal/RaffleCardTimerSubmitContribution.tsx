@@ -49,7 +49,7 @@ export const RaffleCardTimerSubmitContribution = ({
   }, []);
 
   return (
-    <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 p-1 text-[8px]">
+    <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 text-[8px]">
       <div className="prize-card__timer-item flex flex-col justify-between items-center">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {days}

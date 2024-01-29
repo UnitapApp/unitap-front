@@ -101,7 +101,7 @@ const FormYouFilled = ({ data }: Prop) => {
         <div className="text-gray80 text-base mt-1 mb-2">
           by {data.provider}
         </div>
-        <div className="text-sm text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
+        <div className="text-sm h-[40px] max-h-[40px] text-justify">
           {data.description}
         </div>
         <div className="flex gap-2 mb-2 ">
