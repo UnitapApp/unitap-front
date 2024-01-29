@@ -26,6 +26,9 @@ import {
   optimism,
   mainnet,
   sepolia,
+  base,
+  mantle,
+  thunderTestnet,
 } from "viem/chains";
 
 const IDChain = {
@@ -45,7 +48,7 @@ const IDChain = {
 
 export const kccMainnet = {
   id: 321,
-  name: "KuCoin Community Chain",
+  name: "KCC Mainnet",
   network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
@@ -88,8 +91,11 @@ export const kccMainnet = {
 export const supportedChains = [
   sepolia,
   mainnet,
-  avalanche,
+  { ...avalanche, name: "Avalanche C-Chain" },
   bsc,
+  base,
+  mantle,
+  thunderTestnet,
   { ...polygon, name: "Polygon Mainnet" },
   {
     ...fantom,
@@ -115,18 +121,26 @@ export const supportedChains = [
   IDChain,
   optimism,
   meter,
-  zetachainAthensTestnet,
+  {
+    ...zetachainAthensTestnet,
+    name: "ZetaChain Athens 3 Testnet",
+    rpcUrls: {
+      ...zetachainAthensTestnet.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+      public: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+    },
+  },
   scroll,
   xdc,
   arbitrum,
   telos,
-  harmonyOne,
+  { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
   opBNBTestnet,
   linea,
   lineaTestnet,
   arbitrumNova,
-  scrollSepolia,
+  { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
 ];
