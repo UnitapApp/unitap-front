@@ -73,7 +73,6 @@ export const checkTokenContractAddress = async (
   if (!res[2]) {
     return false;
   }
-  console.log(Number(res[2].result));
   setDecimals(Number(res[2].result));
   return res.length === 3;
 };
