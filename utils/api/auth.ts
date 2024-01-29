@@ -61,6 +61,8 @@ export async function loginOrRegister(
     }
   );
 
+  response.data.username = response.data.username ?? `User${response.data?.pk}`;
+
   return response.data;
 }
 
@@ -73,6 +75,8 @@ export async function getUserProfileWithTokenAPI(token: string) {
       },
     }
   );
+
+  response.data.username = response.data.username ?? `User${response.data?.pk}`;
   return response.data;
 }
 
