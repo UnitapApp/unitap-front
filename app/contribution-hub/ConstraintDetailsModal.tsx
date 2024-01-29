@@ -98,7 +98,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
     if (
       !requirementParamsList.ADDRESS ||
       !requirementParamsList.CHAIN ||
-      !requirementParamsList.MINIMUM
+      !requirementParamsList.MINIMUM ||
+      Number(requirementParamsList.MINIMUM) <= 0
     ) {
       !requirementParamsList.ADDRESS
         ? setErrorMessage("Please enter collection address.")
@@ -280,7 +281,6 @@ const CreateParams: FC<CreateModalParam> = ({
 
     if (constraint.name === "core.HasTokenVerification") {
       if (requirementParamsList.ADDRESS == zeroAddress) {
-        console.log("----");
         setDecimals(18);
         return true;
       }

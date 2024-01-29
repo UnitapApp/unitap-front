@@ -90,7 +90,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           className={`
           ${!data.isNft && "text-white font-medium bg-gray40 border-gray50"}
            flex cursor-pointer items-center justify-center border-r border-r-gray50 w-[50%] h-full `}
-          onClick={() => handleSelectTokenOrNft(false)}
+          onClick={() => {
+            if (!isRightChain) return;
+            handleSelectTokenOrNft(false);
+          }}
         >
           Token
         </div>
@@ -98,7 +101,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           className={`
           ${data.isNft && "text-white font-medium  bg-gray40 border-gray50"}
            flex cursor-pointer items-center justify-center border-l border-l-gray50 w-[50%] h-full`}
-          onClick={() => handleSelectTokenOrNft(true)}
+          onClick={() => {
+            if (!isRightChain) return;
+            handleSelectTokenOrNft(true);
+          }}
         >
           NFT
         </div>
@@ -108,7 +114,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className="flex items-center justify-center gap-1 text-white text-2xs mb-[9px] cursor-pointer max-w-[140px]"
-              onClick={() => handleSelectNativeToken(data.isNativeToken)}
+              onClick={() => {
+                if (!isRightChain) return;
+                handleSelectNativeToken(data.isNativeToken);
+              }}
             >
               <Icon
                 height="16px"
