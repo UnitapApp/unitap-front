@@ -14,7 +14,8 @@ const useAddRequirement = (
     title: string,
     isNotSatisfy: boolean,
     requirementValues: any,
-    constraintFiles: any
+    constraintFiles: any,
+    decimals: number | undefined
   ) => {
     handleBackToConstraintListModal();
     if (!existRequirement) {
@@ -24,14 +25,16 @@ const useAddRequirement = (
         title,
         isNotSatisfy,
         requirementValues,
-        constraintFiles
+        constraintFiles,
+        decimals
       );
     } else {
       updateRequirement(
         existRequirement,
         isNotSatisfy,
         requirementValues,
-        constraintFiles
+        constraintFiles,
+        decimals
       );
     }
   };

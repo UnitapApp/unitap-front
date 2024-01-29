@@ -151,7 +151,7 @@ export const createErc20TokenDistribution = async (
       value: BigInt(parseEther(data.totalAmount)),
     };
 
-    const estimatedGas = await estimateGas(provider, {
+    const estimatedGas: any = await estimateGas(provider, {
       from: address,
       to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
       value: BigInt(tx.value),

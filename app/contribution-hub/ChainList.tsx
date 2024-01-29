@@ -7,14 +7,18 @@ interface Props {
   setRequirementParamsList: any;
   requirementParamsList: any;
   allChainList: Chain[] | undefined;
+  selectedChain: Chain | undefined;
+  setSelectedChain: (chain: Chain | undefined) => void;
 }
 
 const ChainList = ({
   setRequirementParamsList,
   requirementParamsList,
   allChainList,
+  selectedChain,
+  setSelectedChain,
 }: Props) => {
-  const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
+  // const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
 
   const handleSelectChain = (chian: Chain) => {
     setSelectedChain(chian);
@@ -42,8 +46,8 @@ const ChainList = ({
     const chain = allChainList!.find(
       (item) => item.pk === requirementParamsList.CHAIN
     );
-    setSelectedChain(chain);
-    setChainName(chain?.chainName);
+    setSelectedChain(chain!);
+    setChainName(chain!.chainName);
   }, [requirementParamsList]);
 
   useOutsideClick(ref, () => {

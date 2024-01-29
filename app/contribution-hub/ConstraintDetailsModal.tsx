@@ -8,7 +8,10 @@ import ChainList from "@/app/contribution-hub/ChainList";
 import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
-import { checkCollectionAddress } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
+import {
+  checkNftCollectionAddress,
+  checkTokenContractAddress,
+} from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
 
 interface CreateModalParam {
@@ -18,6 +21,12 @@ interface CreateModalParam {
   constraintFile: any;
   allChainList: Chain[];
   setConstraintFile: (item: any) => void;
+  requirementList: RequirementProps[];
+  isCollectionValid: boolean;
+  setIsCollectionValid: (e: boolean) => void;
+  setErrorMessage: (message: string) => void;
+  decimals: number | undefined;
+  setDecimals: (decimal: number | undefined) => void;
 }
 
 interface DetailsModal {
@@ -37,8 +46,6 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   updateRequirement,
   allChainList,
 }) => {
-  const provider = useWalletProvider();
-
   const addRequirements = useAddRequirement(
     handleBackToConstraintListModal,
     insertRequirement,
@@ -53,6 +60,10 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   const [isNotSatisfy, setIsNotSatisfy] = useState<boolean>(false);
 
   const [constraintFile, setConstraintFile] = useState<any>();
+
+  const [isCollectionValid, setIsCollectionValid] = useState<boolean>(false);
+
+  const [decimals, setDecimals] = useState<number | undefined>();
 
   const createRequirementParamsList = () => {
     if (constraint.params.length > 0) {
@@ -82,7 +93,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
     }
   }, []);
 
-  const checkingParamsValidation = async () => {
+  const checkingParamsValidation = () => {
     if (!requirementParamsList) return false;
     if (
       !requirementParamsList.ADDRESS ||
@@ -97,23 +108,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       return false;
     }
 
-    if (requirementParamsList.ADDRESS) {
-      const step2Check = isAddress(requirementParamsList.ADDRESS);
-      const chain = allChainList?.find(
-        (item) => Number(item.pk) === Number(requirementParamsList.CHAIN)
-      );
-
-      if (!chain) return false;
-
-      const res = await checkCollectionAddress(
-        provider,
-        requirementParamsList.ADDRESS,
-        Number(chain.chainId)
-      );
-
-      (!step2Check || !res) && setErrorMessage("Invalid contract address.");
-      return step2Check && res;
-    }
+    if (!isCollectionValid) return false;
+    return true;
   };
 
   const checkCsvFileUploadedValidation = () => {
@@ -126,9 +122,12 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
     return true;
   };
 
-  const handleAddRequirement = async () => {
-    if (constraint.name === "core.HasNFTVerification") {
-      const res = await checkingParamsValidation();
+  const handleAddRequirement = () => {
+    if (
+      constraint.name === "core.HasNFTVerification" ||
+      constraint.name === "core.HasTokenVerification"
+    ) {
+      const res = checkingParamsValidation();
       if (!res) return;
     }
 
@@ -144,7 +143,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       constraint.title,
       isNotSatisfy,
       requirementParamsList,
-      constraintFile
+      constraintFile,
+      decimals
     );
   };
 
@@ -194,6 +194,12 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
         constraintFile={constraintFile}
         setConstraintFile={setConstraintFile}
         allChainList={allChainList}
+        requirementList={requirementList}
+        isCollectionValid={isCollectionValid}
+        setIsCollectionValid={setIsCollectionValid}
+        setErrorMessage={setErrorMessage}
+        decimals={decimals}
+        setDecimals={setDecimals}
       />
       <div className="mb-4">{constraint.description}</div>
       <div className="text-error text-2xs min-h-[15px]">{errorMessage}</div>
@@ -214,17 +220,80 @@ const CreateParams: FC<CreateModalParam> = ({
   constraintFile,
   setConstraintFile,
   allChainList,
+  requirementList,
+  isCollectionValid,
+  setIsCollectionValid,
+  setErrorMessage,
+  decimals,
+  setDecimals,
 }) => {
   const [collectionAddress, setCollectionAddress] = useState("");
   const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
+  const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
+  const requirement = requirementList.find((item) => item.pk == constraint.pk);
+
+  const provider = useWalletProvider();
 
   useEffect(() => {
-    if (!requirementParamsList) return;
-    setCollectionAddress(requirementParamsList.ADDRESS);
-    if (requirementParamsList.ADDRESS === zeroAddress) {
-      setIsNativeToken(true);
+    console.log(requirement);
+    if (requirement) {
+      if (!requirement.params) return;
+      setCollectionAddress(requirement.params.ADDRESS);
+      if (requirement.params.ADDRESS === zeroAddress) {
+        setIsNativeToken(true);
+      } else {
+        checkCollectionContract();
+      }
     }
-  }, [requirementParamsList]);
+  }, []);
+
+  useEffect(() => {
+    if (!collectionAddress) return;
+    const isAddressValid = isAddress(collectionAddress);
+    !isAddressValid && setErrorMessage("Invalid contract address.");
+    isAddressValid && setErrorMessage("");
+    if (isAddressValid) {
+      if (collectionAddress === zeroAddress) {
+        setIsCollectionValid(true);
+        setDecimals(18);
+        return;
+      } else {
+        checkCollectionContract();
+      }
+    } else {
+      setIsCollectionValid(false);
+    }
+  }, [collectionAddress, selectedChain, isNativeToken]);
+
+  const checkCollectionContract = async () => {
+    if (!selectedChain) return;
+    let res = false;
+
+    if (constraint.name === "core.HasNFTVerification") {
+      res = await checkNftCollectionAddress(
+        provider,
+        requirementParamsList.ADDRESS,
+        Number(selectedChain.chainId)
+      );
+      setDecimals(18);
+    }
+
+    if (constraint.name === "core.HasTokenVerification") {
+      if (requirementParamsList.ADDRESS == zeroAddress) {
+        console.log("----");
+        setDecimals(18);
+        return true;
+      }
+      res = await checkTokenContractAddress(
+        provider,
+        requirementParamsList.ADDRESS,
+        Number(selectedChain.chainId),
+        setDecimals
+      );
+    }
+    !res && setErrorMessage("Invalid contract address.");
+    setIsCollectionValid(res);
+  };
 
   const handleChangeCollection = (address: string) => {
     setCollectionAddress(address);
@@ -242,14 +311,13 @@ const CreateParams: FC<CreateModalParam> = ({
   ) {
     const isNft: boolean = constraint.name === "core.HasNFTVerification";
 
-    const handleSelectNativeToken = () => {
-      setIsNativeToken(!isNativeToken);
-      !isNativeToken
-        ? setCollectionAddress(zeroAddress)
-        : setCollectionAddress("");
+    const handleSelectNativeToken = (isNative: boolean) => {
+      if (!selectedChain) return;
+      setIsNativeToken((prev) => !prev);
+      !isNative ? setCollectionAddress(zeroAddress) : setCollectionAddress("");
       setRequirementParamsList({
         ...requirementParamsList,
-        ["ADDRESS"]: zeroAddress,
+        ["ADDRESS"]: !isNative ? zeroAddress : "",
       });
     };
 
@@ -259,12 +327,16 @@ const CreateParams: FC<CreateModalParam> = ({
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           allChainList={allChainList}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
         />
 
         {!isNft && (
           <div
-            onClick={handleSelectNativeToken}
-            className="-mb-1 flex gap-2 cursor-pointer items-center mt-2"
+            onClick={() => handleSelectNativeToken(isNativeToken)}
+            className={`${
+              !selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
+            } -mb-1 flex gap-2 items-center mt-2 min-h-[20px] max-w-[110px]`}
           >
             <Icon
               iconSrc={
@@ -279,12 +351,12 @@ const CreateParams: FC<CreateModalParam> = ({
 
         <div
           className={`${
-            isNativeToken ? "opacity-50" : "opacity-1"
+            isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
           } nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50`}
         >
           <input
             name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
-            disabled={isNativeToken}
+            disabled={isNativeToken || !selectedChain}
             placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
             className="bg-inherit w-full h-full"
             value={
@@ -300,6 +372,9 @@ const CreateParams: FC<CreateModalParam> = ({
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={isNft}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={decimals}
         />
       </div>
     );

@@ -72,6 +72,7 @@ export interface RequirementProps {
   isNotSatisfy: boolean;
   isReversed: boolean;
   constraintFile?: [];
+  decimals: number | undefined;
 }
 
 export interface UserRafflesProps {
