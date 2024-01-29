@@ -8,8 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { useWalletAccount } from "@/utils/wallet";
-import { BackToHomeButton } from "./Buttons";
+import { BackToHomeButton } from "../../../app/contribution-hub/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
@@ -70,29 +69,27 @@ const ProviderTabs: FC = () => {
     >
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_GASTAP
-            ? " text-white"
-            : "opacity-[0.2]"
+          pathname.includes("gas-tap") ? " text-white" : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_GASTAP}
+        // href={"#"}
       >
         Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_TOKENTAP
-            ? " text-white"
-            : "opacity-[0.2]"
+          pathname.includes("token-tap") ? " text-white" : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_TOKENTAP}
+        // href={"#"}
       >
         Token Tap{" "}
         <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_PRIZETAP ||
-          pathname == RoutePath.PROVIDERDASHBOARD
+          RoutePath.PROVIDERDASHBOARD == pathname ||
+          pathname.includes("prize-tap")
             ? " text-white opacity-1"
             : "opacity-[0.2]"
         }`}

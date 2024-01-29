@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/Button/button";
 import { useWalletAccount } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { AddMetamaskButton } from "../gas-tap/Cards/Chainlist/ChainCard";
 import Markdown from "./Markdown";
+import Image from "next/image";
+import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -73,7 +74,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       : token.amount / 10 ** token.chain.decimals;
 
   const timePermissionVerification = useMemo(
-    () => token.permissions.find((permission) => permission.type === "TIME"),
+    () => token.constraints.find((permission) => permission.type === "TIME"),
     [token]
   );
 
@@ -109,9 +110,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
-                  <img
+                  <Image
+                    width={8}
+                    height={8}
                     className="arrow-icon mt-1 ml-1 w-2"
-                    src="assets/images/arrow-icon.svg"
+                    src="/assets/images/arrow-icon.svg"
                     alt="arrow"
                   />
                 </p>
@@ -217,8 +220,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             } pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
           >
             {(showAllPermissions
-              ? token.permissions
-              : token.permissions
+              ? token.constraints
+              : token.constraints
                   .filter((permission) => permission.type === "VER")
                   .slice(0, 6)
             ).map((permission, key) => (
@@ -236,14 +239,16 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </Tooltip>
             ))}
 
-            {token.permissions.length > 6 && (
+            {token.constraints.length > 6 && (
               <button
                 onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
                 className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
               >
                 <span>{showAllPermissions ? "Show less" : "Show more"}</span>
-                <img
+                <Image
                   alt="angle-down"
+                  width={12}
+                  height={7}
                   src="/assets/images/token-tap/angle-down.svg"
                   className={`ml-2 ${
                     showAllPermissions ? "rotate-180" : ""

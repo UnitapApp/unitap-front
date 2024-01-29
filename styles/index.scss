@@ -149,6 +149,13 @@ input[type="number"] {
   border-radius: 16px !important;
 }
 
+
+.rmdp-today > span {
+  background: #242431 !important;
+  border: 2px solid #67677b;
+  color: #b5b5c6 !important;
+}
+
 .rmdp-selected > span {
   background: #4ce6a1 !important;
   color: #161623 !important;
@@ -157,12 +164,6 @@ input[type="number"] {
 .rmdp-selected > span:hover {
   background: #4ce6a1 !important;
   color: #161623 !important;
-}
-
-.rmdp-today > span {
-  background: #242431 !important;
-  border: 2px solid #67677b;
-  color: #b5b5c6 !important;
 }
 
 .rmdp-time-picker input {

@@ -1,6 +1,6 @@
 import { UserProfile } from "./auth";
-import { Chain } from "./gas-tap";
-import { WinnerEntry } from "./prize-tap";
+import { Chain } from "./gastap";
+import { WinnerEntry } from "./prizetap";
 
 export type ProviderDashboardFormDataProp = {
   provider: string | null;
@@ -22,7 +22,6 @@ export type ProviderDashboardFormDataProp = {
   creatorUrl: string | null;
   necessaryInfo: string | null;
   satisfy: string;
-  allowListPrivate: boolean;
   numberOfDuration: number;
   durationUnitTime: string;
   NftSatisfy: boolean;
@@ -52,33 +51,33 @@ export type ErrorProps = {
   numberOfWinnersMessage: null | string;
 };
 
-export interface ConstraintParams {
-  id: number;
-}
-
 export interface ConstraintProps {
   description: string | null;
+  explanation: string | null;
+  iconUrl: string | null;
   name: string;
-  params: ConstraintParams[];
+  negativeDescription: string;
+  params: any;
   pk: number;
   response: string | null;
   title: string;
   type: string;
-  iconUrl: string | null;
 }
 
-export interface ConstraintParamValues {
+export interface RequirementProps {
   name: string;
   pk: number;
-  values: Record<number, string | number | boolean> | null;
+  params: any;
   title: string;
   isNotSatisfy: boolean;
+  isReversed: boolean;
+  constraintFile?: [];
 }
 
 export interface UserRafflesProps {
   chain: Chain;
   constraintParams: ConstraintProps;
-  constraints: ConstraintParamValues[];
+  constraints: RequirementProps[];
   contract: string;
   createdAt: string;
   creatorAddress: string;
@@ -151,20 +150,25 @@ export type ErrorObjectProp = {
   numberOfWinnersMessage: null | string;
 };
 
+export enum ContractValidationStatus {
+  Valid, NotValid, Empty
+}
+
 export interface ContractStatus {
   checking: boolean;
-  isValid: boolean;
+  isValid: ContractValidationStatus;
   canDisplayStatus: boolean;
 }
 
 export interface DisplayStepsProps {
   id: number;
-  name: string;
-  des: string;
-  selectStepImage: string;
-  passedStepImage: string;
-  garyImage: string;
+  prevIcon: string;
+  activeIcon: string;
+  nextIcon: string;
+  title: string;
+  description: string;
 }
+
 
 export interface NftRangeProps {
   from: string;
@@ -183,4 +187,46 @@ export interface EnrollmentDurationsProps {
 export interface UploadedFileProps {
   fileName: string;
   fileContent: any;
+}
+
+
+export interface ContactField {
+  name: keyof ProviderDashboardFormDataProp;
+  placeholder: string;
+  icon: string;
+  required: boolean;
+  baseUrl: string;
+}
+
+
+export interface UserTokenDistribution {
+  id: number;
+  chain: Chain;
+  constraints: RequirementProps[];
+  contract: string;
+  createdAt: string;
+  deadline: string;
+  discordUrl: string;
+  distributor: string;
+  distributorUrl: string;
+  emailUrl: string;
+  imageUrl: string;
+  isActive: boolean;
+  isClaimable: boolean;
+  isExpired: boolean;
+  isMaxedOut : boolean;
+  maxNumberOfClaims: number;
+  name : string;
+  necessaryInformation : string | null;
+  notes: string;
+  numberOfClaims: number;
+  rejectionReason: string | null;
+  startAt: string;
+  status: string;
+  telegramUrl: string | null;
+  token: string;
+  tokenAddress: string;
+  tokenImageUrl: string;
+  totalClaimsSinceLastRound: number;
+  twitterUrl: string | null
 }

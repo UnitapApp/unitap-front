@@ -1,9 +1,10 @@
+import { Address } from "viem";
 import { PK } from ".";
 
 type UserWallet = {
   walletType: string;
   pk: number;
-  address: string;
+  address: Address;
 };
 
 export type UserProfile = {
@@ -31,7 +32,16 @@ export enum BrightIdModalState {
   CONNECTED_AND_VERIFIED = "4",
 }
 
+export type UserConnection = {
+  [key: string]: {
+    id: number;
+    userProfile: UserProfile;
+    createdAt: string;
+  };
+};
+
 export type Permission = {
+  isReversed: boolean;
   id: PK;
   pk: PK;
   name: string;
@@ -39,6 +49,7 @@ export type Permission = {
   resourcetype: string;
   type: "TIME" | "VER";
   title?: string;
+  negativeDescription: string | null;
 };
 
 export enum PermissionType {

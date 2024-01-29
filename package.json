@@ -17,6 +17,7 @@
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",
     "@metamask/logo": "^3.1.2",
+    "@types/react-csv": "^1.1.10",
     "@uniswap/sdk-core": "^4.0.9",
     "axios": "^1.5.1",
     "big.js": "^6.2.1",
@@ -32,6 +33,7 @@
     "nprogress": "^0.2.0",
     "pino-pretty": "^10.2.0",
     "react": "latest",
+    "react-csv": "^2.2.2",
     "react-dom": "latest",
     "react-form-hook": "^0.0.1",
     "react-lottie": "^1.2.3",
@@ -49,6 +51,7 @@
     "@types/big.js": "^6.2.2",
     "@types/bn.js": "^5.1.5",
     "@types/node": "latest",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/react-lottie": "^1.2.10",

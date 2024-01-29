@@ -9,8 +9,9 @@ import {
   Chain,
   ClaimBoxStateContainer,
   ClaimReceiptState,
+  FuelChampion,
 } from "@/types";
-import { EmptyCallback } from "@/utils";
+import { EmptyCallback, NullCallback } from "@/utils";
 import {
   FC,
   PropsWithChildren,
@@ -27,11 +28,11 @@ import {
   claimMaxNonEVMAPI,
   getActiveClaimHistory,
   getChainList,
+  getFuelChampionList,
   getOneTimeClaimedChainList,
 } from "@/utils/api";
-import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 import getCorrectAddress, { useWalletAccount } from "@/utils/wallet";
-import { FAST_INTERVAL } from "@/constants";
 import { useGlobalContext } from "./globalProvider";
 
 export const GasTapContext = createContext<{
@@ -57,6 +58,9 @@ export const GasTapContext = createContext<{
   isHighGasFeeModalOpen: boolean;
   changeIsHighGasFeeModalOpen: (isOpen: boolean) => void;
   oneTimeClaimedGasList: ClaimReceipt[];
+  fuelChampionObj: { [key: string]: string };
+  claimWalletAddress: string | null;
+  setClaimWalletAddress: (address: string | null) => void;
 }>({
   chainList: [],
   chainListSearchResult: [],
@@ -80,6 +84,9 @@ export const GasTapContext = createContext<{
   isNonEvmActive: true,
   changeIsHighGasFeeModalOpen: EmptyCallback,
   oneTimeClaimedGasList: [],
+  fuelChampionObj: {},
+  claimWalletAddress: "",
+  setClaimWalletAddress: NullCallback,
 });
 
 export const useGasTapContext = () => useContext(GasTapContext);
@@ -89,23 +96,36 @@ export const GasTapProvider: FC<
     chains: Chain[];
     claimReceiptInitial: ClaimReceipt[];
     oneTimeClaimedGasListInitial: ClaimReceipt[];
+    fuelChampionList: FuelChampion[];
   } & PropsWithChildren
 > = ({
   children,
   chains,
   claimReceiptInitial,
   oneTimeClaimedGasListInitial,
+  fuelChampionList: fuelChampionListInitial,
 }) => {
   const [chainList, setChainList] = useState(chains);
   const [activeChain, setActiveChain] = useState<Chain | null>(null);
   const [isNonEvmActive, setIsNonEvmActive] = useState<boolean>(false);
   const [searchPhrase, setSearchPhrase] = useState<string>("");
+  const [claimWalletAddress, setClaimWalletAddress] = useState<string | null>(
+    ""
+  );
+
   const [activeClaimReceipt, setActiveClaimReceipt] =
     useState<ClaimReceipt | null>(null);
   const [claimBoxStatus, setClaimBoxStatus] = useState<ClaimBoxStateContainer>({
     status: ClaimBoxState.CLOSED,
     lastFailPk: null,
   });
+  const [fuelChampionList, setFuelChampionList] = useState(
+    fuelChampionListInitial.reduce((prev, curr) => {
+      prev[curr.faucetPk] = curr.username;
+
+      return prev;
+    }, {} as { [key: string]: string })
+  );
 
   const [oneTimeClaimedGasList, setOneTimeClaimedGasList] = useState<
     ClaimReceipt[]
@@ -138,7 +158,7 @@ export const GasTapProvider: FC<
   );
 
   const { setIsWalletPromptOpen } = useGlobalContext();
-  const { isConnected } = useWalletAccount();
+  const { isConnected, address: userAddress } = useWalletAccount();
 
   const updateChainList = useCallback(async () => {
     try {
@@ -147,7 +167,19 @@ export const GasTapProvider: FC<
     } catch (e) {}
   }, []);
 
-  const updateOneTimeClaimedList = async () => {
+  const updateFuelChampionList = useCallback(async () => {
+    const fuelChampionList = await getFuelChampionList();
+
+    setFuelChampionList(
+      fuelChampionList.reduce((prev, curr) => {
+        prev[curr.faucetPk] = curr.username;
+
+        return prev;
+      }, {} as { [key: string]: string })
+    );
+  }, []);
+
+  const updateOneTimeClaimedList = useCallback(async () => {
     if (!userToken) return;
 
     try {
@@ -156,7 +188,7 @@ export const GasTapProvider: FC<
       console.warn("error fetching users claimed list");
       console.error(e);
     }
-  };
+  }, [userToken]);
 
   const updateActiveClaimHistory = useCallback(async () => {
     if (userToken && userProfile) {
@@ -233,8 +265,14 @@ export const GasTapProvider: FC<
           lastFailPk: activeClaimReceipt.pk,
         });
 
+      const addr =
+        claimWalletAddress ||
+        userProfile?.wallets.find((item) => item.walletType == "EVM")
+          ?.address ||
+        userAddress;
+
       try {
-        await claimMax(userToken, claimChainPk);
+        await claimMax(userToken, claimChainPk, addr!);
         setTimeout(() => {
           setClaimLoading(false);
         }, 1000);
@@ -246,12 +284,15 @@ export const GasTapProvider: FC<
     },
     [
       userToken,
-      updateActiveClaimHistory,
-      activeClaimReceipt,
       claimLoading,
       isNonEvmActive,
-      chainList,
+      activeClaimReceipt,
+      claimWalletAddress,
+      userProfile?.wallets,
+      userAddress,
       claimNonEVM,
+      chainList,
+      updateActiveClaimHistory,
     ]
   );
 
@@ -264,15 +305,23 @@ export const GasTapProvider: FC<
     updateChainList();
     updateActiveClaimHistory();
     updateOneTimeClaimedList();
-  }, [updateChainList]);
+    updateFuelChampionList();
+  }, []);
 
-  // useRefreshWithInitial(
-  //   () => {
-
-  //   },
-  //   FAST_INTERVAL,
-  //   [updateActiveClaimHistory, userToken]
-  // );
+  useEffect(() => {
+    if (!userToken || chainList.length) return;
+    updateChainList();
+    updateActiveClaimHistory();
+    updateOneTimeClaimedList();
+    updateFuelChampionList();
+  }, [
+    chainList.length,
+    updateActiveClaimHistory,
+    updateChainList,
+    updateFuelChampionList,
+    updateOneTimeClaimedList,
+    userToken,
+  ]);
 
   useEffect(() => {
     if (activeChain) {
@@ -312,6 +361,9 @@ export const GasTapProvider: FC<
         claimLoading,
         claimNonEVM: (chain, address) => claim(chain.pk, address),
         oneTimeClaimedGasList,
+        fuelChampionObj: fuelChampionList,
+        claimWalletAddress,
+        setClaimWalletAddress,
       }}
     >
       {children}

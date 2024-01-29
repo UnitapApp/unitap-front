@@ -13,7 +13,7 @@ import {
   usePublicClient,
   useWalletClient,
 } from "wagmi";
-import { GetWalletClientResult } from "wagmi/actions";
+import { ConnectArgs, GetWalletClientResult } from "wagmi/actions";
 
 export const useWalletAccount = () => {
   return useAccount();
@@ -143,8 +143,35 @@ export const useWalletConnection = () => {
 
   const { disconnect, isLoading: isDisconnectLoading } = useDisconnect();
 
+  const onConnect = async (args?: Partial<ConnectArgs> | undefined) => {
+    if (
+      (args?.connector?.id === "injected" ||
+        args?.connector?.id === "metamask") &&
+      (window as any).ethereum.selectedAddress
+    ) {
+      await (window as any).ethereum.request({
+        method: "eth_requestAccounts",
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      });
+      await (window as any).ethereum.request({
+        method: "wallet_requestPermissions",
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      });
+    }
+
+    connect(args);
+  };
+
   return {
-    connect,
+    connect: onConnect,
     isLoading,
     connectors,
     isSuccess,

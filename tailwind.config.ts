@@ -39,7 +39,7 @@ const config: Config = {
         gray30: "#1B1B29",
         gray40: "#1E1E2C",
         gray50: "#212130",
-        gray60: "#24242F",
+        gray60: "#242431",
         gray70: "#303043",
         gray80: "#4C4C5C",
         gray90: "#67677B",
@@ -74,6 +74,8 @@ const config: Config = {
         3: "3px",
       },
       backgroundImage: {
+        "dark-primary":
+          "linear-gradient(to right, #22222f, #21232e, #242130, #231f2f)",
         primaryGradient:
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)",
         "home-header-texture":
@@ -98,6 +100,8 @@ const config: Config = {
         "donate-texture-s": "url('/assets/images/donate/donate-texture.svg')",
         "donate-texture-p": "url('/assets/images/donate/donate-texture.png')",
         "stats-texture": "url('/assets/images/landing/stats-texture.png')",
+        "soft-primary":
+          "linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.50) 33.85%, rgba(27, 27, 41, 0.50) 63.02%, rgba(77, 52, 81, 0.60) 100%)",
         "g-twitter":
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":
@@ -128,25 +132,25 @@ const config: Config = {
           "100%": { transform: "translateY(-15px)" },
         },
         fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
-				blinking: {
-					'50%': { opacity: '.3'},
-				},
+        blinking: {
+          "50%": { opacity: ".3" },
+        },
         fadeInOut: {
-          '0%': { opacity: '1' },
-          '50%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        }
+          "0%": { opacity: "1" },
+          "50%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
         flip: "flip 0.5s ease-in ",
         rocket: "rocket 1500ms infinite  alternate;",
-        fadeIn: 'fadeIn 0.8s ease-in-out',
-				blinking: 'blinking 2s step-start 0s infinite',
-        fadeInOut: 'fadeIn 0.8s ease-in-out',
+        fadeIn: "fadeIn 0.8s ease-in-out",
+        blinking: "blinking 2s step-start 0s infinite",
+        fadeInOut: "fadeInOut 2s ease-in-out infinite",
       },
       transitionProperty: {
         height: "height",

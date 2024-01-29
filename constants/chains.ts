@@ -23,9 +23,13 @@ import {
   scrollSepolia,
   Chain,
   opBNB,
+  optimism,
+  mainnet,
+  sepolia,
+  base,
+  mantle,
+  thunderTestnet,
 } from "viem/chains";
-
-import { mainnet, sepolia } from "wagmi";
 
 const IDChain = {
   id: 74,
@@ -42,29 +46,10 @@ const IDChain = {
   },
 };
 
-const Optimism = {
-  id: 10,
-  name: "Optimism",
-  nativeCurrency: {
-    decimals: 18,
-    name: "ETH",
-    symbol: "ETH",
-  },
-  network: "Optimism",
-  rpcUrls: {
-    default: { http: ["https://rpc.ankr.com/optimism"] },
-    public: { http: ["https://rpc.ankr.com/optimism"] },
-  },
-  blockExplorers: {
-    etherscan: { name: "etherscan", url: "https://optimistic.etherscan.io" },
-    default: { name: "etherscan", url: "https://optimistic.etherscan.io" },
-  },
-};
-
 export const kccMainnet = {
   id: 321,
-  network: "kcc-mainnet",
-  name: "KuCoin Community Chain",
+  name: "KCC Mainnet",
+  network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
     bscscan: {
@@ -106,30 +91,56 @@ export const kccMainnet = {
 export const supportedChains = [
   sepolia,
   mainnet,
-  avalanche,
+  { ...avalanche, name: "Avalanche C-Chain" },
   bsc,
-  polygon,
-  fantom,
+  base,
+  mantle,
+  thunderTestnet,
+  { ...polygon, name: "Polygon Mainnet" },
+  {
+    ...fantom,
+    name: "Fantom Opera",
+    rpcUrls: {
+      ...fantom.rpcUrls,
+      default: { http: ["https://rpc.ftm.tools"] },
+      public: { http: ["https://rpc.ftm.tools"] },
+    },
+  },
   holesky,
   goerli,
   polygonMumbai,
-  bscTestnet,
+  {
+    ...bscTestnet,
+    rpcUrls: {
+      ...bscTestnet.rpcUrls,
+      default: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+      public: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+    },
+  },
   gnosis,
   IDChain,
-  Optimism,
+  optimism,
   meter,
-  zetachainAthensTestnet,
+  {
+    ...zetachainAthensTestnet,
+    name: "ZetaChain Athens 3 Testnet",
+    rpcUrls: {
+      ...zetachainAthensTestnet.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+      public: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+    },
+  },
   scroll,
   xdc,
   arbitrum,
   telos,
-  harmonyOne,
+  { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
   opBNBTestnet,
   linea,
   lineaTestnet,
   arbitrumNova,
-  scrollSepolia,
+  { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
 ];

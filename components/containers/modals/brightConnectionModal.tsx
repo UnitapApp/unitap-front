@@ -1,82 +1,106 @@
-"use client"
+"use client";
 
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import { QRCode } from "react-qrcode-logo"
+import { ClaimButton } from "@/components/ui/Button/button";
+import { QRCode } from "react-qrcode-logo";
 
 import {
   APIError,
   APIErrorsSource,
   BrightIdConnectionModalState,
-} from "@/types"
-import BrightStatusModal from "./brightStatusModal"
+} from "@/types";
+import BrightStatusModal from "./brightStatusModal";
 
-import Icon from "@/components/ui/Icon"
-import { sponsorAPI } from "@/utils/api"
-import { useUserProfileContext } from "@/context/userProfile"
-import { ErrorsContext } from "@/context/errorsProvider"
-import useGenerateKeys from "@/utils/hooks/generateKeys"
-import { useGlobalContext } from "@/context/globalProvider"
-import Modal from "@/components/ui/Modal/modal"
+import Icon from "@/components/ui/Icon";
+import { ConnectBrightIdApi, sponsorAPI } from "@/utils/api";
+import { useUserProfileContext } from "@/context/userProfile";
+import useGenerateKeys from "@/utils/hooks/generateKeys";
+import { useGlobalContext } from "@/context/globalProvider";
+import Modal from "@/components/ui/Modal/modal";
+import { AxiosError } from "axios";
+import { useSocialACcountContext } from "@/context/socialAccountContext";
 
-const BrightConnectionModalBody = () => {
-  const { userProfile, refreshUserProfile, loading } = useUserProfileContext()
+export const BrightConnectionModalBody = () => {
+  const { userProfile, refreshUserProfile, updateProfile, userToken } =
+    useUserProfileContext();
 
-  const [tried] = useState(false)
+  const [tried] = useState(false);
 
-  const { errors, getError, deleteError } = useContext(ErrorsContext)
+  const [error, setError] = useState("");
 
-  const { keys, signPrivateKey } = useGenerateKeys()
-  const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null)
+  const { keys, signPrivateKey } = useGenerateKeys();
+
+  const [loading, setLoading] = useState(false);
+  const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
 
   const [brightIdConnectionError, setBrightIdConnectionError] =
-    useState<APIError | null>(null)
+    useState<APIError | null>(null);
 
-  useEffect(() => {
-    setBrightIdConnectionError(
-      getError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR)
-    )
-  }, [errors, getError])
+  const { addConnection } = useSocialACcountContext();
 
   useEffect(() => {
     if (keys) {
       signPrivateKey()
         .then((res) => setSignedPrivateKey(res))
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     }
-  }, [keys, signPrivateKey])
+  }, [keys, signPrivateKey]);
 
   useEffect(() => {
     if (keys && keys.address) {
-      sponsorAPI(keys.address)
+      sponsorAPI(keys.address);
     }
-  }, [keys, keys?.address])
+  }, [keys, keys?.address]);
 
   const openVerificationUrl = async () => {
-    if (!keys?.address) return
+    if (!keys?.address) return;
     window.open(
       `brightid://link-verification/http:%2f%2fnode.brightid.org/unitap/${keys?.address.toLowerCase()}/`,
       "_blank"
-    )
-  }
+    );
+  };
 
   const refreshConnectionButtonAction = useCallback(async () => {
-    if (!refreshUserProfile || loading || !keys?.address || !signedPrivateKey)
-      return
-    deleteError(APIErrorsSource.BRIGHTID_CONNECTION_ERROR)
-    await refreshUserProfile(keys.address, signedPrivateKey)
-  }, [refreshUserProfile, loading, signedPrivateKey, keys, deleteError])
+    if (loading || !keys?.address || !signedPrivateKey || !userToken) return;
+
+    setError("");
+    setLoading(true);
+    try {
+      const profile = await ConnectBrightIdApi(
+        keys.address,
+        signedPrivateKey,
+        userToken
+      );
+
+      updateProfile({ ...userProfile!, isMeetVerified: true });
+      addConnection("userProfile", profile);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        setError(e.response?.data.message ?? e.message);
+      } else {
+        setError((e as any).message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [
+    loading,
+    keys?.address,
+    signedPrivateKey,
+    userToken,
+    updateProfile,
+    userProfile,
+    addConnection,
+  ]);
 
   if (userProfile?.isMeetVerified) {
-    return <BrightStatusModal success={true}></BrightStatusModal>
-  } else if (userProfile?.isMeetVerified === false) {
-    return <BrightStatusModal success={false}></BrightStatusModal>
+    return <BrightStatusModal success={true}></BrightStatusModal>;
   }
 
   return (
     <div
-      className="bright-connection-modal flex flex-col items-center justify-center pt-4"
+      className="bright-connection-modal w-full flex flex-col items-center justify-center pt-4"
       data-testid="brightid-modal"
     >
       <p className="scan-qr-text text-sm text-white mb-3">Scan QR Code</p>
@@ -88,7 +112,7 @@ const BrightConnectionModalBody = () => {
             ecLevel="L"
             qrStyle="dots"
             quietZone={1}
-            size={170}
+            size={200}
             eyeRadius={5}
           />
         </span>
@@ -110,19 +134,20 @@ const BrightConnectionModalBody = () => {
         </p>
       </div>
 
-      {brightIdConnectionError && (
+      {error && (
         <span className="notice flex mb-3">
-          <p className="text-xs text-error font-light text-center">
-            {" "}
-            {brightIdConnectionError.message}{" "}
-          </p>
+          <p className="text-xs text-error font-light text-center"> {error} </p>
         </span>
       )}
-      <span className="notice flex mb-3">
-        <Icon className="mr-2" iconSrc="assets/images/modal/gray-danger.svg" />
-        <p className="text-xs text-gray90 font-light">
-          {" "}
-          Submit Verification after verifing with brighID app.{" "}
+      <span className="flex mb-3">
+        <Icon
+          className="mr-2 mb-4"
+          iconSrc="/assets/images/modal/gray-danger.svg"
+        />
+        <p className="text-xs text-center text-gray90 font-light">
+          Submit Verification after verifing with brighID app.
+          <br />
+          This might take up to 5 minutes.
         </p>
       </span>
       {refreshUserProfile && (
@@ -152,24 +177,24 @@ const BrightConnectionModalBody = () => {
             window.open(
               "https://brightid.gitbook.io/brightid/getting-verified",
               "_blank"
-            )
+            );
           }}
         >
           Get Verified on BrightID
         </p>
       </span>
     </div>
-  )
-}
+  );
+};
 
 const BrightConnectionModal = () => {
   const { brightIdConnectionModalStatus, closeBrightIdConnectionModal } =
-    useGlobalContext()
+    useGlobalContext();
 
   return (
     <Modal
       className="bright-modal"
-      title="Login with Your BrightID"
+      title="Connect Your BrightID"
       size="small"
       isOpen={
         brightIdConnectionModalStatus !== BrightIdConnectionModalState.CLOSED
@@ -179,7 +204,7 @@ const BrightConnectionModal = () => {
     >
       <BrightConnectionModalBody />
     </Modal>
-  )
-}
+  );
+};
 
-export default BrightConnectionModal
+export default BrightConnectionModal;

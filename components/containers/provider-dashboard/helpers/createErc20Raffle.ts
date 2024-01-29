@@ -1,5 +1,5 @@
 import { ZERO_ADDRESS } from "@/constants";
-import { ProviderDashboardFormDataProp, ConstraintParamValues } from "@/types";
+import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
 import { prizeTapABI } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
 import { PublicClient, getContract, parseEther } from "viem";
@@ -21,7 +21,7 @@ const createErc20RaffleCallback = async (
   endTime: bigint,
   isNativeToken: boolean,
   winnersCount: bigint,
-  totalAmount:  string
+  totalAmount: string
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
@@ -32,7 +32,9 @@ const createErc20RaffleCallback = async (
     args: [
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
-        : BigInt(toWei((Number(new Big(payableAmount).toFixed())), tokenDecimals)),
+        : BigInt(
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+          ),
       currencyAddress,
       maxParticipants,
       1n,
@@ -41,7 +43,7 @@ const createErc20RaffleCallback = async (
       winnersCount,
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
-    value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount): 0n,
+    value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 
   return signer?.writeContract({
@@ -52,8 +54,10 @@ const createErc20RaffleCallback = async (
     gasPrice: gasEstimate,
     args: [
       isNativeToken
-      ? parseEther(new Big(payableAmount).toFixed())
-      : BigInt(toWei((Number(new Big(payableAmount).toFixed())), tokenDecimals)),
+        ? parseEther(new Big(payableAmount).toFixed())
+        : BigInt(
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+          ),
       currencyAddress,
       maxParticipants,
       1n,
@@ -70,7 +74,7 @@ export const createErc20Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
   signer: GetWalletClientResult,
-  requirementList: ConstraintParamValues[],
+  requirementList: RequirementProps[],
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
@@ -81,8 +85,8 @@ export const createErc20Raffle = async (
     ? data.maxNumberOfEntries
     : "1000000000";
   const prizeName = data.isNativeToken
-    ? data.totalAmount + " " + data.selectedChain.symbol
-    : data.totalAmount + " " + data.tokenSymbol;
+    ? data.tokenAmount + " " + data.selectedChain.symbol
+    : data.tokenAmount + " " + data.tokenSymbol;
   const prizeSymbol = data.isNativeToken
     ? data.selectedChain.symbol
     : data.tokenSymbol;
@@ -91,7 +95,9 @@ export const createErc20Raffle = async (
     data.tokenAmount,
     data.isNativeToken ? 18 : data.tokenDecimals
   );
-  const twitter = "https://twitter.com/" + data.twitter?.replace("@", "");
+  const twitter = data.twitter
+    ? "https://twitter.com/" + data.twitter?.replace("@", "")
+    : null;
   const discord = data.discord
     ? "https://discord.com/" + data.discord.replace("@", "")
     : null;
@@ -99,42 +105,70 @@ export const createErc20Raffle = async (
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
   const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
-  const constraints = requirementList.map((item) => item.pk);
-  const reversed_constraints = requirementList.filter(item => item.isNotSatisfy).map(ids => ids.pk);
-  const raffleData = {
-    name: prizeName,
-    description: data.description,
-    contract: raffleContractAddress,
-    creator_name: data.provider,
-    creator_address: address,
-    prize_amount: prizeAmount,
-    prize_asset: data.tokenContractAddress,
-    prize_name: prizeName,
-    prize_symbol: prizeSymbol,
-    decimals: decimals,
-    chain: Number(data.selectedChain.pk),
-    constraints,
-    constraint_params: btoa(JSON.stringify({})),
-    deadline: deadline(data.endTimeStamp),
-    max_number_of_entries: maxNumberOfEntries,
-    start_at: startAt(data.startTimeStamp),
-    winnersCount: data.winnersCount,
-    discord_url: discord,
-    twitter_url: twitter,
-    creator_url: creatorUrl,
-    telegram_url: telegram,
-    reversed_constraints: reversed_constraints.length > 1 ? reversed_constraints.join(',') : reversed_constraints.length == 1 ? reversed_constraints[0].toString() : undefined,
-    email_url: data.email,
-    necessary_information: data.necessaryInfo,
-  };
+  const constraints = requirementList.map((item) => item.pk.toString());
+  const reversed_constraints = requirementList
+    .filter((item) => item.isNotSatisfy)
+    .map((ids) => ids.pk);
+
+  const constraintFileList: any = requirementList
+    .filter((item) => item.constraintFile)
+    .map((item) => item.constraintFile);
+
+  const constraint_params = requirementList.reduce((obj: any, item: any) => {
+    obj[item.name] = item.params;
+    return obj;
+  }, {});
+
+  const formData = new FormData();
+
+  const reversed =
+    reversed_constraints.length > 1
+      ? reversed_constraints.join(",")
+      : reversed_constraints.length == 1
+      ? reversed_constraints[0].toString()
+      : "";
+
+  for (let i = 0; i < constraints.length; i++) {
+    formData.append("constraints", constraints[i]);
+  }
+
+  if (constraintFileList) {
+    for (let i = 0; i < constraintFileList.length; i++) {
+      formData.append("constraint_files", constraintFileList[i]);
+    }
+  }
+
+  if (reversed) {
+    formData.append("reversed_constraints", reversed);
+  }
+
+  formData.append("name", prizeName);
+  formData.append("contract", raffleContractAddress);
+  formData.append("creator_name", data.provider!);
+  formData.append("creator_address", address);
+  formData.append("prize_amount", prizeAmount.toString());
+  formData.append("prize_asset", data.tokenContractAddress);
+  formData.append("prize_name", prizeName);
+  formData.append("chain", data.selectedChain.pk);
+  formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
+  formData.append("description", data.description ?? "");
+  formData.append("prize_symbol", prizeSymbol);
+  formData.append("deadline", deadline(data.endTimeStamp));
+  formData.append("max_number_of_entries", maxNumberOfEntries);
+  formData.append("start_at", startAt(data.startTimeStamp));
+  formData.append("winners_count", data.winnersCount.toString());
+  formData.append("discord_url", discord! ?? "");
+  formData.append("twitter_url", twitter! ?? "");
+  formData.append("creator_url", creatorUrl! ?? "");
+  formData.append("telegram_url", telegram! ?? "");
+  formData.append("email_url", data.email!);
+  formData.append("necessary_information", data.necessaryInfo!);
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
     abi: prizeTapABI,
     publicClient: provider,
   });
-
-
 
   try {
     setCreateRaffleLoading(true);
@@ -162,7 +196,7 @@ export const createErc20Raffle = async (
       confirmations: 1,
     });
 
-    const raffle = await createRaffleApi(userToken, raffleData);
+    const raffle = await createRaffleApi(userToken, formData);
 
     if (!raffle.success) {
       return false;
@@ -176,8 +210,14 @@ export const createErc20Raffle = async (
       txHash: transactionInfo.transactionHash,
       message: "Created raffle successfully.",
     });
+
     setCreateRaffleLoading(false);
-    updateCreateRaffleTx(userToken, rafflePk, transactionInfo.transactionHash);
+
+    await updateCreateRaffleTx(
+      userToken,
+      rafflePk,
+      transactionInfo.transactionHash
+    );
   } catch (e: any) {
     console.log(e);
     setCreteRaffleResponse({

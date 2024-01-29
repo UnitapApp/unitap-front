@@ -61,7 +61,12 @@ const getConnectorProviders = (): Connector[] => {
   }
 
   return [
-    new InjectedConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        shimDisconnect: true,
+      },
+    }),
     new WalletConnectConnector({
       chains,
       options: {

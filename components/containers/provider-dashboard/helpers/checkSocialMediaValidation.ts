@@ -9,8 +9,9 @@ const checkTwitterVAlidation = (username: string) => {
 };
 
 const checkDiscordValidation = (username: string) => {
+
   const usernameRegex =
-    /^(?!discordtag|everyone|here)(?!@|#|:|```).{2,32}#\d{4}$/;
+    /https:\/\/discord\.com/;
   return !!username.match(usernameRegex);
 };
 
@@ -39,25 +40,25 @@ export const checkSocialMediaValidation = (
   email: string | null,
   telegram: string | null
 ) => {
-  const emailValidation = email ? validateEmail(email) : false;
-  const twitterValidation = twitter
+  const isEmailVerified = email ? validateEmail(email) : false;
+  const isTwitterVerified = twitter
     ? checkTwitterVAlidation(twitter.replace("@", ""))
-    : false;
-  const urlValidation = creatorUrl
-    ? checkUrlValidation(creatorUrl.replace("@", ""))
     : true;
-  const discordValidation = discord
+  const isUrlVerified = creatorUrl
+    ? checkUrlValidation(creatorUrl)
+    : true;
+  const isDiscordVerified = discord
     ? checkDiscordValidation(discord.replace("@", ""))
     : true;
-  const telegramValidation = telegram
+  const isTelegramVerified = telegram
     ? checkTelegramValidation(telegram.replace("@", ""))
     : true;
 
   return {
-    urlValidation,
-    twitterValidation,
-    discordValidation,
-    emailValidation,
-    telegramValidation,
+    isUrlVerified,
+    isTwitterVerified,
+    isDiscordVerified,
+    isEmailVerified,
+    isTelegramVerified,
   };
 };

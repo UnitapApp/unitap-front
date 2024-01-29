@@ -1,4 +1,4 @@
-import TokenTapContent from "@/components/containers/provider-dashboard/token-tap/Content";
+import TokenTapContent from "./components/Content";
 
 const Page = () => {
   return (

@@ -1,5 +1,5 @@
 import { UserProfile } from "@/types";
-import { axiosInstance } from ".";
+import { axiosInstance } from "./base";
 
 export async function getUserProfile(address: string, signature: string) {
   const response = await axiosInstance.post<UserProfile>(
@@ -20,6 +20,52 @@ export async function createUserProfile(address: string) {
   return response.data;
 }
 
+export async function checkUsernameValid(username: string, token: string) {
+  const response = await axiosInstance.post<{ exists: boolean }>(
+    "/api/auth/user/check-username/",
+    {
+      username,
+    },
+    {
+      headers: {
+        Authorization: `token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function checkUserExists(walletAddress: string): Promise<boolean> {
+  const response = await axiosInstance.post<{ exists: boolean }>(
+    "/api/auth/user/check-exists/",
+    {
+      walletAddress,
+    }
+  );
+
+  return response.data.exists;
+}
+
+export async function loginOrRegister(
+  walletAddress: string,
+  signature: string,
+  message: string
+) {
+  const response = await axiosInstance.post<UserProfile>(
+    "/api/auth/user/wallet-login/",
+    {
+      walletAddress,
+      signature,
+      message,
+    }
+  );
+
+  response.data.username = response.data.username ?? `User${response.data?.pk}`;
+
+  return response.data;
+}
+
 export async function getUserProfileWithTokenAPI(token: string) {
   const response = await axiosInstance.get<UserProfile>(
     `/api/auth/user/info/`,
@@ -29,6 +75,8 @@ export async function getUserProfileWithTokenAPI(token: string) {
       },
     }
   );
+
+  response.data.username = response.data.username ?? `User${response.data?.pk}`;
   return response.data;
 }
 
@@ -42,11 +90,18 @@ export async function sponsorAPI(address: string) {
 export async function setWalletAPI(
   token: string,
   wallet: string,
-  walletType: string
+  walletType: string,
+  message: string,
+  signedMessage: string
 ) {
   const response = await axiosInstance.post(
-    "/api/auth/user/set-wallet/",
-    { walletType: walletType, address: wallet },
+    "/api/auth/user/wallets/",
+    {
+      walletType: walletType,
+      address: wallet,
+      signature: signedMessage,
+      message,
+    },
     {
       headers: {
         Authorization: `Token ${token}`,
@@ -55,3 +110,32 @@ export async function setWalletAPI(
   );
   return response.data;
 }
+
+export const setUsernameApi = async (username: string, userToken: string) => {
+  const response = await axiosInstance.post(
+    "/api/auth/user/set-username/",
+    {
+      username,
+    },
+    {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const deleteWalletApi = async (userToken: string, walletId: number) => {
+  const response = await axiosInstance.delete(
+    "/api/auth/user/wallets/" + walletId,
+    {
+      headers: {
+        Authorization: `token ${userToken}`,
+      },
+    }
+  );
+
+  return response.data;
+};
