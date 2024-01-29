@@ -893,7 +893,8 @@ const TokenTapProvider: FC<
     title: string,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     setRequirementList([
       ...requirementList,
@@ -905,6 +906,7 @@ const TokenTapProvider: FC<
         isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
         constraintFile: file,
+        decimals: decimals,
       },
     ]);
   };
@@ -913,7 +915,8 @@ const TokenTapProvider: FC<
     requirement: RequirementProps,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     if (!requirement) return;
     const newItem = requirementList.map((item) => {
@@ -923,6 +926,7 @@ const TokenTapProvider: FC<
           isNotSatisfy,
           params: requirementValues,
           constraintFile: file,
+          decimals: decimals,
         };
       }
       return item;
