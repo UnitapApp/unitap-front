@@ -141,12 +141,13 @@ export const BrightConnectionModalBody = () => {
       )}
       <span className="flex mb-3">
         <Icon
-          className="mr-2 mb-3"
+          className="mr-2 mb-4"
           iconSrc="/assets/images/modal/gray-danger.svg"
         />
-        <p className="text-xs w-88 text-gray90 font-light">
-          Submit Verification after verifing with brighID app. This might take
-          up to 5 minutes.
+        <p className="text-xs text-center text-gray90 font-light">
+          Submit Verification after verifing with brighID app.
+          <br />
+          This might take up to 5 minutes.
         </p>
       </span>
       {refreshUserProfile && (
