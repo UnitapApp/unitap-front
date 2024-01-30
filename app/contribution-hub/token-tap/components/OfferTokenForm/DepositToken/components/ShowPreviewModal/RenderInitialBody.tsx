@@ -17,8 +17,11 @@ interface Prop {
 }
 
 const RenderInitialBody = ({ data }: Prop) => {
-  const { handleCreateRaffle, createRaffleLoading, createRaffleResponse } =
-    useTokenTapFromContext();
+  const {
+    handleCreateDistribution,
+    createRaffleLoading,
+    createRaffleResponse,
+  } = useTokenTapFromContext();
   const { address, isConnected } = useWalletAccount();
   const { chain } = useWalletNetwork();
 
@@ -87,7 +90,7 @@ const RenderInitialBody = ({ data }: Prop) => {
         <div className="w-full flex items-end justify-end">
           <div className="w-[200px]">
             <ProviderDashboardButtonSubmit
-              onClick={handleCreateRaffle}
+              onClick={handleCreateDistribution}
               $width="100%"
               className="text-sm md:text-xs lg:text-sm mt-5"
               disabled={createRaffleLoading}

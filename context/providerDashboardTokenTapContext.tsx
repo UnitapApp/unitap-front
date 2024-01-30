@@ -103,7 +103,7 @@ export const TokenTapContext = createContext<{
     requirementValues: any
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
-  handleCreateRaffle: () => void;
+  handleCreateDistribution: () => void;
   isCreateRaffleModalOpen: boolean;
   createRaffleResponse: any | null;
   createRaffleLoading: boolean;
@@ -190,7 +190,7 @@ export const TokenTapContext = createContext<{
   deleteRequirement: NullCallback,
   updateRequirement: NullCallback,
   handleSelectNativeToken: NullCallback,
-  handleCreateRaffle: NullCallback,
+  handleCreateDistribution: NullCallback,
   isCreateRaffleModalOpen: false,
   createRaffleResponse: null,
   createRaffleLoading: false,
@@ -873,8 +873,9 @@ const TokenTapProvider: FC<
     setCreateRaffleLoading(true);
   };
 
-  const handleCreateRaffle = () => {
+  const handleCreateDistribution = () => {
     if (!address || !address || !provider || !userToken || !signer) return;
+    console.log(address, address, provider, userToken, signer);
     createErc20TokenDistribution(
       data,
       provider,
@@ -1098,7 +1099,7 @@ const TokenTapProvider: FC<
         deleteRequirement,
         updateRequirement,
         handleSelectNativeToken,
-        handleCreateRaffle,
+        handleCreateDistribution,
         closeCreateRaffleModal,
         isCreateRaffleModalOpen,
         openCreteRaffleModal,
