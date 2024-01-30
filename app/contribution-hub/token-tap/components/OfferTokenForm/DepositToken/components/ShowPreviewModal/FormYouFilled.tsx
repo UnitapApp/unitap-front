@@ -1,20 +1,8 @@
 "use client";
 
-import styled from "styled-components";
 import { ProviderDashboardFormDataProp } from "@/types";
-import { DV } from "@/components/ui/designVariables";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
-import RaffleCardTimerSubmitContribution from "./RaffleCardTimerSubmitContribution";
-
-const Action = styled.div`
-	display: flex;
-
-	// @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
-		flex-direction: column;
-	}
-`;
 
 interface Prop {
   data: ProviderDashboardFormDataProp;

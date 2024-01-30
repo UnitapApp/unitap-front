@@ -4,7 +4,6 @@ import { ProviderFormPaginationProp } from "@/types";
 import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
 import Pagination from "@/app/contribution-hub/pagination";
-import CreateRaffleModal from "@/app/contribution-hub/prize-tap/components/CreateRaffleModal";
 import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
@@ -165,9 +164,6 @@ const DepositToken = ({
           page={page}
           func="submit"
         />
-      )}
-      {data.selectedChain && !isShowingDetails && (
-        <CreateRaffleModal chain={data.selectedChain} />
       )}
     </div>
   );
