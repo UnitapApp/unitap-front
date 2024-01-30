@@ -1,5 +1,6 @@
 "use client";
 import Icon from "@/components/ui/Icon";
+import { RequirementProps } from "@/types";
 import React, { useEffect, useState } from "react";
 
 interface Prop {
@@ -7,12 +8,13 @@ interface Prop {
   setRequirementParamsList: any;
   setConstraintFile: (item: any) => void;
   constraintFile: any;
+  requirement: RequirementProps | undefined;
 }
 const CsvFileInput = ({
   setRequirementParamsList,
   requirementParamsList,
   setConstraintFile,
-  constraintFile,
+  requirement,
 }: Prop) => {
   const [isUploadedFileValid, setIsUploadedFileValid] =
     useState<boolean>(false);
@@ -21,6 +23,10 @@ const CsvFileInput = ({
   useEffect(() => {
     if (!requirementParamsList) return;
     if (!requirementParamsList.CSV_FILE) return;
+    if (requirement) {
+      if (!requirement.constraintFile) return;
+      setConstraintFile(requirement.constraintFile);
+    }
     setIsUploadedFileValid(true);
     setUploadedFileName(requirementParamsList.CSV_FILE);
   }, [requirementParamsList]);

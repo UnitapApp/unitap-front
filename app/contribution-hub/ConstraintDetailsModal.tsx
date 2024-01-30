@@ -114,7 +114,6 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   const checkCsvFileUploadedValidation = () => {
-    console.log(requirementParamsList, requirementParamsList.CSV_FILE);
     if (!requirementParamsList) return false;
     if (!requirementParamsList.CSV_FILE) {
       setErrorMessage("Please upload a csv file.");
@@ -236,7 +235,6 @@ const CreateParams: FC<CreateModalParam> = ({
   const provider = useWalletProvider();
 
   useEffect(() => {
-    console.log(requirement);
     if (requirement) {
       if (!requirement.params) return;
       setCollectionAddress(requirement.params.ADDRESS);
@@ -387,6 +385,7 @@ const CreateParams: FC<CreateModalParam> = ({
         requirementParamsList={requirementParamsList}
         setConstraintFile={setConstraintFile}
         constraintFile={constraintFile}
+        requirement={requirement}
       />
     );
   }

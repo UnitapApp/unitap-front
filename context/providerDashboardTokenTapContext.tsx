@@ -875,7 +875,6 @@ const TokenTapProvider: FC<
 
   const handleCreateDistribution = () => {
     if (!address || !address || !provider || !userToken || !signer) return;
-    console.log(address, address, provider, userToken, signer);
     createErc20TokenDistribution(
       data,
       provider,
