@@ -36,13 +36,10 @@ import {
   useWalletSigner,
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
-import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
 import { ZERO_ADDRESS } from "@/constants";
 import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
 import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
-import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
-import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
 
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
@@ -54,6 +51,7 @@ import {
   errorMessages,
   formInitialData,
 } from "@/constants/contributionHub";
+import { getErc20TokenContractTokenTap } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContractTokenTap";
 
 export const TokenTapContext = createContext<{
   page: number;
@@ -109,12 +107,7 @@ export const TokenTapContext = createContext<{
   createRaffleLoading: boolean;
   handleSetCreateRaffleLoading: () => void;
   handleSetDate: (timeStamp: number, label: string) => void;
-  handleApproveErc20Token: () => void;
-  isErc20Approved: boolean;
-  isApprovedAll: boolean;
-  approveLoading: boolean;
   constraintsListApi: ConstraintProps[] | undefined;
-  handleApproveErc721Token: () => void;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserTokenDistribution) => void;
   handleShowUserDetails: (raffle: UserTokenDistribution) => void;
@@ -196,12 +189,7 @@ export const TokenTapContext = createContext<{
   createRaffleLoading: false,
   handleSetCreateRaffleLoading: NullCallback,
   handleSetDate: NullCallback,
-  handleApproveErc20Token: NullCallback,
-  isErc20Approved: false,
-  approveLoading: false,
   constraintsListApi: [] as any,
-  isApprovedAll: false,
-  handleApproveErc721Token: NullCallback,
   updateChainList: NullCallback,
   handleCheckForReason: NullCallback,
   handleShowUserDetails: NullCallback,
@@ -279,8 +267,6 @@ const TokenTapProvider: FC<
 
   const [chainList, setChainList] = useState<Chain[]>([]);
 
-  const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
-
   const [endDateState, setEndDateState] = useState<any>(null);
 
   const [tokenContractStatus, setTokenContractStatus] =
@@ -296,8 +282,6 @@ const TokenTapProvider: FC<
     canDisplayStatus: false,
   });
 
-  const [approveAllowance, setApproveAllowance] = useState<number>(0);
-
   const [insufficientBalance, setInsufficientBalance] =
     useState<boolean>(false);
 
@@ -307,8 +291,6 @@ const TokenTapProvider: FC<
 
   const [createRaffleLoading, setCreateRaffleLoading] =
     useState<boolean>(false);
-
-  const [isApprovedAll, setIsApprovedAll] = useState<boolean>(false);
 
   const [selectedConstrains, setSelectedConstrains] =
     useState<ConstraintProps | null>(null);
@@ -320,8 +302,6 @@ const TokenTapProvider: FC<
   const [userDistribution, setUserDistribution] = useState<
     UserTokenDistribution | undefined
   >(distributionInit);
-
-  const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
     useState<UserTokenDistribution | null>(null);
@@ -399,27 +379,24 @@ const TokenTapProvider: FC<
 
   const checkContractInfo = useCallback(async () => {
     if (!data.isNft && provider && address) {
-      await getErc20TokenContract(
+      await getErc20TokenContractTokenTap(
         data,
         address,
         provider,
         setData,
-        setIsErc20Approved,
-        setTokenContractStatus,
-        setApproveAllowance
+        setTokenContractStatus
       );
     }
 
-    if (data.isNft && provider && address) {
-      getErc721TokenContract(
-        data,
-        address,
-        provider,
-        setData,
-        setIsApprovedAll,
-        setNftContractStatus
-      );
-    }
+    // if (data.isNft && provider && address) {
+    //   getErc721TokenContract(
+    //     data,
+    //     address,
+    //     provider,
+    //     setData,
+    //     setNftContractStatus
+    //   );
+    // }
   }, [address, data, provider]);
 
   const checkContractAddress = useCallback(
@@ -634,7 +611,6 @@ const TokenTapProvider: FC<
     )
       return;
     if (!data.nftContractAddress) {
-      setIsApprovedAll(false);
       setNftContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -656,7 +632,6 @@ const TokenTapProvider: FC<
   useEffect(() => {
     if (isShowingDetails || data.isNft) return;
     if (!data.tokenContractAddress) {
-      setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -666,7 +641,6 @@ const TokenTapProvider: FC<
       return;
     }
     if (data.tokenContractAddress == zeroAddress) {
-      setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Valid,
@@ -721,7 +695,6 @@ const TokenTapProvider: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
-      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,
@@ -843,32 +816,6 @@ const TokenTapProvider: FC<
   const openShowPreviewModal = () => {
     setIsModalOpen(true);
   };
-
-  const handleApproveErc20Token = () => {
-    if (!provider || !address || !signer) return;
-
-    approveErc20Token(
-      data,
-      provider,
-      signer,
-      address,
-      setApproveLoading,
-      setIsErc20Approved
-    );
-  };
-
-  const handleApproveErc721Token = () => {
-    if (!provider || !address || !signer) return;
-    approveErc721Token(
-      data,
-      provider,
-      signer,
-      address,
-      setApproveLoading,
-      setIsApprovedAll
-    );
-  };
-
   const handleSetCreateRaffleLoading = () => {
     setCreateRaffleLoading(true);
   };
@@ -1106,12 +1053,7 @@ const TokenTapProvider: FC<
         createRaffleLoading,
         handleSetCreateRaffleLoading,
         handleSetDate,
-        handleApproveErc20Token,
-        isErc20Approved,
-        approveLoading,
         constraintsListApi,
-        isApprovedAll,
-        handleApproveErc721Token,
         updateChainList,
         handleCheckForReason,
         handleShowUserDetails,

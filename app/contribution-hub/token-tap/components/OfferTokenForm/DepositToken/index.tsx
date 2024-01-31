@@ -40,11 +40,6 @@ const DepositToken = ({
     data,
     page,
     createRaffleResponse,
-    isErc20Approved,
-    isApprovedAll,
-    handleApproveErc721Token,
-    handleApproveErc20Token,
-    approveLoading,
     isShowingDetails,
   } = useTokenTapFromContext();
 
@@ -85,12 +80,6 @@ const DepositToken = ({
     switchChain,
     setIsWalletPromptOpen,
   ]);
-
-  const approve = data.isNativeToken
-    ? true
-    : data.isNft
-    ? isApprovedAll
-    : isErc20Approved;
 
   useEffect(() => {
     createRaffleResponse?.state === "Done" ? handleChangeFormPageNext() : null;
@@ -142,20 +131,6 @@ const DepositToken = ({
           data-testid="fund-action"
         >
           Connect Wallet
-        </ProviderDashboardButtonSubmit>
-      ) : !approve && !isShowingDetails ? (
-        <ProviderDashboardButtonSubmit
-          $width="100%"
-          height="42px"
-          className="max-w-[452px] mt-[2px]"
-          onClick={
-            data.isNft && !isApprovedAll
-              ? handleApproveErc721Token
-              : handleApproveErc20Token
-          }
-          disabled={approveLoading}
-        >
-          <p>{approveLoading ? "Approving Contract..." : "Approve Contract"}</p>
         </ProviderDashboardButtonSubmit>
       ) : (
         <Pagination
