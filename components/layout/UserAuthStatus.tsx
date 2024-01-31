@@ -25,7 +25,7 @@ export const UserAuthStatus = () => {
             className="cursor-pointer relative z-20 pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
           >
             <span className="ml-2 hidden md:block text-sm">
-              @ {userProfile?.username || `User${userProfile.pk}`}
+              @ {userProfile?.username || `User${userProfile?.pk}`}
             </span>
 
             <span className="text-gray90 hidden md:block ml-8 mr-5">
