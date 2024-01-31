@@ -846,7 +846,8 @@ const ProviderDashboard: FC<
       signer,
       address,
       setApproveLoading,
-      setIsErc20Approved
+      setIsErc20Approved,
+      setApproveAllowance
     );
   };
 

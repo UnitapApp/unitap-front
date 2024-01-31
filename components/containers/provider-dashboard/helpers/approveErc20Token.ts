@@ -1,5 +1,5 @@
 import { ProviderDashboardFormDataProp } from "@/types";
-import { toWei } from "@/utils/numbersBigNumber";
+import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import { GetContractReturnType, getContract } from "viem";
 import { Address, PublicClient, erc20ABI } from "wagmi";
 import { GetWalletClientResult } from "wagmi/dist/actions";
@@ -11,11 +11,11 @@ export const approveErc20TokenCallback = async (
   provider: PublicClient,
   signer: GetWalletClientResult,
   decimals: number,
-  totalAmount: string,
+  totalAmount: string
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: erc20ABI,
-    address:erc20Contract.address,
+    address: erc20Contract.address,
     functionName: "approve",
     account: address,
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
@@ -23,7 +23,7 @@ export const approveErc20TokenCallback = async (
 
   const response = await signer?.writeContract({
     abi: erc20ABI,
-    address:erc20Contract.address,
+    address: erc20Contract.address,
     account: address,
     functionName: "approve",
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
@@ -47,8 +47,9 @@ export const approveErc20Token = async (
   provider: PublicClient,
   signer: GetWalletClientResult,
   address: Address,
-  setApproveLoading: any,
-  setIsErc20Approved: any
+  setApproveLoading: (e: boolean) => void,
+  setIsErc20Approved: (e: boolean) => void,
+  setApproveAllowance: (e: number) => void
 ) => {
   if (!provider || !signer) return;
 
@@ -67,12 +68,20 @@ export const approveErc20Token = async (
       provider,
       signer,
       data.tokenDecimals,
-      data.totalAmount,
+      data.totalAmount
     );
 
     setApproveLoading(false);
     setIsErc20Approved(true);
-
+    Promise.all([
+      contract.read.decimals(),
+      contract.read.allowance([
+        address as Address,
+        data.selectedChain.erc20PrizetapAddr,
+      ]),
+    ]).then(([r1, r2]) => {
+      setApproveAllowance(Number(fromWei(r2.toString(), r1)));
+    });
     return response;
   } catch (e: any) {
     console.log(e);
