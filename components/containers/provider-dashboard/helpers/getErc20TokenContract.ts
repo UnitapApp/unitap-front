@@ -37,10 +37,6 @@ export const getErc20TokenContract = async (
     return;
   }
 
-  console.log(address, data.selectedChain.erc20PrizetapAddr);
-
-  console.log(data.selectedChain);
-
   Promise.all([
     contract.read.name(),
     contract.read.symbol(),
