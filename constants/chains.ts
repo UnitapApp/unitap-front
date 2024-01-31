@@ -129,6 +129,7 @@ export const supportedChains = [
       default: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
       public: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
     },
+    symbol: "ZETA",
   },
   scroll,
   xdc,
