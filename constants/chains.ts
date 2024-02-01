@@ -29,6 +29,8 @@ import {
   base,
   mantle,
   thunderTestnet,
+  baseGoerli,
+  mantleTestnet,
 } from "viem/chains";
 
 const IDChain = {
@@ -95,7 +97,8 @@ export const supportedChains = [
   bsc,
   base,
   mantle,
-  thunderTestnet,
+  mantleTestnet,
+  { ...thunderTestnet, name: "5ireChain Thunder" },
   { ...polygon, name: "Polygon Mainnet" },
   {
     ...fantom,
@@ -105,6 +108,10 @@ export const supportedChains = [
       default: { http: ["https://rpc.ftm.tools"] },
       public: { http: ["https://rpc.ftm.tools"] },
     },
+  },
+  {
+    ...baseGoerli,
+    name: "Base Goerli Testnet",
   },
   holesky,
   goerli,
@@ -129,6 +136,11 @@ export const supportedChains = [
       default: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
       public: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
     },
+    nativeCurrency: {
+      ...zetachainAthensTestnet.nativeCurrency,
+      symbol: "ZETA",
+    },
+    symbol: "ZETA",
   },
   scroll,
   xdc,
