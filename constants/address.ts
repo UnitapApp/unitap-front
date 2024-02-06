@@ -1,4 +1,4 @@
-import { Address } from "wagmi";
+import { Address } from "viem";
 import { SupportedChainId } from "./chains";
 
 export type AddressMap = { [chainId: number]: Address | undefined };

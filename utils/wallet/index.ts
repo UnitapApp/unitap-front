@@ -2,7 +2,7 @@
 
 import { Chain, ChainType } from "@/types";
 import { useEffect, useState } from "react";
-import { Address, Client } from "viem";
+import { Address, Client, PublicClient } from "viem";
 import {
   Connector,
   useAccount,
@@ -191,17 +191,32 @@ export type EstimateGasProps = {
   data?: string;
 };
 
-export const estimateGas = (
-  provider: Client,
-  { from, to, value, data }: EstimateGasProps
-) => {
-  return estimateGas({
-    account: from as Address,
-    to: to as Address,
-    value,
-    data: data as Address,
+export const useEstimateContractGas = ({
+  to,
+  amount,
+  chainId,
+}: {
+  to: Address;
+  amount: bigint;
+  chainId?: number;
+}) =>
+  useEstimateGas({
+    to,
+    value: amount,
+    chainId,
   });
-};
+
+// export const estimateGas = (
+//   provider: Client,
+//   { from, to, value, data }: EstimateGasProps
+// ) => {
+//   return estimateGas({
+//     account: from as Address,
+//     to: to as Address,
+//     value,
+//     data: data as Address,
+//   });
+// };
 
 export const callProvider = (
   provider: PublicClient,

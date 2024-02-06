@@ -1,55 +1,26 @@
 "use client";
 
-import {
-  configureChains,
-  createConfig,
-  Chain,
-  Connector,
-  mainnet,
-} from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { RPC_URLS, RPC_URLS_WEBSOCKET } from "@/constants/network";
-import { SupportedChainId, supportedChains } from "@/constants/chains";
-import { MockConnector } from "wagmi/connectors/mock";
-import { createWalletClient, http, publicActions } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { createConfig, http } from "wagmi";
+import { supportedChains } from "@/constants/chains";
+import { injected, mock, safe, walletConnect } from "wagmi/connectors";
+import { HttpTransport } from "viem";
 import { TEST_PRIVATE_KEY } from "@/cypress/utils/data";
 
-export const wagmiPublicProvider = publicProvider();
+// export const wagmiPublicProvider = publicProvider();
 
-export const wagmiJsonRpcProvider = jsonRpcProvider({
-  rpc: (chain: Chain) => ({
-    http: RPC_URLS[chain.id as SupportedChainId],
-    webSocket: RPC_URLS_WEBSOCKET[chain.id as SupportedChainId],
-  }),
-});
+// export const wagmiJsonRpcProvider = jsonRpcProvider({
+//   rpc: (chain: Chain) => ({
+//     http: RPC_URLS[chain.id as SupportedChainId],
+//     webSocket: RPC_URLS_WEBSOCKET[chain.id as SupportedChainId],
+//   }),
+// });
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  supportedChains,
-  [wagmiPublicProvider, wagmiJsonRpcProvider] as any[]
-);
-
-const getConnectorProviders = (): Connector[] => {
+const getConnectorProviders = () => {
   if (process.env.NEXT_PUBLIC_IS_TESTING === "1") {
-    const account = privateKeyToAccount(TEST_PRIVATE_KEY);
+    // const account = privateKeyToAccount(TEST_PRIVATE_KEY);
     const connectors = [
-      new MockConnector({
-        chains,
-        options: {
-          chainId: mainnet.id,
-          flags: {
-            isAuthorized: true,
-          },
-
-          walletClient: createWalletClient({
-            transport: http(mainnet.rpcUrls.default.http[0]),
-            chain: mainnet,
-            account,
-          }).extend(publicActions),
-        },
+      mock({
+        accounts: [TEST_PRIVATE_KEY],
       }),
     ];
 
@@ -57,27 +28,21 @@ const getConnectorProviders = (): Connector[] => {
   }
 
   return [
-    new InjectedConnector({
-      chains,
-      options: {
-        shimDisconnect: true,
-      },
+    injected(),
+    walletConnect({
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
     }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        projectId: "31516b299852311acdc936c61cd7892c",
-      },
-    }),
+    safe(),
   ];
 };
 
-export { publicClient, webSocketPublicClient };
-
 export const config = createConfig({
-  autoConnect: true,
   ssr: true,
-  publicClient,
-  webSocketPublicClient,
+  chains: [supportedChains[0], ...supportedChains.slice(1)],
   connectors: getConnectorProviders(),
+  transports: supportedChains.reduce((prev, curr) => {
+    prev[curr.id] = http();
+
+    return prev;
+  }, {} as { [key: string]: HttpTransport }),
 });

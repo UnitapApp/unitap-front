@@ -84,9 +84,9 @@ export const kccMainnet = {
   // },
 } satisfies Chain;
 
-export const supportedChains = [
-  sepolia,
+export const supportedChains: Chain[] = [
   mainnet,
+  sepolia,
   avalanche,
   bsc,
   { ...polygon, name: "Polygon Mainnet" },
