@@ -57,7 +57,7 @@ const LandingStats: FC<{ chains: Chain[] }> = async ({ chains }) => {
           ))}
           <div className="flex flex-col gap-2 items-center">
             <p className={"text-xl text-space-green font-semibold"}>
-              {gasClaimedCount}
+              {numberWithCommas(gasClaimedCount)}
             </p>
             <p className={"text-gradient-primary text-xs font-medium"}>
               {" "}

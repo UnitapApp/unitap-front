@@ -35,8 +35,6 @@ export async function getWeeklyChainClaimLimitAPI() {
     return prev;
   }, {} as Settings);
 
-  console.log(result);
-
   return result;
 }
 

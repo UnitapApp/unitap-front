@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { getChainList } from "@/utils/api";
 import { ChainType } from "@/types";
+import { getChainList } from "@/utils/api";
 
 const SOLANA_CONNECTION = new Connection(process.env.SOLANA_HTTP_PROVIDER!);
 
@@ -29,8 +29,22 @@ export async function GET() {
     );
 
   try {
+    const chains = await getChainList();
+
+    const solana = chains.find(
+      (chain) => !chain.isTestnet && chain.chainType === ChainType.SOLANA
+    );
+
+    if (!solana)
+      return NextResponse.json(
+        {
+          balance: 0,
+        },
+        { status: 200 }
+      );
+
     const balance = await SOLANA_CONNECTION.getBalance(
-      new PublicKey(solanaChain?.fundManagerAddress)
+      new PublicKey(solana.fundManagerAddress)
     );
 
     return NextResponse.json(
@@ -42,7 +56,7 @@ export async function GET() {
 
     return NextResponse.json(
       {
-        balance: null,
+        balance: 0,
       },
       { status: 200 }
     );

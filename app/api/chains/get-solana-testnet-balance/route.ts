@@ -9,9 +9,6 @@ import { getChainList } from "@/utils/api";
 import { ChainType } from "@/types";
 
 const SOLANA_CONNECTION = new Connection(clusterApiUrl("testnet"));
-
-const WALLET_ADDRESS = process.env.SOLANA_TESTNET_WALLET_ADDRESS!;
-
 const SOLANA_TESTNET_CHAIN_ID = "1399811150";
 
 export const revalidate = true;
@@ -36,8 +33,22 @@ export async function GET() {
     );
 
   try {
+    const chains = await getChainList();
+
+    const solanaTestnet = chains.find(
+      (chain) => chain.isTestnet && chain.chainType === ChainType.SOLANA
+    );
+
+    if (!solanaTestnet)
+      return NextResponse.json(
+        {
+          balance: 0,
+        },
+        { status: 200 }
+      );
+
     const balance = await SOLANA_CONNECTION.getBalance(
-      new PublicKey(solanaChain?.fundManagerAddress)
+      new PublicKey(solanaTestnet.fundManagerAddress)
     );
 
     return NextResponse.json(
@@ -49,7 +60,7 @@ export async function GET() {
 
     return NextResponse.json(
       {
-        balance: null,
+        balance: 0,
       },
       { status: 200 }
     );
