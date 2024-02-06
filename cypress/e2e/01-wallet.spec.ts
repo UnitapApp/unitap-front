@@ -32,70 +32,62 @@ const setupGetChainListServerGeneral = () => {
   );
 };
 
-// describe("wallet interaction", () => {
-//   beforeEach(() => {
-//     setupGetChainListServerGeneral();
-//     setupGetUserProfileVerified();
+describe("wallet interaction", () => {
+  beforeEach(() => {
+    setupGetChainListServerGeneral();
+    setupGetUserProfileVerified();
 
-//     cy.on("uncaught:exception", () => {
-//       return false;
-//     });
-//   });
+    cy.on("uncaught:exception", () => {
+      return false;
+    });
+  });
 
-//   it("connects to eth wallet", () => {
-//     cy.visit(RoutePath.FAUCET);
+  it("connects to eth wallet", () => {
+    cy.visit(RoutePath.FAUCET);
 
-//     cy.get("[data-testid=wallet-address]").contains(
-//       TEST_ADDRESS_NEVER_USE_SHORTENED
-//     );
-//   });
+    cy.get("[data-testid=wallet-address]").contains(
+      TEST_ADDRESS_NEVER_USE_SHORTENED
+    );
+  });
 
-//   // it("switches to network", () => {
-//   //   // cy.on("window:before:load", (win) => {
-//   //   //   // @ts-ignore
-//   //   //   cy.spy(win.ethereum, "switchEthereumChainSpy")
-//   //   // })
+  it("switches to network", () => {
+    // cy.on("window:before:load", (win) => {
+    //   // @ts-ignore
+    //   cy.spy(win.ethereum, "switchEthereumChainSpy")
+    // })
 
-//   //   cy.visit(RoutePath.FAUCET)
-//   //   connectWallet()
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
 
-//   //   clearGasTapFilters()
+    clearGasTapFilters();
 
-//   //   cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click()
-//   //   const expectedChainId = formatChainId(chainList[0].chainId!)
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
+    const expectedChainId = formatChainId(chainList[0].chainId!);
 
-//   //   // cy.window().then((win) => {
-//   //   //   // @ts-ignore
-//   //   //   expect(win.ethereum.switchEthereumChainSpy).to.have.calledWith(
-//   //   //     expectedChainId
-//   //   //   )
-//   //   // })
-//   // })
+    // cy.window().then((win) => {
+    //   // @ts-ignore
+    //   expect(win.ethereum.switchEthereumChainSpy).to.have.calledWith(
+    //     expectedChainId
+    //   )
+    // })
+  });
 
-//   // it("adds network", () => {
-//   //   // cy.on("window:before:load", (win) => {
-//   //   //   cy.spy(ethBridge, "switchEthereumChainSpy")
-//   //   //   cy.spy(ethBridge, "addEthereumChainSpy")
-//   //   //   // @ts-ignore
-//   //   //   win.ethereum = ethBridge
-//   //   // })
+  it("adds network", () => {
+    // cy.on("window:before:load", (win) => {
+    //   cy.spy(ethBridge, "switchEthereumChainSpy")
+    //   cy.spy(ethBridge, "addEthereumChainSpy")
+    //   // @ts-ignore
+    //   win.ethereum = ethBridge
+    // })
 
-//   //   cy.visit(RoutePath.FAUCET)
-//   //   connectWallet()
+    cy.visit(RoutePath.FAUCET);
+    connectWallet();
 
-//   //   clearGasTapFilters()
+    clearGasTapFilters();
 
-//   //   cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click()
-//   //   cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click()
-//   //   // cy.get(`[data-testid=chain-id]`).contains(chainList[0].chainId!);
-//   //   const expectedChainId = formatChainId(chainList[0].chainId!)
-
-//   //   // cy.window().then((win) => {
-//   //   //   expect(ethBridge.switchEthereumChainSpy).to.have.calledTwice
-//   //   //   expect(ethBridge.switchEthereumChainSpy).to.have.calledWith(
-//   //   //     expectedChainId
-//   //   //   )
-//   //   //   expect(ethBridge.addEthereumChainSpy).to.have.calledWith(expectedChainId)
-//   //   // })
-//   // })
-// });
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
+    cy.get(`[data-testid=chain-switch-${chainList[0].pk}]`).click();
+    // cy.get(`[data-testid=chain-id]`).contains(chainList[0].chainId!);
+    const expectedChainId = formatChainId(chainList[0].chainId!);
+  });
+});
