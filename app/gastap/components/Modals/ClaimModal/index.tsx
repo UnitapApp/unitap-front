@@ -1,30 +1,29 @@
 "use client";
 
-import { useMemo } from "react";
-import { Text } from "@/components/ui/text.style";
+import { useMemo, useState } from "react";
 import Icon from "@/components/ui/Icon";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { BrightIdModalState, Chain, ClaimReceiptState } from "@/types";
 import { getChainClaimIcon } from "@/utils/chain";
 import { formatWeiBalance } from "@/utils/numbers";
 import {
-  BrightIdNotVerifiedBody,
   WalletNotConnectedBody,
   ClaimSuccessBody,
   ClaimPendingBody,
   ClaimFailedBody,
   BrightIdNotConnectedBody,
+  ChooseWalletBody,
 } from "./ModalStatusesBody";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { DropIconWrapper } from "../../../../../components/containers/modals/claimModal.style";
-import WalletAddress from "./walletAddress";
 import { useGlobalContext } from "@/context/globalProvider";
 import { shortenAddress } from "@/utils";
 import ClaimNotAvailable from "../ClaimNotRemaining";
 import { useWalletAccount } from "@/utils/wallet";
 import Modal from "@/components/ui/Modal/modal";
 import Image from "next/image";
+import { BrightConnectionModalBody } from "@/components/containers/modals/brightConnectionModal";
 
 const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   const { address, isConnected } = useWalletAccount();
@@ -36,9 +35,12 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     claimLoading,
     activeChain,
     oneTimeClaimedGasList,
+    claimWalletAddress,
   } = useGasTapContext();
 
   const { userProfile, remainingClaims } = useUserProfileContext();
+
+  const [isWalletChoosing, setIsWalletChoosing] = useState(false);
 
   const oneTimeReceipt = useMemo(
     () => oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
@@ -53,7 +55,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       />
     );
 
-  if (!userProfile.isMeetVerified) return <BrightIdNotVerifiedBody />;
+  if (!userProfile.isMeetVerified) return <BrightConnectionModalBody />;
 
   if (!isConnected) return <WalletNotConnectedBody chainPk={chain.pk} />;
 
@@ -90,6 +92,9 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 
   if (!activeChain) return null;
 
+  if (isWalletChoosing)
+    return <ChooseWalletBody setIsWalletChoosing={setIsWalletChoosing} />;
+
   return (
     <>
       <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
@@ -101,8 +106,11 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
           alt=""
         />
       </DropIconWrapper>
-      <button className="bg-gray50 font-semibold text-gray100 mb-10 text-base rounded-xl w-full flex items-center p-4">
-        Selected Wallet: {shortenAddress(address)}
+      <button
+        onClick={() => setIsWalletChoosing(true)}
+        className="bg-gray50 font-semibold text-gray100 mb-10 text-base rounded-xl w-full flex items-center p-4"
+      >
+        Selected Wallet: {shortenAddress(claimWalletAddress || address)}
         <Image
           className="ml-auto"
           src="/assets/images/provider-dashboard/arrow-down-dark.svg"
@@ -133,6 +141,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
 const ClaimModal = () => {
   const { closeClaimModal, activeChain, isNonEvmActive } = useGasTapContext();
   const { brightidModalStatus } = useGlobalContext();
+  const { userProfile } = useUserProfileContext();
 
   const isOpen = useMemo(() => {
     return !!activeChain && brightidModalStatus === BrightIdModalState.CLOSED;
@@ -143,9 +152,13 @@ const ClaimModal = () => {
   return (
     <>
       <Modal
-        title={`Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
-          activeChain.symbol
-        }`}
+        title={
+          userProfile?.isMeetVerified
+            ? `Claim ${formatWeiBalance(activeChain.maxClaimAmount)} ${
+                activeChain.symbol
+              }`
+            : "Connect BrightID"
+        }
         size="small"
         closeModalHandler={closeClaimModal}
         isOpen={isOpen}
@@ -154,6 +167,12 @@ const ClaimModal = () => {
           className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
           data-testid={`chain-claim-modal-${activeChain.pk}`}
         >
+          {!userProfile?.isMeetVerified ? (
+            <div className="my-5 font-semibold text-error text-sm">
+              You need to connect your brightID first before claiming gas
+            </div>
+          ) : null}
+
           <ClaimModalBody chain={activeChain} />
         </div>
       </Modal>

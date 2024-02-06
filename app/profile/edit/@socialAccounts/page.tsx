@@ -1,18 +1,36 @@
-import { cookies } from "next/headers";
+"use client";
+
+import { UserConnection } from "@/types";
+import { FC, useState } from "react";
 import SocialAccount from "../../components/socialAccount";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 import { getAllConnections } from "@/utils/serverApis";
+import { useUserProfileContext } from "@/context/userProfile";
+import { SocialAccountContext } from "@/context/socialAccountContext";
 
-const SocialAccounts = async () => {
-  const cookiesStore = cookies();
+const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
+  initialConnections,
+}) => {
+  const [connections, setConnections] = useState(initialConnections ?? []);
 
-  const connections = await getAllConnections(
-    cookiesStore.get("userToken")?.value
-  );
+  const { userToken } = useUserProfileContext();
+
+  useFastRefresh(() => {
+    if (!userToken) return;
+
+    getAllConnections(userToken).then((res) => {
+      setConnections(res);
+    });
+  }, [userToken]);
 
   return (
-    <div className="mt-5 bg-gray20 rounded-xl p-5">
-      <p>Social Accounts </p>
-
+    <SocialAccountContext.Provider
+      value={{
+        connections,
+        addConnection: (key: string, data: any) =>
+          setConnections({ ...connections, [key]: data }),
+      }}
+    >
       <div className="mt-10 grid grid-cols-2 gap-4">
         <SocialAccount
           title={"Bright ID"}
@@ -20,8 +38,8 @@ const SocialAccounts = async () => {
           isConnected={!!connections["BrightID"]}
         />
       </div>
-    </div>
+    </SocialAccountContext.Provider>
   );
 };
 
-export default SocialAccounts;
+export default SocialAccountsPage;

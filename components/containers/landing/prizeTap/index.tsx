@@ -54,62 +54,64 @@ const PrizeTapLanding: FC = async () => {
           buttonTitle={"Beta"}
           buttonClass={"green-text-button text-gray100"}
         >
-          {validRaffles.length > 0 &&
-            validRaffles.slice(0, 2).map((raffle, key) => (
-              <div
-                key={key}
-                className={
-                  "flex relative text-xs text-white bg-gray30 rounded-xl py-2 px-2 mb-2 overflow-hidden h-[80px] "
-                }
-              >
-                <div className="z-100 w-full">
-                  <div className="flex gap-4">
-                    <div className="raffle-logo-container w-[64px] h-[63px] relative z-100 overflow-hidden">
-                      <span className=" w-[62px] left-[1px] h-[62px] rounded-[13px] bg-gray40 absolute overflow-hidden">
-                        <img
-                          width="62px"
-                          height="63px"
-                          src={raffle.imageUrl}
-                          alt={raffle.name}
-                        />
-                      </span>
-                    </div>
-                    <div>
-                      <p className="">
-                        {raffle.isPrizeNft
-                          ? raffle.prizeAmount
-                          : raffle.prizeAmount / 10 ** raffle.decimals}{" "}
-                        {raffle.prizeSymbol}
-                      </p>
-                      <p className="text-secondary-text mt-2">
-                        {"by " +
-                          (raffle.creatorName ||
-                            raffle.creatorProfile?.username)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex mt-[-1.2em] ml-[6em] justify-between">
-                    {raffle.winnerEntry ? (
-                      <p className="text-gray90">
-                        Congratulations, @
-                        {raffle.winnerEntry?.userProfile?.username}
-                      </p>
-                    ) : (
-                      <>
-                        <p className="text-gray90 ml-2">
-                          Winners Announced in:
+          <div className="mt-14">
+            {validRaffles.length > 0 &&
+              validRaffles.slice(0, 2).map((raffle, key) => (
+                <div
+                  key={key}
+                  className={
+                    "flex relative text-xs text-white bg-gray30 rounded-xl py-2 px-2 mb-2 overflow-hidden h-[80px] "
+                  }
+                >
+                  <div className="z-100 w-full">
+                    <div className="flex gap-4">
+                      <div className="raffle-logo-container w-[64px] h-[63px] relative z-100 overflow-hidden">
+                        <span className=" w-[62px] left-[1px] h-[62px] rounded-[13px] bg-gray40 absolute overflow-hidden">
+                          <img
+                            width="62px"
+                            height="63px"
+                            src={raffle.imageUrl}
+                            alt={raffle.name}
+                          />
+                        </span>
+                      </div>
+                      <div>
+                        <p className="">
+                          {raffle.isPrizeNft
+                            ? raffle.prizeAmount
+                            : raffle.prizeAmount / 10 ** raffle.decimals}{" "}
+                          {raffle.prizeSymbol}
                         </p>
-                        <RaffleCardTimerLandingPage
-                          startTime={raffle.createdAt}
-                          FinishTime={raffle.deadline}
-                        />
-                      </>
-                    )}
+                        <p className="text-secondary-text mt-2">
+                          {"by " +
+                            (raffle.creatorName ||
+                              raffle.creatorProfile?.username)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex mt-[-1.2em] ml-[6em] justify-between">
+                      {raffle.winnerEntry ? (
+                        <p className="text-gray90">
+                          Congratulations, @
+                          {raffle.winnerEntry?.userProfile?.username}
+                        </p>
+                      ) : (
+                        <>
+                          <p className="text-gray90 ml-2">
+                            Winners Announced in:
+                          </p>
+                          <RaffleCardTimerLandingPage
+                            startTime={raffle.createdAt}
+                            FinishTime={raffle.deadline}
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
+                  <div className="w-full bg-gray40 absolute bottom-0 left-0 h-[30px] flex items-center justify-between px-10"></div>
                 </div>
-                <div className="w-full bg-gray40 absolute bottom-0 left-0 h-[30px] flex items-center justify-between px-10"></div>
-              </div>
-            ))}
+              ))}
+          </div>
         </Widget>
       </Link>
     </section>

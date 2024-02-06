@@ -1,6 +1,6 @@
 "use client";
 import OfferPrizeForm from "../../components/OfferPrizeForm";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const Page = () => {
   const params = useParams();

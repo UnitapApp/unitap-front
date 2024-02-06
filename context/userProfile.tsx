@@ -150,13 +150,13 @@ export const UserContextProvider: FC<
           await getUserProfileWithTokenAPI(userToken!);
         setUserProfile(userProfileWithToken);
 
-        document.cookie = `userToken=${userToken!}`;
+        document.cookie = `userToken=${userToken!};path=/;`;
       } finally {
         setUserProfileLoading(false);
       }
     };
 
-    document.cookie = "userToken=" + userToken + ";";
+    document.cookie = "userToken=" + userToken + ";path=/;";
 
     if (userToken && !userProfile) {
       getUserProfileWithToken();
@@ -207,7 +207,7 @@ export const UserContextProvider: FC<
   const logout = () => {
     disconnect?.();
     localStorage.clear();
-    document.cookie = "userToken=;";
+    document.cookie = "userToken=;path=/;";
     setUserProfile(null);
     setToken("");
   };
@@ -225,7 +225,7 @@ export const UserContextProvider: FC<
 
     disconnect?.();
     localStorage.removeItem("userToken");
-    document.cookie = "userToken=;";
+    document.cookie = "userToken=;path=/;";
     setUserProfile(null);
     setToken("");
   }, [

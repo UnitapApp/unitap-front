@@ -3,7 +3,7 @@
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address } from "viem";
-import { WalletWinner } from "@/components/containers/prize-tap/Linea/LineaWinnersModal";
+import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
 import { readContracts } from "wagmi";
@@ -102,6 +102,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
         {userEnrollments.map((item, key) => (
           <WalletWinner
+            claimingPrizeTx={item.claimingPrizeTx}
             id={item.pk}
             walletAddress={item.userWalletAddress}
             isWinner

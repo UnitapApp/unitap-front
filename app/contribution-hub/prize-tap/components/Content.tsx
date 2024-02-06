@@ -124,9 +124,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             className="absolute bottom-3 right-4 left-4"
             href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
           >
-            <ProviderDashboardButtonCheck
-            // onClick={() => handleCheckForReason(prize)}
-            >
+            <ProviderDashboardButtonCheck>
               Check For Reasons
             </ProviderDashboardButtonCheck>
           </Link>
@@ -214,7 +212,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
                 {prize.numberOfOnchainEntries >= 1 &&
                 !prize.winnerEntries?.length
                   ? "Raffle is being processed"
-                  : "Check Winner Wallets"}
+                  : "Check Winners"}
               </p>
             </div>
           </div>
@@ -225,13 +223,6 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
 };
 
 const PrizeTapContent = () => {
-  // const {
-  //   selectNewOffer,
-  //   handleSelectNewOffer,
-  //   userRaffles,
-  //   userRafflesLoading,
-  //   isShowingDetails,
-  // } = usePrizeOfferFormContext();
   const { userToken } = useUserProfileContext();
   const [userRafflesLoading, setUserRafflesLoading] = useState(false);
   const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);

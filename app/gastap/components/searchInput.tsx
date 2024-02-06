@@ -64,7 +64,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     >
       <Input
         data-testid="search-box"
-        $icon="search.png"
+        $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
         $fontSize="12px"
         $iconWidth="20px"

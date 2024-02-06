@@ -113,7 +113,7 @@ const WalletItem = ({
   );
 };
 
-const ProfileDropdown: FC<{
+export const ProfileDropdown: FC<{
   setDropDownActive: (isActive: boolean) => void;
 }> = ({ setDropDownActive }) => {
   const { userProfile, logout, setHoldUserLogout } = useUserProfileContext();

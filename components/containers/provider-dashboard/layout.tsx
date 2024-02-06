@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren } from "react";
 import Header from "./Header";
 import { usePathname } from "next/navigation";
 import RoutePath from "@/utils/routes";
@@ -69,12 +69,10 @@ const ProviderTabs: FC = () => {
     >
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname === RoutePath.PROVIDER_GASTAP
-            ? " text-white"
-            : "opacity-[0.2]"
+          pathname.includes("gas-tap") ? " text-white" : "opacity-[0.2]"
         }`}
-        // href={RoutePath.PROVIDER_GASTAP}
-        href={"#"}
+        href={RoutePath.PROVIDER_GASTAP}
+        // href={"#"}
       >
         Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>

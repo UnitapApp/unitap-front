@@ -24,6 +24,7 @@ import FundTransactionModal from "../FundTransactionModal";
 import { parseEther } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
 import Image from "next/image";
+import Tooltip from "@/components/ui/Tooltip";
 
 const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const { chainList: originalChainList } = useGasTapContext();
@@ -209,6 +210,14 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     balance.refetch();
   }, [isRightChain, address, provider, balance]);
 
+  const helpAmount =
+    fundAmount && selectedChain
+      ? Math.floor(
+          (Number(fundAmount) * 0.75) /
+            (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals)
+        )
+      : 0;
+
   return (
     <div className="flex justify-center">
       <Modal
@@ -305,6 +314,21 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
               </div>
             </div>
           </div>
+          {!!fundAmount && !!helpAmount && (
+            <div className="mt-2 ml-5 text-sm text-gray90">
+              You will help onboard{" "}
+              <Tooltip
+                text="75% of your donation will be distributed among users. the rest is used for transaction fees. and depending on the network gas fees, the number might not be exact."
+                toolTipClassName="!w-[300px]"
+                className="cursor-pointer"
+                // title=""
+              >
+                <b>approximately</b>
+              </Tooltip>{" "}
+              <span className="text-green-500">{helpAmount}</span> users to this
+              network!
+            </div>
+          )}
 
           <ClaimButton
             height="3.5rem"
@@ -333,5 +357,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     </div>
   );
 };
+
+const TooltipContent = () => {};
 
 export default Content;

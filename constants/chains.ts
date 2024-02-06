@@ -26,6 +26,11 @@ import {
   optimism,
   mainnet,
   sepolia,
+  base,
+  mantle,
+  thunderTestnet,
+  baseGoerli,
+  mantleTestnet,
 } from "viem/chains";
 
 const IDChain = {
@@ -45,7 +50,8 @@ const IDChain = {
 
 export const kccMainnet = {
   id: 321,
-  name: "KuCoin Community Chain",
+  name: "KCC Mainnet",
+  network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
     bscscan: {
@@ -87,8 +93,12 @@ export const kccMainnet = {
 export const supportedChains: Chain[] = [
   mainnet,
   sepolia,
-  avalanche,
+  { ...avalanche, name: "Avalanche C-Chain" },
   bsc,
+  base,
+  mantle,
+  mantleTestnet,
+  { ...thunderTestnet, name: "5ireChain Thunder" },
   { ...polygon, name: "Polygon Mainnet" },
   {
     ...fantom,
@@ -99,26 +109,49 @@ export const supportedChains: Chain[] = [
       public: { http: ["https://rpc.ftm.tools"] },
     },
   },
+  {
+    ...baseGoerli,
+    name: "Base Goerli Testnet",
+  },
   holesky,
   goerli,
   polygonMumbai,
-  bscTestnet,
+  {
+    ...bscTestnet,
+    rpcUrls: {
+      ...bscTestnet.rpcUrls,
+      default: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+      public: { http: ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"] },
+    },
+  },
   gnosis,
   IDChain,
   optimism,
   meter,
-  zetachainAthensTestnet,
+  {
+    ...zetachainAthensTestnet,
+    name: "ZetaChain Athens 3 Testnet",
+    rpcUrls: {
+      ...zetachainAthensTestnet.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+      public: { http: ["https://rpc.ankr.com/zetachain_evm_athens_testnet"] },
+    },
+    nativeCurrency: {
+      ...zetachainAthensTestnet.nativeCurrency,
+      symbol: "ZETA",
+    },
+  },
   scroll,
   xdc,
   arbitrum,
   telos,
-  harmonyOne,
+  { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
   opBNBTestnet,
   linea,
   lineaTestnet,
   arbitrumNova,
-  scrollSepolia,
+  { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
 ];

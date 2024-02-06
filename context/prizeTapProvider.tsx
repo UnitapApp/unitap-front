@@ -218,7 +218,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const id = enrollOrClaimPayload?.userEntry?.pk;
 
-    console.log(id);
     setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
@@ -264,7 +263,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
   const openEnrollModal = useCallback(
     (raffle: Prize, method: string | null) => {
-      if (!isConnected) {
+      if (!isConnected && method !== "Winners") {
         setIsWalletPromptOpen(true);
         return;
       }

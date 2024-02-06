@@ -113,7 +113,7 @@ const PrizeInfo = ({
 
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
+            className={`flex gap-2 text-gray100 text-[12px] bg-gray40 border ${
               showErrors && !data.description
                 ? "border-error"
                 : "border-gray50 "

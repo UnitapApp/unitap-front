@@ -15,13 +15,13 @@ import BrightStatusModal from "./brightStatusModal";
 import Icon from "@/components/ui/Icon";
 import { ConnectBrightIdApi, sponsorAPI } from "@/utils/api";
 import { useUserProfileContext } from "@/context/userProfile";
-import { ErrorsContext } from "@/context/errorsProvider";
 import useGenerateKeys from "@/utils/hooks/generateKeys";
 import { useGlobalContext } from "@/context/globalProvider";
 import Modal from "@/components/ui/Modal/modal";
 import { AxiosError } from "axios";
+import { useSocialACcountContext } from "@/context/socialAccountContext";
 
-const BrightConnectionModalBody = () => {
+export const BrightConnectionModalBody = () => {
   const { userProfile, refreshUserProfile, updateProfile, userToken } =
     useUserProfileContext();
 
@@ -36,6 +36,8 @@ const BrightConnectionModalBody = () => {
 
   const [brightIdConnectionError, setBrightIdConnectionError] =
     useState<APIError | null>(null);
+
+  const { addConnection } = useSocialACcountContext();
 
   useEffect(() => {
     if (keys) {
@@ -72,6 +74,7 @@ const BrightConnectionModalBody = () => {
       );
 
       updateProfile({ ...userProfile!, isMeetVerified: true });
+      addConnection("userProfile", profile);
     } catch (e) {
       if (e instanceof AxiosError) {
         setError(e.response?.data.message ?? e.message);
@@ -88,6 +91,7 @@ const BrightConnectionModalBody = () => {
     userToken,
     updateProfile,
     userProfile,
+    addConnection,
   ]);
 
   if (userProfile?.isMeetVerified) {
@@ -135,11 +139,15 @@ const BrightConnectionModalBody = () => {
           <p className="text-xs text-error font-light text-center"> {error} </p>
         </span>
       )}
-      <span className="notice flex mb-3">
-        <Icon className="mr-2" iconSrc="/assets/images/modal/gray-danger.svg" />
-        <p className="text-xs text-gray90 font-light">
-          {" "}
-          Submit Verification after verifing with brighID app.{" "}
+      <span className="flex mb-3">
+        <Icon
+          className="mr-2 mb-4"
+          iconSrc="/assets/images/modal/gray-danger.svg"
+        />
+        <p className="text-xs text-center text-gray90 font-light">
+          Submit Verification after verifing with brighID app.
+          <br />
+          This might take up to 5 minutes.
         </p>
       </span>
       {refreshUserProfile && (

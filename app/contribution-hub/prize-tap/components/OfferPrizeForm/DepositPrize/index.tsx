@@ -16,21 +16,12 @@ import {
 } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
 
-export const DepositDescription = {
-  id: 4,
-  prevIcon: "/assets/images/provider-dashboard/step-4-green.svg",
-  activeIcon: "/assets/images/provider-dashboard/step-4-active.svg",
-  nextIcon: "/assets/images/provider-dashboard/step-4-off.svg",
-  title: "Deposit Prize",
-  description: "Deposit Token or Nft",
-};
-
 const nftDescription = {
   title: "Deposit Selected NFT",
   description: `Please proceed with depositing the NFT for which you have completed the corresponding form. Please wait
 	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
 	your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/Subtract.svg",
+  icon: "/assets/images/provider-dashboard/deposit-nft.png",
 };
 
 const tokenDescription = {
@@ -38,7 +29,7 @@ const tokenDescription = {
   description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait
 	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
 	your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/tokenSelected.svg",
+  icon: "/assets/images/provider-dashboard/deposit-token.png",
 };
 
 const DepositPrize = ({
@@ -111,19 +102,16 @@ const DepositPrize = ({
       <div className="flex flex-col min-h-[424px] gap-5 w-full max-w-[452px] min-w-[300px]">
         <section>
           <div className="text-center">
-            {data.isNft ? (
-              <DepositContent
-                title={nftDescription.title}
-                description={nftDescription.description}
-                icon={nftDescription.icon}
-              />
-            ) : (
-              <DepositContent
-                title={tokenDescription.title}
-                description={tokenDescription.description}
-                icon={tokenDescription.icon}
-              />
-            )}
+            <DepositContent
+              title={data.isNft ? nftDescription.title : tokenDescription.title}
+              description={
+                data.isNft
+                  ? nftDescription.description
+                  : tokenDescription.description
+              }
+              icon={data.isNft ? nftDescription.icon : tokenDescription.icon}
+              isNFT={data.isNft}
+            />
           </div>
         </section>
         <DisplaySelectedTokenOrNft data={data} />
