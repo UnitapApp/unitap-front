@@ -18,6 +18,7 @@ import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
 import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
+import { watchAsset } from "viem/actions";
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -37,13 +38,21 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   const addToken = async () => {
     if (!isConnected) return;
 
+    const provider = await connector?.getClient?.();
+
+    if (!provider) return;
+
     try {
-      await connector?.watchAsset?.({
-        decimals: token.chain.decimals,
-        symbol: token.token,
-        image: token.imageUrl,
-        address: token.tokenAddress,
+      watchAsset(provider, {
+        options: {
+          decimals: token.chain.decimals,
+          symbol: token.token,
+          image: token.imageUrl,
+          address: token.tokenAddress,
+        },
+        type: "ERC20",
       });
+
       // await (window.ethereum as any).request({
       //   method: "wallet_watchAsset",
       //   params: {

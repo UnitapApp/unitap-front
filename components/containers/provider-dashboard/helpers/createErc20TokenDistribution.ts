@@ -2,18 +2,18 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { parseEther } from "viem";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import { Address, parseEther } from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
-import { estimateGas } from "@/utils/wallet";
-import { PublicClient } from "wagmi";
+import { useEstimateContractGas } from "@/utils/wallet";
+import { PublicClient } from "viem";
 
 export const createErc20TokenDistribution = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
   address: string,
   userToken: string,
@@ -98,13 +98,16 @@ export const createErc20TokenDistribution = async (
       value: BigInt(parseEther(data.tokenAmount)),
     };
 
-    const estimatedGas = await estimateGas(provider, {
-      from: address,
-      to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-      value: BigInt(tx.value),
-    }).catch((err: any) => {
-      return err;
-    });
+    const estimatedGas = await provider
+      .estimateGas({
+        account: address as Address,
+
+        to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
+        value: BigInt(tx.value),
+      })
+      .catch((err: any) => {
+        return err;
+      });
 
     const hash = await signer
       ?.sendTransaction({

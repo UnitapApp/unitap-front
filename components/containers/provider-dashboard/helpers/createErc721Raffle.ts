@@ -1,15 +1,15 @@
 import { RequirementProps, ProviderDashboardFormDataProp } from "@/types";
-import { prizeTap721ABI } from "@/types/abis/contracts";
-import { getContract } from "viem";
-import { PublicClient } from "wagmi";
+import { prizeTap721Abi } from "@/types/abis/contracts";
+import { getContract, PublicClient } from "viem";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
-import { GetContractResult, GetWalletClientResult } from "wagmi/dist/actions";
+import { GetWalletClientReturnType } from "wagmi/actions";
+import { GetContractReturnType } from "viem";
 
 export const createErc721RaffleCallback = async (
   account: string,
-  raffleContract: GetContractResult,
-  signer: GetWalletClientResult,
+  raffleContract: GetContractReturnType,
+  signer: GetWalletClientReturnType,
   provider: PublicClient,
   currencyAddress: `0x${string}`,
   nftIds: string[],
@@ -20,7 +20,7 @@ export const createErc721RaffleCallback = async (
   if (!provider || !signer) return;
 
   const gasEstimate = await provider.estimateContractGas({
-    abi: prizeTap721ABI,
+    abi: prizeTap721Abi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -37,7 +37,7 @@ export const createErc721RaffleCallback = async (
   });
 
   return signer?.writeContract({
-    abi: prizeTap721ABI,
+    abi: prizeTap721Abi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -58,7 +58,7 @@ export const createErc721RaffleCallback = async (
 export const createErc721Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
   address: string,
   userToken: string,
@@ -150,8 +150,8 @@ export const createErc721Raffle = async (
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
-    abi: prizeTap721ABI,
-    publicClient: provider,
+    abi: prizeTap721Abi,
+    client: provider,
   });
 
   try {

@@ -1,6 +1,8 @@
-import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
-import { Address, getContract } from "viem";
-import { PublicClient, erc721ABI } from "wagmi";
+import {
+  ContractValidationStatus,
+  ProviderDashboardFormDataProp,
+} from "@/types";
+import { Address, getContract, PublicClient, erc721Abi } from "viem";
 
 export const getErc721TokenContract = async (
   data: ProviderDashboardFormDataProp,
@@ -13,9 +15,9 @@ export const getErc721TokenContract = async (
   if (!provider || !address) return;
 
   const contract = getContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: data.nftContractAddress as any,
-    publicClient: provider,
+    client: provider,
   });
 
   if (!contract) return;
@@ -23,13 +25,11 @@ export const getErc721TokenContract = async (
   try {
     await contract.read.ownerOf([1n]);
   } catch (e) {
-    setNftContractStatus((prev: any) => (
-      {
-        ...prev,
-        isValid: ContractValidationStatus.NotValid,
-        checking: false,
-      }
-    ))
+    setNftContractStatus((prev: any) => ({
+      ...prev,
+      isValid: ContractValidationStatus.NotValid,
+      checking: false,
+    }));
     return;
   }
 
@@ -37,10 +37,10 @@ export const getErc721TokenContract = async (
     contract.read.name(),
     contract.read.symbol(),
     contract.read.balanceOf([address as any]),
-    contract.read.isApprovedForAll(
-      [address as Address,
-      data.selectedChain.erc721PrizetapAddr]
-    ),
+    contract.read.isApprovedForAll([
+      address as Address,
+      data.selectedChain.erc721PrizetapAddr,
+    ]),
   ]).then(([r1, r2, r3, r5]) => {
     setData((prevData: any) => ({
       ...prevData,
@@ -48,9 +48,11 @@ export const getErc721TokenContract = async (
       nftSymbol: r2,
       userNftBalance: r3?.toString(),
     }));
-    setNftContractStatus((prev: any) => ({...prev,
+    setNftContractStatus((prev: any) => ({
+      ...prev,
       isValid: ContractValidationStatus.Valid,
-      checking: false,}))
+      checking: false,
+    }));
     setIsApprovedAll(r5);
   });
 };

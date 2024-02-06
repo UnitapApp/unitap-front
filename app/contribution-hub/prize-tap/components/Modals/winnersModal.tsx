@@ -5,10 +5,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Address } from "viem";
 import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
-import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
-import { readContracts } from "wagmi";
+import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
+import { useReadContracts } from "wagmi";
 import { CSVLink } from "react-csv";
 import { UserRafflesProps } from "@/types";
+import { useProvider, useWalletProvider } from "@/utils/wallet";
 
 interface Props {
   winnersResultRaffle: UserRafflesProps | null;
@@ -18,6 +19,8 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
   const [enrollmentWallets, setEnrollmentWallets] = useState<[]>([]);
 
+  const provider = useWalletProvider();
+
   const exportEnrollmentWallets = useCallback(async () => {
     const isNft = winnersResultRaffle!.isPrizeNft;
     const raffleId = Number(winnersResultRaffle!.raffleId);
@@ -26,7 +29,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
       contracts.push({
-        abi: isNft ? prizeTap721ABI : prizeTapABI,
+        abi: isNft ? prizeTap721Abi : prizeTapAbi,
         address: winnersResultRaffle!.contract as Address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
@@ -34,7 +37,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       });
     }
 
-    const data = await readContracts({
+    const data = await provider.multicall({
       contracts,
     });
 
@@ -46,7 +49,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
         };
       });
     setEnrollmentWallets(allWallet);
-  }, [winnersResultRaffle]);
+  }, [provider, winnersResultRaffle]);
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput

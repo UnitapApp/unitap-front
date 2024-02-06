@@ -1,29 +1,35 @@
 import { ProviderDashboardFormDataProp } from "@/types";
 import { toWei } from "@/utils/numbersBigNumber";
-import { GetContractReturnType, getContract } from "viem";
-import { Address, PublicClient, erc20ABI } from "wagmi";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import {
+  GetContractReturnType,
+  PublicClient,
+  getContract,
+  Address,
+  erc20Abi,
+} from "viem";
+
+import { GetWalletClientReturnType } from "wagmi/actions";
 
 export const approveErc20TokenCallback = async (
   address: Address,
   erc20Contract: GetContractReturnType,
   spenderAddress: Address,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   decimals: number,
-  totalAmount: string,
+  totalAmount: string
 ) => {
   const gasEstimate = await provider.estimateContractGas({
-    abi: erc20ABI,
-    address:erc20Contract.address,
+    abi: erc20Abi,
+    address: erc20Contract.address,
     functionName: "approve",
     account: address,
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
   });
 
   const response = await signer?.writeContract({
-    abi: erc20ABI,
-    address:erc20Contract.address,
+    abi: erc20Abi,
+    address: erc20Contract.address,
     account: address,
     functionName: "approve",
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
@@ -45,7 +51,7 @@ export const approveErc20TokenCallback = async (
 export const approveErc20Token = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   address: Address,
   setApproveLoading: any,
   setIsErc20Approved: any
@@ -53,9 +59,9 @@ export const approveErc20Token = async (
   if (!provider || !signer) return;
 
   const contract = getContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: data.tokenContractAddress as Address,
-    publicClient: provider,
+    client: provider,
   });
 
   try {
@@ -67,7 +73,7 @@ export const approveErc20Token = async (
       provider,
       signer,
       data.tokenDecimals,
-      data.totalAmount,
+      data.totalAmount
     );
 
     setApproveLoading(false);

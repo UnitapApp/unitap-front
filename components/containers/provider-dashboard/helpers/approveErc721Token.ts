@@ -5,8 +5,8 @@ import {
   getContract,
   GetContractReturnType,
 } from "viem";
-import { erc20ABI, erc721ABI } from "wagmi";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import { erc20Abi, erc721Abi } from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
 
 export const approveErc721TokenCallback = async (
   address: Address,
@@ -14,10 +14,10 @@ export const approveErc721TokenCallback = async (
   spenderAddress: Address,
   tokenAddress: Address,
   provider: PublicClient,
-  signer: GetWalletClientResult
+  signer: GetWalletClientReturnType
 ) => {
   const gasEstimate = await provider.estimateContractGas({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: erc721Contract.address,
     functionName: "setApprovalForAll",
     account: address,
@@ -25,7 +25,7 @@ export const approveErc721TokenCallback = async (
   });
 
   const response = await signer?.writeContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: erc721Contract.address,
     account: address,
     functionName: "setApprovalForAll",
@@ -48,7 +48,7 @@ export const approveErc721TokenCallback = async (
 export const approveErc721Token = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   address: Address,
   setApproveLoading: any,
   setIsApprovedAll: any
@@ -56,9 +56,9 @@ export const approveErc721Token = async (
   if (!provider || !signer) return;
 
   const contract = getContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: data.nftContractAddress as Address,
-    publicClient: provider,
+    client: provider,
   });
 
   try {

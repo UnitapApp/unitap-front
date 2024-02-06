@@ -6,7 +6,7 @@ import { getChainIcon } from "@/utils/chain";
 import { USER_DENIED_REQUEST_ERROR_CODE } from "@/utils/web3";
 import { parseToLamports } from "@/utils/numbers";
 import {
-  estimateGas,
+  useEstimateContractGas,
   useNetworkSwitcher,
   useWalletAccount,
   useWalletBalance,
@@ -41,10 +41,21 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const chainId = chain?.id;
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
+  const [fundAmount, setFundAmount] = useState<string>("");
+
+  const [modalState, setModalState] = useState(false);
+  const [fundTransactionError, setFundTransactionError] = useState("");
+  const [txHash, setTxHash] = useState("");
 
   const balance = useWalletBalance({
     address,
     chainId: Number(selectedChain?.chainId),
+  });
+
+  const { data, isLoading } = useEstimateContractGas({
+    chainId,
+    amount: parseEther(fundAmount),
+    to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
   });
 
   const chainList = useMemo(() => {
@@ -70,11 +81,6 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
   const { switchChain } = useNetworkSwitcher();
 
-  const [fundAmount, setFundAmount] = useState<string>("");
-
-  const [modalState, setModalState] = useState(false);
-  const [fundTransactionError, setFundTransactionError] = useState("");
-  const [txHash, setTxHash] = useState("");
   const isRightChain = useMemo(() => {
     if (!isConnected || !chainId || !selectedChain) return false;
     return chainId === Number(selectedChain.chainId);
@@ -137,13 +143,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
     setSubmittingFundTransaction(true);
 
-    const estimatedGas = await estimateGas(provider, {
-      from: address,
-      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
-      value: BigInt(tx.value),
-    }).catch((err: any) => {
-      return err;
-    });
+    if (!data) return;
+
+    const estimatedGas = data;
 
     if (typeof estimatedGas !== "bigint") {
       handleTransactionError(estimatedGas);
@@ -183,6 +185,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     isRightChain,
     fundAmount,
     provider,
+    data,
     signer,
     setIsWalletPromptOpen,
     switchChain,
@@ -335,7 +338,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
             className="!w-full text-white mt-5"
             $fontSize="20px"
             onClick={handleSendFunds}
-            disabled={!Number(fundAmount) && isRightChain && isConnected}
+            disabled={
+              (!Number(fundAmount) && isRightChain && isConnected) || isLoading
+            }
             data-testid="fund-action"
           >
             {fundActionButtonLabel}

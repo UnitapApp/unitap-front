@@ -1,7 +1,10 @@
-import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
+import {
+  ContractValidationStatus,
+  ProviderDashboardFormDataProp,
+} from "@/types";
 import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
-import { PublicClient, erc20ABI } from "wagmi";
+import { PublicClient, erc20Abi } from "viem";
 
 export const getErc20TokenContract = async (
   data: ProviderDashboardFormDataProp,
@@ -10,14 +13,14 @@ export const getErc20TokenContract = async (
   setData: any,
   setIsErc20Approved: any,
   setTokenContractStatus: any,
-  setApproveAllowance: any,
+  setApproveAllowance: any
 ) => {
   if (!provider || !address) return;
 
   const contract = getContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: data.tokenContractAddress as any,
-    publicClient: provider,
+    client: provider,
   });
 
   if (!contract) return;
@@ -25,14 +28,12 @@ export const getErc20TokenContract = async (
   try {
     await contract.read.decimals();
   } catch (e) {
-    setTokenContractStatus((prev: any) => (
-      {
-        ...prev,
-        isValid: ContractValidationStatus.NotValid,
-        checking: false,
-      }
-    ))
-    setIsErc20Approved(false)
+    setTokenContractStatus((prev: any) => ({
+      ...prev,
+      isValid: ContractValidationStatus.NotValid,
+      checking: false,
+    }));
+    setIsErc20Approved(false);
     return;
   }
 
@@ -41,10 +42,10 @@ export const getErc20TokenContract = async (
     contract.read.symbol(),
     contract.read.decimals(),
     contract.read.balanceOf([address as Address]),
-    contract.read.allowance(
-      [address as Address,
-      data.selectedChain.erc20PrizetapAddr]
-    ),
+    contract.read.allowance([
+      address as Address,
+      data.selectedChain.erc20PrizetapAddr,
+    ]),
   ]).then(([r1, r2, r3, r4, r5]) => {
     setData((prevData: any) => ({
       ...prevData,
@@ -53,9 +54,11 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-    setApproveAllowance(Number(fromWei(r5.toString(), r3)))
-    setTokenContractStatus((prev: any) => ({...prev,
+    setApproveAllowance(Number(fromWei(r5.toString(), r3)));
+    setTokenContractStatus((prev: any) => ({
+      ...prev,
       isValid: ContractValidationStatus.Valid,
-      checking: false,}))
+      checking: false,
+    }));
   });
 };

@@ -166,7 +166,7 @@ export const ConnectWalletModal = () => {
   const { isWalletPromptOpen, setIsWalletPromptOpen } = useGlobalContext();
   const [title, setTitle] = useState(walletStateTitles[WalletState.Prompt]);
 
-  const { disconnect, isLoading } = useDisconnect();
+  const { disconnect, isPending } = useDisconnect();
 
   const setWalletTitle = (title: string) => setTitle(title);
 
@@ -180,7 +180,7 @@ export const ConnectWalletModal = () => {
     <Modal
       title={title}
       size="small"
-      isOpen={isWalletPromptOpen && !isLoading}
+      isOpen={isWalletPromptOpen && !isPending}
       closeModalHandler={() => setIsWalletPromptOpen(false)}
     >
       <div className="flex flex-col items-center justify-center pt-12">
