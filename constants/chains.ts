@@ -51,7 +51,6 @@ const IDChain = {
 export const kccMainnet = {
   id: 321,
   name: "KCC Mainnet",
-  network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
     bscscan: {

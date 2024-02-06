@@ -21,7 +21,7 @@ import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
+import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useWalletAccount } from "@/utils/wallet";
 import { useGlobalContext } from "./globalProvider";
 import { Address } from "viem";
@@ -239,7 +239,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         account: address,
         functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
-        abi: prizeTapABI,
+        abi: prizeTapAbi,
         address: selectedRaffleForEnroll?.isPrizeNft
           ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
           : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",

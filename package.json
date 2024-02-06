@@ -27,7 +27,7 @@
     "ethers": "5",
     "lokijs": "^1.5.12",
     "lottie-web": "^5.12.2",
-    "next": "latest",
+    "next": "^14.1.0",
     "next-nprogress-bar": "^2.1.2",
     "nprogress": "^0.2.0",
     "pino-pretty": "^10.2.0",
@@ -42,7 +42,7 @@
     "sass": "^1.68.0",
     "styled-components": "^6.1.0",
     "typechain": "^8.3.2",
-    "viem": "^2.0.10",
+    "viem": "^2.7.6",
     "wagmi": "^2.2.1"
   },
   "devDependencies": {
@@ -55,7 +55,7 @@
     "@types/react-dom": "latest",
     "@types/react-lottie": "^1.2.10",
     "@vercel/speed-insights": "^1.0.1",
-    "@wagmi/cli": "^1.5.2",
+    "@wagmi/cli": "^2.1.0",
     "@zxing/browser": "^0.1.4",
     "@zxing/library": "^0.20.0",
     "autoprefixer": "latest",

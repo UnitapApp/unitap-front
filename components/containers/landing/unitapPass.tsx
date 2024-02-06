@@ -1,24 +1,28 @@
-"use client"
+"use client";
 
-import { ClaimButton } from "@/components/ui/Button/button"
-import Icon from "@/components/ui/Icon"
+import { ClaimButton } from "@/components/ui/Button/button";
+import Icon from "@/components/ui/Icon";
 import {
-  useUnitapPassBatchSaleBatchSize,
-  useUnitapPassBatchSaleBatchSoldCount,
-} from "@/types/abis/contracts"
-import RoutePath from "@/utils/routes"
-import Link from "next/link"
+  useReadUnitapPassBatchSaleBatchSoldCount,
+  useReadUnitapPassBatchSaleBatchSize,
+} from "@/types/abis/contracts";
+import RoutePath from "@/utils/routes";
+import Link from "next/link";
 
-const deadline = new Date("January 12, 2023 16:00:00 UTC")
+const deadline = new Date("January 12, 2023 16:00:00 UTC");
 
 const UnitapPass = () => {
-  const maxBatches = useUnitapPassBatchSaleBatchSize({
+  const maxBatches = useReadUnitapPassBatchSaleBatchSize({
     chainId: 1,
-  })
+  });
 
-  const batchSold = useUnitapPassBatchSaleBatchSoldCount({
+  const batchSold = useReadUnitapPassBatchSaleBatchSoldCount({
     chainId: 1,
-  })
+  });
+
+  const maxBatchAmount = maxBatches.data;
+
+  const batchSoldAmount = batchSold.data;
 
   return (
     <Link
@@ -47,10 +51,10 @@ const UnitapPass = () => {
             {deadline < new Date() && (
               <>
                 <span className={"text-white"}>
-                  {maxBatches.data! - batchSold.data!}
+                  {(maxBatchAmount! - batchSoldAmount!).toString()}
                 </span>{" "}
-                of <span className={"text-white"}>{maxBatches.data}</span>{" "}
-                Passes are left in the current batch. Mint your Passes now
+                of <span className={"text-white"}>{maxBatchAmount}</span> Passes
+                are left in the current batch. Mint your Passes now
               </>
             )}
           </p>
@@ -68,7 +72,7 @@ const UnitapPass = () => {
         </ClaimButton>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default UnitapPass
+export default UnitapPass;

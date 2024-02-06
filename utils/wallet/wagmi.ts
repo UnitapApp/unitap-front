@@ -1,6 +1,4 @@
-"use client";
-
-import { createConfig, http } from "wagmi";
+import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import { supportedChains } from "@/constants/chains";
 import { injected, mock, safe, walletConnect } from "wagmi/connectors";
 import { HttpTransport } from "viem";
@@ -36,13 +34,18 @@ const getConnectorProviders = () => {
   ];
 };
 
+const transports: { [key: string]: HttpTransport } = {};
+
+for (const chain of supportedChains) {
+  transports[chain.id] = http();
+}
+
 export const config = createConfig({
   ssr: true,
-  chains: [supportedChains[0], ...supportedChains.slice(1)],
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
+  chains: supportedChains as any,
   connectors: getConnectorProviders(),
-  transports: supportedChains.reduce((prev, curr) => {
-    prev[curr.id] = http();
-
-    return prev;
-  }, {} as { [key: string]: HttpTransport }),
+  transports,
 });
