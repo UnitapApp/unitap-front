@@ -309,8 +309,7 @@ export const GasTapProvider: FC<
   }, []);
 
   useEffect(() => {
-    if (!userToken || chainList.length) return;
-    updateChainList();
+    if (!userToken) return;
     updateActiveClaimHistory();
     updateOneTimeClaimedList();
     updateFuelChampionList();
