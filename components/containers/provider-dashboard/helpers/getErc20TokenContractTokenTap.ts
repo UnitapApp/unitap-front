@@ -2,18 +2,15 @@ import {
   ContractValidationStatus,
   ProviderDashboardFormDataProp,
 } from "@/types";
-import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
 import { PublicClient, erc20ABI } from "wagmi";
 
-export const getErc20TokenContract = async (
+export const getErc20TokenContractTokenTap = async (
   data: ProviderDashboardFormDataProp,
   address: string,
   provider: PublicClient,
   setData: any,
-  setIsErc20Approved: any,
-  setTokenContractStatus: any,
-  setApproveAllowance: any
+  setTokenContractStatus: any
 ) => {
   if (!provider || !address) return;
 
@@ -33,7 +30,6 @@ export const getErc20TokenContract = async (
       isValid: ContractValidationStatus.NotValid,
       checking: false,
     }));
-    setIsErc20Approved(false);
     return;
   }
 
@@ -42,11 +38,7 @@ export const getErc20TokenContract = async (
     contract.read.symbol(),
     contract.read.decimals(),
     contract.read.balanceOf([address as Address]),
-    contract.read.allowance([
-      address as Address,
-      data.selectedChain.erc20PrizetapAddr,
-    ]),
-  ]).then(([r1, r2, r3, r4, r5]) => {
+  ]).then(([r1, r2, r3, r4]) => {
     setData((prevData: any) => ({
       ...prevData,
       tokenName: r1,
@@ -54,7 +46,6 @@ export const getErc20TokenContract = async (
       tokenDecimals: r3,
       userTokenBalance: r4?.toString(),
     }));
-    setApproveAllowance(Number(fromWei(r5.toString(), r3)));
     setTokenContractStatus((prev: any) => ({
       ...prev,
       isValid: ContractValidationStatus.Valid,

@@ -11,23 +11,31 @@ import {
 } from "@/app/contribution-hub/constants/forms";
 
 interface FromProp {
-  detailRafflePk?: string | undefined;
-  verificationRafflePK?: string | undefined;
+  detailDistributionPk?: string | undefined;
+  verificationDistributePK?: string | undefined;
 }
 
-const OfferTokenForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
-  const { handleCheckForReason, handleShowUserDetails, page, setPage } =
-    useTokenTapFromContext();
+const OfferTokenForm = ({
+  detailDistributionPk,
+  verificationDistributePK,
+}: FromProp) => {
+  const {
+    handleCheckForReason,
+    handleShowUserDetails,
+    page,
+    setPage,
+    userDistribution,
+  } = useTokenTapFromContext();
 
   const { display, prevPage } = usePagination(page, setPage, tokenTapForms);
 
-  // useEffect(() => {
-  //   if (!userRaffle) {
-  //     return;
-  //   }
-  //   if (detailRafflePk) handleShowUserDetails(userRaffle);
-  //   if (verificationRafflePK) handleCheckForReason(userRaffle);
-  // }, [detailRafflePk, userRaffle]);
+  useEffect(() => {
+    if (!userDistribution) {
+      return;
+    }
+    if (detailDistributionPk) handleShowUserDetails(userDistribution);
+    if (verificationDistributePK) handleCheckForReason(userDistribution);
+  }, [detailDistributionPk, userDistribution]);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 select-none">
@@ -36,7 +44,7 @@ const OfferTokenForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
         {page >= 1 && page < 5 && (
           <Icon
             onClick={prevPage}
-            className="absolute text-white text-[20px] top-5 left-5 cursor-pointer select-not"
+            className="absolute text-white text-xl top-5 left-5 cursor-pointer select-not"
             iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           />
         )}

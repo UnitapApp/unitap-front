@@ -78,7 +78,7 @@ const TokenTapTimeEnrollLimitation = ({
             <p
               className={`${
                 !claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-[10px]`}
+              } text-2xs`}
             >
               (Each person can claim once.)
             </p>
@@ -99,7 +99,7 @@ const TokenTapTimeEnrollLimitation = ({
             <p
               className={`${
                 claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-[10px]`}
+              } text-2xs`}
             >
               (Each person can claim once in a month.)
             </p>
@@ -107,7 +107,7 @@ const TokenTapTimeEnrollLimitation = ({
         </div>
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
-        <PeopleLimitation showErrors={showErrors} />
+        {/* <PeopleLimitation showErrors={showErrors} /> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

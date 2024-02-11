@@ -1,20 +1,36 @@
 import Icon from "@/components/ui/Icon";
+import { RequirementProps } from "@/types";
 import { useOutsideClick } from "@/utils/hooks/dom";
+import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import React, { useEffect, useRef, useState } from "react";
+import Big from "big.js";
 
 export enum SelectMethod {
   Minimum = "Minimum",
   Maximum = "Maximum",
 }
 
+interface MethodProp {
+  minimum: string;
+  maximum: string;
+}
+
 interface Prop {
   setRequirementParamsList: (e: any) => void;
   requirementParamsList: any;
+  isNft: boolean;
+  requirement: RequirementProps | undefined;
+  isDisabled: boolean;
+  decimals: number | undefined;
 }
 
 const SelectMethodInput = ({
   setRequirementParamsList,
   requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+  decimals,
 }: Prop) => {
   const [selectedMethod, setSelectedMethod] = useState<string | undefined>();
   const [showItems, setShowItems] = useState<boolean>(false);
@@ -24,14 +40,9 @@ const SelectMethodInput = ({
     setShowItems(false);
   };
 
-  interface MethodProp {
-    minimum: number;
-    maximum: number;
-  }
-
   const [methodValues, setMethodValues] = useState<MethodProp>({
-    minimum: 0,
-    maximum: 0,
+    minimum: "0",
+    maximum: "0",
   });
 
   const ref = useRef<HTMLDivElement>(null);
@@ -43,31 +54,56 @@ const SelectMethodInput = ({
   const handleChangeMethodValues = (e: string) => {
     const value =
       e === "increase"
-        ? methodValues.minimum! + 1
-        : Math.max(1, methodValues.minimum - 1);
+        ? Number(methodValues.minimum!) + 1
+        : Math.max(0, Number(methodValues.minimum) - 1);
+    handleChange(value.toString());
+  };
 
+  const handleChange = (e: string) => {
     setMethodValues({
       ...methodValues,
-      minimum: value,
+      minimum: isNft ? e.replace(/[^0-9]/g, "") : e,
     });
-
-    setRequirementParamsList({ ...requirementParamsList, ["MINIMUM"]: value });
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["MINIMUM"]: isNft
+        ? e.replace(/[^0-9]/g, "")
+        : e
+        ? new Big(toWei(e, decimals)).toFixed()
+        : "",
+    });
   };
 
   useEffect(() => {
-    if (!requirementParamsList) return;
-    if (!requirementParamsList.MINIMUM) return;
+    if (!methodValues.minimum) return;
+    handleChange(methodValues.minimum);
+  }, [decimals]);
+
+  useEffect(() => {
+    if (!requirement) return;
     handleSelectMethod();
     setMethodValues({
       ...methodValues,
-      minimum: requirementParamsList.MINIMUM,
+      minimum: isNft
+        ? requirement.params.MINIMUM
+        : new Big(
+            fromWei(
+              requirement.params.MINIMUM,
+              requirement.decimals ? requirement.decimals : 18
+            )
+          ).toFixed(),
     });
-  }, [requirementParamsList]);
+  }, []);
+
+  const handleShowItems = () => {
+    if (isDisabled) return;
+    setShowItems(!showItems);
+  };
 
   return (
     <div ref={ref} className="relative ">
       <div
-        onClick={() => setShowItems(!showItems)}
+        onClick={() => handleShowItems()}
         className="flex w-full items-center justify-between bored border-gray50 bg-gray40 rounded-xl px-3 h-[43px] cursor-pointer"
       >
         <div
@@ -83,6 +119,7 @@ const SelectMethodInput = ({
           height="8px"
         />
       </div>
+
       {showItems && (
         <div className="absolute w-full top-12 bg-gray40 rounded-xl border border-gray50 overflow-y-scroll">
           <div
@@ -100,15 +137,9 @@ const SelectMethodInput = ({
             className="bg-inherit h-full px-2 w-full "
             name={SelectMethod.Minimum}
             type="number"
-            step={1}
             min={0}
             value={methodValues.minimum}
-            onChange={(e: any) =>
-              setMethodValues({
-                ...methodValues,
-                minimum: Number(e.target.value) ?? "",
-              })
-            }
+            onChange={(e) => handleChange(e.target.value)}
           />
           <div className="flex flex-col gap-3">
             <Icon

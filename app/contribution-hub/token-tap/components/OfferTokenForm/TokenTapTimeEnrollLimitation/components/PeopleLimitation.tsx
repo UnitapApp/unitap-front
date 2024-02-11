@@ -8,7 +8,7 @@ interface PeopleLimitationProp {
 const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
   const { data, handleChange, isShowingDetails } = useTokenTapFromContext();
   return (
-    <div className="text-gray80 text-[12px] w-full max-w-[452px] relative mt-[-2px] ">
+    <div className="text-gray80 text-xs w-full max-w-[452px] relative mt-[-2px] ">
       <div
         className={`border ${
           showErrors && !showErrors.maximumLimitationStatus
@@ -31,7 +31,7 @@ const PeopleLimitation = ({ showErrors }: PeopleLimitationProp) => {
         />
       </div>
       {showErrors && !showErrors.maximumLimitationStatus && (
-        <p className="text-error text-[10px] m-0 p-0 absolute mt-1">
+        <p className="text-error text-2xs m-0 p-0 absolute mt-1">
           {showErrors?.maximumLimitationMessage}
         </p>
       )}
