@@ -22,6 +22,7 @@ import { getAssetUrl, shortenAddress } from "@/utils";
 
 // import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
 import { zeroAddress } from "viem";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 
 export const Action = styled.div`
   display: flex;
@@ -134,9 +135,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     [userProfile, winnersEntry]
   );
 
-  useEffect(() => {
+  useFastRefresh(() => {
     setStarted(new Date(startAt) < new Date());
-  }, [new Date()]);
+  }, [startAt]);
 
   // let tokenImgLink: string | undefined = tokenUri
   //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
