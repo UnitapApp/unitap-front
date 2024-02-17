@@ -1,4 +1,4 @@
-import Styles from "./provider-dashboard.module.scss"
+import Styles from "./provider-dashboard.module.scss";
 
 const Header = () => {
   return (
@@ -13,13 +13,13 @@ const Header = () => {
           className="h-auto w-375 mb-3"
           src="/assets/images/provider-dashboard/blibk neon.png"
         />
-        <p className="z-10 text-sm text-gray100 text-[12px] max-w-[365px]">
+        <p className="z-10 text-sm text-gray100 text-xs max-w-[365px]">
           Here you can see your history of your previous provides and you can
           provide more ;)
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

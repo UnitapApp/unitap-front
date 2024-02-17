@@ -13,17 +13,15 @@ import {
   ProviderDashboardButtonShowDetails,
 } from "../../Buttons";
 import SearchInput from "./SearchInput";
-// import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";
-// import OfferPrizeForm from "./OfferPrizeForm";
 import WinnersModal from "./Modals/winnersModal";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
 import { useUserProfileContext } from "@/context/userProfile";
 import { getUserRaffles } from "@/utils/api";
-import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
 
 interface PrizeCardProp {
@@ -41,8 +39,6 @@ enum RaffleStatus {
 }
 
 const PrizeCard = ({ prize }: PrizeCardProp) => {
-  // const { handleCheckForReason } = usePrizeOfferFormContext();
-
   const [winnersResultRaffle, setWinnersResultRaffle] =
     useState<UserRafflesProps | null>(null);
 
@@ -67,7 +63,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               width="15px"
               height="14px"
             />
-            <p className="text-gray100 text-[10px] font-medium">
+            <p className="text-gray100 text-2xs font-medium">
               on {prize.chain.chainName}
             </p>
           </div>
@@ -85,7 +81,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
         </div>
         <div>
           <div className="providePrize_stats flex justify-between my-2">
-            <div className={"text-white text-[14px] font-medium"}>
+            <div className={"text-white text-sm font-medium"}>
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
@@ -115,7 +111,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               </ProviderDashboardButtonRejected>
             )}
           </div>
-          <div className="providePrize_creator text-[12px] text-gray90 font-medium">
+          <div className="providePrize_creator text-xs text-gray90 font-medium">
             by {prize.creatorName}
           </div>
         </div>
@@ -143,7 +139,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             new Date(prize.deadline) < new Date()) ? (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
             {prize.numberOfOnchainEntries ? (
-              <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+              <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
                 {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
                 {prize.status === RaffleStatus.FINISHED
                   ? " Spots Enrolled"
@@ -169,7 +165,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               startTime={prize.startAt}
               FinishTime={prize.deadline}
             />
-            <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+            <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <div className="relative w-full text-center">
                 <p>
                   {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
@@ -198,7 +194,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : (
           <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <div className="providePrize_Spots bg-gray50 rounded-xl text-[14px] font-medium text-white h-[48px] my-3 flex items-center justify-center">
+            <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
               <p>
                 {prize.numberOfOnchainEntries}{" "}
                 {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
@@ -206,7 +202,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </div>
             <div
               onClick={() => handleWinnersResult(prize)}
-              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-[10px] font-medium text-gray100 h-[48px] flex items-center justify-center"
+              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-2xs font-medium text-gray100 h-[48px] flex items-center justify-center"
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
@@ -339,7 +335,7 @@ const PrizeTapContent = () => {
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div
-            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-[12px] items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
           >
             <div
               className={`${
@@ -389,8 +385,8 @@ const PrizeTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-[16px] font-semibold">Offer a New Prize</p>{" "}
-                <p className="text-[14px] text-gray100">
+                <p className="text-base font-semibold">Offer a New Prize</p>{" "}
+                <p className="text-sm text-gray100">
                   Here you can provide an NFT or Token for Prize Tap.
                 </p>
               </div>
@@ -443,10 +439,10 @@ const Skeleton = () => {
           </div>
           <div>
             <div className="providePrize_stats flex justify-between my-2">
-              <div className="text-white text-[14px] font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
-              <div className="text-white text-[14px] font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
+              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
+              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
             </div>
-            <div className="providePrize_creator text-[12px] text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
+            <div className="providePrize_creator text-xs text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
           </div>
 
           <div className="absolute bottom-3 right-4 left-0">

@@ -17,8 +17,11 @@ interface Prop {
 }
 
 const RenderInitialBody = ({ data }: Prop) => {
-  const { handleCreateRaffle, createRaffleLoading, createRaffleResponse } =
-    useTokenTapFromContext();
+  const {
+    handleCreateDistribution,
+    createRaffleLoading,
+    createRaffleResponse,
+  } = useTokenTapFromContext();
   const { address, isConnected } = useWalletAccount();
   const { chain } = useWalletNetwork();
 
@@ -51,7 +54,7 @@ const RenderInitialBody = ({ data }: Prop) => {
   ]);
   return (
     <div className="flex flex-col select-none">
-      <div className="text-gray100 text-[14px] ">
+      <div className="text-gray100 text-sm ">
         This is how your card will appear. If you are sure of the accuracy of
         the form you filled out, please submit your contribution.
       </div>
@@ -62,7 +65,7 @@ const RenderInitialBody = ({ data }: Prop) => {
             <ProviderDashboardButtonSubmit
               onClick={handleCheckConnection}
               $width="100%"
-              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              className="text-sm md:text-xs lg:text-sm mt-5"
               data-testid="fund-action"
             >
               Switch Network
@@ -87,9 +90,9 @@ const RenderInitialBody = ({ data }: Prop) => {
         <div className="w-full flex items-end justify-end">
           <div className="w-[200px]">
             <ProviderDashboardButtonSubmit
-              onClick={handleCreateRaffle}
+              onClick={handleCreateDistribution}
               $width="100%"
-              className="text-[14px] md:text-[12px] lg:text-[14px] mt-5"
+              className="text-sm md:text-xs lg:text-sm mt-5"
               disabled={createRaffleLoading}
             >
               {createRaffleLoading ? (

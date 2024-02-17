@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { RequirementProps, ConstraintProps, Chain } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/ChainList";
 import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
-import { isAddress } from "viem";
-import { checkCollectionAddress } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
+import { isAddress, zeroAddress } from "viem";
+import {
+  checkNftCollectionAddress,
+  checkTokenContractAddress,
+} from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
 
 interface CreateModalParam {
@@ -18,6 +21,12 @@ interface CreateModalParam {
   constraintFile: any;
   allChainList: Chain[];
   setConstraintFile: (item: any) => void;
+  requirementList: RequirementProps[];
+  isCollectionValid: boolean;
+  setIsCollectionValid: (e: boolean) => void;
+  setErrorMessage: (message: string) => void;
+  decimals: number | undefined;
+  setDecimals: (decimal: number | undefined) => void;
 }
 
 interface DetailsModal {
@@ -29,16 +38,14 @@ interface DetailsModal {
   allChainList: Chain[];
 }
 
-const ConstraintDetailsModal = ({
+const ConstraintDetailsModal: FC<DetailsModal> = ({
   constraint,
   handleBackToConstraintListModal,
   requirementList,
   insertRequirement,
   updateRequirement,
   allChainList,
-}: DetailsModal) => {
-  const provider = useWalletProvider();
-
+}) => {
   const addRequirements = useAddRequirement(
     handleBackToConstraintListModal,
     insertRequirement,
@@ -53,6 +60,10 @@ const ConstraintDetailsModal = ({
   const [isNotSatisfy, setIsNotSatisfy] = useState<boolean>(false);
 
   const [constraintFile, setConstraintFile] = useState<any>();
+
+  const [isCollectionValid, setIsCollectionValid] = useState<boolean>(false);
+
+  const [decimals, setDecimals] = useState<number | undefined>();
 
   const createRequirementParamsList = () => {
     if (constraint.params.length > 0) {
@@ -82,14 +93,15 @@ const ConstraintDetailsModal = ({
     }
   }, []);
 
-  const checkingParamsValidation = async () => {
+  const checkingParamsValidation = () => {
     if (!requirementParamsList) return false;
     if (
-      !requirementParamsList.COLLECTION_ADDRESS ||
+      !requirementParamsList.ADDRESS ||
       !requirementParamsList.CHAIN ||
-      !requirementParamsList.MINIMUM
+      !requirementParamsList.MINIMUM ||
+      Number(requirementParamsList.MINIMUM) <= 0
     ) {
-      !requirementParamsList.COLLECTION_ADDRESS
+      !requirementParamsList.ADDRESS
         ? setErrorMessage("Please enter collection address.")
         : !requirementParamsList.CHAIN
         ? setErrorMessage("Please select chain.")
@@ -97,27 +109,11 @@ const ConstraintDetailsModal = ({
       return false;
     }
 
-    if (requirementParamsList.COLLECTION_ADDRESS) {
-      const step2Check = isAddress(requirementParamsList.COLLECTION_ADDRESS);
-      const chain = allChainList?.find(
-        (item) => Number(item.pk) === Number(requirementParamsList.CHAIN)
-      );
-
-      if (!chain) return false;
-
-      const res = await checkCollectionAddress(
-        provider,
-        requirementParamsList.COLLECTION_ADDRESS,
-        Number(chain.chainId)
-      );
-
-      (!step2Check || !res) && setErrorMessage("Invalid contract address.");
-      return step2Check && res;
-    }
+    if (!isCollectionValid) return false;
+    return true;
   };
 
   const checkCsvFileUploadedValidation = () => {
-    console.log(requirementParamsList, requirementParamsList.CSV_FILE);
     if (!requirementParamsList) return false;
     if (!requirementParamsList.CSV_FILE) {
       setErrorMessage("Please upload a csv file.");
@@ -126,9 +122,12 @@ const ConstraintDetailsModal = ({
     return true;
   };
 
-  const handleAddRequirement = async () => {
-    if (constraint.name === "core.HasNFTVerification") {
-      const res = await checkingParamsValidation();
+  const handleAddRequirement = () => {
+    if (
+      constraint.name === "core.HasNFTVerification" ||
+      constraint.name === "core.HasTokenVerification"
+    ) {
+      const res = checkingParamsValidation();
       if (!res) return;
     }
 
@@ -144,7 +143,8 @@ const ConstraintDetailsModal = ({
       constraint.title,
       isNotSatisfy,
       requirementParamsList,
-      constraintFile
+      constraintFile,
+      decimals
     );
   };
 
@@ -160,7 +160,7 @@ const ConstraintDetailsModal = ({
       >
         <Icon
           iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
-          className="cursor-pointer z-[999999]"
+          className="cursor-pointer"
         />
       </div>
       <div className="w-full flex gap-4 h-[32px] mb-2">
@@ -194,12 +194,18 @@ const ConstraintDetailsModal = ({
         constraintFile={constraintFile}
         setConstraintFile={setConstraintFile}
         allChainList={allChainList}
+        requirementList={requirementList}
+        isCollectionValid={isCollectionValid}
+        setIsCollectionValid={setIsCollectionValid}
+        setErrorMessage={setErrorMessage}
+        decimals={decimals}
+        setDecimals={setDecimals}
       />
       <div className="mb-4">{constraint.description}</div>
-      <div className="text-error text-[10px] min-h-[15px]">{errorMessage}</div>
+      <div className="text-error text-2xs min-h-[15px]">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
-        className="flex cursor-pointer  bg-gray40 text-[14px] font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
+        className="flex cursor-pointer  bg-gray40 text-sm font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
       >
         Add Requirement
       </div>
@@ -207,51 +213,166 @@ const ConstraintDetailsModal = ({
   );
 };
 
-const CreateParams = ({
+const CreateParams: FC<CreateModalParam> = ({
   constraint,
   setRequirementParamsList,
   requirementParamsList,
   constraintFile,
   setConstraintFile,
   allChainList,
-}: CreateModalParam) => {
-  const [reqNftAddress, setReqNftAddress] = useState("");
+  requirementList,
+  isCollectionValid,
+  setIsCollectionValid,
+  setErrorMessage,
+  decimals,
+  setDecimals,
+}) => {
+  const [collectionAddress, setCollectionAddress] = useState("");
+  const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
+  const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
+  const requirement = requirementList.find((item) => item.pk == constraint.pk);
+
+  const provider = useWalletProvider();
 
   useEffect(() => {
-    if (!requirementParamsList) return;
-    setReqNftAddress(requirementParamsList.COLLECTION_ADDRESS);
-  }, [requirementParamsList]);
+    if (requirement) {
+      if (!requirement.params) return;
+      setCollectionAddress(requirement.params.ADDRESS);
+      if (requirement.params.ADDRESS === zeroAddress) {
+        setIsNativeToken(true);
+      } else {
+        checkCollectionContract();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!collectionAddress) return;
+    const isAddressValid = isAddress(collectionAddress);
+    !isAddressValid && setErrorMessage("Invalid contract address.");
+    isAddressValid && setErrorMessage("");
+    if (isAddressValid) {
+      if (collectionAddress === zeroAddress) {
+        setIsCollectionValid(true);
+        setDecimals(18);
+        return;
+      } else {
+        checkCollectionContract();
+      }
+    } else {
+      setIsCollectionValid(false);
+    }
+  }, [collectionAddress, selectedChain, isNativeToken]);
+
+  const checkCollectionContract = async () => {
+    if (!selectedChain) return;
+    let res = false;
+
+    if (constraint.name === "core.HasNFTVerification") {
+      res = await checkNftCollectionAddress(
+        provider,
+        requirementParamsList.ADDRESS,
+        Number(selectedChain.chainId)
+      );
+      setDecimals(18);
+    }
+
+    if (constraint.name === "core.HasTokenVerification") {
+      if (requirementParamsList.ADDRESS == zeroAddress) {
+        setDecimals(18);
+        return true;
+      }
+      res = await checkTokenContractAddress(
+        provider,
+        requirementParamsList.ADDRESS,
+        Number(selectedChain.chainId),
+        setDecimals
+      );
+    }
+    !res && setErrorMessage("Invalid contract address.");
+    setIsCollectionValid(res);
+  };
 
   const handleChangeCollection = (address: string) => {
-    setReqNftAddress(address);
+    setCollectionAddress(address);
     setRequirementParamsList({
       ...requirementParamsList,
-      ["COLLECTION_ADDRESS"]: address,
+      ["ADDRESS"]: address,
     });
   };
 
-  if (constraint.params.length === 0) return;
+  if (constraint.params.length === 0) return null;
 
-  if (constraint.name === "core.HasNFTVerification") {
+  if (
+    constraint.name === "core.HasNFTVerification" ||
+    constraint.name === "core.HasTokenVerification"
+  ) {
+    const isNft: boolean = constraint.name === "core.HasNFTVerification";
+
+    const handleSelectNativeToken = (isNative: boolean) => {
+      if (!selectedChain) return;
+      setIsNativeToken((prev) => !prev);
+      !isNative ? setCollectionAddress(zeroAddress) : setCollectionAddress("");
+      setRequirementParamsList({
+        ...requirementParamsList,
+        ["ADDRESS"]: !isNative ? zeroAddress : "",
+      });
+    };
+
     return (
       <div className="flex flex-col gap-3">
         <ChainList
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           allChainList={allChainList}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
         />
-        <div className="nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50">
+
+        {!isNft && (
+          <div
+            onClick={() => handleSelectNativeToken(isNativeToken)}
+            className={`${
+              !selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
+            } -mb-1 flex gap-2 items-center mt-2 min-h-[20px] max-w-[110px]`}
+          >
+            <Icon
+              iconSrc={
+                isNativeToken
+                  ? "/assets/images/provider-dashboard/check-true.svg"
+                  : "/assets/images/provider-dashboard/checkbox.svg"
+              }
+            />
+            is native token
+          </div>
+        )}
+
+        <div
+          className={`${
+            isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
+          } nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50`}
+        >
           <input
-            name="nftAddressRequirement"
-            placeholder="Paste NFT address"
+            name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
+            disabled={isNativeToken || !selectedChain}
+            placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
             className="bg-inherit w-full h-full"
-            value={reqNftAddress ?? ""}
+            value={
+              collectionAddress && collectionAddress != zeroAddress
+                ? collectionAddress
+                : ""
+            }
             onChange={(e) => handleChangeCollection(e.target.value)}
           />
         </div>
+
         <SelectMethodInput
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
+          isNft={isNft}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={decimals}
         />
       </div>
     );
@@ -264,9 +385,11 @@ const CreateParams = ({
         requirementParamsList={requirementParamsList}
         setConstraintFile={setConstraintFile}
         constraintFile={constraintFile}
+        requirement={requirement}
       />
     );
   }
+
   return <></>;
 };
 

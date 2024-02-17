@@ -77,13 +77,23 @@ const ContactInformation = ({
           Your website, twitter & discord will be shown on PrizeTap card.
         </p>
       </div>
-      <div className="text-gray100 text-[12px] min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
+      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
         {contactFields.map((field, index) => (
           <div key={index}>
-            {index == 3 ? <p className=" mb-2">Contact info</p> : ""}
+            {index == 3 ? (
+              <div className="flex items-center mb-2 gap-2">
+                <p className="">Contact info </p>
+                <div className="bg-gray90 h-[3px] w-[3px] rounded-full"></div>{" "}
+                <span className="text-gray90 text-2xs">
+                  These info will not share with anybody.
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
             <section className="relative" key={index}>
               <div
-                className={`flex gap-5 overflow-hidden text-gray80 text-[12px] bg-gray40 border ${
+                className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
                   (field.required && showErrors && !data[field.name]) ||
                   (showErrors &&
                     data[field.name] &&
@@ -106,14 +116,14 @@ const ContactInformation = ({
                 />
               </div>
               {field.required && showErrors && !data[field.name] && (
-                <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+                <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
                   Required
                 </p>
               )}
               {showErrors &&
                 data[field.name] &&
                 !(socialMediaValidation as any)[field.name] && (
-                  <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+                  <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
                     Invalid input
                   </p>
                 )}
@@ -123,7 +133,7 @@ const ContactInformation = ({
         <section>
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-white text-[12px] focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
+            className="text-white text-xs focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}

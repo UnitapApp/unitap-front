@@ -3,17 +3,25 @@
 import Icon from "@/components/ui/Icon";
 import { shortenAddress } from "@/utils";
 import { useWalletAccount } from "@/utils/wallet";
-import {
-  ClaimButton,
-  WhiteOutlinedButton,
-} from "@/components/ui/Button/button";
-import { FC } from "react";
+import { ClaimButton } from "@/components/ui/Button/button";
+import { FC, useEffect, useRef } from "react";
 import { WalletState } from ".";
+import { Address } from "viem";
 
 const UnknownWalletBody: FC<{
   setWalletState: (state: WalletState) => void;
 }> = ({ setWalletState }) => {
   const { address } = useWalletAccount();
+
+  const previousAddressRef = useRef<Address | null>();
+
+  useEffect(() => {
+    if (!address) return;
+    if (!previousAddressRef.current) previousAddressRef.current = address;
+
+    if (address !== previousAddressRef.current)
+      setWalletState(WalletState.Prompt);
+  }, [address, setWalletState]);
 
   return (
     <div className="text-center">

@@ -54,7 +54,7 @@ export async function getUserRaffles(token: string) {
 
 export const getUserDistributions = async (token: string) => {
   const response = await axiosInstance.get(
-    `/api/tokentap/token-distribution-list/`,
+    `/api/tokentap/user-token-distributions/`,
     {
       headers: {
         Authorization: `Token ${token}`,
@@ -79,9 +79,22 @@ export async function createTokenDistribution(token: string, data: any) {
     {
       headers: {
         Authorization: `Token ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
   return response.data;
 }
+
+export const getUserDonations = async (token: string) => {
+  const response = await axiosInstance.get(
+    `/api/gastap/user/donation/?page=1`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};

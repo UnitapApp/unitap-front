@@ -56,7 +56,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
           ) : null}
           <input
             disabled={isShowingDetails}
-            className="w-full bg-transparent text-white px-2 text-[14px]"
+            className="w-full bg-transparent text-white px-2 text-sm"
             type="text"
             value={chainName ? chainName : ""}
             placeholder="Search for Chain"
@@ -82,7 +82,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
                       setShowItems(false);
                       handleSelectChain(chain);
                     }}
-                    className="flex w-full items-center gap-2 text-white text-[14px] h-[46px] px-2 hover:bg-gray70 rounded-xl"
+                    className="flex w-full items-center gap-2 text-white text-sm h-[46px] px-2 hover:bg-gray70 rounded-xl"
                   >
                     <Icon iconSrc={chain.logoUrl} width="24px" />
                     <p>{chain.chainName}</p>
@@ -95,7 +95,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
                       setShowItems(false);
                       handleSelectChain(chain);
                     }}
-                    className="flex w-full items-center gap-2 text-white text-[14px] h-[46px] px-2 hover:bg-gray70 rounded-xl"
+                    className="flex w-full items-center gap-2 text-white text-sm h-[46px] px-2 hover:bg-gray70 rounded-xl"
                   >
                     <Icon iconSrc={chain.logoUrl} width="24px" />
                     <p>{chain.chainName}</p>

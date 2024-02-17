@@ -239,7 +239,7 @@ const AddNftIdListModalModalBody = () => {
               </div>
               {!!Number(nftRange.to) &&
                 Number(nftRange.from) >= Number(nftRange.to) && (
-                  <p className="absolute -bottom-4 left-0` text-[10px] text-error">
+                  <p className="absolute -bottom-4 left-0` text-2xs text-error">
                     Invalid range
                   </p>
                 )}
@@ -247,7 +247,7 @@ const AddNftIdListModalModalBody = () => {
               !uploadedFile &&
               !invalidInput &&
               !(Number(nftRange.from) >= Number(nftRange.to)) ? (
-                <p className="absolute -bottom-4 left-0` text-[10px] text-error">
+                <p className="absolute -bottom-4 left-0` text-2xs text-error">
                   {error}
                 </p>
               ) : null}
@@ -258,7 +258,7 @@ const AddNftIdListModalModalBody = () => {
         {selectedTab === tabsName.PASTE_IDS && (
           <div className="relative">
             <div
-              className={`flex text-gray80 text-[12px] mt-1  bg-gray40 border border-gray60 rounded-xl w-full  overflow-hidden ${
+              className={`flex text-gray80 text-xs mt-1  bg-gray40 border border-gray60 rounded-xl w-full  overflow-hidden ${
                 uploadedFile ? "opacity-[0.5]" : ""
               }`}
             >
@@ -275,13 +275,13 @@ const AddNftIdListModalModalBody = () => {
               </div>
             </div>
             {error && !textAreaData && !invalidInput ? (
-              <p className="absolute -bottom-4 left-0 text-[10px] text-error">
+              <p className="absolute -bottom-4 left-0 text-2xs text-error">
                 {error}
               </p>
             ) : null}
 
             {error && textAreaData && invalidInput ? (
-              <p className="absolute -bottom-4 left-0 text-[10px] text-error">
+              <p className="absolute -bottom-4 left-0 text-2xs text-error">
                 {error}
               </p>
             ) : null}
@@ -302,7 +302,7 @@ const AddNftIdListModalModalBody = () => {
             </p>
             <div>
               <div
-                className={` flex relative text-gray80 text-[12px] bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
+                className={` flex relative text-gray80 text-xs bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
                   textAreaData || nftRange.to || nftRange.from
                     ? "opacity-[.5]"
                     : ""
@@ -327,12 +327,12 @@ const AddNftIdListModalModalBody = () => {
                     </div>
 
                     {error && !uploadedFile && !invalidInput ? (
-                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                      <p className="absolute bottom-[-17px] left-0 text-2xs text-error">
                         {error}
                       </p>
                     ) : null}
                     {error && uploadedFile && invalidInput ? (
-                      <p className="absolute bottom-[-17px] left-0 text-[10px] text-error">
+                      <p className="absolute bottom-[-17px] left-0 text-2xs text-error">
                         {error}
                       </p>
                     ) : null}
@@ -344,7 +344,7 @@ const AddNftIdListModalModalBody = () => {
                     </p>
                     <button
                       onClick={handleClearUploadedFile}
-                      className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
+                      className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
                     >
                       Reset Uploaded file
                     </button>
@@ -366,17 +366,17 @@ const AddNftIdListModalModalBody = () => {
               ></Lottie>
             </div>
           )}
-          <p className="absolute left-0 text-error text-[12px]">
+          <p className="absolute left-0 text-error text-xs">
             {nftStatus.length > 0 && "Invalid NFT IDs is entered"}
           </p>
 
           {error && !!uploadedFile && nftIds.length > 0 && (
-            <p className="absolute left-0 text-error text-[12px]">{error}</p>
+            <p className="absolute left-0 text-error text-xs">{error}</p>
           )}
 
           <button
             onClick={handleAddNft}
-            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-[14px] font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
+            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-sm font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
               nftContractStatus.isValid === ContractValidationStatus.NotValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||

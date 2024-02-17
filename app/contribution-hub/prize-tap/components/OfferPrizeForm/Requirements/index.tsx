@@ -14,7 +14,7 @@ const Requirements = ({
 
   return (
     <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
-      <div className="text-gray100 min-h-[424px] text-[12px] font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
+      <div className="text-gray100 min-h-[424px] text-xs font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
         <p className="mb-4">
           Add any requirements for Enrolling or leave it free.
         </p>
@@ -23,7 +23,7 @@ const Requirements = ({
         ))}
         <div
           onClick={openRequirementModal}
-          className=" flex cursor-pointer items-center gap-2 bg-gray40 h-[44px] rounded-xl px-4 text-white text-[12px]"
+          className=" flex cursor-pointer items-center gap-2 bg-gray40 h-[44px] rounded-xl px-4 text-white text-xs"
         >
           <Icon
             iconSrc="/assets/images/provider-dashboard/add-requirement.svg"

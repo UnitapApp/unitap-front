@@ -18,8 +18,8 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
   } = useTokenTapFromContext();
 
   return (
-    <div className="w-full text-gray100">
-      <p className="mb-2 text-xs">Set Enrollment Duration:</p>
+    <div className="w-full text-gray90">
+      <p className="mb-2 text-xs">Set Claim Duration:</p>
       <div className=" w-full flex select-not enrollment-duration-wrap justify-between items-center h-[43px] bg-gray30 text-gray90 text-xs text-center border border-gray50 rounded-xl overflow-hidden">
         {enrollmentDurations.map((item) => (
           <div
@@ -36,7 +36,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
           </div>
         ))}
       </div>
-      <div className="text-[14px] grid gap-11 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
+      <div className="text-sm grid gap-11 grid-cols-1 md:grid-cols-2 items-center justify-between mt-4 md:mt-2">
         <div className="text-gray100  cursor-pointer underline w-full">
           <EndDateComp showErrors={showErrors} />
         </div>
