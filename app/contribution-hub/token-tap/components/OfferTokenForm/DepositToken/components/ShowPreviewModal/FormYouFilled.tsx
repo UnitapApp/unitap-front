@@ -1,20 +1,8 @@
 "use client";
 
-import styled from "styled-components";
 import { ProviderDashboardFormDataProp } from "@/types";
-import { DV } from "@/components/ui/designVariables";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
-import RaffleCardTimerSubmitContribution from "./RaffleCardTimerSubmitContribution";
-
-const Action = styled.div`
-	display: flex;
-
-	// @media only screen and (max-width: ${DV.breakpoints.smallDesktop}) {
-		flex-direction: column;
-	}
-`;
 
 interface Prop {
   data: ProviderDashboardFormDataProp;
@@ -50,18 +38,16 @@ const FormYouFilled = ({ data }: Prop) => {
                   className="cursor-pointer"
                 />
               </div>
-              <p className="text-[10px]">Decentralized verification system</p>
+              <p className="text-2xs">Decentralized verification system</p>
             </div>
           </div>
-          <div className="text-gray100 text-[10px] mt-3">
-            {data.description}
-          </div>
+          <div className="text-gray100 text-2xs mt-3">{data.description}</div>
           <div className="flex gap-2  mt-3">
             {requirementList.length > 0
               ? requirementList.map((item, index) => {
                   return (
                     <div
-                      className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-[10px] rounded"
+                      className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
                       key={index}
                     >
                       {item.isNotSatisfy && "Not "} {item.title}
@@ -82,7 +68,7 @@ const FormYouFilled = ({ data }: Prop) => {
             height="12px"
           />
         </div>
-        <div className="flex text-gray90 text-[10px] bg-gray20 h-full items-center gap-2 px-2">
+        <div className="flex text-gray90 text-2xs bg-gray20 h-full items-center gap-2 px-2">
           Repeats Weekly
           <div className="opacity-50">
             <Icon

@@ -26,7 +26,6 @@ const SearchInput = ({
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
     handleSetSearchPhrase(phrase);
-    // changeSearchPhrase!(phrase);
     updateURLQuery(phrase);
   };
 

@@ -309,8 +309,7 @@ export const GasTapProvider: FC<
   }, []);
 
   useEffect(() => {
-    if (!userToken || chainList.length) return;
-    updateChainList();
+    if (!userToken) return;
     updateActiveClaimHistory();
     updateOneTimeClaimedList();
     updateFuelChampionList();
@@ -322,6 +321,13 @@ export const GasTapProvider: FC<
     updateOneTimeClaimedList,
     userToken,
   ]);
+
+  useEffect(() => {
+    if (userToken) return;
+
+    setOneTimeClaimedGasList([]);
+    setActiveClaimHistory([]);
+  }, [userToken]);
 
   useEffect(() => {
     if (activeChain) {

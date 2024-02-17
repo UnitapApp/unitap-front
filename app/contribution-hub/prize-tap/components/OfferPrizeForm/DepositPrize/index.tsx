@@ -127,7 +127,7 @@ const DepositPrize = ({
       ) : address && !isRightChain && data.selectedChain ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="text-[14px] max-w-[452px] mt-[2px]"
+          className="text-sm max-w-[452px] mt-[2px]"
           data-testid="fund-action"
         >
           Switch Network

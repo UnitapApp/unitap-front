@@ -1,3 +1,5 @@
+"use client";
+
 import FundTransactionModal from "@/app/gastap/components/Modals/FundTransactionModal";
 import SelectChainModal from "@/app/gastap/components/Modals/SelectChainModal";
 import { ClaimButton } from "@/components/ui/Button/button";
@@ -222,7 +224,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
         </div>
         <div className="w-full max-w-[452px] ">
           <div className="z-10 mt-5 flex flex-col items-center">
-            <p className="text-[14px] font-semibold mb-2">Provide Gas Fee</p>
+            <p className="text-sm font-semibold mb-2">Provide Gas Fee</p>
             <div className=" flex items-center">
               <p className="text-xs text-gray100 max-w-[300px]">
                 100% of contributions will fund distributions and transaction
@@ -270,7 +272,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 />
                 <div
                   onClick={() => setFundAmount(balance.data?.formatted!)}
-                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-[12px] flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
+                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-xs flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
                 >
                   Max
                 </div>

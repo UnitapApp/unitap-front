@@ -36,7 +36,7 @@ const FundTransactionModal = ({
       <>
         <Icon
           mb={3}
-          iconSrc="assets/images/fund/success-provide-spaceman.svg"
+          iconSrc="/assets/images/fund/success-provide-spaceman.svg"
         ></Icon>
         {selectedChain && (
           <>
