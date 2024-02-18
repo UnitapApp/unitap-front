@@ -1,4 +1,9 @@
-import { ClaimTokenResponse, ClaimedToken, Token } from "@/types/tokentap";
+import {
+  ClaimTokenResponse,
+  ClaimedToken,
+  ShieldSignatureResponse,
+  Token,
+} from "@/types/tokentap";
 import { axiosInstance } from "./base";
 
 export async function getTokensListAPI() {
@@ -6,6 +11,20 @@ export async function getTokensListAPI() {
     "/api/tokentap/token-distribution-list/"
   );
   return response.data;
+}
+
+export async function tokenClaimSignatureApi(
+  claimId: number,
+  distributionId: number,
+  contractAddress: string
+) {
+  const res = await axiosInstance.get<ShieldSignatureResponse>(
+    `https://shield.unitap.app/v1/?app=${
+      process.env.NEXT_PUBLIC_IS_STAGE === "1" ? "stage_unitap" : "unitap"
+    }&method=claim-token&params[claimId]=${claimId}&distributionId=${distributionId}&contract=${contractAddress}`
+  );
+
+  return res.data;
 }
 
 export async function getClaimedTokensListAPI(token: string) {

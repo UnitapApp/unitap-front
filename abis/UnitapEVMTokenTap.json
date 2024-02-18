@@ -1,18 +1,51 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      { "internalType": "address", "name": "admin", "type": "address" },
+      { "internalType": "uint256", "name": "_muonAppId", "type": "uint256" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "x", "type": "uint256" },
+          { "internalType": "uint8", "name": "parity", "type": "uint8" }
+        ],
+        "internalType": "struct IMuonClient.PublicKey",
+        "name": "_muonPublicKey",
+        "type": "tuple"
+      },
+      { "internalType": "address", "name": "_muon", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_muonValidGateway",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
-    "inputs": [],
-    "name": "InvalidSignature",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NonceAlreadyUsed",
-    "type": "error"
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "distributionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DistributionRefunded",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -93,6 +126,43 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "distributionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "provider",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxNumClaims",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "claimAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokenDistributed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "token",
@@ -107,14 +177,8 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "claimId",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint32",
-        "name": "nonce",
-        "type": "uint32"
       }
     ],
     "name": "TokensClaimed",
@@ -122,57 +186,39 @@
   },
   {
     "inputs": [],
-    "name": "DEFAULT_ADMIN_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "name": "DAO_ROLE",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "UNITAP_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
+      { "internalType": "address", "name": "user", "type": "address" },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "distributionId",
         "type": "uint256"
       },
+      { "internalType": "uint256", "name": "claimId", "type": "uint256" },
+      { "internalType": "bytes", "name": "reqId", "type": "bytes" },
       {
-        "internalType": "uint32",
-        "name": "nonce",
-        "type": "uint32"
-      },
-      {
-        "internalType": "bytes",
+        "components": [
+          { "internalType": "uint256", "name": "signature", "type": "uint256" },
+          { "internalType": "address", "name": "owner", "type": "address" },
+          { "internalType": "address", "name": "nonce", "type": "address" }
+        ],
+        "internalType": "struct IMuonClient.SchnorrSign",
         "name": "signature",
-        "type": "bytes"
-      }
+        "type": "tuple"
+      },
+      { "internalType": "bytes", "name": "gatewaySignature", "type": "bytes" }
     ],
     "name": "claimToken",
     "outputs": [],
@@ -181,35 +227,46 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      }
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "uint256", "name": "maxNumClaims", "type": "uint256" },
+      { "internalType": "uint256", "name": "claimAmount", "type": "uint256" },
+      { "internalType": "uint256", "name": "startTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "endTime", "type": "uint256" }
     ],
-    "name": "getRoleAdmin",
+    "name": "distributeToken",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "distributions",
     "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
+      { "internalType": "address", "name": "provider", "type": "address" },
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "uint256", "name": "maxNumClaims", "type": "uint256" },
+      { "internalType": "uint256", "name": "claimAmount", "type": "uint256" },
+      { "internalType": "uint256", "name": "claimsCount", "type": "uint256" },
+      { "internalType": "uint256", "name": "startTime", "type": "uint256" },
+      { "internalType": "uint256", "name": "endTime", "type": "uint256" },
+      { "internalType": "bool", "name": "isRefunded", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "grantRole",
     "outputs": [],
@@ -218,40 +275,58 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "hasRole",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastDistributionId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "muon",
     "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+      { "internalType": "contract IMuonClient", "name": "", "type": "address" }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "muonAppId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "muonPublicKey",
+    "outputs": [
+      { "internalType": "uint256", "name": "x", "type": "uint256" },
+      { "internalType": "uint8", "name": "parity", "type": "uint8" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "muonValidGateway",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "renounceRole",
     "outputs": [],
@@ -260,16 +335,8 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
+      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+      { "internalType": "address", "name": "account", "type": "address" }
     ],
     "name": "revokeRole",
     "outputs": [],
@@ -278,45 +345,76 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceId",
-        "type": "bytes4"
-      }
+      { "internalType": "address", "name": "_muonAddress", "type": "address" }
     ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
+    "name": "setMuonAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_muonAppId", "type": "uint256" }
     ],
-    "stateMutability": "view",
+    "name": "setMuonAppId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "_gatewayAddress",
         "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
       }
     ],
-    "name": "usedNonces",
-    "outputs": [
+    "name": "setMuonGateway",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "components": [
+          { "internalType": "uint256", "name": "x", "type": "uint256" },
+          { "internalType": "uint8", "name": "parity", "type": "uint8" }
+        ],
+        "internalType": "struct IMuonClient.PublicKey",
+        "name": "_muonPublicKey",
+        "type": "tuple"
       }
     ],
+    "name": "setMuonPublicKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }
+    ],
+    "name": "supportsInterface",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "usedClaims",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "distributionId", "type": "uint256" }
+    ],
+    "name": "withdrawReaminingTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]
