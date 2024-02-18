@@ -55,7 +55,7 @@ export default defineConfig({
     {
       name: "TokenTap",
       abi: TokenTap as any,
-      address: "0x3D0902d18737Fe3C0Ee68578D571e98582157Ac5",
+      address: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
     },
   ],
   plugins: [
