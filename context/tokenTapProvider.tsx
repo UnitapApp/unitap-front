@@ -206,7 +206,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
             nonce: shieldRes.result.data.init.nonceAddress,
             owner: shieldRes.result.signatures[0].owner,
           },
-          shieldRes.result.nodeSignature,
+          shieldRes.result.shieldSignature,
         ] as const;
 
         const contractGas = await provider.estimateContractGas({
