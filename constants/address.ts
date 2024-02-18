@@ -40,3 +40,9 @@ export const tokenTapContractAddressList: { [key: string]: Address } = {
   Bright: "0xB67ec856346b22e4BDA2ab2B53d70D61a2014358",
   OP: "0x54a839FF128DC1891a03d7a81724bD5D51A5902b",
 };
+
+export const contractAddresses = {
+  tokenTap: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
+  prizeTapErc20: "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+  prizeTapErc721: "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0",
+};

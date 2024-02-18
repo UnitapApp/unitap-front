@@ -1,4 +1,4 @@
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
 import { prizeTapABI } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
@@ -80,7 +80,7 @@ export const createErc20Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any
 ) => {
-  const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
+  const raffleContractAddress = contractAddresses.prizeTapErc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";

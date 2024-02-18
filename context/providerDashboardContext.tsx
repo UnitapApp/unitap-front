@@ -37,7 +37,7 @@ import {
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getProviderDashboardValidChain } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
@@ -845,6 +845,7 @@ const ProviderDashboard: FC<
       provider,
       signer,
       address,
+      contractAddresses.prizeTapErc20,
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance
