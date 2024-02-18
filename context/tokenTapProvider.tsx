@@ -202,7 +202,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           shieldRes.result.data.result.claimId,
           shieldRes.result.reqId,
           {
-            signature: shieldRes.result.nSign,
+            signature: shieldRes.result.signatures[0].signature as any,
             nonce: shieldRes.result.data.init.nonceAddress,
             owner: shieldRes.result.signatures[0].owner,
           },
