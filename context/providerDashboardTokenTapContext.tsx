@@ -37,11 +37,11 @@ import {
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
 import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
-
+import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
 import Big from "big.js";
 import { NullCallback } from "@/utils";
@@ -112,6 +112,8 @@ export const TokenTapContext = createContext<{
   handleCheckForReason: (raffle: UserTokenDistribution) => void;
   handleShowUserDetails: (raffle: UserTokenDistribution) => void;
   handleAddNftToData: (nftIds: string[]) => void;
+  handleApproveErc20Token: () => void;
+  isErc20Approved: boolean;
   setUploadedFile: (file: any) => void;
   uploadedFile: UploadedFileProps | null;
   isShowingDetails: boolean;
@@ -145,6 +147,7 @@ export const TokenTapContext = createContext<{
   handleSetClaimPeriodic: (e: boolean) => void;
   claimPeriodic: boolean;
   allChainList: Chain[] | undefined;
+  approveLoading: boolean;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -194,6 +197,7 @@ export const TokenTapContext = createContext<{
   handleCheckForReason: NullCallback,
   handleShowUserDetails: NullCallback,
   handleAddNftToData: NullCallback,
+  handleApproveErc20Token: NullCallback,
   setUploadedFile: NullCallback,
   uploadedFile: { fileName: "", fileContent: null },
   isShowingDetails: false,
@@ -235,6 +239,8 @@ export const TokenTapContext = createContext<{
   claimPeriodic: false,
   handleSetClaimPeriodic: NullCallback,
   allChainList: [] as any,
+  isErc20Approved: false,
+  approveLoading: false,
 });
 
 const TokenTapProvider: FC<
@@ -284,6 +290,12 @@ const TokenTapProvider: FC<
 
   const [insufficientBalance, setInsufficientBalance] =
     useState<boolean>(false);
+
+  const [approveAllowance, setApproveAllowance] = useState<number>(0);
+
+  const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
+
+  const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [createRaffleResponse, setCreteRaffleResponse] = useState<any | null>(
     null
@@ -377,6 +389,21 @@ const TokenTapProvider: FC<
     setSelectNewOffer(select);
   };
 
+  const handleApproveErc20Token = () => {
+    if (!provider || !address || !signer) return;
+
+    approveErc20Token(
+      data,
+      provider,
+      signer,
+      address,
+      contractAddresses.tokenTap,
+      setApproveLoading,
+      setIsErc20Approved,
+      setApproveAllowance
+    );
+  };
+
   const checkContractInfo = useCallback(async () => {
     if (!data.isNft && provider && address) {
       await getErc20TokenContractTokenTap(
@@ -384,7 +411,9 @@ const TokenTapProvider: FC<
         address,
         provider,
         setData,
-        setTokenContractStatus
+        setTokenContractStatus,
+        setIsErc20Approved,
+        setApproveAllowance
       );
     }
 
@@ -632,6 +661,7 @@ const TokenTapProvider: FC<
   useEffect(() => {
     if (isShowingDetails || data.isNft) return;
     if (!data.tokenContractAddress) {
+      setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -641,6 +671,7 @@ const TokenTapProvider: FC<
       return;
     }
     if (data.tokenContractAddress == zeroAddress) {
+      setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Valid,
@@ -695,6 +726,7 @@ const TokenTapProvider: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
+      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,
@@ -1058,8 +1090,10 @@ const TokenTapProvider: FC<
         handleCheckForReason,
         handleShowUserDetails,
         handleAddNftToData,
+        handleApproveErc20Token,
         setUploadedFile,
         uploadedFile,
+        isErc20Approved,
         isShowingDetails,
         handleCheckOwnerOfNfts,
         nftStatus,
@@ -1085,6 +1119,7 @@ const TokenTapProvider: FC<
         claimPeriodic,
         handleSetClaimPeriodic: setClaimPeriodic,
         allChainList,
+        approveLoading,
       }}
     >
       {children}
