@@ -17,7 +17,8 @@ const GasTap = () => {
       <Header />
       <GasTapMainContent />
 
-      <ProvideGasCard />
+      {process.env.NODE_ENV === "development" ? null : <ProvideGasCard />}
+
       <ClaimModal />
       <ClaimNonEVMModal />
     </FundContextProvider>

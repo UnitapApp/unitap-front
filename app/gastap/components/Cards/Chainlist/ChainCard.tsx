@@ -185,25 +185,23 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   />
                 </Button>
               ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
-                // <Button
-                //   onClick={() => handleRefillButtonClicked(chain.pk)}
-                //   className="bg-gray60 text-xs !block border-2 !font-normal border-gray100 !w-[220px] !py-1 m-auto"
-                // >
-                //   <p>Refuel</p>
-                //   <p className="text-2xs text-gray90">
-                //     This FASET is out of balance
-                //   </p>
-                // </Button>
-                <div className="btn btn--claim btn--sm btn--out-of-balance">
-                  Out of Gas
-                  <button
-                    onClick={() => handleRefillButtonClicked(chain.pk)}
-                    className="btn btn--sm btn--refill"
-                  >
-                    Refuel
-                  </button>
-                </div>
-              ) : !activeClaimHistory.find(
+                <ClaimButton
+                  data-testid={`chain-refuel-claim-${chain.pk}`}
+                  $mlAuto
+                  className="text-sm !h-11 before:!bg-gray30 inset:!bg-g-dark-primary-gradient !cursor-not-allowed m-auto"
+                >
+                  <p className="!bg-g-dark-primary-gradient">Refuel</p>
+                </ClaimButton>
+              ) : // <div className="btn btn--claim btn--sm btn--out-of-balance">
+              //   Out of Gas
+              //   <button
+              //     onClick={() => handleRefillButtonClicked(chain.pk)}
+              //     className="btn btn--sm btn--refill"
+              //   >
+              //     Refuel
+              //   </button>
+              // </div>
+              !activeClaimHistory.find(
                   (claim: ClaimReceipt) =>
                     claim.chain.pk === chain.pk &&
                     claim.status !== ClaimReceiptState.REJECTED
