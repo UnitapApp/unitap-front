@@ -40,4 +40,5 @@ export const tokenTapContractAddressList: { [key: string]: Address } = {
   Bright: "0xB67ec856346b22e4BDA2ab2B53d70D61a2014358",
   OP: "0x54a839FF128DC1891a03d7a81724bD5D51A5902b",
   USDC: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
+  LINK: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
 };

@@ -10,7 +10,8 @@ export async function getTokensListAPI() {
   const response = await axiosInstance.get<Token[]>(
     "/api/tokentap/token-distribution-list/"
   );
-  return response.data;
+
+  return response.data.filter((item) => item.status === "VERIFIED");
 }
 
 export async function tokenClaimSignatureApi(
