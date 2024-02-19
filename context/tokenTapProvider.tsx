@@ -17,6 +17,7 @@ import {
   claimTokenAPI,
   getClaimedTokensListAPI,
   getTokensListAPI,
+  tokenClaimSignatureApi,
   updateClaimFinished,
 } from "@/utils/api/tokentap";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
@@ -184,42 +185,40 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         if (!claimId) claimId = res!.id;
 
-        console.log({
-          abi: unitapEvmTokenTapABI,
-          account: address,
-          address: contractAddress,
-          functionName: "claimToken",
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
-        });
+        const shieldRes = await tokenClaimSignatureApi(
+          claimId,
+          res!.tokenDistribution.id,
+          contractAddress
+        );
+        console.log(shieldRes);
+
+        if (!shieldRes.success) {
+          throw new Error("Error receiving shield from shield api");
+        }
+
+        const contractArgs = [
+          txPayload.userWalletAddress,
+          shieldRes.result.data.result.distributionId,
+          shieldRes.result.data.result.claimId,
+          shieldRes.result.reqId,
+          {
+            signature: shieldRes.result.signatures[0].signature as any,
+            nonce: shieldRes.result.data.init.nonceAddress,
+            owner: shieldRes.result.signatures[0].owner,
+          },
+          shieldRes.result.shieldSignature,
+        ] as const;
 
         const contractGas = await provider.estimateContractGas({
           abi: unitapEvmTokenTapABI,
           account: address,
           address: contractAddress,
           functionName: "claimToken",
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
+          args: contractArgs,
         });
 
         const claimRes = await writeAsync?.({
-          args: [
-            txPayload.userWalletAddress,
-            txPayload.token,
-            BigInt(txPayload.amount),
-            txPayload.nonce,
-            txPayload.signature,
-          ],
+          args: contractArgs,
           value: 0n,
           gas: contractGas,
         });
