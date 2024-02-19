@@ -190,7 +190,6 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           res!.tokenDistribution.id,
           contractAddress
         );
-        console.log(shieldRes);
 
         if (!shieldRes.success) {
           throw new Error("Error receiving shield from shield api");
