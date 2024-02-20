@@ -925,7 +925,7 @@ const TokenTapProvider: FC<
       description: raffle.notes,
       isNft: false,
       isNativeToken: raffle.tokenAddress == ZERO_ADDRESS,
-      tokenAmount: new Big(fromWei(raffle.amount, 18)).toFixed(),
+      tokenAmount: new Big(fromWei(raffle.amount, raffle.decimals)).toFixed(),
       tokenContractAddress: raffle.tokenAddress,
       // nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,

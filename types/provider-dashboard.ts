@@ -230,6 +230,7 @@ export interface UserTokenDistribution {
   tokenImageUrl: string;
   totalClaimsSinceLastRound: number;
   twitterUrl: string | null;
+  decimals: number;
 }
 
 export interface UserDonation {
