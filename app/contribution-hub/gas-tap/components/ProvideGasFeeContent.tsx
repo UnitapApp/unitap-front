@@ -258,7 +258,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 height="auto"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40">
+            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40 relative">
               <div className="select-box__info__amount w-full flex">
                 <input
                   className="fund-input w-full text-sm bg-transparent text-white"
@@ -277,6 +277,12 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                   Max
                 </div>
               </div>
+
+              {Number(balance.data?.formatted) < Number(fundAmount) && (
+                <p className="text-error text-2xs absolute -bottom-4 left-0">
+                  Insufficient Balance
+                </p>
+              )}
             </div>
           </div>
 
@@ -297,7 +303,10 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
             height="3.5rem"
             className="!w-full mt-5"
             onClick={handleSendFunds}
-            disabled={!Number(fundAmount) && isRightChain && isConnected}
+            disabled={
+              (!Number(fundAmount) && isRightChain && isConnected) ||
+              Number(balance.data?.formatted) < Number(fundAmount)
+            }
             data-testid="fund-action"
           >
             {fundActionButtonLabel}

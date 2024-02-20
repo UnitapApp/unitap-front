@@ -1,4 +1,8 @@
-import { ContractValidationStatus, ProviderDashboardFormDataProp } from "@/types";
+import { contractAddresses } from "@/constants";
+import {
+  ContractValidationStatus,
+  ProviderDashboardFormDataProp,
+} from "@/types";
 import { Address, getContract } from "viem";
 import { PublicClient, erc721ABI } from "wagmi";
 
@@ -23,13 +27,11 @@ export const getErc721TokenContract = async (
   try {
     await contract.read.ownerOf([1n]);
   } catch (e) {
-    setNftContractStatus((prev: any) => (
-      {
-        ...prev,
-        isValid: ContractValidationStatus.NotValid,
-        checking: false,
-      }
-    ))
+    setNftContractStatus((prev: any) => ({
+      ...prev,
+      isValid: ContractValidationStatus.NotValid,
+      checking: false,
+    }));
     return;
   }
 
@@ -37,10 +39,10 @@ export const getErc721TokenContract = async (
     contract.read.name(),
     contract.read.symbol(),
     contract.read.balanceOf([address as any]),
-    contract.read.isApprovedForAll(
-      [address as Address,
-      data.selectedChain.erc721PrizetapAddr]
-    ),
+    contract.read.isApprovedForAll([
+      address as Address,
+      contractAddresses.prizeTapErc721 as any,
+    ]),
   ]).then(([r1, r2, r3, r5]) => {
     setData((prevData: any) => ({
       ...prevData,
@@ -48,9 +50,11 @@ export const getErc721TokenContract = async (
       nftSymbol: r2,
       userNftBalance: r3?.toString(),
     }));
-    setNftContractStatus((prev: any) => ({...prev,
+    setNftContractStatus((prev: any) => ({
+      ...prev,
       isValid: ContractValidationStatus.Valid,
-      checking: false,}))
+      checking: false,
+    }));
     setIsApprovedAll(r5);
   });
 };

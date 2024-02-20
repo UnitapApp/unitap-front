@@ -1,3 +1,4 @@
+import { contractAddresses } from "@/constants";
 import {
   ContractValidationStatus,
   ProviderDashboardFormDataProp,
@@ -44,7 +45,7 @@ export const getErc20TokenContract = async (
     contract.read.balanceOf([address as Address]),
     contract.read.allowance([
       address as Address,
-      data.selectedChain.erc20PrizetapAddr,
+      contractAddresses.prizeTapErc20 as any,
     ]),
   ]).then(([r1, r2, r3, r4, r5]) => {
     setData((prevData: any) => ({

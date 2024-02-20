@@ -9,6 +9,7 @@ import AutoFund from "@/abis/AutoFund.json";
 import UnitapPassBatchSaleMain from "@/abis/UnitapPassBatchSaleMain.json";
 import PrizeTap from "@/abis/UnitapPrizeTap.json";
 import PrizeTap721 from "@/abis/UnitapPrizeTap721.json";
+import TokenTap from "@/abis/TokenTap.json";
 
 export default defineConfig({
   out: "types/abis/contracts.ts",
@@ -50,6 +51,11 @@ export default defineConfig({
       name: "PrizeTap721",
       abi: PrizeTap721 as any,
       address: "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0",
+    },
+    {
+      name: "TokenTap",
+      abi: TokenTap as any,
+      address: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
     },
   ],
   plugins: [

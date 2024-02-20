@@ -47,12 +47,12 @@ export const approveErc20Token = async (
   provider: PublicClient,
   signer: GetWalletClientResult,
   address: Address,
+  spenderAddress: any,
   setApproveLoading: (e: boolean) => void,
   setIsErc20Approved: (e: boolean) => void,
   setApproveAllowance: (e: number) => void
 ) => {
   if (!provider || !signer) return;
-
   const contract = getContract({
     abi: erc20ABI,
     address: data.tokenContractAddress as Address,
@@ -64,7 +64,7 @@ export const approveErc20Token = async (
     const response = await approveErc20TokenCallback(
       address,
       contract,
-      data.selectedChain.erc20PrizetapAddr,
+      spenderAddress,
       provider,
       signer,
       data.tokenDecimals,
@@ -75,10 +75,7 @@ export const approveErc20Token = async (
     setIsErc20Approved(true);
     Promise.all([
       contract.read.decimals(),
-      contract.read.allowance([
-        address as Address,
-        data.selectedChain.erc20PrizetapAddr,
-      ]),
+      contract.read.allowance([address as Address, spenderAddress]),
     ]).then(([r1, r2]) => {
       setApproveAllowance(Number(fromWei(r2.toString(), r1)));
     });

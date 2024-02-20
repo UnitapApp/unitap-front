@@ -7,9 +7,9 @@ import { serverFetch } from "@/utils/api";
 import { Token } from "@/types";
 
 const TokenTapLanding = async () => {
-  const tokensList: Token[] = await serverFetch(
-    "/api/tokentap/token-distribution-list/"
-  );
+  const tokensList: Token[] = (
+    await serverFetch("/api/tokentap/token-distribution-list/")
+  ).filter((item: Token) => item.status === "VERIFIED");
 
   return (
     <section className={"flex--1"}>

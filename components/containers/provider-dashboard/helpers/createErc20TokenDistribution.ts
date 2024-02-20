@@ -2,13 +2,21 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { TransactionReceiptNotFoundError, parseEther } from "viem";
+import {
+  Address,
+  TransactionReceiptNotFoundError,
+  parseEther,
+  zeroAddress,
+} from "viem";
 import { GetWalletClientResult } from "wagmi/dist/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
 import { estimateGas } from "@/utils/wallet";
 import { PublicClient, erc20ABI } from "wagmi";
+import { tokenTapABI } from "@/types/abis/contracts";
+import Big from "big.js";
+import { contractAddresses } from "@/constants";
 
 const txCallBack = async (
   address: string,
@@ -16,29 +24,46 @@ const txCallBack = async (
   provider: PublicClient,
   decimals: number,
   tokenContractAddress: string,
-  totalAmount: string
+  maxNumClaim: bigint,
+  tokenAmount: string,
+  totalAmount: string,
+  startTime: bigint,
+  endTime: bigint,
+  isNativeToken: boolean
 ) => {
   const gasEstimate = await provider.estimateContractGas({
-    abi: erc20ABI,
+    abi: tokenTapABI,
     account: address as any,
-    address: tokenContractAddress as any,
-    functionName: "transfer",
+    address: contractAddresses.tokenTap as any,
+    functionName: "distributeToken",
     args: [
-      "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-      parseEther(totalAmount),
+      tokenContractAddress as any,
+      maxNumClaim,
+      isNativeToken
+        ? parseEther(new Big(tokenAmount).toFixed())
+        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+      startTime,
+      endTime,
     ],
+    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
 
   return signer?.writeContract({
-    abi: erc20ABI,
+    abi: tokenTapABI,
     account: address as any,
-    address: tokenContractAddress as any,
-    functionName: "transfer",
+    address: contractAddresses.tokenTap as any,
+    functionName: "distributeToken",
     gasPrice: gasEstimate,
     args: [
-      "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-      BigInt(toWei(totalAmount, decimals)),
+      tokenContractAddress as any,
+      maxNumClaim,
+      isNativeToken
+        ? parseEther(new Big(tokenAmount).toFixed())
+        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+      startTime,
+      endTime,
     ],
+    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
 };
 
@@ -59,6 +84,8 @@ export const createErc20TokenDistribution = async (
   const prizeName = data.isNativeToken
     ? data.selectedChain.symbol
     : data.tokenSymbol;
+
+  const maxNumClaim = data.winnersCount.toString();
   // const prizeSymbol = data.isNativeToken
   // 	? data.selectedChain.symbol
   // 	: data.tokenSymbol;
@@ -91,6 +118,10 @@ export const createErc20TokenDistribution = async (
     obj[item.name] = item.params;
     return obj;
   }, {});
+
+  const token = data.isNativeToken ? zeroAddress : data.tokenContractAddress;
+  const startTime = startAt(data.startTimeStamp);
+  const endTime = deadline(data.endTimeStamp);
 
   const formData = new FormData();
 
@@ -128,81 +159,50 @@ export const createErc20TokenDistribution = async (
   formData.append("token_address", data.tokenContractAddress);
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
-  formData.append("contract", "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC");
-  formData.append("start_at", startAt(data.startTimeStamp));
-  formData.append("deadline", deadline(data.endTimeStamp));
-  formData.append("max_number_of_claims", data.winnersCount.toString());
+  formData.append("contract", contractAddresses.tokenTap as any);
+  formData.append("start_at", startTime);
+  formData.append("deadline", endTime);
+  formData.append("max_number_of_claims", maxNumClaim);
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
+  formData.append("decimals", decimals);
 
   try {
     setCreateRaffleLoading(true);
+    const response = await txCallBack(
+      address,
+      signer,
+      provider,
+      decimals,
+      token,
+      BigInt(maxNumClaim),
+      data.tokenAmount,
+      data.totalAmount,
+      data.startTimeStamp,
+      data.endTimeStamp,
+      data.isNativeToken
+    );
 
-    if (data.isNativeToken) {
-      let tx = {
-        to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC" as any,
-        value: BigInt(parseEther(data.totalAmount)),
-      };
-      const estimatedGas: any = await estimateGas(provider, {
-        from: address,
-        to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-        value: BigInt(tx.value),
-      }).catch((err: any) => {
-        return err;
-      });
+    if (!response) throw new Error("Contract hash not found");
 
-      const hash = await signer
-        ?.sendTransaction({
-          ...tx,
-          ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
-        })
-        .then(async (tx) => {
-          await provider.waitForTransactionReceipt({
-            hash: tx,
-            confirmations: 1,
-          });
-          return tx;
-        });
+    const transactionInfo = await provider.waitForTransactionReceipt({
+      hash: response,
+      confirmations: 1,
+    });
 
-      const raffle = await createTokenDistribution(userToken, formData);
-      if (!raffle.success) {
-        return false;
-      }
-      setCreteRaffleResponse({
-        success: true,
-        state: "Done",
-        txHash: hash,
-        message: "Created distribution successfully.",
-      });
-      setCreateRaffleLoading(false);
-    } else {
-      const response = await txCallBack(
-        address,
-        signer,
-        provider,
-        decimals,
-        data.tokenContractAddress as any,
-        data.totalAmount
-      );
+    formData.append("tx_hash", transactionInfo.transactionHash);
 
-      if (!response) throw new Error("Contract hash not found");
-
-      const transactionInfo = await provider.waitForTransactionReceipt({
-        hash: response,
-        confirmations: 1,
-      });
-
-      const raffle = await createTokenDistribution(userToken, formData);
-      if (!raffle.success) {
-        return false;
-      }
-      setCreteRaffleResponse({
-        success: true,
-        state: "Done",
-        txHash: transactionInfo.transactionHash,
-        message: "Created distribution successfully.",
-      });
+    const raffle = await createTokenDistribution(userToken, formData);
+    if (!raffle.success) {
+      return false;
     }
+    setCreteRaffleResponse({
+      success: true,
+      state: "Done",
+      txHash: transactionInfo.transactionHash,
+      message: "Created distribution successfully.",
+    });
+    setCreateRaffleLoading(false);
   } catch (e: any) {
     console.log(e);
     setCreteRaffleResponse({
