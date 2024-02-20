@@ -4,69 +4,93 @@ import {
   MEDIUM_INTERVAL,
   SLOW_INTERVAL,
 } from "@/constants";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const useFastRefresh = (
-  callback: CallableFunction,
-  dependencies: any[] = []
+  callback: () => void,
+  dependencies: any[] = [],
+  fastInterval: number = FAST_INTERVAL
 ) => {
-  useEffect(() => {
-    const timeout = setInterval(() => {
-      callback();
-    }, FAST_INTERVAL);
+  const callbackRef = useRef<() => void>();
 
-    return () => {
-      clearInterval(timeout);
-    };
-  }, [...dependencies, callback]);
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (callbackRef.current) {
+        callbackRef.current();
+      }
+    }, fastInterval);
+
+    return () => clearInterval(intervalId);
+  }, [fastInterval, ...dependencies]);
 };
 
 export const useMediumRefresh = (
-  callback: CallableFunction,
-  dependencies: any[] = []
+  callback: () => void,
+  dependencies: any[] = [],
+  mediumInterval: number = MEDIUM_INTERVAL
 ) => {
-  useEffect(() => {
-    const timeout = setInterval(() => {
-      callback();
-    }, MEDIUM_INTERVAL);
+  const callbackRef = useRef<() => void>();
 
-    return () => {
-      clearInterval(timeout);
-    };
-  }, dependencies);
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (callbackRef.current) {
+        callbackRef.current();
+      }
+    }, mediumInterval);
+
+    return () => clearInterval(intervalId);
+  }, [mediumInterval, ...dependencies]);
 };
 
 export const useSlowRefresh = (
-  callback: CallableFunction,
-  dependencies: any[] = []
+  callback: () => void,
+  dependencies: any[] = [],
+  slowInterval: number = SLOW_INTERVAL
 ) => {
-  useEffect(() => {
-    const timeout = setInterval(() => {
-      callback();
-    }, SLOW_INTERVAL);
+  const callbackRef = useRef<() => void>();
 
-    return () => {
-      clearInterval(timeout);
-    };
-  }, dependencies);
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (callbackRef.current) {
+        callbackRef.current();
+      }
+    }, slowInterval);
+
+    return () => clearInterval(intervalId);
+  }, [slowInterval, ...dependencies]);
 };
 
 export const useRefreshWithInitial = (
-  callback: CallableFunction,
+  callback: () => void,
   interval: IntervalType,
   dependencies: any[] = []
 ) => {
+  const callbackRef = useRef<() => void>();
+
   useEffect(() => {
-    const timeout = setInterval(() => {
-      callback();
-    }, interval);
+    callbackRef.current = callback;
+  }, [callback]);
 
-    callback();
+  useEffect(() => {
+    if (interval && callbackRef.current) {
+      const intervalId = setInterval(callbackRef.current, interval);
+      callbackRef.current(); // Initial callback execution
 
-    return () => {
-      clearInterval(timeout);
-    };
-  }, dependencies);
+      return () => clearInterval(intervalId);
+    }
+  }, [interval, ...dependencies]);
 };
 
 export const usePreventNavigation = (isActive: boolean, message?: string) => {

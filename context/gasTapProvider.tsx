@@ -323,6 +323,13 @@ export const GasTapProvider: FC<
   ]);
 
   useEffect(() => {
+    if (userToken) return;
+
+    setOneTimeClaimedGasList([]);
+    setActiveClaimHistory([]);
+  }, [userToken]);
+
+  useEffect(() => {
     if (activeChain) {
       setActiveClaimReceipt(
         getActiveClaimReceipt(activeClaimHistory, activeChain, "EVM")

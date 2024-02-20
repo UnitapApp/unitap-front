@@ -661,7 +661,6 @@ const TokenTapProvider: FC<
   useEffect(() => {
     if (isShowingDetails || data.isNft) return;
     if (!data.tokenContractAddress) {
-      setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -671,7 +670,6 @@ const TokenTapProvider: FC<
       return;
     }
     if (data.tokenContractAddress == zeroAddress) {
-      setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Valid,
@@ -726,7 +724,6 @@ const TokenTapProvider: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
-      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,
