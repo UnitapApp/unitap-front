@@ -11,7 +11,7 @@ import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
 import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
-import { useContext, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
@@ -132,7 +132,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
             }
           >
-            <div className="w-full sm:w-auto items-center sm:items-end">
+            {/* <div className="w-full sm:w-auto items-center sm:items-end">
               {chain.chainType === "EVM" && (
                 <AddMetamaskButton
                   disabled={!isConnected}
@@ -147,9 +147,28 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   Add
                 </AddMetamaskButton>
               )}
-            </div>
+            </div> */}
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
+              {chain.chainType !== ChainType.SOLANA && (
+                <button
+                  onClick={() => handleRefillButtonClicked(chain.pk)}
+                  className={`${
+                    chain.needsFunding ? "bg-unitap-galaxy" : "bg-gray30"
+                  } relative text-sm font-semibold mr-4 rounded-xl p-[2px]`}
+                >
+                  <div className="bg-gray50 h-11 text-secondary-text rounded-xl p-2 flex items-center gap-3">
+                    <Image
+                      src="/assets/images/gas-tap/refuel-logo.svg"
+                      width={17}
+                      height={22}
+                      alt="refuel"
+                    />
+                    <p>Refuel</p>
+                  </div>
+                </button>
+              )}
+
               {isMonthlyCollected || isOneTimeCollected ? (
                 <Button
                   data-testid={`chain-claimed-${chain.pk}`}
@@ -188,20 +207,14 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 <ClaimButton
                   data-testid={`chain-refuel-claim-${chain.pk}`}
                   $mlAuto
-                  className="text-sm !h-11 before:!bg-gray30 inset:!bg-g-dark-primary-gradient !cursor-not-allowed m-auto"
+                  className="text-sm !h-11 !cursor-not-allowed m-auto bg-g-dark-primary-gradient"
                 >
-                  <p className="!bg-g-dark-primary-gradient">Refuel</p>
+                  <p className="!bg-g-dark-primary-gradient">{`Claim ${formatChainBalance(
+                    chain.maxClaimAmount,
+                    chain.symbol
+                  )} ${chain.symbol}`}</p>
                 </ClaimButton>
-              ) : // <div className="btn btn--claim btn--sm btn--out-of-balance">
-              //   Out of Gas
-              //   <button
-              //     onClick={() => handleRefillButtonClicked(chain.pk)}
-              //     className="btn btn--sm btn--refill"
-              //   >
-              //     Refuel
-              //   </button>
-              // </div>
-              !activeClaimHistory.find(
+              ) : !activeClaimHistory.find(
                   (claim: ClaimReceipt) =>
                     claim.chain.pk === chain.pk &&
                     claim.status !== ClaimReceiptState.REJECTED
@@ -233,12 +246,12 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
+          } w-full gap-1 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl justify-between`}
         >
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+            } w-full items-center flex rounded-b-xl pl-4 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Currency
@@ -251,7 +264,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+            } w-full items-center flex rounded-b-xl pl-4 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Fuel Champion{" "}
@@ -276,11 +289,10 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             }
           >
             {chain.isOneTimeClaim ? (
-              <div className="items-center font-semibold px-4 text-secondary-text flex rounded-none justify-between md:justify-center">
+              <div className="items-center font-semibold pl-4 text-secondary-text flex rounded-none justify-between md:justify-center">
                 <p className="flex-1">Single-Claim Tap</p>
                 <Icon
-                  className="text-white"
-                  ml={4}
+                  className="text-white mx-4"
                   iconSrc="/assets/images/gas-tap/claimable-once.svg"
                 />
               </div>
@@ -288,8 +300,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               <div className="items-center font-semibold px-4 text-gray100 flex rounded-none justify-between md:justify-center">
                 <p className="flex-1">Periodic Tap</p>
                 <Icon
-                  className="text-white"
-                  ml={4}
+                  className="text-white mx-auto"
                   iconSrc="/assets/images/gas-tap/periodic-tap.svg"
                 />
               </div>
@@ -319,10 +330,36 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               {numberWithCommas(chain.totalClaims)}
             </p>
           </div>
+          <div
+            className={`${
+              isHighlighted ? "bg-transparent" : "bg-gray30"
+            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+          >
+            <p className="chain-card__info__title text-sm text-gray90">
+              Balance:
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
+};
+
+const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
+  if (balance > 1) {
+    return (
+      <div className="flex items-center gap-2">
+        {Array.from(new Array(balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-space-green" key={key} />
+        ))}
+        {Array.from(new Array(5 - balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+        ))}
+      </div>
+    );
+  }
+
+  return <div></div>;
 };
 
 export default ChainCard;
