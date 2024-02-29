@@ -2,11 +2,12 @@
 
 import { UserConnection } from "@/types";
 import { FC, useState } from "react";
-import SocialAccount from "../../components/socialAccount";
+import BrightIDSocialAccount from "../../components/accounts/brightIDAccount";
 import { useFastRefresh } from "@/utils/hooks/refresh";
 import { getAllConnections } from "@/utils/serverApis";
 import { useUserProfileContext } from "@/context/userProfile";
 import { SocialAccountContext } from "@/context/socialAccountContext";
+import GitCoinPassport from "../../components/accounts/gitCoinPassport";
 
 const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
@@ -32,10 +33,15 @@ const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
       }}
     >
       <div className="mt-10 grid grid-cols-2 gap-4">
-        <SocialAccount
+        <BrightIDSocialAccount
           title={"Bright ID"}
           icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
           isConnected={!!connections["BrightID"]}
+        />
+        <GitCoinPassport
+          title={"Gitcoin Passport"}
+          icon={"/assets/images/up-profile/gitcoin-passport.svg"}
+          isConnected={!!connections["GitCoinPassport"]}
         />
       </div>
     </SocialAccountContext.Provider>

@@ -1,15 +1,14 @@
-"use client";
-
 import Icon from "@/components/ui/Icon";
-import { useGlobalContext } from "@/context/globalProvider";
-import { FC } from "react";
+import { FC, useState } from "react";
 
-export const SocialAccount: FC<{
+const GitCoinPassport: FC<{
   title: string;
   icon: string;
   isConnected?: boolean;
 }> = ({ icon, title, isConnected }) => {
-  const { openBrightIdConnectionModal } = useGlobalContext();
+  const [loading, setLoading] = useState(false);
+
+  const onConnect = () => {};
 
   return (
     <>
@@ -30,7 +29,7 @@ export const SocialAccount: FC<{
             </button>
           ) : (
             <button
-              onClick={openBrightIdConnectionModal}
+              // onClick={openBrightIdConnectionModal}
               className="border-gray90 items-center bg-gray30 text-white border rounded-lg px-5 py-2 text-sm flex"
             >
               Connect
@@ -42,4 +41,4 @@ export const SocialAccount: FC<{
   );
 };
 
-export default SocialAccount;
+export default GitCoinPassport;
