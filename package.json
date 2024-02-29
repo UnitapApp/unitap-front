@@ -43,8 +43,8 @@
     "sass": "^1.68.0",
     "styled-components": "^6.1.0",
     "typechain": "^8.3.2",
-    "viem": "^2.7.6",
-    "wagmi": "^2.2.1"
+    "viem": "^2.7.16",
+    "wagmi": "^2.5.7"
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.7.0",

@@ -1,8 +1,8 @@
 "use client";
 
 import { Chain, ChainType } from "@/types";
-import { useEffect, useState } from "react";
 import { Address, Client, PublicClient } from "viem";
+import { addChain, switchChain } from "viem/actions";
 import {
   Connector,
   useAccount,
@@ -12,6 +12,7 @@ import {
   usePublicClient,
   useWalletClient,
   useEstimateGas,
+  useClient,
 } from "wagmi";
 
 export const useWalletAccount = () => {
@@ -23,50 +24,40 @@ export const useWalletNetwork = () => {
 };
 
 export const useNetworkSwitcher = () => {
-  // const { chain } = useNetwork();
   const { connector, chain } = useAccount();
 
-  const signer = useWalletSigner();
-
-  const [provider, setProvider] = useState<Client | undefined>(undefined);
+  const client = useProvider();
 
   const addAndSwitchChain = (chain: Chain) => {
-    signer?.addChain?.({
-      chain: {
-        id: Number(chain.chainId),
-        name: chain.chainName,
-        nativeCurrency: {
-          decimals: chain.decimals,
-          name: chain.nativeCurrencyName,
-          symbol: chain.symbol,
-        },
-        // network: chain.chainName,
-        blockExplorers: {
-          etherscan: {
-            name: "eth",
-            url: chain.explorerUrl,
-          },
-          default: {
-            name: "eth",
-            url: chain.explorerUrl,
-          },
-        },
-        rpcUrls: {
-          default: { http: [chain.rpcUrl] },
-          public: { http: [chain.rpcUrl] },
-        },
-      },
-    });
+    // addChain(client, {
+    //   chain: {
+    //     id: Number(chain.chainId),
+    //     name: chain.chainName,
+    //     nativeCurrency: {
+    //       decimals: chain.decimals,
+    //       name: chain.nativeCurrencyName,
+    //       symbol: chain.symbol,
+    //     },
+    //     blockExplorers: {
+    //       etherscan: {
+    //         name: "eth",
+    //         url: chain.explorerUrl,
+    //       },
+    //       default: {
+    //         name: "eth",
+    //         url: chain.explorerUrl,
+    //       },
+    //     },
+    //     rpcUrls: {
+    //       default: { http: [chain.rpcUrl] },
+    //       public: { http: [chain.rpcUrl] },
+    //     },
+    //   },
+    // });
+    if (!client) return;
+
+    switchChain(client, { id: Number(chain.chainId) });
   };
-
-  useEffect(() => {
-    if (!connector) return;
-
-    connector.getClient?.().then((provider) => {
-      if (!provider) return;
-      setProvider(provider);
-    });
-  }, [connector]);
 
   return {
     selectedNetwork: chain,
