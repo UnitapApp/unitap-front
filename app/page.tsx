@@ -91,7 +91,7 @@ const Footer = () => {
           "after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center"
         }
       >
-        <h2 className={"text-white card-text"}>Donate to Unitap</h2>
+        <h2 className={"text-white card-text"}>Use Contribution Hub</h2>
       </Link>
       <div
         className={
