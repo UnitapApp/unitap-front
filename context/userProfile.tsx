@@ -73,9 +73,9 @@ export const UserProfileContext = createContext<
 });
 
 export const UserContextProvider: FC<
-  PropsWithChildren & { settings: Settings }
-> = ({ children, settings }) => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  PropsWithChildren & { settings: Settings; initial: UserProfile | null }
+> = ({ children, settings, initial }) => {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(initial);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useLocalStorageState("userToken");
   const [holdUserLogout, setHoldUserLogout] = useState(false);
