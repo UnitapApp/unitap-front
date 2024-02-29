@@ -27,6 +27,7 @@ export type Faucet = {
   needsFunding: boolean;
   blockScanAddress: string;
   isOneTimeClaim: boolean;
+  currentFuelLevel: number;
 };
 
 export type ChainApi = {
@@ -67,6 +68,7 @@ export type Chain = {
   blockScanAddress: string;
   tokentapContractAddress?: string;
   isOneTimeClaim: boolean;
+  currentFuelLevel: number;
 };
 
 export enum ClaimReceiptState {
