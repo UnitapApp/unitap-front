@@ -1,5 +1,6 @@
 "use client";
 import Icon from "@/components/ui/Icon";
+import { RequirementProps } from "@/types";
 import React, { useEffect, useState } from "react";
 
 interface Prop {
@@ -7,22 +8,25 @@ interface Prop {
   setRequirementParamsList: any;
   setConstraintFile: (item: any) => void;
   constraintFile: any;
+  requirement: RequirementProps | undefined;
 }
 const CsvFileInput = ({
   setRequirementParamsList,
   requirementParamsList,
   setConstraintFile,
-  constraintFile,
+  requirement,
 }: Prop) => {
   const [isUploadedFileValid, setIsUploadedFileValid] =
     useState<boolean>(false);
-
-  console.log(constraintFile);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>();
 
   useEffect(() => {
     if (!requirementParamsList) return;
     if (!requirementParamsList.CSV_FILE) return;
+    if (requirement) {
+      if (!requirement.constraintFile) return;
+      setConstraintFile(requirement.constraintFile);
+    }
     setIsUploadedFileValid(true);
     setUploadedFileName(requirementParamsList.CSV_FILE);
   }, [requirementParamsList]);
@@ -77,7 +81,7 @@ const CsvFileInput = ({
               type="file"
               className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
               onChange={(e) => handleChangeUploadedFile(e)}
-              accept=".csv, .txt"
+              accept=".csv"
             />
           </div>
         </div>
@@ -86,7 +90,7 @@ const CsvFileInput = ({
           <p className="text-gray100">file name: {uploadedFileName}</p>
           <button
             onClick={handleClearUploadedFile}
-            className="text-white text-[10px] border border-gray60 bg-gray20 p-2 rounded-xl"
+            className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
           >
             Reset file
           </button>

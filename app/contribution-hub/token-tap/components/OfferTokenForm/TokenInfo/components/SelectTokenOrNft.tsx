@@ -85,7 +85,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         data.selectedChain && isRightChain ? "w-full" : "setOpacity w-full"
       }
     >
-      <section className="flex text-gray80 text-[12px] bg-gray30 border border-gray50 rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden">
+      <section className="flex text-gray80 text-xs bg-gray30 border border-gray50 rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden">
         <div
           className={`
           ${!data.isNft && "text-white font-medium bg-gray40 border-gray50"}
@@ -98,7 +98,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           className={`
           ${data.isNft && "text-white font-medium  bg-gray40 border-gray50"}
            flex cursor-pointer items-center justify-center border-l border-l-gray50 w-[50%] h-full`}
-          onClick={() => handleSelectTokenOrNft(true)}
+          // onClick={() => handleSelectTokenOrNft(true)}
         >
           NFT
         </div>
@@ -107,7 +107,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         <div className="flex flex-col gap-5 w-full mt-4">
           <div className="relative">
             <div
-              className="flex items-center justify-center gap-1 text-white text-[10px] mb-[9px] cursor-pointer max-w-[140px]"
+              className="flex items-center justify-center gap-1 text-white text-2xs mb-[9px] cursor-pointer max-w-[140px]"
               onClick={() => handleSelectNativeToken(data.isNativeToken)}
             >
               <Icon
@@ -119,11 +119,11 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     : "/assets/images/provider-dashboard/check-true.svg"
                 }
               />
-              <p className="text-[14px] text-gray100 ml-1">use native token</p>
+              <p className="text-sm text-gray100 ml-1">use native token</p>
             </div>
 
             <div
-              className={`flex text-gray80 text-[12px] bg-gray40 border-[1.4px] 
+              className={`flex text-gray100 text-xs bg-gray40 border-[1.4px] 
               rounded-xl h-[43px] max-w-[452px] overflow-hidden 
               ${data.isNativeToken ? "opacity-[.5]" : "opacity-1"} 
               ${tokenAddressError ? "border-error" : "border-gray50"}`}
@@ -171,13 +171,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
             {tokenContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute ">
+              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute ">
                 Invalid Token Contract Address
               </p>
             )}
 
             {showErrors && !data.tokenContractAddress && (
-              <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute left-1">
+              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute left-1">
                 Required
               </p>
             )}
@@ -190,7 +190,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               } `}
             >
               <div
-                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border-gray50 border-2 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 text-xs bg-gray40 border-gray50 border-2 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   Number of claims
@@ -216,7 +216,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 text-xs bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   <p>Amount per claim</p>
@@ -239,7 +239,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray80 opacity-50 text-[12px] bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex gap-2 text-gray100 opacity-50 text-xs bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
               >
                 <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
                   <p>Total Amount</p>
@@ -256,16 +256,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
             {showErrors &&
             (!data.totalAmount || Number(data.totalAmount) <= 0) ? (
-              <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
+              <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
                 Required
               </p>
             ) : Number(data.winnersCount) > 500 ? (
-              <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
+              <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
                 The maximum number of winners is 500.
               </p>
             ) : (
               insufficientBalance && (
-                <p className="text-error text-[10px] mt-[2px] m-0 p-0 absolute -bottom-4">
+                <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
                   Insufficient Balance
                 </p>
               )
@@ -277,7 +277,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`
-							 flex text-gray80 text-[12px] bg-gray40 border-[1.4px] ${
+							 flex text-gray80 text-xs bg-gray40 border-[1.4px] ${
                  nftAddressError ? "border-error" : "border-gray50"
                } ${
                 data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
@@ -319,13 +319,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
             </div>
             {showErrors && !data.nftContractAddress && (
-              <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute left-1">
+              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute left-1">
                 Required
               </p>
             )}
             {nftContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="text-error text-[10px] m-0 p-0 mt-[2px] absolute ">
+              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute ">
                 Invalid NFT Contract Address
               </p>
             )}
@@ -340,7 +340,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
             <div
               className={`
-							 flex text-gray80 text-[12px] bg-gray40 border ${
+							 flex text-gray80 text-xs bg-gray40 border ${
                  Number(numberOfNfts) > 500 ||
                  (data.nftTokenIds.length > 0 &&
                    data.nftTokenIds.length != Number(numberOfNfts))
@@ -375,23 +375,23 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
               {Number(numberOfNfts) > 500 && (
-                <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                <p className="absolute text-error text-2xs m-0 p-0 -bottom-4 left-0">
                   Maximum is 500
                 </p>
               )}
             </div>
             {data.nftTokenIds.length > 0 &&
               data.nftTokenIds.length != Number(numberOfNfts) && (
-                <p className="absolute text-error text-[10px] m-0 p-0 -bottom-4 left-0">
+                <p className="absolute text-error text-2xs m-0 p-0 -bottom-4 left-0">
                   Number of NFTs are not equal with Number of NFts you added.
                 </p>
               )}
           </div>
           {data.nftTokenIds.length > 0 ? (
             <div className="flex relative justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">
-              <div className="text-white text-[12px]">
+              <div className="text-white text-xs">
                 <p>{data.nftTokenIds.length} NFT ID added</p>
-                <div className="flex text-gray90 text-[10px]">
+                <div className="flex text-gray90 text-2xs">
                   <p>
                     {data.nftTokenIds.length > 1
                       ? data.nftTokenIds.join(", ")
@@ -402,7 +402,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div className="flex gap-3">
                 <button
                   onClick={() => openAddNftIdListModal()}
-                  className="text-gray90 text-[10px] w-[60px] h-[20px] rounded bg-gray70 border border-gray80 flex items-center justify-center"
+                  className="text-gray90 text-2xs w-[60px] h-[20px] rounded bg-gray70 border border-gray80 flex items-center justify-center"
                 >
                   Edit
                 </button>
@@ -420,7 +420,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   if (!numberOfNfts) return;
                   openAddNftIdListModal();
                 }}
-                className={`flex text-white text-[12px] ${
+                className={`flex text-white text-xs ${
                   nftContractStatus.isValid ===
                     ContractValidationStatus.NotValid ||
                   !numberOfNfts ||
@@ -443,7 +443,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </div>
               </div>
               {data.nftTokenIds.length == 0 && showErrors && (
-                <p className="absolute text-error text-[10px] m-0 p-0 mt-[2px] ml-1">
+                <p className="absolute text-error text-2xs m-0 p-0 mt-[2px] ml-1">
                   Required
                 </p>
               )}

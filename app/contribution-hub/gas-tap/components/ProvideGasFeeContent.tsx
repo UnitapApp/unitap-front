@@ -1,3 +1,5 @@
+"use client";
+
 import FundTransactionModal from "@/app/gastap/components/Modals/FundTransactionModal";
 import SelectChainModal from "@/app/gastap/components/Modals/SelectChainModal";
 import { ClaimButton } from "@/components/ui/Button/button";
@@ -221,7 +223,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
         </div>
         <div className="w-full max-w-[452px] ">
           <div className="z-10 mt-5 flex flex-col items-center">
-            <p className="text-[14px] font-semibold mb-2">Provide Gas Fee</p>
+            <p className="text-sm font-semibold mb-2">Provide Gas Fee</p>
             <div className=" flex items-center">
               <p className="text-xs text-gray100 max-w-[300px]">
                 100% of contributions will fund distributions and transaction
@@ -255,7 +257,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 height="auto"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40">
+            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40 relative">
               <div className="select-box__info__amount w-full flex">
                 <input
                   className="fund-input w-full text-sm bg-transparent text-white"
@@ -269,11 +271,17 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 />
                 <div
                   onClick={() => setFundAmount(balance.data?.formatted!)}
-                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-[12px] flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
+                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-xs flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
                 >
                   Max
                 </div>
               </div>
+
+              {Number(balance.data?.formatted) < Number(fundAmount) && (
+                <p className="text-error text-2xs absolute -bottom-4 left-0">
+                  Insufficient Balance
+                </p>
+              )}
             </div>
           </div>
 
@@ -295,7 +303,8 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
             className="!w-full mt-5"
             onClick={handleSendFunds}
             disabled={
-              (!Number(fundAmount) && isRightChain && isConnected) || isLoading
+              (!Number(fundAmount) && isRightChain && isConnected) ||
+              Number(balance.data?.formatted) < Number(fundAmount)
             }
             data-testid="fund-action"
           >

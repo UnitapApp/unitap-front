@@ -64,7 +64,7 @@ const Profile = async () => {
         </div>
 
         <div className="my-10 py-10 relative">
-          <div className="flex flex-wrap justify-between overflow-hidden opacity-20 gap-10">
+          <div className="flex select-none flex-wrap justify-between overflow-hidden opacity-20 gap-10">
             <SeasonMission
               className="opacity-20"
               title="Gnosis Explorer"

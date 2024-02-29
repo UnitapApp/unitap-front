@@ -1,13 +1,11 @@
-import { PublicClient, erc721Abi } from "viem";
+import { PublicClient, erc721Abi, erc20Abi } from "viem";
 
-//check erc721 collection address
-
-export const checkCollectionAddress = async (
+export const checkNftCollectionAddress = async (
   provider: PublicClient,
   collectionAddress: string,
   chainId: number
 ) => {
-  if (!provider) return;
+  if (!provider) return false;
 
   const contracts = [
     {
@@ -34,8 +32,47 @@ export const checkCollectionAddress = async (
   const data = await provider.multicall({
     contracts,
   });
+  const res = data.filter((item) => item.status === "success");
+  return res.length === 3;
+};
+
+export const checkTokenContractAddress = async (
+  provider: PublicClient,
+  collectionAddress: string,
+  chainId: number,
+  setDecimals: (decimal: number) => void
+) => {
+  if (!provider) return false;
+
+  const contracts = [
+    {
+      abi: erc20Abi,
+      address: collectionAddress as any,
+      functionName: "name",
+      chainId: chainId,
+    },
+    {
+      abi: erc20Abi,
+      address: collectionAddress as any,
+      functionName: "symbol",
+      chainId: chainId,
+    },
+    {
+      abi: erc20Abi,
+      address: collectionAddress as any,
+      functionName: "decimals",
+      chainId: chainId,
+    },
+  ];
+
+  const data = await provider.multicall({
+    contracts,
+  });
 
   const res = data.filter((item) => item.status === "success");
-
+  if (!res[2]) {
+    return false;
+  }
+  setDecimals(Number(res[2].result));
   return res.length === 3;
 };

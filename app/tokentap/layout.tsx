@@ -8,7 +8,13 @@ const TokenTapLayout: FC<PropsWithChildren> = async ({ children }) => {
     "/api/tokentap/token-distribution-list/"
   );
 
-  return <TokenTapProvider tokens={tokens}>{children}</TokenTapProvider>;
+  return (
+    <TokenTapProvider
+      tokens={tokens.filter((item) => item.status === "VERIFIED")}
+    >
+      {children}
+    </TokenTapProvider>
+  );
 };
 
 export default TokenTapLayout;

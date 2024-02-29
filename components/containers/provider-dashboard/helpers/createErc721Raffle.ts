@@ -5,6 +5,7 @@ import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import { GetWalletClientReturnType } from "wagmi/actions";
 import { GetContractReturnType } from "viem";
+import { contractAddresses } from "@/constants";
 
 export const createErc721RaffleCallback = async (
   account: string,
@@ -65,7 +66,7 @@ export const createErc721Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any
 ) => {
-  const raffleContractAddress = data.selectedChain?.erc721PrizetapAddr;
+  const raffleContractAddress = contractAddresses.prizeTapErc721;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";

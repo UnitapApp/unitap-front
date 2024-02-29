@@ -37,7 +37,7 @@ import {
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getProviderDashboardValidChain } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
@@ -49,102 +49,17 @@ import { checkSocialMediaValidation } from "@/components/containers/provider-das
 import Big from "big.js";
 import { NullCallback } from "@/utils";
 import { isValidContractAddress } from "@/components/containers/provider-dashboard/helpers/isValidContractAddress";
-const formInitialData: ProviderDashboardFormDataProp = {
-  provider: "",
-  description: "",
-  isNft: false,
-  isNativeToken: false,
-  tokenAmount: "",
-  tokenContractAddress: "",
-  nftContractAddress: "",
-  nftTokenIds: [],
-  selectedChain: null,
-  startTimeStamp: null,
-  endTimeStamp: null,
-  maxNumberOfEntries: null,
-  email: "",
-  twitter: "",
-  discord: "",
-  telegram: "",
-  creatorUrl: "",
-  necessaryInfo: "",
-  satisfy: "satisfyAll",
-  numberOfDuration: 0,
-  durationUnitTime: "Month",
-  NftSatisfy: false,
-  decimal: null,
-  tokenName: null,
-  tokenSymbol: null,
-  tokenDecimals: null,
-  userTokenBalance: undefined,
-  nftName: null,
-  nftSymbol: null,
-  userNftBalance: undefined,
-  nftTokenUri: null,
-  winnersCount: 1,
-  totalAmount: "",
-};
-
-const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
-  {
-    id: 0,
-    name: "1 Week",
-    selected: false,
-    time: null,
-    value: 1,
-    status: "week",
-  },
-  {
-    id: 1,
-    name: "2 Week",
-    selected: false,
-    time: null,
-    value: 2,
-    status: "week",
-  },
-  {
-    id: 2,
-    name: "1 Month",
-    selected: false,
-    time: null,
-    value: 1,
-    status: "month",
-  },
-  {
-    id: 3,
-    name: "2 Month",
-    selected: false,
-    time: null,
-    value: 2,
-    status: "month",
-  },
-];
-
-const title = {
-  0: "Prize Info",
-  1: "Time Limitation",
-  2: "Requirements",
-  4: "Contact Info",
-  5: "Deposit Prize",
-  6: "Information Verification",
-};
-
-const errorMessages = {
-  required: "Required",
-  invalidFormat: "Invalid Format",
-  startTimeDuration: "The start time must be at least 7 days after now.",
-  endDateUnacceptable: "End date is unacceptable.",
-  period: "The minimum period is one week.",
-  endLessThanStart: "The end time cannot be less than the start time.",
-  invalidInput: "Invalid input",
-};
+import {
+  enrollmentDurationsInit,
+  errorMessages,
+  formInitialData,
+} from "@/constants/contributionHub";
 
 export const ProviderDashboardContext = createContext<{
   page: number;
   setPage: (page: number) => void;
   data: ProviderDashboardFormDataProp;
   selectedConstrains: ConstraintProps | null;
-  title: any;
   handleChange: (e: any) => void;
   handleSelectTokenOrNft: (e: boolean) => void;
   openRequirementModal: () => void;
@@ -240,9 +155,6 @@ export const ProviderDashboardContext = createContext<{
   setPage: NullCallback,
   data: formInitialData,
   selectedConstrains: null,
-  title: {
-    ...title,
-  },
   handleChange: NullCallback,
   handleSelectTokenOrNft: NullCallback,
   closeRequirementModal: NullCallback,
@@ -933,8 +845,10 @@ const ProviderDashboard: FC<
       provider,
       signer,
       address,
+      contractAddresses.prizeTapErc20,
       setApproveLoading,
-      setIsErc20Approved
+      setIsErc20Approved,
+      setApproveAllowance
     );
   };
 
@@ -988,7 +902,8 @@ const ProviderDashboard: FC<
     title: string,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     setRequirementList([
       ...requirementList,
@@ -1000,6 +915,7 @@ const ProviderDashboard: FC<
         isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
         constraintFile: file,
+        decimals: decimals,
       },
     ]);
   };
@@ -1008,7 +924,8 @@ const ProviderDashboard: FC<
     requirement: RequirementProps,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     if (!requirement) return;
     const newItem = requirementList.map((item) => {
@@ -1018,6 +935,7 @@ const ProviderDashboard: FC<
           isNotSatisfy,
           params: requirementValues,
           constraintFile: file,
+          decimals: decimals,
         };
       }
       return item;
@@ -1157,7 +1075,6 @@ const ProviderDashboard: FC<
         page,
         setPage,
         data,
-        title,
         handleChange,
         handleSelectTokenOrNft,
         openRequirementModal,

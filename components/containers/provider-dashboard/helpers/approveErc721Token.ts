@@ -1,3 +1,4 @@
+import { contractAddresses } from "@/constants";
 import { ProviderDashboardFormDataProp } from "@/types";
 import {
   PublicClient,
@@ -66,7 +67,7 @@ export const approveErc721Token = async (
     const response = await approveErc721TokenCallback(
       address,
       contract,
-      data.selectedChain.erc721PrizetapAddr,
+      contractAddresses.prizeTapErc721 as any,
       data.nftContractAddress as Address,
       provider,
       signer

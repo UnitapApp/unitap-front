@@ -1,6 +1,6 @@
 import TokenTapProvider from "@/context/providerDashboardTokenTapContext";
 import {
-  getConstraintListServer,
+  getTokenTapConstraintListServer,
   getFaucetListServer,
 } from "@/utils/serverApis";
 import { FC, PropsWithChildren } from "react";
@@ -9,7 +9,7 @@ const ProviderDashboardPrizeTapLayout: FC<PropsWithChildren> = async ({
   children,
 }) => {
   const chainsApi = await getFaucetListServer();
-  const constraintLisApi = await getConstraintListServer();
+  const constraintLisApi = await getTokenTapConstraintListServer();
   return (
     <TokenTapProvider
       allChains={chainsApi}

@@ -13,6 +13,7 @@ import {
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
+  UserTokenDistribution,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -35,115 +36,28 @@ import {
   useWalletSigner,
 } from "@/utils/wallet";
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
-import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
 import { createErc20TokenDistribution } from "@/components/containers/provider-dashboard/helpers/createErc20TokenDistribution";
-import { approveErc721Token } from "@/components/containers/provider-dashboard/helpers/approveErc721Token";
-import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkNftsAreValid } from "@/components/containers/provider-dashboard/helpers/checkAreNftsValid";
-
+import { approveErc20Token } from "@/components/containers/provider-dashboard/helpers/approveErc20Token";
 import { checkSocialMediaValidation } from "@/components/containers/provider-dashboard/helpers/checkSocialMediaValidation";
 import Big from "big.js";
 import { NullCallback } from "@/utils";
 import { isValidContractAddress } from "@/components/containers/provider-dashboard/helpers/isValidContractAddress";
-const formInitialData: ProviderDashboardFormDataProp = {
-  provider: "",
-  description: "",
-  isNft: false,
-  isNativeToken: false,
-  tokenAmount: "",
-  tokenContractAddress: "",
-  nftContractAddress: "",
-  nftTokenIds: [],
-  selectedChain: null,
-  startTimeStamp: null,
-  endTimeStamp: null,
-  maxNumberOfEntries: null,
-  email: "",
-  twitter: "",
-  discord: "",
-  telegram: "",
-  creatorUrl: "",
-  necessaryInfo: "",
-  satisfy: "satisfyAll",
-  numberOfDuration: 0,
-  durationUnitTime: "Month",
-  NftSatisfy: false,
-  decimal: null,
-  tokenName: null,
-  tokenSymbol: null,
-  tokenDecimals: null,
-  userTokenBalance: undefined,
-  nftName: null,
-  nftSymbol: null,
-  userNftBalance: undefined,
-  nftTokenUri: null,
-  winnersCount: 1,
-  totalAmount: "",
-};
-
-const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
-  {
-    id: 0,
-    name: "1 Week",
-    selected: false,
-    time: null,
-    value: 1,
-    status: "week",
-  },
-  {
-    id: 1,
-    name: "2 Week",
-    selected: false,
-    time: null,
-    value: 2,
-    status: "week",
-  },
-  {
-    id: 2,
-    name: "1 Month",
-    selected: false,
-    time: null,
-    value: 1,
-    status: "month",
-  },
-  {
-    id: 3,
-    name: "2 Month",
-    selected: false,
-    time: null,
-    value: 2,
-    status: "month",
-  },
-];
-
-const title = {
-  0: "Prize Info",
-  1: "Time Limitation",
-  2: "Requirements",
-  4: "Contact Info",
-  5: "Deposit Prize",
-  6: "Information Verification",
-};
-
-const errorMessages = {
-  required: "Required",
-  invalidFormat: "Invalid Format",
-  startTimeDuration: "The start time must be at least 7 days after now.",
-  endDateUnacceptable: "End date is unacceptable.",
-  period: "The minimum period is one week.",
-  endLessThanStart: "The end time cannot be less than the start time.",
-  invalidInput: "Invalid input",
-};
+import {
+  enrollmentDurationsInit,
+  errorMessages,
+  formInitialData,
+} from "@/constants/contributionHub";
+import { getErc20TokenContractTokenTap } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContractTokenTap";
 
 export const TokenTapContext = createContext<{
   page: number;
   setPage: (page: number) => void;
   data: ProviderDashboardFormDataProp;
   selectedConstrains: ConstraintProps | null;
-  title: any;
   handleChange: (e: any) => void;
   handleSelectTokenOrNft: (e: boolean) => void;
   openRequirementModal: () => void;
@@ -187,29 +101,26 @@ export const TokenTapContext = createContext<{
     requirementValues: any
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
-  handleCreateRaffle: () => void;
+  handleCreateDistribution: () => void;
   isCreateRaffleModalOpen: boolean;
   createRaffleResponse: any | null;
   createRaffleLoading: boolean;
   handleSetCreateRaffleLoading: () => void;
   handleSetDate: (timeStamp: number, label: string) => void;
+  constraintsListApi: ConstraintProps[] | undefined;
+  updateChainList: () => void;
+  handleCheckForReason: (raffle: UserTokenDistribution) => void;
+  handleShowUserDetails: (raffle: UserTokenDistribution) => void;
+  handleAddNftToData: (nftIds: string[]) => void;
   handleApproveErc20Token: () => void;
   isErc20Approved: boolean;
-  isApprovedAll: boolean;
-  approveLoading: boolean;
-  constraintsListApi: ConstraintProps[] | undefined;
-  handleApproveErc721Token: () => void;
-  updateChainList: () => void;
-  handleCheckForReason: (raffle: UserRafflesProps) => void;
-  handleShowUserDetails: (raffle: UserRafflesProps) => void;
-  handleAddNftToData: (nftIds: string[]) => void;
   setUploadedFile: (file: any) => void;
   uploadedFile: UploadedFileProps | null;
   isShowingDetails: boolean;
   handleCheckOwnerOfNfts: (nftIds: string[]) => Promise<boolean>;
   nftStatus: NftStatusProp[];
   handleClearNfts: () => void;
-  selectedRaffleForCheckReason: UserRafflesProps | null;
+  selectedRaffleForCheckReason: UserTokenDistribution | null;
   insufficientBalance: boolean;
   userBalance: string | null;
   socialMediaValidation: {
@@ -232,18 +143,16 @@ export const TokenTapContext = createContext<{
   winnersResultRaffle: UserRafflesProps | null;
   endDateState: any;
   setEndDateState: (date: any) => void;
-  userRaffle: UserRafflesProps | undefined;
+  userDistribution: UserTokenDistribution | undefined;
   handleSetClaimPeriodic: (e: boolean) => void;
   claimPeriodic: boolean;
   allChainList: Chain[] | undefined;
+  approveLoading: boolean;
 }>({
   page: 0,
   setPage: NullCallback,
   data: formInitialData,
   selectedConstrains: null,
-  title: {
-    ...title,
-  },
   handleChange: NullCallback,
   handleSelectTokenOrNft: NullCallback,
   closeRequirementModal: NullCallback,
@@ -277,22 +186,18 @@ export const TokenTapContext = createContext<{
   deleteRequirement: NullCallback,
   updateRequirement: NullCallback,
   handleSelectNativeToken: NullCallback,
-  handleCreateRaffle: NullCallback,
+  handleCreateDistribution: NullCallback,
   isCreateRaffleModalOpen: false,
   createRaffleResponse: null,
   createRaffleLoading: false,
   handleSetCreateRaffleLoading: NullCallback,
   handleSetDate: NullCallback,
-  handleApproveErc20Token: NullCallback,
-  isErc20Approved: false,
-  approveLoading: false,
   constraintsListApi: [] as any,
-  isApprovedAll: false,
-  handleApproveErc721Token: NullCallback,
   updateChainList: NullCallback,
   handleCheckForReason: NullCallback,
   handleShowUserDetails: NullCallback,
   handleAddNftToData: NullCallback,
+  handleApproveErc20Token: NullCallback,
   setUploadedFile: NullCallback,
   uploadedFile: { fileName: "", fileContent: null },
   isShowingDetails: false,
@@ -330,19 +235,21 @@ export const TokenTapContext = createContext<{
   winnersResultRaffle: null,
   endDateState: null,
   setEndDateState: NullCallback,
-  userRaffle: {} as any,
+  userDistribution: {} as any,
   claimPeriodic: false,
   handleSetClaimPeriodic: NullCallback,
   allChainList: [] as any,
+  isErc20Approved: false,
+  approveLoading: false,
 });
 
 const TokenTapProvider: FC<
   PropsWithChildren & {
-    rafflesInitial?: UserRafflesProps;
+    distributionInit?: UserTokenDistribution;
     allChains?: Chain[];
     constraintListApi?: ConstraintProps[];
   }
-> = ({ children, rafflesInitial, allChains, constraintListApi }) => {
+> = ({ children, distributionInit, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
     []
   );
@@ -366,8 +273,6 @@ const TokenTapProvider: FC<
 
   const [chainList, setChainList] = useState<Chain[]>([]);
 
-  const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
-
   const [endDateState, setEndDateState] = useState<any>(null);
 
   const [tokenContractStatus, setTokenContractStatus] =
@@ -383,10 +288,14 @@ const TokenTapProvider: FC<
     canDisplayStatus: false,
   });
 
-  const [approveAllowance, setApproveAllowance] = useState<number>(0);
-
   const [insufficientBalance, setInsufficientBalance] =
     useState<boolean>(false);
+
+  const [approveAllowance, setApproveAllowance] = useState<number>(0);
+
+  const [isErc20Approved, setIsErc20Approved] = useState<boolean>(false);
+
+  const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [createRaffleResponse, setCreteRaffleResponse] = useState<any | null>(
     null
@@ -395,8 +304,6 @@ const TokenTapProvider: FC<
   const [createRaffleLoading, setCreateRaffleLoading] =
     useState<boolean>(false);
 
-  const [isApprovedAll, setIsApprovedAll] = useState<boolean>(false);
-
   const [selectedConstrains, setSelectedConstrains] =
     useState<ConstraintProps | null>(null);
 
@@ -404,14 +311,12 @@ const TokenTapProvider: FC<
     string | null
   >(null);
 
-  const [userRaffle, setUserRaffle] = useState<UserRafflesProps | undefined>(
-    rafflesInitial
-  );
-
-  const [approveLoading, setApproveLoading] = useState<boolean>(false);
+  const [userDistribution, setUserDistribution] = useState<
+    UserTokenDistribution | undefined
+  >(distributionInit);
 
   const [selectedRaffleForCheckReason, setSelectedRaffleForCheckReason] =
-    useState<UserRafflesProps | null>(null);
+    useState<UserTokenDistribution | null>(null);
 
   const [winnersResultRaffle, setWinnersResultRaffle] =
     useState<UserRafflesProps | null>(null);
@@ -484,29 +389,43 @@ const TokenTapProvider: FC<
     setSelectNewOffer(select);
   };
 
+  const handleApproveErc20Token = () => {
+    if (!provider || !address || !signer) return;
+
+    approveErc20Token(
+      data,
+      provider,
+      signer,
+      address,
+      contractAddresses.tokenTap,
+      setApproveLoading,
+      setIsErc20Approved,
+      setApproveAllowance
+    );
+  };
+
   const checkContractInfo = useCallback(async () => {
     if (!data.isNft && provider && address) {
-      await getErc20TokenContract(
+      await getErc20TokenContractTokenTap(
         data,
         address,
         provider,
         setData,
-        setIsErc20Approved,
         setTokenContractStatus,
+        setIsErc20Approved,
         setApproveAllowance
       );
     }
 
-    if (data.isNft && provider && address) {
-      getErc721TokenContract(
-        data,
-        address,
-        provider,
-        setData,
-        setIsApprovedAll,
-        setNftContractStatus
-      );
-    }
+    // if (data.isNft && provider && address) {
+    //   getErc721TokenContract(
+    //     data,
+    //     address,
+    //     provider,
+    //     setData,
+    //     setNftContractStatus
+    //   );
+    // }
   }, [address, data, provider]);
 
   const checkContractAddress = useCallback(
@@ -721,7 +640,6 @@ const TokenTapProvider: FC<
     )
       return;
     if (!data.nftContractAddress) {
-      setIsApprovedAll(false);
       setNftContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -743,7 +661,6 @@ const TokenTapProvider: FC<
   useEffect(() => {
     if (isShowingDetails || data.isNft) return;
     if (!data.tokenContractAddress) {
-      setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Empty,
@@ -753,7 +670,6 @@ const TokenTapProvider: FC<
       return;
     }
     if (data.tokenContractAddress == zeroAddress) {
-      setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
         ...prev,
         isValid: ContractValidationStatus.Valid,
@@ -808,7 +724,6 @@ const TokenTapProvider: FC<
         ...prev,
         totalAmount: new Big(totalAmount).toFixed(),
       }));
-      setIsErc20Approved(approveAllowance >= Number(totalAmount));
     } else {
       setData((prev) => ({
         ...prev,
@@ -930,37 +845,11 @@ const TokenTapProvider: FC<
   const openShowPreviewModal = () => {
     setIsModalOpen(true);
   };
-
-  const handleApproveErc20Token = () => {
-    if (!provider || !address || !signer) return;
-
-    approveErc20Token(
-      data,
-      provider,
-      signer,
-      address,
-      setApproveLoading,
-      setIsErc20Approved
-    );
-  };
-
-  const handleApproveErc721Token = () => {
-    if (!provider || !address || !signer) return;
-    approveErc721Token(
-      data,
-      provider,
-      signer,
-      address,
-      setApproveLoading,
-      setIsApprovedAll
-    );
-  };
-
   const handleSetCreateRaffleLoading = () => {
     setCreateRaffleLoading(true);
   };
 
-  const handleCreateRaffle = () => {
+  const handleCreateDistribution = () => {
     if (!address || !address || !provider || !userToken || !signer) return;
     createErc20TokenDistribution(
       data,
@@ -980,7 +869,8 @@ const TokenTapProvider: FC<
     title: string,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     setRequirementList([
       ...requirementList,
@@ -992,6 +882,7 @@ const TokenTapProvider: FC<
         isNotSatisfy: isNotSatisfy,
         isReversed: isNotSatisfy,
         constraintFile: file,
+        decimals: decimals,
       },
     ]);
   };
@@ -1000,7 +891,8 @@ const TokenTapProvider: FC<
     requirement: RequirementProps,
     isNotSatisfy: boolean,
     requirementValues: any,
-    file?: []
+    file?: [],
+    decimals?: number
   ) => {
     if (!requirement) return;
     const newItem = requirementList.map((item) => {
@@ -1010,6 +902,7 @@ const TokenTapProvider: FC<
           isNotSatisfy,
           params: requirementValues,
           constraintFile: file,
+          decimals: decimals,
         };
       }
       return item;
@@ -1018,49 +911,48 @@ const TokenTapProvider: FC<
     setRequirementList(newItem);
   };
 
-  const handleCheckForReason = (raffle: UserRafflesProps) => {
+  const handleCheckForReason = (raffle: UserTokenDistribution) => {
     setPage(5);
     setSelectedRaffleForCheckReason(raffle);
   };
 
-  const handleShowUserDetails = async (raffle: UserRafflesProps) => {
+  const handleShowUserDetails = async (raffle: UserTokenDistribution) => {
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
-      provider: raffle.creatorName,
+      provider: raffle.distributor,
       selectedChain: raffle.chain,
-      description: raffle.description,
-      isNft: raffle.isPrizeNft,
-      isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
-      tokenAmount: new Big(
-        fromWei(raffle.prizeAmount, raffle.decimals)
-      ).toFixed(),
-      tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
-      nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
+      description: raffle.notes,
+      isNft: false,
+      isNativeToken: raffle.tokenAddress == ZERO_ADDRESS,
+      tokenAmount: new Big(fromWei(raffle.amount, raffle.decimals)).toFixed(),
+      tokenContractAddress: raffle.tokenAddress,
+      // nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
       startTimeStamp: Date.parse(raffle.startAt) / 1000,
       endTimeStamp: Date.parse(raffle.deadline) / 1000,
       limitEnrollPeopleCheck:
-        raffle.maxNumberOfEntries != 1000000000 ? true : false,
+        raffle.maxNumberOfClaims != 1000000000 ? true : false,
       maxNumberOfEntries:
-        raffle.maxNumberOfEntries != 1000000000
-          ? raffle.maxNumberOfEntries.toString()
+        raffle.maxNumberOfClaims != 1000000000
+          ? raffle.maxNumberOfClaims.toString()
           : null,
-      winnersCount: raffle.winnersCount,
-      nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
+      winnersCount: raffle.maxNumberOfClaims,
+      // nftTokenIds: raffle.nftIds ? raffle.nftIds.split(",") : [],
       twitter: raffle.twitterUrl,
       discord: raffle.discordUrl,
-      creatorUrl: raffle.creatorUrl,
+      creatorUrl: raffle.distributorUrl,
       telegram: raffle.telegramUrl,
       email: raffle.emailUrl,
       necessaryInfo: raffle.necessaryInformation,
-      tokenSymbol: raffle.prizeSymbol,
-      nftName: raffle.prizeName,
+      // tokenSymbol: raffle.prizeSymbol,
+      // nftName: raffle.prizeName,
     }));
     setIsShowingDetails(true);
     setSelectNewOffer(true);
-    setNumberOfNfts(
-      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
-    );
+    setSelectedChain(raffle.chain);
+    // setNumberOfNfts(
+    //   raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
+    // );
     setConstraintsListApi(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
@@ -1150,7 +1042,6 @@ const TokenTapProvider: FC<
         page,
         setPage,
         data,
-        title,
         handleChange,
         handleSelectTokenOrNft,
         openRequirementModal,
@@ -1183,7 +1074,7 @@ const TokenTapProvider: FC<
         deleteRequirement,
         updateRequirement,
         handleSelectNativeToken,
-        handleCreateRaffle,
+        handleCreateDistribution,
         closeCreateRaffleModal,
         isCreateRaffleModalOpen,
         openCreteRaffleModal,
@@ -1191,18 +1082,15 @@ const TokenTapProvider: FC<
         createRaffleLoading,
         handleSetCreateRaffleLoading,
         handleSetDate,
-        handleApproveErc20Token,
-        isErc20Approved,
-        approveLoading,
         constraintsListApi,
-        isApprovedAll,
-        handleApproveErc721Token,
         updateChainList,
         handleCheckForReason,
         handleShowUserDetails,
         handleAddNftToData,
+        handleApproveErc20Token,
         setUploadedFile,
         uploadedFile,
+        isErc20Approved,
         isShowingDetails,
         handleCheckOwnerOfNfts,
         nftStatus,
@@ -1224,10 +1112,11 @@ const TokenTapProvider: FC<
         handleWinnersResult: setWinnersResultRaffle,
         endDateState,
         setEndDateState,
-        userRaffle,
+        userDistribution,
         claimPeriodic,
         handleSetClaimPeriodic: setClaimPeriodic,
         allChainList,
+        approveLoading,
       }}
     >
       {children}

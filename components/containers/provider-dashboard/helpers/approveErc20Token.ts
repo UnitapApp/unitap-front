@@ -1,5 +1,5 @@
 import { ProviderDashboardFormDataProp } from "@/types";
-import { toWei } from "@/utils/numbersBigNumber";
+import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
   GetContractReturnType,
   PublicClient,
@@ -53,11 +53,12 @@ export const approveErc20Token = async (
   provider: PublicClient,
   signer: GetWalletClientReturnType,
   address: Address,
-  setApproveLoading: any,
-  setIsErc20Approved: any
+  spenderAddress: any,
+  setApproveLoading: (e: boolean) => void,
+  setIsErc20Approved: (e: boolean) => void,
+  setApproveAllowance: (e: number) => void
 ) => {
   if (!provider || !signer) return;
-
   const contract = getContract({
     abi: erc20Abi,
     address: data.tokenContractAddress as Address,
@@ -69,7 +70,7 @@ export const approveErc20Token = async (
     const response = await approveErc20TokenCallback(
       address,
       contract,
-      data.selectedChain.erc20PrizetapAddr,
+      spenderAddress,
       provider,
       signer,
       data.tokenDecimals,
@@ -78,7 +79,12 @@ export const approveErc20Token = async (
 
     setApproveLoading(false);
     setIsErc20Approved(true);
-
+    Promise.all([
+      contract.read.decimals(),
+      contract.read.allowance([address as Address, spenderAddress]),
+    ]).then(([r1, r2]) => {
+      setApproveAllowance(Number(fromWei(r2.toString(), r1)));
+    });
     return response;
   } catch (e: any) {
     console.log(e);

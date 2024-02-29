@@ -82,7 +82,7 @@ const PrizeInfo = ({
       >
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray80 text-[12px] bg-gray40 border ${
+            className={`flex gap-2 text-gray80 text-xs bg-gray40 border ${
               showErrors && !data.provider ? "border-error" : "border-gray50 "
             } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
           >
@@ -101,7 +101,7 @@ const PrizeInfo = ({
             <p>{data.provider?.length}/30</p>
           </div>
           {showErrors && !data.provider && (
-            <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
               Required
             </p>
           )}
@@ -113,7 +113,7 @@ const PrizeInfo = ({
 
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray100 text-[12px] bg-gray40 border ${
+            className={`flex gap-2 text-gray100 text-xs bg-gray40 border ${
               showErrors && !data.description
                 ? "border-error"
                 : "border-gray50 "
@@ -134,7 +134,7 @@ const PrizeInfo = ({
             <p>{data.description?.length}/100</p>
           </div>
           {showErrors && !data.description && (
-            <p className="text-error text-[10px] m-0 mt-[2px] p-0 absolute left-1">
+            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
               Required
             </p>
           )}

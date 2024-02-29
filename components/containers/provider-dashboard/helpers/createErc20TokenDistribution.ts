@@ -2,13 +2,63 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { Address, parseEther } from "viem";
+import { Address, parseEther, PublicClient, zeroAddress } from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
-import { useEstimateContractGas } from "@/utils/wallet";
-import { PublicClient } from "viem";
+import { tokenTapAbi } from "@/types/abis/contracts";
+import Big from "big.js";
+import { contractAddresses } from "@/constants";
+
+const txCallBack = async (
+  address: string,
+  signer: GetWalletClientReturnType,
+  provider: PublicClient,
+  decimals: number,
+  tokenContractAddress: string,
+  maxNumClaim: bigint,
+  tokenAmount: string,
+  totalAmount: string,
+  startTime: bigint,
+  endTime: bigint,
+  isNativeToken: boolean
+) => {
+  const gasEstimate = await provider.estimateContractGas({
+    abi: tokenTapAbi,
+    account: address as any,
+    address: contractAddresses.tokenTap as any,
+    functionName: "distributeToken",
+    args: [
+      tokenContractAddress as any,
+      maxNumClaim,
+      isNativeToken
+        ? parseEther(new Big(tokenAmount).toFixed())
+        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+      startTime,
+      endTime,
+    ],
+    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  });
+
+  return signer?.writeContract({
+    abi: tokenTapAbi,
+    account: address as any,
+    address: contractAddresses.tokenTap as any,
+    functionName: "distributeToken",
+    gasPrice: gasEstimate,
+    args: [
+      tokenContractAddress as any,
+      maxNumClaim,
+      isNativeToken
+        ? parseEther(new Big(tokenAmount).toFixed())
+        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+      startTime,
+      endTime,
+    ],
+    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  });
+};
 
 export const createErc20TokenDistribution = async (
   data: ProviderDashboardFormDataProp,
@@ -27,10 +77,12 @@ export const createErc20TokenDistribution = async (
   const prizeName = data.isNativeToken
     ? data.selectedChain.symbol
     : data.tokenSymbol;
+
+  const maxNumClaim = data.winnersCount.toString();
   // const prizeSymbol = data.isNativeToken
   // 	? data.selectedChain.symbol
   // 	: data.tokenSymbol;
-  // const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
+  const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
   const prizeAmount = toWei(
     data.tokenAmount,
     data.isNativeToken ? 18 : data.tokenDecimals
@@ -45,98 +97,104 @@ export const createErc20TokenDistribution = async (
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
   const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
-  const constraints = requirementList.map((item) => item.pk);
+
+  const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList
     .filter((item) => item.isNotSatisfy)
     .map((ids) => ids.pk);
-  const constraint_params = requirementList
-    .filter((item) => item.params)
-    .map((item) => ({ [item.name]: item.params }));
 
-  const distributionData = {
-    name: prizeName,
-    distributor: data.provider,
-    distributor_address: address,
-    distributor_url: creatorUrl,
-    discord_url: discord,
-    twitter_url: twitter,
-    email_url: data.email,
-    telegram_url: telegram,
-    token: prizeName,
-    tokenAddress: data.tokenContractAddress,
-    amount: prizeAmount,
-    chain: data.selectedChain.pk,
-    contract: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-    constraint_params: btoa(
-      JSON.stringify(constraint_params.length > 0 ? constraint_params[0] : {})
-    ),
-    constraints,
-    reversed_constraints:
-      reversed_constraints.length > 1
-        ? reversed_constraints.join(",")
-        : reversed_constraints.length == 1
-        ? reversed_constraints[0].toString()
-        : undefined,
-    start_at: startAt(data.startTimeStamp),
-    deadline: deadline(data.endTimeStamp),
-    max_number_of_claims: maxNumberOfEntries,
-    notes: data.description,
-    necessary_information: data.necessaryInfo,
-    // prize_symbol: prizeSymbol,
-    // decimals: decimals,
-    // winnersCount: data.winnersCount,
-  };
+  const constraintFileList: any = requirementList
+    .filter((item) => item.constraintFile)
+    .map((item) => item.constraintFile);
+
+  const constraint_params = requirementList.reduce((obj: any, item: any) => {
+    obj[item.name] = item.params;
+    return obj;
+  }, {});
+
+  const token = data.isNativeToken ? zeroAddress : data.tokenContractAddress;
+  const startTime = startAt(data.startTimeStamp);
+  const endTime = deadline(data.endTimeStamp);
+
+  const formData = new FormData();
+
+  const reversed =
+    reversed_constraints.length > 1
+      ? reversed_constraints.join(",")
+      : reversed_constraints.length == 1
+      ? reversed_constraints[0].toString()
+      : "";
+
+  for (let i = 0; i < constraints.length; i++) {
+    formData.append("constraints", constraints[i]);
+  }
+
+  if (constraintFileList) {
+    for (let i = 0; i < constraintFileList.length; i++) {
+      formData.append("constraint_files", constraintFileList[i]);
+    }
+  }
+
+  if (reversed) {
+    formData.append("reversed_constraints", reversed);
+  }
+
+  formData.append("name", prizeName);
+  formData.append("distributor", data.provider!);
+  formData.append("distributor_address", address);
+  formData.append("distributor_url", creatorUrl! ?? "");
+  formData.append("discord_url", discord! ?? "");
+  formData.append("twitter_url", twitter! ?? "");
+  formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
+  formData.append("email_url", data.email!);
+  formData.append("telegram_url", telegram! ?? "");
+  formData.append("token", prizeName);
+  formData.append("token_address", data.tokenContractAddress);
+  formData.append("amount", prizeAmount.toString());
+  formData.append("chain", data.selectedChain.pk);
+  formData.append("contract", contractAddresses.tokenTap as any);
+  formData.append("start_at", startTime);
+  formData.append("deadline", endTime);
+  formData.append("max_number_of_claims", maxNumClaim);
+  formData.append("notes", data.description! ?? "");
+  formData.append("necessary_information", data.necessaryInfo! ?? "");
+  formData.append("decimals", decimals);
 
   try {
     setCreateRaffleLoading(true);
+    const response = await txCallBack(
+      address,
+      signer,
+      provider,
+      decimals,
+      token,
+      BigInt(maxNumClaim),
+      data.tokenAmount,
+      data.totalAmount,
+      data.startTimeStamp,
+      data.endTimeStamp,
+      data.isNativeToken
+    );
 
-    const raffle = await createTokenDistribution(userToken, distributionData);
+    if (!response) throw new Error("Contract hash not found");
 
-    console.log(BigInt(parseEther(data.tokenAmount)));
-    let tx = {
-      to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC" as any,
-      value: BigInt(parseEther(data.tokenAmount)),
-    };
+    const transactionInfo = await provider.waitForTransactionReceipt({
+      hash: response,
+      confirmations: 1,
+    });
 
-    const estimatedGas = await provider
-      .estimateGas({
-        account: address as Address,
+    formData.append("tx_hash", transactionInfo.transactionHash);
 
-        to: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
-        value: BigInt(tx.value),
-      })
-      .catch((err: any) => {
-        return err;
-      });
-
-    const hash = await signer
-      ?.sendTransaction({
-        ...tx,
-        ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
-      })
-      .then(async (tx) => {
-        await provider.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 1,
-        });
-        return tx;
-      });
-
-    console.log(hash);
-
-    // if (!raffle.success) {
-    // 	return false;
-    // }
-
-    // const rafflePk = raffle.data.id;
-
+    const raffle = await createTokenDistribution(userToken, formData);
+    if (!raffle.success) {
+      return false;
+    }
     setCreteRaffleResponse({
       success: true,
       state: "Done",
-      txHash: hash,
-      message: "Created raffle successfully.",
+      txHash: transactionInfo.transactionHash,
+      message: "Created distribution successfully.",
     });
-
     setCreateRaffleLoading(false);
   } catch (e: any) {
     console.log(e);

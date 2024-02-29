@@ -49,7 +49,7 @@ const FormYouFilled = ({ data }: Prop) => {
           <p className="mb-8">{prizeName}</p>
         </div>
         <div className="flex items-center bg-gray50 justify-center gap-2 absolute bottom-[-12px] left-7 border border-gray70 rounded-[3px] p-1 min-w-[150px] min-h-[25px]">
-          <p className="text-gray100 text-[10px] font-semibold">
+          <p className="text-gray100 text-2xs font-semibold">
             on{" "}
             {data.selectedChain?.chainName ? data.selectedChain.chainName : ""}
           </p>
@@ -60,7 +60,7 @@ const FormYouFilled = ({ data }: Prop) => {
           />
         </div>
       </div>
-      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-[14px] text-white p-4">
+      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-sm text-white p-4">
         <div className="flex justify-between">
           <div className="flex items-center">
             <p>{prizeName}</p>
@@ -98,10 +98,10 @@ const FormYouFilled = ({ data }: Prop) => {
             ) : null}
           </div>
         </div>
-        <div className="text-gray80 text-[16px] mt-1 mb-2">
+        <div className="text-gray80 text-base mt-1 mb-2">
           by {data.provider}
         </div>
-        <div className="text-[14px] text-gray100 text-xs leading-5 mb-6 grow shrink-0 basis-auto text-justify">
+        <div className="text-sm h-[40px] max-h-[40px] text-justify">
           {data.description}
         </div>
         <div className="flex gap-2 mb-2 ">
@@ -109,7 +109,7 @@ const FormYouFilled = ({ data }: Prop) => {
             ? requirementList.map((item, index) => {
                 return (
                   <div
-                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-[10px] rounded"
+                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
                     key={index}
                   >
                     {item.isNotSatisfy && "Not "} {item.title}
@@ -125,7 +125,7 @@ const FormYouFilled = ({ data }: Prop) => {
         >
           <span className="flex flex-row items-center justify-between w-full gap-4 ">
             <div className="flex flex-row gap-4 justify-between w-full  items-center bg-gray40 px-5 h-full py-1 rounded-xl">
-              <p className="text-[12px] text-gray100">0 people enrolled</p>
+              <p className="text-xs text-gray100">0 people enrolled</p>
               <RaffleCardTimerSubmitContribution
                 startTime={new Date(data.startTimeStamp * 1000).toString()}
                 FinishTime={new Date(data.endTimeStamp * 1000).toString()}

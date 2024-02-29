@@ -4,7 +4,6 @@ import { ProviderFormPaginationProp } from "@/types";
 import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
 import Pagination from "@/app/contribution-hub/pagination";
-import CreateRaffleModal from "@/app/contribution-hub/prize-tap/components/CreateRaffleModal";
 import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
@@ -29,7 +28,7 @@ const tokenDescription = {
   description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait
 	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
 	your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/tokenSelected.svg",
+  icon: "/assets/images/provider-dashboard/deposit-token.png",
 };
 
 const DepositToken = ({
@@ -42,8 +41,6 @@ const DepositToken = ({
     page,
     createRaffleResponse,
     isErc20Approved,
-    isApprovedAll,
-    handleApproveErc721Token,
     handleApproveErc20Token,
     approveLoading,
     isShowingDetails,
@@ -87,12 +84,7 @@ const DepositToken = ({
     setIsWalletPromptOpen,
   ]);
 
-  const approve = data.isNativeToken
-    ? true
-    : data.isNft
-    ? isApprovedAll
-    : isErc20Approved;
-
+  const approve = data.isNativeToken ? true : isErc20Approved;
   useEffect(() => {
     createRaffleResponse?.state === "Done" ? handleChangeFormPageNext() : null;
   }, [createRaffleResponse, handleChangeFormPageNext]);
@@ -130,7 +122,7 @@ const DepositToken = ({
       ) : address && !isRightChain && data.selectedChain ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="text-[14px] max-w-[452px] mt-[2px]"
+          className="text-sm max-w-[452px] mt-[2px]"
           data-testid="fund-action"
         >
           Switch Network
@@ -149,11 +141,7 @@ const DepositToken = ({
           $width="100%"
           height="42px"
           className="max-w-[452px] mt-[2px]"
-          onClick={
-            data.isNft && !isApprovedAll
-              ? handleApproveErc721Token
-              : handleApproveErc20Token
-          }
+          onClick={() => handleApproveErc20Token()}
           disabled={approveLoading}
         >
           <p>{approveLoading ? "Approving Contract..." : "Approve Contract"}</p>
@@ -165,9 +153,6 @@ const DepositToken = ({
           page={page}
           func="submit"
         />
-      )}
-      {data.selectedChain && !isShowingDetails && (
-        <CreateRaffleModal chain={data.selectedChain} />
       )}
     </div>
   );

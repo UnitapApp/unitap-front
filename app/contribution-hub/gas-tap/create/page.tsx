@@ -1,5 +1,3 @@
-"use client";
-
 import ProvideGasFeeContent from "../components/ProvideGasFeeContent";
 
 const Page = () => {

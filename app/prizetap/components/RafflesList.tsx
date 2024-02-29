@@ -22,6 +22,7 @@ import { getAssetUrl, shortenAddress } from "@/utils";
 
 // import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
 import { zeroAddress } from "viem";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 
 export const Action = styled.div`
   display: flex;
@@ -134,9 +135,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     [userProfile, winnersEntry]
   );
 
-  useEffect(() => {
+  useFastRefresh(() => {
     setStarted(new Date(startAt) < new Date());
-  }, [new Date()]);
+  }, [startAt]);
 
   // let tokenImgLink: string | undefined = tokenUri
   //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
@@ -190,10 +191,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             </div>
           </div>
           <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-            <p className="text-gray100 text-[10px] p-1">
-              {" "}
-              on {chain.chainName}{" "}
-            </p>
+            <p className="text-gray100 text-2xs p-1"> on {chain.chainName} </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
         </div>
@@ -334,10 +332,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
-                      <p className="text-[10px] text-white">
+                      <p className="text-2xs text-white">
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
-                      <p className="text-[10px] text-gray100">
+                      <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
                               numberOfOnchainEntries
@@ -385,10 +383,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
-                      <p className="text-[10px] text-white">
+                      <p className="text-2xs text-white">
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
-                      <p className="text-[10px] text-gray100">
+                      <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
                               numberOfOnchainEntries
@@ -435,10 +433,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
                     <div className="flex flex-col gap-1">
-                      <p className="text-[10px] text-white">
+                      <p className="text-2xs text-white">
                         {start ? "Winners Announced in:" : "Starts in:"}
                       </p>
-                      <p className="text-[10px] text-gray100">
+                      <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
                               numberOfOnchainEntries
@@ -471,7 +469,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         className={`${
                           !winnersEntry.length &&
                           new Date(deadline) < new Date()
-                            ? "text-[14px]"
+                            ? "text-sm"
                             : ""
                         } text-transparent bg-clip-text bg-g-primary`}
                       >
@@ -491,7 +489,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               ) : winnersEntry && !userClaimEntry ? (
                 <div className="flex w-full flex-1 items-center gap-4">
                   <span className="overflow-hidden font-medium md:leading-[normal] leading-[15px] flex h-[70px] md:h-[48px] w-full items-center bg-gray10 py-1 rounded-xl align-center justify-between">
-                    <p className="text-[10px] ml-4 text-gray100">
+                    <p className="text-2xs ml-4 text-gray100">
                       {maxNumberOfEntries >= 1_000_000_000
                         ? `${numberWithCommas(
                             numberOfOnchainEntries
@@ -531,7 +529,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 !userClaimEntry.claimingPrizeTx ? (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-                    <p className="text-[10px] text-white">
+                    <p className="text-2xs text-white">
                       Congratulations @
                       {userProfile?.username ||
                         shortenAddress(userProfile?.wallets?.[0].address)}{" "}
@@ -560,7 +558,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               ) : (
                 <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
                   <div className="flex gap-4 overflow-hidden pl-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
-                    <p className="text-[10px] text-white">
+                    <p className="text-2xs text-white">
                       Congratulations @
                       {userProfile?.username ||
                         shortenAddress(userProfile?.wallets?.[0].address)}
@@ -658,28 +656,28 @@ export const RaffleCardTimer = ({
 
   return (
     <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {days}
         </p>
         <p className="prize-card__timer-item-label text-gray90">d</p>
       </div>
       <p className="text-sm text-white">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {hours}
         </p>
         <p className="prize-card__timer-item-label text-gray90">h</p>
       </div>
       <p className="text-sm text-white">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {minutes}
         </p>
         <p className="prize-card__timer-item-label text-gray90">m</p>
       </div>
       <p className="text-sm text-white">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {seconds}
         </p>
@@ -732,19 +730,19 @@ export const RaffleCardTimerLandingPage = ({
 
   return (
     <div className="prize-card__timer flex gap-1 md:px-1 mt-[-2px] text-gray100 items-center">
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value font-semibold">{days}</p>
       </div>
       <p className="text-sm">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value font-semibold">{hours}</p>
       </div>
       <p className="text-sm">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value font-semibold">{minutes}</p>
       </div>
       <p className="text-sm">:</p>
-      <div className="prize-card__timer-item flex flex-col justify-between items-center text-[10px]">
+      <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value font-semibold">{seconds}</p>
       </div>
     </div>
