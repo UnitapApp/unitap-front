@@ -85,7 +85,7 @@ const Footer = () => {
   return (
     <section id="home-footer" className={"flex gap-4 md:flex-row flex-col"}>
       <Link
-        href={RoutePath.DONATE}
+        href={"/contribution-hub"}
         className={
           "uni-card hover:bg-gray00 hover:after:top-3 cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto " +
           "after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center"
