@@ -167,7 +167,7 @@ export const ProfileDropdown: FC<{
           </button>
         </div>
         <div className="px-2 overflow-y-auto h-[194px] flex flex-col">
-          {userProfile?.wallets.map((wallet, key) => (
+          {userProfile?.wallets?.map((wallet, key) => (
             <WalletItem
               wallet={wallet.address}
               isActive={connection.address === wallet.address}
@@ -195,7 +195,7 @@ export const RenderNavbarWalletAddress = () => {
   const { setIsWalletPromptOpen } = useGlobalContext();
   const { userProfile } = useUserProfileContext();
 
-  const EVMWallet = userProfile?.wallets.find(
+  const EVMWallet = userProfile?.wallets?.find(
     (wallet) => wallet.walletType === "EVM"
   );
 
