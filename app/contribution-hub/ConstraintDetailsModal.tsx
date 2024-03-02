@@ -270,7 +270,7 @@ const CreateParams: FC<CreateModalParam> = ({
 
     if (constraint.name === "core.HasNFTVerification") {
       res = await checkNftCollectionAddress(
-        provider,
+        provider!,
         requirementParamsList.ADDRESS,
         Number(selectedChain.chainId)
       );
@@ -283,7 +283,7 @@ const CreateParams: FC<CreateModalParam> = ({
         return true;
       }
       res = await checkTokenContractAddress(
-        provider,
+        provider!,
         requirementParamsList.ADDRESS,
         Number(selectedChain.chainId),
         setDecimals

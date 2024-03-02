@@ -2,7 +2,7 @@
 
 import { Chain, ChainType } from "@/types";
 import { Address, Client, PublicClient } from "viem";
-import { addChain, switchChain } from "viem/actions";
+import { switchChain } from "viem/actions";
 import {
   Connector,
   useAccount,
@@ -12,7 +12,6 @@ import {
   usePublicClient,
   useWalletClient,
   useEstimateGas,
-  useClient,
 } from "wagmi";
 
 export const useWalletAccount = () => {

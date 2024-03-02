@@ -173,7 +173,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
   const claimWithWallet = useCallback(
     async (claimTokenPayload?: TokenClaimPayload, claimId?: number) => {
-      if (!userToken || !selectedTokenForClaim) return;
+      if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
         tokenTapContractAddressList[selectedTokenForClaim.token];

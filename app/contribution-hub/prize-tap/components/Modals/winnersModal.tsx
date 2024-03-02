@@ -37,11 +37,11 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       });
     }
 
-    const data = await provider.multicall({
+    const data = await (provider?.multicall as any)({
       contracts,
     });
 
-    const allWallet = (data.map((item) => item.result) as any)
+    const allWallet = (data.map((item: any) => item.result) as any)
       .flat(2)
       .map((item: string) => {
         return {

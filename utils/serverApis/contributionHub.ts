@@ -47,9 +47,9 @@ export const getConstraintListServer = async () => {
     }
   ).then((res) => res.json());
 
-  if (!Array.isArray(res)) return [];
+  if (typeof res !== "object") return {};
 
-  return res as ConstraintProps[];
+  return res as { [key: string]: ConstraintProps[] };
 };
 
 export const getTokenTapConstraintListServer = async () => {
@@ -60,9 +60,9 @@ export const getTokenTapConstraintListServer = async () => {
     }
   ).then((res) => res.json());
 
-  if (!Array.isArray(res)) return [];
+  if (typeof res !== "object") return {};
 
-  return res as ConstraintProps[];
+  return res as { [key: string]: ConstraintProps[] };
 };
 
 export const getUserDonationsServer = async (token?: string) => {

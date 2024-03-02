@@ -68,12 +68,12 @@ const WinnersModal = () => {
 
   const { data } = useReadContracts({
     contracts: fetchEnrollmentWallets(),
-  });
+  }) as any;
 
   const enrollmentWallets = useMemo(() => {
     if (!data) return;
 
-    const allWallet = (data.map((item) => item.result) as any[])
+    const allWallet = (data.map((item: any) => item.result) as any[])
       .flat(2)
       .reduce((prev, curr: string) => {
         prev[curr.toLowerCase()] = true;

@@ -17,10 +17,13 @@ const NewAddedConstraint = ({ requirement }: Props) => {
     isShowingDetails,
   } = useTokenTapFromContext();
 
-  const constraint = constraintsListApi!.find(
-    (item) => item.pk == requirement.pk
-  );
-
+  const constraint = constraintsListApi
+    ? Object.values(constraintsListApi)
+        .flatMap((category) =>
+          category.find((element) => element.pk === requirement.pk)
+        )
+        .at(0)
+    : undefined;
   const isNotSatisfy = requirement.isNotSatisfy;
 
   const handleClick = () => {
