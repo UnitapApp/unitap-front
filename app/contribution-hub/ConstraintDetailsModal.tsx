@@ -402,20 +402,23 @@ const CreateParams: FC<CreateModalParam> = ({
     constraint.name === "core.IsFollowingLensUser" ||
     constraint.name == "core.BeFollowedByLensUser"
   ) {
-    console.log(requirementParamsList);
     return (
       <LensUserFinder
         onAddRequirementParam={(params: any) =>
           setRequirementParamsList({ ...requirementParamsList, ...params })
         }
-        featuredName={Object.keys(requirementList)[0] as string}
+        featuredName={Object.keys(requirementParamsList ?? [])[0] as string}
         params={requirementParamsList}
       />
     );
   }
 
-  if (constraint.name == "core.HasMinimumLensPost") {
-    const featuredName = Object.keys(requirementList)[0] as string;
+  if (
+    constraint.name == "core.HasMinimumLensPost" ||
+    constraint.name === "core.HasMinimumLensFollower"
+  ) {
+    const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
+
     return (
       <MinimumLensAction
         featuredName={featuredName}
