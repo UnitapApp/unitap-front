@@ -5,6 +5,7 @@ import ConstraintDetailsModal from "../../../../../ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
+import { uppercaseFirstLetter } from "@/utils";
 
 const ModalBody = () => {
   const {
@@ -54,7 +55,11 @@ export const InitialBody = () => {
           className="cursor-pointer z-[999999]"
         />
       </div>
-      <p className="text-white text-sm font-medium">General</p>
+      {!!selectedApp && (
+        <p className="text-white text-sm font-medium">
+          {uppercaseFirstLetter(selectedApp)}
+        </p>
+      )}
       <div className="grid grid-cols-2 gap-2.5 row-gap-2 w-full items-center justify-center text-center">
         {selectedApp
           ? constraintsListApi![selectedApp].map((constraint, key) => (
@@ -73,7 +78,7 @@ export const InitialBody = () => {
                 className="requireModal"
                 onClick={() => setSelectedApp(constraintKey)}
               >
-                {constraintKey}
+                {uppercaseFirstLetter(constraintKey)}
               </div>
             ))}
       </div>

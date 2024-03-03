@@ -8,3 +8,4 @@ export * from "./prizetap";
 export * from "./transaction";
 export * from "./brightId";
 export * from "./provider-dashboard";
+export * from "./lens";

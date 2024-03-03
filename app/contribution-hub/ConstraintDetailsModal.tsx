@@ -1,7 +1,12 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import { RequirementProps, ConstraintProps, Chain } from "@/types";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
+import {
+  RequirementProps,
+  ConstraintProps,
+  Chain,
+  LensUserProfile,
+} from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/ChainList";
@@ -13,6 +18,9 @@ import {
   checkTokenContractAddress,
 } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
+import Input from "@/components/ui/input";
+import { fetchLensProfileUsers } from "@/utils/api/lens";
+import { useOutsideClick } from "@/utils/hooks/dom";
 
 interface CreateModalParam {
   constraint: ConstraintProps;
@@ -390,7 +398,178 @@ const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
+  if (
+    constraint.name === "core.IsFollowingLensUser" ||
+    constraint.name == "core.BeFollowedByLensUser"
+  ) {
+    console.log(requirementParamsList);
+    return (
+      <LensUserFinder
+        onAddRequirementParam={(params: any) =>
+          setRequirementParamsList({ ...requirementParamsList, ...params })
+        }
+        featuredName={Object.keys(requirementList)[0] as string}
+        params={requirementParamsList}
+      />
+    );
+  }
+
+  if (constraint.name == "core.HasMinimumLensPost") {
+    const featuredName = Object.keys(requirementList)[0] as string;
+    return (
+      <MinimumLensAction
+        featuredName={featuredName}
+        onChange={(value: any) =>
+          setRequirementParamsList({
+            ...requirementParamsList,
+            [featuredName]: value,
+          })
+        }
+        value={requirementParamsList?.[featuredName]}
+      />
+    );
+  }
+
   return <></>;
+};
+
+const MinimumLensAction: FC<{
+  featuredName: string;
+  onChange: (arg: any) => void;
+  value: any;
+}> = ({ featuredName, onChange, value }) => {
+  return (
+    <Input
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Number of followers/Post"
+      className="bg-gray40 placeholder:text-gray80 font-normal text-lg"
+    />
+  );
+};
+
+const LensUserFinder: FC<{
+  onAddRequirementParam: (param: any) => void;
+  params: any;
+  featuredName: string;
+}> = ({ onAddRequirementParam, params, featuredName }) => {
+  const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<LensUserProfile[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [showResults, setShowResults] = useState<boolean>(false);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    setShowResults(false);
+  });
+
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (!query) return;
+      setLoading(true);
+      try {
+        const results = await fetchLensProfileUsers(query);
+        setSearchResults(results);
+        setLoading(false);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      handleSearch();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const onUserClick = (profileId: string, displayName: string) => {
+    onAddRequirementParam({ [featuredName]: profileId });
+    setQuery(displayName);
+    setShowResults(false);
+  };
+
+  return (
+    <div className="mb-20">
+      <div onClick={() => setShowResults(true)} ref={ref}>
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search a user to follow/Paste Lenster link/Paste Lenster link"
+          className="bg-gray40 placeholder:text-gray80 font-normal text-lg"
+        />
+
+        {showResults && (
+          <div className="absolute overflow-hidden shadow-md w-full bg-gray20 border border-gray70 rounded-lg z-10">
+            {loading ? (
+              <div className="divide-y h-40 overflow-auto divide-gray70">
+                {Array.from(new Array(3)).map((user) => (
+                  <div
+                    key={user}
+                    className="p-4 cursor-pointer hover:bg-gray60 transition-colors flex items-center"
+                  >
+                    <div className="w-10 skeleton-item h-10 rounded-full bg-gray100 mr-4" />
+
+                    <div>
+                      <div className="skeleton-item bg-gray100 rounded h-2 w-20"></div>
+                      <div className="h-2 mt-2 bg-gray100 w-10 skeleton-item rounded"></div>
+                      <div className="h-2 mt-2 bg-gray100 w-10 skeleton-item rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : searchResults.length === 0 ? (
+              <div className="p-4 text-gray100">No results found.</div>
+            ) : (
+              <div className="divide-y h-40 overflow-auto divide-gray70">
+                {searchResults.map((user, key) =>
+                  user.metadata ? (
+                    <div
+                      onClickCapture={() =>
+                        onUserClick(user.id, user.metadata!.displayName)
+                      }
+                      key={user.id}
+                      className={`p-4 cursor-pointer hover:bg-gray60 transition-colors flex items-center ${
+                        params[featuredName] == user.id ? "bg-gray60" : ""
+                      }`}
+                    >
+                      <img
+                        src={
+                          user.metadata.picture
+                            ? user.metadata.picture.optimized.uri
+                            : "/assets/images/profile.png"
+                        }
+                        alt={user.metadata.displayName}
+                        className="w-10 h-10 rounded-full bg-gray100 mr-4"
+                      />
+
+                      <div>
+                        <div className="text font-semibold">
+                          {user.metadata.displayName}
+                        </div>
+                        <div className="text-xs text-gray-400">
+                          Followers: {user.stats.followers}
+                        </div>
+                        <div className="text-xs text-gray-400">
+                          Following: {user.stats.following}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <Fragment key={key}></Fragment>
+                  )
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default ConstraintDetailsModal;

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import ConstraintDetailsModal from "@/app/contribution-hub/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
+import { uppercaseFirstLetter } from "@/utils";
 
 const RequirementModalBody = () => {
   const {
@@ -54,9 +55,13 @@ const InitialBody = () => {
           onClick={() => setSelectedApp("")}
         />
       </div>
-      <p className="text-white text-sm font-medium">General</p>
+      {!!selectedApp && (
+        <p className="text-white text-sm font-medium">
+          {uppercaseFirstLetter(selectedApp)}
+        </p>
+      )}
       <div className="grid grid-cols-2 gap-2.5 row-gap-2 w-full items-center justify-center text-center">
-        {selectedApp
+        {!!selectedApp
           ? constraintsListApi![selectedApp].map((constraint, key) => (
               <div
                 key={key}
@@ -73,7 +78,7 @@ const InitialBody = () => {
                 className="requireModal"
                 onClick={() => setSelectedApp(constraintKey)}
               >
-                {constraintKey}
+                {uppercaseFirstLetter(constraintKey)}
               </div>
             ))}
       </div>
