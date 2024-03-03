@@ -28,7 +28,6 @@ const NewAddedConstraint = ({ requirement }: Props) => {
   const isNotSatisfy = requirement.isNotSatisfy;
 
   const handleClick = () => {
-    console.log(isShowingDetails, constraint);
     if (isShowingDetails || !constraint) return;
     handleSelectConstraint(constraint);
     openRequirementModal();
