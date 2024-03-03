@@ -5,7 +5,7 @@ import { getChainList } from "@/utils/api";
 
 const SOLANA_CONNECTION = new Connection(process.env.SOLANA_HTTP_PROVIDER!);
 
-export const revalidate = true;
+export const revalidate = 10;
 export const maxDuration = 10;
 
 export async function GET() {

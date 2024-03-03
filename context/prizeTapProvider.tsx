@@ -20,11 +20,11 @@ import {
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
-import { useContractWrite } from "wagmi";
-import { prizeTapABI } from "@/types/abis/contracts";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useWalletAccount } from "@/utils/wallet";
-import { waitForTransaction } from "wagmi/actions";
 import { useGlobalContext } from "./globalProvider";
+import { Address } from "viem";
 
 export const PrizeTapContext = createContext<{
   rafflesList: Prize[];
@@ -46,6 +46,7 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
   isLineaCheckEnrolledModalOpen: boolean;
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
+  isWaitingForConfirmation: boolean;
 }>({
   claimError: null,
   rafflesList: [],
@@ -66,6 +67,7 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: NullCallback,
   isLineaCheckEnrolledModalOpen: false,
   setIsLineaCheckEnrolledModalOpen: NullCallback,
+  isWaitingForConfirmation: false,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -91,21 +93,46 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const [claimOrEnrollWalletResponse, setClaimOrEnrollWalletResponse] =
     useState<any | null>(null);
   const [method, setMethod] = useState<string | null>(null);
+  const [hash, setHash] = useState<Address>();
+  const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
 
   const { userToken } = useUserProfileContext();
   const { setIsWalletPromptOpen } = useGlobalContext();
 
-  const { isConnected, address } = useWalletAccount();
+  const { isConnected, address, chainId } = useWalletAccount();
 
-  const { writeAsync } = useContractWrite({
-    account: address,
-    functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
-    chainId: Number(selectedRaffleForEnroll?.chain.chainId),
-    abi: prizeTapABI,
-    address: selectedRaffleForEnroll?.isPrizeNft
-      ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-      : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+  const { isLoading } = useWaitForTransactionReceipt({
+    confirmations: 1,
+    hash,
+    chainId,
+    onReplaced: async (res) => {
+      setClaimOrEnrollWalletResponse({
+        success: true,
+        state: "Done",
+        txHash: res.transaction.hash,
+        message:
+          method === "Claim"
+            ? "Claimed successfully."
+            : "Enrolled successfully",
+      });
+
+      if (!userToken) return;
+
+      await (method === "Enroll"
+        ? updateEnrolledFinished(
+            userToken,
+            chainPkConfirmingHash,
+            res.transaction.hash
+          )
+        : updateClaimPrizeFinished(
+            userToken,
+            chainPkConfirmingHash,
+            res.transaction.hash
+          ));
+    },
   });
+
+  const { writeContractAsync } = useWriteContract({});
 
   const getRafflesList = useCallback(async () => {
     try {
@@ -185,7 +212,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
-    const setClaimHashId = selectedRaffleForEnroll?.pk;
+    setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
 
     const enrollOrClaimPayload = await getSignature();
 
@@ -207,51 +234,32 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     }
 
     try {
-      const response = await writeAsync({
+      const response = await writeContractAsync({
         args,
+        account: address,
+        functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
+        chainId: Number(selectedRaffleForEnroll?.chain.chainId),
+        abi: prizeTapAbi,
+        address: selectedRaffleForEnroll?.isPrizeNft
+          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
+          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
       });
 
       if (response) {
-        await waitForTransaction({
-          hash: response.hash,
-          confirmations: 1,
-          chainId,
-        })
-          .then(async (res) => {
-            setClaimOrEnrollWalletResponse({
-              success: true,
-              state: "Done",
-              txHash: res.transactionHash,
-              message:
-                method === "Claim"
-                  ? "Claimed successfully."
-                  : "Enrolled successfully",
-            });
-
-            await (method === "Enroll"
-              ? updateEnrolledFinished(userToken, id, res.transactionHash)
-              : updateClaimPrizeFinished(
-                  userToken,
-                  setClaimHashId,
-                  res.transactionHash
-                ));
-          })
-          .catch((e) => {
-            setClaimOrEnrollWalletResponse({
-              success: false,
-              state: "Retry",
-              message: "Something went wrong. Please try again!",
-            });
-          });
-        // .finally(() => {
-        //   setClaimOrEnrollLoading(false);
-        // });
+        setHash(response);
       }
     } finally {
       setClaimOrEnrollLoading(false);
       console.log("-");
     }
-  }, [getSignature, method, selectedRaffleForEnroll, userToken, writeAsync]);
+  }, [
+    address,
+    getSignature,
+    method,
+    selectedRaffleForEnroll,
+    userToken,
+    writeContractAsync,
+  ]);
 
   const openEnrollModal = useCallback(
     (raffle: Prize, method: string | null) => {
@@ -308,6 +316,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaWinnersOpen,
         lineaEnrolledUsers,
         isLineaCheckEnrolledModalOpen,
+        isWaitingForConfirmation: isLoading,
       }}
     >
       {children}

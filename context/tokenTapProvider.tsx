@@ -11,7 +11,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useContractWrite } from "wagmi";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { useUserProfileContext } from "./userProfile";
 import {
   claimTokenAPI,
@@ -22,8 +22,7 @@ import {
 } from "@/utils/api/tokentap";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
-import { unitapEvmTokenTapABI } from "@/types/abis/contracts";
-import { waitForTransaction } from "wagmi/actions";
+import { unitapEvmTokenTapAbi } from "@/types/abis/contracts";
 import { useGlobalContext } from "./globalProvider";
 import { FAST_INTERVAL, tokenTapContractAddressList } from "@/constants";
 import { Address, TransactionExecutionError } from "viem";
@@ -83,6 +82,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const [selectedTokenForClaim, setSelectedTokenForClaim] =
     useState<Token | null>(null);
   const [claimingTokenPk, setClaimingTokenPk] = useState<PK | null>(null);
+  const [hash, setHash] = useState<Address>();
+  const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
 
   const tokenListSearchResult = useMemo(() => {
     const searchPhraseLowerCase = searchPhrase.toLowerCase();
@@ -91,29 +92,36 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     );
   }, [searchPhrase, tokensList]);
 
-  const { address, isConnected } = useWalletAccount();
+  const { address, isConnected, chainId } = useWalletAccount();
 
   const { setIsWalletPromptOpen } = useGlobalContext();
 
-  // const { config, refetch } = usePrepareContractWrite({
-  // abi: unitapEvmTokenTapABI,
-  // account: selectedTokenForClaim?.chain.tokentapContractAddress as any,
-  // address,
-  // functionName: "claimToken",
-  // })
   const [loading, setLoading] = useState(false);
   const provider = useWalletProvider();
 
-  const { write, writeAsync, isLoading, reset, data, error } = useContractWrite(
-    {
-      abi: unitapEvmTokenTapABI,
-      account: address,
-      address: selectedTokenForClaim
-        ? tokenTapContractAddressList[selectedTokenForClaim.token]
-        : undefined,
-      functionName: "claimToken",
-    }
-  );
+  const { writeContractAsync, isPending, reset, data, error } =
+    useWriteContract({});
+
+  const {} = useWaitForTransactionReceipt({
+    chainId,
+    hash,
+    confirmations: 1,
+    onReplaced: async (res) => {
+      if (!userToken) return;
+      setClaimTokenResponse({
+        success: true,
+        state: "Done",
+        txHash: res.transaction.hash,
+        message: "Token claimed successfully.",
+      });
+
+      await updateClaimFinished(
+        userToken,
+        chainPkConfirmingHash,
+        res.transaction.hash
+      );
+    },
+  });
 
   const { userToken } = useUserProfileContext();
 
@@ -165,7 +173,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
   const claimWithWallet = useCallback(
     async (claimTokenPayload?: TokenClaimPayload, claimId?: number) => {
-      if (!userToken || !selectedTokenForClaim) return;
+      if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
         tokenTapContractAddressList[selectedTokenForClaim.token];
@@ -179,7 +187,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
         const txPayload = res?.payload ?? claimTokenPayload;
 
-        if (!txPayload || !address || !chainId) {
+        if (!txPayload || !address || !chainId || !selectedTokenForClaim) {
           return;
         }
 
@@ -209,33 +217,25 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         ] as const;
 
         const contractGas = await provider.estimateContractGas({
-          abi: unitapEvmTokenTapABI,
+          abi: unitapEvmTokenTapAbi,
           account: address,
           address: contractAddress,
           functionName: "claimToken",
           args: contractArgs,
         });
 
-        const claimRes = await writeAsync?.({
+        const claimRes = await writeContractAsync?.({
           args: contractArgs,
-          value: 0n,
+          abi: unitapEvmTokenTapAbi,
+          account: address,
+          address: tokenTapContractAddressList[selectedTokenForClaim.token]!,
+          functionName: "claimToken",
           gas: contractGas,
         });
 
         if (claimRes) {
-          await waitForTransaction({
-            hash: claimRes.hash,
-            confirmations: 1,
-            chainId,
-          }).then(async (res) => {
-            setClaimTokenResponse({
-              success: true,
-              state: "Done",
-              txHash: res.transactionHash,
-              message: "Token claimed successfully.",
-            });
-            await updateClaimFinished(userToken, claimId!, res.transactionHash);
-          });
+          setHash(claimRes);
+          setChainPkConfirmingHash(claimId);
         }
       } catch (e: any) {
         const error: TransactionExecutionError = e;
@@ -256,12 +256,12 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       provider,
       selectedTokenForClaim,
       userToken,
-      writeAsync,
+      writeContractAsync,
     ]
   );
 
   const handleClaimToken = useCallback(async () => {
-    if (!selectedTokenForClaim || isLoading) return;
+    if (!selectedTokenForClaim || isPending) return;
 
     const relatedClaimedToken = claimedTokensList.find(
       (claimedToken) =>
@@ -269,7 +269,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     );
 
     claimWithWallet(relatedClaimedToken?.payload, relatedClaimedToken?.id);
-  }, [selectedTokenForClaim, claimedTokensList, isLoading, claimWithWallet]);
+  }, [selectedTokenForClaim, claimedTokensList, isPending, claimWithWallet]);
 
   const openClaimModal = useCallback(
     (token: Token) => {

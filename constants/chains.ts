@@ -51,7 +51,6 @@ const IDChain = {
 export const kccMainnet = {
   id: 321,
   name: "KCC Mainnet",
-  network: "KuCoin",
   nativeCurrency: { name: "KuCoin Token", symbol: "KCS", decimals: 18 },
   rpcUrls: {
     bscscan: {
@@ -90,9 +89,9 @@ export const kccMainnet = {
   // },
 } satisfies Chain;
 
-export const supportedChains = [
-  sepolia,
+export const supportedChains: Chain[] = [
   mainnet,
+  sepolia,
   { ...avalanche, name: "Avalanche C-Chain" },
   bsc,
   base,
@@ -140,7 +139,6 @@ export const supportedChains = [
       ...zetachainAthensTestnet.nativeCurrency,
       symbol: "ZETA",
     },
-    symbol: "ZETA",
   },
   scroll,
   xdc,

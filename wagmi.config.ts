@@ -1,6 +1,5 @@
 import { defineConfig } from "@wagmi/cli";
 import { etherscan, react } from "@wagmi/cli/plugins";
-import { erc20ABI } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import UnitapPass from "@/abis/UnitapPass.json";
 import UnitapPassMain from "@/abis/UnitapPassMain.json";
@@ -9,6 +8,7 @@ import AutoFund from "@/abis/AutoFund.json";
 import UnitapPassBatchSaleMain from "@/abis/UnitapPassBatchSaleMain.json";
 import PrizeTap from "@/abis/UnitapPrizeTap.json";
 import PrizeTap721 from "@/abis/UnitapPrizeTap721.json";
+import erc20ABI from "@/abis/Erc20.json";
 import TokenTap from "@/abis/TokenTap.json";
 
 export default defineConfig({

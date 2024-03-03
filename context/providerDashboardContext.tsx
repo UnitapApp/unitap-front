@@ -113,7 +113,7 @@ export const ProviderDashboardContext = createContext<{
   isErc20Approved: boolean;
   isApprovedAll: boolean;
   approveLoading: boolean;
-  constraintsListApi: ConstraintProps[] | undefined;
+  constraintsListApi: { [key: string]: ConstraintProps[] } | undefined;
   handleApproveErc721Token: () => void;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserRafflesProps) => void;
@@ -249,7 +249,7 @@ const ProviderDashboard: FC<
   PropsWithChildren & {
     rafflesInitial?: UserRafflesProps;
     allChains?: Chain[];
-    constraintListApi?: ConstraintProps[];
+    constraintListApi?: { [key: string]: ConstraintProps[] };
   }
 > = ({ children, rafflesInitial, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
@@ -360,7 +360,7 @@ const ProviderDashboard: FC<
   };
 
   const [constraintsListApi, setConstraintsListApi] = useState<
-    ConstraintProps[] | undefined
+    { [key: string]: ConstraintProps[] } | undefined
   >(constraintListApi);
 
   const { userToken } = useUserProfileContext();
@@ -417,6 +417,8 @@ const ProviderDashboard: FC<
 
   const checkContractAddress = useCallback(
     async (contractAddress: string) => {
+      if (!provider) return;
+
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
@@ -439,7 +441,7 @@ const ProviderDashboard: FC<
             }));
       }
     },
-    [checkContractInfo, data.isNft, isValidContractAddress]
+    [checkContractInfo, data.isNft, provider, isValidContractAddress]
   );
 
   const handleSetDate = (timeStamp: number, label: string) => {

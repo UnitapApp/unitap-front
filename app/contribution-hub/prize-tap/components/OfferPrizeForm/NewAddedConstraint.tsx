@@ -17,15 +17,19 @@ const NewAddedConstraint = ({ requirement }: Props) => {
     isShowingDetails,
   } = usePrizeOfferFormContext();
 
-  const constraint = constraintsListApi!.find(
-    (item) => item.pk == requirement.pk
-  );
+  const constraint = constraintsListApi
+    ? Object.values(constraintsListApi)
+        .flat(1)
+        .find((element) => {
+          return element.pk === requirement.pk;
+        })
+    : undefined;
 
   const isNotSatisfy = requirement.isNotSatisfy;
 
   const handleClick = () => {
-    if (isShowingDetails) return;
-    handleSelectConstraint(constraint!);
+    if (isShowingDetails || !constraint) return;
+    handleSelectConstraint(constraint);
     openRequirementModal();
   };
 

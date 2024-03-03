@@ -13,7 +13,7 @@ import { parseToLamports } from "@/utils/numbers";
 import { parseEther } from "viem";
 import { submitDonationTxHash } from "@/utils/api";
 import {
-  estimateGas,
+  useEstimateContractGas,
   useNetworkSwitcher,
   useWalletAccount,
   useWalletBalance,
@@ -38,9 +38,21 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   const chainId = chain?.id;
 
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
+  const [fundAmount, setFundAmount] = useState<string>("");
+
+  const [modalState, setModalState] = useState(false);
+  const [fundTransactionError, setFundTransactionError] = useState("");
+  const [txHash, setTxHash] = useState("");
+
   const balance = useWalletBalance({
     address,
     chainId: Number(selectedChain?.chainId),
+  });
+
+  const { isLoading, data } = useEstimateContractGas({
+    chainId,
+    amount: parseEther(fundAmount),
+    to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
   });
 
   const chainList = useMemo(() => {
@@ -65,12 +77,6 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   }, [chainList, initialChainId, selectedChain]);
 
   const { switchChain } = useNetworkSwitcher();
-
-  const [fundAmount, setFundAmount] = useState<string>("");
-
-  const [modalState, setModalState] = useState(false);
-  const [fundTransactionError, setFundTransactionError] = useState("");
-  const [txHash, setTxHash] = useState("");
 
   const isRightChain = useMemo(() => {
     if (!isConnected || !chainId || !selectedChain) return false;
@@ -138,15 +144,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
 
     setSubmittingFundTransaction(true);
 
-    const estimatedGas = await estimateGas(provider, {
-      from: address,
-      to: "0xE6Bc2586fcC1Da738733867BFAf381B846AAe834",
-      value: BigInt(tx.value),
-    }).catch((err: any) => {
-      return err;
-    });
-
-    console.log(estimateGas);
+    const estimatedGas = data!;
 
     if (typeof estimatedGas !== "bigint") {
       handleTransactionError(estimatedGas);
@@ -186,6 +184,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
     isRightChain,
     fundAmount,
     provider,
+    data,
     signer,
     setIsWalletPromptOpen,
     switchChain,
@@ -211,7 +210,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
 
   useEffect(() => {
     balance.refetch();
-  }, [isRightChain, address, provider]);
+  }, [isRightChain, address, provider, balance]);
 
   return (
     <div className="bg-gray20 select-none rounded-xl p-12 relative h-[10hv] overflow-hidden  text-white flex flex-col items-center text-center">

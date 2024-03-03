@@ -60,7 +60,7 @@ const AddNewWalletBody: FC<{
           connect({
             connector: connectors.find(
               (connector) => connector.id === "injected"
-            ),
+            )!,
           });
         }}
       />
@@ -74,7 +74,7 @@ const AddNewWalletBody: FC<{
           connect({
             connector: connectors.find(
               (connector) => connector.id === "walletConnect"
-            ),
+            )!,
           });
         }}
       />

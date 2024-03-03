@@ -1,4 +1,4 @@
-import { PublicClient, erc20ABI, erc721ABI, readContracts } from "wagmi";
+import { PublicClient, erc721Abi, erc20Abi } from "viem";
 
 export const checkNftCollectionAddress = async (
   provider: PublicClient,
@@ -9,19 +9,19 @@ export const checkNftCollectionAddress = async (
 
   const contracts = [
     {
-      abi: erc721ABI,
+      abi: erc721Abi,
       address: collectionAddress as any,
       functionName: "name",
       chainId: chainId,
     },
     {
-      abi: erc721ABI,
+      abi: erc721Abi,
       address: collectionAddress as any,
       functionName: "symbol",
       chainId: chainId,
     },
     {
-      abi: erc721ABI,
+      abi: erc721Abi,
       address: collectionAddress as any,
       functionName: "ownerOf",
       args: [1n],
@@ -29,7 +29,7 @@ export const checkNftCollectionAddress = async (
     },
   ];
 
-  const data = await readContracts({
+  const data = await provider.multicall({
     contracts,
   });
   const res = data.filter((item) => item.status === "success");
@@ -46,26 +46,26 @@ export const checkTokenContractAddress = async (
 
   const contracts = [
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: collectionAddress as any,
       functionName: "name",
       chainId: chainId,
     },
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: collectionAddress as any,
       functionName: "symbol",
       chainId: chainId,
     },
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: collectionAddress as any,
       functionName: "decimals",
       chainId: chainId,
     },
   ];
 
-  const data = await readContracts({
+  const data = await provider.multicall({
     contracts,
   });
 

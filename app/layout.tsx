@@ -1,4 +1,4 @@
-import { WagmiConfig } from "wagmi";
+import { WagmiProvider } from "wagmi";
 import type { Metadata } from "next";
 import { config } from "@/utils/wallet/wagmi";
 import { Noto_Sans } from "next/font/google";
@@ -15,8 +15,13 @@ import {
 import StyledJsxRegistry from "@/components/styled-components";
 import { ConnectWalletModal } from "@/components/containers/modals/ConnectWalletModal";
 import GoogleAnalytics from "@/components/google-analytics";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./globals.scss";
+
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
+import { Providers } from "./providers";
 
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -24,6 +29,8 @@ const notoSansFont = Noto_Sans({
   adjustFontFallback: false,
   subsets: ["latin"],
 });
+
+const queryClient = new QueryClient();
 
 export const metadata: Metadata = {
   title: "Unitap",
@@ -35,10 +42,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const initialState = cookieToInitialState(config, headers().get("cookie"));
+
   return (
     <html lang="en" dir="ltr" className="dark">
       <body className={`dark:bg-gray10 dark:text-white ${notoSansFont}`}>
-        <WagmiConfig config={config}>
+        <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
               <div id="app">
@@ -56,7 +65,7 @@ export default async function RootLayout({
               <ConnectWalletModal />
             </StyledJsxRegistry>
           </UnitapProvider>
-        </WagmiConfig>
+        </Providers>
 
         <Progressbar />
 

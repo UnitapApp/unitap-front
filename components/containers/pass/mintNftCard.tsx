@@ -3,10 +3,8 @@ import { ClaimButton } from "@/components/ui/Button/button";
 
 import Icon from "@/components/ui/Icon";
 import {
-  unitapPassBatchSaleABI,
-  useUnitapPassBatchSaleBatchSize,
-  useUnitapPassBatchSaleBatchSoldCount,
-  useUnitapPassBatchSalePrice,
+  unitapEvmTokenTapAbi,
+  unitapPassBatchSaleAbi,
 } from "@/types/abis/contracts";
 import {
   UNITAP_PASS_BATCH_SALE_ADDRESS,
@@ -18,7 +16,8 @@ import {
   useWalletAccount,
 } from "@/utils/wallet";
 import { SupportedChainId } from "@/constants/chains";
-import { mainnet, useContractReads, useContractWrite } from "wagmi";
+import { useReadContracts, useWriteContract } from "wagmi";
+import { mainnet } from "wagmi/chains";
 import { goerli } from "viem/chains";
 import { CurrencyAmount } from "@uniswap/sdk-core";
 import { nativeOnChain } from "@/constants/tokens";
@@ -38,24 +37,24 @@ const saleAddress = UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId];
 const MintNFTCard = () => {
   const [count, setCount] = useState(1);
 
-  const { data: contractsRes, isLoading: isContractLoading } = useContractReads(
+  const { data: contractsRes, isLoading: isContractLoading } = useReadContracts(
     {
-      watch: true,
+      // multicallAddress: saleAddress,
       contracts: [
         {
-          abi: unitapPassBatchSaleABI,
+          abi: unitapPassBatchSaleAbi,
           functionName: "batchSoldCount",
           chainId: supportedChainId,
           address: saleAddress,
         },
         {
-          abi: unitapPassBatchSaleABI,
+          abi: unitapPassBatchSaleAbi,
           functionName: "price",
           chainId: supportedChainId,
           address: saleAddress,
         },
         {
-          abi: unitapPassBatchSaleABI,
+          abi: unitapPassBatchSaleAbi,
           functionName: "batchSize",
           chainId: supportedChainId,
           address: saleAddress,
@@ -63,6 +62,8 @@ const MintNFTCard = () => {
       ],
     }
   );
+
+  console.log(contractsRes);
 
   const remainingCount = useMemo(
     () =>
@@ -109,24 +110,26 @@ const MintNFTCard = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { write, data, isLoading, isSuccess, isError, error, reset, isIdle } =
-    useContractWrite({
-      abi: unitapPassBatchSaleABI,
-      account: address,
-      functionName: "multiMint",
-      chainId: supportedChainId,
-      address: UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId],
-    });
+  const {
+    writeContractAsync,
+    data,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+    reset,
+    isIdle,
+  } = useWriteContract({});
 
   const chainScanLink = useMemo(() => {
-    if (data?.hash) {
+    if (data) {
       if (chainId === SupportedChainId.MAINNET) {
-        return `https://etherscan.io/tx/${data.hash}`;
+        return `https://etherscan.io/tx/${data}`;
       } else if (chainId === SupportedChainId.GOERLI) {
-        return `https://goerli.etherscan.io/tx/${data.hash}`;
+        return `https://goerli.etherscan.io/tx/${data}`;
       }
     }
-  }, [chainId, data?.hash]);
+  }, [chainId, data]);
 
   const switchNetwork = () => {
     if (supportedChainId === SupportedChainId.MAINNET) {
@@ -154,11 +157,19 @@ const MintNFTCard = () => {
 
   const mintPass = useCallback(async () => {
     if (loading) return;
+
+    if (!UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]) return;
+
     setLoading(true);
 
-    write({
+    writeContractAsync({
       args: [count, address!],
-      value: BigInt(contractsRes?.[1].result! as number) * BigInt(count),
+      value: contractsRes?.[1].result! * BigInt(count),
+      abi: unitapPassBatchSaleAbi,
+      account: address,
+      functionName: "multiMint",
+      chainId: supportedChainId,
+      address: UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]!,
     });
 
     // try {
@@ -184,7 +195,7 @@ const MintNFTCard = () => {
     //   console.log("mint failed")
     //   console.log(e)
     // }
-  }, [loading]);
+  }, [address, contractsRes, count, loading, writeContractAsync]);
 
   return (
     <div className="mint-nft-card h-full flex flex-col justify-between ">
@@ -222,7 +233,7 @@ const MintNFTCard = () => {
                   : "Goerli Etherscan"}
               </p>
             </>
-          ) : isLoading ? (
+          ) : isPending ? (
             <p className="text-gradient-primary mx-auto font-medium text-sm mb-3">
               Minting {count} Unitap Pass{count > 1 ? "es" : ""}!
             </p>
@@ -269,7 +280,7 @@ const MintNFTCard = () => {
                   {" "}
                   {isContractLoading
                     ? "..."
-                    : (contractsRes?.[0].result as number).toString()}{" "}
+                    : contractsRes?.[0].result?.toString()}{" "}
                 </span>
                 Left in current batch
               </p>
@@ -363,9 +374,9 @@ const MintNFTCard = () => {
                     onClick={mintPass}
                     height="48px"
                     className="!w-full"
-                    disabled={isLoading}
+                    disabled={isPending}
                   >
-                    <p>{isLoading ? "Contract Loading" : "Mint Unitap Pass"}</p>
+                    <p>{isPending ? "Contract Loading" : "Mint Unitap Pass"}</p>
                   </ClaimButton>
                 )
               ) : (

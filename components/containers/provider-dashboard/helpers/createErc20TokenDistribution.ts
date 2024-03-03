@@ -2,25 +2,18 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import {
-  Address,
-  TransactionReceiptNotFoundError,
-  parseEther,
-  zeroAddress,
-} from "viem";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import { Address, parseEther, PublicClient, zeroAddress } from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
-import { estimateGas } from "@/utils/wallet";
-import { PublicClient, erc20ABI } from "wagmi";
-import { tokenTapABI } from "@/types/abis/contracts";
+import { tokenTapAbi } from "@/types/abis/contracts";
 import Big from "big.js";
 import { contractAddresses } from "@/constants";
 
 const txCallBack = async (
   address: string,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   provider: PublicClient,
   decimals: number,
   tokenContractAddress: string,
@@ -32,7 +25,7 @@ const txCallBack = async (
   isNativeToken: boolean
 ) => {
   const gasEstimate = await provider.estimateContractGas({
-    abi: tokenTapABI,
+    abi: tokenTapAbi,
     account: address as any,
     address: contractAddresses.tokenTap as any,
     functionName: "distributeToken",
@@ -49,7 +42,7 @@ const txCallBack = async (
   });
 
   return signer?.writeContract({
-    abi: tokenTapABI,
+    abi: tokenTapAbi,
     account: address as any,
     address: contractAddresses.tokenTap as any,
     functionName: "distributeToken",
@@ -70,7 +63,7 @@ const txCallBack = async (
 export const createErc20TokenDistribution = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
   address: string,
   userToken: string,

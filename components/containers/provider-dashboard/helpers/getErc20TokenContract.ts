@@ -5,7 +5,7 @@ import {
 } from "@/types";
 import { fromWei } from "@/utils/numbersBigNumber";
 import { Address, getContract } from "viem";
-import { PublicClient, erc20ABI } from "wagmi";
+import { PublicClient, erc20Abi } from "viem";
 
 export const getErc20TokenContract = async (
   data: ProviderDashboardFormDataProp,
@@ -19,9 +19,9 @@ export const getErc20TokenContract = async (
   if (!provider || !address) return;
 
   const contract = getContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: data.tokenContractAddress as any,
-    publicClient: provider,
+    client: provider,
   });
 
   if (!contract) return;

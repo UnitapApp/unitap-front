@@ -1,17 +1,22 @@
 import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
-import { prizeTapABI } from "@/types/abis/contracts";
+import { prizeTapAbi } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
-import { PublicClient, getContract, parseEther } from "viem";
-import { GetContractResult, GetWalletClientResult } from "wagmi/dist/actions";
+import {
+  GetContractReturnType,
+  PublicClient,
+  getContract,
+  parseEther,
+} from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
 import { deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import Big from "big.js";
 
 const createErc20RaffleCallback = async (
   account: string,
-  raffleContract: GetContractResult,
-  signer: GetWalletClientResult,
+  raffleContract: GetContractReturnType,
+  signer: GetWalletClientReturnType,
   provider: PublicClient,
   payableAmount: string,
   tokenDecimals: number,
@@ -25,7 +30,7 @@ const createErc20RaffleCallback = async (
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
-    abi: prizeTapABI,
+    abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -47,7 +52,7 @@ const createErc20RaffleCallback = async (
   });
 
   return signer?.writeContract({
-    abi: prizeTapABI,
+    abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -73,7 +78,7 @@ const createErc20RaffleCallback = async (
 export const createErc20Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
   address: string,
   userToken: string,
@@ -166,8 +171,8 @@ export const createErc20Raffle = async (
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
-    abi: prizeTapABI,
-    publicClient: provider,
+    abi: prizeTapAbi,
+    client: provider,
   });
 
   try {

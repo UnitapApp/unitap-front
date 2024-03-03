@@ -10,7 +10,7 @@ import { ChainType } from "@/types";
 
 const SOLANA_CONNECTION = new Connection(clusterApiUrl("testnet"));
 
-export const revalidate = true;
+export const revalidate = 10;
 export const maxDuration = 10;
 
 export async function GET() {

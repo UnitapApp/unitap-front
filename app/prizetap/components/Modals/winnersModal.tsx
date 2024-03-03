@@ -10,8 +10,8 @@ import UButton from "@/components/ui/Button/UButton";
 import { WinnerEntry } from "@/types";
 import { Address, isAddressEqual } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
-import { prizeTap721ABI, prizeTapABI } from "@/types/abis/contracts";
-import { readContracts } from "wagmi";
+import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
+import { useReadContracts } from "wagmi";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -27,9 +27,6 @@ export const getRaffleEntry = (
 
 const WinnersModal = () => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
-  const [enrollmentWallets, setEnrollmentWallets] = useState<{
-    [key: string]: true;
-  }>({});
 
   const { selectedRaffleForEnroll } = usePrizeTapContext();
 
@@ -42,7 +39,7 @@ const WinnersModal = () => {
     [selectedRaffleForEnroll, address]
   );
 
-  const fetchEnrollmentWallets = useCallback(async () => {
+  const fetchEnrollmentWallets = useCallback(() => {
     if (!selectedRaffleForEnroll) return [];
 
     const isNft = selectedRaffleForEnroll.isPrizeNft;
@@ -53,7 +50,7 @@ const WinnersModal = () => {
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
       contracts.push({
-        abi: isNft ? prizeTap721ABI : prizeTapABI,
+        abi: isNft ? prizeTap721Abi : prizeTapAbi,
         address: (selectedRaffleForEnroll.isPrizeNft
           ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
           : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994") as Address,
@@ -63,19 +60,28 @@ const WinnersModal = () => {
       });
     }
 
-    const data = await readContracts({
-      contracts,
-    });
+    return contracts;
+    // const data = await readContracts({
+    //   contracts,
+    // });
+  }, [selectedRaffleForEnroll]);
 
-    const allWallet = (data.map((item) => item.result) as any[])
+  const { data } = useReadContracts({
+    contracts: fetchEnrollmentWallets(),
+  }) as any;
+
+  const enrollmentWallets = useMemo(() => {
+    if (!data) return;
+
+    const allWallet = (data.map((item: any) => item.result) as any[])
       .flat(2)
       .reduce((prev, curr: string) => {
         prev[curr.toLowerCase()] = true;
 
         return prev;
       }, {} as { [key: string]: true });
-    setEnrollmentWallets(allWallet);
-  }, [selectedRaffleForEnroll]);
+    return allWallet;
+  }, [data]);
 
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput

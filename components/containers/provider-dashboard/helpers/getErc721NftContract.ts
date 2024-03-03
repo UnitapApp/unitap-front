@@ -3,8 +3,7 @@ import {
   ContractValidationStatus,
   ProviderDashboardFormDataProp,
 } from "@/types";
-import { Address, getContract } from "viem";
-import { PublicClient, erc721ABI } from "wagmi";
+import { Address, getContract, PublicClient, erc721Abi } from "viem";
 
 export const getErc721TokenContract = async (
   data: ProviderDashboardFormDataProp,
@@ -17,9 +16,9 @@ export const getErc721TokenContract = async (
   if (!provider || !address) return;
 
   const contract = getContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: data.nftContractAddress as any,
-    publicClient: provider,
+    client: provider,
   });
 
   if (!contract) return;

@@ -105,12 +105,7 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
             >
               {item.name}
             </p>
-            <img
-              alt={item.name}
-              src={item.icon}
-              width={item.iconWidth}
-              height={item.iconHeight}
-            />
+            <Image alt={item.name} src={item.icon} width={20} height={28} />
           </Link>
         );
       })}

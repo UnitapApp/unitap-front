@@ -2,8 +2,7 @@ import {
   ContractValidationStatus,
   ProviderDashboardFormDataProp,
 } from "@/types";
-import { Address, getContract } from "viem";
-import { PublicClient, erc20ABI } from "wagmi";
+import { Address, getContract, PublicClient, erc20Abi } from "viem";
 import { fromWei } from "@/utils/numbersBigNumber";
 import { contractAddresses } from "@/constants/address";
 
@@ -19,9 +18,9 @@ export const getErc20TokenContractTokenTap = async (
   if (!provider || !address) return;
 
   const contract = getContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: data.tokenContractAddress as any,
-    publicClient: provider,
+    client: provider,
   });
 
   if (!contract) return;

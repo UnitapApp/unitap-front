@@ -1,76 +1,66 @@
 "use client";
 
 import { Chain, ChainType } from "@/types";
-import { useEffect, useState } from "react";
-import { Client } from "viem";
+import { Address, Client, PublicClient } from "viem";
+import { switchChain } from "viem/actions";
 import {
-  PublicClient,
+  Connector,
   useAccount,
   useBalance,
   useConnect,
   useDisconnect,
-  useNetwork,
   usePublicClient,
   useWalletClient,
+  useEstimateGas,
 } from "wagmi";
-import { ConnectArgs, GetWalletClientResult } from "wagmi/actions";
 
 export const useWalletAccount = () => {
   return useAccount();
 };
 
 export const useWalletNetwork = () => {
-  return useNetwork();
+  return useAccount();
 };
 
 export const useNetworkSwitcher = () => {
-  const { chain } = useNetwork();
-  const { connector } = useAccount();
+  const { connector, chain } = useAccount();
 
-  const signer = useWalletSigner();
-
-  const [provider, setProvider] = useState<Client | undefined>(undefined);
+  const client = useProvider();
 
   const addAndSwitchChain = (chain: Chain) => {
-    signer?.addChain?.({
-      chain: {
-        id: Number(chain.chainId),
-        name: chain.chainName,
-        nativeCurrency: {
-          decimals: chain.decimals,
-          name: chain.nativeCurrencyName,
-          symbol: chain.symbol,
-        },
-        network: chain.chainName,
-        blockExplorers: {
-          etherscan: {
-            name: "eth",
-            url: chain.explorerUrl,
-          },
-          default: {
-            name: "eth",
-            url: chain.explorerUrl,
-          },
-        },
-        rpcUrls: {
-          default: { http: [chain.rpcUrl] },
-          public: { http: [chain.rpcUrl] },
-        },
-      },
-    });
+    // addChain(client, {
+    //   chain: {
+    //     id: Number(chain.chainId),
+    //     name: chain.chainName,
+    //     nativeCurrency: {
+    //       decimals: chain.decimals,
+    //       name: chain.nativeCurrencyName,
+    //       symbol: chain.symbol,
+    //     },
+    //     blockExplorers: {
+    //       etherscan: {
+    //         name: "eth",
+    //         url: chain.explorerUrl,
+    //       },
+    //       default: {
+    //         name: "eth",
+    //         url: chain.explorerUrl,
+    //       },
+    //     },
+    //     rpcUrls: {
+    //       default: { http: [chain.rpcUrl] },
+    //       public: { http: [chain.rpcUrl] },
+    //     },
+    //   },
+    // });
+    if (!client) return;
+
+    switchChain(client, { id: Number(chain.chainId) });
   };
-
-  useEffect(() => {
-    if (!connector) return;
-
-    connector.getWalletClient().then((provider) => {
-      setProvider(provider);
-    });
-  }, [connector]);
 
   return {
     selectedNetwork: chain,
-    switchChain: (chainId: number) => connector?.switchChain?.(chainId),
+    switchChain: (chainId: number) => connector?.switchChain?.({ chainId }),
     addAndSwitchChain,
   };
 };
@@ -81,10 +71,7 @@ export const useAccountBalance = (account?: string, chainId?: number) =>
     chainId,
   });
 
-export const useProvider: () =>
-  | PublicClient
-  | GetWalletClientResult
-  | undefined = () => {
+export const useProvider: () => Client | undefined = () => {
   const { isConnected } = useWalletAccount();
 
   const walletProvider = useWalletClient();
@@ -110,7 +97,7 @@ export const useWeb3 = () => {
 };
 
 export class WalletProvider {
-  constructor(private provider: PublicClient) {}
+  constructor(private provider: Client) {}
 }
 
 export const useUserWalletProvider = () => {
@@ -139,11 +126,14 @@ export const useUserWalletProvider = () => {
 };
 
 export const useWalletConnection = () => {
-  const { connect, isLoading, connectors, isSuccess } = useConnect();
+  const { connect, isPending, connectors, isSuccess } = useConnect();
 
-  const { disconnect, isLoading: isDisconnectLoading } = useDisconnect();
+  const { disconnect, isPending: isDisconnectLoading } = useDisconnect();
 
-  const onConnect = async (args?: Partial<ConnectArgs> | undefined) => {
+  const onConnect = async (args: {
+    connector: Connector;
+    chainId?: number;
+  }) => {
     if (
       (args?.connector?.id === "injected" ||
         args?.connector?.id === "metamask") &&
@@ -157,6 +147,7 @@ export const useWalletConnection = () => {
           },
         ],
       });
+
       await (window as any).ethereum.request({
         method: "wallet_requestPermissions",
         params: [
@@ -167,12 +158,15 @@ export const useWalletConnection = () => {
       });
     }
 
-    connect(args);
+    connect({
+      connector: args?.connector,
+      chainId: args?.chainId,
+    });
   };
 
   return {
     connect: onConnect,
-    isLoading,
+    isLoading: isPending,
     connectors,
     isSuccess,
     disconnect,
@@ -187,17 +181,32 @@ export type EstimateGasProps = {
   data?: string;
 };
 
-export const estimateGas = (
-  provider: PublicClient,
-  { from, to, value, data }: EstimateGasProps
-) => {
-  return provider.estimateGas({
-    account: from as `0x{string}`,
-    to: to as `0x{string}`,
-    value,
-    data: data as `0x{string}`,
+export const useEstimateContractGas = ({
+  to,
+  amount,
+  chainId,
+}: {
+  to: Address;
+  amount: bigint;
+  chainId?: number;
+}) =>
+  useEstimateGas({
+    to,
+    value: amount,
+    chainId,
   });
-};
+
+// export const estimateGas = (
+//   provider: Client,
+//   { from, to, value, data }: EstimateGasProps
+// ) => {
+//   return estimateGas({
+//     account: from as Address,
+//     to: to as Address,
+//     value,
+//     data: data as Address,
+//   });
+// };
 
 export const callProvider = (
   provider: PublicClient,

@@ -107,7 +107,7 @@ export const TokenTapContext = createContext<{
   createRaffleLoading: boolean;
   handleSetCreateRaffleLoading: () => void;
   handleSetDate: (timeStamp: number, label: string) => void;
-  constraintsListApi: ConstraintProps[] | undefined;
+  constraintsListApi: { [key: string]: ConstraintProps[] } | undefined;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserTokenDistribution) => void;
   handleShowUserDetails: (raffle: UserTokenDistribution) => void;
@@ -247,7 +247,7 @@ const TokenTapProvider: FC<
   PropsWithChildren & {
     distributionInit?: UserTokenDistribution;
     allChains?: Chain[];
-    constraintListApi?: ConstraintProps[];
+    constraintListApi?: { [key: string]: ConstraintProps[] };
   }
 > = ({ children, distributionInit, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
@@ -359,7 +359,7 @@ const TokenTapProvider: FC<
   };
 
   const [constraintsListApi, setConstraintsListApi] = useState<
-    ConstraintProps[] | undefined
+    { [key: string]: ConstraintProps[] } | undefined
   >(constraintListApi);
 
   const { userToken } = useUserProfileContext();
@@ -433,7 +433,7 @@ const TokenTapProvider: FC<
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider
+        provider!
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
