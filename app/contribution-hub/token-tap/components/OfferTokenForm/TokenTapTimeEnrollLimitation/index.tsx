@@ -63,42 +63,46 @@ const TokenTapTimeEnrollLimitation = ({
       >
         <div className="flex items-center justify-between w-full text-center">
           <div
-            // onClick={() => handleSetClaimPeriodic(false)}
-            className={`${
-              claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex flex-col rounded-[12px_0px_0px_12px] cursor-pointer border border-gray50 w-full h-[43px] items-center justify-center`}
-          >
-            <p
-              className={`${
-                !claimPeriodic ? "text-white" : "text-gray90"
-              } text-xs`}
-            >
-              OneTime-Claimable
-            </p>
-            <p
-              className={`${
-                !claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-2xs`}
-            >
-              (Each person can claim once.)
-            </p>
-          </div>
-          <div
-            // onClick={() => handleSetClaimPeriodic(true)}
+            onClick={() => {
+              !isShowingDetails && handleSetClaimPeriodic(true);
+            }}
             className={`${
               !claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex flex-col rounded-[0px_12px_12px_0px] cursor-pointer  border border-gray50 w-full h-[43px] items-center justify-center`}
+            } flex flex-col rounded-[12px_0px_0px_12px] cursor-pointer border border-gray50 w-full h-[43px] items-center justify-center`}
           >
             <p
               className={`${
                 claimPeriodic ? "text-white" : "text-gray90"
               } text-xs`}
             >
-              Periodic-Claimable
+              OneTime-Claimable
             </p>
             <p
               className={`${
                 claimPeriodic ? "text-gray100" : "text-gray90"
+              } text-2xs`}
+            >
+              (Each person can claim once.)
+            </p>
+          </div>
+          <div
+            onClick={() => {
+              !isShowingDetails && handleSetClaimPeriodic(false);
+            }}
+            className={`${
+              claimPeriodic ? "bg-gray30" : "bg-gray40"
+            } flex flex-col rounded-[0px_12px_12px_0px] cursor-pointer  border border-gray50 w-full h-[43px] items-center justify-center`}
+          >
+            <p
+              className={`${
+                !claimPeriodic ? "text-white" : "text-gray90"
+              } text-xs`}
+            >
+              Periodic-Claimable
+            </p>
+            <p
+              className={`${
+                !claimPeriodic ? "text-gray100" : "text-gray90"
               } text-2xs`}
             >
               (Each person can claim once in a month.)

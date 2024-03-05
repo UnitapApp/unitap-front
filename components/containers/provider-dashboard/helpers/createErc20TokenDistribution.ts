@@ -65,6 +65,7 @@ export const createErc20TokenDistribution = async (
   provider: PublicClient,
   signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
+  isOneTimeClaim: any,
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
@@ -159,6 +160,7 @@ export const createErc20TokenDistribution = async (
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
   formData.append("decimals", decimals);
+  formData.append("is_one_time_claim", isOneTimeClaim);
 
   try {
     setCreateRaffleLoading(true);

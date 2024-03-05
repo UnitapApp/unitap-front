@@ -236,7 +236,7 @@ export const TokenTapContext = createContext<{
   endDateState: null,
   setEndDateState: NullCallback,
   userDistribution: {} as any,
-  claimPeriodic: false,
+  claimPeriodic: true,
   handleSetClaimPeriodic: NullCallback,
   allChainList: [] as any,
   isErc20Approved: false,
@@ -331,7 +331,7 @@ const TokenTapProvider: FC<
 
   const [numberOfNfts, setNumberOfNfts] = useState<string>("");
 
-  const [claimPeriodic, setClaimPeriodic] = useState(false);
+  const [claimPeriodic, setClaimPeriodic] = useState(true);
 
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);
@@ -856,6 +856,7 @@ const TokenTapProvider: FC<
       provider,
       signer,
       requirementList,
+      claimPeriodic,
       address,
       userToken,
       setCreateRaffleLoading,
@@ -916,7 +917,12 @@ const TokenTapProvider: FC<
     setSelectedRaffleForCheckReason(raffle);
   };
 
+  const handleSetClaimPeriodic = (claimPeriodic: boolean) => {
+    setClaimPeriodic(claimPeriodic);
+  };
+
   const handleShowUserDetails = async (raffle: UserTokenDistribution) => {
+    console.log(raffle);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
@@ -950,9 +956,12 @@ const TokenTapProvider: FC<
     setIsShowingDetails(true);
     setSelectNewOffer(true);
     setSelectedChain(raffle.chain);
+    console.log(raffle.isOneTimeClaim);
+    setClaimPeriodic(raffle.isOneTimeClaim);
     // setNumberOfNfts(
     //   raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
     // );
+
     setConstraintsListApi(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
@@ -1114,7 +1123,7 @@ const TokenTapProvider: FC<
         setEndDateState,
         userDistribution,
         claimPeriodic,
-        handleSetClaimPeriodic: setClaimPeriodic,
+        handleSetClaimPeriodic,
         allChainList,
         approveLoading,
       }}
