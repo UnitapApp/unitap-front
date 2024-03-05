@@ -922,7 +922,6 @@ const TokenTapProvider: FC<
   };
 
   const handleShowUserDetails = async (raffle: UserTokenDistribution) => {
-    console.log(raffle);
     setChainName(raffle.chain.chainName);
     setData((prev) => ({
       ...prev,
@@ -956,7 +955,6 @@ const TokenTapProvider: FC<
     setIsShowingDetails(true);
     setSelectNewOffer(true);
     setSelectedChain(raffle.chain);
-    console.log(raffle.isOneTimeClaim);
     setClaimPeriodic(raffle.isOneTimeClaim);
     // setNumberOfNfts(
     //   raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
