@@ -13,30 +13,38 @@ const Header = () => {
   const { userProfile } = useUserProfileContext();
 
   return (
-    <div className="gas-tap-header h-[202px] rounded-2xl flex flex-col  md:flex-row lg:items-start md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray30">
-      <div className="flex">
-        <div className="header-left z-10 tracking-[10px] font-semibold text-2xl text-[#AEF2D1]">
+    <div className="gas-tap-header h-[250px] rounded-3xl flex flex-col lg:items-start md:justify-between overflow-hidden relative mb-5 border-4 border-gray30">
+      <div className="flex w-full">
+        <div className="z-10 tracking-[10px] font-semibold text-2xl p-5 text-[#AEF2D1]">
           GASTAP
         </div>
         <Timer />
+        <span className="ml-auto" />
       </div>
-      <div className="header-right flex mt-2 justify-center md:justify-start">
-        <div className="claim-stat z-10">
-          {userProfile ? <Dabes /> : <RenderConnectBrightID />}
+
+      <div className="flex w-full mb-5 justify-center">
+        <div>
+          <Icon iconSrc="/assets/images/gas-tap/half-galon.svg" />
+          {userProfile ? <Gallons /> : <RenderConnectBrightID />}
         </div>
       </div>
+      {/* <div className="flex mt-2 justify-center md:justify-start">
+        <div className="claim-stat z-10">
+        
+        </div>
+      </div> */}
     </div>
   );
 };
 
-const Dabes = () => {
+const Gallons = () => {
   const { activeClaimHistory, openClaimModal } = useGasTapContext();
-  const { gastapRoundClaimLimit } = useUserProfileContext();
+  // const { gastapRoundClaimLimit } = useUserProfileContext();
 
   return (
     <div
       data-testid="claims-chain-list"
-      className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3"
+      className="py-[2px] h-11 px-3 flex gap-x-3"
     >
       <>
         {activeClaimHistory
@@ -56,22 +64,6 @@ const Dabes = () => {
               />
             );
           })}
-        {range(
-          0,
-          (gastapRoundClaimLimit ?? 5) -
-            activeClaimHistory.filter(
-              (claim) => claim.status !== ClaimReceiptState.REJECTED
-            ).length
-        ).map((i) => {
-          return (
-            <Icon
-              key={i}
-              iconSrc="assets/images/gas-tap/empty-dabe.svg"
-              width="36px"
-              height="auto"
-            />
-          );
-        })}
       </>
     </div>
   );
