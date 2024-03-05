@@ -12,7 +12,7 @@ const RenderNavbarDropdown = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   return (
-    <span className="ml-auto cursor-pointer">
+    <span className="cursor-pointer">
       <Image
         src="/assets/images/navbar/navbar-dropdown-icon.svg"
         width={31}

@@ -1,7 +1,11 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M25 1H7C3.68629 1 1 3.68629 1 7V25C1 28.3137 3.68629 31 7 31H25C28.3137 31 31 28.3137 31 25V7C31 3.68629 28.3137 1 25 1ZM7 0C3.13401 0 0 3.13401 0 7V25C0 28.866 3.13401 32 7 32H25C28.866 32 32 28.866 32 25V7C32 3.13401 28.866 0 25 0H7Z" fill="#67677B"/>
-<rect x="4" y="4" width="11" height="11" rx="3" fill="#4C4C5C"/>
-<rect x="4" y="17" width="11" height="11" rx="3" fill="#4C4C5C"/>
-<rect x="17" y="4" width="11" height="11" rx="3" fill="#67677B"/>
-<rect x="17" y="17" width="11" height="11" rx="3" fill="#4C4C5C"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="9.5" fill="url(#paint0_linear_308_42379)" stroke="#39394E" />
+  <rect x="6" y="9" width="20" height="3" rx="1.5" fill="#6F6F8E" />
+  <rect x="6" y="20" width="20" height="3" rx="1.5" fill="#6F6F8E" />
+  <defs>
+    <linearGradient id="paint0_linear_308_42379" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3F3F55" />
+      <stop offset="1" stop-color="#1D1D31" />
+    </linearGradient>
+  </defs>
 </svg>

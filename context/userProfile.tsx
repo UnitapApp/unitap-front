@@ -217,7 +217,7 @@ export const UserContextProvider: FC<
 
     if (
       isConnected &&
-      userProfile.wallets.find((wallet) =>
+      userProfile.wallets?.find((wallet) =>
         isAddressEqual(wallet.address, address!)
       )
     )

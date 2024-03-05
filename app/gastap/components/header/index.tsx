@@ -1,38 +1,37 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import Timer from "../timer"
-import { range } from "@/utils"
-import { ClaimReceiptState } from "@/types"
-import { useUserProfileContext } from "@/context/userProfile"
-import { useGasTapContext } from "@/context/gasTapProvider"
+import Icon from "@/components/ui/Icon";
+import Timer from "../timer";
+import { range } from "@/utils";
+import { ClaimReceiptState } from "@/types";
+import { useUserProfileContext } from "@/context/userProfile";
+import { useGasTapContext } from "@/context/gasTapProvider";
 
-import "./styles.scss"
+import "./styles.scss";
 
 const Header = () => {
-  const { userProfile } = useUserProfileContext()
+  const { userProfile } = useUserProfileContext();
 
   return (
-    <div className="gas-tap-header h-[202px] rounded-2xl flex flex-col  md:flex-row lg:items-end  md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20">
-      <div className="header-left z-10 flex flex-col items-start">
-        <Icon
-          className="gas-tap h-12 w-[140px]"
-          iconSrc="assets/images/gas-tap/gas-tap-text-logo.svg"
-        />
+    <div className="gas-tap-header h-[202px] rounded-2xl flex flex-col  md:flex-row lg:items-start md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray30">
+      <div className="flex">
+        <div className="header-left z-10 tracking-[10px] font-semibold text-2xl text-[#AEF2D1]">
+          GASTAP
+        </div>
+        <Timer />
       </div>
-      <Timer />
-      <div className="header-right  flex mt-2 justify-center md:justify-start">
+      <div className="header-right flex mt-2 justify-center md:justify-start">
         <div className="claim-stat z-10">
           {userProfile ? <Dabes /> : <RenderConnectBrightID />}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Dabes = () => {
-  const { activeClaimHistory, openClaimModal } = useGasTapContext()
-  const { gastapRoundClaimLimit } = useUserProfileContext()
+  const { activeClaimHistory, openClaimModal } = useGasTapContext();
+  const { gastapRoundClaimLimit } = useUserProfileContext();
 
   return (
     <div
@@ -55,7 +54,7 @@ const Dabes = () => {
                 width="36px"
                 height="40px"
               />
-            )
+            );
           })}
         {range(
           0,
@@ -71,12 +70,12 @@ const Dabes = () => {
               width="36px"
               height="auto"
             />
-          )
+          );
         })}
       </>
     </div>
-  )
-}
+  );
+};
 
 const RenderConnectBrightID = () => {
   return (
@@ -85,7 +84,7 @@ const RenderConnectBrightID = () => {
         Connect BrightID to See Your Claims
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

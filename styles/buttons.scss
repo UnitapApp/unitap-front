@@ -82,13 +82,13 @@
   &--address {
     @apply bg-gray00 text-white;
 
-    &::before {
-      @apply w-1.5 h-[6px] rounded-3xl bg-error inline-block -ml-1 mr-4 mb-[1px];
+    &::after {
+      @apply w-1.5 h-[6px] rounded-3xl bg-error inline-block -mr-1 ml-4 mb-[1px];
       content: "";
     }
 
     &--active {
-      @apply before:bg-space-green;
+      @apply after:bg-space-green;
     }
   }
 

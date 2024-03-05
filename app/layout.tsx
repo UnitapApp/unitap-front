@@ -1,7 +1,6 @@
-import { WagmiProvider } from "wagmi";
 import type { Metadata } from "next";
 import { config } from "@/utils/wallet/wagmi";
-import { Noto_Sans } from "next/font/google";
+import { Noto_Sans, Montserrat } from "next/font/google";
 import UnitapProvider from "@/context";
 import Header from "@/components/layout/header";
 import Progressbar from "@/components/progress";
@@ -15,7 +14,7 @@ import {
 import StyledJsxRegistry from "@/components/styled-components";
 import { ConnectWalletModal } from "@/components/containers/modals/ConnectWalletModal";
 import GoogleAnalytics from "@/components/google-analytics";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 import "./globals.scss";
 
@@ -24,6 +23,13 @@ import { cookieToInitialState } from "wagmi";
 import { Providers } from "./providers";
 
 const notoSansFont = Noto_Sans({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  adjustFontFallback: false,
+  subsets: ["latin"],
+});
+
+const montserratFont = Montserrat({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   adjustFontFallback: false,
@@ -46,7 +52,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" dir="ltr" className="dark">
-      <body className={`dark:bg-gray10 dark:text-white ${notoSansFont}`}>
+      <body
+        className={`dark:bg-gray10 font-normal dark:text-white ${montserratFont.className}`}
+      >
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>

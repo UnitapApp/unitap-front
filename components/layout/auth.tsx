@@ -14,12 +14,12 @@ import { Noto_Sans_Mono } from "next/font/google";
 import Link from "next/link";
 import { useWalletManagementContext } from "@/context/walletProvider";
 
-const NotoSansMono = Noto_Sans_Mono({
-  weight: ["400", "500"],
-  display: "swap",
-  adjustFontFallback: false,
-  subsets: ["latin"],
-});
+// const NotoSansMono = Noto_Sans_Mono({
+//   weight: ["400", "500"],
+//   display: "swap",
+//   adjustFontFallback: false,
+//   subsets: ["latin"],
+// });
 
 export const UserAuthStatus = () => {
   const divRef = useRef<HTMLDivElement>(null);
@@ -31,23 +31,29 @@ export const UserAuthStatus = () => {
   const { userProfile } = useUserProfileContext();
 
   return (
-    <div ref={divRef} className="md:relative ml-5">
-      <div className={`ml-5 p-[1px] rounded-lg mr-3`} id="profile-dropdown">
-        <div className="cursor-pointer flex rounded-lg h-9 items-center justify-between bg-gray40">
+    <div ref={divRef} className="md:relative ml-5 mr-auto">
+      <div className={`ml-5 mr-3`} id="profile-dropdown">
+        <div className="cursor-pointer relative p-[2px] flex items-center justify-between rounded-2xl bg-gray40 pl-8">
+          <Link href="/" className="-ml-3 absolute left-0">
+            <Image
+              src="/assets/images/auth-logo.svg"
+              width={36}
+              height={38}
+              alt="unitap"
+              className="w-12 h-14"
+            />
+          </Link>
           <div
             onClick={() => {
               if (!userProfile) return;
               setDropDownActive(!dropDownActive);
             }}
-            className="cursor-pointer relative z-20 pr-0.5 pl-2 flex rounded-lg h-9 items-center justify-between bg-gray40"
+            className="cursor-pointer relative z-20 pr-[1px] pl-2 flex items-center justify-between"
           >
-            <span className="ml-2 hidden md:block text-sm">
-              @ {userProfile?.username}
+            <span className="ml-2 mr-16 hidden md:block text-sm">
+              {userProfile?.username}
             </span>
 
-            <span className="text-gray90 hidden md:block ml-8 mr-5">
-              level: ?{" "}
-            </span>
             <RenderNavbarWalletAddress />
           </div>
 
@@ -91,9 +97,7 @@ const WalletItem = ({
           (isActive ? "bg-white" : "bg-gray90") + " w-2 h-2 rounded-full"
         }
       />
-      <span className={`ml-3 font-normal ${NotoSansMono.className}`}>
-        {shortenAddress(wallet)}
-      </span>
+      <span className={`ml-3 font-normal`}>{shortenAddress(wallet)}</span>
       <div className="relative">
         {copyMessage && (
           <div className="absolute top-1/2 translate-y-1/2 mb-3 w-16 left-1/2 -translate-x-1/2 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
@@ -220,11 +224,9 @@ export const RenderNavbarWalletAddress = () => {
     <>
       <button
         data-testid="wallet-address"
-        className={`btn ${
-          NotoSansMono.className
-        } btn--sm btn--address tracking-wider font-normal ${
+        className={`btn btn--sm btn--address tracking-wider font-normal ${
           connection.isConnected && "btn--address--active"
-        } !w-36 h-[28px] !py-0 ml-0 md:ml-3 align-baseline`}
+        } !w-40 h-10 rounded-2xl !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {
           if (connection.isConnected) return;
           e.stopPropagation();
