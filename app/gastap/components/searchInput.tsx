@@ -60,7 +60,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
 
   return (
     <div
-      className={`search-input relative h-12 border-gray30 border-2 bg-gray40 rounded-xl ${className}`}
+      className={`search-input relative h-12 border-gray30 border-2 bg-gray40 rounded-2xl ${className}`}
     >
       <Input
         data-testid="search-box"
@@ -74,7 +74,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Chain name, Currency, ID"
         $pl={7}
         $p={1.5}
-        className="mb-0"
+        className="mb-0 !rounded-2xl"
         $backgroundColor="black1"
       ></Input>
     </div>

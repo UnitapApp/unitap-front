@@ -13,7 +13,7 @@ const Header = () => {
   const { userProfile } = useUserProfileContext();
 
   return (
-    <div className="gas-tap-header h-[250px] rounded-3xl flex flex-col lg:items-start md:justify-between overflow-hidden relative mb-5 border-4 border-gray30">
+    <div className="gas-tap-header h-[250px] rounded-3xl flex flex-col lg:items-start md:justify-between overflow-hidden relative mb-5 border-4 border-gray20">
       <div className="flex w-full">
         <div className="z-10 tracking-[10px] font-semibold text-2xl p-5 text-[#AEF2D1]">
           GASTAP

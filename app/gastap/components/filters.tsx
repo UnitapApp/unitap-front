@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useGasTapContext } from "@/context/gasTapProvider"
-import { ChainType, Network } from "@/types"
+import { useGasTapContext } from "@/context/gasTapProvider";
+import { ChainType, Network } from "@/types";
 
 export const Filters = () => {
   const {
@@ -9,11 +9,11 @@ export const Filters = () => {
     setSelectedNetwork,
     selectedChainType,
     setSelectedChainType,
-  } = useGasTapContext()
+  } = useGasTapContext();
 
   return (
     <div className="flex flex-col w-full sm:w-auto sm:flex-row gap-2 sm:gap-0 mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
-      <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-xl w-full sm:w-auto">
+      <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-2xl w-full sm:w-auto">
         <div
           className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
             selectedChainType === ChainType.ALL
@@ -22,7 +22,7 @@ export const Filters = () => {
           }`}
           data-testid="chains-filter-chain-type-all"
           onClick={() => {
-            setSelectedChainType(ChainType.ALL)
+            setSelectedChainType(ChainType.ALL);
           }}
         >
           ALL
@@ -35,7 +35,7 @@ export const Filters = () => {
           }`}
           data-testid="chains-filter-chain-type-evm"
           onClick={() => {
-            setSelectedChainType(ChainType.EVM)
+            setSelectedChainType(ChainType.EVM);
           }}
         >
           EVM
@@ -47,7 +47,7 @@ export const Filters = () => {
               : `text-gray80`
           }`}
           onClick={() => {
-            setSelectedChainType(ChainType.NONEVM)
+            setSelectedChainType(ChainType.NONEVM);
           }}
           data-testid="chains-filter-chain-type-non-evm"
         >
@@ -63,7 +63,7 @@ export const Filters = () => {
           }`}
           data-testid="chains-filter-all"
           onClick={() => {
-            setSelectedNetwork(Network.ALL)
+            setSelectedNetwork(Network.ALL);
           }}
         >
           ALL
@@ -76,7 +76,7 @@ export const Filters = () => {
           }`}
           data-testid="chains-filter-mainnets"
           onClick={() => {
-            setSelectedNetwork(Network.MAINNET)
+            setSelectedNetwork(Network.MAINNET);
           }}
         >
           Mainnets
@@ -89,14 +89,14 @@ export const Filters = () => {
           }`}
           data-testid="chains-filter-testnets"
           onClick={() => {
-            setSelectedNetwork(Network.TESTNET)
+            setSelectedNetwork(Network.TESTNET);
           }}
         >
           Testnets
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Filters
+export default Filters;
