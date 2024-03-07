@@ -86,7 +86,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         className={`chain-card ${
           isHighlighted
             ? "before:!inset-[1.5px] p-0 gradient-outline-card mb-20"
-            : "mb-4"
+            : "mb-6"
         } rounded-3xl flex flex-col items-center justify-center w-full`}
       >
         <div
@@ -294,12 +294,12 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-bg04"
-            } items-center flex rounded-b-xl justify-between md:justify-center`}
+            } items-center flex rounded-b-3xl justify-between md:justify-center`}
           >
-            <p className="chain-card__info__title text-sm text-gray90">
+            <p className="text-sm text-gray90">
               This Round Claims
             </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
+            <p className="text-sm text-gray100 ml-1.5">
               {numberWithCommas(chain.totalClaimsThisRound)}
             </p>
           </div>
@@ -308,10 +308,10 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               isHighlighted ? "bg-transparent" : "bg-bg04"
             } items-center flex rounded-b-xl justify-between md:justify-end`}
           >
-            <p className="chain-card__info__title text-sm text-gray90">
+            <p className="text-sm text-gray90">
               Total Claims
             </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
+            <p className="text-sm text-gray100 ml-1.5">
               {numberWithCommas(chain.totalClaims)}
             </p>
           </div>
