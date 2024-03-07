@@ -1,6 +1,6 @@
 "use client";
 
-import { ClaimButton, Button } from "@/components/ui/Button/button";
+import ClaimButton from "./claimButton";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
@@ -10,7 +10,6 @@ import { FC, useContext, useMemo } from "react";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
-import Styles from "./chain-card.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -150,77 +149,23 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 </button>
               )}
 
-              {isMonthlyCollected || isOneTimeCollected ? (
-                <Button
-                  data-testid={`chain-claimed-${chain.pk}`}
-                  $mlAuto
-                  onClick={() => openClaimModal(chain.pk)}
-                  className={`text-sm ${Styles.claimedButton} !w-[220px] !py-2 m-auto`}
-                >
-                  <div className="flex-[2] text-left text-xs">
-                    <p className="text-space-green font-semibold">
-                      Gas Claimed!
-                    </p>
-                    <p
-                      className={`${
-                        isOneTimeCollected
-                          ? "text-warning2"
-                          : "text-secondary-text"
-                      } text-2xs font-normal`}
-                    >
-                      {isOneTimeCollected
-                        ? "Not claimable anymore"
-                        : "Claimable again in next round"}
-                    </p>
-                  </div>
-                  <Image
-                    width={24}
-                    height={20}
-                    src={`/assets/images/${
-                      isOneTimeCollected
-                        ? "gas-tap/claimed-logo.svg"
-                        : "claim/claimedIcon.svg"
-                    }`}
-                    alt="claimed logo"
-                  />
-                </Button>
-              ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
-                <ClaimButton
-                  data-testid={`chain-refuel-claim-${chain.pk}`}
-                  $mlAuto
-                  className="text-sm !h-11 !cursor-not-allowed m-auto bg-g-dark-primary-gradient"
-                >
-                  <p className="!bg-g-dark-primary-gradient">{`Claim ${formatChainBalance(
-                    chain.maxClaimAmount,
-                    chain.symbol
-                  )} ${chain.symbol}`}</p>
-                </ClaimButton>
-              ) : !activeClaimHistory.find(
-                  (claim: ClaimReceipt) =>
-                    claim.chain.pk === chain.pk &&
-                    claim.status !== ClaimReceiptState.REJECTED
-                ) ? (
-                <ClaimButton
-                  data-testid={`chain-show-claim-${chain.pk}`}
-                  $mlAuto
-                  onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm !h-11 m-auto"
-                >
-                  <p>{`Claim ${formatChainBalance(
-                    chain.maxClaimAmount,
-                    chain.symbol
-                  )} ${chain.symbol}`}</p>
-                </ClaimButton>
-              ) : (
-                <ClaimButton
-                  data-testid={`chain-show-claim-${chain.pk}`}
-                  $mlAuto
-                  onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm !h-11 before:!bg-gray30 opacity-90 m-auto"
-                >
-                  <p>Pending ...</p>
-                </ClaimButton>
-              )}
+              <ClaimButton
+                onClick={() => openClaimModal(chain.pk)}
+                isClaimed={isMonthlyCollected || isOneTimeCollected}
+                amount={formatChainBalance(chain.maxClaimAmount, chain.symbol)}
+                disabled={chain.needsFunding}
+                isClaiming={
+                  !!activeClaimHistory.find(
+                    (claim: ClaimReceipt) =>
+                      claim.chain.pk === chain.pk &&
+                      claim.status !== ClaimReceiptState.REJECTED
+                  )
+                }
+                needsFunding={
+                  chain.needsFunding && chain.chainType !== ChainType.SOLANA
+                }
+                symbol={chain.symbol}
+              />
             </div>
           </div>
         </div>

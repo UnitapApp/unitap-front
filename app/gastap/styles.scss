@@ -1,44 +1,93 @@
-
-
-
-
 .gas-balance-low {
-  background: linear-gradient(329.12deg, #AD7F3B 18.71%, #EBDB4B 81.29%);
+  background: linear-gradient(329.12deg, #ad7f3b 18.71%, #ebdb4b 81.29%);
 }
 
 .gas-balance-fine {
-  background: linear-gradient(86.2deg, #6DE0A2 3.12%, #75CBA2 96.88%);
+  background: linear-gradient(86.2deg, #6de0a2 3.12%, #75cba2 96.88%);
 }
 
 .gas-balance-danger {
-  background: linear-gradient(86.2deg, #E74242 3.12%, #DE3232 96.88%);
+  background: linear-gradient(86.2deg, #e74242 3.12%, #de3232 96.88%);
 }
 
-
 .refuel-button {
-   background: linear-gradient(180deg, #3C6A78 0%, #47778C 100%);
-
+  background: linear-gradient(180deg, #3c6a78 0%, #47778c 100%);
 
   > div {
-    background: linear-gradient(180deg, #2D313A 0%, #1B2231 100%);
+    background: linear-gradient(180deg, #2d313a 0%, #1b2231 100%);
   }
 }
 
 .refuel-fine {
-   background: linear-gradient(180deg, #2D313A 0%, #1B2231 100%);
+  background: linear-gradient(180deg, #2d313a 0%, #1b2231 100%);
 
   > div {
-    background: linear-gradient(180deg, #1B1B29 0%, #191927 100%);
+    background: linear-gradient(180deg, #1b1b29 0%, #191927 100%);
   }
-
 }
 
-
 .claim-button {
+  background: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
 
-  background-color: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
+  &:disabled {
+    background: linear-gradient(198.38deg, #1f1111 12.47%, #13070b 87.53%);
+    cursor: not-allowed;
+    > div {
+      background: linear-gradient(
+        180deg,
+        #1f1521 0%,
+        #1a121c 50%,
+        #100d12 100%
+      );
+
+      &::after {
+        content: none;
+      }
+    }
+  }
 
   > div {
-    background: linear-gradient(180deg, #3B1841 0%, #2A1033 50%, #190621 100%);
+    background: linear-gradient(180deg, #3b1841 0%, #2a1033 50%, #190621 100%);
+
+    position: relative;
+
+    &::after {
+      content: "";
+      z-index: 1;
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      @apply rounded-3xl;
+      background: url("/assets/images/gas-tap/claim-bg.svg");
+    }
+  }
+
+  &.claimed {
+    background: #1e3828;
+
+    > div {
+      background: linear-gradient(
+        120.05deg,
+        rgba(36, 50, 42, 0.3) 60.86%,
+        #49a47c 98.14%
+      );
+    }
+  }
+
+  &.pending {
+    background: linear-gradient(198.38deg, #402641 12.47%, #331740 87.53%);
+
+    > div {
+      background: linear-gradient(
+        180deg,
+        #190a1b 0%,
+        #0f0811 50%,
+        #0a050d 100%
+      );
+
+      &::after {
+        content: none;
+      }
+    }
   }
 }

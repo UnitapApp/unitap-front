@@ -6,10 +6,10 @@ const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
 
 const Header = () => {
   return (
-    <header className="text-xs backdrop-blur-md sticky w-full flex items-center justify-center top-0 z-40 py-3 px-8">
+    <header className="text-xs backdrop-blur-md sticky w-full flex items-center justify-between top-0 z-40 py-3 px-8">
       <UserAuthStatus />
 
-      <div className="hidden md:flex -translate-x-1/2">
+      <div className="hidden md:flex mx-auto flex-grow-[0.5] justify-self-center">
         <div className="bg-gray30 p-[1px] border border-gray70 flex items-center rounded-2xl gap-1">
           <TapLink href="/" logo="/assets/images/main-logo.svg" />
           <TapLink href="/gastap" logo="/assets/images/gastap-logo.svg" />
