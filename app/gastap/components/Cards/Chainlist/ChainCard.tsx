@@ -11,7 +11,7 @@ import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
 import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
-import { useContext, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
@@ -146,6 +146,25 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           >
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
+              {chain.chainType !== ChainType.SOLANA && (
+                <button
+                  onClick={() => handleRefillButtonClicked(chain.pk)}
+                  className={`${
+                    chain.needsFunding ? "bg-unitap-galaxy" : "bg-gray30"
+                  } relative text-sm font-semibold mr-4 rounded-xl p-[2px]`}
+                >
+                  <div className="bg-gray50 h-11 text-secondary-text rounded-xl p-2 flex items-center gap-3">
+                    <Image
+                      src="/assets/images/gas-tap/refuel-logo.svg"
+                      width={17}
+                      height={22}
+                      alt="refuel"
+                    />
+                    <p>Refuel</p>
+                  </div>
+                </button>
+              )}
+
               {isMonthlyCollected || isOneTimeCollected ? (
                 <Button
                   data-testid={`chain-claimed-${chain.pk}`}
@@ -181,24 +200,16 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   />
                 </Button>
               ) : chain.needsFunding && chain.chainType !== ChainType.SOLANA ? (
-                // <Button
-                //   onClick={() => handleRefillButtonClicked(chain.pk)}
-                //   className="bg-gray60 text-xs !block border-2 !font-normal border-gray100 !w-[220px] !py-1 m-auto"
-                // >
-                //   <p>Refuel</p>
-                //   <p className="text-2xs text-gray90">
-                //     This FASET is out of balance
-                //   </p>
-                // </Button>
-                <div className="btn btn--claim btn--sm btn--out-of-balance">
-                  Out of Gas
-                  <button
-                    onClick={() => handleRefillButtonClicked(chain.pk)}
-                    className="btn btn--sm btn--refill"
-                  >
-                    Refuel
-                  </button>
-                </div>
+                <ClaimButton
+                  data-testid={`chain-refuel-claim-${chain.pk}`}
+                  $mlAuto
+                  className="text-sm !h-11 !cursor-not-allowed m-auto bg-g-dark-primary-gradient"
+                >
+                  <p className="!bg-g-dark-primary-gradient">{`Claim ${formatChainBalance(
+                    chain.maxClaimAmount,
+                    chain.symbol
+                  )} ${chain.symbol}`}</p>
+                </ClaimButton>
               ) : !activeClaimHistory.find(
                   (claim: ClaimReceipt) =>
                     claim.chain.pk === chain.pk &&
@@ -231,7 +242,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-bg04"
-          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-4 justify-between`}
+          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl pl-4 justify-between`}
         >
           <div
             className={`${
@@ -315,8 +326,56 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               {numberWithCommas(chain.totalClaims)}
             </p>
           </div>
+          <div
+            className={`${
+              isHighlighted ? "bg-transparent" : "bg-gray30"
+            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+          >
+            <p className="chain-card__info__title text-sm text-gray90">
+              Balance:
+            </p>
+            <GasBalanceRenderer balance={chain.currentFuelLevel} />
+          </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
+  if (balance > 1) {
+    return (
+      <div className="flex items-center ml-3 gap-2">
+        {Array.from(new Array(balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-space-green" key={key} />
+        ))}
+        {Array.from(new Array(5 - balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+        ))}
+      </div>
+    );
+  }
+
+  if (balance == 1)
+    return (
+      <div className="flex items-center ml-3 gap-2">
+        {Array.from(new Array(balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-yellow-600" key={key} />
+        ))}
+        {Array.from(new Array(5 - balance)).map((_, key) => (
+          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+        ))}
+      </div>
+    );
+
+  return (
+    <div className="flex items-center ml-3 gap-2">
+      {Array.from(new Array(5)).map((_, key) => (
+        <span
+          className="w-3 h-[5px] rounded-[8px] border-[1px] bg-gray60 border-error"
+          key={key}
+        />
+      ))}
     </div>
   );
 };
