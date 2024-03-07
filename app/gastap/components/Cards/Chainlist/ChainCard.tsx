@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  SecondaryButton,
-  ClaimButton,
-  Button,
-} from "@/components/ui/Button/button";
-import { DV } from "@/components/ui/designVariables";
+import { ClaimButton, Button } from "@/components/ui/Button/button";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
 import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
 import { FC, useContext, useMemo } from "react";
-import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
@@ -24,23 +18,6 @@ type ChainCardProps = {
   chain: Chain;
   isHighlighted?: boolean;
 };
-
-export const AddMetamaskButton = styled(SecondaryButton)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: white;
-  background-color: #21212c;
-  border: 2px solid #1b1b26;
-  gap: ${DV.sizes.baseMargin * 1.5}px;
-  font-weight: 500;
-
-  img {
-    width: 20px;
-    height: 20px;
-    transform: scale(1.4);
-  }
-`;
 
 const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
   const {
@@ -80,7 +57,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
     setIsOpen(true);
   };
 
-
   const isChainRefuelFine = chain.currentFuelLevel >= 2;
 
   return (
@@ -117,18 +93,23 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 >
                   {chain.chainName}
                 </p>
-                <Link href={chain.blockScanAddress} target="_blank" className="ml-2 text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 bg-bg04 w-10 h-6">
+                <Link
+                  href={chain.blockScanAddress}
+                  target="_blank"
+                  className="ml-2 text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 bg-bg04 w-10 h-6"
+                >
                   <Icon iconSrc="/icons/network.svg" />
                 </Link>
-              {chain.chainType === "EVM" && (
-                 <button       
+                {chain.chainType === "EVM" && (
+                  <button
                     data-testid={`chain-switch-${chain.pk}`}
                     disabled={!isConnected}
                     onClick={() => addAndSwitchChain(chain)}
-                    className="text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 h-6 w-10 disabled:opacity-60 bg-bg04">
-                  <Icon iconSrc="/icons/plus.svg" />
-                </button>
-              )}
+                    className="text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 h-6 w-10 disabled:opacity-60 bg-bg04"
+                  >
+                    <Icon iconSrc="/icons/plus.svg" />
+                  </button>
+                )}
               </div>
               <div className="flex items-center gap-3 ml-3 mt-2">
                 <p className="ml-2 text-gray100 text-2xs px-2 py-1 rounded-lg border border-bg06">
@@ -147,12 +128,13 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
             }
           >
-
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {chain.chainType !== ChainType.SOLANA && (
                 <button
                   onClick={() => handleRefillButtonClicked(chain.pk)}
-                  className={`relative w-28 text-sm font-semibold refuel-button mr-4 rounded-3xl p-[2px] ${isChainRefuelFine ? "refuel-fine": ""}`}
+                  className={`relative w-28 text-sm font-semibold refuel-button mr-4 rounded-3xl p-[2px] ${
+                    isChainRefuelFine ? "refuel-fine" : ""
+                  }`}
                 >
                   <div className="h-11 justify-center text-[#6DD0E6] rounded-3xl p-2 px-4 flex items-center gap-4">
                     <p>Refuel</p>
@@ -164,7 +146,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                         alt="refuel"
                       />
                     )}
-                    
                   </div>
                 </button>
               )}
@@ -251,10 +232,10 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-bg04"
-            } items-center flex justify-between md:justify-start`}
+            } items-center w-28 flex justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
-              Currency:{' '}
+              Currency:{" "}
             </p>
             <p className="chain-card__info__value text-sm text-gray100 ml-1.5">
               {chain.symbol}
@@ -264,20 +245,20 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-bg04"
-            } items-center flex rounded-b-xl h-12 justify-between md:justify-start`}
+            } items-center flex rounded-b-xl w-32 h-12 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Top Catalyst:{" "}
             </p>
             <p className="text-sm font-normal text-gray100 ml-1.5">
-              {!!fuelChampionObj[chain.pk] ? `@${fuelChampionObj[chain.pk]}`: '--'}
+              {!!fuelChampionObj[chain.pk]
+                ? `@${fuelChampionObj[chain.pk]}`
+                : "--"}
             </p>
           </div>
           <Tooltip
             className={`text-sm h-10 rounded-t-2xl px-3 !cursor-default py-3 w-56 self-end ${
-              isHighlighted
-                ? "bg-transparent"
-                : "bg-bg00"
+              isHighlighted ? "bg-transparent" : "bg-bg00"
             }`}
             withoutImage
             text={
@@ -308,19 +289,19 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-bg04"
-            } items-center flex rounded-b-xl justify-between md:justify-end`}
+            } items-center flex rounded-b-xl w-32 justify-between md:justify-end`}
           >
-            <p className="text-sm text-gray90">
-              Total Claims:
-            </p>
+            <p className="text-sm text-gray90">Total Claims:</p>
             <p className="text-sm text-gray100 ml-1.5">
               {numberWithCommas(chain.totalClaims)}
             </p>
           </div>
-          <div
-            className={`items-center flex rounded-b-xl justify-between md:justify-end`}
-          >
-            <p className={`text-sm ${chain.currentFuelLevel < 1 ? 'text-[#CD3D3E]': 'text-[#B5B5C6]'}`}>
+          <div className={`items-center flex w-44 rounded-b-xl md:justify-end`}>
+            <p
+              className={`text-sm ${
+                chain.currentFuelLevel < 1 ? "text-[#CD3D3E]" : "text-[#B5B5C6]"
+              }`}
+            >
               Balance:
             </p>
             <GasBalanceRenderer balance={chain.currentFuelLevel} />
@@ -334,7 +315,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
   if (balance > 1) {
     return (
-      <div className="flex items-center ml-3 gap-2">
+      <div className="flex items-center ml-2 gap-2">
         {Array.from(new Array(balance)).map((_, key) => (
           <span className="w-3 h-1 gas-balance-fine" key={key} />
         ))}
@@ -347,7 +328,7 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
 
   if (balance == 1)
     return (
-      <div className="flex items-center ml-3 gap-2">
+      <div className="flex items-center ml-2 gap-2">
         {Array.from(new Array(balance)).map((_, key) => (
           <span className="w-3 h-1 gas-balance-low" key={key} />
         ))}
@@ -358,13 +339,10 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
     );
 
   return (
-    <div className="flex items-center ml-3 gap-2">
+    <div className="flex items-center ml-2 gap-2">
       {Array.from(new Array(5)).map((_, key) => (
-        <div
-          className="gas-balance-danger p-[1px]"
-          key={key}
-        >
-          <div className="w-3 h-[4px] bg-bg04"></div>
+        <div className="gas-balance-danger p-[1px]" key={key}>
+          <div className="w-[10px] h-[3px] bg-bg04"></div>
         </div>
       ))}
     </div>

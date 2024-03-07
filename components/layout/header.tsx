@@ -6,7 +6,7 @@ const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
 
 const Header = () => {
   return (
-    <header className="text-xs backdrop-blur-md sticky w-full flex items-center justify-center top-0 z-60 py-3 px-8">
+    <header className="text-xs backdrop-blur-md sticky w-full flex items-center justify-center top-0 z-40 py-3 px-8">
       <UserAuthStatus />
 
       <div className="hidden md:flex -translate-x-1/2">
