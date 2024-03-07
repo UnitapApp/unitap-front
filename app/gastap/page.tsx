@@ -5,6 +5,9 @@ import { Metadata } from "next";
 import GasTapMainContent from "./components";
 import FundContextProvider from "./components/Modals/FundGasModal";
 
+
+import "./styles.scss"
+
 export const metadata: Metadata = {
   title: "Unitap | Gas Tap ⛽",
   description: "Enjoy surfing Web3 without the worry of gas fees",

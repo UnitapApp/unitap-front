@@ -226,7 +226,7 @@ export const RenderNavbarWalletAddress = () => {
         data-testid="wallet-address"
         className={`btn btn--sm btn--address tracking-wider font-normal ${
           connection.isConnected && "btn--address--active"
-        } !w-40 h-10 rounded-2xl !py-0 ml-0 md:ml-3 align-baseline`}
+        } !w-40 h-10 rounded-2xl -mr-[1px] !py-0 ml-0 md:ml-3 align-baseline`}
         onClick={(e) => {
           if (connection.isConnected) return;
           e.stopPropagation();

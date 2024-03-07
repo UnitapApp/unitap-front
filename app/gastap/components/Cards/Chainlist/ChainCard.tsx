@@ -80,6 +80,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
     setIsOpen(true);
   };
 
+
+  const isChainRefuelFine = chain.currentFuelLevel >= 2;
+
   return (
     <div>
       <div
@@ -149,18 +152,19 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               {chain.chainType !== ChainType.SOLANA && (
                 <button
                   onClick={() => handleRefillButtonClicked(chain.pk)}
-                  className={`${
-                    chain.needsFunding ? "bg-unitap-galaxy" : "bg-gray30"
-                  } relative text-sm font-semibold mr-4 rounded-xl p-[2px]`}
+                  className={`relative w-28 text-sm font-semibold refuel-button mr-4 rounded-3xl p-[2px] ${isChainRefuelFine ? "refuel-fine": ""}`}
                 >
-                  <div className="bg-gray50 h-11 text-secondary-text rounded-xl p-2 flex items-center gap-3">
-                    <Image
-                      src="/assets/images/gas-tap/refuel-logo.svg"
-                      width={17}
-                      height={22}
-                      alt="refuel"
-                    />
+                  <div className="h-11 justify-center text-[#6DD0E6] rounded-3xl p-2 px-4 flex items-center gap-4">
                     <p>Refuel</p>
+                    {isChainRefuelFine && (
+                      <Image
+                        src="/assets/images/gas-tap/refuel-logo.svg"
+                        width={17}
+                        height={22}
+                        alt="refuel"
+                      />
+                    )}
+                    
                   </div>
                 </button>
               )}
@@ -242,7 +246,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-bg04"
-          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl pl-4 justify-between`}
+          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-4 justify-between`}
         >
           <div
             className={`${
@@ -301,37 +305,22 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             )}
           </Tooltip>
 
-          
-          <div
-            className={`${
-              isHighlighted ? "bg-transparent" : "bg-bg04"
-            } items-center flex rounded-b-3xl justify-between md:justify-center`}
-          >
-            <p className="text-sm text-gray90">
-              This Round Claims
-            </p>
-            <p className="text-sm text-gray100 ml-1.5">
-              {numberWithCommas(chain.totalClaimsThisRound)}
-            </p>
-          </div>
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-bg04"
             } items-center flex rounded-b-xl justify-between md:justify-end`}
           >
             <p className="text-sm text-gray90">
-              Total Claims
+              Total Claims:
             </p>
             <p className="text-sm text-gray100 ml-1.5">
               {numberWithCommas(chain.totalClaims)}
             </p>
           </div>
           <div
-            className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+            className={`items-center flex rounded-b-xl justify-between md:justify-end`}
           >
-            <p className="chain-card__info__title text-sm text-gray90">
+            <p className={`text-sm ${chain.currentFuelLevel < 1 ? 'text-[#CD3D3E]': 'text-[#B5B5C6]'}`}>
               Balance:
             </p>
             <GasBalanceRenderer balance={chain.currentFuelLevel} />
@@ -347,10 +336,10 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
     return (
       <div className="flex items-center ml-3 gap-2">
         {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-space-green" key={key} />
+          <span className="w-3 h-1 gas-balance-fine" key={key} />
         ))}
         {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+          <span className="w-3 h-1 bg-gray60" key={key} />
         ))}
       </div>
     );
@@ -360,10 +349,10 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
     return (
       <div className="flex items-center ml-3 gap-2">
         {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-yellow-600" key={key} />
+          <span className="w-3 h-1 gas-balance-low" key={key} />
         ))}
         {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+          <span className="w-3 h-1 bg-gray60" key={key} />
         ))}
       </div>
     );
@@ -371,10 +360,12 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
   return (
     <div className="flex items-center ml-3 gap-2">
       {Array.from(new Array(5)).map((_, key) => (
-        <span
-          className="w-3 h-[5px] rounded-[8px] border-[1px] bg-gray60 border-error"
+        <div
+          className="gas-balance-danger p-[1px]"
           key={key}
-        />
+        >
+          <div className="w-3 h-[4px] bg-bg04"></div>
+        </div>
       ))}
     </div>
   );

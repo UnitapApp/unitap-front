@@ -1,0 +1,44 @@
+
+
+
+
+.gas-balance-low {
+  background: linear-gradient(329.12deg, #AD7F3B 18.71%, #EBDB4B 81.29%);
+}
+
+.gas-balance-fine {
+  background: linear-gradient(86.2deg, #6DE0A2 3.12%, #75CBA2 96.88%);
+}
+
+.gas-balance-danger {
+  background: linear-gradient(86.2deg, #E74242 3.12%, #DE3232 96.88%);
+}
+
+
+.refuel-button {
+
+  background: linear-gradient(180deg, #2D313A 0%, #1B2231 100%);
+
+  > div {
+    background: linear-gradient(180deg, #1B1B29 0%, #191927 100%);
+  }
+}
+
+.refuel-fine {
+  background: linear-gradient(180deg, #3C6A78 0%, #47778C 100%);
+
+
+  > div {
+    background: linear-gradient(180deg, #2D313A 0%, #1B2231 100%);
+  }
+}
+
+
+.claim-button {
+
+  background-color: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
+
+  > div {
+    background: linear-gradient(180deg, #3B1841 0%, #2A1033 50%, #190621 100%);
+  }
+}
