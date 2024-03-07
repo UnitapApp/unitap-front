@@ -18,6 +18,7 @@ import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import Styles from "./chain-card.module.scss";
 import Image from "next/image";
+import Link from "next/link";
 
 type ChainCardProps = {
   chain: Chain;
@@ -94,7 +95,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           } flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-3xl`}
         >
           <div
-            // onClick={() => window.open(chain.blockScanAddress, "_blank")}
             className={`${
               isOneTimeCollected ? "opacity-60" : ""
             } items-center flex mb-6 sm:mb-0`}
@@ -114,9 +114,20 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 >
                   {chain.chainName}
                 </p>
-                <button className="ml-2 text-gray100 text-2xs px-3 py-1 rounded-lg border border-bg06"></button>
+                <Link href={chain.blockScanAddress} target="_blank" className="ml-2 text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 bg-bg04 w-10 h-6">
+                  <Icon iconSrc="/icons/network.svg" />
+                </Link>
+              {chain.chainType === "EVM" && (
+                 <button       
+                    data-testid={`chain-switch-${chain.pk}`}
+                    disabled={!isConnected}
+                    onClick={() => addAndSwitchChain(chain)}
+                    className="text-gray100 text-2xs px-3 py-1 rounded-xl border border-bg06 h-6 w-10 disabled:opacity-60 bg-bg04">
+                  <Icon iconSrc="/icons/plus.svg" />
+                </button>
+              )}
               </div>
-              <div className="flex items-center gap-1 mt-2">
+              <div className="flex items-center gap-3 ml-3 mt-2">
                 <p className="ml-2 text-gray100 text-2xs px-2 py-1 rounded-lg border border-bg06">
                   {chain.chainType}
                 </p>
@@ -133,22 +144,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
             }
           >
-            <div className="w-full sm:w-auto items-center sm:items-end">
-              {chain.chainType === "EVM" && (
-                <AddMetamaskButton
-                  disabled={!isConnected}
-                  data-testid={`chain-switch-${chain.pk}`}
-                  onClick={() => addAndSwitchChain(chain)}
-                  className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                    alt="metamask logo"
-                  />
-                  Add
-                </AddMetamaskButton>
-              )}
-            </div>
 
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {isMonthlyCollected || isOneTimeCollected ? (
@@ -235,41 +230,39 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         </div>
         <div
           className={`${
-            isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-8 justify-between`}
+            isHighlighted ? "bg-g-primary-low" : "bg-bg04"
+          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-4 justify-between`}
         >
           <div
             className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+              isHighlighted ? "bg-transparent" : "bg-bg04"
+            } items-center flex justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
-              Currency
+              Currency:{' '}
             </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
+            <p className="chain-card__info__value text-sm text-gray100 ml-1.5">
               {chain.symbol}
             </p>
           </div>
 
           <div
             className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-start`}
+              isHighlighted ? "bg-transparent" : "bg-bg04"
+            } items-center flex rounded-b-xl h-12 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
-              Fuel Champion{" "}
+              Top Catalyst:{" "}
             </p>
-            <p className="text-sm font-normal text-white ml-1.5">
-              {!!fuelChampionObj[chain.pk] && `@${fuelChampionObj[chain.pk]}`}
+            <p className="text-sm font-normal text-gray100 ml-1.5">
+              {!!fuelChampionObj[chain.pk] ? `@${fuelChampionObj[chain.pk]}`: '--'}
             </p>
           </div>
           <Tooltip
-            className={`text-xs !cursor-default py-3 w-full max-w-[180px] ${
+            className={`text-sm h-10 rounded-t-2xl px-3 !cursor-default py-3 w-56 self-end ${
               isHighlighted
                 ? "bg-transparent"
-                : chain.isOneTimeClaim
-                ? "bg-gray40"
-                : "bg-dark-primary"
+                : "bg-bg00"
             }`}
             withoutImage
             text={
@@ -279,29 +272,29 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             }
           >
             {chain.isOneTimeClaim ? (
-              <div className="items-center font-semibold px-4 text-secondary-text flex rounded-none justify-between md:justify-center">
-                <p className="flex-1">Single-Claim Tap</p>
+              <div className="items-center flex text-secondary-text justify-between md:justify-center">
+                <p className="flex-1">Single Shot Faucet</p>
                 <Icon
                   className="text-white"
-                  ml={4}
                   iconSrc="/assets/images/gas-tap/claimable-once.svg"
                 />
               </div>
             ) : (
-              <div className="items-center font-semibold px-4 text-gray100 flex rounded-none justify-between md:justify-center">
-                <p className="flex-1">Periodic Tap</p>
+              <div className="items-center text-gray100 flex rounded-none justify-between md:justify-center">
+                <p className="flex-1 text-[#689E7A]">Periodic Tap</p>
                 <Icon
-                  className="text-white"
-                  ml={4}
+                  className="text-[#689E7A]"
                   iconSrc="/assets/images/gas-tap/periodic-tap.svg"
                 />
               </div>
             )}
           </Tooltip>
+
+          
           <div
             className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center`}
+              isHighlighted ? "bg-transparent" : "bg-bg04"
+            } items-center flex rounded-b-xl justify-between md:justify-center`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               This Round Claims
@@ -312,8 +305,8 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           </div>
           <div
             className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+              isHighlighted ? "bg-transparent" : "bg-bg04"
+            } items-center flex rounded-b-xl justify-between md:justify-end`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Total Claims

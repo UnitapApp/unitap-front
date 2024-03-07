@@ -25,6 +25,7 @@ const config: Config = {
         "2xs": "0.625rem",
       },
       colors: {
+        bg00: '#0C0C17',
         bg01: "",
         bg02: "",
         bg03: "#161623",
