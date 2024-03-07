@@ -86,16 +86,16 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           isHighlighted
             ? "before:!inset-[1.5px] p-0 gradient-outline-card mb-20"
             : "mb-4"
-        } rounded-xl flex flex-col items-center justify-center w-full`}
+        } rounded-3xl flex flex-col items-center justify-center w-full`}
       >
         <div
           className={`pt-4 pr-6 pb-4 pl-3 w-full ${
-            isHighlighted ? "bg-g-primary-low" : "bg-gray20"
-          } flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl`}
+            isHighlighted ? "bg-g-primary-low" : "bg-bg03"
+          } flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-3xl`}
         >
           <div
-            onClick={() => window.open(chain.blockScanAddress, "_blank")}
-            className={`cursor-pointer ${
+            // onClick={() => window.open(chain.blockScanAddress, "_blank")}
+            className={`${
               isOneTimeCollected ? "opacity-60" : ""
             } items-center flex mb-6 sm:mb-0`}
           >
@@ -103,28 +103,29 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               <img
                 className="chain-logo w-auto h-[100%]"
                 src={getChainIcon(chain)}
-                alt="polygon logo"
+                alt={chain.chainName}
               />
             </span>
-            <p
-              className=" text-white ml-3 text-center sm:text-left"
-              data-testid={`chain-name-${chain.pk}`}
-            >
-              {chain.chainName}
-            </p>
-            <Image
-              width={8}
-              height={8}
-              className="arrow-icon mt-1 ml-1.5 w-2 h-2"
-              src="/assets/images/arrow-icon.svg"
-              alt="arrow"
-            />
-            <p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
-              {chain.chainType}
-            </p>
-            <p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
-              {chain.isTestnet ? "Testnet" : "Mainnet"}
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <p
+                  className=" text-white ml-3 text-center sm:text-left"
+                  data-testid={`chain-name-${chain.pk}`}
+                >
+                  {chain.chainName}
+                </p>
+                <button className="ml-2 text-gray100 text-2xs px-3 py-1 rounded-lg border border-bg06"></button>
+              </div>
+              <div className="flex items-center gap-1 mt-2">
+                <p className="ml-2 text-gray100 text-2xs px-2 py-1 rounded-lg border border-bg06">
+                  {chain.chainType}
+                </p>
+                <p className="text-2xs text-gray100 px-2 py-1 rounded-lg border border-bg06">
+                  {chain.isTestnet ? "Testnet" : "Mainnet"}
+                </p>
+              </div>
+            </div>
+            <div className=""></div>
           </div>
 
           <div
@@ -235,7 +236,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-8 justify-between`}
+          } w-full gap-2 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-8 justify-between`}
         >
           <div
             className={`${

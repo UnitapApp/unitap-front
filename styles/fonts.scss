@@ -1,0 +1,17 @@
+
+
+@font-face {
+  font-family: 'FontGenerator';
+  src: url('./icons/font-generator.eot');
+  src: url('./icons/font-generator.eot?#iefix') format('embedded-opentype'),
+       url('./icons/font-generator.woff2') format('woff2'),
+       url('./icons/font-generator.woff') format('woff'),
+       url('./icons/font-generator.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon {
+  font-family: 'FontGenerator';
+  font-size: 24px;
+}

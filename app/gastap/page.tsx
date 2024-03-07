@@ -17,7 +17,7 @@ const GasTap = () => {
       <Header />
       <GasTapMainContent />
 
-      <ProvideGasCard />
+      {/* <ProvideGasCard /> */}
       <ClaimModal />
       <ClaimNonEVMModal />
     </FundContextProvider>

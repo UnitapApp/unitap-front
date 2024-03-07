@@ -1,3 +1,6 @@
+@import 'fonts.scss';
+
+
 .uni-card {
   @apply rounded-2xl after:bg-cover after:content-[''] after:absolute after:inset-0 relative bg-gray20 overflow-hidden;
   @apply transition-all duration-250 after:transition-all after:duration-250;
