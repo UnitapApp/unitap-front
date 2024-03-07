@@ -156,7 +156,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 >
                   <div className="h-11 justify-center text-[#6DD0E6] rounded-3xl p-2 px-4 flex items-center gap-4">
                     <p>Refuel</p>
-                    {isChainRefuelFine && (
+                    {isChainRefuelFine || (
                       <Image
                         src="/assets/images/gas-tap/refuel-logo.svg"
                         width={17}
