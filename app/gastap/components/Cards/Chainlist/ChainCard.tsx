@@ -12,6 +12,26 @@ import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import Image from "next/image";
 import Link from "next/link";
+import { SecondaryButton } from "@/components/ui/Button/button";
+import styled from "styled-components";
+import { DV } from "@/components/ui/designVariables";
+
+export const AddMetamaskButton = styled(SecondaryButton)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  background-color: #21212c;
+  border: 2px solid #1b1b26;
+  gap: ${DV.sizes.baseMargin * 1.5}px;
+  font-weight: 500;
+
+  img {
+    width: 20px;
+    height: 20px;
+    transform: scale(1.4);
+  }
+`;
 
 type ChainCardProps = {
   chain: Chain;
