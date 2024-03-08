@@ -25,6 +25,15 @@ const config: Config = {
         "2xs": "0.625rem",
       },
       colors: {
+        bg00: '#0C0C17',
+        bg01: "",
+        bg02: "",
+        bg03: "#161623",
+        bg04: "#1B1B29",
+        bg05: "",
+        bg06: "#212130",
+        bg07: "",
+        bg08: "",
         primary: "#EF476F",
         secondary: "#F59569",
         input: "#EFF3F8",
@@ -106,12 +115,16 @@ const config: Config = {
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)",
+        "unitap-galaxy": "linear-gradient(to right, #1F3A3E, #412E4894)",
+        "g-dark-primary-gradient":
+          "linear-gradient(to right, #2A3837,#3F2B44, #322837)",
         "g-primary-2":
           "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
           "linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)",
         "tap-header-gradient":
           "linear-gradient(to bottom, #7FE7B5, #06063C00 70%)",
+        "ut-grad-ltr": "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%, #DD40CD 111.44%)",
       },
 
       dropShadow: {

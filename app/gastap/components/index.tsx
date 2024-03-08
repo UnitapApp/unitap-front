@@ -14,9 +14,6 @@ export const GasTapMainContent = () => {
         {searchPhrase === "" && <Filters />}
       </div>
       <ChainList />
-      <p className="provide-gas-title text-white text-xl mr-auto mb-3">
-        GasTap Fuel Levels
-      </p>
     </>
   );
 };

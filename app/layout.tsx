@@ -53,7 +53,7 @@ export default async function RootLayout({
   return (
     <html lang="en" dir="ltr" className="dark">
       <body
-        className={`dark:bg-gray10 font-normal dark:text-white ${montserratFont.className}`}
+        className={`dark:bg-[#0C0C17] font-normal dark:text-white ${montserratFont.className}`}
       >
         <Providers initialState={initialState}>
           <UnitapProvider>

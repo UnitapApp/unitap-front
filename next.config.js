@@ -1,5 +1,11 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: process.env.ANALYZE === 'true'
+})
+
+
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig =withBundleAnalyzer({
   compiler: {
     styledComponents: true,
   },
@@ -22,6 +28,6 @@ const nextConfig = {
       },
     ];
   },
-};
+});
 
 module.exports = nextConfig;

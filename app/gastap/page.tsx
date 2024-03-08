@@ -4,7 +4,9 @@ import Header from "./components/header";
 import { Metadata } from "next";
 import GasTapMainContent from "./components";
 import FundContextProvider from "./components/Modals/FundGasModal";
-import ProvideGasCard from "./components/Cards/ProvideGasCard/provideGasCard";
+
+
+import "./styles.scss"
 
 export const metadata: Metadata = {
   title: "Unitap | Gas Tap ⛽",
@@ -17,7 +19,6 @@ const GasTap = () => {
       <Header />
       <GasTapMainContent />
 
-      <ProvideGasCard />
       <ClaimModal />
       <ClaimNonEVMModal />
     </FundContextProvider>
