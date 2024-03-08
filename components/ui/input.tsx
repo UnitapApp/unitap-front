@@ -90,7 +90,7 @@ const InputWrapper = styled.div<InputProps>`
   }
 `;
 
-const Input = (props: InputProps) => {
+const Input = React.forwardRef(function InputComponent(props: InputProps, ref) {
   const {
     $icon: icon,
     $width: width,
@@ -101,6 +101,7 @@ const Input = (props: InputProps) => {
     testid,
     $mb: mb,
   } = props;
+
   return (
     <InputWrapper $width={width} $mb={mb}>
       {label && <Label>{label}</Label>}
@@ -112,10 +113,10 @@ const Input = (props: InputProps) => {
           className="input-icon"
         />
       )}
-      <RawInput data-testid={testid} {...props} />
+      <RawInput ref={ref as any} data-testid={testid} {...props} />
       {postfix && <p className="input-postfix">{postfix}</p>}
     </InputWrapper>
   );
-};
+});
 
 export default Input;

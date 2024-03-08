@@ -21,7 +21,7 @@ const Header = () => {
       <div className="flex flex-col w-full mb-5 justify-center items-center">
         <Icon iconSrc="/assets/images/token-tap/token-header-bg.svg" />
         <div className="mt-5">
-          {userProfile ? <TokenCoins /> : <RenderConnectBrightID />}
+          {/* {userProfile ? <TokenCoins /> : <RenderConnectBrightID />} */}
         </div>
       </div>
     </div>
