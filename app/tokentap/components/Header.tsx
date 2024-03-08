@@ -4,17 +4,16 @@ import { useUserProfileContext } from "@/context/userProfile";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Icon from "@/components/ui/Icon";
 import { range } from "@/utils";
+import Timer from "./timer";
 
 const Header = () => {
-  const { userProfile } = useUserProfileContext();
-
   return (
     <div className="tap-header h-[250px] rounded-3xl flex flex-col lg:items-start md:justify-between overflow-hidden relative mb-5 border-4 border-gray20">
       <div className="flex w-full">
         <div className="z-10 tracking-[10px] font-semibold text-2xl p-5 text-[#AEF2D1]">
           TOKENTAP
         </div>
-        {/* <Timer /> */}
+        <Timer />
         <span className="ml-auto" />
       </div>
 
