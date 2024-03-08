@@ -116,7 +116,7 @@
 }
 
 .prize-card-bg-2 {
-  @apply lg:bg-[url("/assets/images/prize-tap/cover.svg")] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+  @apply bg-[url("/assets/images/prize-tap/cover.svg")] bg-no-repeat;
 }
 
 .prize-tap-header-bg {
@@ -447,3 +447,15 @@
 .nftIdTextarea::placeholder {
   @apply text-gray80;
 }
+
+.new-enroll-btn {
+  background: linear-gradient(180deg, #3B1841 0%, #2A1033 50%, #190621 100%);
+  border: 1px solid;
+  border-image-source: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
+  // background: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%, #DD40CD 111.44%);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+}
+
+
+

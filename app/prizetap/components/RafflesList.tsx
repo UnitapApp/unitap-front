@@ -139,12 +139,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     setStarted(new Date(startAt) < new Date());
   }, [startAt]);
 
-  // let tokenImgLink: string | undefined = tokenUri
-  //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
-  //       Number(tokenUri.split("/")[3]) + 1
-  //     }.png`
-  //   : undefined;
-
   const prizeLink = getAssetUrl(chain, raffle.prizeAsset!);
 
   const onPrizeClick = () => {
@@ -153,11 +147,60 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   };
 
   return (
-    <div
-      className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
-        isHighlighted ? "mb-20" : "mb-4"
-      }`}
-    >
+    <div>
+      <div className="h-[227px] rounded-[28px] overflow-hidden">
+        <div
+          className={`h-[187px] flex bg-gray20 ${
+            isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
+          }`}
+        >
+          <div className="min-w-[308px] h-full left-side"></div>
+          <div className="w-full right-side p-5">
+            <div className="right-side-top flex justify-between items-start ">
+              <div className="prize_data">
+                <div className="prize_name__socialMedia flex items-center justify-center gap-2">
+                  <p className="text-white text-base font-medium leading-[19.5px]">
+                    {prizeName}
+                  </p>
+                  {twitterUrl && (
+                    <Icon
+                      iconSrc="assets/images/prize-tap/twitter-logo.svg"
+                      onClick={() => window.open(twitterUrl, "_blank")}
+                      width="20px"
+                      height="16px"
+                      hoverable
+                    />
+                  )}
+                  {discordUrl && (
+                    <Icon
+                      iconSrc="assets/images/prize-tap/discord-logo.svg"
+                      onClick={() => window.open(discordUrl, "_blank")}
+                      width="20px"
+                      height="16px"
+                      hoverable
+                    />
+                  )}
+                </div>
+                <div
+                  className="prize-creator_name hover:cursor-pointer text-[10px] text-[#979BA9] font-medium leading-[12.19px]"
+                  onClick={() => {
+                    creatorUrl && window.open(creatorUrl, "_blank");
+                  }}
+                >
+                  by {creator}
+                </div>
+              </div>
+              <div className="enroll-btn cursor-pointer"></div>
+            </div>
+            <div className="right-side-description h-[72px] text-xs mt-2 leading-6 font-normal font-sans text-gray100">
+              {description}
+            </div>
+            <div></div>
+          </div>
+        </div>
+        <div className="h-[40px] bg-gray30"></div>
+      </div>
+
       <div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
         <div className="prize-card__image relative mb-3 lg:mb-0">
           <div
