@@ -5,8 +5,6 @@ import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Icon from "@/components/ui/Icon";
 import { range } from "@/utils";
 
-import Styles from "./header.module.scss";
-
 const Header = () => {
   const { userProfile } = useUserProfileContext();
 
