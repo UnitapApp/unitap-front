@@ -1,14 +1,14 @@
-import Header from "@/components/containers/token-tap/Header"
-import ClaimTokenModal from "@/components/containers/token-tap/Modals/ClaimModal"
-import TokensList from "@/components/containers/token-tap/TokensList"
-import SearchInput from "@/components/containers/token-tap/searchInput"
-import { Metadata } from "next"
+import Header from "./components/Header";
+import ClaimTokenModal from "./components/Modals/ClaimModal";
+import TokensList from "./components/TokensList";
+import SearchInput from "./components/searchInput";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Unitap | Token Tap 🪙",
   description:
     "Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens",
-}
+};
 
 const TokenTapPage = () => {
   return (
@@ -19,7 +19,7 @@ const TokenTapPage = () => {
 
       <ClaimTokenModal />
     </>
-  )
-}
+  );
+};
 
-export default TokenTapPage
+export default TokenTapPage;

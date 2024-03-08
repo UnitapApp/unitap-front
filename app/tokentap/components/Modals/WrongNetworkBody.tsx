@@ -5,7 +5,7 @@ import Icon from "@/components/ui/Icon";
 import { FC } from "react";
 import { Chain } from "@/types";
 import { useNetworkSwitcher } from "@/utils/wallet";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const WrongNetworkBody: FC<{
   imageUrl: string;

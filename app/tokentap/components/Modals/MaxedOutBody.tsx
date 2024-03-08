@@ -6,7 +6,7 @@ import { Text } from "@/components/ui/text.style";
 import { FC } from "react";
 import { Token } from "@/types";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const MaxedOutBody: FC<{
   token: Token;

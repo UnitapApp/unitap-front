@@ -4,7 +4,7 @@ import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { FC } from "react";
 import { useGlobalContext } from "@/context/globalProvider";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const BrightNotConnectedBody: FC<{
   chainPk: number;
