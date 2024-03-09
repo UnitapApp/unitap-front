@@ -190,7 +190,18 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   by {creator}
                 </div>
               </div>
-              <div className="enroll-btn cursor-pointer"></div>
+              <div className="enroll-btn cursor-pointer">
+                <button
+                  // onClick={onClick}
+                  className="enroll-button rounded-[18px] p-[1px] text-sm"
+                >
+                  <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                    <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
+                      Enroll
+                    </p>
+                  </div>
+                </button>
+              </div>
             </div>
             <div className="right-side-description h-[72px] text-xs mt-2 leading-6 font-normal font-sans text-gray100">
               {description}

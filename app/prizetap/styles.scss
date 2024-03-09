@@ -448,14 +448,70 @@
   @apply text-gray80;
 }
 
-.new-enroll-btn {
-  background: linear-gradient(180deg, #3B1841 0%, #2A1033 50%, #190621 100%);
-  border: 1px solid;
-  border-image-source: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
-  // background: linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%, #DD40CD 111.44%);
-  // -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
-}
+.enroll-button {
+  background: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
+  height: 36px;
+  &:disabled {
+    background: linear-gradient(198.38deg, #1f1111 12.47%, #13070b 87.53%);
+    cursor: not-allowed;
+    > div {
+      background: linear-gradient(
+        180deg,
+        #1f1521 0%,
+        #1a121c 50%,
+        #100d12 100%
+      );
 
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  > div {
+    height: 34px;
+    background: linear-gradient(180deg, #3b1841 0%, #2a1033 50%, #190621 100%);
+    @apply rounded-[18px];
+    position: relative;
+    &::after {
+      content: "";
+      z-index: 1;
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      @apply rounded-[18px];
+      background: url("/assets/images/gas-tap/claim-bg.svg");
+    }
+  }
+
+  // &.claimed {
+  //   background: #1e3828;
+
+  //   > div {
+  //     background: linear-gradient(
+  //       120.05deg,
+  //       rgba(36, 50, 42, 0.3) 60.86%,
+  //       #49a47c 98.14%
+  //     );
+  //   }
+  // }
+
+  // &.pending {
+  //   background: linear-gradient(198.38deg, #402641 12.47%, #331740 87.53%);
+
+  //   > div {
+  //     background: linear-gradient(
+  //       180deg,
+  //       #190a1b 0%,
+  //       #0f0811 50%,
+  //       #0a050d 100%
+  //     );
+
+  //     &::after {
+  //       content: none;
+  //     }
+  //   }
+  // }
+}
 
 
