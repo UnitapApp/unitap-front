@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react";
 
-import TokenCard from "./TokenCard"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { useSearchParams } from "next/navigation"
+import TokenCard from "./TokenCard";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { useSearchParams } from "next/navigation";
 
-import Styles from "./header.module.scss"
+import Styles from "./header.module.scss";
 
 const TokensList = () => {
   const { tokensList, tokensListLoading, tokenListSearchResult } =
-    useTokenTapContext()
-  const [highlightedToken, setHighlightedToken] = useState("")
+    useTokenTapContext();
+  const [highlightedToken, setHighlightedToken] = useState("");
 
-  const params = useSearchParams()
+  const params = useSearchParams();
 
   const tokenListMemo = useMemo(
     () =>
       tokenListSearchResult.sort((a, b) => {
-        const lowerHighlightChainName = highlightedToken.toLowerCase()
+        const lowerHighlightChainName = highlightedToken.toLowerCase();
 
-        if (a.name.toLowerCase() === lowerHighlightChainName) return -1
-        if (b.name.toLowerCase() === lowerHighlightChainName) return 1
+        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
 
-        return 0
+        return 0;
       }),
     [tokenListSearchResult, highlightedToken]
-  )
+  );
 
   useEffect(() => {
-    const highlightedChain = params.get("hc")
+    const highlightedChain = params.get("hc");
 
-    setHighlightedToken(highlightedChain || "")
-  }, [params, setHighlightedToken])
+    setHighlightedToken(highlightedChain || "");
+  }, [params, setHighlightedToken]);
 
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
@@ -74,17 +74,15 @@ const TokensList = () => {
       )}
       <FinalVersionCard />
     </div>
-  )
-}
+  );
+};
 
 const FinalVersionCard = () => {
   return (
     <div
-      className={`${Styles["footer-container"]} w-full h-60 bg-gray20 rounded-xl relative`}
-    >
-      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2"></div>
-    </div>
-  )
-}
+      className={`${Styles["footer-container"]} w-full h-60 bg-gray20 rounded-3xl relative`}
+    ></div>
+  );
+};
 
-export default TokensList
+export default TokensList;

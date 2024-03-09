@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, Fragment } from "react";
 import { Token } from "@/types";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
@@ -49,6 +49,12 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     () => token.constraints.find((permission) => permission.type === "TIME"),
     [token]
   );
+
+  const verificationsList = showAllPermissions
+    ? token.constraints.filter((permission) => permission.type === "VER")
+    : token.constraints
+        .filter((permission) => permission.type === "VER")
+        .slice(0, 10);
 
   return (
     <article
@@ -147,43 +153,43 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
-          } pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
+          }  text-justify pb-3 pr-6 text-[#B5B5C6]`}
         >
-          {(showAllPermissions
-            ? token.constraints
-            : token.constraints
-                .filter((permission) => permission.type === "VER")
-                .slice(0, 6)
-          ).map((permission, key) => (
-            <Tooltip
-              className={
-                "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
-              }
-              data-testid={`token-verification-${token.id}-${permission.name}`}
-              key={key}
-              text={permission.description}
-            >
-              <div className="flex items-center gap-3">{permission.title}</div>
-            </Tooltip>
-          ))}
+          <div className="flex relative items-center pl-4 flex-wrap text-xs gap-2 constraints-wrapper rounded-2xl">
+            {verificationsList.map((permission, key) => (
+              <div key={key}>
+                <span className="text-[#D9D9D9] text-lg">
+                  {key === 0 || "|"}
+                </span>
+                <Tooltip
+                  className={"px-3 py-3 rounded-lg "}
+                  data-testid={`token-verification-${token.id}-${permission.name}`}
+                  text={permission.description}
+                >
+                  <div className="flex items-center gap-3">
+                    {permission.title}
+                  </div>
+                </Tooltip>
+              </div>
+            ))}
 
-          {token.constraints.length > 6 && (
-            <button
-              onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
-              className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
-            >
-              <span>{showAllPermissions ? "Show less" : "Show more"}</span>
-              <Image
-                alt="angle-down"
-                width={12}
-                height={7}
-                src="/assets/images/token-tap/angle-down.svg"
-                className={`ml-2 ${
-                  showAllPermissions ? "rotate-180" : ""
-                } transition-transform`}
-              />
-            </button>
-          )}
+            {token.constraints.length > 2 && (
+              <button
+                onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
+                className={`flex ml-auto absolute top-0 right-0 bottom-0 items-center z-10 px-3 py-4 rounded-r-2xl collapse-handler`}
+              >
+                <Image
+                  alt="angle-down"
+                  width={12}
+                  height={7}
+                  src="/assets/images/token-tap/angle-down.svg"
+                  className={`ml-2 ${
+                    showAllPermissions ? "rotate-180" : ""
+                  } transition-transform`}
+                />
+              </button>
+            )}
+          </div>
         </div>
       </span>
       <div
