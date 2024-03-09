@@ -5,7 +5,7 @@ import { Token } from "@/types";
 import { FC } from "react";
 import { Text } from "@/components/ui/text.style";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { DropIconWrapper } from "../../modals/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 
 const SuccessBody: FC<{
   token: Token;

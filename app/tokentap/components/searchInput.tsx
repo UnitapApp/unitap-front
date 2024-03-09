@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import Input from "@/components/ui/input";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type SearchInputProps = {
   className?: string;
@@ -14,6 +14,8 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const { changeSearchPhrase, searchPhrase } = useTokenTapContext();
   const [searchPhraseInput, setSearchPhraseInput] =
     useState<string>(searchPhrase);
+
+  const ref = useRef<HTMLDivElement>(null);
 
   const params = useSearchParams();
   const pathname = usePathname();
@@ -52,11 +54,24 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     }
   }, [params, changeSearchPhrase]);
 
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      if (e.key == "/" && ref.current) {
+        ref.current.focus();
+      }
+    };
+
+    document.addEventListener("keyup", onKeyPress);
+
+    return () => {
+      document.removeEventListener("keyup", onKeyPress);
+    };
+  }, []);
+
   return (
-    <div
-      className={`search-input relative border-gray30 border-2 bg-gray40 rounded-xl ${className}`}
-    >
+    <div className={`search-input relative ${className}`}>
       <Input
+        ref={ref}
         data-testid="search-box"
         $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
@@ -68,6 +83,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Token name"
         $pl={7}
         $p={1.5}
+        className="!rounded-3xl"
         $mb={0}
         $backgroundColor="black1"
       ></Input>
