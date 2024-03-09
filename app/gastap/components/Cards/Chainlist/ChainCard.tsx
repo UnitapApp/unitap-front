@@ -98,6 +98,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             } items-center flex mb-6 sm:mb-0`}
           >
             <span className="chain-logo-container w-10 h-10 flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="chain-logo w-auto h-[100%]"
                 src={getChainIcon(chain)}

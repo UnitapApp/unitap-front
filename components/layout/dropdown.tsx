@@ -11,8 +11,14 @@ import { useState } from "react";
 const RenderNavbarDropdown = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    if (isDropdownVisible) setIsDropdownVisible(false);
+  });
+
   return (
-    <span className="cursor-pointer">
+    <span ref={ref} className="cursor-pointer">
       <Image
         src="/assets/images/navbar/navbar-dropdown-icon.svg"
         width={31}
@@ -73,13 +79,8 @@ const navItems = [
 const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
   const path = usePathname();
 
-  const ref = useRef<HTMLDivElement>(null);
-
-  useOutsideClick(ref, () => closeDropdown());
-
   return (
     <div
-      ref={ref}
       className={`absolute z-10 top-14 right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
         className ? className : ""
       }`}
@@ -118,10 +119,11 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
         <p className="text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text">
           Unitap Pass NFT
         </p>
-        <img
+        <Image
+          alt="dropdown"
           src="/assets/images/navbar/navbar-dropdown-mint.svg"
-          width="auto"
-          height="26px"
+          width={28}
+          height={26}
         />
       </Link>
     </div>
