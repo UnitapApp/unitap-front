@@ -115,7 +115,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     prizeAmount,
     creatorProfile,
     winnerEntries: winnersEntry,
-
     winnersCount,
     status,
   } = raffle;
@@ -148,13 +147,13 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 
   return (
     <div>
-      <div className="h-[227px] rounded-[28px] overflow-hidden">
-        <div
-          className={`h-[187px] flex bg-gray20 ${
-            isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
-          }`}
-        >
-          <div className="min-w-[308px] h-full left-side"></div>
+      <div className="min-h-[227px] rounded-[28px] overflow-hidden mb-5">
+        <div className={`min-h-[187px] flex bg-gray20 `}>
+          <div
+            className={`min-w-[308px] left-side ${
+              isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
+            }`}
+          ></div>
           <div className="w-full right-side p-5">
             <div className="right-side-top flex justify-between items-start ">
               <div className="prize_data">
@@ -190,26 +189,218 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   by {creator}
                 </div>
               </div>
-              <div className="enroll-btn cursor-pointer">
-                <button
-                  // onClick={onClick}
-                  className="enroll-button rounded-[18px] p-[1px] text-sm"
-                >
-                  <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
-                    <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
-                      Enroll
-                    </p>
-                  </div>
-                </button>
-              </div>
+              {!winnersEntry.length && !userEntry?.txHash ? (
+                // user can enroll in raffle
+                <div className="enroll-btn cursor-pointer">
+                  <button
+                    onClick={() => openEnrollModal(raffle, "Verify")}
+                    className="enroll-button rounded-[18px] p-[1px] text-sm"
+                  >
+                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                      <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
+                        Enroll
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              ) : !winnersEntry.length && userEntry?.txHash ? (
+                //user enrolled
+
+                <div className="claim-btn cursor-pointer">
+                  <button
+                    onClick={() => openEnrollModal(raffle, "Claim")}
+                    className="claim-button rounded-[18px] p-[1px] text-sm"
+                  >
+                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                      <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
+                        Claim prize
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              ) : // <div className="enrolled-btn cursor-pointer bg-enrolled-grad-btn text-xs h-[36px] max-w-[208px] border border-[#1e3828] px-4 w-52 flex items-center justify-between rounded-3xl">
+              //   <p className="text-[#83B39E]">Enrolled!</p>
+              //   <svg
+              //     width="30"
+              //     height="24"
+              //     viewBox="0 0 30 24"
+              //     fill="none"
+              //     xmlns="http://www.w3.org/2000/svg"
+              //   >
+              //     <path
+              //       d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H24C27.0376 0.5 29.5 2.96243 29.5 6V8.53924C27.8866 8.79533 26.6875 10.2722 26.6875 12C26.6875 13.7278 27.8866 15.2047 29.5 15.4608V18C29.5 21.0376 27.0376 23.5 24 23.5H6C2.96243 23.5 0.5 21.0376 0.5 18V15.4608C2.11341 15.2047 3.3125 13.7278 3.3125 12C3.3125 10.2722 2.11341 8.79533 0.5 8.53924V6Z"
+              //       fill="url(#paint0_linear_30_138)"
+              //       stroke="url(#paint1_linear_30_138)"
+              //     />
+              //     <path
+              //       d="M0 6C0 2.68629 2.68629 0 6 0H24C27.3137 0 30 2.68629 30 6V9C28.4467 9 27.1875 10.3431 27.1875 12C27.1875 13.6569 28.4467 15 30 15V18C30 21.3137 27.3137 24 24 24H6C2.68629 24 0 21.3137 0 18V15C1.5533 15 2.8125 13.6569 2.8125 12C2.8125 10.3431 1.5533 9 0 9V6Z"
+              //       fill="url(#paint2_radial_30_138)"
+              //     />
+              //     <defs>
+              //       <linearGradient
+              //         id="paint0_linear_30_138"
+              //         x1="-7.5"
+              //         y1="-10.5"
+              //         x2="27.4294"
+              //         y2="20.8504"
+              //         gradientUnits="userSpaceOnUse"
+              //       >
+              //         <stop stop-color="#2F6756" />
+              //         <stop offset="0.427083" stop-color="#1D0926" />
+              //         <stop offset="0.699054" stop-color="#2F1237" />
+              //         <stop offset="1" stop-color="#3A1840" />
+              //       </linearGradient>
+              //       <linearGradient
+              //         id="paint1_linear_30_138"
+              //         x1="-1.78322"
+              //         y1="12"
+              //         x2="33.8369"
+              //         y2="13.0497"
+              //         gradientUnits="userSpaceOnUse"
+              //       >
+              //         <stop stop-color="#4BF2A2" />
+              //         <stop offset="0.522948" stop-color="#A89FE7" />
+              //         <stop offset="0.669499" stop-color="#E1C4F4" />
+              //         <stop offset="1" stop-color="#DD40CD" />
+              //         <stop offset="1" stop-color="#DD40CD" />
+              //       </linearGradient>
+              //       <radialGradient
+              //         id="paint2_radial_30_138"
+              //         cx="0"
+              //         cy="0"
+              //         r="1"
+              //         gradientUnits="userSpaceOnUse"
+              //         gradientTransform="translate(-3.5 -7) rotate(44.5185) scale(42.0743 29.8729)"
+              //       >
+              //         <stop stop-color="#2F6756" stop-opacity="0" />
+              //         <stop
+              //           offset="0.334673"
+              //           stop-color="#367760"
+              //           stop-opacity="0"
+              //         />
+              //         <stop
+              //           offset="0.739673"
+              //           stop-color="#439371"
+              //           stop-opacity="0.1"
+              //         />
+              //         <stop
+              //           offset="0.879673"
+              //           stop-color="#469D77"
+              //           stop-opacity="0.29"
+              //         />
+              //         <stop
+              //           offset="1"
+              //           stop-color="#49A47C"
+              //           stop-opacity="0.81"
+              //         />
+              //       </radialGradient>
+              //     </defs>
+              //   </svg>
+              // </div>
+              !!winnersEntry.length &&
+                !!userClaimEntry &&
+                !userClaimEntry.claimingPrizeTx ? (
+                // user can claim prize
+                <div className="enroll-btn cursor-pointer">
+                  <button
+                    onClick={() => openEnrollModal(raffle, "Claim")}
+                    className="enroll-button rounded-[18px] p-[1px] text-sm"
+                  >
+                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                      <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
+                        Enroll
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="right-side-description h-[72px] text-xs mt-2 leading-6 font-normal font-sans text-gray100">
               {description}
             </div>
-            <div></div>
+            <span className="prizeTap-constraint bg-constraint-grad-ltr mt-[14px] rounded-tr-[10px] overflow-hidden rounded-br-[10px] text-[10px] flex items-center justify-between h-[22px] ">
+              <div className={`text-gray100 flex gap-[18px] items-center`}>
+                {(showAllPermissions
+                  ? raffle.constraints
+                  : raffle.constraints
+                      .filter((permission) => permission.type === "VER")
+                      .slice(0, 6)
+                ).map((permission, key) => (
+                  <Tooltip
+                    onClick={openEnrollModal.bind(null, raffle, "Verify")}
+                    className={"border-r border-white pr-[18px] cursor-pointer"}
+                    data-testid={`token-verification-${raffle.id}-${permission.name}`}
+                    key={key}
+                    text={
+                      permission.isReversed
+                        ? permission.negativeDescription
+                        : permission.description
+                    }
+                  >
+                    <div className="flex items-center gap-3">
+                      {permission.isReversed && "Not "}
+                      {permission.title}
+                    </div>
+                  </Tooltip>
+                ))}
+              </div>
+              {raffle.constraints.length > 6 && (
+                <button
+                  onClick={setShowAllPermissions.bind(
+                    null,
+                    !showAllPermissions
+                  )}
+                  className=" flex items-center w-[34px] z-10 h-full bg-constraint-grad-btn transition-colors justify-center"
+                >
+                  <svg
+                    width="10"
+                    height="4"
+                    viewBox="0 0 10 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`ml-2 ${
+                      showAllPermissions ? "rotate-180" : ""
+                    } transition-transform`}
+                  >
+                    <path
+                      d="M10 0L5.88384 3.67453C5.39773 4.10849 4.60227 4.10849 4.11616 3.67453L0 0"
+                      fill="#B5B5C6"
+                    />
+                  </svg>
+                </button>
+              )}
+            </span>
           </div>
         </div>
-        <div className="h-[40px] bg-gray30"></div>
+        <div className="flex h-[40px] bg-gray30 items-center justify-between px-9">
+          <div className="flex font-medium leading-[14.63px]">
+            <p className="text-gray100 text-xs mr-1">
+              <span className="text-gray90 mr-2">Chain:</span>
+              {chain.chainName}
+            </p>
+            <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
+          </div>
+          <div>
+            <RaffleCardTimer startTime={startAt} FinishTime={deadline} />
+          </div>
+          <div className="flex">
+            {" "}
+            <p className="text-xs text-gray100">
+              {maxNumberOfEntries >= 1_000_000_000
+                ? `${numberWithCommas(numberOfOnchainEntries)} people enrolled`
+                : !isRemainingPercentLessThanTen
+                ? `
+											${numberOfOnchainEntries} / ${numberWithCommas(
+                    maxNumberOfEntries
+                  )} people enrolled`
+                : remainingPeople > 0
+                ? `${remainingPeople} people remains`
+                : `${numberWithCommas(maxNumberOfEntries)} people enrolled`}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
@@ -709,33 +900,33 @@ export const RaffleCardTimer = ({
   }, [startTime]);
 
   return (
-    <div className="prize-card__timer flex items-center justify-between rounded-xl gap-4 md:px-3 py-2">
+    <div className="prize-card__timer flex items-center justify-between h-8 rounded-tl-xl rounded-tr-xl gap-4 md:px-3 py-2 bg-gray00 mt-[10px]">
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {days}
         </p>
-        <p className="prize-card__timer-item-label text-gray90">d</p>
+        {/* <p className="prize-card__timer-item-label text-gray90">d</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {hours}
         </p>
-        <p className="prize-card__timer-item-label text-gray90">h</p>
+        {/* <p className="prize-card__timer-item-label text-gray90">h</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {minutes}
         </p>
-        <p className="prize-card__timer-item-label text-gray90">m</p>
+        {/* <p className="prize-card__timer-item-label text-gray90">m</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
         <p className="prize-card__timer-item-value text-white font-semibold">
           {seconds}
         </p>
-        <p className="prize-card__timer-item-label text-gray90">s</p>
+        {/* <p className="prize-card__timer-item-label text-gray90">s</p> */}
       </div>
     </div>
   );

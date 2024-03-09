@@ -118,6 +118,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
       if (!userToken) return;
 
+      console.log("----+++----");
+
       await (method === "Enroll"
         ? updateEnrolledFinished(
             userToken,
@@ -212,15 +214,20 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
+    console.log(chainId);
+
     setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
 
     const enrollOrClaimPayload = await getSignature();
+
+    console.log(enrollOrClaimPayload);
 
     const id = enrollOrClaimPayload?.userEntry?.pk;
 
     setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
+      console.log("enrolling ----");
       args.push(
         enrollOrClaimPayload?.multiplier,
         enrollOrClaimPayload?.result?.reqId,
@@ -234,6 +241,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     }
 
     try {
+      console.log("tx");
       const response = await writeContractAsync({
         args,
         account: address,
@@ -244,6 +252,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
           : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
       });
+
+      console.log(response);
 
       if (response) {
         setHash(response);

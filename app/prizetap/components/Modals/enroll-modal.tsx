@@ -74,4 +74,5 @@ const EnrollModal = () => {
     </Modal>
   );
 };
+
 export default EnrollModal;
