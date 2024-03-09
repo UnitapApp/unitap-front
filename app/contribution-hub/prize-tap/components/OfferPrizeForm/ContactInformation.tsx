@@ -79,7 +79,7 @@ const ContactInformation = ({
           Your website, twitter & discord will be shown on PrizeTap card.
         </p>
       </div>
-      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-3 w-full max-w-[452px]">
+      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-4 w-full max-w-[452px]">
         {contactFields.map((field, index) => (
           <div key={index}>
             {index == 3 && <p className="mt-2 mb-3">Contact info</p>}
@@ -110,14 +110,20 @@ const ContactInformation = ({
                 />
               </div>
               {field.required && showErrors && !data[field.name] && (
-                <p className="text-error text-2xs m-0 -bottom-4 p-0 absolute left-1">
+                <p
+                  className={`text-error text-2xs m-0 -bottom-4 p-0 absolute left-1`}
+                >
                   Required
                 </p>
               )}
               {showErrors &&
                 data[field.name] &&
                 !(socialMediaValidation as any)[field.name] && (
-                  <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
+                  <p
+                    className={`text-error text-2xs m-0 p-0 absolute left-1 ${
+                      index >= 3 ? "-mt-[5px]" : ""
+                    }`}
+                  >
                     Invalid input
                   </p>
                 )}

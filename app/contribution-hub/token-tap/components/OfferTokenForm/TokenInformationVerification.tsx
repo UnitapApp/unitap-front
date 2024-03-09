@@ -106,7 +106,7 @@ const TokenInformationVerification = () => {
         href={RoutePath.PROVIDER_TOKENTAP}
         className="flex flex-col lg:flex-row w-full max-w-[452px] mt-[111px] items-center"
       >
-        <ProviderDashboardGoToDashBoard className="opacity-[.2]">
+        <ProviderDashboardGoToDashBoard>
           Go To Dashboard
         </ProviderDashboardGoToDashBoard>
       </Link>

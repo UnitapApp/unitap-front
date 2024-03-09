@@ -321,9 +321,11 @@ const TokenTapContent = () => {
         <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
           <div className="flex items-center relative">
             <div>
-              <p className="text-base font-semibold">Offer a New Token</p>{" "}
+              <p className="text-base font-semibold">
+                Distribute a token on Token Tap
+              </p>{" "}
               <p className="text-sm text-gray100">
-                Here you can provide Token for Token Tap.
+                Give out tokens based on specific requirements.
               </p>
             </div>
             <Icon
@@ -335,7 +337,7 @@ const TokenTapContent = () => {
             href={RoutePath.PROVIDER_TOKENTAP_CREATE}
             className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
           >
-            + Provide a New Token
+            + List a New Token
           </Link>
         </div>
       </div>
