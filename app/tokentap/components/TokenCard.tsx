@@ -5,14 +5,8 @@ import { Token } from "@/types";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import { getChainIcon } from "@/utils/chain";
-import { numberWithCommas } from "@/utils/numbers";
 import styled from "styled-components/";
 import { DV } from "@/components/ui/designVariables";
-import {
-  NoCurrencyButton,
-  ClaimButton,
-  ClaimedButton,
-} from "@/components/ui/Button/button";
 import { useWalletAccount } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
