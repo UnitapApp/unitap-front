@@ -4,6 +4,8 @@ import TokensList from "./components/TokensList";
 import SearchInput from "./components/searchInput";
 import { Metadata } from "next";
 
+import "./styles.scss";
+
 export const metadata: Metadata = {
   title: "Unitap | Token Tap 🪙",
   description:

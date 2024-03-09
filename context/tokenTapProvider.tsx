@@ -289,10 +289,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     setSelectedTokenForClaim(null);
   }, []);
 
-  useRefreshWithInitial(getClaimedTokensList, FAST_INTERVAL, [
-    userToken,
-    getClaimedTokensList,
-  ]);
+  useRefreshWithInitial(getClaimedTokensList, FAST_INTERVAL, [userToken]);
 
   useFastRefresh(getTokensList, [getTokensList]);
 

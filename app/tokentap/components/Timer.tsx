@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { diffToNextMonday, diffToNextMonth } from "@/utils/time";
+import { diffToNextMonth } from "@/utils/time";
 
 const Timer = () => {
   const [now, setNow] = useState(new Date());
@@ -12,7 +12,7 @@ const Timer = () => {
   const [seconds, setSeconds] = useState("00");
 
   useEffect(() => {
-    const diff = diffToNextMonday(now);
+    const diff = diffToNextMonth(now);
     setSeconds(diff.seconds);
     setMinutes(diff.minutes);
     setHours(diff.hours);
