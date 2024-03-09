@@ -20,11 +20,16 @@ import {
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
-import { useWalletAccount } from "@/utils/wallet";
+import {
+  useClient,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
+import { prizeTapAbi } from "@/types/abis/contracts";
+import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { useGlobalContext } from "./globalProvider";
 import { Address } from "viem";
+import { waitForTransactionReceipt } from "viem/actions";
 
 export const PrizeTapContext = createContext<{
   rafflesList: Prize[];
@@ -46,7 +51,6 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
   isLineaCheckEnrolledModalOpen: boolean;
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
-  isWaitingForConfirmation: boolean;
 }>({
   claimError: null,
   rafflesList: [],
@@ -67,7 +71,6 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: NullCallback,
   isLineaCheckEnrolledModalOpen: false,
   setIsLineaCheckEnrolledModalOpen: NullCallback,
-  isWaitingForConfirmation: false,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -93,7 +96,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const [claimOrEnrollWalletResponse, setClaimOrEnrollWalletResponse] =
     useState<any | null>(null);
   const [method, setMethod] = useState<string | null>(null);
-  const [hash, setHash] = useState<Address>();
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
 
   const { userToken } = useUserProfileContext();
@@ -101,38 +103,18 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
   const { isConnected, address, chainId } = useWalletAccount();
 
-  const { isLoading } = useWaitForTransactionReceipt({
-    confirmations: 1,
-    hash,
-    chainId,
-    onReplaced: async (res) => {
-      setClaimOrEnrollWalletResponse({
-        success: true,
-        state: "Done",
-        txHash: res.transaction.hash,
-        message:
-          method === "Claim"
-            ? "Claimed successfully."
-            : "Enrolled successfully",
-      });
+  // const { isLoading } = useWaitForTransactionReceipt({
+  //   confirmations: 1,
+  //   hash,
+  //   chainId,
+  //   onReplaced: async (res) => {
 
-      if (!userToken) return;
-
-      await (method === "Enroll"
-        ? updateEnrolledFinished(
-            userToken,
-            chainPkConfirmingHash,
-            res.transaction.hash
-          )
-        : updateClaimPrizeFinished(
-            userToken,
-            chainPkConfirmingHash,
-            res.transaction.hash
-          ));
-    },
-  });
+  //   },
+  // });
 
   const { writeContractAsync } = useWriteContract({});
+
+  const client = useWalletProvider();
 
   const getRafflesList = useCallback(async () => {
     try {
@@ -246,7 +228,27 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       });
 
       if (response) {
-        setHash(response);
+        const res = await client?.waitForTransactionReceipt({
+          hash: response,
+          confirmations: 1,
+        });
+        if (!res) return;
+
+        setClaimOrEnrollWalletResponse({
+          success: true,
+          state: "Done",
+          txHash: res.transactionHash,
+          message:
+            method === "Claim"
+              ? "Claimed successfully."
+              : "Enrolled successfully",
+        });
+
+        if (!userToken) return;
+
+        await (method === "Enroll"
+          ? updateEnrolledFinished(userToken, id, res.transactionHash)
+          : updateClaimPrizeFinished(userToken, id, res.transactionHash));
       }
     } finally {
       setClaimOrEnrollLoading(false);
@@ -254,6 +256,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     }
   }, [
     address,
+    client,
     getSignature,
     method,
     selectedRaffleForEnroll,
@@ -316,7 +319,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaWinnersOpen,
         lineaEnrolledUsers,
         isLineaCheckEnrolledModalOpen,
-        isWaitingForConfirmation: isLoading,
       }}
     >
       {children}
