@@ -4,7 +4,7 @@ import { useUserProfileContext } from "@/context/userProfile";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Icon from "@/components/ui/Icon";
 import { range } from "@/utils";
-import Timer from "./timer2";
+import Timer from "./timer";
 
 const Header = () => {
   return (
