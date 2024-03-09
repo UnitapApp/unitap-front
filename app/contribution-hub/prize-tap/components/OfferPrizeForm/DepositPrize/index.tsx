@@ -26,9 +26,7 @@ const nftDescription = {
 
 const tokenDescription = {
   title: "Deposit Selected Token",
-  description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait
-	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
-	your designated wallet.`,
+  description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait as we validate your request. In the event of rejection, the token will promptly be returned to your designated wallet.`,
   icon: "/assets/images/provider-dashboard/deposit-token.png",
 };
 

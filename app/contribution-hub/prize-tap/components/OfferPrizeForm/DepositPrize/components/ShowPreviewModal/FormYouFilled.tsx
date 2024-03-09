@@ -91,7 +91,14 @@ const FormYouFilled = ({ data }: Prop) => {
             {data.creatorUrl ? (
               <Icon
                 onClick={() =>
-                  window.open("https://" + data.creatorUrl!, "_blank")
+                  window.open(
+                    data.creatorUrl!.includes("https://")
+                      ? data.creatorUrl!
+                      : data.creatorUrl!.includes("www.")
+                      ? "https://" + data.creatorUrl!.replace("www.", "")!
+                      : "https://" + data.creatorUrl!,
+                    "_blank"
+                  )
                 }
                 iconSrc="/assets/images/provider-dashboard/creatorUrl.svg"
               />
