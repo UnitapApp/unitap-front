@@ -128,7 +128,7 @@ const config: Config = {
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%, #DD40CD 111.44%)",
         "constraint-grad-ltr":
           "linear-gradient(270deg, #0C0C17 0%, #161623 100%)",
-
+        // linear-gradient(270deg, #56566a, #0D0D18, 9.5%, #0C0C17 0%, #21213245 100%);
         "constraint-grad-btn":
           "linear-gradient(270deg, #56566A 0%, #0D0D18 100%)",
 

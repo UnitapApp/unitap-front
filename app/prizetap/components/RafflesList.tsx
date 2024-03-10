@@ -119,6 +119,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     status,
   } = raffle;
 
+  const isRaffleEnd = new Date(deadline) < new Date();
   const creator = creatorName || creatorProfile?.username;
 
   const { openEnrollModal } = usePrizeTapContext();
@@ -191,12 +192,13 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               </div>
               {!winnersEntry.length && !userEntry?.txHash ? (
                 // user can enroll in raffle
+
                 <div className="enroll-btn cursor-pointer">
                   <button
                     onClick={() => openEnrollModal(raffle, "Verify")}
                     className="enroll-button rounded-[18px] p-[1px] text-sm"
                   >
-                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                    <div className="h-[36px] min-w-[208px] flex items-center justify-center rounded-3xl">
                       <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
                         Enroll
                       </p>
@@ -205,111 +207,154 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 </div>
               ) : !winnersEntry.length && userEntry?.txHash ? (
                 //user enrolled
-
+                <div className="enrolled-btn cursor-pointer bg-enrolled-grad-btn text-xs h-[36px] max-w-[208px] border border-[#1e3828] px-4 w-52 flex items-center justify-between rounded-3xl">
+                  <p className="text-[#83B39E] font-medium text-sm  leading-[14px]">
+                    Enrolled!
+                  </p>
+                  <svg
+                    width="30"
+                    height="24"
+                    viewBox="0 0 30 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H24C27.0376 0.5 29.5 2.96243 29.5 6V8.53924C27.8866 8.79533 26.6875 10.2722 26.6875 12C26.6875 13.7278 27.8866 15.2047 29.5 15.4608V18C29.5 21.0376 27.0376 23.5 24 23.5H6C2.96243 23.5 0.5 21.0376 0.5 18V15.4608C2.11341 15.2047 3.3125 13.7278 3.3125 12C3.3125 10.2722 2.11341 8.79533 0.5 8.53924V6Z"
+                      fill="url(#paint0_linear_30_138)"
+                      stroke="url(#paint1_linear_30_138)"
+                    />
+                    <path
+                      d="M0 6C0 2.68629 2.68629 0 6 0H24C27.3137 0 30 2.68629 30 6V9C28.4467 9 27.1875 10.3431 27.1875 12C27.1875 13.6569 28.4467 15 30 15V18C30 21.3137 27.3137 24 24 24H6C2.68629 24 0 21.3137 0 18V15C1.5533 15 2.8125 13.6569 2.8125 12C2.8125 10.3431 1.5533 9 0 9V6Z"
+                      fill="url(#paint2_radial_30_138)"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="paint0_linear_30_138"
+                        x1="-7.5"
+                        y1="-10.5"
+                        x2="27.4294"
+                        y2="20.8504"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop stop-color="#2F6756" />
+                        <stop offset="0.427083" stop-color="#1D0926" />
+                        <stop offset="0.699054" stop-color="#2F1237" />
+                        <stop offset="1" stop-color="#3A1840" />
+                      </linearGradient>
+                      <linearGradient
+                        id="paint1_linear_30_138"
+                        x1="-1.78322"
+                        y1="12"
+                        x2="33.8369"
+                        y2="13.0497"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop stop-color="#4BF2A2" />
+                        <stop offset="0.522948" stop-color="#A89FE7" />
+                        <stop offset="0.669499" stop-color="#E1C4F4" />
+                        <stop offset="1" stop-color="#DD40CD" />
+                        <stop offset="1" stop-color="#DD40CD" />
+                      </linearGradient>
+                      <radialGradient
+                        id="paint2_radial_30_138"
+                        cx="0"
+                        cy="0"
+                        r="1"
+                        gradientUnits="userSpaceOnUse"
+                        gradientTransform="translate(-3.5 -7) rotate(44.5185) scale(42.0743 29.8729)"
+                      >
+                        <stop stop-color="#2F6756" stop-opacity="0" />
+                        <stop
+                          offset="0.334673"
+                          stop-color="#367760"
+                          stop-opacity="0"
+                        />
+                        <stop
+                          offset="0.739673"
+                          stop-color="#439371"
+                          stop-opacity="0.1"
+                        />
+                        <stop
+                          offset="0.879673"
+                          stop-color="#469D77"
+                          stop-opacity="0.29"
+                        />
+                        <stop
+                          offset="1"
+                          stop-color="#49A47C"
+                          stop-opacity="0.81"
+                        />
+                      </radialGradient>
+                    </defs>
+                  </svg>
+                </div>
+              ) : !!winnersEntry.length &&
+                !!userClaimEntry &&
+                !userClaimEntry.claimingPrizeTx ? (
+                // user can claim prize
                 <div className="claim-btn cursor-pointer">
                   <button
                     onClick={() => openEnrollModal(raffle, "Claim")}
                     className="claim-button rounded-[18px] p-[1px] text-sm"
                   >
-                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
+                    <div className="h-11 relative px-4 w-52 flex items-center overflow-hidden justify-center rounded-3xl">
                       <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
                         Claim prize
                       </p>
+                      <Image
+                        className="absolute right-0"
+                        alt="claimPrize"
+                        src={"/assets/images/prize-tap/claimPrize.svg"}
+                        width={50}
+                        height={34}
+                      />
+                      <svg
+                        width="63"
+                        height="34"
+                        viewBox="0 0 63 34"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute right-0"
+                      >
+                        <path
+                          d="M0 0H46C55.3888 0 63 7.61116 63 17V17C63 26.3888 55.3888 34 46 34H0V0Z"
+                          fill="url(#paint0_linear_1_32)"
+                        />
+                        <defs>
+                          <linearGradient
+                            id="paint0_linear_1_32"
+                            x1="10.8281"
+                            y1="17"
+                            x2="44.3517"
+                            y2="-0.908468"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="#24322A" stop-opacity="0" />
+                            <stop
+                              offset="0.659927"
+                              stop-color="#CCFFE8"
+                              stop-opacity="0.38"
+                            />
+                            <stop
+                              offset="1"
+                              stop-color="#EEFFF6"
+                              stop-opacity="0.84"
+                            />
+                          </linearGradient>
+                        </defs>
+                      </svg>
                     </div>
                   </button>
                 </div>
-              ) : // <div className="enrolled-btn cursor-pointer bg-enrolled-grad-btn text-xs h-[36px] max-w-[208px] border border-[#1e3828] px-4 w-52 flex items-center justify-between rounded-3xl">
-              //   <p className="text-[#83B39E]">Enrolled!</p>
-              //   <svg
-              //     width="30"
-              //     height="24"
-              //     viewBox="0 0 30 24"
-              //     fill="none"
-              //     xmlns="http://www.w3.org/2000/svg"
-              //   >
-              //     <path
-              //       d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H24C27.0376 0.5 29.5 2.96243 29.5 6V8.53924C27.8866 8.79533 26.6875 10.2722 26.6875 12C26.6875 13.7278 27.8866 15.2047 29.5 15.4608V18C29.5 21.0376 27.0376 23.5 24 23.5H6C2.96243 23.5 0.5 21.0376 0.5 18V15.4608C2.11341 15.2047 3.3125 13.7278 3.3125 12C3.3125 10.2722 2.11341 8.79533 0.5 8.53924V6Z"
-              //       fill="url(#paint0_linear_30_138)"
-              //       stroke="url(#paint1_linear_30_138)"
-              //     />
-              //     <path
-              //       d="M0 6C0 2.68629 2.68629 0 6 0H24C27.3137 0 30 2.68629 30 6V9C28.4467 9 27.1875 10.3431 27.1875 12C27.1875 13.6569 28.4467 15 30 15V18C30 21.3137 27.3137 24 24 24H6C2.68629 24 0 21.3137 0 18V15C1.5533 15 2.8125 13.6569 2.8125 12C2.8125 10.3431 1.5533 9 0 9V6Z"
-              //       fill="url(#paint2_radial_30_138)"
-              //     />
-              //     <defs>
-              //       <linearGradient
-              //         id="paint0_linear_30_138"
-              //         x1="-7.5"
-              //         y1="-10.5"
-              //         x2="27.4294"
-              //         y2="20.8504"
-              //         gradientUnits="userSpaceOnUse"
-              //       >
-              //         <stop stop-color="#2F6756" />
-              //         <stop offset="0.427083" stop-color="#1D0926" />
-              //         <stop offset="0.699054" stop-color="#2F1237" />
-              //         <stop offset="1" stop-color="#3A1840" />
-              //       </linearGradient>
-              //       <linearGradient
-              //         id="paint1_linear_30_138"
-              //         x1="-1.78322"
-              //         y1="12"
-              //         x2="33.8369"
-              //         y2="13.0497"
-              //         gradientUnits="userSpaceOnUse"
-              //       >
-              //         <stop stop-color="#4BF2A2" />
-              //         <stop offset="0.522948" stop-color="#A89FE7" />
-              //         <stop offset="0.669499" stop-color="#E1C4F4" />
-              //         <stop offset="1" stop-color="#DD40CD" />
-              //         <stop offset="1" stop-color="#DD40CD" />
-              //       </linearGradient>
-              //       <radialGradient
-              //         id="paint2_radial_30_138"
-              //         cx="0"
-              //         cy="0"
-              //         r="1"
-              //         gradientUnits="userSpaceOnUse"
-              //         gradientTransform="translate(-3.5 -7) rotate(44.5185) scale(42.0743 29.8729)"
-              //       >
-              //         <stop stop-color="#2F6756" stop-opacity="0" />
-              //         <stop
-              //           offset="0.334673"
-              //           stop-color="#367760"
-              //           stop-opacity="0"
-              //         />
-              //         <stop
-              //           offset="0.739673"
-              //           stop-color="#439371"
-              //           stop-opacity="0.1"
-              //         />
-              //         <stop
-              //           offset="0.879673"
-              //           stop-color="#469D77"
-              //           stop-opacity="0.29"
-              //         />
-              //         <stop
-              //           offset="1"
-              //           stop-color="#49A47C"
-              //           stop-opacity="0.81"
-              //         />
-              //       </radialGradient>
-              //     </defs>
-              //   </svg>
-              // </div>
-              !!winnersEntry.length &&
-                !!userClaimEntry &&
-                !userClaimEntry.claimingPrizeTx ? (
-                // user can claim prize
-                <div className="enroll-btn cursor-pointer">
+              ) : winnersEntry ? (
+                // check winners
+                <div className="check-winners-btn cursor-pointer">
                   <button
-                    onClick={() => openEnrollModal(raffle, "Claim")}
-                    className="enroll-button rounded-[18px] p-[1px] text-sm"
+                    onClick={() => openEnrollModal(raffle, "Winners")}
+                    className="check-winners-button rounded-[18px] text-sm"
                   >
-                    <div className="h-11 px-4 w-52 flex items-center justify-center rounded-3xl">
-                      <p className="bg-ut-grad-ltr text-transparent font-semibold bg-clip-text">
-                        Enroll
-                      </p>
+                    <div className="h-[36px] min-w-[208px] flex items-center justify-center rounded-3xl font-medium leading-[17px] text-sm">
+                      <p>Check for Winners</p>
                     </div>
                   </button>
                 </div>
@@ -320,8 +365,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             <div className="right-side-description h-[72px] text-xs mt-2 leading-6 font-normal font-sans text-gray100">
               {description}
             </div>
-            <span className="prizeTap-constraint bg-constraint-grad-ltr mt-[14px] rounded-tr-[10px] overflow-hidden rounded-br-[10px] text-[10px] flex items-center justify-between h-[22px] ">
-              <div className={`text-gray100 flex gap-[18px] items-center`}>
+            <span className="prizeTap-constraint bg-constraint-grad-ltr mt-[14px] rounded-tr-[10px] overflow-hidden rounded-br-[10px] text-[10px] flex items-stretch min-h-[22px] w-full">
+              <div className={`text-gray100 flex flex-wrap w-full gap-3 p-1`}>
                 {(showAllPermissions
                   ? raffle.constraints
                   : raffle.constraints
@@ -330,7 +375,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 ).map((permission, key) => (
                   <Tooltip
                     onClick={openEnrollModal.bind(null, raffle, "Verify")}
-                    className={"border-r border-white pr-[18px] cursor-pointer"}
+                    className={"border-r border-white cursor-pointer "}
                     data-testid={`token-verification-${raffle.id}-${permission.name}`}
                     key={key}
                     text={
@@ -339,7 +384,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         : permission.description
                     }
                   >
-                    <div className="flex items-center gap-3">
+                    <div className=" w-full pr-4 flex">
                       {permission.isReversed && "Not "}
                       {permission.title}
                     </div>
@@ -352,7 +397,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     null,
                     !showAllPermissions
                   )}
-                  className=" flex items-center w-[34px] z-10 h-full bg-constraint-grad-btn transition-colors justify-center"
+                  className=" flex items-center w-[34px] z-10 h-auto bg-constraint-grad-btn transition-colors justify-center"
                 >
                   <svg
                     width="10"
@@ -362,7 +407,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     xmlns="http://www.w3.org/2000/svg"
                     className={`ml-2 ${
                       showAllPermissions ? "rotate-180" : ""
-                    } transition-transform`}
+                    } transition-transform mr-1`}
                   >
                     <path
                       d="M10 0L5.88384 3.67453C5.39773 4.10849 4.60227 4.10849 4.11616 3.67453L0 0"
@@ -383,7 +428,15 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
           <div>
-            <RaffleCardTimer startTime={startAt} FinishTime={deadline} />
+            {isRaffleEnd ? (
+              <div className="flex items-center justify-center bg-gray00 mt-[10px] min-w-[184px] rounded-tl-xl rounded-tr-xl h-8">
+                <p className="font-medium text-xs lead-[14px] text-gray100 ">
+                  This raffle has ended
+                </p>
+              </div>
+            ) : (
+              <RaffleCardTimer startTime={startAt} FinishTime={deadline} />
+            )}
           </div>
           <div className="flex">
             {" "}
@@ -403,7 +456,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
+      {/* <div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
         <div className="prize-card__image relative mb-3 lg:mb-0">
           <div
             className={
@@ -428,11 +481,6 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   className={`${!isPrizeNft ? "ml-1" : ""} cursor-pointer mb-2`}
                 />
               )}
-              {/* {!isPrizeNft && (
-								<div className="prize__amount" data-amount={calculateClaimAmount + '   ' + prizeSymbol}>
-									{calculateClaimAmount + '  ' + prizeSymbol}
-								</div>
-							)} */}
             </div>
           </div>
           <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
@@ -832,7 +880,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             </Action>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -900,33 +948,29 @@ export const RaffleCardTimer = ({
   }, [startTime]);
 
   return (
-    <div className="prize-card__timer flex items-center justify-between h-8 rounded-tl-xl rounded-tr-xl gap-4 md:px-3 py-2 bg-gray00 mt-[10px]">
+    <div className="prize-card__timer flex items-center justify-between h-8 rounded-tl-xl rounded-tr-xl gap-4 md:px-3 py-2 bg-gray00 mt-[10px] min-w-[184px]">
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
-        <p className="prize-card__timer-item-value text-white font-semibold">
+        <p className="prize-card__timer-item-value text-white font-semibold min-w-[15px] text-center">
           {days}
         </p>
-        {/* <p className="prize-card__timer-item-label text-gray90">d</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
-        <p className="prize-card__timer-item-value text-white font-semibold">
+        <p className="prize-card__timer-item-value text-white font-semibold min-w-[15px] text-center">
           {hours}
         </p>
-        {/* <p className="prize-card__timer-item-label text-gray90">h</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
-        <p className="prize-card__timer-item-value text-white font-semibold">
+        <p className="prize-card__timer-item-value text-white font-semibold min-w-[15px] text-center">
           {minutes}
         </p>
-        {/* <p className="prize-card__timer-item-label text-gray90">m</p> */}
       </div>
       <p className="text-sm text-white">:</p>
       <div className="prize-card__timer-item flex flex-col justify-between items-center text-2xs">
-        <p className="prize-card__timer-item-value text-white font-semibold">
+        <p className="prize-card__timer-item-value text-white font-semibold  min-w-[15px] text-center">
           {seconds}
         </p>
-        {/* <p className="prize-card__timer-item-label text-gray90">s</p> */}
       </div>
     </div>
   );
