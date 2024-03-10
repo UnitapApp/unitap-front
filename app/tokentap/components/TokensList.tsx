@@ -1,38 +1,40 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react";
 
-import TokenCard from "./TokenCard"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { useSearchParams } from "next/navigation"
+import TokenCard from "./TokenCard";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { useSearchParams } from "next/navigation";
 
-import Styles from "./header.module.scss"
+import Styles from "./header.module.scss";
+import Image from "next/image";
+import Link from "next/link";
 
 const TokensList = () => {
   const { tokensList, tokensListLoading, tokenListSearchResult } =
-    useTokenTapContext()
-  const [highlightedToken, setHighlightedToken] = useState("")
+    useTokenTapContext();
+  const [highlightedToken, setHighlightedToken] = useState("");
 
-  const params = useSearchParams()
+  const params = useSearchParams();
 
   const tokenListMemo = useMemo(
     () =>
       tokenListSearchResult.sort((a, b) => {
-        const lowerHighlightChainName = highlightedToken.toLowerCase()
+        const lowerHighlightChainName = highlightedToken.toLowerCase();
 
-        if (a.name.toLowerCase() === lowerHighlightChainName) return -1
-        if (b.name.toLowerCase() === lowerHighlightChainName) return 1
+        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
 
-        return 0
+        return 0;
       }),
     [tokenListSearchResult, highlightedToken]
-  )
+  );
 
   useEffect(() => {
-    const highlightedChain = params.get("hc")
+    const highlightedChain = params.get("hc");
 
-    setHighlightedToken(highlightedChain || "")
-  }, [params, setHighlightedToken])
+    setHighlightedToken(highlightedChain || "");
+  }, [params, setHighlightedToken]);
 
   return (
     <div className="tokens-list-wrapper py-6 mb-20 w-full">
@@ -74,17 +76,39 @@ const TokensList = () => {
       )}
       <FinalVersionCard />
     </div>
-  )
-}
+  );
+};
 
 const FinalVersionCard = () => {
   return (
-    <div
-      className={`${Styles["footer-container"]} w-full h-60 bg-gray20 rounded-xl relative`}
+    <Link
+      href="/contribution-hub/token-tap"
+      className={`${Styles["footer-container"]} group hover:opacity-90 transition-all duration-300 w-full h-44 bg-gray20 rounded-3xl px-10 relative flex items-center justify-between`}
     >
-      <div className="token_tap__final-version-card flex flex-col items-center text-center min-w-[240px] sm:flex-row sm:w-max py-3 sm:py-2 px-3.5 gap-5 sm:gap-9 bg-gray50 border-2 border-gray60 rounded-lg absolute bottom-7 left-1/2 -translate-x-1/2"></div>
-    </div>
-  )
-}
+      <div>
+        <div className="text-2xl flex group-hover:-mt-5 duration-300 transition-all items-center gap-4 text-white">
+          Want to provide a Token
+          <Image
+            src="/assets/images/provider-dashboard/ic_link_white.svg"
+            width="10"
+            height="11"
+            alt="link"
+          />
+        </div>
+        <div className="mt-10 text-sm text-[#5A8B9A]">
+          If you want to provide something as a prize and set a raffle you can
+          use contribution hub.
+        </div>
+      </div>
+      <Image
+        className="group-hover:-mb-5 duration-300 transition-all"
+        width="278"
+        height="152"
+        alt="contribute token"
+        src="/assets/images/token-tap/token-gas.svg"
+      />
+    </Link>
+  );
+};
 
-export default TokensList
+export default TokensList;

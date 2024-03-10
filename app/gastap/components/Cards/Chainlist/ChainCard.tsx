@@ -98,6 +98,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             } items-center flex mb-6 sm:mb-0`}
           >
             <span className="chain-logo-container w-10 h-10 flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="chain-logo w-auto h-[100%]"
                 src={getChainIcon(chain)}
@@ -213,7 +214,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             } items-center flex rounded-b-xl w-32 h-12 justify-between md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
-              Top Catalyst:{" "}
+              Fuel Champion:{" "}
             </p>
             <p className="text-sm font-normal text-gray100 ml-1.5">
               {!!fuelChampionObj[chain.pk]
@@ -234,7 +235,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           >
             {chain.isOneTimeClaim ? (
               <div className="items-center flex text-secondary-text justify-between md:justify-center">
-                <p className="flex-1">Single Shot Faucet</p>
+                <p className="flex-1">Single-Claim Tap</p>
                 <Icon
                   className="text-white"
                   iconSrc="/assets/images/gas-tap/claimable-once.svg"

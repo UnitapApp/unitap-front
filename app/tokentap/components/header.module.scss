@@ -1,13 +1,6 @@
 .footer-container {
-  background-image: linear-gradient(
-      180deg,
-      rgba(22, 22, 33, 0.99) 0%,
-      rgba(22, 22, 33, 0.9) 7.96%,
-      rgba(22, 22, 33, 0) 52.11%,
-      rgba(22, 22, 33, 0.91) 91.6%,
-      rgba(22, 22, 33, 0.99) 100%
-    ),
-    url("/assets/images/token-tap/final-version-background.svg");
-  background-repeat: no-repeat;
-  background-position: right top;
+  background: url("/assets/images/token-tap/contribution-hub-bg.svg");
+  background-size: contain;
+  background-position: center;
+  position: relative;
 }

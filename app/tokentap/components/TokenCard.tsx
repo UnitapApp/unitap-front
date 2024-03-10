@@ -1,24 +1,17 @@
 "use client";
 
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, Fragment } from "react";
 import { Token } from "@/types";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import { getChainIcon } from "@/utils/chain";
-import { numberWithCommas } from "@/utils/numbers";
 import styled from "styled-components/";
 import { DV } from "@/components/ui/designVariables";
-import {
-  NoCurrencyButton,
-  ClaimButton,
-  ClaimedButton,
-} from "@/components/ui/Button/button";
 import { useWalletAccount } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
-import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
-import { watchAsset } from "viem/actions";
+import ClaimTokenButton from "./claimButton";
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -33,42 +26,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
 
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
-  };
-
-  const addToken = async () => {
-    if (!isConnected) return;
-
-    const provider = await connector?.getClient?.();
-
-    if (!provider) return;
-
-    try {
-      watchAsset(provider, {
-        options: {
-          decimals: token.chain.decimals,
-          symbol: token.token,
-          image: token.imageUrl,
-          address: token.tokenAddress,
-        },
-        type: "ERC20",
-      });
-
-      // await (window.ethereum as any).request({
-      //   method: "wallet_watchAsset",
-      //   params: {
-      //     type: "ERC20",
-      //     options: {
-      //       name: token.name,
-      //       address: token.tokenAddress,
-      //       symbol: token.token,
-      //       decimals: token.chain.decimals,
-      //       image: token.imageUrl,
-      //     },
-      //   },
-      // })
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const collectedToken = useMemo(
@@ -87,173 +44,134 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     [token]
   );
 
+  const verificationsList = showAllPermissions
+    ? token.constraints.filter((permission) => permission.type === "VER")
+    : token.constraints
+        .filter((permission) => permission.type === "VER")
+        .slice(0, 10);
+
   return (
-    <div>
-      <div
-        className={`token-card flex ${
-          isHighlighted
-            ? "before:!inset-[3px] p-0 gradient-outline-card mb-20"
-            : "mb-4"
-        } flex-col items-center justify-center w-full mb-4`}
-      >
-        <span className="flex flex-col w-full">
-          <div
-            className={`pt-4 pr-6 pb-4 pl-3 ${
-              isHighlighted ? "bg-g-primary-low" : "bg-gray40"
-            } w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl`}
-          >
+    <article
+      className={`token-card flex ${
+        isHighlighted
+          ? "before:!inset-[3px] p-0 gradient-outline-card mb-20"
+          : "mb-4"
+      } flex-col items-center justify-center w-full mb-4`}
+    >
+      <span className="flex flex-col w-full">
+        <div
+          className={`pt-4 pr-6 pl-3 ${
+            isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
+          } w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-3xl`}
+        >
+          <div className="token-header rounded-l-full p-[2px]">
             <div
-              onClick={onTokenClicked}
-              className="hover:cursor-pointer items-center flex mb-6 sm:mb-0"
+              // onClick={onTokenClicked}
+              className="w-80 rounded-l-full bg-[#161623] items-start flex mb-6 sm:mb-0"
             >
-              <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
+              <span className="w-16 h-16 flex justify-center mr-3">
                 <img
-                  className="chain-logo w-auto h-full"
-                  src={token.imageUrl}
+                  className="w-auto h-full"
+                  src={
+                    token.imageUrl ??
+                    "/assets/images/token-tap/bright-token.svg"
+                  }
                   alt="chain logo"
                 />
               </span>
-              <span className="w-max">
+              <div className="w-max mt-2 ml-2">
                 <p
-                  className="text-white text-center md:text-left flex mb-2"
+                  className="text-white text-sm text-center md:text-left flex mb-2"
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
-                  <Image
-                    width={8}
-                    height={8}
-                    className="arrow-icon mt-1 ml-1 w-2"
-                    src="/assets/images/arrow-icon.svg"
-                    alt="arrow"
-                  />
                 </p>
                 <p className="text-xs text-white font-medium">
                   {token.distributor}
                 </p>
-              </span>
-            </div>
-
-            <div
-              className={
-                "flex items-center gap-2 justify-end flex-col md:flex-row !w-full sm:w-auto"
-              }
-            >
-              <div className="w-full sm:w-auto items-center sm:items-end">
-                {token.chain.chainName === "Lightning" || (
-                  <AddMetamaskButton
-                    onClick={addToken}
-                    className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
-                  >
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                      alt="metamask logo"
-                    />
-                    Add
-                  </AddMetamaskButton>
-                )}
               </div>
-              <Action className={"w-full sm:w-auto items-center sm:items-end"}>
-                {token.isMaxedOut ? (
-                  <NoCurrencyButton disabled $fontSize="13px">
-                    Empty
-                  </NoCurrencyButton>
-                ) : collectedToken ? (
-                  claimingTokenPk === token.id ||
-                  (token.chain.chainName === "Lightning" &&
-                    collectedToken.status === "Pending") ? (
-                    <ClaimButton
-                      data-testid={`chain-pending-claim-${token.id}`}
-                      $mlAuto
-                      onClick={() => openClaimModal(token)}
-                      className="text-sm m-auto"
-                    >
-                      <p>{`Pending...`}</p>
-                    </ClaimButton>
-                  ) : collectedToken!.status === "Pending" ? (
-                    <ClaimButton
-                      data-testid={`chain-show-claim-${token.id}`}
-                      $mlAuto
-                      onClick={() => openClaimModal(token)}
-                      className="text-sm m-auto"
-                    >
-                      <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
-                    </ClaimButton>
-                  ) : (
-                    <ClaimedButton
-                      data-testid={`chain-claimed-${token.id}`}
-                      $mlAuto
-                      $icon="/assets/images/landing/tokentap-icon.png"
-                      $iconWidth={24}
-                      $iconHeight={24}
-                      onClick={() => openClaimModal(token)}
-                      className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
-                    >
-                      <p className="text-gradient-primary flex-[2] font-semibold text-sm">
-                        Claimed!
-                      </p>
-                    </ClaimedButton>
-                  )
-                ) : token.amount !== 0 ? (
-                  <ClaimButton
-                    data-testid={`chain-show-claim-${token.id}`}
-                    $mlAuto
-                    onClick={() => openClaimModal(token)}
-                    className="text-sm m-auto"
-                  >
-                    <p
-                      data-testid={`token-claim-text-${token.id}`}
-                    >{`Claim ${calculateClaimAmount} ${token.token}`}</p>
-                  </ClaimButton>
-                ) : (
-                  <ClaimedButton
-                    data-testid={`chain-claimed-${token.id}`}
-                    $mlAuto
-                    $icon="/assets/images/claim/claimedIcon.svg"
-                    $iconWidth={24}
-                    $iconHeight={20}
-                    onClick={() => openClaimModal(token)}
-                    className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
-                  >
-                    <p className="text-space-green flex-[2] font-medium text-sm">
-                      Claimed!
-                    </p>
-                  </ClaimedButton>
-                )}
-              </Action>
+              <div className="flex mt-2 items-start">
+                <a
+                  className="mx-2 text-gray100 bg-[#1B1B29] text-2xs px-2 py-1 rounded-xl border border-bg06"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={token.twitterUrl}
+                >
+                  <Icon
+                    className="cursor-pointer"
+                    iconSrc="assets/images/token-tap/twitter-icon.svg"
+                    width="auto"
+                    height="13px"
+                  />
+                </a>
+                <a
+                  className="text-2xs text-gray100 bg-[#1B1B29] px-2 py-1 rounded-xl border border-bg06"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={token.discordUrl}
+                >
+                  <Icon
+                    className="cursor-pointer"
+                    iconSrc="assets/images/token-tap/discord-icon.svg"
+                    width="auto"
+                    height="13px"
+                  />
+                </a>
+              </div>
             </div>
           </div>
-          <Markdown isHighlighted={isHighlighted} content={token.notes} />
           <div
-            className={`${
-              isHighlighted ? "bg-g-primary-low" : "bg-gray40"
-            } pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
+            className={
+              "flex items-center gap-2 justify-end flex-col md:flex-row !w-full sm:w-auto"
+            }
           >
-            {(showAllPermissions
-              ? token.constraints
-              : token.constraints
-                  .filter((permission) => permission.type === "VER")
-                  .slice(0, 6)
-            ).map((permission, key) => (
-              <Tooltip
-                className={
-                  "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
+            <Action className={"w-full sm:w-auto items-center sm:items-end"}>
+              <ClaimTokenButton
+                isEmpty={token.isMaxedOut}
+                isClaiming={
+                  claimingTokenPk === token.id ||
+                  (token.chain.chainName === "Lightning" &&
+                    collectedToken?.status === "Pending")
                 }
-                data-testid={`token-verification-${token.id}-${permission.name}`}
-                key={key}
-                text={permission.description}
-              >
-                <div className="flex items-center gap-3">
-                  {permission.title}
-                </div>
-              </Tooltip>
+                isClaimed={collectedToken?.status === "Verified"}
+                amount={calculateClaimAmount}
+                symbol={token.token}
+                disabled={token.isMaxedOut}
+                onClick={() => openClaimModal(token)}
+                tokenLogo={token.tokenImageUrl}
+              />
+            </Action>
+          </div>
+        </div>
+        <Markdown isHighlighted={isHighlighted} content={token.notes} />
+        <div
+          className={`${
+            isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
+          }  text-justify pb-3 pr-6 text-[#B5B5C6]`}
+        >
+          <div className="flex relative items-center pl-4 flex-wrap text-xs gap-2 constraints-wrapper rounded-2xl">
+            {verificationsList.map((permission, key) => (
+              <div key={key}>
+                <span className="text-[#D9D9D9] text-lg">
+                  {key === 0 || "|"}
+                </span>
+                <Tooltip
+                  className={"px-3 py-3 rounded-lg "}
+                  data-testid={`token-verification-${token.id}-${permission.name}`}
+                  text={permission.description}
+                >
+                  <div className="flex items-center gap-3">
+                    {permission.title}
+                  </div>
+                </Tooltip>
+              </div>
             ))}
 
-            {token.constraints.length > 6 && (
+            {token.constraints.length > 2 && (
               <button
                 onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
-                className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+                className={`flex ml-auto absolute top-0 right-0 bottom-0 items-center z-10 px-3 py-4 rounded-r-2xl collapse-handler`}
               >
-                <span>{showAllPermissions ? "Show less" : "Show more"}</span>
                 <Image
                   alt="angle-down"
                   width={12}
@@ -266,79 +184,70 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </button>
             )}
           </div>
-        </span>
-        <div
-          className={`${
-            isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between relative`}
-        >
-          <div className="flex gap-x-2 items-center text-xs sm:text-sm">
-            <p className="text-gray100">
-              <span className="text-white">
-                {numberWithCommas(
-                  token.maxNumberOfClaims - token.numberOfClaims
-                )}{" "}
-              </span>{" "}
-              of{" "}
-              <span className="text-white">
-                {" "}
-                {numberWithCommas(token.maxNumberOfClaims)}{" "}
-              </span>{" "}
-              are left to claim on
-              {" " + token.chain.chainName}
-            </p>
-            <Icon
-              iconSrc={getChainIcon(token.chain)}
-              width="auto"
-              height="16px"
+        </div>
+      </span>
+      <div
+        className={`${
+          isHighlighted ? "bg-g-primary-low" : "bg-[#1B1B29]"
+        } w-full gap-4 md:gap-0 items-center flex min-h-[48px] md:flex-row flex-col rounded-b-3xl px-4 pr-6 justify-between relative`}
+      >
+        <div className="flex gap-x-2 items-center mr-auto text-xs sm:text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-[#67677B]">Chain: </span>
+            <span className="text-[#B5B5C6]">{token.chain.chainName}</span>
+            <img
+              src={
+                token.chain.logoUrl ??
+                "https://bafybeicyyzg3pak32msuuzwdldiybydlwzm7yqpuh6hjm7fp4pox7disbm.ipfs.w3s.link/100.svg"
+              }
+              className="w-4"
+              alt={token.chain.chainName}
             />
           </div>
+          <Icon
+            iconSrc={getChainIcon(token.chain)}
+            width="auto"
+            height="16px"
+          />
+        </div>
 
-          {!!timePermissionVerification && (
-            <Tooltip
-              className="px-5 py-2 md:absolute rounded top-0 bottom-0 static left-1/2 md:-translate-x-1/2 text-xs text-gray80 flex items-center justify-center bg-gray20"
-              withoutImage
-              text={timePermissionVerification.description}
+        {!!timePermissionVerification && (
+          <Tooltip
+            className={`text-sm h-9 mr-auto mt-2 rounded-t-2xl px-1 !cursor-default py-3 w-52 self-end ${
+              isHighlighted ? "bg-transparent" : "bg-bg00"
+            }`}
+            withoutImage
+            text={timePermissionVerification.description}
+          >
+            <div
+              data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+              className="flex items-center justify-between px-3"
             >
-              <div
-                data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-                className="flex items-center justify-center"
+              <span
+                className={`${
+                  timePermissionVerification.name ===
+                  "tokenTap.OnceInALifeTimeVerification"
+                    ? "text-[#689E7A]"
+                    : "text-[#997EA4]"
+                }`}
               >
                 {timePermissionVerification.title}
-                <Icon
-                  iconSrc={`/assets/images/token-tap/${
-                    timePermissionVerification.name ===
-                    "tokenTap.OnceInALifeTimeVerification"
-                      ? "non-repeat.svg"
-                      : "repeat.svg"
-                  }`}
-                  className="ml-3"
-                />
-              </div>
-            </Tooltip>
-          )}
-
-          <div className="flex gap-x-6 items-center">
-            <a target="_blank" rel="noreferrer" href={token.twitterUrl}>
+              </span>
               <Icon
-                className="cursor-pointer"
-                iconSrc="assets/images/token-tap/twitter-icon.svg"
-                width="auto"
-                height="20px"
+                width="20px"
+                iconSrc={`/assets/images/token-tap/${
+                  timePermissionVerification.name ===
+                  "tokenTap.OnceInALifeTimeVerification"
+                    ? "non-repeat.svg"
+                    : "repeat.svg"
+                }`}
               />
-            </a>
-            <a target="_blank" rel="noreferrer" href={token.discordUrl}>
-              <Icon
-                className="cursor-pointer"
-                iconSrc="assets/images/token-tap/discord-icon.svg"
-                width="auto"
-                height="20px"
-              />
-            </a>
-          </div>
-        </div>
+            </div>
+          </Tooltip>
+        )}
+        <div className="mr-auto"></div>
       </div>
-    </div>
+    </article>
   );
 };
 
