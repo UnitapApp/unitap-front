@@ -144,10 +144,12 @@ export const UserContextProvider: FC<
 
   useEffect(() => {
     const getUserProfileWithToken = async () => {
+      if (!userToken) return;
       setUserProfileLoading(true);
       try {
         const userProfileWithToken: UserProfile =
           await getUserProfileWithTokenAPI(userToken!);
+
         setUserProfile(userProfileWithToken);
 
         document.cookie = `userToken=${userToken!};path=/;`;
@@ -211,6 +213,10 @@ export const UserContextProvider: FC<
     setUserProfile(null);
     setToken("");
   };
+
+  useEffect(() => {
+    console.log(userToken, isConnected);
+  }, [isConnected, userToken]);
 
   useEffect(() => {
     if (holdUserLogout || !userToken || !userProfile) return;

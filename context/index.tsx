@@ -18,7 +18,7 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const cookieStorage = cookies();
 
   try {
-    if (cookieStorage.has("userToken"))
+    if (cookieStorage.has("userToken") && cookieStorage.get("userToken")?.value)
       authProfile = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/info/`,
         {
@@ -27,7 +27,13 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
           },
           cache: "no-store",
         }
-      ).then((res) => res.json());
+      )
+        .then((res) => {
+          if (res.ok) return res;
+
+          throw new Error("Auth error");
+        })
+        .then((res) => res.json());
   } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {
