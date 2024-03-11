@@ -1,44 +1,30 @@
-"use client";
-
-import {
-  FC,
-  PropsWithChildren,
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 import DeleteWalletModal from "./components/deleteWalletModal";
-import { NullCallback } from "@/utils";
-import { Address } from "viem";
-
-export const ProfileEditContext = createContext<{
-  focusedWalletDeleteAddress: Address | null;
-  setFocusedWalletDeleteAddress: (walletPk: Address | null) => void;
-}>({
-  focusedWalletDeleteAddress: null,
-  setFocusedWalletDeleteAddress: NullCallback,
-});
-
-export const useProfileEditContext = () => useContext(ProfileEditContext);
+import ProfileEditProvider from "./components/profileEditContext";
+import { cookies } from "next/headers";
+import { getAllConnections } from "@/utils/serverApis";
+import { redirect } from "next/navigation";
+import { UserConnection } from "@/types";
 
 const ProfileEditLayout: FC<
   PropsWithChildren & { socialAccounts: ReactNode }
-> = ({ children, socialAccounts }) => {
-  const [focusedWalletDeleteAddress, setFocusedWalletDeleteAddress] =
-    useState<Address | null>(null);
+> = async ({ children, socialAccounts }) => {
+  const cookiesStore = cookies();
+
+  let connections: UserConnection;
+
+  try {
+    connections = await getAllConnections(cookiesStore.get("userToken")?.value);
+  } catch (e) {
+    redirect("/");
+  }
 
   return (
-    <ProfileEditContext.Provider
-      value={{
-        focusedWalletDeleteAddress,
-        setFocusedWalletDeleteAddress,
-      }}
-    >
+    <ProfileEditProvider initialConnections={connections}>
       {children}
       {socialAccounts}
       <DeleteWalletModal />
-    </ProfileEditContext.Provider>
+    </ProfileEditProvider>
   );
 };
 

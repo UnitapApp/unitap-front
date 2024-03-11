@@ -22,7 +22,7 @@ export const getAllConnections = async (token?: string) => {
     {
       cache: "no-store",
       headers: {
-        Authorization: `token ${token}`,
+        Authorization: `TOKEN ${token}`,
       },
     }
   );

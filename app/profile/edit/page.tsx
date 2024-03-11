@@ -13,7 +13,7 @@ import { Address, isAddressEqual } from "viem";
 import { Noto_Sans_Mono } from "next/font/google";
 import { useWalletManagementContext } from "@/context/walletProvider";
 import LoadingSpinner from "@/components/ui/loadingSpinner";
-import { useProfileEditContext } from "./layout";
+import { useProfileEditContext } from "./components/profileEditContext";
 
 const NotoSansMono = Noto_Sans_Mono({
   weight: ["400", "500"],
