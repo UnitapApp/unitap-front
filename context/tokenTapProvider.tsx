@@ -8,6 +8,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -292,6 +293,12 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   useRefreshWithInitial(getClaimedTokensList, FAST_INTERVAL, [userToken]);
 
   useFastRefresh(getTokensList, [getTokensList]);
+
+  useEffect(() => {
+    if (userToken) return;
+
+    setClaimedTokensList([]);
+  }, [userToken]);
 
   return (
     <TokenTapContext.Provider

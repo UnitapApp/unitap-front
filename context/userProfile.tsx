@@ -215,10 +215,6 @@ export const UserContextProvider: FC<
   };
 
   useEffect(() => {
-    console.log(userToken, isConnected);
-  }, [isConnected, userToken]);
-
-  useEffect(() => {
     if (holdUserLogout || !userToken || !userProfile) return;
 
     if (
