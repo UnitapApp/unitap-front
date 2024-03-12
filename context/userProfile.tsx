@@ -214,9 +214,9 @@ export const UserContextProvider: FC<
 
   useEffect(() => {
     if (holdUserLogout || !userToken || !userProfile) {
-      if (isConnected && !userToken) {
-        disconnect?.();
-      }
+      // if (isConnected && !userToken) {
+      //   disconnect?.();
+      // }
       return;
     }
 
