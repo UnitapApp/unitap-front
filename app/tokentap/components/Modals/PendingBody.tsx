@@ -3,9 +3,9 @@
 import { SecondaryGreenColorButton } from "@/components/ui/Button/button";
 import { Text } from "@/components/ui/text.style";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
-import { FC, useEffect, useMemo } from "react";
-import lottie from "lottie-web";
+import { FC, useMemo } from "react";
 import animation from "@/assets/animations/GasFee-delivery2.json";
+import Lottie from "react-lottie";
 
 const PendingBody: FC<{
   tokenId: number;
@@ -20,33 +20,21 @@ const PendingBody: FC<{
   const token = useMemo(
     () =>
       claimedTokensList.find(
-        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id
+        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id,
       ),
-    [claimedTokensList, selectedTokenForClaim]
+    [claimedTokensList, selectedTokenForClaim],
   );
-
-  useEffect(() => {
-    if (claimTokenLoading || token?.status === "Pending") {
-      const animationElement = document.querySelector("#animation");
-      if (animationElement) {
-        animationElement.innerHTML = "";
-      }
-      lottie.loadAnimation({
-        container: document.querySelector("#animation") as HTMLInputElement,
-        animationData: animation,
-        loop: true,
-        autoplay: true,
-      });
-    }
-  }, [claimTokenLoading, token?.status]);
 
   return (
     <>
-      <div
-        data-testid={`token-claim-pending-${tokenId}`}
-        id="animation"
-        style={{ width: "200px" }}
-      ></div>
+      <Lottie
+        options={{
+          animationData: animation,
+          loop: true,
+          autoplay: true,
+        }}
+        width={200}
+      ></Lottie>
       <Text width="100%" fontSize="14" color="space_green" $textAlign="center">
         Claim transaction submitted
       </Text>

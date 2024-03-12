@@ -2,37 +2,26 @@
 
 import { SecondaryGreenColorButton } from "@/components/ui/Button/button";
 import { Text } from "@/components/ui/text.style";
-import { FC, useEffect } from "react";
-import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types";
-import lottie from "lottie-web";
+import { FC } from "react";
+import { Chain, ClaimReceipt } from "@/types";
 import animation from "@/assets/animations/GasFee-delivery2.json";
+import Lottie from "react-lottie";
 
 const ClaimPendingBody: FC<{
   chain: Chain;
   closeClaimModal: () => void;
   activeClaimReceipt: ClaimReceipt;
 }> = ({ chain, closeClaimModal, activeClaimReceipt }) => {
-  useEffect(() => {
-    if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
-      const animationElement = document.querySelector("#animation");
-      if (animationElement) {
-        animationElement.innerHTML = "";
-      }
-      lottie.loadAnimation({
-        container: document.querySelector("#animation") as HTMLInputElement,
-        animationData: animation,
-        loop: true,
-        autoplay: true,
-      });
-    }
-  }, []);
   return (
     <>
-      <div
-        data-testid={`chain-claim-pending-${chain.pk}`}
-        id="animation"
-        style={{ width: "200px" }}
-      ></div>
+      <Lottie
+        options={{
+          animationData: animation,
+          loop: true,
+          autoplay: true,
+        }}
+        width={200}
+      ></Lottie>
       <Text width="100%" fontSize="14" color="space_green" $textAlign="center">
         Claim transaction submitted
       </Text>
@@ -43,7 +32,7 @@ const ClaimPendingBody: FC<{
         mb={3}
         $textAlign="center"
       >
-        The claim transaction will be compeleted soon
+        The claim transaction will be completed soon
       </Text>
       <SecondaryGreenColorButton
         onClick={closeClaimModal}
