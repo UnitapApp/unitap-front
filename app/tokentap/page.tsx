@@ -1,10 +1,12 @@
 import Header from "./components/Header";
-import ClaimTokenModal from "./components/Modals/ClaimModal";
 import TokensList from "./components/TokensList";
 import SearchInput from "./components/searchInput";
 import { Metadata } from "next";
 
+const ClaimTokenModal = dynamic(() => import("./components/Modals/ClaimModal"));
+
 import "./styles.scss";
+import dynamic from "next/dynamic";
 
 export const metadata: Metadata = {
   title: "Unitap | Token Tap 🪙",
@@ -16,7 +18,7 @@ const TokenTapPage = () => {
   return (
     <>
       <Header />
-      <SearchInput className="mt-1 lg:mt-0 w-full md:w-1/3" />
+      <SearchInput className="mt-1 w-full md:w-1/3 lg:mt-0" />
       <TokensList />
 
       <ClaimTokenModal />
