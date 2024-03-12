@@ -26,6 +26,7 @@ import { USER_DENIED_REQUEST_ERROR_CODE } from "@/utils/web3";
 import { getChainIcon } from "@/utils/chain";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
+import Tooltip from "@/components/ui/Tooltip";
 
 const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   initialChainId,
@@ -45,6 +46,14 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   const [modalState, setModalState] = useState(false);
   const [fundTransactionError, setFundTransactionError] = useState("");
   const [txHash, setTxHash] = useState("");
+
+  const helpAmount =
+  fundAmount && selectedChain
+    ? Math.floor(
+        (Number(fundAmount) * 0.75) /
+          (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals)
+      )
+    : 0;
 
   const balance = useWalletBalance({
     address,
@@ -293,9 +302,32 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                   Insufficient Balance
                 </p>
               )}
+
             </div>
           </div>
 
+          {!!fundAmount && !!helpAmount && (
+            <div className="flex mt-4 text-xs text-gray90 border justify-between border-gray50 rounded-lg min-h-[31px] items-center  px-2 ">
+              <div>
+                You will help onboard approximately
+                <span className="text-gray100 mx-1">{  helpAmount }</span> users to this
+                network!
+              </div>
+              <Tooltip
+                text="75% of your donation will be distributed among users. the rest is used for transaction fees. and depending on the network gas fees, the number might not be exact."
+                toolTipClassName="!w-[300px]"
+                className="cursor-pointer mr-2"
+                // title=""
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 13.6666C11.1144 13.6666 13.6667 11.1144 13.6667 7.99998C13.6667 4.8856 11.1144 2.33331 8.00004 2.33331C4.88566 2.33331 2.33337 4.8856 2.33337 7.99998C2.33337 11.1144 4.88566 13.6666 8.00004 13.6666ZM14.6667 7.99998C14.6667 11.6666 11.6667 14.6666 8.00004 14.6666C4.33337 14.6666 1.33337 11.6666 1.33337 7.99998C1.33337 4.33331 4.33337 1.33331 8.00004 1.33331C11.6667 1.33331 14.6667 4.33331 14.6667 7.99998Z" fill="#67677B"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.2 7.16669C8.36569 7.16669 8.5 7.301 8.5 7.46669V11.2C8.5 11.3657 8.36569 11.5 8.2 11.5H7.8C7.63431 11.5 7.5 11.3657 7.5 11.2V7.46669C7.5 7.301 7.63431 7.16669 7.8 7.16669H8.2Z" fill="#67677B"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.49634 5.13331C7.49634 4.96763 7.63065 4.83331 7.79634 4.83331H8.20233C8.36801 4.83331 8.50233 4.96763 8.50233 5.13331V5.53331C8.50233 5.699 8.36801 5.83331 8.20233 5.83331H7.79634C7.63065 5.83331 7.49634 5.699 7.49634 5.53331V5.13331Z" fill="#67677B"/>
+                </svg>
+
+              </Tooltip>
+            </div>
+          )}
           <Modal
             titleLeft="Select Chain"
             isOpen={modalState}
