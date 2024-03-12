@@ -19,7 +19,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
 
   return (
     <div className="w-full text-gray90">
-      <p className="mb-2 text-xs">Set Claim Duration:</p>
+      <p className="mb-2 text-xs">Set Duration:</p>
       <div className=" w-full flex select-not enrollment-duration-wrap justify-between items-center h-[43px] bg-gray30 text-gray90 text-xs text-center border border-gray50 rounded-xl overflow-hidden">
         {enrollmentDurations.map((item) => (
           <div
