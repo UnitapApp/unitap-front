@@ -9,9 +9,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import JSBI from "jsbi";
 import { CurrencyAmount } from "@uniswap/sdk-core";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Connection, PublicKey } from "@solana/web3.js";
 import { numberWithCommas } from "@/utils/numbers";
-import { useUserWalletProvider } from "@/utils/wallet";
 import { nativeOnChain } from "@/constants/tokens";
 
 interface props {
@@ -33,7 +31,7 @@ const ChainCard = ({ chain }: props) => {
               chain.isTestnet
                 ? "get-solana-testnet-balance"
                 : "get-solana-balance"
-            }`
+            }`,
           ).then((res) => res.json());
 
           setFundManagerBalance(result.balance?.toString());
@@ -56,13 +54,13 @@ const ChainCard = ({ chain }: props) => {
     const amount = JSBI.BigInt(fundManagerBalance.toString());
     return CurrencyAmount.fromRawAmount(
       nativeOnChain(Number(chain.chainId)),
-      amount
+      amount,
     );
   }, [chain.chainId, fundManagerBalance]);
 
   return (
-    <div className="chain px-5 py-4 flex flex-col h-28 lg:w-36 xl:w-40 sm:border-r-2 border-r-gray30">
-      <div className="flex-1 flex mb-4 text-white">
+    <div className="chain flex h-28 flex-col border-r-gray30 px-5 py-4 sm:border-r-2 lg:w-36 xl:w-40">
+      <div className="mb-4 flex flex-1 text-white">
         {chain.chainName}
         <Icon
           className="ml-2"
@@ -71,16 +69,16 @@ const ChainCard = ({ chain }: props) => {
           height="22px"
         />
       </div>
-      <p className="text-xs mt-auto text-gray90 flex">
+      <p className="mt-auto flex text-xs text-gray90">
         balance:
-        <span className="text-white ml-1">
+        <span className="ml-1 text-white">
           {typeof fundManagerBalance === "string"
             ? fundManagerBalance
             : fundManagerBalanceAmount
-            ? numberWithCommas(
-                parseFloat(fundManagerBalanceAmount.toSignificant(5))
-              )
-            : "..."}
+              ? numberWithCommas(
+                  parseFloat(fundManagerBalanceAmount.toSignificant(5)),
+                )
+              : "..."}
         </span>
       </p>
     </div>
