@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState, useContext } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Prize } from "@/types";
 import Icon from "@/components/ui/Icon";
 import {
@@ -20,9 +20,9 @@ import Image from "next/image";
 import { LINEA_RAFFLE_PK } from "@/constants";
 import { getAssetUrl, shortenAddress } from "@/utils";
 
-// import Styles from "@/components/containers/provider-dashboard/prize-tap/content.module.scss";
 import { zeroAddress } from "viem";
 import { useFastRefresh } from "@/utils/hooks/refresh";
+import ReactMarkdown from "react-markdown";
 
 export const Action = styled.div`
   display: flex;
@@ -554,9 +554,13 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 )}
               </p>
             </span>
-            <p className="prize-card__description text-gray100 text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
+            <ReactMarkdown
+              className={`prize-card__description text-gray100 text-xs leading-5 mb-2 grow shrink-0 basis-auto ${
+                isHighlighted ? "bg-g-primary-low" : "!bg-gray30"
+              } text-justify`}
+            >
               {description}
-            </p>
+            </ReactMarkdown>
 
             {!winnersEntry.length &&
               !userEntry?.txHash &&

@@ -14,8 +14,7 @@ const Header = () => {
           src="/assets/images/provider-dashboard/blibk neon.png"
         />
         <p className="z-10 text-sm text-gray100 text-xs max-w-[365px]">
-          Here you can see your history of your previous provides and you can
-          provide more ;)
+          Manage your contributions and help onboard users to Web3
         </p>
       </div>
     </div>

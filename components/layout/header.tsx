@@ -6,11 +6,11 @@ const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
 
 const Header = () => {
   return (
-    <header className="text-xs backdrop-blur-md sticky w-full flex items-center justify-between top-0 z-40 py-3 px-8">
+    <header className="sticky top-0 z-40 flex w-full items-center justify-between px-8 py-3 text-xs backdrop-blur-md">
       <UserAuthStatus />
 
-      <div className="hidden md:flex mx-auto flex-grow-1 translate-x-0 lg:-translate-x-1/2 justify-self-center">
-        <div className="bg-gray30 p-[1px] border border-gray70 flex items-center rounded-2xl gap-1">
+      <div className="flex-grow-1 mx-auto hidden translate-x-0 justify-self-center md:flex lg:-translate-x-1/2">
+        <div className="flex items-center gap-1 rounded-2xl border border-gray70 bg-gray30 p-[1px]">
           <TapLink href="/" logo="/assets/images/main-logo.svg" />
           <TapLink href="/gastap" logo="/assets/images/gastap-logo.svg" />
           <TapLink href="/learntap" logo="/assets/images/learntap-logo.svg" />
@@ -19,7 +19,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="hidden ml-auto md:flex">
+      <div className="ml-auto hidden md:flex">
         <RenderNavbarDropdown />
       </div>
     </header>

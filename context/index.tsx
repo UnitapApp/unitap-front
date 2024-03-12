@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const settingsRes: { index: string; value: string }[] = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/settings/",
-    { next: { revalidate: 10 } }
+    { next: { revalidate: 10 } },
   ).then((res) => res.json());
 
   let authProfile: UserProfile | null = null;
@@ -26,7 +26,7 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
             Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
           },
           cache: "no-store",
-        }
+        },
       )
         .then((res) => {
           if (res.ok) return res;

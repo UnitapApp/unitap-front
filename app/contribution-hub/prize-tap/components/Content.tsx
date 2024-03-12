@@ -385,9 +385,12 @@ const PrizeTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-base font-semibold">Offer a New Prize</p>{" "}
+                <p className="text-base font-semibold">
+                  Create a Raffle on Prize Tap
+                </p>{" "}
                 <p className="text-sm text-gray100">
-                  Here you can provide an NFT or Token for Prize Tap.
+                  Hold raffles and give out prizes based on specific
+                  requirements.
                 </p>
               </div>
               <Icon
@@ -399,7 +402,7 @@ const PrizeTapContent = () => {
               href={RoutePath.PROVIDER_PRIZETAP_CREATE}
               className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
             >
-              + Provide a New Prize
+              + Set Up a New Raffle
             </Link>
           </div>
         </div>

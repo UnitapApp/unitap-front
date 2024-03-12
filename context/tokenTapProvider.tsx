@@ -103,27 +103,6 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const { writeContractAsync, isPending, reset, data, error } =
     useWriteContract({});
 
-  const {} = useWaitForTransactionReceipt({
-    chainId,
-    hash,
-    confirmations: 1,
-    onReplaced: async (res) => {
-      if (!userToken) return;
-      setClaimTokenResponse({
-        success: true,
-        state: "Done",
-        txHash: res.transaction.hash,
-        message: "Token claimed successfully.",
-      });
-
-      await updateClaimFinished(
-        userToken,
-        chainPkConfirmingHash,
-        res.transaction.hash
-      );
-    },
-  });
-
   const { userToken } = useUserProfileContext();
 
   const getTokensList = useCallback(async () => {
@@ -235,8 +214,19 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         });
 
         if (claimRes) {
-          setHash(claimRes);
-          setChainPkConfirmingHash(claimId);
+          const res = await provider.waitForTransactionReceipt({
+            hash: claimRes,
+            confirmations: 1,
+          });
+
+          setClaimTokenResponse({
+            success: true,
+            state: "Done",
+            txHash: res.transactionHash,
+            message: "Token claimed successfully.",
+          });
+
+          await updateClaimFinished(userToken, claimId, res.transactionHash);
         }
       } catch (e: any) {
         const error: TransactionExecutionError = e;

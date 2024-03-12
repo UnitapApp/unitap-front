@@ -257,8 +257,8 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 height="auto"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between px-4 py-2 rounded-xl bg-gray40 relative">
-              <div className="select-box__info__amount w-full flex">
+            <div className="select-box__info w-full flex flex-col pl-4 rounded-xl bg-gray40 relative">
+              <div className="select-box__info__amount w-full flex items-center justify-center h-[43px]">
                 <input
                   className="fund-input w-full text-sm bg-transparent text-white"
                   type="number"
@@ -269,11 +269,13 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                   value={fundAmount}
                   onChange={(e) => setFundAmount(e.target.value)}
                 />
-                <div
-                  onClick={() => setFundAmount(balance.data?.formatted!)}
-                  className="bg-gray20 select-not hover:bg-gray40 border border-gray100 text-gray100 text-xs flex items-center w-[52px] h-[28px] rounded-xl justify-center cursor-pointer"
-                >
-                  Max
+                <div className="bg-gray30 text-xs font-medium leading-4 text-gray90 text-center flex items-center justify-center h-[100%] w-[130px]">
+                  Balance{" "}
+                  {balance.data?.formatted && (
+                    <span className="ml-1 text-space-green">
+                      {Number.parseFloat(balance.data?.formatted).toFixed(3)}
+                    </span>
+                  )}
                 </div>
               </div>
 

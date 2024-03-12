@@ -40,7 +40,11 @@ const DonationCard = ({ donation }: DonationProps) => {
       <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
         <div className="flex justify-between items-center text-gray90">
           <div className="flex items-center text-white gap-2 font-medium text-base;">
-            <Icon iconSrc={donation.faucet.gasImageUrl} />
+            <Icon
+              iconSrc={donation.faucet.gasImageUrl}
+              width="30px"
+              height="27px"
+            />
             <p>{donation.faucet.chain.chainName}</p>
           </div>
           <div className="flex gap-2 text-2xs items-center justify-center">
@@ -299,8 +303,11 @@ const GasTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-base font-semibold">Refill Gas Tap Tokens</p>{" "}
-                <p className="text-sm text-gray100">Provide Gas Fee.</p>
+                <p className="text-base font-semibold">Refuel Gas Tap</p>{" "}
+                <p className="text-sm text-gray100">
+                  Fill the taps of Gas Tap to help users get started on their
+                  journey.
+                </p>
               </div>
               <Icon
                 className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
