@@ -885,6 +885,7 @@ const TokenTapProvider: FC<
         decimals: decimals,
       },
     ]);
+    closeRequirementModal()
   };
 
   const updateRequirement = (
@@ -907,7 +908,7 @@ const TokenTapProvider: FC<
       }
       return item;
     });
-
+    closeRequirementModal()
     setRequirementList(newItem);
   };
 
