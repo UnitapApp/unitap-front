@@ -17,11 +17,11 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useSearchParams } from "next/navigation";
 import { useUserProfileContext } from "@/context/userProfile";
 import Image from "next/image";
-import { LINEA_RAFFLE_PK } from "@/constants";
+import { FAST_INTERVAL, LINEA_RAFFLE_PK } from "@/constants";
 import { getAssetUrl, shortenAddress } from "@/utils";
 
 import { zeroAddress } from "viem";
-import { useFastRefresh } from "@/utils/hooks/refresh";
+import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import ReactMarkdown from "react-markdown";
 
 export const Action = styled.div`
@@ -127,18 +127,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
   const isRemainingPercentLessThanTen =
     remainingPeople < (maxNumberOfEntries / 100) * 10;
-  const [start, setStarted] = useState<boolean>(true);
+  const start = new Date(startAt) < new Date()
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const userClaimEntry = useMemo(
     () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
     [userProfile, winnersEntry]
   );
-
-  useFastRefresh(() => {
-    setStarted(new Date(startAt) < new Date());
-  }, [startAt]);
-
+  
   // let tokenImgLink: string | undefined = tokenUri
   //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
   //       Number(tokenUri.split("/")[3]) + 1
