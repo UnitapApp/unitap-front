@@ -46,6 +46,8 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
     setWinnersResultRaffle(raffle);
   };
 
+
+
   const diff = new Date(prize.deadline).getTime() - new Date().getTime();
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
   return (
@@ -85,9 +87,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-            (prize.status === RaffleStatus.VERIFIED ||
-              prize.status === RaffleStatus.WS) &&
-            diff > 0 ? (
+              (prize.status === RaffleStatus.VERIFIED ||
+                prize.status === RaffleStatus.WS) &&
+              diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
@@ -206,7 +208,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
-                !prize.winnerEntries?.length
+                  !prize.winnerEntries?.length
                   ? "Raffle is being processed"
                   : "Check Winners"}
               </p>
@@ -222,12 +224,13 @@ const PrizeTapContent = () => {
   const { userToken } = useUserProfileContext();
   const [userRafflesLoading, setUserRafflesLoading] = useState(false);
   const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
-
+  const [firstCheck, setFirstCheck] = useState(false)
   const handleGetUserRaffles = useCallback(async () => {
     if (!userToken) return;
     try {
       const raffles = await getUserRaffles(userToken);
       setUserRaffles(raffles);
+      setFirstCheck(true);
       setUserRafflesLoading(false);
     } catch (e: any) {
       setUserRafflesLoading(false);
@@ -338,41 +341,36 @@ const PrizeTapContent = () => {
             className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
           >
             <div
-              className={`${
-                RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
-              }`}
+              className={`${RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
+                }`}
               onClick={() => handleSelectFilter(RaffleStatus.ALL)}
             >
               All
             </div>
             <div
-              className={`${
-                RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
-              }`}
+              className={`${RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
+                }`}
               onClick={() => handleSelectFilter(RaffleStatus.ONGOING)}
             >
               ongoing
             </div>
             <div
-              className={`${
-                RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
-              }`}
+              className={`${RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
+                }`}
               onClick={() => handleSelectFilter(RaffleStatus.VERIFIED)}
             >
               verified
             </div>
             <div
-              className={`${
-                RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
-              }`}
+              className={`${RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
+                }`}
               onClick={() => handleSelectFilter(RaffleStatus.REJECTED)}
             >
               rejected
             </div>
             <div
-              className={`${
-                RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
-              }`}
+              className={`${RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
+                }`}
               onClick={() => handleSelectFilter(RaffleStatus.FINISHED)}
             >
               finished
@@ -420,7 +418,7 @@ const PrizeTapContent = () => {
         )}
         {filteredRaffles.length == 0 &&
           userRafflesLoading &&
-          selectedFilter == RaffleStatus.ALL && (
+          selectedFilter == RaffleStatus.ALL && !firstCheck && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
               <Skeleton />
               <Skeleton />
