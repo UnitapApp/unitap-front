@@ -51,7 +51,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               height="36px"
             />
             <p className="text-sm font-medium text-white">
-              {distribution.name}
+              {distribution.distributor}
             </p>
           </div>
           <div>
