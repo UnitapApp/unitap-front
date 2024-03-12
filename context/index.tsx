@@ -27,7 +27,11 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
           },
           cache: "no-store",
         }
-      ).then((res) => res.json());
+      ).then((res) => {
+        if (!res.ok) throw new Error("Unauthorized")
+
+        return res
+      }).then((res) => res.json());
   } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {
