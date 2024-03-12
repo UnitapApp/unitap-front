@@ -73,14 +73,14 @@ const TokenTapTimeEnrollLimitation = ({
                 !claimPeriodic ? "text-white" : "text-gray90"
               } text-xs`}
             >
-              OneTime-Claimable
+              Single Claim Tap
             </p>
             <p
               className={`${
                 !claimPeriodic ? "text-gray100" : "text-gray90"
               } text-2xs`}
             >
-              (Each person can claim once.)
+              ( Users can only claim once)
             </p>
           </div>
           <div
@@ -94,14 +94,14 @@ const TokenTapTimeEnrollLimitation = ({
                 claimPeriodic ? "text-white" : "text-gray90"
               } text-xs`}
             >
-              Periodic-Claimable
+              Periodic Tap
             </p>
             <p
               className={`${
                 claimPeriodic ? "text-gray100" : "text-gray90"
               } text-2xs`}
             >
-              (Each person can claim once in a month.)
+              (Users can claim once per round.)
             </p>
           </div>
         </div>
