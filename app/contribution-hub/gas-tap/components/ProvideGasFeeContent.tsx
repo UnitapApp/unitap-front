@@ -24,6 +24,8 @@ import {
 import { useGlobalContext } from "@/context/globalProvider";
 import { USER_DENIED_REQUEST_ERROR_CODE } from "@/utils/web3";
 import { getChainIcon } from "@/utils/chain";
+import Link from "next/link";
+import RoutePath from "@/utils/routes";
 
 const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   initialChainId,
@@ -214,10 +216,18 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
 
   return (
     <div className="bg-gray20 select-none rounded-xl p-12 relative h-[10hv] overflow-hidden  text-white flex flex-col items-center text-center">
-      <div className="animate-fadeIn">
+      <div className="animate-fadeIn w-full max-w-[452px]">
         <div className="absolute top-[-10.5em] left-[-24.5em] z-0">
           <Icon iconSrc="/assets/images/fund/provide-gas-fee-planet.svg" />
         </div>
+        <div className="absolute top-2 cursor-pointer">
+          <Link href={RoutePath.PROVIDER_GASTAP}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.84756 6.22275C10.1388 6.51734 10.136 6.99221 9.84141 7.2834L4.81687 12.25L9.84141 17.2166C10.136 17.5078 10.1388 17.9827 9.84756 18.2772C9.55637 18.5718 9.08151 18.5746 8.78692 18.2834L3.22275 12.7834C3.08022 12.6425 3 12.4504 3 12.25C3 12.0496 3.08022 11.8575 3.22275 11.7166L8.78692 6.2166C9.08151 5.92541 9.55637 5.92817 9.84756 6.22275Z" fill="#67677B"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.15625 12.25C3.15625 11.8358 3.49204 11.5 3.90625 11.5H19.3338C19.748 11.5 20.0837 11.8358 20.0837 12.25C20.0837 12.6642 19.748 13 19.3338 13H3.90625C3.49204 13 3.15625 12.6642 3.15625 12.25Z" fill="#67677B"/>
+            </svg>
+          </Link>
+      </div> 
         <div className="z-10">
           <Icon iconSrc="/assets/images/provider-dashboard/gasTap/battery.png" />
         </div>
@@ -232,7 +242,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
             </div>
           </div>
 
-          <div className="select-box w-full mt-4 min-w-[452px]">
+          <div className="select-box mt-4 w-full">
             <div
               className="select-box__token flex justify-between px-4 py-2 items-center h-[44px] rounded-[12px] w-full cursor-pointer bg-gray40 border border-gray50 hover:bg-gray60 mb-4"
               onClick={() => setModalState(true)}
@@ -257,7 +267,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 height="auto"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col pl-4 rounded-xl bg-gray40 relative">
+            <div className="select-box__info w-full flex flex-col pl-4 rounded-xl bg-gray40 relative overflow-hidden">
               <div className="select-box__info__amount w-full flex items-center justify-center h-[43px]">
                 <input
                   className="fund-input w-full text-sm bg-transparent text-white"

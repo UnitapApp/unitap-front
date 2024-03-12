@@ -13,7 +13,7 @@ const Header = () => {
           className="h-auto w-375 mb-3"
           src="/assets/images/provider-dashboard/blibk neon.png"
         />
-        <p className="z-10 text-sm text-gray100 text-xs max-w-[365px]">
+        <p className="z-10 text-gray100 text-xs max-w-[365px]">
           Manage your contributions and help onboard users to Web3
         </p>
       </div>
