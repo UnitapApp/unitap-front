@@ -2,7 +2,7 @@
 
 import { UserConnection } from "@/types";
 import { FC, useState } from "react";
-import SocialAccount from "../../components/socialAccount";
+import SocialAccount from "../components/socialAccount";
 import { useFastRefresh } from "@/utils/hooks/refresh";
 import { getAllConnections } from "@/utils/serverApis";
 import { useUserProfileContext } from "@/context/userProfile";

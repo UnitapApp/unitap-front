@@ -213,7 +213,10 @@ export const UserContextProvider: FC<
   };
 
   useEffect(() => {
-    if (holdUserLogout || !userToken || !userProfile) return;
+    if (holdUserLogout || !userToken || !userProfile) {
+      disconnect?.();
+      return;
+    }
 
     if (
       isConnected &&
