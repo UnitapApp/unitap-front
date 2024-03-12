@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConstraintDetailsModal from "@/app/contribution-hub/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";

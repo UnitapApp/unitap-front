@@ -46,7 +46,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Icon
-              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              iconSrc={distribution.chain.logoUrl}
               width="36px"
               height="36px"
             />
@@ -91,7 +91,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               on {distribution.chain.chainName}
             </div>
             <Icon
-              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              iconSrc={distribution.chain.logoUrl}
               width="14px"
               height="14px"
             />

@@ -57,11 +57,13 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 const ProviderTabs: FC = () => {
   const pathname = usePathname();
 
-  const borderPosition = pathname.includes(RoutePath.PROVIDER_GASTAP)
-    ? "after:left-0"
-    : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
-    ? "after:left-[33.33%]"
-    : "after:left-[67%]";
+  const borderPosition =
+    pathname.includes(RoutePath.PROVIDER_GASTAP) ||
+    pathname == RoutePath.PROVIDERDASHBOARD
+      ? "after:left-0"
+      : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
+      ? "after:left-[33.33%]"
+      : "after:left-[67%]";
 
   return (
     <div
@@ -69,7 +71,10 @@ const ProviderTabs: FC = () => {
     >
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          pathname.includes("gas-tap") ? " text-white" : "opacity-[0.2]"
+          RoutePath.PROVIDERDASHBOARD == pathname ||
+          pathname.includes("gas-tap")
+            ? " text-white"
+            : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_GASTAP}
         // href={"#"}
@@ -88,7 +93,6 @@ const ProviderTabs: FC = () => {
       </Link>
       <Link
         className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
-          RoutePath.PROVIDERDASHBOARD == pathname ||
           pathname.includes("prize-tap")
             ? " text-white opacity-1"
             : "opacity-[0.2]"
