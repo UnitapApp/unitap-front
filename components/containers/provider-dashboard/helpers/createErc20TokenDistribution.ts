@@ -68,7 +68,8 @@ export const createErc20TokenDistribution = async (
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
-  setCreteRaffleResponse: any
+  setCreteRaffleResponse: any,
+  clamPeriodic: any
 ) => {
   // const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -159,6 +160,7 @@ export const createErc20TokenDistribution = async (
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
   formData.append("decimals", decimals);
+  formData.append("is_one_time_claim", clamPeriodic)
 
   try {
     setCreateRaffleLoading(true);

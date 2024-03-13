@@ -51,7 +51,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               height="36px"
             />
             <p className="text-sm font-medium text-white">
-              {distribution.name}
+              {distribution.distributor}
             </p>
           </div>
           <div>
@@ -180,6 +180,8 @@ const TokenTapContent = () => {
 
   const [searchPhrase, setSearchPhrase] = useState<string>("");
 
+  const [firstCheck, setFirstCheck] = useState(false);
+
   const handleSetSearchPhrase = (str: string) => {
     const debounce = setTimeout(() => {
       setSearchPhrase(str);
@@ -192,6 +194,7 @@ const TokenTapContent = () => {
     try {
       const distributions = await getUserDistributions(userToken);
       setUserDistributions(distributions);
+      setFirstCheck(true);
       setLoading(false);
     } catch (e: any) {
       setLoading(false);
@@ -282,33 +285,29 @@ const TokenTapContent = () => {
             All
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Pending && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Pending && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Pending)}
           >
             ongoing
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Verified && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Verified && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Verified)}
           >
             verified
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Rejected && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Rejected && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Rejected)}
           >
             rejected
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Finished && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Finished && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Finished)}
           >
             finished
@@ -350,7 +349,7 @@ const TokenTapContent = () => {
 
       {loading &&
         filteredItems.length == 0 &&
-        selectedFilter === Filters.All && (
+        selectedFilter === Filters.All && !firstCheck && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
             <Skeleton />
             <Skeleton />

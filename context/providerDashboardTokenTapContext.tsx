@@ -441,15 +441,15 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, isValidContractAddress]
@@ -754,7 +754,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {
@@ -859,7 +859,8 @@ const TokenTapProvider: FC<
       address,
       userToken,
       setCreateRaffleLoading,
-      setCreteRaffleResponse
+      setCreteRaffleResponse,
+      claimPeriodic
     );
   };
 
@@ -885,6 +886,7 @@ const TokenTapProvider: FC<
         decimals: decimals,
       },
     ]);
+    closeRequirementModal();
   };
 
   const updateRequirement = (
@@ -907,7 +909,7 @@ const TokenTapProvider: FC<
       }
       return item;
     });
-
+    closeRequirementModal();
     setRequirementList(newItem);
   };
 
@@ -950,6 +952,7 @@ const TokenTapProvider: FC<
     setIsShowingDetails(true);
     setSelectNewOffer(true);
     setSelectedChain(raffle.chain);
+    setClaimPeriodic(raffle.isOneTimeClaim);
     // setNumberOfNfts(
     //   raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
     // );

@@ -178,7 +178,7 @@ export const UserContextProvider: FC<
   const deleteWallet = async (address: Address) => {
     if (!userProfile || !userToken) return;
     const selectedWalletIndex = userProfile.wallets.findIndex((wallet) =>
-      isAddressEqual(wallet.address, address)
+      isAddressEqual(wallet.address, address),
     );
 
     const selectedWallet = userProfile.wallets[selectedWalletIndex];
@@ -203,7 +203,7 @@ export const UserContextProvider: FC<
       }
     },
     IntervalType.MEDIUM,
-    [userToken && userProfile]
+    [userToken && userProfile],
   );
 
   const logout = () => {
@@ -216,7 +216,9 @@ export const UserContextProvider: FC<
 
   useEffect(() => {
     if (holdUserLogout || !userToken || !userProfile) {
-      disconnect?.();
+      // if (isConnected && !userToken) {
+      //   disconnect?.();
+      // }
       return;
     }
 

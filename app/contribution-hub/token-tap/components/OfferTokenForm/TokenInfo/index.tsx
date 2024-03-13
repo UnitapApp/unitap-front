@@ -77,15 +77,13 @@ const TokenInfo = ({
       className={`flex flex-col justify-center w-full items-center animate-fadeIn`}
     >
       <div
-        className={`flex flex-col select-not min-h-[340px] mb-5 gap-5 w-full items-center max-w-[452px] ${
-          data.isNft ? "mb-[45px]" : ""
-        } ${!address ? "opacity-[.5]" : "opacity-1"}`}
+        className={`flex flex-col select-not min-h-[340px] mb-5 gap-5 w-full items-center max-w-[452px] ${data.isNft ? "mb-[45px]" : ""
+          } ${!address ? "opacity-[.5]" : "opacity-1"}`}
       >
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray80 text-xs bg-gray40 border ${
-              showErrors && !data.provider ? "border-error" : "border-gray50 "
-            } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+            className={`flex gap-2 text-gray80 text-xs bg-gray40 border ${showErrors && !data.provider ? "border-error" : "border-gray50 "
+              } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
           >
             <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-gray100">
               <p>Provider</p>
@@ -114,19 +112,17 @@ const TokenInfo = ({
 
         <section className="w-full relative">
           <div
-            className={`flex gap-2 text-gray100 text-xs bg-gray40 border ${
-              showErrors && !data.description
-                ? "border-error"
-                : "border-gray50 "
-            } rounded-xl h-[63px] items-center justify-between pr-4 w-full max-w-[452px] overflow-hidden`}
+            className={`flex gap-2 text-gray100 text-xs bg-gray40 border ${showErrors && !data.description
+              ? "border-error"
+              : "border-gray50 "
+              } rounded-xl h-[63px] items-center justify-between pr-4 w-full max-w-[452px] overflow-hidden`}
           >
             <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center">
               <p>Description</p>
             </div>
-            <input
-              type="text"
+            <textarea
               placeholder="will be shown on card"
-              className="provider-dashboard-input"
+              className="border-none focus:ring-0 bg-none h-full w-full bg-gray40 max-h-[55px] p-1 !outline-none"
               name="description"
               onChange={handleChange}
               disabled={isShowingDetails || !address}
