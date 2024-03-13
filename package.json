@@ -27,7 +27,6 @@
     "bignumber.js": "^9.1.2",
     "cypress": "^13.4.0",
     "encoding": "^0.1.13",
-    "ethers": "5",
     "lokijs": "^1.5.12",
     "next": "^14.1.0",
     "next-nprogress-bar": "^2.1.2",
