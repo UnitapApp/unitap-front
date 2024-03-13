@@ -63,43 +63,43 @@ const TokenTapTimeEnrollLimitation = ({
       >
         <div className="flex items-center justify-between w-full text-center">
           <div
-            // onClick={() => handleSetClaimPeriodic(false)}
-            className={`${
-              claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex flex-col rounded-[12px_0px_0px_12px] cursor-pointer border border-gray50 w-full h-[43px] items-center justify-center`}
+            onClick={() => {
+              if (isShowingDetails) return;
+              handleSetClaimPeriodic(false);
+            }}
+            className={`${claimPeriodic ? "bg-gray30" : "bg-gray40"
+              } flex flex-col rounded-[12px_0px_0px_12px] cursor-pointer border border-gray50 w-full h-[43px] items-center justify-center`}
           >
             <p
-              className={`${
-                !claimPeriodic ? "text-white" : "text-gray90"
-              } text-xs`}
+              className={`${!claimPeriodic ? "text-white" : "text-gray90"
+                } text-xs`}
             >
               Single Claim Tap
             </p>
             <p
-              className={`${
-                !claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-2xs`}
+              className={`${!claimPeriodic ? "text-gray100" : "text-gray90"
+                } text-2xs`}
             >
               ( Users can only claim once)
             </p>
           </div>
           <div
-            // onClick={() => handleSetClaimPeriodic(true)}
-            className={`${
-              !claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex flex-col rounded-[0px_12px_12px_0px] cursor-pointer  border border-gray50 w-full h-[43px] items-center justify-center`}
+            onClick={() => {
+              if (isShowingDetails) return;
+              handleSetClaimPeriodic(true);
+            }}
+            className={`${!claimPeriodic ? "bg-gray30" : "bg-gray40"
+              } flex flex-col rounded-[0px_12px_12px_0px] cursor-pointer  border border-gray50 w-full h-[43px] items-center justify-center`}
           >
             <p
-              className={`${
-                claimPeriodic ? "text-white" : "text-gray90"
-              } text-xs`}
+              className={`${claimPeriodic ? "text-white" : "text-gray90"
+                } text-xs`}
             >
               Periodic Tap
             </p>
             <p
-              className={`${
-                claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-2xs`}
+              className={`${claimPeriodic ? "text-gray100" : "text-gray90"
+                } text-2xs`}
             >
               (Users can claim once per round.)
             </p>
