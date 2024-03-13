@@ -11,11 +11,31 @@ const Header = () => {
 
       <div className="flex-grow-1 mx-auto hidden translate-x-0 justify-self-center md:flex lg:-translate-x-1/2">
         <div className="flex items-center gap-1 rounded-2xl border border-gray70 bg-gray30 p-[1px]">
-          <TapLink href="/" logo="/assets/images/main-logo.svg" />
-          <TapLink href="/gastap" logo="/assets/images/gastap-logo.svg" />
-          <TapLink href="/learntap" logo="/assets/images/learntap-logo.svg" />
-          <TapLink href="/tokentap" logo="/assets/images/tokentap-logo.svg" />
-          <TapLink href="/prizetap" logo="/assets/images/prizetap-logo.svg" />
+          <TapLink
+            href="/"
+            alt="unitap-home"
+            logo="/assets/images/main-logo.svg"
+          />
+          <TapLink
+            href="/gastap"
+            alt="gastap"
+            logo="/assets/images/gastap-logo.svg"
+          />
+          <TapLink
+            href="/learntap"
+            alt="learntap"
+            logo="/assets/images/learntap-logo.svg"
+          />
+          <TapLink
+            href="/tokentap"
+            alt="tokentap"
+            logo="/assets/images/tokentap-logo.svg"
+          />
+          <TapLink
+            href="/prizetap"
+            alt="prizetap"
+            logo="/assets/images/prizetap-logo.svg"
+          />
         </div>
       </div>
 
