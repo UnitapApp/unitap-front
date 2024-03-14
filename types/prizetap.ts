@@ -13,6 +13,7 @@ export type LineaRaffleEntry = {
 export type Prize = {
   id: PK;
   pk: PK;
+  constraintParams: string;
   constraints: Permission[];
   imageUrl: string;
   tokenUri: string;

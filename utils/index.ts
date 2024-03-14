@@ -50,3 +50,12 @@ export const uppercaseFirstLetter = (str: string): string => {
     return str;
   }
 };
+
+export const replacePlaceholders = (
+  input: string,
+  values: { [key: string]: any },
+): string => {
+  return input.replace(/\${(.*?)}/g, (match, key) => {
+    return values[key.trim()] || match;
+  });
+};

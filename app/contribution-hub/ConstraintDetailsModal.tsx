@@ -6,6 +6,7 @@ import {
   ConstraintProps,
   Chain,
   LensUserProfile,
+  FarcasterProfile,
 } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
@@ -19,7 +20,10 @@ import {
 } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
 import Input from "@/components/ui/input";
-import { fetchLensProfileUsers } from "@/utils/api/lens";
+import {
+  fetchFarcasterProfiles,
+  fetchLensProfileUsers,
+} from "@/utils/api/lens";
 import { useOutsideClick } from "@/utils/hooks/dom";
 
 interface CreateModalParam {
@@ -57,7 +61,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   const addRequirements = useAddRequirement(
     handleBackToConstraintListModal,
     insertRequirement,
-    updateRequirement
+    updateRequirement,
   );
 
   const [existRequirement, setExistRequirement] =
@@ -79,7 +83,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
         constraint.params.reduce((obj: any, item: any, index: any) => {
           obj[item] = "";
           return obj;
-        }, {})
+        }, {}),
       );
     }
   };
@@ -88,7 +92,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
 
   useEffect(() => {
     const requirement = requirementList.find(
-      (item) => item.pk == constraint.pk
+      (item) => item.pk == constraint.pk,
     );
 
     setExistRequirement(requirement ? requirement : null);
@@ -112,8 +116,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       !requirementParamsList.ADDRESS
         ? setErrorMessage("Please enter collection address.")
         : !requirementParamsList.CHAIN
-        ? setErrorMessage("Please select chain.")
-        : setErrorMessage("Please select minimum amount.");
+          ? setErrorMessage("Please select chain.")
+          : setErrorMessage("Please select minimum amount.");
       return false;
     }
 
@@ -152,7 +156,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       isNotSatisfy,
       requirementParamsList,
       constraintFile,
-      decimals
+      decimals,
     );
   };
 
@@ -161,9 +165,9 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-5 relative">
+    <div className="relative mt-5 flex flex-col gap-2">
       <div
-        className="absolute -top-14 cursor-pointer z-[999]"
+        className="absolute -top-14 z-[999] cursor-pointer"
         onClick={handleBackToConstraintListModal}
       >
         <Icon
@@ -171,26 +175,26 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
           className="cursor-pointer"
         />
       </div>
-      <div className="w-full flex gap-4 h-[32px] mb-2">
+      <div className="mb-2 flex h-[32px] w-full gap-4">
         <div
           onClick={() => handleSelectNotSatisfy(false)}
-          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
+          className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
             className={`${
               !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
-            } absolute w-full h-full`}
+            } absolute h-full w-full`}
           ></div>
           <p className="absolute text-white">Should satisfy</p>
         </div>
         <div
           onClick={() => handleSelectNotSatisfy(true)}
-          className={`w-full flex items-center justify-center rounded-lg h-full cursor-pointer text-white relative overflow-hidden`}
+          className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
             className={`${
               isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
-            } absolute w-full h-full `}
+            } absolute h-full w-full `}
           ></div>
           <p className="absolute text-white">Should not satisfy</p>
         </div>
@@ -210,10 +214,10 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
         setDecimals={setDecimals}
       />
       <div className="mb-4">{constraint.description}</div>
-      <div className="text-error text-2xs min-h-[15px]">{errorMessage}</div>
+      <div className="min-h-[15px] text-2xs text-error">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
-        className="flex cursor-pointer  bg-gray40 text-sm font-semibold text-white h-[44px] border-2 border-gray70 rounded-xl items-center justify-center mb-2"
+        className="mb-2 flex  h-[44px] cursor-pointer items-center justify-center rounded-xl border-2 border-gray70 bg-gray40 text-sm font-semibold text-white"
       >
         Add Requirement
       </div>
@@ -280,7 +284,7 @@ const CreateParams: FC<CreateModalParam> = ({
       res = await checkNftCollectionAddress(
         provider!,
         requirementParamsList.ADDRESS,
-        Number(selectedChain.chainId)
+        Number(selectedChain.chainId),
       );
       setDecimals(18);
     }
@@ -294,7 +298,7 @@ const CreateParams: FC<CreateModalParam> = ({
         provider!,
         requirementParamsList.ADDRESS,
         Number(selectedChain.chainId),
-        setDecimals
+        setDecimals,
       );
     }
     !res && setErrorMessage("Invalid contract address.");
@@ -342,7 +346,7 @@ const CreateParams: FC<CreateModalParam> = ({
             onClick={() => handleSelectNativeToken(isNativeToken)}
             className={`${
               !selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
-            } -mb-1 flex gap-2 items-center mt-2 min-h-[20px] max-w-[110px]`}
+            } -mb-1 mt-2 flex min-h-[20px] max-w-[110px] items-center gap-2`}
           >
             <Icon
               iconSrc={
@@ -358,13 +362,13 @@ const CreateParams: FC<CreateModalParam> = ({
         <div
           className={`${
             isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
-          } nftAddress_requirement_input overflow-hidden pl-4 flex rounded-2xl bg-gray40 border items-center h-[43px] border-gray50`}
+          } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
         >
           <input
             name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
             disabled={isNativeToken || !selectedChain}
             placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
-            className="bg-inherit w-full h-full"
+            className="h-full w-full bg-inherit"
             value={
               collectionAddress && collectionAddress != zeroAddress
                 ? collectionAddress
@@ -433,6 +437,20 @@ const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
+  console.log(constraint);
+
+  if (constraint.params.includes("FARCASTER_FID")) {
+    return (
+      <FarcasterUserFinder
+        onAddRequirementParam={(params: any) =>
+          setRequirementParamsList({ ...requirementParamsList, ...params })
+        }
+        featuredName={Object.keys(requirementParamsList ?? [])[0] as string}
+        params={requirementParamsList}
+      />
+    );
+  }
+
   return <></>;
 };
 
@@ -446,16 +464,126 @@ const MinimumLensAction: FC<{
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Number of followers/Post"
-      className="bg-gray40 placeholder:text-gray80 font-normal text-lg"
+      className="bg-gray40 text-lg font-normal placeholder:text-gray80"
     />
   );
 };
 
-const LensUserFinder: FC<{
+export type UserParams = {
   onAddRequirementParam: (param: any) => void;
   params: any;
   featuredName: string;
-}> = ({ onAddRequirementParam, params, featuredName }) => {
+};
+
+const FarcasterUserFinder: FC<UserParams> = ({
+  featuredName,
+  onAddRequirementParam,
+  params,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<FarcasterProfile[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [showResults, setShowResults] = useState<boolean>(false);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    setShowResults(false);
+  });
+
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (!query) return;
+      setLoading(true);
+      try {
+        const results = await fetchFarcasterProfiles(query);
+        setSearchResults(results);
+        setLoading(false);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      handleSearch();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const onUserClick = (profileId: number, displayName: string) => {
+    onAddRequirementParam({ [featuredName]: profileId });
+    setQuery(displayName);
+    setShowResults(false);
+  };
+
+  return (
+    <div className="mb-20">
+      <div onClick={() => setShowResults(true)} ref={ref}>
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search a user to follow/Paste Farcaster link/Paste Farcaster link"
+          className="bg-gray40 text-lg font-normal placeholder:text-gray80"
+        />
+
+        {showResults && (
+          <div className="absolute z-10 w-full overflow-hidden rounded-lg border border-gray70 bg-gray20 shadow-md">
+            {loading ? (
+              <div className="h-40 divide-y divide-gray70 overflow-auto">
+                {Array.from(new Array(3)).map((user) => (
+                  <div
+                    key={user}
+                    className="flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60"
+                  >
+                    <div>
+                      <div className="skeleton-item h-2 w-20 rounded bg-gray100"></div>
+                      <div className="skeleton-item mt-2 h-2 w-10 rounded bg-gray100"></div>
+                      <div className="skeleton-item mt-2 h-2 w-10 rounded bg-gray100"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : searchResults.length === 0 ? (
+              <div className="p-4 text-gray100">No results found.</div>
+            ) : (
+              <div className="h-40 divide-y divide-gray70 overflow-auto">
+                {searchResults.map((user, key) => (
+                  <div
+                    onClickCapture={() => onUserClick(user.fid, user.username)}
+                    key={key}
+                    className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${
+                      params[featuredName] == user.fid ? "bg-gray60" : ""
+                    }`}
+                  >
+                    <div>
+                      <div className="text font-semibold">{user.username}</div>
+                      <div className="text-gray-400 text-xs">
+                        Followers: {user.follower_count}
+                      </div>
+                      <div className="text-gray-400 text-xs">
+                        Following: {user.following_count}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const LensUserFinder: FC<UserParams> = ({
+  onAddRequirementParam,
+  params,
+  featuredName,
+}) => {
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<LensUserProfile[]>([]);
   const [query, setQuery] = useState<string>("");
@@ -503,24 +631,24 @@ const LensUserFinder: FC<{
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search a user to follow/Paste Lenster link/Paste Lenster link"
-          className="bg-gray40 placeholder:text-gray80 font-normal text-lg"
+          className="bg-gray40 text-lg font-normal placeholder:text-gray80"
         />
 
         {showResults && (
-          <div className="absolute overflow-hidden shadow-md w-full bg-gray20 border border-gray70 rounded-lg z-10">
+          <div className="absolute z-10 w-full overflow-hidden rounded-lg border border-gray70 bg-gray20 shadow-md">
             {loading ? (
-              <div className="divide-y h-40 overflow-auto divide-gray70">
+              <div className="h-40 divide-y divide-gray70 overflow-auto">
                 {Array.from(new Array(3)).map((user) => (
                   <div
                     key={user}
-                    className="p-4 cursor-pointer hover:bg-gray60 transition-colors flex items-center"
+                    className="flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60"
                   >
-                    <div className="w-10 skeleton-item h-10 rounded-full bg-gray100 mr-4" />
+                    <div className="skeleton-item mr-4 h-10 w-10 rounded-full bg-gray100" />
 
                     <div>
-                      <div className="skeleton-item bg-gray100 rounded h-2 w-20"></div>
-                      <div className="h-2 mt-2 bg-gray100 w-10 skeleton-item rounded"></div>
-                      <div className="h-2 mt-2 bg-gray100 w-10 skeleton-item rounded"></div>
+                      <div className="skeleton-item h-2 w-20 rounded bg-gray100"></div>
+                      <div className="skeleton-item mt-2 h-2 w-10 rounded bg-gray100"></div>
+                      <div className="skeleton-item mt-2 h-2 w-10 rounded bg-gray100"></div>
                     </div>
                   </div>
                 ))}
@@ -528,7 +656,7 @@ const LensUserFinder: FC<{
             ) : searchResults.length === 0 ? (
               <div className="p-4 text-gray100">No results found.</div>
             ) : (
-              <div className="divide-y h-40 overflow-auto divide-gray70">
+              <div className="h-40 divide-y divide-gray70 overflow-auto">
                 {searchResults.map((user, key) =>
                   user.metadata ? (
                     <div
@@ -536,7 +664,7 @@ const LensUserFinder: FC<{
                         onUserClick(user.id, user.metadata!.displayName)
                       }
                       key={user.id}
-                      className={`p-4 cursor-pointer hover:bg-gray60 transition-colors flex items-center ${
+                      className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${
                         params[featuredName] == user.id ? "bg-gray60" : ""
                       }`}
                     >
@@ -547,24 +675,24 @@ const LensUserFinder: FC<{
                             : "/assets/images/profile.png"
                         }
                         alt={user.metadata.displayName}
-                        className="w-10 h-10 rounded-full bg-gray100 mr-4"
+                        className="mr-4 h-10 w-10 rounded-full bg-gray100"
                       />
 
                       <div>
                         <div className="text font-semibold">
                           {user.metadata.displayName}
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-gray-400 text-xs">
                           Followers: {user.stats.followers}
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-gray-400 text-xs">
                           Following: {user.stats.following}
                         </div>
                       </div>
                     </div>
                   ) : (
                     <Fragment key={key}></Fragment>
-                  )
+                  ),
                 )}
               </div>
             )}

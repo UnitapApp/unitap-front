@@ -7,6 +7,7 @@ import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import Tooltip from "@/components/ui/Tooltip";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Permission, Prize } from "@/types";
+import { replacePlaceholders } from "@/utils";
 
 // const tokenImgLink = (tokenUri: string) =>
 //   tokenUri
@@ -23,6 +24,11 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
     (Permission & { isVerified: boolean })[]
   >([]);
 
+  const params = useMemo(
+    () => JSON.parse(raffle.constraintParams),
+    [raffle.constraintParams],
+  );
+
   useEffect(() => {
     setLoading(true);
     if (!userToken) {
@@ -30,7 +36,6 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
       return;
     }
 
-    console.log(raffle.constraints);
     getRaffleConstraintsVerifications(raffle.pk, userToken)
       .then((res) => {
         console.log(res.constraints);
@@ -41,7 +46,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           raffle.constraints.map((constraint) => ({
             ...constraint,
             isVerified: false,
-          }))
+          })),
         );
       })
       .finally(() => setLoading(false));
@@ -49,53 +54,54 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
 
   return (
     <div className="w-full">
-      <div className="mb-20 text-center relative">
+      <div className="relative mb-20 text-center">
         <div
           className={`${
             raffle.isPrizeNft
               ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
               : "bg-[url('/assets/images/prize-tap/cover.svg')]"
-          } bg-cover rounded-lg w-64 h-40 mx-auto`}
+          } mx-auto h-40 w-64 rounded-lg bg-cover`}
         />
         <img
           src={raffle.imageUrl}
-          className="absolute left-1/2 -translate-x-1/2 top-5"
+          className="absolute left-1/2 top-5 -translate-x-1/2"
           alt={raffle.name}
           width={168}
         />
       </div>
 
       {loading ? (
-        <div className="relative animate-pulse mt-10">
-          <div className="flex overflow-y-hidden overflow-x-auto items-center text-xs gap-2">
+        <div className="relative mt-10 animate-pulse">
+          <div className="flex items-center gap-2 overflow-x-auto overflow-y-hidden text-xs">
             {Array.from(new Array(5)).map((_, index) => (
               <div
                 key={index}
-                className="relative inline-block border-gray70 bg-gray50 border px-2 py-2 rounded-lg flex-1 w-20 h-7"
+                className="relative inline-block h-7 w-20 flex-1 rounded-lg border border-gray70 bg-gray50 px-2 py-2"
               />
             ))}
           </div>
 
-          <div className="mt-5 text-center relative py-3 bg-gray50 border-gray70 border-2 border-solid w-full h-14 rounded-xl"></div>
+          <div className="relative mt-5 h-14 w-full rounded-xl border-2 border-solid border-gray70 bg-gray50 py-3 text-center"></div>
         </div>
       ) : (
         <>
           <div
-            className={`flex items-center flex-wrap text-xs gap-2 text-white`}
+            className={`flex flex-wrap items-center gap-2 text-xs text-white`}
           >
             {permissions.map((permission, key) => (
               <Tooltip
                 className={
-                  "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-2 py-2 rounded-lg " +
+                  "rounded-lg border border-gray70 bg-gray50 px-2 py-2 transition-colors hover:bg-gray10 " +
                   (permission.isVerified ? "text-space-green" : "text-warn")
                 }
                 data-testid={`token-verification-modal-${raffle.pk}-${permission.name}`}
                 key={key}
-                text={
-                  permission.isReversed
+                text={replacePlaceholders(
+                  (permission.isReversed
                     ? permission.negativeDescription
-                    : permission.description
-                }
+                    : permission.description)!,
+                  params[permission.name],
+                )}
               >
                 <div className="flex items-center gap-1">
                   <img
@@ -115,7 +121,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           {permissions.some((item) => !item.isVerified) ? (
             <button
               disabled
-              className="mt-5 text-center text-warn py-3 bg-[#392821] border-warn border-2 border-solid w-full rounded-xl"
+              className="mt-5 w-full rounded-xl border-2 border-solid border-warn bg-[#392821] py-3 text-center text-warn"
             >
               Complete requirements first!
             </button>
@@ -124,7 +130,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
               height="48px"
               $fontSize="14px"
               disabled={new Date(raffle.startAt) > new Date()}
-              className="!w-full mt-5"
+              className="mt-5 !w-full"
               onClick={() => openEnrollModal(raffle, "Enroll")}
             >
               <div className="relative w-full">
