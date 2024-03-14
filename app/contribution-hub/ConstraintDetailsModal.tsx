@@ -417,8 +417,6 @@ const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
-  console.log(requirementList);
-
   if (
     constraint.name == "core.HasMinimumLensPost" ||
     constraint.name === "core.HasMinimumLensFollower"
