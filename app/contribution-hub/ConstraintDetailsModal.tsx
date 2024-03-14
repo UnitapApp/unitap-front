@@ -437,8 +437,6 @@ const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
-  console.log(constraint);
-
   if (constraint.params.includes("FARCASTER_FID")) {
     return (
       <FarcasterUserFinder
@@ -451,6 +449,24 @@ const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
+  if (constraint.params.includes("FARCASTER_CAST_HASH")) {
+    const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
+
+    return (
+      <MinimumLensAction
+        featuredName={featuredName}
+        onChange={(value: any) =>
+          setRequirementParamsList({
+            ...requirementParamsList,
+            [featuredName]: value,
+          })
+        }
+        placeholder="Paste Farcaster Cast Hash"
+        value={requirementParamsList?.[featuredName]}
+      />
+    );
+  }
+
   return <></>;
 };
 
@@ -458,12 +474,13 @@ const MinimumLensAction: FC<{
   featuredName: string;
   onChange: (arg: any) => void;
   value: any;
-}> = ({ featuredName, onChange, value }) => {
+  placeholder?: string;
+}> = ({ featuredName, onChange, value, placeholder }) => {
   return (
     <Input
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Number of followers/Post"
+      placeholder={placeholder ?? "Number of followers/Post"}
       className="bg-gray40 text-lg font-normal placeholder:text-gray80"
     />
   );
