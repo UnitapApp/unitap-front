@@ -9,7 +9,7 @@ const Header = () => {
     <header className="sticky top-0 z-40 flex w-full items-center justify-between px-8 py-3 text-xs backdrop-blur-md">
       <UserAuthStatus />
 
-      <div className="flex-grow-1 mx-auto hidden translate-x-0 justify-self-center md:flex lg:-translate-x-1/2">
+      <div className="absolute left-1/2 hidden -translate-x-1/2 justify-self-center lg:flex">
         <div className="flex items-center gap-1 rounded-2xl border border-gray70 bg-gray30 p-[1px]">
           <TapLink
             href="/"
@@ -39,9 +39,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="ml-auto hidden md:flex">
-        <RenderNavbarDropdown />
-      </div>
+      <RenderNavbarDropdown />
     </header>
   );
 };

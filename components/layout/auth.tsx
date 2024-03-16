@@ -31,16 +31,16 @@ export const UserAuthStatus = () => {
   const { userProfile } = useUserProfileContext();
 
   return (
-    <div ref={divRef} className="md:relative ml-5 mr-auto">
+    <div ref={divRef} className="ml-5 md:relative">
       <div className={`ml-5 mr-3`} id="profile-dropdown">
-        <div className="cursor-pointer relative p-[2px] flex items-center justify-between rounded-2xl bg-gray40 pl-8">
-          <Link href="/" className="-ml-3 absolute left-0">
+        <div className="relative flex cursor-pointer items-center justify-between rounded-2xl bg-gray40 p-[2px] pl-8">
+          <Link href="/" className="absolute left-0 -ml-3">
             <Image
               src="/assets/images/auth-logo.svg"
               width={36}
               height={38}
               alt="unitap"
-              className="w-12 h-14"
+              className="h-14 w-12"
             />
           </Link>
           <div
@@ -48,9 +48,9 @@ export const UserAuthStatus = () => {
               if (!userProfile) return;
               setDropDownActive(!dropDownActive);
             }}
-            className="cursor-pointer relative z-20 pr-[1px] pl-2 flex items-center justify-between"
+            className="relative z-20 flex cursor-pointer items-center justify-between pl-2 pr-[1px]"
           >
-            <span className="ml-2 mr-16 hidden md:block text-sm">
+            <span className="ml-2 mr-16 hidden text-sm md:block">
               {userProfile?.username}
             </span>
 
@@ -88,19 +88,19 @@ const WalletItem = ({
   return (
     <div
       className={
-        "flex hover:text-white text-sm my-2 items-center " +
+        "my-2 flex items-center text-sm hover:text-white " +
         (isActive ? "text-white" : "text-gray90")
       }
     >
       <span
         className={
-          (isActive ? "bg-white" : "bg-gray90") + " w-2 h-2 rounded-full"
+          (isActive ? "bg-white" : "bg-gray90") + " h-2 w-2 rounded-full"
         }
       />
       <span className={`ml-3 font-normal`}>{shortenAddress(wallet)}</span>
       <div className="relative">
         {copyMessage && (
-          <div className="absolute top-1/2 translate-y-1/2 mb-3 w-16 left-1/2 -translate-x-1/2 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 bg-gray10 py-2 text-center text-xs text-gray100">
             {copyMessage}
           </div>
         )}
@@ -128,10 +128,10 @@ export const ProfileDropdown: FC<{
     useWalletManagementContext();
 
   return (
-    <div className="absolute bg-gradient-to-l cursor-default from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% left-5 rounded-xl bg-cover text-white p-[2px] z-20 top-full mt-2">
-      <div className="h-[260px] rounded-xl bg-gray30 w-full  md:w-[385px] max-w-full">
+    <div className="absolute left-5 top-full z-20 mt-2 cursor-default rounded-xl bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% bg-cover p-[2px] text-white">
+      <div className="h-[260px] w-full max-w-full rounded-xl  bg-gray30 md:w-[385px]">
         <div
-          className={`p-3 rounded-t-xl ${Styles.dropdownHeader} flex items-center justify-between font-normal text-sm`}
+          className={`rounded-t-xl p-3 ${Styles.dropdownHeader} flex items-center justify-between text-sm font-normal`}
         >
           <Link
             onClick={() => {
@@ -140,7 +140,7 @@ export const ProfileDropdown: FC<{
             href="/profile"
             className="mb-1 font-semibold"
           >
-            <button className="relative text-left px-2 h-8 flex items-center w-40 z-10 text-white">
+            <button className="relative z-10 flex h-8 w-40 items-center px-2 text-left text-white">
               <Image
                 className="absolute inset-0 -z-10"
                 src="/assets/images/navbar/logout-button.svg"
@@ -153,7 +153,7 @@ export const ProfileDropdown: FC<{
                 width={12}
                 height={10}
                 src="/assets/images/navbar/arrow-right.svg"
-                className="ml-auto mr-6 mb-1"
+                className="mb-1 ml-auto mr-6"
                 alt="arrow-right"
               />
             </button>
@@ -164,13 +164,13 @@ export const ProfileDropdown: FC<{
               setDropDownActive(false);
               logout();
             }}
-            className="rounded-lg relative text-xs z-10 px-5 py-2"
+            className="relative z-10 rounded-lg px-5 py-2 text-xs"
           >
-            <div className="absolute rounded-lg -z-10 inset-0 bg-gray20 opacity-50" />
+            <div className="absolute inset-0 -z-10 rounded-lg bg-gray20 opacity-50" />
             Log Out
           </button>
         </div>
-        <div className="px-2 overflow-y-auto h-[194px] flex flex-col">
+        <div className="flex h-[194px] flex-col overflow-y-auto px-2">
           {userProfile?.wallets?.map((wallet, key) => (
             <WalletItem
               wallet={wallet.address}
@@ -185,7 +185,7 @@ export const ProfileDropdown: FC<{
               setDuplicateWalletRaiseError(false);
               setHoldUserLogout(true);
             }}
-            className="bg-gray60 mt-auto w-full rounded-lg py-2"
+            className="mt-auto w-full rounded-lg bg-gray60 py-2"
           >
             Add Or Switch Wallet
           </button>
@@ -200,7 +200,7 @@ export const RenderNavbarWalletAddress = () => {
   const { userProfile } = useUserProfileContext();
 
   const EVMWallet = userProfile?.wallets?.find(
-    (wallet) => wallet.walletType === "EVM"
+    (wallet) => wallet.walletType === "EVM",
   );
 
   const { connection } = useUserWalletProvider();
@@ -213,7 +213,7 @@ export const RenderNavbarWalletAddress = () => {
     return (
       <button
         data-testid="wallet-connect"
-        className="btn btn--sm btn--primary !w-36 h-[28px] !py-0 align-baseline"
+        className="btn btn--sm btn--primary h-[28px] !w-36 !py-0 align-baseline"
         onClick={() => setIsWalletPromptOpen(true)}
       >
         Connect Wallet
@@ -224,9 +224,9 @@ export const RenderNavbarWalletAddress = () => {
     <>
       <button
         data-testid="wallet-address"
-        className={`btn btn--sm btn--address tracking-wider font-normal ${
+        className={`btn btn--sm btn--address font-normal tracking-wider ${
           connection.isConnected && "btn--address--active"
-        } !w-40 h-10 rounded-2xl -mr-[1px] !py-0 ml-0 md:ml-3 align-baseline`}
+        } -mr-[1px] ml-0 h-10 !w-40 rounded-2xl !py-0 align-baseline md:ml-3`}
         onClick={(e) => {
           if (connection.isConnected) return;
           e.stopPropagation();
