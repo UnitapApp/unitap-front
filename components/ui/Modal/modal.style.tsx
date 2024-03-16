@@ -9,7 +9,7 @@ interface props {
 
 export const ModalWrapper = styled.div<props>`
   position: fixed;
-  z-index: 30;
+  z-index: 40;
   left: 0;
   top: 0;
   width: 100%;
@@ -27,8 +27,8 @@ export const ModalContent = styled.div<props>`
     size === "small"
       ? `width: min(420px, 90%);`
       : size === "large"
-      ? `width: min(800px, 80%);`
-      : `width: min(500px, 80%);`}
+        ? `width: min(800px, 80%);`
+        : `width: min(500px, 80%);`}
   margin: 0 5%;
   position: relative;
   padding: ${DV.sizes.basePadding * 2}px;
