@@ -64,10 +64,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
           } flex w-full flex-col items-center justify-between gap-2 rounded-t-3xl md:flex-row md:gap-0`}
         >
-          <div className="token-header rounded-l-full p-[2px]">
+          <div className="token-header mb-6 rounded-l-full p-[2px] sm:mb-0">
             <div
               // onClick={onTokenClicked}
-              className="mb-6 flex w-80 items-start rounded-l-full bg-[#161623] sm:mb-0"
+              className="flex w-80 items-start rounded-l-full bg-[#161623] "
             >
               <span className="mr-3 flex h-16 w-16 justify-center">
                 <img
