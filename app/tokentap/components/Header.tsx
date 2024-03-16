@@ -8,16 +8,15 @@ import Timer from "./timer";
 
 const Header = () => {
   return (
-    <div className="tap-header h-[250px] rounded-3xl flex flex-col lg:items-start md:justify-between overflow-hidden relative mb-5 border-4 border-gray20">
-      <div className="flex w-full">
-        <div className="z-10 tracking-[10px] font-semibold text-2xl p-5 text-[#AEF2D1]">
+    <div className="tap-header relative mb-5 flex h-[250px] flex-col overflow-hidden rounded-3xl border-4 border-gray20 md:justify-between lg:items-start">
+      <div className="flex w-full flex-wrap justify-center md:justify-start">
+        <div className="z-10 p-5 text-2xl font-semibold tracking-[10px] text-[#AEF2D1]">
           TOKENTAP
         </div>
         <Timer />
-        <span className="ml-auto" />
       </div>
 
-      <div className="flex flex-col w-full mb-5 justify-center items-center">
+      <div className="mb-5 flex w-full flex-col items-center justify-center">
         <Icon iconSrc="/assets/images/token-tap/token-header-bg.svg" />
         <div className="mt-5">
           {/* {userProfile ? <TokenCoins /> : <RenderConnectBrightID />} */}
@@ -29,7 +28,7 @@ const Header = () => {
 
 const RenderConnectBrightID = () => {
   return (
-    <div className="rounded-lg bg-gray30 border-2 border-gray50">
+    <div className="rounded-lg border-2 border-gray50 bg-gray30">
       <p>Connect BrightID to See Your Claims</p>
     </div>
   );
@@ -41,7 +40,7 @@ const TokenCoins = () => {
   const { tokentapRoundClaimLimit } = useUserProfileContext();
 
   return (
-    <div className="py-[2px] px-3 flex gap-x-3">
+    <div className="flex gap-x-3 px-3 py-[2px]">
       <>
         {claimedTokensList.map((claim, key) => {
           return (
@@ -62,7 +61,7 @@ const TokenCoins = () => {
         })}
         {range(
           0,
-          (tokentapRoundClaimLimit ?? 4) - claimedTokensList.length
+          (tokentapRoundClaimLimit ?? 4) - claimedTokensList.length,
         ).map((i, key) => {
           return (
             <Icon
