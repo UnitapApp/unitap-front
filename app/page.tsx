@@ -66,7 +66,7 @@ export default async function Home() {
 const socialLinks = [
   {
     img: "twitter-icon.svg",
-    localClass: "hover:bg-light-space-green sm:rounded-l-2xl",
+    localClass: "hover:bg-light-space-green",
     link: "http://twitter.com/unitap_app",
     alt: "twitter",
   },
@@ -78,7 +78,7 @@ const socialLinks = [
   },
   {
     img: "discord-icon.svg",
-    localClass: "hover:bg-purple-200",
+    localClass: "hover:bg-purple",
     link: "https://discord.gg/unitap",
     alt: "discord",
   },
