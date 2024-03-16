@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Address, createWalletClient, http, stringToHex } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { privateKeyToAccount, generatePrivateKey } from "viem/accounts";
 
 interface Keys {
   privateKey: string;
@@ -31,12 +31,7 @@ const useGenerateKeys = (): {
       try {
         setIsLoading(true);
 
-        const randomBytesArray = getRandomBytes(32);
-        const randomBytesHex = Array.from(randomBytesArray)
-          .map((byte) => byte.toString(16).padStart(2, "0"))
-          .join("");
-
-        const privateKey = randomBytesHex as Address;
+        const privateKey = generatePrivateKey();
 
         const wallet = createWalletClient({
           transport: http(
@@ -47,9 +42,11 @@ const useGenerateKeys = (): {
 
         const publicKey = wallet.account.publicKey;
         const address = wallet.account.address;
+
         setKeys({ privateKey, publicKey, address });
         setIsLoading(false);
       } catch (error: any) {
+        console.log(error);
         setError(error);
         setIsLoading(false);
       }
