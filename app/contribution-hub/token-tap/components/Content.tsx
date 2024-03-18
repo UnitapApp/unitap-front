@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
+import { zeroAddress } from "viem";
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
@@ -40,6 +41,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const isStart = new Date(distribution.startAt) < new Date();
   const isFinished = new Date(distribution.deadline) < new Date();
   const status = distribution.status;
+
   return (
     <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px] ">
       <div className="provideToken-item-container">
@@ -51,7 +53,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               height="36px"
             />
             <p className="text-sm font-medium text-white">
-              {distribution.distributor}
+              {distribution.token}
             </p>
           </div>
           <div>
