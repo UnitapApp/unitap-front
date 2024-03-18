@@ -22,6 +22,7 @@ import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
 import { zeroAddress } from "viem";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
@@ -202,14 +203,7 @@ const TokenTapContent = () => {
     }
   }, [userToken]);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-
-    return () => { }
-  }, [])
+  useScrollToTop();
 
   useEffect(() => {
     if (selectedFilter === Filters.All) {

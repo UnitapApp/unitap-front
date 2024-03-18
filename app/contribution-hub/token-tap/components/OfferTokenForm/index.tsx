@@ -9,6 +9,7 @@ import {
   TokenTapDisplaySteps,
   tokenTapForms,
 } from "@/app/contribution-hub/constants/forms";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface FromProp {
   detailDistributionPk?: string | undefined;
@@ -26,6 +27,8 @@ const OfferTokenForm = ({
     setPage,
     userDistribution,
   } = useTokenTapFromContext();
+
+  useScrollToTop()
 
   const { display, prevPage } = usePagination(page, setPage, tokenTapForms);
 

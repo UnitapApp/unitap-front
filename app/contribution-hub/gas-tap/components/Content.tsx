@@ -21,6 +21,7 @@ import {
   UserDonation,
   filterProps,
 } from "@/types";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface DonationProps {
   donation: UserDonation;
@@ -152,15 +153,7 @@ const GasTapContent = () => {
     }
   };
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-
-    return () => { }
-  }, [])
-
+  useScrollToTop();
 
   useEffect(() => {
     if (canDisplayAll) {

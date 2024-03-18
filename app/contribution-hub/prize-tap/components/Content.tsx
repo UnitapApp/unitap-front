@@ -23,6 +23,7 @@ import { useUserProfileContext } from "@/context/userProfile";
 import { getUserRaffles } from "@/utils/api";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { FAST_INTERVAL } from "@/constants";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface PrizeCardProp {
   prize: UserRafflesProps;
@@ -266,13 +267,7 @@ const PrizeTapContent = () => {
     setSelectedFilter(filter);
   };
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-    return () => { }
-  }, [])
+  useScrollToTop();
 
   useEffect(() => {
     if (selectedFilter == RaffleStatus.ONGOING) {

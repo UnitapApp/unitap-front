@@ -10,6 +10,7 @@ import {
   prizeTapForms,
 } from "@/app/contribution-hub/constants/forms";
 import { usePreventNavigation } from "@/utils/hooks/refresh";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface FromProp {
   detailRafflePk?: string | undefined;
@@ -39,6 +40,8 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
     process.env.NODE_ENV === "development" ? false : isFormFilled,
     "You have unsaved changes. Refreshing the page may result in data loss."
   );
+
+  useScrollToTop()
 
   const { display, prevPage } = usePagination(page, setPage, prizeTapForms);
 
