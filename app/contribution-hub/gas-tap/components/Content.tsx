@@ -198,7 +198,7 @@ const GasTapContent = () => {
   );
 
   return (
-    <div>
+    <div className="min-h-[600px]">
       <div>
         <div className="flex flex-col lg:flex-row  items-center gap-2 lg:gap-2 justify-between">
           <SearchInput

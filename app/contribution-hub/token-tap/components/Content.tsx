@@ -270,7 +270,7 @@ const TokenTapContent = () => {
     []
   );
   return (
-    <div>
+    <div className="min-h-[600px]">
       <div className="flex flex-col md:flex-row items-center justify-between select-none">
         <SearchInput
           className="w-full md:w-1/3"
