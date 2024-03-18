@@ -5,7 +5,7 @@ import Icon from "@/components/ui/Icon";
 import { FC } from "react";
 import { Chain } from "@/types";
 import { getChainClaimIcon } from "@/utils/chain";
-import { DropIconWrapper } from "../../../../../../components/containers/modals/claimModal.style";
+import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 import { Text } from "@/components/ui/text.style";
 
 const ClaimFailedBody: FC<{
@@ -17,14 +17,14 @@ const ClaimFailedBody: FC<{
     <>
       <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
           iconSrc={getChainClaimIcon(chain)}
           alt=""
         />
       </DropIconWrapper>
-      <span className="flex justify-center items-center font-medium mb-3">
+      <span className="mb-3 flex items-center justify-center font-medium">
         <Text
           className="!mb-0"
           width="100%"

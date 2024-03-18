@@ -157,20 +157,22 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     <div>
       <div className="mb-5 min-h-[227px] overflow-hidden rounded-[28px]">
         <div className={`flex min-h-[187px] bg-gray20 `}>
-          <div className="raffle-border rounded-tl-2xl p-[1px]">
-            <div
-              className={`left-side relative h-full min-w-[280px] overflow-hidden rounded-tl-2xl ${
-                isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
-              }`}
-            >
-              <span className="raffle-bg-cover absolute inset-0" />
-              <div className="relative mr-8 flex h-full flex-col items-center justify-center gap-3 p-3">
-                <img
-                  onClick={onPrizeClick}
-                  src={imageUrl ?? "/assets/images/prize-tap/default.svg"}
-                  alt={name}
-                  className={`${!isPrizeNft ? "ml-1" : ""} w-28 object-cover`}
-                />
+          <div className="raffle-border relative rounded-tl-3xl p-[1px]">
+            <div className="h-full rounded-tl-[29px] bg-gray20">
+              <div
+                className={`left-side relative h-full min-w-[320px] overflow-hidden rounded-tl-[29px] ${
+                  isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
+                }`}
+              >
+                <span className="raffle-bg-cover absolute inset-0" />
+                <div className="relative mr-8 flex h-full flex-col items-center justify-center gap-3 p-3">
+                  <img
+                    onClick={onPrizeClick}
+                    src={imageUrl ?? "/assets/images/prize-tap/default.svg"}
+                    alt={name}
+                    className={`${!isPrizeNft ? "ml-1" : ""} w-28 object-cover`}
+                  />
+                </div>
               </div>
             </div>
           </div>
