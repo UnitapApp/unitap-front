@@ -1,14 +1,40 @@
 import PermissionsCard from "@/app/_components/permissions-card";
 import Markdown from "@/app/tokentap/components/Markdown";
 import Icon from "@/components/ui/Icon";
-import Tooltip from "@/components/ui/Tooltip";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { Prize } from "@/types";
-import { getAssetUrl, replacePlaceholders, numberWithCommas } from "@/utils";
+import { getAssetUrl, numberWithCommas } from "@/utils";
 import Image from "next/image";
 import { FC, useMemo, useState, useEffect } from "react";
 import { zeroAddress } from "viem";
+
+const RenderEnrollsCount: FC<{ count: number; max: number }> = ({
+  count,
+  max,
+}) => {
+  const remaining = max - count;
+
+  const isRemainingPercentLessThanTen = (remaining / max) * 100 < 10;
+
+  if (max >= 1_000_000_000) {
+    return (
+      <p className="text-xs text-gray100">
+        {numberWithCommas(count)} people enrolled
+      </p>
+    );
+  }
+
+  if (isRemainingPercentLessThanTen || remaining < 5) {
+    return <p className="text-xs text-[#F16E35]">{remaining} Spots remains</p>;
+  }
+
+  return (
+    <p className="text-xs text-gray100">
+      {`${count} / ${numberWithCommas(max)} people enrolled`}
+    </p>
+  );
+};
 
 const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   raffle,
@@ -47,11 +73,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 
   const { openEnrollModal } = usePrizeTapContext();
   const { userProfile } = useUserProfileContext();
-  const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
-  const isRemainingPercentLessThanTen =
-    remainingPeople < (maxNumberOfEntries / 100) * 10;
   const start = new Date(startAt) < new Date();
-  const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const userClaimEntry = useMemo(
     () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
@@ -98,8 +120,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             <div className="right-side-top flex items-start justify-between ">
               <div className="prize_data">
                 <div className="prize_name__socialMedia flex items-center justify-center gap-2">
-                  <p className="text-base font-medium leading-[19.5px] text-white">
+                  <p className="mr-3 text-base font-medium leading-[19.5px] text-white">
                     {prizeName}
+                    {winnersCount > 1 && (
+                      <span className="ml-1 text-gray100">
+                        {" "}
+                        x{winnersCount}
+                      </span>
+                    )}
                   </p>
                   {twitterUrl && (
                     <a href={twitterUrl} target="_blank">
@@ -317,7 +345,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             />
           </div>
         </div>
-        <div className="flex h-[40px] items-center justify-between bg-gray30 px-9">
+        <div className="relative flex h-[40px] items-center justify-between bg-gray30 px-9">
           <div className="flex font-medium leading-[14.63px]">
             <p className="mr-1 text-xs text-gray100">
               <span className="mr-1">On</span>
@@ -325,7 +353,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
-          <div>
+          <div className="absolute left-1/2 -translate-x-1/2">
             {isRaffleEnd ? (
               <div className="mt-[10px] flex h-8 min-w-[184px] items-center justify-center rounded-tl-xl rounded-tr-xl bg-gray00">
                 <p className="lead-[14px] text-xs font-medium text-gray100 ">
@@ -336,20 +364,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               <RaffleCardTimer startTime={startAt} FinishTime={deadline} />
             )}
           </div>
-          <div className="flex">
-            {" "}
-            <p className="text-xs text-gray100">
-              {maxNumberOfEntries >= 1_000_000_000
-                ? `${numberWithCommas(numberOfOnchainEntries)} people enrolled`
-                : !isRemainingPercentLessThanTen
-                  ? `
-											${numberOfOnchainEntries} / ${numberWithCommas(
-                        maxNumberOfEntries,
-                      )} people enrolled`
-                  : remainingPeople > 0
-                    ? `${remainingPeople} people remains`
-                    : `${numberWithCommas(maxNumberOfEntries)} people enrolled`}
-            </p>
+          <div className="flex gap-14">
+            {winnersCount > 1 && (
+              <span className="text-xs text-[#B5B5C6]">
+                {winnersCount} Winners
+              </span>
+            )}{" "}
+            <RenderEnrollsCount
+              count={numberOfOnchainEntries}
+              max={maxNumberOfEntries}
+            />
           </div>
         </div>
       </div>

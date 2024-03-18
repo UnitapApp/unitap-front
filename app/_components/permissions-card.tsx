@@ -1,5 +1,5 @@
 import Tooltip from "@/components/ui/Tooltip";
-import { ConstraintProps, Permission } from "@/types";
+import { Permission } from "@/types";
 import { replacePlaceholders } from "@/utils";
 import Image from "next/image";
 import { FC, useMemo, useState } from "react";
