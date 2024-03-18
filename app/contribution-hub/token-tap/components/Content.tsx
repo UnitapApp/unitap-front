@@ -85,7 +85,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           </div>
         </div>
         <div className="text-2xs font-medium mt-2 text-white">
-          Decentralized verification system
+          {distribution.distributor}
         </div>
         <div className="flex justify-between my-3">
           <div className="flex items-center gap-3">
@@ -99,7 +99,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-gray80 text-xs">non-Repeatable</div>
+            <div className="text-gray80 text-xs">{distribution.isOneTimeClaim ? "Single-Claim" : " Periodic claim"}</div>
             <Icon
               iconSrc="/assets/images/provider-dashboard/reload.svg"
               width="16px"
@@ -108,21 +108,20 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           </div>
         </div>
         <div className="pt-2">
-          {isStart && isFinished && status === Filters.Verified && (
-            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
-              {distribution.numberOfClaims} Spots Enrolled
-            </div>
-          )}
-
           {isStart && !isFinished && status === Filters.Verified && (
             <div className="bg-gray50 rounded-xl text-sm font-medium text-white h-[48px]  flex items-center justify-center ">
               {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
-              Spots left
+              claims left
             </div>
           )}
         </div>
         <div className="absolute bottom-2 right-4 left-4">
-          {status == Filters.Verified && (
+          {isStart && isFinished && status === Filters.Verified && (
+            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
+              {distribution.numberOfClaims} claimed
+            </div>
+          )}
+          {status == Filters.Verified && !isFinished && (
             <CardTimerTokenTap
               startTime={distribution.startAt}
               FinishTime={distribution.deadline}
