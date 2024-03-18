@@ -314,7 +314,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 network!
               </div>
               <Tooltip
-                text="75% of your donation will be distributed among users. the rest is used for transaction fees. and depending on the network gas fees, the number might not be exact."
+                text="All of your contributions will go to onboarding users to this network. The majority of the donations will be transferred straight to users as gas tokens and a smaller part will cover the network transaction fees."
                 toolTipClassName="!w-[300px]"
                 className="cursor-pointer mr-2"
               // title=""
