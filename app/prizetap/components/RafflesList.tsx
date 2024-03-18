@@ -23,6 +23,7 @@ import { getAssetUrl, replacePlaceholders, shortenAddress } from "@/utils";
 import { zeroAddress } from "viem";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import ReactMarkdown from "react-markdown";
+import Markdown from "@/app/tokentap/components/Markdown";
 
 export const Action = styled.div`
   display: flex;
@@ -156,11 +157,23 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     <div>
       <div className="mb-5 min-h-[227px] overflow-hidden rounded-[28px]">
         <div className={`flex min-h-[187px] bg-gray20 `}>
-          <div
-            className={`left-side min-w-[308px] ${
-              isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
-            }`}
-          ></div>
+          <div className="raffle-border rounded-tl-2xl p-[1px]">
+            <div
+              className={`left-side relative h-full min-w-[280px] overflow-hidden rounded-tl-2xl ${
+                isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"
+              }`}
+            >
+              <span className="raffle-bg-cover absolute inset-0" />
+              <div className="relative mr-8 flex h-full flex-col items-center justify-center gap-3 p-3">
+                <img
+                  onClick={onPrizeClick}
+                  src={imageUrl ?? "/assets/images/prize-tap/default.svg"}
+                  alt={name}
+                  className={`${!isPrizeNft ? "ml-1" : ""} w-28 object-cover`}
+                />
+              </div>
+            </div>
+          </div>
           <div className="right-side w-full p-5">
             <div className="right-side-top flex items-start justify-between ">
               <div className="prize_data">
@@ -169,26 +182,30 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     {prizeName}
                   </p>
                   {twitterUrl && (
-                    <Icon
-                      iconSrc="assets/images/prize-tap/twitter-logo.svg"
-                      onClick={() => window.open(twitterUrl, "_blank")}
-                      width="20px"
-                      height="16px"
-                      hoverable
-                    />
+                    <a href={twitterUrl} target="_blank">
+                      <Icon
+                        iconSrc="assets/images/prize-tap/twitter-logo.svg"
+                        width="20px"
+                        className="rounded-xl border border-bg06 bg-bg04 p-1 px-2"
+                        height="16px"
+                        hoverable
+                      />
+                    </a>
                   )}
                   {discordUrl && (
-                    <Icon
-                      iconSrc="assets/images/prize-tap/discord-logo.svg"
-                      onClick={() => window.open(discordUrl, "_blank")}
-                      width="20px"
-                      height="16px"
-                      hoverable
-                    />
+                    <a href={discordUrl} target="_blank">
+                      <Icon
+                        iconSrc="assets/images/prize-tap/discord-logo.svg"
+                        className="rounded-xl border border-bg06 bg-bg04 p-1 px-2"
+                        width="20px"
+                        height="16px"
+                        hoverable
+                      />
+                    </a>
                   )}
                 </div>
                 <div
-                  className="prize-creator_name text-[10px] font-medium leading-[12.19px] text-[#979BA9] hover:cursor-pointer"
+                  className="prize-creator_name mt-2 text-[10px] font-medium leading-[12.19px] text-[#979BA9] hover:cursor-pointer"
                   onClick={() => {
                     creatorUrl && window.open(creatorUrl, "_blank");
                   }}
@@ -368,9 +385,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 ""
               )}
             </div>
-            <div className="right-side-description mt-2 h-[72px] font-sans text-xs font-normal leading-6 text-gray100">
-              {description}
-            </div>
+            <Markdown
+              content={description}
+              className="right-side-description mt-2 h-[72px] font-sans text-xs font-normal leading-6 text-gray100"
+            />
             <span className="prizeTap-constraint mt-[14px] flex min-h-[22px] w-full items-stretch overflow-hidden rounded-br-[10px] rounded-tr-[10px] bg-constraint-grad-ltr text-[10px]">
               <div className={`flex w-full flex-wrap gap-3 p-1 text-gray100`}>
                 {(showAllPermissions
@@ -429,7 +447,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
         <div className="flex h-[40px] items-center justify-between bg-gray30 px-9">
           <div className="flex font-medium leading-[14.63px]">
             <p className="mr-1 text-xs text-gray100">
-              <span className="mr-2 text-gray90">Chain:</span>
+              <span className="mr-1">On</span>
               {chain.chainName}
             </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
