@@ -8,12 +8,12 @@ interface Prop {
   data: ProviderDashboardFormDataProp;
 }
 const FormYouFilled = ({ data }: Prop) => {
-  const { requirementList } = useTokenTapFromContext();
+  const { requirementList, claimPeriodic } = useTokenTapFromContext();
   const prizeName = data.isNft
     ? data.nftName
     : data.isNativeToken
-    ? data.selectedChain.symbol
-    : data.tokenSymbol;
+      ? data.selectedChain.symbol
+      : data.tokenSymbol;
 
   return (
     <div
@@ -38,22 +38,22 @@ const FormYouFilled = ({ data }: Prop) => {
                   className="cursor-pointer"
                 />
               </div>
-              <p className="text-2xs">Decentralized verification system</p>
+              <p className="text-2xs">{data.provider}</p>
             </div>
           </div>
           <div className="text-gray100 text-2xs mt-3">{data.description}</div>
           <div className="flex gap-2  mt-3">
             {requirementList.length > 0
               ? requirementList.map((item, index) => {
-                  return (
-                    <div
-                      className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
-                      key={index}
-                    >
-                      {item.isNotSatisfy && "Not "} {item.title}
-                    </div>
-                  );
-                })
+                return (
+                  <div
+                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
+                    key={index}
+                  >
+                    {item.isNotSatisfy && "Not "} {item.title}
+                  </div>
+                );
+              })
               : null}
           </div>
         </div>
@@ -69,7 +69,7 @@ const FormYouFilled = ({ data }: Prop) => {
           />
         </div>
         <div className="flex text-gray90 text-2xs bg-gray20 h-full items-center gap-2 px-2">
-          Repeats Weekly
+          {claimPeriodic ? "Periodic-Claim" : "Single-Claim"}
           <div className="opacity-50">
             <Icon
               iconSrc="/assets/images/provider-dashboard/warn-loading.svg"

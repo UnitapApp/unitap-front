@@ -99,7 +99,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-gray80 text-xs">{distribution.isOneTimeClaim ? "Single-Claim" : " Periodic claim"}</div>
+            <div className="text-gray80 text-xs">{distribution.isOneTimeClaim ? "Single-Claim" : " Periodic-Claim"}</div>
             <Icon
               iconSrc="/assets/images/provider-dashboard/reload.svg"
               width="16px"
