@@ -22,6 +22,7 @@ export type Token = {
   isClaimable: boolean;
   tokenImageUrl?: string;
   contract?: string;
+  constraintParams: string;
   status: "VERIFIED" | "PENDING" | "REJECTED";
   chain: Chain;
   constraints: Permission[];
