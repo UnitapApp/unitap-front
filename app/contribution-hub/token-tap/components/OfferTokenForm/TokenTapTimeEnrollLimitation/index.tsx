@@ -5,6 +5,7 @@ import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
 import Pagination from "@/app/contribution-hub/pagination";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
+import Icon from "@/components/ui/Icon";
 
 export const TimeEnrollLimitationDescription = {
   id: 1,
@@ -107,7 +108,29 @@ const TokenTapTimeEnrollLimitation = ({
         </div>
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
-        {/* <PeopleLimitation showErrors={showErrors} /> */}
+
+        <div className="text-xs text-gray100 flex items-center justify-center text-center w-full max-w-[452px] absolute top-[35em] px-2">
+
+          <div className="flex">
+            <Icon
+              className="mt-[-1px]"
+              width="18px"
+              height="18px"
+              iconSrc="/assets/images/provider-dashboard/exclamationMark.svg"
+            />
+            <p>
+              Validating requests usually takes around 1 week. if you need for your raffle to go live sooner, please contact us at
+              <a
+                target="_blank"
+                href="mailto: help@unitap.app"
+                className="text-white"
+              >
+                {" "}help@unitap.app
+
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}
