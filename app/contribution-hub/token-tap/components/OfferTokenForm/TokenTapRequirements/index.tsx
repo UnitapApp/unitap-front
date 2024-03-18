@@ -16,8 +16,7 @@ const TokenTapRequirements = ({
     <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
       <div className="text-gray100 min-h-[424px] text-xs font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
         <p className="mb-4">
-          Add enrollment requirements. You can skip this part but it is advised
-          to have at least one requirement for sybil attack protection.
+          Add enrollment requirements. You can skip this part but it is advised to have at least one requirement to prevent bot attacks and fake accounts.
         </p>
         {requirementList.map((requirement, key) => (
           <NewAddedConstraint key={key} requirement={requirement} />
