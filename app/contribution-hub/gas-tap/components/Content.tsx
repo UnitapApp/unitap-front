@@ -153,6 +153,16 @@ const GasTapContent = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
+    return () => { }
+  }, [])
+
+
+  useEffect(() => {
     if (canDisplayAll) {
       setFilteredItem(userDonations);
       filterByPhrase(userDonations);

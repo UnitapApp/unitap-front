@@ -203,6 +203,15 @@ const TokenTapContent = () => {
   }, [userToken]);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
+    return () => { }
+  }, [])
+
+  useEffect(() => {
     if (selectedFilter === Filters.All) {
       setFilteredItems(userDistributions);
     }

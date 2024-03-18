@@ -267,6 +267,14 @@ const PrizeTapContent = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    return () => { }
+  }, [])
+
+  useEffect(() => {
     if (selectedFilter == RaffleStatus.ONGOING) {
       setFilteredRaffle(
         userRaffles.filter(
