@@ -480,7 +480,7 @@ const TokenTapProvider: FC<
         !insufficientBalance &&
         tokenContractStatus.isValid === ContractValidationStatus.Valid &&
         tokenContractAddress &&
-        Number(winnersCount) <= 500 &&
+        // Number(winnersCount) <= 500 &&
         Number(totalAmount) > 0;
       return isValid;
     };
@@ -549,49 +549,6 @@ const TokenTapProvider: FC<
     //   errorObject.endDateStatus = false;
     //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
     // }
-
-    if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
-      errorObject.maximumLimitationStatus = false;
-      errorObject.maximumLimitationMessage = errorMessages.required;
-    }
-
-    if (
-      data.winnersCount &&
-      Math.floor(data.winnersCount) != data.winnersCount
-    ) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
-
-    if (data.winnersCount && data.winnersCount <= 0) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.invalidInput;
-    }
-
-    if (!data.winnersCount) {
-      errorObject.numberOfWinnersStatus = false;
-      errorObject.numberOfWinnersMessage = errorMessages.required;
-    }
-
-    if (Number(data.maxNumberOfEntries) > 0) {
-      if (
-        (data.isNft &&
-          Number(data.maxNumberOfEntries) <= data.nftTokenIds.length) ||
-        (!data.isNft &&
-          Number(data.maxNumberOfEntries) <= Number(data.winnersCount))
-      ) {
-        errorObject.maximumLimitationStatus = false;
-        errorObject.maximumLimitationMessage = (
-          <p>
-            The maximum number of enrollees cannot be less than or equal to the
-            number of winners.
-            <br />
-            Number of winners:{" "}
-            {!data.isNft ? data.winnersCount : data.nftTokenIds.length}
-          </p>
-        );
-      }
-    }
 
     return errorObject;
   };
