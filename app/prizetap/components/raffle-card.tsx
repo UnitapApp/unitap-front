@@ -161,7 +161,18 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   by {creator}
                 </div>
               </div>
-              {!winnersEntry.length && !userEntry?.txHash ? (
+              {!start ? (
+                <div className="enroll-btn cursor-pointer">
+                  <button
+                    disabled
+                    className="enroll-button rounded-[18px] p-[1px] text-sm"
+                  >
+                    <div className="flex h-[36px] min-w-[208px] items-center justify-center rounded-3xl">
+                      <p className="text-[#8B6D8B]">Enrollment Not Started!</p>
+                    </div>
+                  </button>
+                </div>
+              ) : !winnersEntry.length && !userEntry?.txHash ? (
                 // user can enroll in raffle
 
                 <div className="enroll-btn cursor-pointer">
