@@ -65,8 +65,8 @@ export default async function Home() {
 
 const socialLinks = [
   {
-    img: "twitter-icon.svg",
-    localClass: "hover:bg-light-space-green",
+    img: "x-logo.svg",
+    localClass: "hover:bg-[#000000]",
     link: "http://twitter.com/unitap_app",
     alt: "twitter",
   },
@@ -109,7 +109,9 @@ const Footer = () => {
             key={social.link}
             className={`${social.localClass} home-footer-social-link flex cursor-pointer items-center justify-center border-b-3 border-gray40 px-8 py-6 transition duration-300 ease-in-out sm:py-0 md:border-b-0 md:border-r-3`}
           >
-            <img
+            <Image
+              width="34"
+              height="28"
               alt={social.alt}
               className={social.localClass}
               src={`/assets/images/landing/${social.img}`}
