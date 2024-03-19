@@ -31,7 +31,6 @@ export const ModalContent = styled.div<props>`
         : `width: min(500px, 80%);`}
   margin: 0 5%;
   position: relative;
-  padding: ${DV.sizes.basePadding * 2}px;
   overflow: hidden;
   z-index: -2;
 
