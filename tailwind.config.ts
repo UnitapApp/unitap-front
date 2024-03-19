@@ -35,6 +35,7 @@ const config: Config = {
         bg06: "#212130",
         bg07: "",
         bg08: "",
+        bg3: "#21212E",
         bg6: "#3E3E4A",
         primary: "#EF476F",
         secondary: "#F59569",
