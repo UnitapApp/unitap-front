@@ -37,7 +37,7 @@ const config: Config = {
         bg08: "",
         bg3: "#21212E",
         bg6: "#3E3E4A",
-        primary: "#EF476F",
+        primary: "#5EE1B0",
         secondary: "#F59569",
         input: "#EFF3F8",
         label: "#565656",

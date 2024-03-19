@@ -4,7 +4,7 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { shortenAddress } from "@/utils";
 import { FC, Fragment, useEffect, useState } from "react";
-import { isAddress } from "viem";
+import { Address, isAddress, isAddressEqual } from "viem";
 
 const ChooseWalletBody: FC<{
   setIsWalletChoosing: (isWalletChoosing: boolean) => void;
@@ -22,6 +22,8 @@ const ChooseWalletBody: FC<{
       setError("Address is not valid");
       return;
     }
+
+    if (!text) return;
 
     setError("");
     setClaimWalletAddress(text);
@@ -63,7 +65,7 @@ const ChooseWalletBody: FC<{
       </div>
       {!!error && <p className="-mt-4 ml-2 text-xs text-error">{error}</p>}
 
-      <div className="bg-bg3 mt-4 rounded-xl">
+      <div className="bg-bg3 mt-4 overflow-hidden rounded-xl">
         {userProfile?.wallets.map((wallet, key) => (
           <Fragment key={key}>
             <div
@@ -71,9 +73,22 @@ const ChooseWalletBody: FC<{
                 setClaimWalletAddress(wallet.address);
                 setIsWalletChoosing(false);
               }}
-              className={`cursor-pointer px-5 py-4 font-semibold text-gray100`}
+              className={`flex cursor-pointer items-center justify-between px-5 py-4 font-semibold text-gray100 ${claimWalletAddress && isAddressEqual(wallet.address, claimWalletAddress as Address) ? "!bg-primary/5 text-primary" : ""}`}
             >
-              {shortenAddress(wallet.address)}
+              <span>{shortenAddress(wallet.address)}</span>
+
+              {!!claimWalletAddress &&
+                isAddressEqual(
+                  wallet.address,
+                  claimWalletAddress as Address,
+                ) && (
+                  <Icon
+                    iconSrc="/assets/images/gas-tap/wallet-active.svg"
+                    alt="check"
+                    width="24"
+                    height="25"
+                  />
+                )}
             </div>
             {key + 1 !== userProfile.wallets.length && (
               <div className="mx-auto h-[1px] w-88 bg-[#323244]"></div>
