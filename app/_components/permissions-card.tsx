@@ -12,7 +12,7 @@ const PermissionsCard: FC<{
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const params = useMemo(
-    () => JSON.parse(constraintParams),
+    () => JSON.parse(constraintParams || "{}"),
     [constraintParams],
   );
 
