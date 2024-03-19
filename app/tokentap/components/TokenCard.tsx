@@ -60,9 +60,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               // onClick={onTokenClicked}
               className="flex w-80 items-start rounded-l-full bg-[#161623] "
             >
-              <span className="mr-3 flex h-16 w-16 justify-center">
+              <span className="mr-3 flex h-16 w-16 justify-center ">
                 <img
-                  className="h-full w-auto"
+                  className="h-full w-auto object-contain"
                   src={
                     token.imageUrl ??
                     "/assets/images/token-tap/bright-token.svg"
@@ -92,9 +92,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 >
                   <Icon
                     className="cursor-pointer"
-                    iconSrc="assets/images/token-tap/twitter-icon.svg"
+                    iconSrc="/assets/images/landing/x-logo.svg"
                     width="auto"
                     height="13px"
+                    alt="twitter"
                   />
                 </a>
                 <a

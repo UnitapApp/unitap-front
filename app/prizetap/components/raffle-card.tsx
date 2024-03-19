@@ -142,10 +142,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     {twitterUrl && (
                       <a href={twitterUrl} target="_blank">
                         <Icon
-                          iconSrc="assets/images/prize-tap/twitter-logo.svg"
-                          width="20px"
+                          iconSrc="/assets/images/landing/x-logo.svg"
                           className="rounded-xl border border-bg06 bg-bg04 p-1 px-2"
-                          height="16px"
+                          alt="twitter"
+                          width="15px"
+                          height="15px"
                           hoverable
                         />
                       </a>
@@ -157,6 +158,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           className="rounded-xl border border-bg06 bg-bg04 p-1 px-2"
                           width="20px"
                           height="16px"
+                          alt="discord"
                           hoverable
                         />
                       </a>
