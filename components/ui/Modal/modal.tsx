@@ -38,8 +38,8 @@ const Modal = ({
   return (
     <>
       {isOpen && (
-        <ModalWrapper
-          className={className}
+        <div
+          className={`bg-darkblack/20 fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center overflow-auto backdrop-blur-sm ${className}`}
           onClick={(_e) => closeModalHandler()}
           data-testid="modal-wrapper"
         >
@@ -55,15 +55,15 @@ const Modal = ({
             data-testid="modal-content"
             size={size}
           >
-            <div className="flex items-center">
+            <div className="bg-bg6 flex items-center p-4">
               {titleLeft && (
-                <p className="text-xl text-left relative z-10 text-white">
+                <p className="relative z-10 text-left text-xl text-white">
                   {" "}
                   {titleLeft}{" "}
                 </p>
               )}
               {title && (
-                <p className="modal-title font-bold text-sm relative z-10 text-center ml-auto text-white">
+                <p className="modal-title relative z-10 ml-auto text-center text-sm font-semibold text-white">
                   {" "}
                   {title}{" "}
                 </p>
@@ -81,13 +81,13 @@ const Modal = ({
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } max-h-[70vh] !rounded-none styled-scroll`}
+              } styled-scroll max-h-[70vh] !rounded-none p-3`}
               size={size}
             >
               {children}
             </ModalChildrenWrapper>
           </ModalContent>
-        </ModalWrapper>
+        </div>
       )}
     </>
   );
