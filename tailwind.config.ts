@@ -137,6 +137,7 @@ const config: Config = {
 
         "enrolled-grad-btn":
           "linear-gradient(110.05deg, rgba(36, 50, 42, 0.3) 60.86%, #49A47C 112.10%)",
+        "x-button": "url('/assets/images/x-button-bg.svg')",
       },
 
       dropShadow: {

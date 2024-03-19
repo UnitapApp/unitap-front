@@ -1,12 +1,11 @@
 "use client";
 
-import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
 import { FC } from "react";
 import { Chain } from "@/types";
-import { getChainClaimIcon } from "@/utils/chain";
-import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
 import { Text } from "@/components/ui/text.style";
+import Image from "next/image";
+import { formatWeiBalance } from "@/utils";
 
 const ClaimFailedBody: FC<{
   chain: Chain;
@@ -15,16 +14,21 @@ const ClaimFailedBody: FC<{
 }> = ({ chain, claim, claimLoading }) => {
   return (
     <>
-      <DropIconWrapper data-testid={`chain-claim-failed-${chain.pk}`}>
+      <Image
+        className="mb-10"
+        width="150"
+        height="153"
+        src={"/assets/images/gas-tap/claim-failed.svg"}
+        alt="spaceman failed"
+      />
+      <span className="flex items-center justify-center font-medium">
         <Icon
-          className="chain-logo z-10 mb-10 mt-14"
-          width="auto"
-          height="110px"
-          iconSrc={getChainClaimIcon(chain)}
-          alt=""
+          iconSrc="assets/images/gas-tap/error.svg"
+          width="25"
+          height="25"
+          className="mr-1"
+          alt="error"
         />
-      </DropIconWrapper>
-      <span className="mb-3 flex items-center justify-center font-medium">
         <Text
           className="!mb-0"
           width="100%"
@@ -34,31 +38,28 @@ const ClaimFailedBody: FC<{
         >
           Claim Failed!
         </Text>
-        <Icon
-          iconSrc="assets/images/modal/failed-state-x.svg"
-          width="22px"
-          height="auto"
-          className="ml-2"
-        />
       </span>
-      <Text
-        width="100%"
-        fontSize="14"
-        color="second_gray_light"
-        mb={3}
-        $textAlign="center"
-      >
-        An error occurred while processing your request
-      </Text>
-      <ClaimButton
-        $fontSize="16px"
+      <p className="mb-5 mt-5 text-xs text-gray100">
+        Something went wrong, try again to claim{" "}
+        {`${formatWeiBalance(chain.maxClaimAmount)} ${chain.symbol}`}
+      </p>
+      <button
         onClick={() => claim(chain.pk)}
-        $width={"100%"}
-        className="!w-full"
-        data-testid={`chain-claim-action-${chain.pk}`}
+        disabled={claimLoading}
+        className="gradient-button-st-1 w-full rounded-3xl !bg-ut-grad-ltr p-[2px] text-sm"
       >
-        {claimLoading ? <p>Claiming...</p> : <p>Try Again</p>}
-      </ClaimButton>
+        <div className="flex h-11 items-center justify-center rounded-3xl px-4">
+          {claimLoading ? (
+            <p className="bg-ut-grad-ltr bg-clip-text font-semibold text-transparent">
+              Claiming...
+            </p>
+          ) : (
+            <p className="bg-ut-grad-ltr bg-clip-text font-semibold text-transparent">
+              Try Again
+            </p>
+          )}
+        </div>
+      </button>
     </>
   );
 };

@@ -172,7 +172,7 @@ const ClaimModal = () => {
         isOpen={isOpen}
       >
         <div
-          className="claim-modal-wrapper flex flex-col items-center justify-center pt-5"
+          className="flex flex-col items-center justify-center"
           data-testid={`chain-claim-modal-${activeChain.pk}`}
         >
           {!userProfile?.isMeetVerified ? (

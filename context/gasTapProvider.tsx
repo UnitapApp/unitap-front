@@ -328,11 +328,11 @@ export const GasTapProvider: FC<
     userToken,
   ]);
 
-  // useEffect(() => {
-  //   if (!isConnected || !userAddress) return;
+  useEffect(() => {
+    if (!isConnected || !userAddress) return;
 
-  //   setClaimWalletAddress(userAddress);
-  // }, [isConnected, userAddress]);
+    setClaimWalletAddress(userAddress);
+  }, [isConnected, userAddress]);
 
   useEffect(() => {
     if (userToken) return;

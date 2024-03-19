@@ -1,7 +1,5 @@
 "use client";
 
-import { SecondaryGreenColorButton } from "@/components/ui/Button/button";
-import { Text } from "@/components/ui/text.style";
 import { FC } from "react";
 import { Chain, ClaimReceipt } from "@/types";
 import animation from "@/assets/animations/GasFee-delivery2.json";
@@ -14,33 +12,29 @@ const ClaimPendingBody: FC<{
 }> = ({ chain, closeClaimModal, activeClaimReceipt }) => {
   return (
     <>
-      <Lottie
-        options={{
-          animationData: animation,
-          loop: true,
-          autoplay: true,
-        }}
-        width={200}
-      ></Lottie>
-      <Text width="100%" fontSize="14" color="space_green" $textAlign="center">
+      <div className="-mt-10 w-full">
+        <Lottie
+          options={{
+            animationData: animation,
+            loop: true,
+            autoplay: true,
+          }}
+          width={250}
+        />
+      </div>
+      <p className="-mt-8 text-center text-sm font-semibold text-[#55E9A9]">
         Claim transaction submitted
-      </Text>
-      <Text
-        width="100%"
-        fontSize="14"
-        color="second_gray_light"
-        mb={3}
-        $textAlign="center"
-      >
-        The claim transaction will be completed soon
-      </Text>
-      <SecondaryGreenColorButton
+      </p>
+      <p className="mb-5 mt-8 text-sm text-gray100">
+        The claim transaction will be completed soon...
+      </p>
+
+      <button
         onClick={closeClaimModal}
-        className="!w-full"
-        data-testid={`chain-claim-action-${chain.pk}`}
+        className="gradient-button-st-1 mt-5 w-full rounded-3xl p-[1px]"
       >
-        Close
-      </SecondaryGreenColorButton>
+        <div className="btn !rounded-3xl tracking-wide">Close</div>
+      </button>
     </>
   );
 };
