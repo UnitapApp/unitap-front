@@ -106,6 +106,9 @@ const config: Config = {
           "linear-gradient(91.35deg, #03A9F4 -0%, #DFFFF5 42.19%, #03E6F4 100%)",
         "g-primary":
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 56.06%, #E1C4F4 73.07%, #DD40CD 111.44%)",
+        "unitap-galaxy": "linear-gradient(to right, #1F3A3E, #412E4894)",
+        "g-dark-primary-gradient":
+          "linear-gradient(to right, #2A3837,#3F2B44, #322837)",
         "g-primary-2":
           "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
