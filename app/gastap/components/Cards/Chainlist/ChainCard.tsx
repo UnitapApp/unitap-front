@@ -18,6 +18,7 @@ import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
 import Styles from "./chain-card.module.scss";
 import Image from "next/image";
+import GasBalanceRenderer from "./GasBalanceRenderer";
 
 type ChainCardProps = {
   chain: Chain;
@@ -54,9 +55,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
       !!oneTimeClaimedGasList.find(
         (item) =>
           item.status === ClaimReceiptState.VERIFIED &&
-          item.chain.pk === chain.pk
+          item.chain.pk === chain.pk,
       ),
-    [chain, oneTimeClaimedGasList]
+    [chain, oneTimeClaimedGasList],
   );
 
   const isMonthlyCollected = useMemo(
@@ -64,9 +65,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
       !!activeClaimHistory.find(
         (claim: ClaimReceipt) =>
           claim.chain.pk === chain.pk &&
-          claim.status === ClaimReceiptState.VERIFIED
+          claim.status === ClaimReceiptState.VERIFIED,
       ),
-    [activeClaimHistory, chain]
+    [activeClaimHistory, chain],
   );
 
   const { setChainId, setIsOpen } = useContext(FundContext);
@@ -132,23 +133,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
             }
           >
-            {/* <div className="w-full sm:w-auto items-center sm:items-end">
-              {chain.chainType === "EVM" && (
-                <AddMetamaskButton
-                  disabled={!isConnected}
-                  data-testid={`chain-switch-${chain.pk}`}
-                  onClick={() => addAndSwitchChain(chain)}
-                  className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
-                    alt="metamask logo"
-                  />
-                  Add
-                </AddMetamaskButton>
-              )}
-            </div> */}
-
             <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
               {chain.chainType !== ChainType.SOLANA && (
                 <button
@@ -211,13 +195,13 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 >
                   <p className="!bg-g-dark-primary-gradient">{`Claim ${formatChainBalance(
                     chain.maxClaimAmount,
-                    chain.symbol
+                    chain.symbol,
                   )} ${chain.symbol}`}</p>
                 </ClaimButton>
               ) : !activeClaimHistory.find(
                   (claim: ClaimReceipt) =>
                     claim.chain.pk === chain.pk &&
-                    claim.status !== ClaimReceiptState.REJECTED
+                    claim.status !== ClaimReceiptState.REJECTED,
                 ) ? (
                 <ClaimButton
                   data-testid={`chain-show-claim-${chain.pk}`}
@@ -227,7 +211,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 >
                   <p>{`Claim ${formatChainBalance(
                     chain.maxClaimAmount,
-                    chain.symbol
+                    chain.symbol,
                   )} ${chain.symbol}`}</p>
                 </ClaimButton>
               ) : (
@@ -278,8 +262,8 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               isHighlighted
                 ? "bg-transparent"
                 : chain.isOneTimeClaim
-                ? "bg-gray40"
-                : "bg-dark-primary"
+                  ? "bg-gray40"
+                  : "bg-dark-primary"
             }`}
             withoutImage
             text={
@@ -342,44 +326,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
-  if (balance > 1) {
-    return (
-      <div className="flex items-center ml-3 gap-2">
-        {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-space-green" key={key} />
-        ))}
-        {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
-        ))}
-      </div>
-    );
-  }
-
-  if (balance == 1)
-    return (
-      <div className="flex items-center ml-3 gap-2">
-        {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-yellow-600" key={key} />
-        ))}
-        {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
-        ))}
-      </div>
-    );
-
-  return (
-    <div className="flex items-center ml-3 gap-2">
-      {Array.from(new Array(5)).map((_, key) => (
-        <span
-          className="w-3 h-[5px] rounded-[8px] border-[1px] bg-gray60 border-error"
-          key={key}
-        />
-      ))}
     </div>
   );
 };
