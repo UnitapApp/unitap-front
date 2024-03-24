@@ -7,7 +7,7 @@ import {
   ProviderDashboardButtonShowDetails,
   ProviderDashboardButtonSuccess,
   ProviderDashboardButtonVerifying,
-} from "../../Buttons";
+} from "../../components/Buttons";
 
 import Icon from "@/components/ui/Icon";
 import SearchInput from "../../prize-tap/components/SearchInput";
@@ -44,9 +44,9 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const status = distribution.status;
 
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px] ">
+    <div className="relative h-[264px] w-full select-none rounded-xl border-2 border-gray40 bg-gray30 p-4 ">
       <div className="provideToken-item-container">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Icon
               iconSrc={distribution.chain.logoUrl}
@@ -79,18 +79,18 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               </ProviderDashboardButtonSuccess>
             )}
             {isFinished && status == Filters.Verified && (
-              <div className="bg-gray50 border flex items-center justify-center border-gray70 rounded-md w-[100px] h-6 text-2xs text-gray100">
+              <div className="flex h-6 w-[100px] items-center justify-center rounded-md border border-gray70 bg-gray50 text-2xs text-gray100">
                 Finished
               </div>
             )}
           </div>
         </div>
-        <div className="text-2xs font-medium mt-2 text-white">
+        <div className="mt-2 text-2xs font-medium text-white">
           {distribution.distributor}
         </div>
-        <div className="flex justify-between my-3">
+        <div className="my-3 flex justify-between">
           <div className="flex items-center gap-3">
-            <div className="text-gray100 text-2xs">
+            <div className="text-2xs text-gray100">
               on {distribution.chain.chainName}
             </div>
             <Icon
@@ -100,7 +100,9 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-gray80 text-xs">{distribution.isOneTimeClaim ? "Single-Claim" : " Periodic-Claim"}</div>
+            <div className="text-xs text-gray80">
+              {distribution.isOneTimeClaim ? "Single-Claim" : " Periodic-Claim"}
+            </div>
             <Icon
               iconSrc="/assets/images/provider-dashboard/reload.svg"
               width="16px"
@@ -110,15 +112,15 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         </div>
         <div className="pt-2">
           {isStart && !isFinished && status === Filters.Verified && (
-            <div className="bg-gray50 rounded-xl text-sm font-medium text-white h-[48px]  flex items-center justify-center ">
+            <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50  text-sm font-medium text-white ">
               {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
               claims left
             </div>
           )}
         </div>
-        <div className="absolute bottom-2 right-4 left-4">
+        <div className="absolute bottom-2 left-4 right-4">
           {isStart && isFinished && status === Filters.Verified && (
-            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
+            <div className="flex h-[48px] items-center  justify-center rounded-xl bg-gray50 text-sm font-medium text-white ">
               {distribution.numberOfClaims} claimed
             </div>
           )}
@@ -167,7 +169,7 @@ const TokenTapContent = () => {
   >([]);
 
   const [filteredItems, setFilteredItems] = useState<UserTokenDistribution[]>(
-    []
+    [],
   );
 
   const [selectedFilter, setSelectedFilter] = useState<Filters>(Filters.All);
@@ -212,7 +214,7 @@ const TokenTapContent = () => {
 
     if (selectedFilter === Filters.Rejected) {
       setFilteredItems(
-        userDistributions.filter((item) => item.status === Filters.Rejected)
+        userDistributions.filter((item) => item.status === Filters.Rejected),
       );
     }
 
@@ -223,8 +225,8 @@ const TokenTapContent = () => {
           (item) =>
             item.status === Filters.Verified &&
             new Date(item.startAt) < new Date() &&
-            new Date(item.deadline) > new Date()
-        )
+            new Date(item.deadline) > new Date(),
+        ),
       );
     }
 
@@ -234,8 +236,8 @@ const TokenTapContent = () => {
           (item) =>
             item.status === Filters.Verified &&
             item.status === Filters.Verified &&
-            new Date(item.startAt) > new Date()
-        )
+            new Date(item.startAt) > new Date(),
+        ),
       );
     }
 
@@ -244,8 +246,8 @@ const TokenTapContent = () => {
         userDistributions.filter(
           (item) =>
             item.status === Filters.Verified &&
-            new Date(item.deadline) < new Date()
-        )
+            new Date(item.deadline) < new Date(),
+        ),
       );
     }
     if (searchPhrase) {
@@ -258,8 +260,8 @@ const TokenTapContent = () => {
             item.name
               .toLocaleLowerCase()
               .includes(searchPhrase.toLocaleLowerCase()) ||
-            item.chain.chainId.includes(searchPhrase)
-        )
+            item.chain.chainId.includes(searchPhrase),
+        ),
       );
     }
   }, [userDistributions, selectedFilter, searchPhrase]);
@@ -270,17 +272,17 @@ const TokenTapContent = () => {
       handleGetUserDistribution();
     },
     FAST_INTERVAL,
-    []
+    [],
   );
   return (
     <div className="min-h-[600px]">
-      <div className="flex flex-col md:flex-row items-center justify-between select-none">
+      <div className="flex select-none flex-col items-center justify-between md:flex-row">
         <SearchInput
           className="w-full md:w-1/3"
           handleSetSearchPhrase={handleSetSearchPhrase}
         />
         <div
-          className={`${Styles.provider_dashboard__status} justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+          className={`${Styles.provider_dashboard__status} align-center mt-5 flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto`}
         >
           <div
             className={`${selectedFilter === Filters.All && "text-gray100"}`}
@@ -289,29 +291,33 @@ const TokenTapContent = () => {
             All
           </div>
           <div
-            className={`${selectedFilter === Filters.Pending && "text-gray100"
-              }`}
+            className={`${
+              selectedFilter === Filters.Pending && "text-gray100"
+            }`}
             onClick={() => handleSelectFilter(Filters.Pending)}
           >
             ongoing
           </div>
           <div
-            className={`${selectedFilter === Filters.Verified && "text-gray100"
-              }`}
+            className={`${
+              selectedFilter === Filters.Verified && "text-gray100"
+            }`}
             onClick={() => handleSelectFilter(Filters.Verified)}
           >
             verified
           </div>
           <div
-            className={`${selectedFilter === Filters.Rejected && "text-gray100"
-              }`}
+            className={`${
+              selectedFilter === Filters.Rejected && "text-gray100"
+            }`}
             onClick={() => handleSelectFilter(Filters.Rejected)}
           >
             rejected
           </div>
           <div
-            className={`${selectedFilter === Filters.Finished && "text-gray100"
-              }`}
+            className={`${
+              selectedFilter === Filters.Finished && "text-gray100"
+            }`}
             onClick={() => handleSelectFilter(Filters.Finished)}
           >
             finished
@@ -319,10 +325,10 @@ const TokenTapContent = () => {
         </div>
       </div>
       <div
-        className={`refill-token ${Styles.refill_token} h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center`}
+        className={`refill-token ${Styles.refill_token} mt-4 flex h-auto w-full items-center justify-between overflow-hidden md:h-[78px]`}
       >
-        <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
-          <div className="flex items-center relative">
+        <div className="flex w-full flex-col items-center justify-between px-7 py-5 text-white sm:flex-row">
+          <div className="relative flex items-center">
             <div>
               <p className="text-base font-semibold">
                 Distribute a token on Token Tap
@@ -332,19 +338,19 @@ const TokenTapContent = () => {
               </p>
             </div>
             <Icon
-              className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
+              className="absolute left-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
               iconSrc="/assets/images/provider-dashboard/token-bg.png"
             />
           </div>
           <Link
             href={RoutePath.PROVIDER_TOKENTAP_CREATE}
-            className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
+            className="mt-5 flex h-[46px] w-[226px] cursor-pointer items-center justify-center rounded-[12px] border-2 border-white bg-[#0C0C17] sm:mt-0"
           >
             + List a New Token
           </Link>
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {filteredItems.length > 0 &&
           filteredItems.map((distribution, index: number) => (
             <DistributionCard key={index} distribution={distribution} />
@@ -353,8 +359,9 @@ const TokenTapContent = () => {
 
       {loading &&
         filteredItems.length == 0 &&
-        selectedFilter === Filters.All && !firstCheck && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
+        selectedFilter === Filters.All &&
+        !firstCheck && (
+          <div className="mt-4 grid animate-fadeInOut grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <Skeleton />
             <Skeleton />
             <Skeleton />
@@ -362,7 +369,7 @@ const TokenTapContent = () => {
         )}
 
       {filteredItems.length === 0 && !loading && (
-        <div className="text-center animate-fadeIn">
+        <div className="animate-fadeIn text-center">
           <p>No items found.</p>
         </div>
       )}
@@ -374,22 +381,22 @@ export default TokenTapContent;
 
 const Skeleton = () => {
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
-      <div className="w-full flex items-center justify-between">
-        <div className="flex gap-2 items-center">
-          <div className="min-w-[40px] min-h-[40px] bg-gray50 rounded-[50%]"></div>
-          <div className="min-w-[50px] min-h-[20px] bg-gray50"></div>
+    <div className="w-full rounded-xl border-2 border-gray40 bg-gray30 p-4">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="min-h-[40px] min-w-[40px] rounded-[50%] bg-gray50"></div>
+          <div className="min-h-[20px] min-w-[50px] bg-gray50"></div>
         </div>
         <div className="min-h-[25px] min-w-[100px] rounded-lg bg-gray50"></div>
       </div>
-      <div className="min-h-[20px] w-[170px] rounded-md mt-3 bg-gray50"></div>
+      <div className="mt-3 min-h-[20px] w-[170px] rounded-md bg-gray50"></div>
       <div className="flex justify-between">
-        <div className="w-[85px] h-[15px] rounded-md mt-3 bg-gray50"></div>
-        <div className="w-[85px] h-[15px] rounded-md mt-3 bg-gray50"></div>
+        <div className="mt-3 h-[15px] w-[85px] rounded-md bg-gray50"></div>
+        <div className="mt-3 h-[15px] w-[85px] rounded-md bg-gray50"></div>
       </div>
-      <div className="w-full h-[44px] rounded-xl mt-4 bg-gray50"></div>
-      <div className="w-[40px] h-[20px] rounded-xl mt-8 bg-gray50"></div>
-      <div className="w-full h-[50px] rounded-xl mt-3 bg-gray50"></div>
+      <div className="mt-4 h-[44px] w-full rounded-xl bg-gray50"></div>
+      <div className="mt-8 h-[20px] w-[40px] rounded-xl bg-gray50"></div>
+      <div className="mt-3 h-[50px] w-full rounded-xl bg-gray50"></div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import ConstraintDetailsModal from "@/app/contribution-hub/ConstraintDetailsModal";
+import ConstraintDetailsModal from "@/app/contribution-hub/components/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
@@ -34,7 +34,7 @@ const RequirementModalBody = () => {
     }
   };
   return (
-    <div className="claim-modal-wrapper flex flex-col max-h-[550px] pt-5">
+    <div className="claim-modal-wrapper flex max-h-[550px] flex-col pt-5">
       {getRequirementModalBody()}
     </div>
   );
@@ -48,19 +48,19 @@ const InitialBody = () => {
 
   return (
     <div className="flex flex-col gap-2 ">
-      <div className="absolute top-5 cursor-pointer z-[999]">
+      <div className="absolute top-5 z-[999] cursor-pointer">
         <Icon
           iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
-          className="cursor-pointer z-[999999]"
+          className="z-[999999] cursor-pointer"
           onClick={() => setSelectedApp("")}
         />
       </div>
       {!!selectedApp && (
-        <p className="text-white text-sm font-medium">
+        <p className="text-sm font-medium text-white">
           {uppercaseFirstLetter(selectedApp)}
         </p>
       )}
-      <div className="grid grid-cols-2 gap-2.5 row-gap-2 w-full items-center justify-center text-center">
+      <div className="row-gap-2 grid w-full grid-cols-2 items-center justify-center gap-2.5 text-center">
         {!!selectedApp
           ? constraintsListApi![selectedApp].map((constraint, key) => (
               <div

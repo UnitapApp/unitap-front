@@ -10,8 +10,8 @@ import {
 } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
-import ChainList from "@/app/contribution-hub/ChainList";
-import SelectMethodInput from "@/app/contribution-hub/SelectMethodInput";
+import ChainList from "@/app/contribution-hub/components/ChainList";
+import SelectMethodInput from "@/app/contribution-hub/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
 import {
@@ -165,9 +165,9 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   return (
-    <div className="relative mt-5 flex flex-col gap-2">
+    <div className="mt-5 flex flex-col gap-2">
       <div
-        className="absolute -top-14 z-[999] cursor-pointer"
+        className="absolute top-5 z-[999] cursor-pointer"
         onClick={handleBackToConstraintListModal}
       >
         <Icon
@@ -470,7 +470,7 @@ const CreateParams: FC<CreateModalParam> = ({
   return <></>;
 };
 
-const MinimumLensAction: FC<{
+export const MinimumLensAction: FC<{
   featuredName: string;
   onChange: (arg: any) => void;
   value: any;
@@ -492,7 +492,7 @@ export type UserParams = {
   featuredName: string;
 };
 
-const FarcasterUserFinder: FC<UserParams> = ({
+export const FarcasterUserFinder: FC<UserParams> = ({
   featuredName,
   onAddRequirementParam,
   params,
@@ -596,7 +596,7 @@ const FarcasterUserFinder: FC<UserParams> = ({
   );
 };
 
-const LensUserFinder: FC<UserParams> = ({
+export const LensUserFinder: FC<UserParams> = ({
   onAddRequirementParam,
   params,
   featuredName,

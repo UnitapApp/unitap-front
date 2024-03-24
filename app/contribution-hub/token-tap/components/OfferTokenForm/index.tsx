@@ -1,6 +1,6 @@
 "use client";
 
-import DisplaySteps from "../../../DisplaySteps";
+import DisplaySteps from "../../../components/DisplaySteps";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
 import { useEffect } from "react";
@@ -28,7 +28,7 @@ const OfferTokenForm = ({
     userDistribution,
   } = useTokenTapFromContext();
 
-  useScrollToTop()
+  useScrollToTop();
 
   const { display, prevPage } = usePagination(page, setPage, tokenTapForms);
 
@@ -41,17 +41,17 @@ const OfferTokenForm = ({
   }, [detailDistributionPk, userDistribution]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 select-none">
+    <div className="flex select-none flex-col gap-5 md:flex-row">
       <DisplaySteps page={page} displaySteps={TokenTapDisplaySteps} />
-      <div className="offerPrize-form relative bg-gray20 w-full rounded-xl py-[4em] min-h-[504px] flex flex-col items-center px-5">
+      <div className="offerPrize-form relative flex min-h-[504px] w-full flex-col items-center rounded-xl bg-gray20 px-5 py-[4em]">
         {page >= 1 && page < 5 && (
           <Icon
             onClick={prevPage}
-            className="absolute text-white text-xl top-5 left-5 cursor-pointer select-not"
+            className="select-not absolute left-5 top-5 cursor-pointer text-xl text-white"
             iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           />
         )}
-        <div className="w-full flex  justify-center min-h-[320px]">
+        <div className="flex min-h-[320px]  w-full justify-center">
           {display}
         </div>
       </div>

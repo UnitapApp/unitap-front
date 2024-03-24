@@ -1,6 +1,6 @@
 .providerDashboardStatus {
   & div {
-    @apply py-[10px] px-3 cursor-pointer min-w-[60px] text-center;
+    @apply min-w-[60px] cursor-pointer px-3 py-[10px] text-center;
   }
   & div:not(:last-child) {
     @apply border-r-2 border-r-gray30;
@@ -13,7 +13,7 @@
 }
 
 .refillToken {
-  @apply bg-no-repeat bg-cover border border-2 rounded-[16px] border-gray40;
+  @apply rounded-[16px] border border-2 border-gray40 bg-cover bg-no-repeat;
   background-image: url("/assets/images/provider-dashboard/bg.png");
 }
 
@@ -71,40 +71,40 @@
 }
 
 .prizeForm-current-step-icon {
-  @apply rounded-full bg-gray30 overflow-hidden w-[26px] h-[26px] rounded-full;
+  @apply h-[26px] w-[26px] overflow-hidden rounded-full rounded-full bg-gray30;
 }
 
 .requireModal {
-  @apply text-sm font-semibold flex flex-col gap-2 items-center justify-center cursor-pointer max-w-[184px] h-[84px] bg-gray40 border border-gray70 rounded-xl;
+  @apply flex max-w-[184px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-gray70 bg-gray40 text-sm font-semibold;
 }
 
 .requireModalIntegration {
-  @apply bg-gray40 border mt-1 border-gray70 text-gray100 text-sm font-semibold cursor-pointer max-w-[376px] rounded-xl px-3 h-[48px] flex items-center justify-between;
+  @apply mt-1 flex h-[48px] max-w-[376px] cursor-pointer items-center justify-between rounded-xl border border-gray70 bg-gray40 px-3 text-sm font-semibold text-gray100;
 }
 
 .provider-dashboard-input {
-  @apply placeholder-gray80 text-white w-full bg-transparent h-[100%];
+  @apply h-[100%] w-full bg-transparent text-white placeholder-gray80;
 }
 .prize-card-bg-1 {
-  @apply lg:bg-[url("/assets/images/prize-tap/nft-cover.svg")] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/assets/images/prize-tap/nft-cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-card-linea {
-  @apply lg:bg-[url('/assets/images/prize-tap/linia-raffle-bg.svg')] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url('/assets/images/prize-tap/linia-raffle-bg.svg')] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-card-bg-2 {
-  @apply lg:bg-[url("/assets/images/prize-tap/cover.svg")] bg-no-repeat p-0 pl-0 lg:pr-0 lg:p-4 lg:pl-6;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/assets/images/prize-tap/cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-tap-header-bg {
   background-image: url("/assets/images/prize-tap/header-bg.svg");
-  @apply bg-no-repeat bg-cover bg-center;
+  @apply bg-cover bg-center bg-no-repeat;
 }
 
 .deposit-prize-nft-cover {
   background-image: url("/assets/images/prize-tap/nft-cover.svg");
-  @apply bg-no-repeat bg-cover bg-center;
+  @apply bg-cover bg-center bg-no-repeat;
   object-fit: contain;
 }
 
@@ -122,7 +122,7 @@
 .winner-box-bg {
   background-color: #10101b;
   // background-image: url('../public/assets/images/prize-tap/winner_bg.svg');
-  @apply bg-no-repeat bg-cover bg-center;
+  @apply bg-cover bg-center bg-no-repeat;
 }
 
 .claimed-prize {
@@ -141,10 +141,10 @@
     margin-left: 10px;
   }
 
-  @apply bg-g-primary relative z-10 before:content-[''];
-  @apply before:block before:rounded-lg before:-z-10 before:absolute before:inset-[2px] before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)];
+  @apply relative z-10 bg-g-primary before:content-[''];
+  @apply before:absolute before:inset-[2px] before:-z-10 before:block before:rounded-lg before:bg-[radial-gradient(174.04%_3217.67%_at_17.05%_37.02%,#2A3837_0%,#3F2B44_42.19%,#322837_100%)];
   @apply text-white;
-  @apply p-3 rounded-[10px];
+  @apply rounded-[10px] p-3;
 }
 
 .prize-success-stroke {

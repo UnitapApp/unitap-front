@@ -11,7 +11,7 @@ import {
   ProviderDashboardButtonRejected,
   ProviderDashboardButtonCheck,
   ProviderDashboardButtonShowDetails,
-} from "../../Buttons";
+} from "../../components/Buttons";
 import SearchInput from "./SearchInput";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
@@ -47,26 +47,24 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
     setWinnersResultRaffle(raffle);
   };
 
-
-
   const diff = new Date(prize.deadline).getTime() - new Date().getTime();
   const day = Math.floor(diff / (1000 * 60 * 60 * 24));
   return (
-    <div className="bg-gray30 border-2 animate-fadeIn border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
+    <div className="select-not relative h-[512px] w-full animate-fadeIn rounded-xl border-2 border-gray40 bg-gray30 p-4">
       <WinnersModal
         handleWinnersResult={handleWinnersResult}
         winnersResultRaffle={winnersResultRaffle}
       />
       <div className="providePrize-item-container">
-        <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-          <div className="providePrize__chainName absolute top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md">
+        <div className="providePrize__amountBox relative flex h-[288px] flex-col items-center justify-center rounded-2xl border border-gray40 bg-gray20">
+          <div className="providePrize__chainName absolute top-0 mt-2 flex w-full max-w-[100px] items-center justify-center rounded-md border border-gray70 bg-gray50 py-1">
             <Icon
               className="mr-2"
               iconSrc={prize.chain.logoUrl}
               width="15px"
               height="14px"
             />
-            <p className="text-gray100 text-2xs font-medium">
+            <p className="text-2xs font-medium text-gray100">
               on {prize.chain.chainName}
             </p>
           </div>
@@ -83,14 +81,14 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         </div>
         <div>
-          <div className="providePrize_stats flex justify-between my-2">
-            <div className={"text-white text-sm font-medium"}>
+          <div className="providePrize_stats my-2 flex justify-between">
+            <div className={"text-sm font-medium text-white"}>
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-              (prize.status === RaffleStatus.VERIFIED ||
-                prize.status === RaffleStatus.WS) &&
-              diff > 0 ? (
+            (prize.status === RaffleStatus.VERIFIED ||
+              prize.status === RaffleStatus.WS) &&
+            diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
@@ -114,13 +112,13 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               </ProviderDashboardButtonRejected>
             )}
           </div>
-          <div className="providePrize_creator text-xs text-gray90 font-medium">
+          <div className="providePrize_creator text-xs font-medium text-gray90">
             by {prize.creatorName}
           </div>
         </div>
         {prize.status === RaffleStatus.REJECTED ? (
           <Link
-            className="absolute bottom-3 right-4 left-4"
+            className="absolute bottom-3 left-4 right-4"
             href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
           >
             <ProviderDashboardButtonCheck>
@@ -129,7 +127,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </Link>
         ) : prize.status === RaffleStatus.PENDING ? (
           <Link
-            className="absolute bottom-3 right-4 left-4"
+            className="absolute bottom-3 left-4 right-4"
             href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
           >
             <ProviderDashboardButtonShowDetails>
@@ -140,22 +138,22 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           (prize.status == RaffleStatus.VERIFIED &&
             new Date(prize.startAt) > new Date() &&
             new Date(prize.deadline) < new Date()) ? (
-          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
+          <div className="providePrize_timer absolute bottom-3 left-4 right-4">
             {prize.numberOfOnchainEntries ? (
-              <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
+              <div className="providePrize_Spots my-3 flex h-[48px] items-center justify-center rounded-xl bg-gray50 text-sm font-medium text-white">
                 {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
                 {prize.status === RaffleStatus.FINISHED
                   ? " Spots Enrolled"
                   : " Spots Left"}
               </div>
             ) : null}
-            <p className="text-white text-[8px] font-medium mb-2 ml-1">
+            <p className="mb-2 ml-1 text-[8px] font-medium text-white">
               {Date.now() < new Date(prize.startAt).getTime()
                 ? "Starts in:"
                 : "Ends in:"}
             </p>
 
-            <div className="bg-gray50 px-5 rounded-xl">
+            <div className="rounded-xl bg-gray50 px-5">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -168,7 +166,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               startTime={prize.startAt}
               FinishTime={prize.deadline}
             />
-            <div className="providePrize_Spots absolute bottom-0 right-4 left-4 bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
+            <div className="providePrize_Spots absolute bottom-0 left-4 right-4 my-3 flex h-[48px] items-center justify-center rounded-xl bg-gray50 text-sm font-medium text-white">
               <div className="relative w-full text-center">
                 <p>
                   {prize.maxNumberOfEntries - prize.numberOfOnchainEntries}{" "}
@@ -184,11 +182,11 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </div>
           </div>
         ) : diff > 0 && prize.status == RaffleStatus.VERIFIED ? (
-          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <p className="text-white text-[8px] font-medium mb-2 ml-1">
+          <div className="providePrize_timer absolute bottom-3 left-4 right-4">
+            <p className="mb-2 ml-1 text-[8px] font-medium text-white">
               Starts in:
             </p>
-            <div className="bg-gray50 px-5 rounded-xl">
+            <div className="rounded-xl bg-gray50 px-5">
               <ProviderDashboardCardTimer
                 startTime={prize.startAt}
                 FinishTime={prize.deadline}
@@ -196,8 +194,8 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </div>
           </div>
         ) : (
-          <div className="providePrize_timer absolute bottom-3 right-4 left-4">
-            <div className="providePrize_Spots bg-gray50 rounded-xl text-sm font-medium text-white h-[48px] my-3 flex items-center justify-center">
+          <div className="providePrize_timer absolute bottom-3 left-4 right-4">
+            <div className="providePrize_Spots my-3 flex h-[48px] items-center justify-center rounded-xl bg-gray50 text-sm font-medium text-white">
               <p>
                 {prize.numberOfOnchainEntries}{" "}
                 {prize.numberOfOnchainEntries > 1 ? "spots" : "spot"} Enrolled
@@ -205,11 +203,11 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             </div>
             <div
               onClick={() => handleWinnersResult(prize)}
-              className="bg-gray50 rounded-xl cursor-pointer border border-gray70 text-2xs font-medium text-gray100 h-[48px] flex items-center justify-center"
+              className="flex h-[48px] cursor-pointer items-center justify-center rounded-xl border border-gray70 bg-gray50 text-2xs font-medium text-gray100"
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
-                  !prize.winnerEntries?.length
+                !prize.winnerEntries?.length
                   ? "Raffle is being processed"
                   : "Check Winners"}
               </p>
@@ -225,7 +223,7 @@ const PrizeTapContent = () => {
   const { userToken } = useUserProfileContext();
   const [userRafflesLoading, setUserRafflesLoading] = useState(false);
   const [userRaffles, setUserRaffles] = useState<UserRafflesProps[]>([]);
-  const [firstCheck, setFirstCheck] = useState(false)
+  const [firstCheck, setFirstCheck] = useState(false);
   const handleGetUserRaffles = useCallback(async () => {
     if (!userToken) return;
     try {
@@ -244,11 +242,11 @@ const PrizeTapContent = () => {
       handleGetUserRaffles();
     },
     FAST_INTERVAL,
-    []
+    [],
   );
 
   const [selectedFilter, setSelectedFilter] = useState<string>(
-    RaffleStatus.ALL
+    RaffleStatus.ALL,
   );
   const [searchPhrase, setSearchPhrase] = useState<string>("");
 
@@ -279,8 +277,10 @@ const PrizeTapContent = () => {
                 new Date(item.startAt) < new Date())) &&
             new Date(item.deadline) > new Date() &&
             (!searchPhrase ||
-              item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
-        )
+              item.prizeName
+                .toLowerCase()
+                .includes(searchPhrase.toLowerCase())),
+        ),
       );
       return;
     }
@@ -294,8 +294,10 @@ const PrizeTapContent = () => {
                 item.status !== RaffleStatus.REJECTED &&
                 item.status !== RaffleStatus.PENDING)) &&
             (!searchPhrase ||
-              item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
-        )
+              item.prizeName
+                .toLowerCase()
+                .includes(searchPhrase.toLowerCase())),
+        ),
       );
       return;
     }
@@ -308,8 +310,10 @@ const PrizeTapContent = () => {
               (new Date(item.startAt) > new Date() &&
                 item.status === RaffleStatus.VERIFIED)) &&
             (!searchPhrase ||
-              item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
-        )
+              item.prizeName
+                .toLowerCase()
+                .includes(searchPhrase.toLowerCase())),
+        ),
       );
       return;
     }
@@ -325,8 +329,10 @@ const PrizeTapContent = () => {
               selectedFilter === RaffleStatus.ALL ||
               item.status === selectedFilter) &&
             (!searchPhrase ||
-              item.prizeName.toLowerCase().includes(searchPhrase.toLowerCase()))
-        )
+              item.prizeName
+                .toLowerCase()
+                .includes(searchPhrase.toLowerCase())),
+        ),
       );
       return;
     }
@@ -335,45 +341,50 @@ const PrizeTapContent = () => {
   return (
     <div className="min-h-[600px]">
       <div>
-        <div className="flex flex-col md:flex-row  items-center justify-between ">
+        <div className="flex flex-col items-center  justify-between md:flex-row ">
           <SearchInput
             className="w-full md:w-1/3"
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div
-            className={`${Styles.providerDashboardStatus} select-not justify-center mt-5 md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto`}
+            className={`${Styles.providerDashboardStatus} select-not align-center mt-5 flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto`}
           >
             <div
-              className={`${RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
-                }`}
+              className={`${
+                RaffleStatus.ALL == selectedFilter ? "text-gray100" : ""
+              }`}
               onClick={() => handleSelectFilter(RaffleStatus.ALL)}
             >
               All
             </div>
             <div
-              className={`${RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
-                }`}
+              className={`${
+                RaffleStatus.ONGOING == selectedFilter ? "text-gray100" : ""
+              }`}
               onClick={() => handleSelectFilter(RaffleStatus.ONGOING)}
             >
               ongoing
             </div>
             <div
-              className={`${RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
-                }`}
+              className={`${
+                RaffleStatus.VERIFIED == selectedFilter ? "text-gray100" : ""
+              }`}
               onClick={() => handleSelectFilter(RaffleStatus.VERIFIED)}
             >
               verified
             </div>
             <div
-              className={`${RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
-                }`}
+              className={`${
+                RaffleStatus.REJECTED == selectedFilter ? "text-gray100" : ""
+              }`}
               onClick={() => handleSelectFilter(RaffleStatus.REJECTED)}
             >
               rejected
             </div>
             <div
-              className={`${RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
-                }`}
+              className={`${
+                RaffleStatus.FINISHED == selectedFilter ? "text-gray100" : ""
+              }`}
               onClick={() => handleSelectFilter(RaffleStatus.FINISHED)}
             >
               finished
@@ -381,10 +392,10 @@ const PrizeTapContent = () => {
           </div>
         </div>
         <div
-          className={`${Styles.refillToken} h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center`}
+          className={`${Styles.refillToken} mt-4 flex h-auto w-full items-center justify-between overflow-hidden md:h-[78px]`}
         >
-          <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
-            <div className="flex items-center relative">
+          <div className="flex w-full flex-col items-center justify-between px-7 py-5 text-white sm:flex-row">
+            <div className="relative flex items-center">
               <div>
                 <p className="text-base font-semibold">
                   Create a Raffle on Prize Tap
@@ -395,34 +406,35 @@ const PrizeTapContent = () => {
                 </p>
               </div>
               <Icon
-                className="absolute left-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
+                className="absolute left-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
                 iconSrc="/assets/images/provider-dashboard/prize-bg.png"
               />
             </div>
             <Link
               href={RoutePath.PROVIDER_PRIZETAP_CREATE}
-              className="flex mt-5 z-[10] sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-xl bg-[#0C0C17] w-[226px] h-[46px]"
+              className="z-[10] mt-5 flex h-[46px] w-[226px] cursor-pointer items-center justify-center rounded-xl border-2 border-white bg-[#0C0C17] sm:mt-0"
             >
               + Set Up a New Raffle
             </Link>
           </div>
         </div>
         {filteredRaffles && filteredRaffles.length > 0 && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {filteredRaffles.map((item, index) => (
               <PrizeCard key={index} prize={item} />
             ))}
           </div>
         )}
         {filteredRaffles?.length == 0 && !userRafflesLoading && (
-          <div className="flex items-center justify-center mt-5 text-gray100 animate-fadeIn">
+          <div className="mt-5 flex animate-fadeIn items-center justify-center text-gray100">
             No items found
           </div>
         )}
         {filteredRaffles.length == 0 &&
           userRafflesLoading &&
-          selectedFilter == RaffleStatus.ALL && !firstCheck && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center mt-5 text-gray100">
+          selectedFilter == RaffleStatus.ALL &&
+          !firstCheck && (
+            <div className="mt-5 grid grid-cols-1 items-center justify-center gap-5 text-gray100 md:grid-cols-2 lg:grid-cols-3">
               <Skeleton />
               <Skeleton />
               <Skeleton />
@@ -436,21 +448,21 @@ const PrizeTapContent = () => {
 const Skeleton = () => {
   return (
     <div className="animate-pulse">
-      <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl relative h-[512px] select-not">
+      <div className="select-not relative h-[512px] w-full rounded-xl border-2 border-gray40 bg-gray30 p-4">
         <div className="providePrize-item-container">
-          <div className="providePrize__amountBox bg-gray20 border border-gray40 h-[288px] rounded-2xl flex flex-col items-center justify-center relative">
-            <div className="providePrize__chainName absolute h-[22px] top-0 mt-2 w-full max-w-[100px] py-1 flex items-center justify-center bg-gray50 border border-gray70 rounded-md"></div>
+          <div className="providePrize__amountBox relative flex h-[288px] flex-col items-center justify-center rounded-2xl border border-gray40 bg-gray20">
+            <div className="providePrize__chainName absolute top-0 mt-2 flex h-[22px] w-full max-w-[100px] items-center justify-center rounded-md border border-gray70 bg-gray50 py-1"></div>
           </div>
           <div>
-            <div className="providePrize_stats flex justify-between my-2">
-              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
-              <div className="text-white text-sm font-medium rounded bg-gray50 w-[30%] h-[20px]"></div>
+            <div className="providePrize_stats my-2 flex justify-between">
+              <div className="h-[20px] w-[30%] rounded bg-gray50 text-sm font-medium text-white"></div>
+              <div className="h-[20px] w-[30%] rounded bg-gray50 text-sm font-medium text-white"></div>
             </div>
-            <div className="providePrize_creator text-xs text-gray90 font-medium bg-gray50 w-[30%] h-[20px] mt-5"></div>
+            <div className="providePrize_creator mt-5 h-[20px] w-[30%] bg-gray50 text-xs font-medium text-gray90"></div>
           </div>
 
-          <div className="absolute bottom-3 right-4 left-0">
-            <div className=" absolute bottom-3 right-4 left-4 bg-gray50 w-[95%] h-[40px] rounded-xl"></div>
+          <div className="absolute bottom-3 left-0 right-4">
+            <div className=" absolute bottom-3 left-4 right-4 h-[40px] w-[95%] rounded-xl bg-gray50"></div>
           </div>
         </div>
       </div>
