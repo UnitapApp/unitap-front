@@ -1,5 +1,5 @@
 import Icon from "@/components/ui/Icon";
-import Styles from "./content.module.scss";
+import Styles from "../content.module.scss";
 import { DisplayStepsProps } from "@/types/provider-dashboard";
 
 interface Prop {
@@ -10,14 +10,14 @@ interface Prop {
 const DisplaySteps = ({ page, displaySteps }: Prop) => {
   return (
     <div
-      className={`${Styles.offerPrizeSteps} offerPrize-Steps w-full md:max-w-[362px] py-[4em] px-10 flex flex-col gap-[3.1em] select-not`}
+      className={`${Styles.offerPrizeSteps} offerPrize-Steps select-not flex w-full flex-col gap-[3.1em] px-10 py-[4em] md:max-w-[362px]`}
     >
       {displaySteps.map((item, index) => (
         <div
-          className="flex items-center gap-3 relative text-xs text-white"
+          className="relative flex items-center gap-3 text-xs text-white"
           key={index}
         >
-          <div className="rounded-full bg-gray30 overflow-hidden w-[26px] h-[26px] z-[1]">
+          <div className="z-[1] h-[26px] w-[26px] overflow-hidden rounded-full bg-gray30">
             <Icon
               width="26px"
               height="26px"
@@ -25,8 +25,8 @@ const DisplaySteps = ({ page, displaySteps }: Prop) => {
                 index == page
                   ? item.activeIcon
                   : index > page
-                  ? item.nextIcon
-                  : item.prevIcon
+                    ? item.nextIcon
+                    : item.prevIcon
               }
             />
           </div>
@@ -35,8 +35,8 @@ const DisplaySteps = ({ page, displaySteps }: Prop) => {
               index == page
                 ? "text-white"
                 : index > page
-                ? "opacity-[.4]"
-                : "text-[#4CE6A1] opacity-[.4]"
+                  ? "opacity-[.4]"
+                  : "text-[#4CE6A1] opacity-[.4]"
             } `}
           >
             <p className={`font-semibold`}>{item.title}</p>{" "}
@@ -48,7 +48,7 @@ const DisplaySteps = ({ page, displaySteps }: Prop) => {
           </div>
           {index < 5 && (
             <div
-              className={`absolute w-[2px] left-3 top-7 bottom-[-4.6em] ${
+              className={`absolute bottom-[-4.6em] left-3 top-7 w-[2px] ${
                 index < page ? "bg-dark-space-green" : "bg-gray70"
               }  top-0`}
             ></div>

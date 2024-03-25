@@ -4,38 +4,10 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { RequirementProps, ConstraintProps, Chain } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
-import ChainList from "@/app/contribution-hub/components/ChainList";
-import SelectMethodInput from "@/app/contribution-hub/components/SelectMethodInput";
-import { useWalletProvider } from "@/utils/wallet";
-import { isAddress, zeroAddress } from "viem";
-import {
-  checkNftCollectionAddress,
-  checkTokenContractAddress,
-} from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
-import CsvFileInput from "./CsvFileInput";
-import {
-  FarcasterUserFinder,
-  LensUserFinder,
-  MinimumLensAction,
-} from "./ConstraintDetailsModal";
-
-type CreateModalParam = {
-  constraint: ConstraintProps;
-  setRequirementParamsList: any;
-  requirementParamsList: any;
-  constraintFile: any;
-  allChainList: Chain[];
-  setConstraintFile: (item: any) => void;
-  requirementList: RequirementProps[];
-  isCollectionValid: boolean;
-  setIsCollectionValid: (e: boolean) => void;
-  setErrorMessage: (message: string) => void;
-  decimals: number | undefined;
-  setDecimals: (decimal: number | undefined) => void;
-};
+import { CreateParams } from "./ConstraintDetailsModal";
+import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 
 type DetailsModal = {
-  appDetail: { label: string; icon: string; constraints: ConstraintProps[] };
   handleBackToConstraintListModal: any;
   requirementList: RequirementProps[];
   insertRequirement: any;
@@ -49,13 +21,14 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   insertRequirement,
   updateRequirement,
   allChainList,
-  appDetail,
 }) => {
   const addRequirements = useAddRequirement(
     handleBackToConstraintListModal,
     insertRequirement,
     updateRequirement,
   );
+
+  const { selectedApp, setSelectedApp } = usePrizeOfferFormContext();
 
   const [existRequirement, setExistRequirement] =
     useState<RequirementProps | null>(null);
@@ -132,6 +105,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   };
 
   const handleAddRequirement = () => {
+    if (!constraint) return;
+
     if (
       constraint.name === "core.HasNFTVerification" ||
       constraint.name === "core.HasTokenVerification"
@@ -165,7 +140,9 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
     <div className="mt-5 flex flex-col gap-2">
       <div
         className="absolute top-5 z-[999] cursor-pointer"
-        onClick={handleBackToConstraintListModal}
+        onClick={() => {
+          setSelectedApp();
+        }}
       >
         <Icon
           iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
@@ -197,21 +174,24 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
         </div>
       </div>
 
-      <CreateParams
-        constraint={constraint}
-        setRequirementParamsList={setRequirementParamsList}
-        requirementParamsList={requirementParamsList}
-        constraintFile={constraintFile}
-        setConstraintFile={setConstraintFile}
-        allChainList={allChainList}
-        requirementList={requirementList}
-        isCollectionValid={isCollectionValid}
-        setIsCollectionValid={setIsCollectionValid}
-        setErrorMessage={setErrorMessage}
-        decimals={decimals}
-        setDecimals={setDecimals}
-      />
-      <div className="mb-4">{constraint.description}</div>
+      {!!constraint && (
+        <CreateParams
+          constraint={constraint}
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          constraintFile={constraintFile}
+          setConstraintFile={setConstraintFile}
+          allChainList={allChainList}
+          requirementList={requirementList}
+          isCollectionValid={isCollectionValid}
+          setIsCollectionValid={setIsCollectionValid}
+          setErrorMessage={setErrorMessage}
+          decimals={decimals}
+          setDecimals={setDecimals}
+        />
+      )}
+
+      <div className="mb-4">{constraint?.description}</div>
       <div className="min-h-[15px] text-2xs text-error">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}

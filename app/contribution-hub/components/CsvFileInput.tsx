@@ -1,7 +1,7 @@
 "use client";
 import Icon from "@/components/ui/Icon";
 import { RequirementProps } from "@/types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Prop {
   requirementParamsList: any;
@@ -68,29 +68,29 @@ const CsvFileInput = ({
   return (
     <div>
       {!isUploadedFileValid ? (
-        <div className="flex w-full gap-1 items-center pl-3 bg-gray40 rounded-xl">
+        <div className="flex w-full items-center gap-1 rounded-xl bg-gray40 pl-3">
           <Icon
             width="16px"
             height="16px"
             iconSrc="/assets/images/provider-dashboard/upload.svg"
             className="-mt-1"
           />
-          <div className="w-full relative mt-0">
+          <div className="relative mt-0 w-full">
             <input
               disabled={isUploadedFileValid}
               type="file"
-              className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
+              className="uploadFileInput flex w-[100%] cursor-pointer p-3 text-gray100"
               onChange={(e) => handleChangeUploadedFile(e)}
               accept=".csv"
             />
           </div>
         </div>
       ) : (
-        <div className="flex  w-full gap-1 items-center pl-3 justify-between pr-3 bg-gray40 rounded-xl">
+        <div className="flex  w-full items-center justify-between gap-1 rounded-xl bg-gray40 pl-3 pr-3">
           <p className="text-gray100">file name: {uploadedFileName}</p>
           <button
             onClick={handleClearUploadedFile}
-            className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
+            className="rounded-xl border border-gray60 bg-gray20 p-2 text-2xs text-white"
           >
             Reset file
           </button>

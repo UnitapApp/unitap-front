@@ -1,12 +1,12 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import ConstraintDetailsModal from "../../../../../components/ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
-import { uppercaseFirstLetter } from "@/utils";
 import Input from "@/components/ui/input";
+import ConstraintAppDetailModal from "@/app/contribution-hub/components/constraintAppDetailModal";
 
 const ModalBody = () => {
   const {
@@ -16,6 +16,7 @@ const ModalBody = () => {
     insertRequirement,
     updateRequirement,
     allChainList,
+    selectedApp,
   } = usePrizeOfferFormContext();
 
   return (
@@ -23,6 +24,14 @@ const ModalBody = () => {
       {selectedConstrains ? (
         <ConstraintDetailsModal
           constraint={selectedConstrains}
+          handleBackToConstraintListModal={handleBackToConstraintListModal}
+          requirementList={requirementList}
+          insertRequirement={insertRequirement}
+          updateRequirement={updateRequirement}
+          allChainList={allChainList!}
+        />
+      ) : selectedApp ? (
+        <ConstraintAppDetailModal
           handleBackToConstraintListModal={handleBackToConstraintListModal}
           requirementList={requirementList}
           insertRequirement={insertRequirement}
@@ -93,26 +102,13 @@ const appInfos: {
   },
 };
 
-const AppFocused = () => {
-  // constraintsListApi![selectedApp].map((constraint, key) => (
-  //               <div
-  //                 key={key}
-  //                 className="requireModal"
-  //                 onClick={() => handleSelectConstraint(constraint)}
-  //               >
-  //                 {constraint.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
-  //                 {constraint.title}
-  //               </div>
-  //             ))
-};
-
 export const InitialBody = () => {
   const { handleSelectConstraint, constraintsListApi } =
     usePrizeOfferFormContext();
 
-  const [searchBar, setSearchBar] = useState("");
+  const { selectedApp, setSelectedApp } = usePrizeOfferFormContext();
 
-  const [selectedApp, setSelectedApp] = useState("");
+  const [searchBar, setSearchBar] = useState("");
 
   const availableIntegrations = Object.keys(constraintsListApi!).filter((key) =>
     key.toLowerCase().includes(searchBar.toLowerCase()),
@@ -123,13 +119,6 @@ export const InitialBody = () => {
       <SelectCoreIntegrations />
       <p className="my-3 text-sm font-semibold text-white">Integrations</p>
       <div className="mt-2 gap-2">
-        {/* <div className="absolute top-5 z-[999] cursor-pointer">
-          <Icon
-            onClick={() => setSelectedApp("")}
-            iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
-            className="z-[999999] cursor-pointer"
-          />
-        </div> */}
         <Input
           data-testid="search-box"
           $icon="/assets/images/modal/search-icon.svg"
@@ -149,7 +138,12 @@ export const InitialBody = () => {
               <button
                 key={index}
                 className="mb-3 flex w-full items-center gap-4 rounded-xl border border-gray60 bg-gray30 p-2 text-gray100"
-                onClick={() => setSelectedApp(constraintKey)}
+                onClick={() =>
+                  setSelectedApp({
+                    constraints: constraintsListApi![constraintKey],
+                    label: appInfos[constraintKey].label,
+                  })
+                }
               >
                 <Icon
                   iconSrc={appInfos[constraintKey].logo}

@@ -225,7 +225,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   );
 };
 
-const CreateParams: FC<CreateModalParam> = ({
+export const CreateParams: FC<CreateModalParam> = ({
   constraint,
   setRequirementParamsList,
   requirementParamsList,
