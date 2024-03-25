@@ -21,7 +21,7 @@ import Modal from "@/components/ui/Modal/modal";
 import { submitDonationTxHash } from "@/utils/api";
 import SelectChainModal from "../SelectChainModal";
 import FundTransactionModal from "../FundTransactionModal";
-import { parseEther } from "viem";
+import { formatUnits, parseEther } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
 import Image from "next/image";
 import Tooltip from "@/components/ui/Tooltip";
@@ -297,7 +297,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                     className="select-box__info__coin-balance text-gray100 text-xs font-semibold"
                   >
                     Balance:{" "}
-                    {balance.data?.formatted.slice(0, 5) +
+                    {(balance.data ? formatUnits(balance.data.value, balance.data.decimals) :"...") +
                       " " +
                       selectedChain?.symbol}{" "}
                   </p>

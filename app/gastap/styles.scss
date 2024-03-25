@@ -25,3 +25,13 @@
     background: linear-gradient(180deg, #1b1b29 0%, #191927 100%);
   }
 }
+
+.gradient-button-st-1 {
+  background: linear-gradient(to bottom, #464760 12.47%, #26263e 87.53%);
+
+  // background: linear-gradient(198.38deg, #464760 12.47%, #26263e 87.53%);
+
+  > div {
+    background: linear-gradient(171.26deg, #303040 -8.91%, #161624 124.43%);
+  }
+}

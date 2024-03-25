@@ -27,7 +27,7 @@ const TokensList = () => {
 
         return 0;
       }),
-    [tokenListSearchResult, highlightedToken]
+    [tokenListSearchResult, highlightedToken],
   );
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const TokensList = () => {
   }, [params, setHighlightedToken]);
 
   return (
-    <div className="tokens-list-wrapper py-6 mb-20 w-full">
+    <div className="tokens-list-wrapper mb-20 w-full py-6">
       {tokensListLoading && tokensList.length === 0 && (
         <div
           style={{ color: "white", textAlign: "center" }}
@@ -62,13 +62,13 @@ const TokensList = () => {
 
       {tokenListSearchResult.length === 0 && !!tokensList.length && (
         <div className="my-10" data-testid="tokens-not-found">
-          <div className="bg-gray30 text-white shadow-lg rounded-lg p-6 mx-auto">
-            <div className="flex justify-center items-center h-20">
-              <h1 className="text-4xl bg-primaryGradient text-transparent bg-clip-text font-semibold">
+          <div className="mx-auto rounded-lg bg-gray30 p-6 text-white shadow-lg">
+            <div className="flex h-20 items-center justify-center">
+              <h1 className="bg-primaryGradient bg-clip-text text-4xl font-semibold text-transparent">
                 404
               </h1>
             </div>
-            <p className="text-center mb-6">
+            <p className="mb-6 text-center">
               No network with the current filter could be found.
             </p>
           </div>
@@ -83,10 +83,10 @@ const FinalVersionCard = () => {
   return (
     <Link
       href="/contribution-hub/token-tap"
-      className={`${Styles["footer-container"]} group hover:opacity-90 transition-all duration-300 w-full h-44 bg-gray20 rounded-3xl px-10 relative flex items-center justify-between`}
+      className={`${Styles["footer-container"]} group relative flex min-h-[11rem] w-full flex-wrap items-center justify-between rounded-3xl bg-gray20 px-10 transition-all duration-300 hover:opacity-90`}
     >
-      <div>
-        <div className="text-2xl flex group-hover:-mt-5 duration-300 transition-all items-center gap-4 text-white">
+      <div className="flex md:flex-col">
+        <div className="flex items-center gap-4 text-2xl text-white transition-all duration-300 group-hover:-mt-5">
           Want to provide a Token
           <Image
             src="/assets/images/provider-dashboard/ic_link_white.svg"
@@ -101,7 +101,7 @@ const FinalVersionCard = () => {
         </div>
       </div>
       <Image
-        className="group-hover:-mb-5 duration-300 transition-all"
+        className="absolute transition-all duration-300 group-hover:-mb-5 md:static"
         width="278"
         height="152"
         alt="contribute token"

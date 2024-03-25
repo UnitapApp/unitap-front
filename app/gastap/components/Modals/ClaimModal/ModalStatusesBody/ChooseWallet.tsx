@@ -3,8 +3,8 @@ import Input from "@/components/ui/input";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { shortenAddress } from "@/utils";
-import { FC, useEffect, useState } from "react";
-import { isAddress } from "viem";
+import { FC, Fragment, useEffect, useState } from "react";
+import { Address, isAddress, isAddressEqual } from "viem";
 
 const ChooseWalletBody: FC<{
   setIsWalletChoosing: (isWalletChoosing: boolean) => void;
@@ -23,20 +23,23 @@ const ChooseWalletBody: FC<{
       return;
     }
 
+    if (!text) return;
+
     setError("");
     setClaimWalletAddress(text);
   }, [setClaimWalletAddress, text]);
 
   return (
-    <div className="text-sm w-full">
+    <div className="w-full text-sm">
       <div
         onClick={() => setIsWalletChoosing(false)}
-        className="absolute cursor-pointer z-10 top-4 right-3 bg-gray30"
+        className="absolute left-3 top-4 z-10 cursor-pointer"
       >
         <Icon
-          iconSrc="/assets/images/token-tap/angle-down.svg"
-          className="-rotate-90"
-          width="20px"
+          iconSrc="/assets/images/gas-tap/arrow-back.svg"
+          width="24"
+          height="25"
+          alt="back"
         />
       </div>
       <div className="relative">
@@ -44,7 +47,7 @@ const ChooseWalletBody: FC<{
           value={text}
           onChange={(e) => setText(e.target.value)}
           className={
-            "placeholder:!text-gray80 h-12 !bg-gray70 rounded-xl " +
+            "!bg-bg6 h-12 !rounded-xl !font-semibold placeholder:!text-gray90 " +
             (error ? "border border-error" : "")
           }
           placeholder="Paste Wallet Address"
@@ -53,25 +56,44 @@ const ChooseWalletBody: FC<{
           onClick={() =>
             navigator.clipboard.readText().then((text) => setText(text))
           }
-          className="absolute z-10 top-1/2 right-3 -translate-y-1/2 btn btn--sm btn--primary-light font-semibold tracking-wide"
+          className="gradient-button-st-1 absolute right-3 top-1/2 z-10 -translate-y-1/2 !rounded-2xl p-[1px]"
         >
-          PASTE
+          <div className="btn btn--sm !rounded-2xl !font-normal tracking-wide">
+            PASTE
+          </div>
         </button>
       </div>
-      {!!error && <p className="text-xs ml-2 -mt-4 text-error">{error}</p>}
+      {!!error && <p className="-mt-4 ml-2 text-xs text-error">{error}</p>}
 
-      <div className="mt-4">
+      <div className="bg-bg3 mt-4 overflow-hidden rounded-xl">
         {userProfile?.wallets.map((wallet, key) => (
-          <div
-            onClick={() => {
-              setClaimWalletAddress(wallet.address);
-              setIsWalletChoosing(false);
-            }}
-            key={key}
-            className="border cursor-pointer mt-3 font-semibold text-gray100 py-3 px-5 border-gray60 rounded-xl bg-gray40"
-          >
-            {shortenAddress(wallet.address)}
-          </div>
+          <Fragment key={key}>
+            <div
+              onClick={() => {
+                setClaimWalletAddress(wallet.address);
+                setIsWalletChoosing(false);
+              }}
+              className={`flex cursor-pointer items-center justify-between px-5 py-4 font-semibold text-gray100 ${claimWalletAddress && isAddressEqual(wallet.address, claimWalletAddress as Address) ? "!bg-primary/5 text-primary" : ""}`}
+            >
+              <span>{shortenAddress(wallet.address)}</span>
+
+              {!!claimWalletAddress &&
+                isAddressEqual(
+                  wallet.address,
+                  claimWalletAddress as Address,
+                ) && (
+                  <Icon
+                    iconSrc="/assets/images/gas-tap/wallet-active.svg"
+                    alt="check"
+                    width="24"
+                    height="25"
+                  />
+                )}
+            </div>
+            {key + 1 !== userProfile.wallets.length && (
+              <div className="mx-auto h-[1px] w-88 bg-[#323244]"></div>
+            )}
+          </Fragment>
         ))}
       </div>
     </div>

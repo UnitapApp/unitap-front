@@ -12,6 +12,7 @@ import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
 import ClaimTokenButton from "./claimButton";
+import PermissionsCard from "@/app/_components/permissions-card";
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -20,10 +21,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   const { openClaimModal, claimedTokensList, claimingTokenPk } =
     useTokenTapContext();
 
-  const { isConnected, connector } = useWalletAccount();
-
-  const [showAllPermissions, setShowAllPermissions] = useState(false);
-
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
   };
@@ -31,7 +28,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   const collectedToken = useMemo(
     () =>
       claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
-    [claimedTokensList, token]
+    [claimedTokensList, token],
   );
 
   const calculateClaimAmount =
@@ -41,71 +38,68 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
 
   const timePermissionVerification = useMemo(
     () => token.constraints.find((permission) => permission.type === "TIME"),
-    [token]
+    [token],
   );
-
-  const verificationsList = showAllPermissions
-    ? token.constraints.filter((permission) => permission.type === "VER")
-    : token.constraints
-        .filter((permission) => permission.type === "VER")
-        .slice(0, 10);
 
   return (
     <article
       className={`token-card flex ${
         isHighlighted
-          ? "before:!inset-[3px] p-0 gradient-outline-card mb-20"
+          ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
           : "mb-4"
-      } flex-col items-center justify-center w-full mb-4`}
+      } mb-4 w-full flex-col items-center justify-center`}
     >
-      <span className="flex flex-col w-full">
+      <span className="flex w-full flex-col">
         <div
-          className={`pt-4 pr-6 pl-3 ${
+          className={`pl-3 pr-6 pt-4 ${
             isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
-          } w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-3xl`}
+          } flex w-full flex-col items-center justify-between gap-2 rounded-t-3xl md:flex-row md:gap-0`}
         >
-          <div className="token-header rounded-l-full p-[2px]">
+          <div className="token-header mb-6 rounded-l-full p-[2px] sm:mb-0">
             <div
               // onClick={onTokenClicked}
-              className="w-80 rounded-l-full bg-[#161623] items-start flex mb-6 sm:mb-0"
+              className="flex w-80 items-start rounded-l-full bg-[#161623] "
             >
-              <span className="w-16 h-16 flex justify-center mr-3">
+              <span className="mr-3 flex h-16 w-16 justify-center ">
                 <img
-                  className="w-auto h-full"
+                  className="h-full w-auto object-contain"
                   src={
                     token.imageUrl ??
                     "/assets/images/token-tap/bright-token.svg"
                   }
+                  width="68"
+                  height="68"
                   alt="chain logo"
                 />
               </span>
-              <div className="w-max mt-2 ml-2">
+              <div className="ml-2 mt-2 w-max">
                 <p
-                  className="text-white text-sm text-center md:text-left flex mb-2"
+                  className="mb-2 flex text-center text-sm text-white md:text-left"
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
                 </p>
-                <p className="text-xs text-white font-medium">
+                <p className="text-xs font-medium text-white">
                   {token.distributor}
                 </p>
               </div>
-              <div className="flex mt-2 items-start">
+              <div className="mt-2 flex items-start">
                 <a
-                  className="mx-2 text-gray100 bg-[#1B1B29] text-2xs px-2 py-1 rounded-xl border border-bg06"
+                  className="mx-2 rounded-xl border border-bg06 bg-[#1B1B29] px-2 py-1 text-2xs text-gray100"
                   target="_blank"
                   rel="noreferrer"
                   href={token.twitterUrl}
                 >
                   <Icon
                     className="cursor-pointer"
-                    iconSrc="assets/images/token-tap/twitter-icon.svg"
+                    iconSrc="/assets/images/landing/x-logo.svg"
                     width="auto"
                     height="13px"
+                    alt="twitter"
                   />
                 </a>
                 <a
-                  className="text-2xs text-gray100 bg-[#1B1B29] px-2 py-1 rounded-xl border border-bg06"
+                  className="rounded-xl border border-bg06 bg-[#1B1B29] px-2 py-1 text-2xs text-gray100"
                   target="_blank"
                   rel="noreferrer"
                   href={token.discordUrl}
@@ -122,10 +116,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           </div>
           <div
             className={
-              "flex items-center gap-2 justify-end flex-col md:flex-row !w-full sm:w-auto"
+              "flex !w-full flex-col items-center justify-end gap-2 sm:w-auto md:flex-row"
             }
           >
-            <Action className={"w-full sm:w-auto items-center sm:items-end"}>
+            <Action className={"w-full items-center sm:w-auto sm:items-end"}>
               <ClaimTokenButton
                 isEmpty={token.isMaxedOut}
                 isClaiming={
@@ -147,51 +141,21 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-[#161623]"
-          }  text-justify pb-3 pr-6 text-[#B5B5C6]`}
+          }  pb-3 pr-6 text-justify text-[#B5B5C6]`}
         >
-          <div className="flex relative items-center pl-4 flex-wrap text-xs gap-2 constraints-wrapper rounded-2xl">
-            {verificationsList.map((permission, key) => (
-              <div key={key}>
-                <span className="text-[#D9D9D9] text-lg">
-                  {key === 0 || "|"}
-                </span>
-                <Tooltip
-                  className={"px-3 py-3 rounded-lg "}
-                  data-testid={`token-verification-${token.id}-${permission.name}`}
-                  text={permission.description}
-                >
-                  <div className="flex items-center gap-3">
-                    {permission.title}
-                  </div>
-                </Tooltip>
-              </div>
-            ))}
-
-            {token.constraints.length > 2 && (
-              <button
-                onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
-                className={`flex ml-auto absolute top-0 right-0 bottom-0 items-center z-10 px-3 py-4 rounded-r-2xl collapse-handler`}
-              >
-                <Image
-                  alt="angle-down"
-                  width={12}
-                  height={7}
-                  src="/assets/images/token-tap/angle-down.svg"
-                  className={`ml-2 ${
-                    showAllPermissions ? "rotate-180" : ""
-                  } transition-transform`}
-                />
-              </button>
-            )}
-          </div>
+          <PermissionsCard
+            constraintParams={token.constraintParams}
+            constraints={token.constraints}
+            pk={token.id}
+          />
         </div>
       </span>
       <div
         className={`${
           isHighlighted ? "bg-g-primary-low" : "bg-[#1B1B29]"
-        } w-full gap-4 md:gap-0 items-center flex min-h-[48px] md:flex-row flex-col rounded-b-3xl px-4 pr-6 justify-between relative`}
+        } relative flex min-h-[48px] w-full flex-col items-center justify-between gap-4 rounded-b-3xl px-4 pr-6 md:flex-row md:gap-0`}
       >
-        <div className="flex gap-x-2 items-center mr-auto text-xs sm:text-sm">
+        <div className="mr-auto flex items-center gap-x-2 text-xs sm:text-sm">
           <div className="flex items-center gap-2">
             <span className="text-[#67677B]">Chain: </span>
             <span className="text-[#B5B5C6]">{token.chain.chainName}</span>
@@ -204,16 +168,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               alt={token.chain.chainName}
             />
           </div>
-          <Icon
-            iconSrc={getChainIcon(token.chain)}
-            width="auto"
-            height="16px"
-          />
         </div>
 
         {!!timePermissionVerification && (
           <Tooltip
-            className={`text-sm h-9 mr-auto mt-2 rounded-t-2xl px-1 !cursor-default py-3 w-52 self-end ${
+            className={`mr-auto mt-2 h-9 w-52 !cursor-default self-end rounded-t-2xl px-1 py-3 text-sm ${
               isHighlighted ? "bg-transparent" : "bg-bg00"
             }`}
             withoutImage

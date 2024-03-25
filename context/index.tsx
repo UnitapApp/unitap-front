@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const settingsRes: { index: string; value: string }[] = await fetch(
     process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/settings/",
-    { next: { revalidate: 10 } }
+    { next: { revalidate: 10 } },
   ).then((res) => res.json());
 
   let authProfile: UserProfile | null = null;
@@ -18,7 +18,7 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const cookieStorage = cookies();
 
   try {
-    if (cookieStorage.has("userToken"))
+    if (cookieStorage.has("userToken") && cookieStorage.get("userToken")?.value)
       authProfile = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/info/`,
         {
@@ -26,8 +26,14 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
             Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
           },
           cache: "no-store",
-        }
-      ).then((res) => res.json());
+        },
+      )
+        .then((res) => {
+          if (res.ok) return res;
+
+          throw new Error("Auth error");
+        })
+        .then((res) => res.json());
   } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {

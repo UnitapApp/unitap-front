@@ -119,18 +119,18 @@ const PrizeInfo = ({
                 : "border-gray50 "
             } rounded-xl h-[63px] items-center justify-between pr-4 w-full max-w-[452px] overflow-hidden`}
           >
-            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center">
+            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center ">
               <p>Description</p>
             </div>
-            <input
-              type="text"
+            <textarea
               placeholder="will be shown on card"
-              className="provider-dashboard-input"
+              className="border-none focus:ring-0 bg-none h-full w-full bg-gray40 max-h-[55px] p-1 !outline-none"
               name="description"
               onChange={handleChange}
               disabled={isShowingDetails || !address}
               value={data.description ? data.description : ""}
             />
+
             <p>{data.description?.length}/100</p>
           </div>
           {showErrors && !data.description && (

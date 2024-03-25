@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import styled from "styled-components/"
-import { DV } from "./designVariables"
+import styled from "styled-components/";
+import { DV } from "./designVariables";
 
 type props = {
-  fontSize?: string
-  xsFontSize?: string
-  smFontSize?: string
-  mdFontSize?: string
-  lgFontSize?: string
-  xlgFontSize?: string
-  lineHeight?: string
-  breakOverflow?: boolean
-  color?: string
-  width?: string
-  $textAlign?: string
-  mr?: number
-  mrAuto?: boolean
-  mb?: number
-  mdMb?: number
-}
+  fontSize?: string;
+  xsFontSize?: string;
+  smFontSize?: string;
+  mdFontSize?: string;
+  lgFontSize?: string;
+  xlgFontSize?: string;
+  lineHeight?: string;
+  breakOverflow?: boolean;
+  color?: string;
+  width?: string;
+  $textAlign?: string;
+  mr?: number;
+  mrAuto?: boolean;
+  mb?: number;
+  mdMb?: number;
+};
 
 export const Text = styled.p<props>`
   color: ${({ color }): string => {
     const xyz: string | undefined = Object.keys(DV.colors).find(
-      (x) => x === color
-    )
+      (x) => x === color,
+    );
     if (xyz) {
-      return `${DV.colors[xyz]}!important`
-    } else return `white !important`
+      return `${DV.colors[xyz]}!important`;
+    } else return `white !important`;
   }};
   font-size: ${({ fontSize }) => fontSize || "16"}px;
   line-height: ${({ lineHeight }) => lineHeight || ""};
@@ -57,4 +57,4 @@ export const Text = styled.p<props>`
       word-wrap: break-word;
       hyphens: none;
     `}
-`
+`;

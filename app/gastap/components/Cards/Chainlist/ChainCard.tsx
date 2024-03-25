@@ -148,7 +148,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
               "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
             }
           >
-            <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
+            <div className="action flex flex-col gap-4 md:flex-row w-full sm:w-auto items-center sm:items-end">
               {chain.chainType !== ChainType.SOLANA && (
                 <button
                   onClick={() => handleRefillButtonClicked(chain.pk)}
@@ -193,7 +193,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-bg04"
-          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl px-4 justify-between`}
+          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-3xl md:px-4 p-4 md:p-0 justify-center md:justify-between`}
         >
           <div
             className={`${
@@ -223,7 +223,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             </p>
           </div>
           <Tooltip
-            className={`text-sm h-10 rounded-t-2xl px-3 !cursor-default py-3 w-56 self-end ${
+            className={`text-sm h-10 rounded-b-2xl md:rounded-b-none rounded-t-2xl px-3 !cursor-default py-3 mx-auto md:mx-0 w-56 self-end ${
               isHighlighted ? "bg-transparent" : "bg-bg00"
             }`}
             withoutImage

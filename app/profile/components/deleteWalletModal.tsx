@@ -3,7 +3,7 @@
 import Modal from "@/components/ui/Modal/modal";
 import Image from "next/image";
 import { Noto_Sans_Mono } from "next/font/google";
-import { useProfileEditContext } from "../layout";
+import { useProfileEditContext } from "./profileEditContext";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useState } from "react";
 import { shortenAddress } from "@/utils";

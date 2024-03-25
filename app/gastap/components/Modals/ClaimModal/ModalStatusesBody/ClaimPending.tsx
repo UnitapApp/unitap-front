@@ -1,57 +1,40 @@
 "use client";
 
-import { SecondaryGreenColorButton } from "@/components/ui/Button/button";
-import { Text } from "@/components/ui/text.style";
-import { FC, useEffect } from "react";
-import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types";
-import lottie from "lottie-web";
+import { FC } from "react";
+import { Chain, ClaimReceipt } from "@/types";
 import animation from "@/assets/animations/GasFee-delivery2.json";
+import Lottie from "react-lottie";
 
 const ClaimPendingBody: FC<{
   chain: Chain;
   closeClaimModal: () => void;
   activeClaimReceipt: ClaimReceipt;
 }> = ({ chain, closeClaimModal, activeClaimReceipt }) => {
-  useEffect(() => {
-    if (activeClaimReceipt?.status === ClaimReceiptState.PENDING) {
-      const animationElement = document.querySelector("#animation");
-      if (animationElement) {
-        animationElement.innerHTML = "";
-      }
-      lottie.loadAnimation({
-        container: document.querySelector("#animation") as HTMLInputElement,
-        animationData: animation,
-        loop: true,
-        autoplay: true,
-      });
-    }
-  }, []);
   return (
     <>
-      <div
-        data-testid={`chain-claim-pending-${chain.pk}`}
-        id="animation"
-        style={{ width: "200px" }}
-      ></div>
-      <Text width="100%" fontSize="14" color="space_green" $textAlign="center">
+      <div className="-mt-10 w-full">
+        <Lottie
+          options={{
+            animationData: animation,
+            loop: true,
+            autoplay: true,
+          }}
+          width={250}
+        />
+      </div>
+      <p className="-mt-8 text-center text-sm font-semibold text-[#55E9A9]">
         Claim transaction submitted
-      </Text>
-      <Text
-        width="100%"
-        fontSize="14"
-        color="second_gray_light"
-        mb={3}
-        $textAlign="center"
-      >
-        The claim transaction will be compeleted soon
-      </Text>
-      <SecondaryGreenColorButton
+      </p>
+      <p className="mb-5 mt-8 text-sm text-gray100">
+        The claim transaction will be completed soon...
+      </p>
+
+      <button
         onClick={closeClaimModal}
-        className="!w-full"
-        data-testid={`chain-claim-action-${chain.pk}`}
+        className="gradient-button-st-1 mt-5 w-full rounded-3xl p-[1px]"
       >
-        Close
-      </SecondaryGreenColorButton>
+        <div className="btn !rounded-3xl tracking-wide">Close</div>
+      </button>
     </>
   );
 };

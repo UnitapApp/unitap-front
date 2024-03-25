@@ -8,13 +8,13 @@
 @tailwind utilities;
 
 @mixin btn {
-  @apply ease-out duration-300;
+  @apply duration-300 ease-out;
 }
 
 @layer base {
   // TYPOGRAPHY
   h1 {
-    @apply text-3xl font-semibold items-center;
+    @apply items-center text-3xl font-semibold;
   }
 
   h2 {
@@ -77,7 +77,7 @@ input {
 }
 
 .tap-header {
-  @apply bg-no-repeat bg-cover bg-right;
+  @apply bg-cover bg-right bg-no-repeat;
 
   background-image: linear-gradient(
       90deg,
@@ -152,4 +152,11 @@ input {
       }
     }
   }
+}
+
+.constraints-wrapper {
+  background: url("/assets/images/constraints.svg"),
+    linear-gradient(270deg, #0c0c17 0%, #161623 100%);
+
+  background-size: cover;
 }

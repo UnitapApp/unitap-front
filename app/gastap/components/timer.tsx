@@ -27,10 +27,10 @@ const Timer = () => {
   }, []);
 
   return (
-    <div className="flex relative flex-col -translate-x-1/2 items-center ml-auto bg-[#11111F] py-2 px-5 rounded-b-2xl">
-      <p className="text-gray100 text-xs mb-1.5">This Round ends in:</p>
-      <span className="relative w-52 h-7 text-center">
-        <p className="font-digital-numbers text-[#A3BFC8] text-xl text-center">
+    <div className="relative flex translate-x-0 flex-col items-center rounded-b-2xl rounded-t-2xl bg-[#11111F] px-5 py-2 md:absolute md:left-1/2 md:top-0 md:-translate-x-1/2 md:rounded-t-none">
+      <p className="mb-1.5 text-xs text-gray100">This Round ends in:</p>
+      <span className="h-7 w-52 text-center">
+        <p className="text-center font-digital-numbers text-xl text-[#A3BFC8]">
           {days}:{hours}:{minutes}:{seconds}
         </p>
       </span>

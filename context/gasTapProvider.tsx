@@ -110,7 +110,7 @@ export const GasTapProvider: FC<
   const [isNonEvmActive, setIsNonEvmActive] = useState<boolean>(false);
   const [searchPhrase, setSearchPhrase] = useState<string>("");
   const [claimWalletAddress, setClaimWalletAddress] = useState<string | null>(
-    ""
+    "",
   );
 
   const [activeClaimReceipt, setActiveClaimReceipt] =
@@ -120,11 +120,14 @@ export const GasTapProvider: FC<
     lastFailPk: null,
   });
   const [fuelChampionList, setFuelChampionList] = useState(
-    fuelChampionListInitial.reduce((prev, curr) => {
-      prev[curr.faucetPk] = curr.username;
+    fuelChampionListInitial.reduce(
+      (prev, curr) => {
+        prev[curr.faucetPk] = curr.username;
 
-      return prev;
-    }, {} as { [key: string]: string })
+        return prev;
+      },
+      {} as { [key: string]: string },
+    ),
   );
 
   const [oneTimeClaimedGasList, setOneTimeClaimedGasList] = useState<
@@ -152,9 +155,9 @@ export const GasTapProvider: FC<
         searchPhrase,
         chainList,
         selectedNetwork,
-        selectedChainType
+        selectedChainType,
       ),
-    [searchPhrase, chainList, selectedNetwork, selectedChainType]
+    [searchPhrase, chainList, selectedNetwork, selectedChainType],
   );
 
   const { setIsWalletPromptOpen } = useGlobalContext();
@@ -171,11 +174,14 @@ export const GasTapProvider: FC<
     const fuelChampionList = await getFuelChampionList();
 
     setFuelChampionList(
-      fuelChampionList.reduce((prev, curr) => {
-        prev[curr.faucetPk] = curr.username;
+      fuelChampionList.reduce(
+        (prev, curr) => {
+          prev[curr.faucetPk] = curr.username;
 
-        return prev;
-      }, {} as { [key: string]: string })
+          return prev;
+        },
+        {} as { [key: string]: string },
+      ),
     );
   }, []);
 
@@ -223,7 +229,7 @@ export const GasTapProvider: FC<
         setIsNonEvmActive(true);
       }
     },
-    [chainList, isConnected, setIsWalletPromptOpen]
+    [chainList, isConnected, setIsWalletPromptOpen],
   );
 
   const claimNonEVM = useCallback(
@@ -241,7 +247,7 @@ export const GasTapProvider: FC<
         }, 1000);
       }
     },
-    [updateActiveClaimHistory]
+    [updateActiveClaimHistory],
   );
 
   const claim = useCallback(
@@ -255,7 +261,7 @@ export const GasTapProvider: FC<
         return await claimNonEVM(
           chainList.find((item) => item.pk === claimChainPk)!,
           address,
-          userToken
+          userToken,
         );
       }
 
@@ -293,12 +299,12 @@ export const GasTapProvider: FC<
       claimNonEVM,
       chainList,
       updateActiveClaimHistory,
-    ]
+    ],
   );
 
   const chainListSearchSimpleResult = useMemo(
     () => searchChainListSimple(searchPhrase, chainList),
-    [searchPhrase, chainList]
+    [searchPhrase, chainList],
   );
 
   useFastRefresh(() => {
@@ -323,6 +329,12 @@ export const GasTapProvider: FC<
   ]);
 
   useEffect(() => {
+    if (!isConnected || !userAddress) return;
+
+    setClaimWalletAddress(userAddress);
+  }, [isConnected, userAddress]);
+
+  useEffect(() => {
     if (userToken) return;
 
     setOneTimeClaimedGasList([]);
@@ -332,11 +344,11 @@ export const GasTapProvider: FC<
   useEffect(() => {
     if (activeChain) {
       setActiveClaimReceipt(
-        getActiveClaimReceipt(activeClaimHistory, activeChain, "EVM")
+        getActiveClaimReceipt(activeClaimHistory, activeChain, "EVM"),
       );
     } else if (isNonEvmActive) {
       setActiveClaimReceipt(
-        getActiveClaimReceipt(activeClaimHistory, activeChain, "NONEVM")
+        getActiveClaimReceipt(activeClaimHistory, activeChain, "NONEVM"),
       );
     }
   }, [activeChain, isNonEvmActive, setActiveClaimReceipt, activeClaimHistory]);
@@ -379,7 +391,7 @@ export const GasTapProvider: FC<
 
 const getNetworkFilterResult = (
   selectedNetwork: Network,
-  chainList: Chain[]
+  chainList: Chain[],
 ) => {
   if (selectedNetwork === Network.MAINNET) {
     chainList = chainList.filter((chain) => chain.isTestnet === false);
@@ -391,7 +403,7 @@ const getNetworkFilterResult = (
 
 const getChainTypeFilterResult = (
   selectedChainType: ChainType,
-  chainList: Chain[]
+  chainList: Chain[],
 ) => {
   if (selectedChainType === ChainType.EVM) {
     chainList = chainList.filter((chain) => chain.chainType === ChainType.EVM);
@@ -400,7 +412,7 @@ const getChainTypeFilterResult = (
       (chain) =>
         chain.chainType === ChainType.NONEVMXDC ||
         chain.chainType === ChainType.SOLANA ||
-        chain.chainType === ChainType.LIGHTNING
+        chain.chainType === ChainType.LIGHTNING,
     );
   }
   return chainList;
@@ -414,7 +426,7 @@ const getSearchQueryResult = (searchPhrase: string, chainList: Chain[]) => {
       chain.nativeCurrencyName
         .toLowerCase()
         .includes(searchPhrase.toLowerCase()) ||
-      chain.chainName.toLowerCase().includes(searchPhrase.toLowerCase())
+      chain.chainName.toLowerCase().includes(searchPhrase.toLowerCase()),
   );
 
   return filteredChains;
@@ -422,7 +434,7 @@ const getSearchQueryResult = (searchPhrase: string, chainList: Chain[]) => {
 
 export const searchChainListSimple = (
   searchPhrase: string,
-  chainList: Chain[]
+  chainList: Chain[],
 ) => {
   let searchChainListResult = getSearchQueryResult(searchPhrase, chainList);
   return searchChainListResult;
@@ -432,17 +444,17 @@ export const searchChainList = (
   searchPhrase: string,
   chainList: Chain[],
   selectedNetwork: Network,
-  selectedChainType: ChainType
+  selectedChainType: ChainType,
 ) => {
   if (searchPhrase !== "") return getSearchQueryResult(searchPhrase, chainList);
 
   let searchChainListResult = getNetworkFilterResult(
     selectedNetwork,
-    chainList
+    chainList,
   );
   searchChainListResult = getChainTypeFilterResult(
     selectedChainType,
-    searchChainListResult
+    searchChainListResult,
   );
   return searchChainListResult;
 };
@@ -450,12 +462,12 @@ export const searchChainList = (
 const getActiveClaimReceipt = (
   activeClaimHistory: ClaimReceipt[],
   activeChain: Chain | null,
-  chainType: string
+  chainType: string,
 ) => {
   if (!activeChain) return null;
 
   const filteredClaimHistory = activeClaimHistory.filter(
-    (claimReceipt: ClaimReceipt) => claimReceipt.chain.pk === activeChain.pk
+    (claimReceipt: ClaimReceipt) => claimReceipt.chain.pk === activeChain.pk,
   );
 
   let selectedClaimReceipt = null;
@@ -464,29 +476,29 @@ const getActiveClaimReceipt = (
     selectedClaimReceipt =
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.VERIFIED
+          claimReceipt.status === ClaimReceiptState.VERIFIED,
       ) ||
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.PENDING
+          claimReceipt.status === ClaimReceiptState.PENDING,
       ) ||
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.REJECTED
+          claimReceipt.status === ClaimReceiptState.REJECTED,
       );
   } else if (chainType === "NONEVM") {
     selectedClaimReceipt =
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.VERIFIED
+          claimReceipt.status === ClaimReceiptState.VERIFIED,
       ) ||
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.PENDING
+          claimReceipt.status === ClaimReceiptState.PENDING,
       ) ||
       filteredClaimHistory.find(
         (claimReceipt: ClaimReceipt) =>
-          claimReceipt.status === ClaimReceiptState.REJECTED
+          claimReceipt.status === ClaimReceiptState.REJECTED,
       );
   }
 

@@ -14,7 +14,7 @@ const DisplaySelectedDate = () => {
               : "text-gray100"
           }`}
         >
-          Raffle Time:{" "}
+          End Time:{" "}
           {(Number(new Date(data.endTimeStamp * 1000).getDate()) < 10
             ? "0" + new Date(data.endTimeStamp * 1000).getDate()
             : new Date(data.endTimeStamp * 1000).getDate()) +

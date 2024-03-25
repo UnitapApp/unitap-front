@@ -5,11 +5,10 @@ import { Spaceman } from "@/constants/spaceman";
 import Icon from "@/components/ui/Icon";
 import { APIErrorsSource } from "@/types";
 import { ErrorsContext } from "@/context/errorsProvider";
-import {
-  ModalWrapper,
-  ModalContent,
-  ModalChildrenWrapper,
-} from "./modal.style";
+import { ModalContent } from "./modal.style";
+import Image from "next/image";
+
+import HeaderImage from "./header-image.svg";
 
 type props = {
   title?: string;
@@ -38,8 +37,8 @@ const Modal = ({
   return (
     <>
       {isOpen && (
-        <ModalWrapper
-          className={className}
+        <div
+          className={`bg-darkblack/20 fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center overflow-auto backdrop-blur-sm ${className}`}
           onClick={(_e) => closeModalHandler()}
           data-testid="modal-wrapper"
         >
@@ -47,23 +46,29 @@ const Modal = ({
             className={`${
               className === "provider-dashboard__modal"
                 ? "bg-gray20"
-                : "bg-gray30"
-            } rounded-2xl border-2 border-gray80 ${
+                : "bg-gray60"
+            } rounded-2xl border-3 border-t-0 border-gray60 ${
               errorSource && getError(errorSource) ? "!border-error " : ""
             }`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
             size={size}
           >
-            <div className="flex items-center">
+            <div className="relative flex items-center p-4">
+              <Image
+                src={HeaderImage}
+                alt="polygon"
+                className="absolute left-1/2 top-0 -translate-x-1/2"
+              />
+
               {titleLeft && (
-                <p className="text-xl text-left relative z-10 text-white">
+                <p className="relative z-10 text-left text-xl text-gray100">
                   {" "}
                   {titleLeft}{" "}
                 </p>
               )}
               {title && (
-                <p className="modal-title font-bold text-sm relative z-10 text-center ml-auto text-white">
+                <p className="modal-title relative z-10 ml-auto mt-1 text-center text-sm font-semibold text-gray100">
                   {" "}
                   {title}{" "}
                 </p>
@@ -73,21 +78,25 @@ const Modal = ({
                 className="close ml-auto cursor-pointer"
                 data-testid="close-modal"
               >
-                <Icon iconSrc="/assets/images/modal/exit.svg" />
+                <Image
+                  width="12"
+                  height="13"
+                  alt="exit"
+                  src="/assets/images/modal/exit.svg"
+                />
               </span>
             </div>
-            <ModalChildrenWrapper
-              className={`${
+            <div
+              className={`rounded-lg ${
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } max-h-[70vh] !rounded-none styled-scroll`}
-              size={size}
+              } styled-scroll max-h-[70vh] p-3`}
             >
               {children}
-            </ModalChildrenWrapper>
+            </div>
           </ModalContent>
-        </ModalWrapper>
+        </div>
       )}
     </>
   );

@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
+import { zeroAddress } from "viem";
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
@@ -40,18 +41,19 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const isStart = new Date(distribution.startAt) < new Date();
   const isFinished = new Date(distribution.deadline) < new Date();
   const status = distribution.status;
+
   return (
     <div className="bg-gray30 border-2 border-gray40 w-full select-none p-4 rounded-xl relative h-[264px] ">
       <div className="provideToken-item-container">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Icon
-              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              iconSrc={distribution.chain.logoUrl}
               width="36px"
               height="36px"
             />
             <p className="text-sm font-medium text-white">
-              {distribution.name}
+              {distribution.token}
             </p>
           </div>
           <div>
@@ -83,7 +85,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           </div>
         </div>
         <div className="text-2xs font-medium mt-2 text-white">
-          Decentralized verification system
+          {distribution.distributor}
         </div>
         <div className="flex justify-between my-3">
           <div className="flex items-center gap-3">
@@ -91,13 +93,13 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               on {distribution.chain.chainName}
             </div>
             <Icon
-              iconSrc="/assets/images/provider-dashboard/btc_lightning_logo 1.svg"
+              iconSrc={distribution.chain.logoUrl}
               width="14px"
               height="14px"
             />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-gray80 text-xs">non-Repeatable</div>
+            <div className="text-gray80 text-xs">{distribution.isOneTimeClaim ? "Single-Claim" : " Periodic claim"}</div>
             <Icon
               iconSrc="/assets/images/provider-dashboard/reload.svg"
               width="16px"
@@ -106,21 +108,20 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           </div>
         </div>
         <div className="pt-2">
-          {isStart && isFinished && status === Filters.Verified && (
-            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
-              {distribution.numberOfClaims} Spots Enrolled
-            </div>
-          )}
-
           {isStart && !isFinished && status === Filters.Verified && (
             <div className="bg-gray50 rounded-xl text-sm font-medium text-white h-[48px]  flex items-center justify-center ">
               {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
-              Spots left
+              claims left
             </div>
           )}
         </div>
         <div className="absolute bottom-2 right-4 left-4">
-          {status == Filters.Verified && (
+          {isStart && isFinished && status === Filters.Verified && (
+            <div className="bg-gray50 rounded-xl text-sm  font-medium text-white h-[48px] flex items-center justify-center ">
+              {distribution.numberOfClaims} claimed
+            </div>
+          )}
+          {status == Filters.Verified && !isFinished && (
             <CardTimerTokenTap
               startTime={distribution.startAt}
               FinishTime={distribution.deadline}
@@ -180,6 +181,8 @@ const TokenTapContent = () => {
 
   const [searchPhrase, setSearchPhrase] = useState<string>("");
 
+  const [firstCheck, setFirstCheck] = useState(false);
+
   const handleSetSearchPhrase = (str: string) => {
     const debounce = setTimeout(() => {
       setSearchPhrase(str);
@@ -192,6 +195,7 @@ const TokenTapContent = () => {
     try {
       const distributions = await getUserDistributions(userToken);
       setUserDistributions(distributions);
+      setFirstCheck(true);
       setLoading(false);
     } catch (e: any) {
       setLoading(false);
@@ -282,33 +286,29 @@ const TokenTapContent = () => {
             All
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Pending && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Pending && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Pending)}
           >
             ongoing
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Verified && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Verified && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Verified)}
           >
             verified
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Rejected && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Rejected && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Rejected)}
           >
             rejected
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Finished && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Finished && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Finished)}
           >
             finished
@@ -321,9 +321,11 @@ const TokenTapContent = () => {
         <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
           <div className="flex items-center relative">
             <div>
-              <p className="text-base font-semibold">Offer a New Token</p>{" "}
+              <p className="text-base font-semibold">
+                Distribute a token on Token Tap
+              </p>{" "}
               <p className="text-sm text-gray100">
-                Here you can provide Token for Token Tap.
+                Give out tokens based on specific requirements.
               </p>
             </div>
             <Icon
@@ -335,7 +337,7 @@ const TokenTapContent = () => {
             href={RoutePath.PROVIDER_TOKENTAP_CREATE}
             className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
           >
-            + Provide a New Token
+            + List a New Token
           </Link>
         </div>
       </div>
@@ -348,7 +350,7 @@ const TokenTapContent = () => {
 
       {loading &&
         filteredItems.length == 0 &&
-        selectedFilter === Filters.All && (
+        selectedFilter === Filters.All && !firstCheck && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
             <Skeleton />
             <Skeleton />

@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 
 import Icon from "@/components/ui/Icon";
 import { Chain } from "@/types";
 import { getChainIcon } from "@/utils/chain";
-import { BigNumber } from "@ethersproject/bignumber";
-import JSBI from "jsbi";
-import { CurrencyAmount } from "@uniswap/sdk-core";
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { useWalletProvider } from "@/utils/wallet";
-import { nativeOnChain } from "@/constants/tokens";
+import { formatUnits } from "viem";
+import { useBalance } from "wagmi";
 
 interface ChainItemProps {
   chain: Chain;
@@ -23,25 +19,14 @@ const ChainItem = (props: ChainItemProps) => {
   const { selected, chain, onClick } = props;
   const icon = getChainIcon(chain);
   const provider = useWalletProvider();
-  const [fundManagerBalance, setFundManagerBalance] =
-    useState<BigNumber | null>(null);
 
-  useEffect(() => {
-    new StaticJsonRpcProvider(chain.rpcUrl)
-      ?.getBalance(chain.fundManagerAddress)
-      .then((balance) => {
-        setFundManagerBalance(balance);
-      });
-  }, [chain, provider]);
 
-  const fundManagerBalanceAmount = useMemo(() => {
-    if (!fundManagerBalance) return null;
-    const amount = JSBI.BigInt(fundManagerBalance.toString());
-    return CurrencyAmount.fromRawAmount(
-      nativeOnChain(Number(chain.chainId)),
-      amount
-    );
-  }, [fundManagerBalance]);
+  const { data } = useBalance({
+    address: chain.fundManagerAddress,
+    chainId: Number(chain.chainId)
+  })
+
+
 
   return (
     <div
@@ -55,8 +40,8 @@ const ChainItem = (props: ChainItemProps) => {
       </p>
       <p className="balance mr-2 text-gray90 text-xs">Contract Balance: </p>
       <p className="balance-amount text-white text-xs">
-        {fundManagerBalanceAmount
-          ? fundManagerBalanceAmount.toSignificant(5)
+        {data
+          ? formatUnits(data.value, data.decimals).slice(0, 7)
           : "..."}
       </p>
       {selected && (

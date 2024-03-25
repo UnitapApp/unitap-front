@@ -25,6 +25,7 @@ const config: Config = {
         "2xs": "0.625rem",
       },
       colors: {
+        darkblack: "#000000",
         bg00: "#0C0C17",
         bg01: "",
         bg02: "",
@@ -34,7 +35,9 @@ const config: Config = {
         bg06: "#212130",
         bg07: "",
         bg08: "",
-        primary: "#EF476F",
+        bg3: "#21212E",
+        bg6: "#3E3E4A",
+        primary: "#5EE1B0",
         secondary: "#F59569",
         input: "#EFF3F8",
         label: "#565656",
@@ -134,6 +137,7 @@ const config: Config = {
 
         "enrolled-grad-btn":
           "linear-gradient(110.05deg, rgba(36, 50, 42, 0.3) 60.86%, #49A47C 112.10%)",
+        "x-button": "url('/assets/images/x-button-bg.svg')",
       },
 
       dropShadow: {

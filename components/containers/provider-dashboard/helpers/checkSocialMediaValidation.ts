@@ -9,9 +9,7 @@ const checkTwitterVAlidation = (username: string) => {
 };
 
 const checkDiscordValidation = (username: string) => {
-
-  const usernameRegex =
-    /https:\/\/discord\.com/;
+  const usernameRegex = /https:\/\/discord\.com/;
   return !!username.match(usernameRegex);
 };
 
@@ -44,12 +42,11 @@ export const checkSocialMediaValidation = (
   const isTwitterVerified = twitter
     ? checkTwitterVAlidation(twitter.replace("@", ""))
     : true;
-  const isUrlVerified = creatorUrl
-    ? checkUrlValidation(creatorUrl)
-    : true;
-  const isDiscordVerified = discord
-    ? checkDiscordValidation(discord.replace("@", ""))
-    : true;
+  const isUrlVerified = creatorUrl ? checkUrlValidation(creatorUrl) : true;
+  // const isDiscordVerified = discord
+  //   ? checkDiscordValidation(discord.replace("@", ""))
+  //   : true;
+  const isDiscordVerified = true;
   const isTelegramVerified = telegram
     ? checkTelegramValidation(telegram.replace("@", ""))
     : true;

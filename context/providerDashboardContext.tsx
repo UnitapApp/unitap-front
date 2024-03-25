@@ -920,6 +920,7 @@ const ProviderDashboard: FC<
         decimals: decimals,
       },
     ]);
+    closeRequirementModal();
   };
 
   const updateRequirement = (
@@ -943,6 +944,7 @@ const ProviderDashboard: FC<
       return item;
     });
     setRequirementList(newItem);
+    closeRequirementModal();
   };
 
   const handleCheckForReason = (raffle: UserRafflesProps) => {

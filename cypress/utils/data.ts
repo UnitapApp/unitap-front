@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import {
   BrightIdVerificationStatus,
   Chain,
@@ -7,7 +8,6 @@ import {
 } from "../../types";
 
 import { shortenAddress } from "../../utils";
-import { Wallet } from "@ethersproject/wallet";
 
 // todo: figure out how env vars actually work in CI
 // const TEST_PRIVATE_KEY = Cypress.env('INTEGRATION_TEST_PRIVATE_KEY')
@@ -20,11 +20,11 @@ export const SIGNED_MESSAGE =
   "0xa2162955fbfbac44ad895441a3501465861435d6615053a64fc9622d98061f1556e47c6655d0ea02df00ed6f6050298eea381b4c46f8148ecb617b32695bdc451c";
 
 // address of the above key
-export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address;
-export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2).address;
+export const TEST_ADDRESS_NEVER_USE = "DEPR";
+export const TEST_ADDRESS_NEVER_USE_2 = "0x1231387213182736128736812738" as Address;
 
 export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(
-  TEST_ADDRESS_NEVER_USE
+  TEST_ADDRESS_NEVER_USE,
 );
 
 export const SAMPLE_ERROR_MESSAGE = "An error occurred";
@@ -175,11 +175,11 @@ export const emptyClaimHistoryResponse: ClaimReceipt[] = [];
 export const createClaimHistory: (
   chainPk: number,
   claimStatus: ClaimReceiptState,
-  pk: number
+  pk: number,
 ) => Omit<ClaimReceipt, "chain"> & { chain: number } = (
   chainPk,
   claimStatus,
-  pk
+  pk,
 ) => {
   const date = new Date();
   // const claimAmount: BigInt = BigInt('10000000000000000');

@@ -231,6 +231,7 @@ export interface UserTokenDistribution {
   totalClaimsSinceLastRound: number;
   twitterUrl: string | null;
   decimals: number;
+  isOneTimeClaim: boolean;
 }
 
 export interface UserDonation {

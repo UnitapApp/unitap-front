@@ -40,7 +40,11 @@ const DonationCard = ({ donation }: DonationProps) => {
       <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
         <div className="flex justify-between items-center text-gray90">
           <div className="flex items-center text-white gap-2 font-medium text-base;">
-            <Icon iconSrc={donation.faucet.gasImageUrl} />
+            <Icon
+              iconSrc={donation.faucet.gasImageUrl}
+              width="30px"
+              height="27px"
+            />
             <p>{donation.faucet.chain.chainName}</p>
           </div>
           <div className="flex gap-2 text-2xs items-center justify-center">
@@ -104,12 +108,15 @@ const GasTapContent = () => {
 
   const [filteredItem, setFilteredItem] = useState<UserDonation[]>([]);
 
+  const [firstCheck, setFirstCheck] = useState(false);
+
   const handleGetUserDonations = useCallback(async () => {
     if (!userToken) return;
     try {
       const donations = await getUserDonations(userToken);
       setUserDonations(donations.results);
       setLoading(false);
+      setFirstCheck(true);
     } catch (e: any) {
       setLoading(false);
     }
@@ -201,37 +208,33 @@ const GasTapContent = () => {
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-1 w-full sm:w-auto select-none">
             <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
-                className={`${
-                  selectedFilter.statusFilter == StatusFilters.All &&
+                className={`${selectedFilter.statusFilter == StatusFilters.All &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("statusFilter", "All")}
               >
                 All
               </div>
               <div
-                className={`${
-                  selectedFilter.statusFilter == StatusFilters.Pending &&
+                className={`${selectedFilter.statusFilter == StatusFilters.Pending &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("statusFilter", "Pending")}
               >
                 ongoing
               </div>
               <div
-                className={`${
-                  selectedFilter.statusFilter == StatusFilters.Verified &&
+                className={`${selectedFilter.statusFilter == StatusFilters.Verified &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("statusFilter", "Verified")}
               >
                 verified
               </div>
               <div
-                className={`${
-                  selectedFilter.statusFilter == StatusFilters.Rejected &&
+                className={`${selectedFilter.statusFilter == StatusFilters.Rejected &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("statusFilter", "Rejected")}
               >
                 rejected
@@ -239,28 +242,25 @@ const GasTapContent = () => {
             </div>
             <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
-                className={`${
-                  selectedFilter.mainnetFilter == MainnetFilters.All &&
+                className={`${selectedFilter.mainnetFilter == MainnetFilters.All &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("mainnetFilter", "All")}
               >
                 All
               </div>
               <div
-                className={`${
-                  selectedFilter.mainnetFilter == MainnetFilters.Testnet &&
+                className={`${selectedFilter.mainnetFilter == MainnetFilters.Testnet &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("mainnetFilter", "Testnet")}
               >
                 Testnet
               </div>
               <div
-                className={`${
-                  selectedFilter.mainnetFilter == MainnetFilters.Mainnet &&
+                className={`${selectedFilter.mainnetFilter == MainnetFilters.Mainnet &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("mainnetFilter", "Mainnet")}
               >
                 Mainnet
@@ -268,26 +268,23 @@ const GasTapContent = () => {
             </div>
             <div className="provider-dashboard__status  justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
               <div
-                className={`${
-                  selectedFilter.evmFilter == EvmFilters.All && "text-gray100"
-                }`}
+                className={`${selectedFilter.evmFilter == EvmFilters.All && "text-gray100"
+                  }`}
                 onClick={() => handleSelectFilter("evmFilter", "All")}
               >
                 All
               </div>
               <div
-                className={`${
-                  selectedFilter.evmFilter == EvmFilters.Evm && "text-gray100"
-                }`}
+                className={`${selectedFilter.evmFilter == EvmFilters.Evm && "text-gray100"
+                  }`}
                 onClick={() => handleSelectFilter("evmFilter", "EVM")}
               >
                 EVM
               </div>
               <div
-                className={`${
-                  selectedFilter.evmFilter == EvmFilters.NonEvm &&
+                className={`${selectedFilter.evmFilter == EvmFilters.NonEvm &&
                   "text-gray100"
-                }`}
+                  }`}
                 onClick={() => handleSelectFilter("evmFilter", "NonEvm")}
               >
                 nonEVM
@@ -299,8 +296,11 @@ const GasTapContent = () => {
           <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
             <div className="flex items-center relative">
               <div>
-                <p className="text-base font-semibold">Refill Gas Tap Tokens</p>{" "}
-                <p className="text-sm text-gray100">Provide Gas Fee.</p>
+                <p className="text-base font-semibold">Refuel Gas Tap</p>{" "}
+                <p className="text-sm text-gray100">
+                  Fill the taps of Gas Tap to help users get started on their
+                  journey.
+                </p>
               </div>
               <Icon
                 className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
@@ -321,7 +321,7 @@ const GasTapContent = () => {
               <DonationCard donation={item} key={index} />
             ))}
         </div>
-        {filteredItem.length == 0 && loading && canDisplayAll && (
+        {filteredItem.length == 0 && loading && canDisplayAll && !firstCheck && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
             <Skeleton />
             <Skeleton />

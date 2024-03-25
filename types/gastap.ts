@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { PK } from ".";
 
 export enum Network {
@@ -58,7 +59,7 @@ export type Chain = {
   rpcUrl: string;
   maxClaimAmount: number;
   decimals: number;
-  fundManagerAddress: string;
+  fundManagerAddress: Address;
   totalClaims: number;
   gasImageUrl: string;
   totalClaimsThisRound: number;

@@ -1,154 +1,261 @@
-import UnitapPass from "@/app/profile/components/unitapPass";
+"use client";
+
 import Icon from "@/components/ui/Icon";
-import { cookies } from "next/headers";
+import { useUserProfileContext } from "@/context/userProfile";
+import { shortenAddress } from "@/utils";
+import { checkUsernameValid, setUsernameApi } from "@/utils/api";
+import { useWalletAccount } from "@/utils/wallet";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
-import { getUserHistory } from "@/utils/serverApis";
-import RenderProfileUsername from "@/app/profile/components/renderProfileUsername";
-import { redirect } from "next/navigation";
+import { FC, useEffect, useState } from "react";
+import { Address, isAddressEqual } from "viem";
+import { Noto_Sans_Mono } from "next/font/google";
+import { useWalletManagementContext } from "@/context/walletProvider";
+import LoadingSpinner from "@/components/ui/loadingSpinner";
+import { useProfileEditContext } from "./components/profileEditContext";
 
-const Profile = async () => {
-  const cookieStore = cookies();
+const NotoSansMono = Noto_Sans_Mono({
+  weight: ["400", "500"],
+  display: "swap",
+  adjustFontFallback: false,
+  subsets: ["latin"],
+});
 
-  const token = cookieStore.get("userToken");
+export const Wallet: FC<{
+  address: string;
+  isActive: boolean;
+  isDeleteAllowed: boolean;
+}> = ({ address, isActive, isDeleteAllowed }) => {
+  const { setFocusedWalletDeleteAddress } = useProfileEditContext();
 
-  let res: { gasClaim: number; tokenClaim: number; raffleWin: number };
+  const [copyMessage, setCopyMessage] = useState("");
 
-  try {
-    res = await getUserHistory(token?.value);
+  const copyToClipboard = (address: string) => {
+    navigator.clipboard.writeText(address);
 
-    if ((res as any).detail === "Invalid token.") redirect("/");
-  } catch (e) {
-    redirect("/");
-  }
+    setCopyMessage("Copied");
+
+    setTimeout(() => {
+      if (setCopyMessage) setCopyMessage("");
+    }, 3000);
+  };
+
+  return (
+    <div className="flex items-center rounded-xl border-2 border-gray50 bg-gray40 p-4">
+      <span
+        className={`h-2 w-2 rounded-full ${
+          isActive ? "bg-space-green" : "bg-error"
+        }`}
+      ></span>
+      <p className={`ml-5 text-sm font-normal ${NotoSansMono.className}`}>
+        {shortenAddress(address)}
+      </p>
+      <div className="relative ml-4">
+        {copyMessage && (
+          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 bg-gray10 py-2 text-center text-xs text-gray100">
+            {copyMessage}
+          </div>
+        )}
+        <Image
+          onClick={() => copyToClipboard(address)}
+          src="/assets/images/navbar/copy.svg"
+          width={12}
+          height={14}
+          className="cursor-pointer"
+          alt="copy"
+        />
+      </div>
+
+      {isDeleteAllowed && (
+        <Image
+          onClick={() => setFocusedWalletDeleteAddress(address as Address)}
+          width={16}
+          height={18}
+          src="/assets/images/up-profile/trashcan.svg"
+          className="ml-auto cursor-pointer opacity-70 hover:opacity-100"
+          alt="delete"
+        />
+      )}
+    </div>
+  );
+};
+
+const EditPage = () => {
+  const { userProfile, updateUsername, userToken, setHoldUserLogout } =
+    useUserProfileContext();
+  const { address } = useWalletAccount();
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isUserEditEnabled, setIsUserEditEnabled] = useState(false);
+
+  const { setIsAddModalOpen, setDuplicateWalletRaiseError } =
+    useWalletManagementContext();
+
+  const onSubmit = async () => {
+    if (!userToken) return;
+    setError("");
+    setLoading(true);
+    try {
+      await setUsernameApi(username, userToken);
+      updateUsername(username);
+      setIsUserEditEnabled(false);
+    } catch (e) {
+      if (!(e instanceof AxiosError) || !e.response) return;
+      setError(e.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userProfile?.username) {
+      setUsername(userProfile?.username);
+    }
+  }, [userProfile?.username]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (!userToken || username === userProfile?.username || !username) return;
+      setLoading(true);
+      checkUsernameValid(username, userToken)
+        .catch((err) => {
+          if (err instanceof AxiosError) {
+            setError(
+              err.response?.data.message || err.response?.data.username?.[0],
+            );
+            return;
+          }
+
+          setError(err.message);
+        })
+        .finally(() => setLoading(false));
+    }, 300);
+
+    setError("");
+    return () => clearTimeout(timerId);
+  }, [userProfile?.username, userToken, username]);
 
   return (
     <div>
-      <div className="rounded-2xl bg-soft-primary border-2 border-gray30">
-        <div className="flex p-5 items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/assets/images/landing/profile-img.svg"
-              alt="profile-unitap"
-              width={79.8}
-              height={89.6}
+      <div className="mt-10 flex items-center rounded-xl bg-gray20 p-5">
+        <Link href="/profile" className="mr-auto">
+          <Icon iconSrc="/assets/images/up-profile/back.svg" />
+        </Link>
+        <h4 className="mr-auto">Edit Profile</h4>
+      </div>
+
+      <div className="mt-5 flex items-center gap-10 rounded-xl bg-[url('/assets/images/up-profile/profile-landing.svg')] bg-cover p-5">
+        <Image
+          src="/assets/images/landing/profile-img.svg"
+          alt="profile-unitap"
+          width={64}
+          height={79}
+        />
+
+        <div>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={`w-72 rounded-xl border border-solid bg-gray50 px-4 py-3 ${
+                error ? "border-error" : "border-gray70"
+              } disabled:opacity-60`}
+              disabled={!isUserEditEnabled}
             />
-
-            <div>
-              <RenderProfileUsername />
-
-              <div className="mt-5 text-gray80">??? XP</div>
-            </div>
+            <button
+              disabled={
+                isUserEditEnabled
+                  ? username === userProfile?.username ||
+                    loading ||
+                    !username ||
+                    !!error
+                  : false
+              }
+              onClick={
+                isUserEditEnabled ? onSubmit : () => setIsUserEditEnabled(true)
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] px-3 py-1 disabled:opacity-60"
+            >
+              {loading ? (
+                <LoadingSpinner />
+              ) : isUserEditEnabled ? (
+                "Save"
+              ) : (
+                "Edit"
+              )}
+            </button>
           </div>
-
-          <div className="rounded-xl bg-gray10 p-1 flex items-center">
-            {/* <Icon
-              iconSrc="/assets/images/up-profile/twitter.svg"
-              className="mx-2 cursor-pointer"
-            />
-            <Icon
-              iconSrc="/assets/images/up-profile/discord.svg"
-              className="mx-2 cursor-pointer"
-            />
-            <Icon
-              iconSrc="/assets/images/up-profile/brightid.svg"
-              className="mx-2 mr-3 cursor-pointer"
-            /> */}
-            <Link href="/profile/edit">
-              <div className="px-10 cursor-pointer rounded-lg text-center bg-gray50 text-sm font-medium py-3">
-                Edit Profile
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        <div className="my-10 py-10 relative">
-          <div className="flex select-none flex-wrap justify-between overflow-hidden opacity-20 gap-10">
-            <SeasonMission
-              className="opacity-20"
-              title="Gnosis Explorer"
-              xp={30}
-            />
-            <SeasonMission title="Gnosis Explorer" xp={30} />
-            <SeasonMission title="Gnosis Explorer" xp={30} />
-            <SeasonMission title="Gnosis Explorer" xp={30} />
-            <SeasonMission title="Gnosis Explorer" xp={30} />
-            <SeasonMission
-              className="opacity-20"
-              title="Gnosis Explorer"
-              xp={30}
-            />
-          </div>
-
-          <div className="absolute top-1/2 -mt-5 -translate-y-1/2 left-1/2 bg-[url('/assets/images/up-profile/big-bang.svg')] h-48 bg-contain bg-no-repeat bg-center flex flex-col items-center justify-center -translate-x-1/2">
-            <h2 className="bg-gradient-to-br text-transparent font-bold bg-clip-text from-[#e863ff] via-[#e4b0fb] to-[#DFFF83]">
-              {'"Big Bang"'}
-            </h2>
-            <p className="mt-3 font-normal text-[#ABAB9D]">
-              The first season will come soon...
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-gray20 p-10 flex gap-10 items-center flex-wrap">
-          <Cart
-            title={"Gas Claimed"}
-            image={"/assets/images/up-profile/dabe.svg"}
-            amount={res.gasClaim}
-          />
-          <Cart
-            title={"Token Claimed"}
-            image={"/assets/images/up-profile/coin.svg"}
-            amount={res.tokenClaim}
-          />
-          <Cart
-            title={"Raffle Enrolled"}
-            image={"/assets/images/up-profile/raffle.svg"}
-            amount={res.raffleWin}
-          />
+          {!!error && (
+            <p className="w-[250px] pl-2 text-xs text-error">{error}</p>
+          )}
         </div>
       </div>
 
-      <UnitapPass />
+      <div className="mt-5 rounded-xl bg-gray20 p-5">
+        <p>
+          Wallets{" "}
+          <small className="text-gray90">
+            ({userProfile?.wallets.length ?? 0}/10)
+          </small>
+        </p>
+
+        <div className="mt-10">
+          <div className="grid grid-cols-2 gap-4">
+            {!!userProfile &&
+              userProfile.wallets.map((wallet, key) => (
+                <Wallet
+                  address={wallet.address}
+                  key={key}
+                  isActive={
+                    !!address &&
+                    isAddressEqual(
+                      address as Address,
+                      wallet.address as Address,
+                    )
+                  }
+                  isDeleteAllowed={
+                    userProfile.wallets.length > 1 &&
+                    !(
+                      !!address &&
+                      isAddressEqual(
+                        address as Address,
+                        wallet.address as Address,
+                      )
+                    )
+                  }
+                />
+              ))}
+            <button
+              onClick={() => {
+                setHoldUserLogout(true);
+                setIsAddModalOpen(true);
+                setDuplicateWalletRaiseError(true);
+              }}
+              className="flex items-center rounded-xl border-2 border-gray70 px-5 py-5"
+              type="button"
+            >
+              <span className="ml-auto text-sm font-semibold">
+                Add New Wallet
+              </span>
+              <span className="ml-auto">
+                <Image
+                  width={16}
+                  height={16}
+                  src="/assets/images/up-profile/plus.svg"
+                  alt="plus"
+                  className="h-[16px] w-[16px]"
+                />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-const Cart: FC<{ title: string; image: string; amount: number }> = ({
-  amount,
-  image,
-  title,
-}) => {
-  return (
-    <div className="p-4 relative rounded-lg bg-gray30">
-      <div className="mr-20">
-        <p className="text-space-green">{amount}</p>
-        <div className="mt-4 text-gray100 text-sm">{title}</div>
-      </div>
-      <div className="absolute z-10 -top-2 right-2">
-        <Icon iconSrc={image} />
-      </div>
-      <Icon
-        iconSrc="/assets/images/up-profile/bg-card.svg"
-        className="absolute top-0 right-0 bottom-0"
-      ></Icon>
-    </div>
-  );
-};
-
-const SeasonMission: FC<{
-  title: string;
-  xp: number;
-  className?: string;
-}> = ({ title, xp, className }) => {
-  return (
-    <div className={`text-center ${className}`}>
-      <Icon width="60px" iconSrc="/assets/images/up-profile/lock.svg" />
-      <p className="mt-4">{title}</p>
-      <div className="text-xs mt-2 font-semibold">+ {xp} XP</div>
-    </div>
-  );
-};
-
-export default Profile;
+export default EditPage;

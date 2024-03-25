@@ -109,7 +109,11 @@ export const createErc20Raffle = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
   const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList
     .filter((item) => item.isNotSatisfy)

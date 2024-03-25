@@ -7,12 +7,14 @@ import Header from "@/app/prizetap/components/header";
 import { FC } from "react";
 
 import "./styles.scss";
+import ContributionPrizetap from "./components/footer-button";
 
 const PrizeTapPage: FC = () => {
   return (
     <>
       <Header />
       <RafflesList />
+      <ContributionPrizetap />
       <LineaCheckWalletsModal />
       <LineaWinnersModal />
       <EnrollModal />
