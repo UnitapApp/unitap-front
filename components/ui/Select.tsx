@@ -1,20 +1,26 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import { useUserProfileContext } from "@/context/userProfile";
 import { useOutsideClick } from "@/utils/hooks/dom";
-import { useWalletAccount } from "@/utils/wallet";
 import { FC, useMemo, useRef, useState } from "react";
 
 export type SelectProps = {
-  hasError: boolean;
+  hasError?: boolean;
   value: any;
+  label?: string;
   onChange: (value: any) => void;
+  placeholder?: string;
   options: { icon?: string; label: string; value: any }[];
 };
 
-const Select: FC<SelectProps> = ({ hasError, onChange, options, value }) => {
+const Select: FC<SelectProps> = ({
+  hasError,
+  onChange,
+  options,
+  value,
+  label,
+  placeholder,
+}) => {
   const [search, setSearch] = useState("");
 
   const [showItems, setShowItems] = useState(false);
@@ -27,19 +33,45 @@ const Select: FC<SelectProps> = ({ hasError, onChange, options, value }) => {
 
   const handleSearch = (e: any) => {
     setShowItems(true);
-    setSearch(e);
+    setSearch(e.target.value);
+  };
+
+  const handleValueChanged = (item: {
+    icon?: string;
+    label: string;
+    value: any;
+  }) => {
+    setSearch(item.label);
+
+    onChange(item.value);
   };
 
   const selectedItem = useMemo(() => {
     return options.find((item) => item.value === value);
   }, [options, value]);
 
+  const filteredItems = useMemo(() => {
+    const existingElement = options.find((item) => item.value === value);
+    if (
+      existingElement &&
+      existingElement.label.toLowerCase() === search?.toLowerCase()
+    ) {
+      return options;
+    }
+
+    return options.filter((item) =>
+      item.label.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [options, search, value]);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full font-normal">
+      {!!label && <p className="mb-2 text-xs text-gray100">{label}</p>}
+
       <div ref={ref} className="relative w-full cursor-pointer">
         <div
-          onClick={() => setShowItems(false)}
-          className="flex h-[43px] w-full items-center rounded-xl border border-gray50 bg-gray40 px-5"
+          onClick={() => setShowItems(true)}
+          className="flex w-full items-center rounded-xl border border-gray50 bg-gray40 p-2"
         >
           {selectedItem?.icon ? (
             <Icon iconSrc={selectedItem.icon} width="24px" />
@@ -47,8 +79,8 @@ const Select: FC<SelectProps> = ({ hasError, onChange, options, value }) => {
           <input
             className="w-full bg-transparent px-2 text-sm text-white"
             type="text"
-            value={value ?? ""}
-            placeholder="Search for Chain"
+            value={search ?? ""}
+            placeholder={placeholder}
             onChange={handleSearch}
           />
           <Icon
@@ -63,33 +95,19 @@ const Select: FC<SelectProps> = ({ hasError, onChange, options, value }) => {
         </div>
         {showItems && (
           <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 border-gray60 bg-gray40 p-1">
-            {filterChainList.length == 0
-              ? chainList.map((chain, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setShowItems(false);
-                      handleSelectChain(chain);
-                    }}
-                    className="flex h-[46px] w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70"
-                  >
-                    <Icon iconSrc={chain.logoUrl} width="24px" />
-                    <p>{chain.chainName}</p>
-                  </div>
-                ))
-              : filterChainList.map((chain, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setShowItems(false);
-                      handleSelectChain(chain);
-                    }}
-                    className="flex h-[46px] w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70"
-                  >
-                    <Icon iconSrc={chain.logoUrl} width="24px" />
-                    <p>{chain.chainName}</p>
-                  </div>
-                ))}
+            {filteredItems.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  setShowItems(false);
+                  handleValueChanged(item);
+                }}
+                className={`flex p-2 ${item.value === value ? "bg-gray60" : ""} w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70`}
+              >
+                {!!item.icon && <Icon iconSrc={item.icon} width="24px" />}
+                <p>{item.label}</p>
+              </div>
+            ))}
           </div>
         )}
       </div>

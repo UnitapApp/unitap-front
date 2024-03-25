@@ -6,6 +6,7 @@ import useAddRequirement from "@/components/containers/provider-dashboard/hooks/
 import Icon from "@/components/ui/Icon";
 import { CreateParams } from "./ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
+import Select from "@/components/ui/Select";
 
 type DetailsModal = {
   handleBackToConstraintListModal: any;
@@ -130,6 +131,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
       constraintFile,
       decimals,
     );
+
+    setSelectedApp();
   };
 
   const handleSelectNotSatisfy = (isSatisfy: boolean) => {
@@ -137,7 +140,7 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   };
 
   return (
-    <div className="mt-5 flex flex-col gap-2">
+    <div className="min-h[200px] mt-5 flex flex-col gap-2">
       <div
         className="absolute top-5 z-[999] cursor-pointer"
         onClick={() => {
@@ -174,6 +177,21 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
         </div>
       </div>
 
+      <Select
+        label="Constraint"
+        placeholder="Select Constraint"
+        onChange={(value) => setConstraint(value)}
+        options={
+          selectedApp
+            ? selectedApp?.constraints.map((item) => ({
+                label: item.title,
+                value: item,
+              }))
+            : []
+        }
+        value={constraint}
+      />
+
       {!!constraint && (
         <CreateParams
           constraint={constraint}
@@ -195,7 +213,7 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
       <div className="min-h-[15px] text-2xs text-error">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
-        className="mb-2 flex  h-[44px] cursor-pointer items-center justify-center rounded-xl border-2 border-gray70 bg-gray40 text-sm font-semibold text-white"
+        className="mb-2 mt-auto flex h-[44px] cursor-pointer items-center justify-center rounded-xl border-2 border-gray70 bg-gray40 text-sm font-semibold text-white"
       >
         Add Requirement
       </div>
