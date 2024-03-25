@@ -7,6 +7,7 @@ import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
 import Input from "@/components/ui/input";
 import ConstraintAppDetailModal from "@/app/contribution-hub/components/constraintAppDetailModal";
+import { appInfos } from "@/app/contribution-hub/constants/integrations";
 
 const ModalBody = () => {
   const {
@@ -39,13 +40,13 @@ const ModalBody = () => {
           allChainList={allChainList!}
         />
       ) : (
-        <InitialBody />
+        <ConstraintInitialBody />
       )}
     </div>
   );
 };
 
-const SelectCoreIntegrations = () => {
+export const SelectCoreIntegrations = () => {
   const { handleSelectConstraint, constraintsListApi } =
     usePrizeOfferFormContext();
 
@@ -78,35 +79,9 @@ const SelectCoreIntegrations = () => {
   );
 };
 
-const appInfos: {
-  [key: string]: {
-    logo: string;
-    label: string;
-  };
-} = {
-  brightId: {
-    logo: "/assets/images/provider-dashboard/requirements/brightid.svg",
-    label: "Bright ID",
-  },
-  ENS: {
-    logo: "/assets/images/provider-dashboard/requirements/ens.svg",
-    label: "ENS",
-  },
-  lens: {
-    logo: "/assets/images/provider-dashboard/requirements/lens.svg",
-    label: "Lens",
-  },
-  farcaster: {
-    logo: "/assets/images/provider-dashboard/requirements/farcaster.svg",
-    label: "Farcaster",
-  },
-};
-
-export const InitialBody = () => {
-  const { handleSelectConstraint, constraintsListApi } =
+export const ConstraintInitialBody = () => {
+  const { handleSelectConstraint, constraintsListApi, setSelectedApp } =
     usePrizeOfferFormContext();
-
-  const { selectedApp, setSelectedApp } = usePrizeOfferFormContext();
 
   const [searchBar, setSearchBar] = useState("");
 
