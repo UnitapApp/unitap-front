@@ -1,3 +1,11 @@
 import OfferPrizeForm from "../components/OfferPrizeForm";
 
-export default OfferPrizeForm;
+const Page = () => {
+  return (
+    <div>
+      <OfferPrizeForm />
+    </div>
+  );
+};
+
+export default Page;
