@@ -33,7 +33,7 @@ const FormYouFilled = ({ data }: Prop) => {
     <div
       className={`flex ${
         data.isNft ? "prize-card-bg-1" : "prize-card-bg-2"
-      } select-not styled-scroll mt-5 min-w-[348px] cursor-pointer flex-row gap-4 overflow-hidden overflow-x-scroll pb-8`}
+      } styled-scroll mt-5 min-w-[348px] cursor-pointer select-none flex-row gap-4 overflow-hidden overflow-x-scroll pb-8`}
     >
       <div className="relative flex max-h-[208px] min-h-[208px] min-w-[208px] justify-center rounded-md border border-gray40 bg-gray30">
         <div

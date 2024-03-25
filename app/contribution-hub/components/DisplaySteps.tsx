@@ -10,14 +10,14 @@ interface Prop {
 const DisplaySteps = ({ page, displaySteps }: Prop) => {
   return (
     <div
-      className={`${Styles.offerPrizeSteps} offerPrize-Steps select-not flex w-full flex-col gap-[3.1em] px-10 py-[4em] md:max-w-[362px]`}
+      className={`${Styles.offerPrizeSteps} flex w-full select-none flex-col gap-[3.1em] px-10 py-[4em] md:max-w-[362px]`}
     >
       {displaySteps.map((item, index) => (
         <div
           className="relative flex items-center gap-3 text-xs text-white"
           key={index}
         >
-          <div className="z-[1] h-[26px] w-[26px] overflow-hidden rounded-full bg-gray30">
+          <div className="z-[1] h-6 w-6 overflow-hidden rounded-full bg-gray30">
             <Icon
               width="26px"
               height="26px"

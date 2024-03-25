@@ -60,7 +60,7 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
         {page >= 1 && page < 5 && (
           <Icon
             onClick={prevPage}
-            className="select-not absolute left-5 top-5 cursor-pointer text-xl text-white"
+            className="absolute left-5 top-5 cursor-pointer select-none text-xl text-white"
             iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           />
         )}

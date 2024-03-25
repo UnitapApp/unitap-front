@@ -14,7 +14,7 @@ const TokenTapRequirements = ({
     useTokenTapFromContext();
   return (
     <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
-      <div className="select-not flex min-h-[424px] w-full min-w-[300px] max-w-[452px] flex-col  text-xs font-medium text-gray100">
+      <div className="flex min-h-[424px] w-full min-w-[300px] max-w-[452px] select-none flex-col  text-xs font-medium text-gray100">
         <p className="mb-4">
           Add enrollment requirements. You can skip this part but it is advised
           to have at least one requirement to prevent bot attacks and fake

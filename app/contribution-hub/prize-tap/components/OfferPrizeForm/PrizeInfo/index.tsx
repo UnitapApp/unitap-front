@@ -76,7 +76,7 @@ const PrizeInfo = ({
       className={`flex w-full animate-fadeIn flex-col items-center justify-center`}
     >
       <div
-        className={`select-not mb-5 flex min-h-[340px] w-full max-w-[452px] flex-col items-center gap-5 ${
+        className={`mb-5 flex min-h-[340px] w-full max-w-[452px] select-none flex-col items-center gap-5 ${
           data.isNft ? "mb-[45px]" : ""
         } ${!address ? "opacity-[.5]" : "opacity-1"}`}
       >

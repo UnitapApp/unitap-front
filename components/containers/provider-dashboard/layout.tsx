@@ -67,7 +67,7 @@ const ProviderTabs: FC = () => {
 
   return (
     <div
-      className={`${borderPosition} select-not relative mb-4 flex justify-between rounded-t-xl border-b-2 border-gray80  bg-gray20 text-center font-semibold text-white transition ease-in-out after:absolute after:bottom-[-1.8px] after:w-[33%] after:border after:transition-all  after:duration-[1s]`}
+      className={`${borderPosition} relative mb-4 flex select-none justify-between rounded-t-xl border-b-2 border-gray80  bg-gray20 text-center font-semibold text-white transition ease-in-out after:absolute after:bottom-[-1.8px] after:w-[33%] after:border after:transition-all  after:duration-[1s]`}
     >
       <Link
         className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
