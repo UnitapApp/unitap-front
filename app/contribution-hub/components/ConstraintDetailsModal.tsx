@@ -167,7 +167,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   return (
     <div className="mt-5 flex flex-col gap-2">
       <div
-        className="absolute top-5 z-[999] cursor-pointer"
+        className="absolute top-5 z-30 cursor-pointer"
         onClick={handleBackToConstraintListModal}
       >
         <Icon

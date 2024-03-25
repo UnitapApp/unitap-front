@@ -86,7 +86,7 @@ const CsvFileInput = ({
           </div>
         </div>
       ) : (
-        <div className="flex  w-full items-center justify-between gap-1 rounded-xl bg-gray40 pl-3 pr-3">
+        <div className="flex w-full items-center justify-between gap-1 rounded-xl bg-gray40 pl-3 pr-3">
           <p className="text-gray100">file name: {uploadedFileName}</p>
           <button
             onClick={handleClearUploadedFile}

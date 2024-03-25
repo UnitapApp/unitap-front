@@ -35,13 +35,13 @@ const DisplaySteps = ({ page, displaySteps }: Prop) => {
               index == page
                 ? "text-white"
                 : index > page
-                  ? "opacity-[.4]"
-                  : "text-[#4CE6A1] opacity-[.4]"
+                  ? "opacity-40"
+                  : "text-space-green opacity-40"
             } `}
           >
             <p className={`font-semibold`}>{item.title}</p>{" "}
             <p
-              className={`${index >= page ? "text-gray100" : "text-[#4CE6A1]"}`}
+              className={`${index >= page ? "text-gray100" : "text-space-green"}`}
             >
               {item.description}
             </p>

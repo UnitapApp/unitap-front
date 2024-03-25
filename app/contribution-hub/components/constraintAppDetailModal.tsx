@@ -142,10 +142,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   return (
     <div className="min-h[200px] mt-5 flex flex-col gap-2">
       <div
-        className="absolute top-5 z-[999] cursor-pointer"
-        onClick={() => {
-          setSelectedApp();
-        }}
+        className="absolute top-5 z-30 cursor-pointer"
+        onClick={() => setSelectedApp()}
       >
         <Icon
           iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
