@@ -8,7 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "../../../app/contribution-hub/Buttons";
+import { BackToHomeButton } from "../../../app/contribution-hub/components/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
@@ -25,12 +25,12 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
           {children}
         </>
       ) : (
-        <div className="bg-gray20 rounded-xl flex flex-col items-center justify-center py-10">
+        <div className="flex flex-col items-center justify-center rounded-xl bg-gray20 py-10">
           <div className="mb-10">
             <Icon iconSrc="/assets/images/provider-dashboard/dashboard-login.svg" />
           </div>
           <p
-            className=" text-sm font-semibold text-white cursor-pointer"
+            className=" cursor-pointer text-sm font-semibold text-white"
             onClick={openBrightIdModal}
           >
             Sign up first!
@@ -42,7 +42,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
           <Link href="/">
             <BackToHomeButton
               height="32px"
-              className="!w-full mt-10 text-xs max-w-[120px]"
+              className="mt-10 !w-full max-w-[120px] text-xs"
               $fontSize="10px"
             >
               <p>Back to Home</p>
@@ -62,15 +62,15 @@ const ProviderTabs: FC = () => {
     pathname == RoutePath.PROVIDERDASHBOARD
       ? "after:left-0"
       : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
-      ? "after:left-[33.33%]"
-      : "after:left-[67%]";
+        ? "after:left-[33.33%]"
+        : "after:left-[67%]";
 
   return (
     <div
-      className={`${borderPosition} mb-4 select-not relative rounded-t-xl after:transition-all transition after:duration-[1s] ease-in-out  after:border after:absolute after:w-[33%] after:bottom-[-1.8px] flex bg-gray20 justify-between text-center text-white font-semibold border-b-2  border-gray80`}
+      className={`${borderPosition} relative mb-4 flex select-none justify-between rounded-t-xl border-b-2 border-gray80  bg-gray20 text-center font-semibold text-white transition ease-in-out after:absolute after:bottom-[-1.8px] after:w-[33%] after:border after:transition-all  after:duration-[1s]`}
     >
       <Link
-        className={`w-full p-3 flex flex-col-reverse sm:flex-row gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
           RoutePath.PROVIDERDASHBOARD == pathname ||
           pathname.includes("gas-tap")
             ? " text-white"
@@ -82,7 +82,7 @@ const ProviderTabs: FC = () => {
         Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>
       <Link
-        className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
           pathname.includes("token-tap") ? " text-white" : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_TOKENTAP}
@@ -92,9 +92,9 @@ const ProviderTabs: FC = () => {
         <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
       </Link>
       <Link
-        className={`w-full p-3 flex flex-col-reverse sm:flex-row  gap-2 items-center transition duration-[1s] delay-260 ease-in-out cursor-pointer justify-center ${
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
           pathname.includes("prize-tap")
-            ? " text-white opacity-1"
+            ? " opacity-1 text-white"
             : "opacity-[0.2]"
         }`}
         href={RoutePath.PROVIDER_PRIZETAP}

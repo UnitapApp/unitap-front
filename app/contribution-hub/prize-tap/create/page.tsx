@@ -1,4 +1,3 @@
-"use client";
 import OfferPrizeForm from "../components/OfferPrizeForm";
 
 const Page = () => {

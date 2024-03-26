@@ -35,6 +35,14 @@ const Modal = ({
 }: props) => {
   const { getError } = React.useContext(ErrorsContext);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
@@ -57,13 +65,13 @@ const Modal = ({
           >
             <div className="flex items-center">
               {titleLeft && (
-                <p className="text-xl text-left relative z-10 text-white">
+                <p className="relative z-10 text-left text-xl text-white">
                   {" "}
                   {titleLeft}{" "}
                 </p>
               )}
               {title && (
-                <p className="modal-title font-bold text-sm relative z-10 text-center ml-auto text-white">
+                <p className="modal-title relative z-10 ml-auto text-center text-sm font-bold text-white">
                   {" "}
                   {title}{" "}
                 </p>
@@ -81,7 +89,7 @@ const Modal = ({
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } max-h-[70vh] !rounded-none styled-scroll`}
+              } styled-scroll max-h-[70vh] !rounded-none`}
               size={size}
             >
               {children}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ContactField, ProviderFormPaginationProp } from "@/types";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
 
@@ -64,8 +64,8 @@ const ContactInformation = ({
   };
 
   return (
-    <div className="flex flex-col w-full items-center  animate-fadeIn">
-      <div className="flex mb-2 w-full max-w-[452px] items-center gap-1">
+    <div className="flex w-full animate-fadeIn flex-col  items-center">
+      <div className="mb-2 flex w-full max-w-[452px] items-center gap-1">
         <div className="min-w-[16px]">
           <Icon
             width="16px"
@@ -77,14 +77,14 @@ const ContactInformation = ({
           Your website, twitter & discord will be shown on PrizeTap card.
         </p>
       </div>
-      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-5 w-full max-w-[452px]">
+      <div className="flex min-h-[400px] w-full max-w-[452px] flex-col gap-5 text-xs font-medium text-gray100">
         {contactFields.map((field, index) => (
           <div key={index}>
             {index == 3 ? (
-              <div className="flex items-center mb-2 gap-2">
+              <div className="mb-2 flex items-center gap-2">
                 <p className="">Contact info </p>
-                <div className="bg-gray90 h-[3px] w-[3px] rounded-full"></div>{" "}
-                <span className="text-gray90 text-2xs">
+                <div className="h-[3px] w-[3px] rounded-full bg-gray90"></div>{" "}
+                <span className="text-2xs text-gray90">
                   These info will not share with anybody.
                 </span>
               </div>
@@ -93,16 +93,16 @@ const ContactInformation = ({
             )}
             <section className="relative" key={index}>
               <div
-                className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
+                className={`flex gap-5 overflow-hidden border bg-gray40 text-xs text-gray80 ${
                   (field.required && showErrors && !data[field.name]) ||
                   (showErrors &&
                     data[field.name] &&
                     !(socialMediaValidation as any)[field.name])
                     ? "border-error"
                     : "border-gray50"
-                } rounded-xl h-[43px] items-center justify-between w-full max-w-[452px]`}
+                } h-[43px] w-full max-w-[452px] items-center justify-between rounded-xl`}
               >
-                <div className="w-[54px] bg-gray30 h-full flex items-center justify-center">
+                <div className="flex h-full w-[54px] items-center justify-center bg-gray30">
                   <Icon iconSrc={field.icon} />
                 </div>
                 <input
@@ -116,14 +116,14 @@ const ContactInformation = ({
                 />
               </div>
               {field.required && showErrors && !data[field.name] && (
-                <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
+                <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
                   Required
                 </p>
               )}
               {showErrors &&
                 data[field.name] &&
                 !(socialMediaValidation as any)[field.name] && (
-                  <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
+                  <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
                     Invalid input
                   </p>
                 )}
@@ -133,7 +133,7 @@ const ContactInformation = ({
         <section>
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-white text-xs focus:!outline-none placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[55px] p-1 pl-3 w-full"
+            className="max-h-[55px] w-full rounded-xl border border-gray50 bg-gray40 p-1 pl-3 text-xs text-white placeholder-gray80 focus:!outline-none"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}
