@@ -77,6 +77,7 @@ const WinnersModal = () => {
       .flat(2)
       .reduce(
         (prev, curr: string) => {
+          if (!curr) return prev;
           prev[curr.toLowerCase()] = true;
 
           return prev;
