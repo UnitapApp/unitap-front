@@ -5,7 +5,7 @@ import { ProviderDashboardFormDataProp } from "@/types";
 import { DV } from "@/components/ui/designVariables";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/components/Buttons";
 import RaffleCardTimerSubmitContribution from "./RaffleCardTimerSubmitContribution";
 
 const Action = styled.div`
@@ -24,8 +24,8 @@ const FormYouFilled = ({ data }: Prop) => {
   const prizeName = data.isNft
     ? data.nftName
     : data.isNativeToken
-    ? data.tokenAmount + " " + data.selectedChain.symbol
-    : data.tokenAmount + " " + data.tokenSymbol;
+      ? data.tokenAmount + " " + data.selectedChain.symbol
+      : data.tokenAmount + " " + data.tokenSymbol;
 
   const winnersCount = data.isNft ? data.nftTokenIds.length : data.winnersCount;
 
@@ -33,11 +33,11 @@ const FormYouFilled = ({ data }: Prop) => {
     <div
       className={`flex ${
         data.isNft ? "prize-card-bg-1" : "prize-card-bg-2"
-      } min-w-[348px] select-not flex-row gap-4 mt-5 overflow-hidden overflow-x-scroll cursor-pointer styled-scroll pb-8`}
+      } styled-scroll mt-5 min-w-[348px] cursor-pointer select-none flex-row gap-4 overflow-hidden overflow-x-scroll pb-8`}
     >
-      <div className="bg-gray30 border border-gray40 rounded-md min-w-[208px] min-h-[208px] max-h-[208px] relative flex justify-center">
+      <div className="relative flex max-h-[208px] min-h-[208px] min-w-[208px] justify-center rounded-md border border-gray40 bg-gray30">
         <div
-          className="providePrize__amount_modal flex flex-col justify-center items-center"
+          className="providePrize__amount_modal flex flex-col items-center justify-center"
           data-amount={prizeName}
         >
           <Icon
@@ -48,8 +48,8 @@ const FormYouFilled = ({ data }: Prop) => {
           />
           <p className="mb-8">{prizeName}</p>
         </div>
-        <div className="flex items-center bg-gray50 justify-center gap-2 absolute bottom-[-12px] left-7 border border-gray70 rounded-[3px] p-1 min-w-[150px] min-h-[25px]">
-          <p className="text-gray100 text-2xs font-semibold">
+        <div className="absolute bottom-[-12px] left-7 flex min-h-[25px] min-w-[150px] items-center justify-center gap-2 rounded-[3px] border border-gray70 bg-gray50 p-1">
+          <p className="text-2xs font-semibold text-gray100">
             on{" "}
             {data.selectedChain?.chainName ? data.selectedChain.chainName : ""}
           </p>
@@ -60,12 +60,12 @@ const FormYouFilled = ({ data }: Prop) => {
           />
         </div>
       </div>
-      <div className="bg-gray30 border border-gray40 rounded-md min-h-[100px] max-h-[208px] text-sm text-white p-4">
+      <div className="max-h-[208px] min-h-[100px] rounded-md border border-gray40 bg-gray30 p-4 text-sm text-white">
         <div className="flex justify-between">
           <div className="flex items-center">
             <p>{prizeName}</p>
             {winnersCount > 1 && (
-              <p className="rounded-xl ml-5 font-semibold text-xs p-1 px-2 bg-gray10 text-gray100">
+              <p className="ml-5 rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
                 {winnersCount + "x winners"}
               </p>
             )}
@@ -76,7 +76,7 @@ const FormYouFilled = ({ data }: Prop) => {
                 onClick={() =>
                   window.open(
                     "https://twitter.com/" + data.twitter!.replace("@", ""),
-                    "_blank"
+                    "_blank",
                   )
                 }
                 iconSrc="/assets/images/provider-dashboard/twitter.svg"
@@ -95,9 +95,9 @@ const FormYouFilled = ({ data }: Prop) => {
                     data.creatorUrl!.includes("https://")
                       ? data.creatorUrl!
                       : data.creatorUrl!.includes("www.")
-                      ? "https://" + data.creatorUrl!.replace("www.", "")!
-                      : "https://" + data.creatorUrl!,
-                    "_blank"
+                        ? "https://" + data.creatorUrl!.replace("www.", "")!
+                        : "https://" + data.creatorUrl!,
+                    "_blank",
                   )
                 }
                 iconSrc="/assets/images/provider-dashboard/creatorUrl.svg"
@@ -105,18 +105,18 @@ const FormYouFilled = ({ data }: Prop) => {
             ) : null}
           </div>
         </div>
-        <div className="text-gray80 text-base mt-1 mb-2">
+        <div className="mb-2 mt-1 text-base text-gray80">
           by {data.provider}
         </div>
-        <div className="text-sm h-[40px] max-h-[40px] text-justify">
+        <div className="h-[40px] max-h-[40px] text-justify text-sm">
           {data.description}
         </div>
-        <div className="flex gap-2 mb-2 ">
+        <div className="mb-2 flex gap-2 ">
           {requirementList.length > 0
             ? requirementList.map((item, index) => {
                 return (
                   <div
-                    className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
+                    className="rounded border border-gray70 bg-gray50 p-1 px-2 text-2xs text-gray100"
                     key={index}
                   >
                     {item.isNotSatisfy && "Not "} {item.title}
@@ -126,12 +126,12 @@ const FormYouFilled = ({ data }: Prop) => {
             : null}
         </div>
         <Action
-          className={`w-full sm:w-auto items-center sm:items-end  ${
+          className={`w-full items-center sm:w-auto sm:items-end  ${
             requirementList.length == 0 ? "mt-10" : ""
           }`}
         >
-          <span className="flex flex-row items-center justify-between w-full gap-4 ">
-            <div className="flex flex-row gap-4 justify-between w-full  items-center bg-gray40 px-5 h-full py-1 rounded-xl">
+          <span className="flex w-full flex-row items-center justify-between gap-4 ">
+            <div className="flex h-full w-full flex-row items-center  justify-between gap-4 rounded-xl bg-gray40 px-5 py-1">
               <p className="text-xs text-gray100">0 people enrolled</p>
               <RaffleCardTimerSubmitContribution
                 startTime={new Date(data.startTimeStamp * 1000).toString()}

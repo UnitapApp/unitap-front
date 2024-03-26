@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ProviderFormPaginationProp, ContactField } from "@/types";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 
@@ -66,8 +66,8 @@ const ContactInformation = ({
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center animate-fadeIn">
-      <div className="flex mb-3 w-full max-w-[452px] items-center gap-2">
+    <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
+      <div className="mb-3 flex w-full max-w-[452px] items-center gap-2">
         <div className="min-w-[16px]">
           <Icon
             width="16px"
@@ -79,13 +79,13 @@ const ContactInformation = ({
           Your website, twitter & discord will be shown on PrizeTap card.
         </p>
       </div>
-      <div className="text-gray100 text-xs min-h-[400px] font-medium flex flex-col gap-4 w-full max-w-[452px]">
+      <div className="flex min-h-[400px] w-full max-w-[452px] flex-col gap-4 text-xs font-medium text-gray100">
         {contactFields.map((field, index) => (
           <div key={index}>
-            {index == 3 && <p className="mt-2 mb-3">Contact info</p>}
+            {index == 3 && <p className="mb-3 mt-2">Contact info</p>}
             <section className="relative" key={index}>
               <div
-                className={`flex gap-5 overflow-hidden text-gray80 text-xs bg-gray40 border ${
+                className={`flex gap-5 overflow-hidden border bg-gray40 text-xs text-gray80 ${
                   index >= 3 ? "mb-2" : ""
                 } ${
                   (field.required && showErrors && !data[field.name]) ||
@@ -94,9 +94,9 @@ const ContactInformation = ({
                     !(socialMediaValidation as any)[field.name])
                     ? "border-error"
                     : "border-gray50"
-                } rounded-xl h-[43px] items-center justify-between w-full max-w-[452px]`}
+                } h-[43px] w-full max-w-[452px] items-center justify-between rounded-xl`}
               >
-                <div className="w-[54px] bg-gray30 h-full flex items-center justify-center">
+                <div className="flex h-full w-[54px] items-center justify-center bg-gray30">
                   <Icon iconSrc={field.icon} />
                 </div>
                 <input
@@ -111,7 +111,7 @@ const ContactInformation = ({
               </div>
               {field.required && showErrors && !data[field.name] && (
                 <p
-                  className={`text-error text-2xs m-0 -bottom-4 p-0 absolute left-1`}
+                  className={`absolute -bottom-4 left-1 m-0 p-0 text-2xs text-error`}
                 >
                   Required
                 </p>
@@ -120,7 +120,7 @@ const ContactInformation = ({
                 data[field.name] &&
                 !(socialMediaValidation as any)[field.name] && (
                   <p
-                    className={`text-error text-2xs m-0 p-0 absolute left-1 ${
+                    className={`absolute left-1 m-0 p-0 text-2xs text-error ${
                       index >= 3 ? "-mt-[5px]" : ""
                     }`}
                   >
@@ -133,7 +133,7 @@ const ContactInformation = ({
         <section className="mb-9">
           <textarea
             placeholder="Please provide any necessary information"
-            className="text-white text-xs focus:!outline-none font-normal placeholder-gray80 bg-gray40 border border-gray50 rounded-xl max-h-[63px] h-[63px] pl-4 pt-3 w-full"
+            className="h-[63px] max-h-[63px] w-full rounded-xl border border-gray50 bg-gray40 pl-4 pt-3 text-xs font-normal text-white placeholder-gray80 focus:!outline-none"
             name="necessaryInfo"
             onChange={handleChange}
             value={data.necessaryInfo ? data.necessaryInfo : ""}

@@ -91,14 +91,14 @@ export const TokenTapContext = createContext<{
     name: string,
     title: string,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
   ) => void;
   requirementList: RequirementProps[];
   deleteRequirement: (id: number) => void;
   updateRequirement: (
     requirement: RequirementProps,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
   handleCreateDistribution: () => void;
@@ -148,6 +148,11 @@ export const TokenTapContext = createContext<{
   claimPeriodic: boolean;
   allChainList: Chain[] | undefined;
   approveLoading: boolean;
+  selectedApp?: { label: string; constraints: ConstraintProps[] };
+  setSelectedApp: (arg?: {
+    label: string;
+    constraints: ConstraintProps[];
+  }) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -241,6 +246,7 @@ export const TokenTapContext = createContext<{
   allChainList: [] as any,
   isErc20Approved: false,
   approveLoading: false,
+  setSelectedApp: NullCallback,
 });
 
 const TokenTapProvider: FC<
@@ -251,7 +257,7 @@ const TokenTapProvider: FC<
   }
 > = ({ children, distributionInit, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
-    []
+    [],
   );
 
   const [allChainList] = useState<Chain[] | undefined>(allChains);
@@ -288,6 +294,10 @@ const TokenTapProvider: FC<
     canDisplayStatus: false,
   });
 
+  const [selectedApp, setSelectedApp] = useState<
+    { label: string; constraints: ConstraintProps[] } | undefined
+  >();
+
   const [insufficientBalance, setInsufficientBalance] =
     useState<boolean>(false);
 
@@ -298,7 +308,7 @@ const TokenTapProvider: FC<
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
 
   const [createRaffleResponse, setCreteRaffleResponse] = useState<any | null>(
-    null
+    null,
   );
 
   const [createRaffleLoading, setCreateRaffleLoading] =
@@ -322,7 +332,7 @@ const TokenTapProvider: FC<
     useState<UserRafflesProps | null>(null);
 
   const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
-    null
+    null,
   );
   const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
@@ -345,7 +355,7 @@ const TokenTapProvider: FC<
   });
 
   const [enrollmentDurations, setEnrollmentDurations] = useState(
-    enrollmentDurationsInit
+    enrollmentDurationsInit,
   );
 
   const handleSetEnrollDuration = (id: number) => {
@@ -353,8 +363,8 @@ const TokenTapProvider: FC<
       enrollmentDurations.map((item) =>
         item.id == id
           ? { ...item, selected: true }
-          : { ...item, selected: false }
-      )
+          : { ...item, selected: false },
+      ),
     );
   };
 
@@ -377,7 +387,7 @@ const TokenTapProvider: FC<
     return chainList.filter((chain) =>
       chain.chainName
         .toLocaleLowerCase()
-        .includes(searchPhrase.toLocaleLowerCase())
+        .includes(searchPhrase.toLocaleLowerCase()),
     );
   }, [chainList, searchPhrase]);
 
@@ -400,7 +410,7 @@ const TokenTapProvider: FC<
       contractAddresses.tokenTap,
       setApproveLoading,
       setIsErc20Approved,
-      setApproveAllowance
+      setApproveAllowance,
     );
   };
 
@@ -413,7 +423,7 @@ const TokenTapProvider: FC<
         setData,
         setTokenContractStatus,
         setIsErc20Approved,
-        setApproveAllowance
+        setApproveAllowance,
       );
     }
 
@@ -433,7 +443,7 @@ const TokenTapProvider: FC<
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider!
+        provider!,
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
@@ -441,18 +451,18 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
-    [checkContractInfo, data.isNft, isValidContractAddress]
+    [checkContractInfo, data.isNft, isValidContractAddress],
   );
 
   const handleSetDate = (timeStamp: number, label: string) => {
@@ -524,10 +534,10 @@ const TokenTapProvider: FC<
       errorObject.statDateStatusMessage = errorMessages.required;
     }
     const sevenDaysLaterAfterNow: Date = new Date(
-      Date.now() + 7 * 24 * 60 * 59 * 1000
+      Date.now() + 7 * 24 * 60 * 59 * 1000,
     );
     const sevenDaysLaterAfterNowTimeStamp = Math.round(
-      sevenDaysLaterAfterNow.getTime() / 1000
+      sevenDaysLaterAfterNow.getTime() / 1000,
     );
 
     // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
@@ -570,7 +580,7 @@ const TokenTapProvider: FC<
       twitter,
       discord,
       email,
-      telegram
+      telegram,
     );
     setSocialMediaValidation({
       creatorUrl: isUrlVerified,
@@ -658,7 +668,7 @@ const TokenTapProvider: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) >= Number(data.userTokenBalance!)
+          : Number(data.totalAmount) >= Number(data.userTokenBalance!),
       );
     }
   }, [
@@ -711,7 +721,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -817,7 +827,7 @@ const TokenTapProvider: FC<
       userToken,
       setCreateRaffleLoading,
       setCreteRaffleResponse,
-      claimPeriodic
+      claimPeriodic,
     );
   };
 
@@ -828,7 +838,7 @@ const TokenTapProvider: FC<
     isNotSatisfy: boolean,
     requirementValues: any,
     file?: [],
-    decimals?: number
+    decimals?: number,
   ) => {
     setRequirementList([
       ...requirementList,
@@ -851,7 +861,7 @@ const TokenTapProvider: FC<
     isNotSatisfy: boolean,
     requirementValues: any,
     file?: [],
-    decimals?: number
+    decimals?: number,
   ) => {
     if (!requirement) return;
     const newItem = requirementList.map((item) => {
@@ -918,8 +928,8 @@ const TokenTapProvider: FC<
       raffle.constraints.map((constraint) =>
         constraint.isReversed
           ? { ...constraint, isNotSatisfy: true }
-          : { ...constraint, isNotSatisfy: false }
-      )
+          : { ...constraint, isNotSatisfy: false },
+      ),
     );
     handleSetEnrollDuration(-1);
   };
@@ -983,8 +993,8 @@ const TokenTapProvider: FC<
 
         newEndTimeStamp = Math.round(
           currentDate.setMonth(
-            Number(currentDate.getMonth()) + selectedDuration.value
-          ) / 1000
+            Number(currentDate.getMonth()) + selectedDuration.value,
+          ) / 1000,
         );
       }
     }
@@ -1077,6 +1087,8 @@ const TokenTapProvider: FC<
         handleSetClaimPeriodic: setClaimPeriodic,
         allChainList,
         approveLoading,
+        setSelectedApp,
+        selectedApp,
       }}
     >
       {children}

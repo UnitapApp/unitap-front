@@ -1,25 +1,25 @@
 .provider-dashboard-input {
-  @apply placeholder-gray80 text-white w-full bg-transparent h-[100%];
+  @apply h-[100%] w-full bg-transparent text-white placeholder-gray80;
 }
 
 .requireModal {
-  @apply text-sm font-semibold flex flex-col gap-2 items-center justify-center cursor-pointer max-w-[184px] h-[84px] bg-gray40 border border-gray70 rounded-xl;
+  @apply flex min-h-[102px] max-w-[184px] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-gray70 bg-gray40 text-sm font-semibold;
 }
 
 .enrollment-duration-wrap > div:last-child {
-  @apply  border-none
+  @apply border-none;
 }
 
 .refill-token {
-  @apply bg-no-repeat bg-cover border-2 rounded-[16px] border-gray40;
+  @apply rounded-[16px] border-2 border-gray40 bg-cover bg-no-repeat;
   background-image: url("/assets/images/provider-dashboard/bg.png");
 }
 
 .provider-dashboard__status {
-	& div {
-		@apply py-[10px] px-3 cursor-pointer min-w-[60px] text-center;
-	}
-	& div:not(:last-child) {
-		@apply border-r-2 border-r-gray30;
-	}
+  & div {
+    @apply min-w-[60px] cursor-pointer px-3 py-[10px] text-center;
+  }
+  & div:not(:last-child) {
+    @apply border-r-2 border-r-gray30;
+  }
 }

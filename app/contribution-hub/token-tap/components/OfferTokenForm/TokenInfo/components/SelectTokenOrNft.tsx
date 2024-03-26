@@ -82,7 +82,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   return (
     <div
       className={
-        data.selectedChain && isRightChain ? "w-full" : "setOpacity w-full"
+        data.selectedChain && isRightChain ? "w-full" : "opacity-30 w-full"
       }
     >
       <section className="flex text-gray80 text-xs bg-gray30 border border-gray50 rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden">

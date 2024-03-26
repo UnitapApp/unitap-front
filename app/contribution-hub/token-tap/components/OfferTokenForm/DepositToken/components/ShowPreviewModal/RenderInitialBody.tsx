@@ -3,7 +3,7 @@
 import { ProviderDashboardFormDataProp } from "@/types";
 import FormYouFilled from "./FormYouFilled";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/components/Buttons";
 import {
   useNetworkSwitcher,
   useWalletAccount,
@@ -53,19 +53,19 @@ const RenderInitialBody = ({ data }: Prop) => {
     setIsWalletPromptOpen,
   ]);
   return (
-    <div className="flex flex-col select-none">
-      <div className="text-gray100 text-sm ">
+    <div className="flex select-none flex-col">
+      <div className="text-sm text-gray100 ">
         This is how your card will appear. If you are sure of the accuracy of
         the form you filled out, please submit your contribution.
       </div>
       <FormYouFilled data={data} />
       {address && !isRightChain && data.selectedChain ? (
-        <div className="w-full flex items-end justify-end">
+        <div className="flex w-full items-end justify-end">
           <div className="w-[200px]">
             <ProviderDashboardButtonSubmit
               onClick={handleCheckConnection}
               $width="100%"
-              className="text-sm md:text-xs lg:text-sm mt-5"
+              className="mt-5 text-sm md:text-xs lg:text-sm"
               data-testid="fund-action"
             >
               Switch Network
@@ -73,12 +73,12 @@ const RenderInitialBody = ({ data }: Prop) => {
           </div>
         </div>
       ) : !address ? (
-        <div className="w-full flex items-end justify-end">
+        <div className="flex w-full items-end justify-end">
           <div className="w-[200px]">
             <ProviderDashboardButtonSubmit
               onClick={handleCheckConnection}
               height="2.8rem"
-              className="!w-full  text-white max-w-[452px] "
+              className="!w-full  max-w-[452px] text-white "
               $fontSize="14px"
               data-testid="fund-action"
             >
@@ -87,12 +87,12 @@ const RenderInitialBody = ({ data }: Prop) => {
           </div>
         </div>
       ) : (
-        <div className="w-full flex items-end justify-end">
+        <div className="flex w-full items-end justify-end">
           <div className="w-[200px]">
             <ProviderDashboardButtonSubmit
               onClick={handleCreateDistribution}
               $width="100%"
-              className="text-sm md:text-xs lg:text-sm mt-5"
+              className="mt-5 text-sm md:text-xs lg:text-sm"
               disabled={createRaffleLoading}
             >
               {createRaffleLoading ? (
