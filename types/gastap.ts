@@ -29,6 +29,7 @@ export type Faucet = {
   blockScanAddress: string;
   isOneTimeClaim: boolean;
   currentFuelLevel: number;
+  isDeprecated: boolean;
 };
 
 export type ChainApi = {
