@@ -140,8 +140,8 @@ const config: Config = {
         },
         fadeToggle: {
           "0%": { opacity: "0" },
-          "50%": { opacity: "1" },
-          "90%": { opacity: "1" },
+          "10%": { opacity: "1" },
+          "95%": { opacity: "1" },
           "100%": { opacity: "0" },
         },
         blinking: {
@@ -160,7 +160,7 @@ const config: Config = {
         fadeIn: "fadeIn 0.8s ease-in-out",
         blinking: "blinking 2s step-start 0s infinite",
         fadeInOut: "fadeInOut 2s ease-in-out infinite",
-        fadeToggle: "fadeToggle 3s ease-in-out infinite",
+        fadeToggle: "fadeToggle 5s ease-in-out infinite",
       },
       transitionProperty: {
         height: "height",

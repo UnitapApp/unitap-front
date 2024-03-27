@@ -77,7 +77,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsThisRound((prevIsThisRound) => !prevIsThisRound);
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
