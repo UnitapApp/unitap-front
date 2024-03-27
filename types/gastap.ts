@@ -70,6 +70,7 @@ export type Chain = {
   tokentapContractAddress?: string;
   isOneTimeClaim: boolean;
   currentFuelLevel: number;
+  isDeprecated: boolean;
 };
 
 export enum ClaimReceiptState {
