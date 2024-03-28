@@ -3,7 +3,7 @@ import { FC } from "react";
 import "@/styles/gastap.scss";
 
 const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
-  if (balance > 4) {
+  if (balance > 6) {
     return (
       <div className="ml-3 flex items-center gap-[2px]">
         {Array.from(new Array(balance)).map((_, key) => (
@@ -16,7 +16,7 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
     );
   }
 
-  if (balance >= 2)
+  if (balance >= 4)
     return (
       <div className="ml-3 flex items-center gap-[2px]">
         {Array.from(new Array(balance)).map((_, key) => (
