@@ -6,7 +6,7 @@ import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
 import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
-import { FC, useContext, useMemo } from "react";
+import { FC, MouseEventHandler, ReactNode, useContext, useMemo } from "react";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
 import Tooltip from "@/components/ui/Tooltip";
@@ -43,21 +43,36 @@ type ChainCardProps = {
 const ExpandableLink: FC<{
   label: string;
   icon: string;
-  link: string;
-}> = ({ icon, label, link }) => {
+  link?: string;
+  children?: ReactNode;
+  disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}> = ({ icon, label, link, children, onClick }) => {
+  if (onClick || !link) {
+    return (
+      <button
+        onClick={onClick}
+        className="group ml-2 flex h-6 items-center overflow-hidden rounded-xl border border-bg04 bg-bg02 px-3 py-1 text-2xs text-gray100 transition-all hover:bg-bg05"
+      >
+        <Icon iconSrc={icon} alt="network" />
+        <div className="invisible flex w-0 items-center gap-4 whitespace-nowrap opacity-0 transition-all group-hover:visible group-hover:ml-2 group-hover:w-20 group-hover:opacity-100">
+          <span className="w-full">{label}</span>
+          {children}
+        </div>
+      </button>
+    );
+  }
   return (
     <Link
       href={link}
       target="_blank"
-      className="group ml-2 flex h-6 w-10 items-center gap-4 overflow-hidden rounded-xl border border-bg06 bg-bg04 px-3 py-1 text-2xs text-gray100 transition-all hover:w-32"
+      className="group ml-2 flex h-6 items-center overflow-hidden rounded-xl border border-bg04 bg-bg02 px-3 py-1 text-2xs text-gray100 transition-all hover:bg-bg05"
     >
       <Icon iconSrc={icon} alt="network" />
-      <span className="invisible group-hover:visible">{label}</span>
-      <Icon
-        alt="link"
-        className="invisible group-hover:visible"
-        iconSrc="/assets/images/gas-tap/external-link.svg"
-      />
+      <div className="invisible flex w-0 items-center gap-4 transition-all group-hover:visible group-hover:ml-4 group-hover:w-16">
+        <span className="">{label}</span>
+        {children}
+      </div>
     </Link>
   );
 };
@@ -108,11 +123,11 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
         isHighlighted
           ? "gradient-outline-card mb-20 p-0 before:!inset-[1.5px]"
           : "mb-6"
-      } flex w-full flex-col items-center justify-center rounded-3xl border border-bg04`}
+      } chain-clip flex w-full flex-col items-center justify-center rounded-3xl border border-bg04`}
     >
       <div
         className={`w-full border-2 border-bg03 pb-4 pl-3 pr-6 pt-4 ${
-          isHighlighted ? "bg-g-primary-low" : "bg-bg01"
+          isHighlighted ? "bg-g-primary-low" : "bg-bg02"
         } flex flex-col items-center justify-between gap-2 rounded-t-3xl sm:flex-row sm:gap-0`}
       >
         <div
@@ -141,30 +156,29 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
                 icon="/icons/network.svg"
                 label="Website"
                 link={chain.blockScanAddress}
-              />
-              {/* <Link
-                href={chain.blockScanAddress}
-                target="_blank"
-                className="ml-2 h-6 w-10 rounded-xl border border-bg06 bg-bg04 px-3 py-1 text-2xs text-gray100"
               >
-                <Icon iconSrc="/icons/network.svg" />
-              </Link> */}
+                <Image
+                  alt="link"
+                  height={12}
+                  width={12}
+                  src="/assets/images/gas-tap/external-link.svg"
+                />
+              </ExpandableLink>
+
               {chain.chainType === "EVM" && (
-                <button
-                  data-testid={`chain-switch-${chain.pk}`}
+                <ExpandableLink
+                  icon="/icons/plus.svg"
                   disabled={!isConnected}
                   onClick={() => addAndSwitchChain(chain)}
-                  className="h-6 w-10 rounded-xl border border-bg06 bg-bg04 px-3 py-1 text-2xs text-gray100 disabled:opacity-60"
-                >
-                  <Icon iconSrc="/icons/plus.svg" />
-                </button>
+                  label="Add To Wallet"
+                />
               )}
             </div>
             <div className="mt-2 flex items-center gap-3">
-              <p className="ml-2 rounded-lg border border-bg06 px-2 py-1 text-2xs text-gray100">
+              <p className="ml-2 rounded-lg border border-bg04 px-2 py-1 text-2xs text-gray100">
                 {chain.chainType}
               </p>
-              <p className="rounded-lg border border-bg06 px-2 py-1 text-2xs text-gray100">
+              <p className="rounded-lg border border-bg04 px-2 py-1 text-2xs text-gray100">
                 {chain.isTestnet ? "Testnet" : "Mainnet"}
               </p>
             </div>
@@ -181,20 +195,18 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             {chain.chainType !== ChainType.SOLANA && (
               <button
                 onClick={() => handleRefillButtonClicked(chain.pk)}
-                className={`refuel-button relative mr-4 w-28 rounded-3xl p-[2px] text-sm font-semibold ${
+                className={`refuel-button relative mr-4 min-w-16 rounded-3xl p-[2px] text-sm font-semibold ${
                   isChainRefuelFine ? "refuel-fine" : ""
                 }`}
               >
-                <div className="flex h-11 items-center justify-center gap-4 rounded-3xl p-2 px-4 text-[#6DD0E6]">
-                  <p>Refuel</p>
-                  {isChainRefuelFine || (
-                    <Image
-                      src="/assets/images/gas-tap/refuel-logo.svg"
-                      width={17}
-                      height={22}
-                      alt="refuel"
-                    />
-                  )}
+                <div className="text-second-white flex h-11 items-center justify-center gap-4 rounded-3xl p-2 px-4">
+                  {isChainRefuelFine || <p>Refuel</p>}
+                  <Image
+                    src="/assets/images/gas-tap/refuel-logo.svg"
+                    width={16}
+                    height={20}
+                    alt="refuel"
+                  />
                 </div>
               </button>
             )}
@@ -221,13 +233,11 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
       </div>
       <div
         className={`${
-          isHighlighted ? "bg-g-primary-low" : "bg-bg04"
+          isHighlighted ? "bg-g-primary-low" : "bg-bg03"
         } flex w-full flex-col items-center justify-center gap-4 rounded-b-3xl p-4 md:flex-row md:justify-between md:gap-0 md:p-0 md:px-4`}
       >
         <div
-          className={`${
-            isHighlighted ? "bg-transparent" : "bg-bg04"
-          } flex w-28 items-center justify-between md:justify-start`}
+          className={` flex w-28 items-center justify-between md:justify-start`}
         >
           <p className="chain-card__info__title text-sm text-gray90">
             Currency:{" "}
@@ -238,9 +248,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
         </div>
 
         <div
-          className={`${
-            isHighlighted ? "bg-transparent" : "bg-bg04"
-          } flex h-12 w-32 items-center justify-between rounded-b-xl md:justify-start`}
+          className={`flex h-12 w-32 items-center justify-between rounded-b-xl md:justify-start`}
         >
           <p className="chain-card__info__title text-sm text-gray90">
             Fuel Champion:{" "}
@@ -252,9 +260,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
           </p>
         </div>
         <Tooltip
-          className={`mx-auto h-10 w-56 !cursor-default self-end rounded-b-2xl rounded-t-2xl px-3 py-3 text-sm md:mx-0 md:rounded-b-none ${
-            isHighlighted ? "bg-transparent" : "bg-bg00"
-          }`}
+          className={`mx-auto w-56 !cursor-default bg-bg04 px-3 py-3 text-sm md:mx-0`}
           withoutImage
           text={
             chain.isOneTimeClaim
@@ -264,7 +270,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
         >
           {chain.isOneTimeClaim ? (
             <div className="flex items-center justify-between text-secondary-text md:justify-center">
-              <p className="flex-1">Single-Claim Tap</p>
+              <p className="flex-1 font-semibold">Single-Claim Tap</p>
               <Icon
                 className="text-white"
                 iconSrc="/assets/images/gas-tap/claimable-once.svg"
@@ -272,7 +278,9 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             </div>
           ) : (
             <div className="flex items-center justify-between rounded-none text-gray100 md:justify-center">
-              <p className="flex-1 text-[#689E7A]">Periodic Tap</p>
+              <p className="flex-1 font-semibold text-[#689E7A]">
+                Periodic Tap
+              </p>
               <Icon
                 className="text-[#689E7A]"
                 iconSrc="/assets/images/gas-tap/periodic-tap.svg"
@@ -280,24 +288,13 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             </div>
           )}
         </Tooltip>
-        {/* <div
-          className={`${
-            isHighlighted ? "bg-transparent" : "bg-bg04"
-          } flex w-32 items-center justify-between rounded-b-xl md:justify-end`}
-        >
-          <p className="text-sm text-gray90">Total Claims:</p>
-          <p className="ml-1.5 text-sm text-gray100">
-            {numberWithCommas(chain.totalClaims)}
-          </p>
-        </div> */}
+
         <div
           key={isThisRound ? 1 : 0}
-          className={`${
-            isHighlighted ? "bg-transparent" : "bg-bg04"
-          } animate-fadeToggle flex w-32 items-center justify-between rounded-b-xl transition-opacity duration-300 ease-in-out`}
+          className={` animate-fadeToggle flex w-32 items-center justify-between rounded-b-xl transition-opacity duration-300 ease-in-out`}
         >
           <p className="text-sm text-gray90">
-            {isThisRound ? "This Round Claims" : "Total Claims"}
+            {isThisRound ? "Round Claims" : "Total Claims"}
           </p>
           <p className="ml-1.5 font-mono text-sm text-white">
             {isThisRound

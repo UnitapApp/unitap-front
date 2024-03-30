@@ -3,18 +3,24 @@
 }
 
 .refuel-button {
-  background: linear-gradient(180deg, #3c6a78 0%, #47778c 100%);
+  background: linear-gradient(to right, #995196 0%, #ffc3fd 50%, #995196 100%);
 
   > div {
-    background: linear-gradient(180deg, #2d313a 0%, #1b2231 100%);
+    background: linear-gradient(
+        90deg,
+        rgba(177, 100, 175, 0.9) 0%,
+        rgba(185, 138, 244, 0.62) 50%,
+        rgba(210, 118, 207, 0.9) 100%
+      ),
+      #20202c;
   }
 }
 
 .refuel-fine {
-  background: linear-gradient(180deg, #2d313a 0%, #1b2231 100%);
+  @apply bg-bg04 bg-none;
 
   > div {
-    background: linear-gradient(180deg, #1b1b29 0%, #191927 100%);
+    @apply bg-bg02 bg-none;
   }
 }
 
@@ -85,4 +91,8 @@
 
 .gas-level-empty {
   background: linear-gradient(329.12deg, #c24e1b 18.71%, #f16e35 81.29%);
+}
+
+.chain-clip {
+  clip-path: polygon(50% 0%, 100% 0, 100% 85%, 98% 100%, 0 100%, 0% 60%, 0 0);
 }
