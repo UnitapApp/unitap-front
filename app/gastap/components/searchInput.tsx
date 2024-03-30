@@ -26,7 +26,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const previousTimeout = useRef<any>(null);
 
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (previousTimeout.current) clearTimeout(previousTimeout.current);
     const phrase: string = event.target.value;
@@ -72,7 +72,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Chain name, Currency, ID"
         $pl={7}
         $p={1.5}
-        className="mb-0 h-12 !bg-bg04 !rounded-2xl"
+        className="gastap-search mb-0 h-12 !rounded-2xl !bg-bg04"
       ></Input>
     </div>
   );

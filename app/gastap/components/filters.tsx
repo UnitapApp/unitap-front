@@ -2,6 +2,53 @@
 
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { ChainType, Network } from "@/types";
+import { FC } from "react";
+
+const GasTapChainTypeFilter: FC<{
+  label: string;
+  selectedChainType: string;
+  onChange: (value: ChainType) => void;
+  chainType: ChainType;
+}> = ({ selectedChainType, label, onChange, chainType }) => {
+  return (
+    <div
+      className={`relative w-full cursor-pointer rounded-md border border-bg01 px-1 py-3 text-center text-xs sm:w-[72px] ${
+        selectedChainType === chainType
+          ? `gastap-filter-gradient text-whit gastap-filter-active`
+          : `text-txt2`
+      }`}
+      data-testid={`chains-filter-chain-type-${label}`}
+      onClick={() => {
+        onChange(chainType);
+      }}
+    >
+      {label}
+    </div>
+  );
+};
+
+const GasTapNetworkFilter: FC<{
+  label: string;
+  selectedNetwork: string;
+  onChange: (value: Network) => void;
+  network: Network;
+}> = ({ selectedNetwork, label, onChange, network }) => {
+  return (
+    <div
+      className={`relative w-full cursor-pointer rounded-md border border-bg01 px-1 py-3 text-center text-xs sm:w-[72px] ${
+        selectedNetwork === network
+          ? `gastap-filter-gradient text-whit gastap-filter-active`
+          : `text-txt2`
+      }`}
+      data-testid={`chains-filter-chain-type-${label}`}
+      onClick={() => {
+        onChange(network);
+      }}
+    >
+      {label}
+    </div>
+  );
+};
 
 export const Filters = () => {
   const {
@@ -12,88 +59,46 @@ export const Filters = () => {
   } = useGasTapContext();
 
   return (
-    <div className="flex flex-col w-full sm:w-auto sm:flex-row gap-2 sm:gap-0 mb-2 md:mb-0 justify-between md:justify-end items-center md:ml-auto">
-      <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-2xl w-full sm:w-auto">
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
-            selectedChainType === ChainType.ALL
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          data-testid="chains-filter-chain-type-all"
-          onClick={() => {
-            setSelectedChainType(ChainType.ALL);
-          }}
-        >
-          ALL
-        </div>
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
-            selectedChainType === ChainType.EVM
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          data-testid="chains-filter-chain-type-evm"
-          onClick={() => {
-            setSelectedChainType(ChainType.EVM);
-          }}
-        >
-          EVM
-        </div>
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs border-l-2 border-l-gray30 cursor-pointer rounded-r-[11px] ${
-            selectedChainType === ChainType.NONEVM
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          onClick={() => {
-            setSelectedChainType(ChainType.NONEVM);
-          }}
-          data-testid="chains-filter-chain-type-non-evm"
-        >
-          nonEVM
-        </div>
+    <div className="mb-2 flex w-full flex-col items-center justify-between gap-2 sm:w-auto sm:flex-row sm:gap-0 md:mb-0 md:ml-auto md:justify-end">
+      <div className="flex w-full items-center gap-[2px] rounded-lg border-2  border-bg01 bg-bg02 sm:w-auto">
+        <GasTapChainTypeFilter
+          chainType={ChainType.ALL}
+          label="ALL"
+          onChange={setSelectedChainType}
+          selectedChainType={selectedChainType}
+        />
+        <GasTapChainTypeFilter
+          chainType={ChainType.EVM}
+          label="EVM"
+          onChange={setSelectedChainType}
+          selectedChainType={selectedChainType}
+        />
+        <GasTapChainTypeFilter
+          chainType={ChainType.NONEVM}
+          label="nonEVM"
+          onChange={setSelectedChainType}
+          selectedChainType={selectedChainType}
+        />
       </div>
-      <div className="switch flex items-center border-2 border-gray30 bg-gray30 rounded-xl w-full sm:w-auto sm:ml-3">
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer rounded-l-[11px] ${
-            selectedNetwork === Network.ALL
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          data-testid="chains-filter-all"
-          onClick={() => {
-            setSelectedNetwork(Network.ALL);
-          }}
-        >
-          ALL
-        </div>
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs cursor-pointer ${
-            selectedNetwork === Network.MAINNET
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          data-testid="chains-filter-mainnets"
-          onClick={() => {
-            setSelectedNetwork(Network.MAINNET);
-          }}
-        >
-          Mainnets
-        </div>
-        <div
-          className={`switch__option w-full sm:w-[72px] px-1 py-3 text-center text-xs border-l-2 border-l-gray30 rounded-r-[11px] cursor-pointer ${
-            selectedNetwork === Network.TESTNET
-              ? `text-white bg-gray50`
-              : `text-gray80`
-          }`}
-          data-testid="chains-filter-testnets"
-          onClick={() => {
-            setSelectedNetwork(Network.TESTNET);
-          }}
-        >
-          Testnets
-        </div>
+      <div className="switch flex w-full items-center gap-[2px] rounded-lg border-2 border-bg01 bg-bg02 sm:ml-3 sm:w-auto">
+        <GasTapNetworkFilter
+          selectedNetwork={selectedNetwork}
+          label="ALL"
+          network={Network.ALL}
+          onChange={setSelectedNetwork}
+        />
+        <GasTapNetworkFilter
+          selectedNetwork={selectedNetwork}
+          label="Mainnets"
+          network={Network.MAINNET}
+          onChange={setSelectedNetwork}
+        />
+        <GasTapNetworkFilter
+          selectedNetwork={selectedNetwork}
+          label="Testnets"
+          network={Network.TESTNET}
+          onChange={setSelectedNetwork}
+        />
       </div>
     </div>
   );

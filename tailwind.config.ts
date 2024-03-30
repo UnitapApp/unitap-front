@@ -27,8 +27,8 @@ const config: Config = {
       colors: {
         darkblack: "#000000",
         bg00: "#0C0C17",
-        bg01: "",
-        bg02: "",
+        bg01: "#181823",
+        bg02: "#20202C",
         bg03: "#161623",
         bg04: "#1B1B29",
         bg05: "",
@@ -37,6 +37,8 @@ const config: Config = {
         bg08: "",
         bg3: "#21212E",
         bg6: "#3E3E4A",
+        txt1: "#B5B5C6",
+        txt2: "#67677B",
         primary: "#5EE1B0",
         secondary: "#F59569",
         input: "#EFF3F8",
@@ -167,6 +169,12 @@ const config: Config = {
         blinking: {
           "50%": { opacity: ".3" },
         },
+        fadeToggle: {
+          "0%": { opacity: "0" },
+          "10%": { opacity: "1" },
+          "95%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
         fadeInOut: {
           "0%": { opacity: "1" },
           "50%": { opacity: "0" },
@@ -180,6 +188,7 @@ const config: Config = {
         fadeIn: "fadeIn 0.8s ease-in-out",
         blinking: "blinking 2s step-start 0s infinite",
         fadeInOut: "fadeInOut 2s ease-in-out infinite",
+        fadeToggle: "fadeToggle 5s ease-in-out infinite",
       },
       transitionProperty: {
         height: "height",

@@ -6,7 +6,8 @@ import EmptyChainListCard from "./EmptyChainListCard";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useSearchParams } from "next/navigation";
-import ChainCard from "./ChainCard";
+import ChainCard from "./chainCard";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 
 const ChainList = () => {
   const {
@@ -22,6 +23,12 @@ const ChainList = () => {
   const [highlightedChain, setHighlightedChain] = useState("");
 
   const params = useSearchParams();
+
+  const [isThisRound, setIsThisRound] = useState(true);
+
+  useFastRefresh(() => {
+    setIsThisRound((prevIsThisRound) => !prevIsThisRound);
+  }, []);
 
   const chainListMemo = useMemo(
     () =>
@@ -41,7 +48,7 @@ const ChainList = () => {
 
         return 0;
       }),
-    [chainListSearchResult, highlightedChain]
+    [chainListSearchResult, highlightedChain],
   );
 
   useEffect(() => {
@@ -56,7 +63,7 @@ const ChainList = () => {
   }, [params, setHighlightedChain, setSelectedNetwork]);
 
   return (
-    <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
+    <div className="chain-list-wrapper mb-20 w-full pb-2 pt-5">
       <div>
         {!chainList.length || isGasTapAvailable ? (
           <>
@@ -67,16 +74,21 @@ const ChainList = () => {
                   highlightedChain.toLowerCase()
                 }
                 chain={chainListMemo[0]}
+                isThisRound={isThisRound}
               />
             )}
 
             {chainListMemo.slice(1).map((chain) => (
-              <ChainCard chain={chain} key={chain.pk} />
+              <ChainCard
+                isThisRound={isThisRound}
+                chain={chain}
+                key={chain.pk}
+              />
             ))}
           </>
         ) : (
           <div
-            className="text-white text-center mt-20"
+            className="mt-20 text-center text-white"
             data-testid="chain-list-loading"
           >
             Gas Tap is not available right now

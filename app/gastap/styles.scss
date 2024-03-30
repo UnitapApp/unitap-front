@@ -1,11 +1,3 @@
-.gas-balance-low {
-  background: linear-gradient(329.12deg, #ad7f3b 18.71%, #ebdb4b 81.29%);
-}
-
-.gas-balance-fine {
-  background: linear-gradient(86.2deg, #6de0a2 3.12%, #75cba2 96.88%);
-}
-
 .gas-balance-danger {
   background: linear-gradient(86.2deg, #e74242 3.12%, #de3232 96.88%);
 }
@@ -34,4 +26,63 @@
   > div {
     background: linear-gradient(171.26deg, #303040 -8.91%, #161624 124.43%);
   }
+}
+
+.gastap-search {
+  clip-path: polygon(50% 0%, 100% 0, 100% 63%, 93% 100%, 0 100%, 0% 60%, 0 0);
+  // clip-path: polygon(
+  //   0% 0%,
+  //   100% 1%,
+  //   100% 64%,
+  //   99% 70%,
+  //   92% 98%,
+  //   90% 100%,
+  //   0% 98%
+  // );
+}
+
+.gastap-filter-gradient {
+  background: radial-gradient(
+    134.72% 134.72% at 50% 50%,
+    #272733 0%,
+    #808097 100%
+  );
+}
+
+.gastap-filter-active {
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    z-index: 10;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+
+    background: url("/assets/images/gas-tap/gastap-filter-active.svg");
+  }
+
+  &::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    z-index: 10;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    transform: rotate(180deg);
+    background: url("/assets/images/gas-tap/gastap-filter-active.svg");
+  }
+}
+
+.gas-level-fine {
+  background: linear-gradient(to right, #bcf8d8 3.12%, #75cba2 96.88%);
+}
+
+.gas-level-low {
+  background: linear-gradient(329.12deg, #ad7f3b 18.71%, #ebdb4b 81.29%);
+}
+
+.gas-level-empty {
+  background: linear-gradient(329.12deg, #c24e1b 18.71%, #f16e35 81.29%);
 }

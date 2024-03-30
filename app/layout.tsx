@@ -53,14 +53,14 @@ export default async function RootLayout({
   return (
     <html lang="en" dir="ltr" className="dark">
       <body
-        className={`dark:bg-[#0C0C17] font-normal dark:text-white ${montserratFont.className}`}
+        className={`font-normal dark:bg-[#13131C] dark:text-white ${montserratFont.className}`}
       >
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
               <div id="app">
                 <Header />
-                <main className="px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-14 max-w-screen-2xl m-auto flex flex-col w-full min-h-[calc(100vh_-_130px)]">
+                <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
                   {children}
                 </main>
 
