@@ -65,17 +65,17 @@ const ClaimButton: FC<ClaimButtonProps> = ({
 
   return (
     <>
-      <Icon
-        width="36px"
-        height="40px"
-        className="absolute -top-4 left-1/2 z-50 -translate-x-1/2"
-        iconSrc={gasIcon}
-        alt={amount + " " + symbol}
-      />
       <button
         onClick={onClick}
-        className="claim-button-idle group overflow-x-hidden rounded-3xl p-[1px] text-sm"
+        className="claim-button-idle group relative z-20 overflow-visible rounded-3xl p-[1px] text-sm"
       >
+        <Icon
+          width="36px"
+          height="40px"
+          className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 scale-75 transition-all group-hover:-top-20 group-hover:scale-100 group-hover:delay-300"
+          iconSrc={gasIcon}
+          alt={amount + " " + symbol}
+        />
         <Icon
           iconSrc="/assets/images/gas-tap/half-circle.svg"
           alt="half circle"
