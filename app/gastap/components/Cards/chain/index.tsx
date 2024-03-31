@@ -63,42 +63,36 @@ const ChainList = () => {
   }, [params, setHighlightedChain, setSelectedNetwork]);
 
   return (
-    <div className="chain-list-wrapper mb-20 w-full pb-2 pt-5">
-      <div>
-        {!chainList.length || isGasTapAvailable ? (
-          <>
-            {!!chainListMemo.length && (
-              <ChainCard
-                isHighlighted={
-                  chainListMemo[0].chainName.toLowerCase() ===
-                  highlightedChain.toLowerCase()
-                }
-                chain={chainListMemo[0]}
-                isThisRound={isThisRound}
-              />
-            )}
+    <section className="mb-20 w-full pb-2 pt-5">
+      {!chainList.length || isGasTapAvailable ? (
+        <>
+          {!!chainListMemo.length && (
+            <ChainCard
+              isHighlighted={
+                chainListMemo[0].chainName.toLowerCase() ===
+                highlightedChain.toLowerCase()
+              }
+              chain={chainListMemo[0]}
+              isThisRound={isThisRound}
+            />
+          )}
 
-            {chainListMemo.slice(1).map((chain) => (
-              <ChainCard
-                isThisRound={isThisRound}
-                chain={chain}
-                key={chain.pk}
-              />
-            ))}
-          </>
-        ) : (
-          <div
-            className="mt-20 text-center text-white"
-            data-testid="chain-list-loading"
-          >
-            Gas Tap is not available right now
-          </div>
-        )}
-        {chainListSearchResult.length === 0 && !!chainList.length && (
-          <EmptyChainListCard />
-        )}
-      </div>
-    </div>
+          {chainListMemo.slice(1).map((chain) => (
+            <ChainCard isThisRound={isThisRound} chain={chain} key={chain.pk} />
+          ))}
+        </>
+      ) : (
+        <div
+          className="mt-20 text-center text-white"
+          data-testid="chain-list-loading"
+        >
+          Gas Tap is not available right now
+        </div>
+      )}
+      {chainListSearchResult.length === 0 && !!chainList.length && (
+        <EmptyChainListCard />
+      )}
+    </section>
   );
 };
 

@@ -40,6 +40,7 @@ const config: Config = {
         txt1: "#B5B5C6",
         txt2: "#67677B",
         primary: "#5EE1B0",
+        "primary-black": "#1A1E26",
         secondary: "#F59569",
         input: "#EFF3F8",
         label: "#565656",

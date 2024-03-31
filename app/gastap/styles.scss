@@ -96,3 +96,115 @@
 .chain-clip {
   clip-path: polygon(50% 0%, 100% 0, 100% 85%, 98% 100%, 0 100%, 0% 60%, 0 0);
 }
+
+@keyframes changeBackground {
+  0% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: normal;
+  }
+  50% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: normal;
+  }
+  60% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: bold;
+  }
+  100% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: bold;
+  }
+}
+
+.claim-button-idle {
+  background: linear-gradient(90deg, #ddfef1 0%, #426464 50%, #e3fff4 100%);
+  position: relative;
+
+  // &:disabled {
+  //   background: linear-gradient(198.38deg, #1f1111 12.47%, #13070b 87.53%);
+  //   cursor: not-allowed;
+  //   > div {
+  //     background: linear-gradient(
+  //       180deg,
+  //       #1f1521 0%,
+  //       #1a121c 50%,
+  //       #100d12 100%
+  //     );
+
+  //     &::after {
+  //       content: none;
+  //     }
+  //   }
+  // }
+
+  > div {
+    @apply text-primary transition-all;
+
+    background: linear-gradient(
+      90deg,
+      rgba(162, 233, 206, 1) 0%,
+      rgba(55, 86, 74, 1) 21%,
+      rgba(40, 57, 52, 1) 34%,
+      rgba(40, 57, 52, 1) 73%,
+      rgba(55, 86, 74, 1) 78%,
+      rgba(162, 233, 206, 1) 100%
+    );
+  }
+
+  &:hover {
+    > div {
+      @apply text-primary-black font-bold;
+      background: linear-gradient(
+        90deg,
+        #a2e9ce 0%,
+        #bcd8cd 25%,
+        #caf6e9 50%,
+        #bbefdb 75%,
+        #a2e9ce 100%
+      );
+      animation: changeBackground 0.5s linear;
+    }
+  }
+
+  // &:hover {
+  //   > div {
+  //     @apply text-primary-black font-bold;
+  //     background: linear-gradient(
+  //       90deg,
+  //       #a2e9ce 0%,
+  //       #bcd8cd 25%,
+  //       #caf6e9 50%,
+  //       #bbefdb 75%,
+  //       #a2e9ce 100%
+  //     );
+  //   }
+  // }
+}

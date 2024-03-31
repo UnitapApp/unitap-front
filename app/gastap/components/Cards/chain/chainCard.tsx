@@ -123,7 +123,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
         isHighlighted
           ? "gradient-outline-card mb-20 p-0 before:!inset-[1.5px]"
           : "mb-6"
-      } chain-clip flex w-full flex-col items-center justify-center rounded-3xl border border-bg04`}
+      } chain-clip relative flex w-full flex-col items-center justify-center overflow-visible rounded-3xl border border-bg04`}
     >
       <div
         className={`w-full border-2 border-bg03 pb-4 pl-3 pr-6 pt-4 ${
@@ -175,11 +175,11 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
               )}
             </div>
             <div className="mt-2 flex items-center gap-3">
-              <p className="ml-2 rounded-lg border border-bg04 px-2 py-1 text-2xs text-gray100">
-                {chain.chainType}
-              </p>
               <p className="rounded-lg border border-bg04 px-2 py-1 text-2xs text-gray100">
                 {chain.isTestnet ? "Testnet" : "Mainnet"}
+              </p>
+              <p className="ml-2 rounded-lg border border-bg04 px-2 py-1 text-2xs text-gray100">
+                {chain.chainType}
               </p>
             </div>
           </div>
@@ -212,6 +212,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             )}
 
             <ClaimButton
+              gasIcon={chain.gasImageUrl}
               onClick={() => openClaimModal(chain.pk)}
               isClaimed={isMonthlyCollected || isOneTimeCollected}
               amount={formatChainBalance(chain.maxClaimAmount, chain.symbol)}
