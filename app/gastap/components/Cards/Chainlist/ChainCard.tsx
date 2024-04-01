@@ -10,7 +10,6 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
-import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
@@ -23,6 +22,7 @@ import GasBalanceRenderer from "./GasBalanceRenderer";
 type ChainCardProps = {
   chain: Chain;
   isHighlighted?: boolean;
+  isThisRound: boolean;
 };
 
 export const AddMetamaskButton = styled(SecondaryButton)`
@@ -42,7 +42,7 @@ export const AddMetamaskButton = styled(SecondaryButton)`
   }
 `;
 
-const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
+const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
   const {
     openClaimModal,
     activeClaimHistory,
@@ -71,16 +71,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
   );
 
   const { setChainId, setIsOpen } = useContext(FundContext);
-
-  const [isThisRound, setIsThisRound] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsThisRound((prevIsThisRound) => !prevIsThisRound);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleRefillButtonClicked = (chainId: PK) => {
     setChainId(chainId);
@@ -300,16 +290,18 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             )}
           </Tooltip>
           <div
-            key={isThisRound ? 1 : 0}
+            key={isThisRound && !chain.isDeprecated ? 1 : 0}
             className={`${
               isThisRound ? "bg-transparent" : "bg-gray30"
             } animate-fadeToggle flex w-full items-center justify-between rounded-b-xl px-4 transition-opacity duration-300 ease-in-out md:justify-center`}
           >
             <p className="text-sm text-gray90">
-              {isThisRound ? "This Round Claims" : "Total Claims"}
+              {isThisRound && !chain.isDeprecated
+                ? "This Round Claims"
+                : "Total Claims"}
             </p>
             <p className="ml-1.5 font-mono text-sm text-white">
-              {isThisRound
+              {isThisRound && !chain.isDeprecated
                 ? numberWithCommas(chain.totalClaimsThisRound)
                 : numberWithCommas(chain.totalClaims)}
             </p>
