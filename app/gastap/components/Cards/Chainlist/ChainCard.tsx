@@ -10,7 +10,7 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
@@ -101,7 +101,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
               <img
                 className="chain-logo h-[100%] w-auto"
                 src={getChainIcon(chain)}
-                alt="polygon logo"
+                alt={chain.chainName}
               />
             </span>
             <p
@@ -293,7 +293,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             key={isThisRound && !chain.isDeprecated ? 1 : 0}
             className={`${
               isThisRound ? "bg-transparent" : "bg-gray30"
-            } animate-fadeToggle flex w-full items-center justify-between rounded-b-xl px-4 transition-opacity duration-300 ease-in-out md:justify-center`}
+            } ${chain.isDeprecated ? "" : "animate-fadeToggle"} flex w-full items-center justify-between rounded-b-xl px-4 transition-opacity duration-300 ease-in-out md:justify-center`}
           >
             <p className="text-sm text-gray90">
               {isThisRound && !chain.isDeprecated
@@ -307,18 +307,23 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
             </p>
           </div>
 
-          <div
-            className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } flex w-full items-center justify-between rounded-b-xl px-4 md:justify-end`}
+          <Tooltip
+            text={`${chain.remainingClaimNumber} amount of claims are left`}
+            withoutImage
           >
-            <p
-              className={`text-sm ${chain.currentFuelLevel > 4 ? "text-gray90" : chain.currentFuelLevel >= 2 ? "text-[#EBD14A]" : "text-[#F16E35]"} `}
+            <div
+              className={`${
+                isHighlighted ? "bg-transparent" : "bg-gray30"
+              } flex w-full items-center justify-between rounded-b-xl px-4 md:justify-end`}
             >
-              Balance:
-            </p>
-            <GasBalanceRenderer balance={chain.currentFuelLevel} />
-          </div>
+              <p
+                className={`text-sm ${chain.currentFuelLevel > 4 ? "text-gray90" : chain.currentFuelLevel >= 2 ? "text-[#EBD14A]" : "text-[#F16E35]"} `}
+              >
+                Balance:
+              </p>
+              <GasBalanceRenderer balance={chain.currentFuelLevel} />
+            </div>
+          </Tooltip>
         </div>
       </div>
     </div>

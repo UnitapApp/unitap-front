@@ -72,6 +72,7 @@ export type Chain = {
   isOneTimeClaim: boolean;
   currentFuelLevel: number;
   isDeprecated: boolean;
+  remainingClaimNumber: number;
 };
 
 export enum ClaimReceiptState {
