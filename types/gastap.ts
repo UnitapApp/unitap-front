@@ -30,6 +30,7 @@ export type Faucet = {
   isOneTimeClaim: boolean;
   currentFuelLevel: number;
   isDeprecated: boolean;
+  remainingClaimNumber: number;
 };
 
 export type ChainApi = {
