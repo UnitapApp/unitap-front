@@ -41,6 +41,7 @@ const config: Config = {
         txt2: "#67677B",
         primary: "#5EE1B0",
         "primary-black": "#1A1E26",
+        "primary-dark": "#2D3A35",
         secondary: "#F59569",
         input: "#EFF3F8",
         label: "#565656",

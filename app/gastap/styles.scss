@@ -148,22 +148,16 @@
   background: linear-gradient(90deg, #ddfef1 0%, #426464 50%, #e3fff4 100%);
   position: relative;
 
-  // &:disabled {
-  //   background: linear-gradient(198.38deg, #1f1111 12.47%, #13070b 87.53%);
-  //   cursor: not-allowed;
-  //   > div {
-  //     background: linear-gradient(
-  //       180deg,
-  //       #1f1521 0%,
-  //       #1a121c 50%,
-  //       #100d12 100%
-  //     );
+  &:disabled {
+    background: none;
+    cursor: not-allowed;
 
-  //     &::after {
-  //       content: none;
-  //     }
-  //   }
-  // }
+    > div {
+      &::after {
+        content: none;
+      }
+    }
+  }
 
   > div {
     @apply text-primary transition-all;

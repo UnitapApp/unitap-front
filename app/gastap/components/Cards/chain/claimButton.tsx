@@ -31,8 +31,8 @@ const ClaimButton: FC<ClaimButtonProps> = ({
         className="claim-button claimed rounded-3xl p-[1px] text-sm"
       >
         <div className="flex h-11 w-52 items-center justify-between rounded-3xl px-4">
-          <p className="text-[#83B39E]">Gas Claimed!</p>
-          <Icon iconSrc="/assets/images/gas-tap/claimed-gallon.svg" />
+          <p className="text-primary-dark">Gas Claimed!</p>
+          <Icon iconSrc={gasIcon} width="22px" height="26px" />
         </div>
       </button>
     );
@@ -45,7 +45,9 @@ const ClaimButton: FC<ClaimButtonProps> = ({
         className="claim-button pending rounded-3xl p-[1px] text-sm"
       >
         <div className="flex h-11 w-52 items-center justify-center rounded-3xl px-4">
-          <p className="font-semibold text-[#8B6D8B]">Pending...</p>
+          <p className="text-primary">
+            Claiming {amount} {symbol}...
+          </p>
         </div>
       </button>
     );
@@ -55,7 +57,7 @@ const ClaimButton: FC<ClaimButtonProps> = ({
     return (
       <button disabled className="claim-button rounded-3xl p-[1px] text-sm">
         <div className="flex h-11 w-52 items-center justify-center rounded-3xl px-4">
-          <p className="font-semibold text-[#8B6D8B]">
+          <p className="">
             Claim {amount} {symbol}
           </p>
         </div>
@@ -72,7 +74,7 @@ const ClaimButton: FC<ClaimButtonProps> = ({
         <Icon
           width="36px"
           height="40px"
-          className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 scale-75 transition-all group-hover:-top-20 group-hover:scale-100 group-hover:delay-300"
+          className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 scale-75 transition-all group-hover:-top-12 group-hover:scale-100 group-hover:delay-300"
           iconSrc={gasIcon}
           alt={amount + " " + symbol}
         />

@@ -88,19 +88,35 @@ input {
     url("/assets/images/gas-tap/header-background.svg");
 }
 
+@keyframes toggleTextOpacity {
+  0% {
+    @apply text-primary;
+  }
+  50% {
+    @apply text-primary;
+  }
+  51% {
+    color: #27433b;
+  }
+
+  99% {
+    color: #27433b;
+  }
+
+  100% {
+    @apply text-primary;
+  }
+}
+
 .claim-button {
   background: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
 
   &:disabled {
-    background: linear-gradient(198.38deg, #1f1111 12.47%, #13070b 87.53%);
+    background: none;
     cursor: not-allowed;
     > div {
-      background: linear-gradient(
-        180deg,
-        #1f1521 0%,
-        #1a121c 50%,
-        #100d12 100%
-      );
+      background: none;
+      @apply text-primary-dark bg-primary-black;
 
       &::after {
         content: none;
@@ -125,31 +141,48 @@ input {
   }
 
   &.claimed {
-    background: #1e3828;
+    background: linear-gradient(90deg, rgba(6, 13, 10, 0) 0%, #37564a 100%);
 
     > div {
-      background: linear-gradient(
-        120.05deg,
-        rgba(36, 50, 42, 0.3) 60.86%,
-        #49a47c 98.14%
-      );
+      @apply relative;
+
+      background: rgb(26 30 38);
+
+      &::after {
+        background: linear-gradient(
+          108.96deg,
+          rgba(27, 31, 37, 0) 0%,
+          rgba(40, 69, 64, 0) 23.55%,
+          rgba(77, 177, 141, 0.57) 67.13%,
+          #ffffff 100%
+        );
+
+        @apply absolute bottom-0 left-auto right-0 top-0 w-12 rounded-l-none;
+      }
     }
   }
 
   &.pending {
-    background: linear-gradient(198.38deg, #402641 12.47%, #331740 87.53%);
+    background: none;
+    @apply bg-primary-black;
 
     > div {
       background: linear-gradient(
-        180deg,
-        #190a1b 0%,
-        #0f0811 50%,
-        #0a050d 100%
+        90deg,
+        #37564a 0%,
+        rgba(44, 45, 44, 0) 40%,
+        rgba(44, 45, 44, 0) 50%,
+        rgba(44, 45, 44, 0) 60%,
+        #37564a 100%
       );
 
       &::after {
         content: none;
       }
+    }
+
+    p {
+      animation: toggleTextOpacity 1.5s infinite;
     }
   }
 }
