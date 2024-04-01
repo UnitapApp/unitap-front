@@ -128,11 +128,11 @@ const TokenTapTimeEnrollLimitation = ({
               your raffle to go live sooner, please contact us at
               <a
                 target="_blank"
-                href="mailto: help@unitap.app"
+                href="mailto: support@unitap.app"
                 className="text-white"
               >
                 {" "}
-                help@unitap.app
+                support@unitap.app
               </a>
             </p>
           </div>

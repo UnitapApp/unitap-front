@@ -688,7 +688,7 @@ export const LensUserFinder: FC<UserParams> = ({
                       <img
                         src={
                           user.metadata.picture
-                            ? user.metadata.picture.optimized.uri
+                            ? user.metadata.picture.optimized?.uri
                             : "/assets/images/profile.png"
                         }
                         alt={user.metadata.displayName}
