@@ -93,57 +93,6 @@
   background: linear-gradient(329.12deg, #c24e1b 18.71%, #f16e35 81.29%);
 }
 
-.chain-clip {
-  clip-path: polygon(50% 0%, 100% 0, 100% 50%, 98% 100%, 0 100%, 0% 60%, 0 0);
-}
-
-@keyframes changeBackground {
-  0% {
-    background: linear-gradient(
-      90deg,
-      #a2e9ce 0%,
-      #bcd8cd 25%,
-      #caf6e9 50%,
-      #bbefdb 75%,
-      #a2e9ce 100%
-    );
-    font-weight: normal;
-  }
-  50% {
-    background: linear-gradient(
-      90deg,
-      #a2e9ce 0%,
-      #bcd8cd 25%,
-      #caf6e9 50%,
-      #bbefdb 75%,
-      #a2e9ce 100%
-    );
-    font-weight: normal;
-  }
-  60% {
-    background: linear-gradient(
-      90deg,
-      #a2e9ce 0%,
-      #bcd8cd 25%,
-      #caf6e9 50%,
-      #bbefdb 75%,
-      #a2e9ce 100%
-    );
-    font-weight: bold;
-  }
-  100% {
-    background: linear-gradient(
-      90deg,
-      #a2e9ce 0%,
-      #bcd8cd 25%,
-      #caf6e9 50%,
-      #bbefdb 75%,
-      #a2e9ce 100%
-    );
-    font-weight: bold;
-  }
-}
-
 .claim-button-idle {
   background: linear-gradient(90deg, #ddfef1 0%, #426464 50%, #e3fff4 100%);
   position: relative;

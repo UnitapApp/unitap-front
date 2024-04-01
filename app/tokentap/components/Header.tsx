@@ -8,7 +8,7 @@ import Timer from "./timer";
 
 const Header = () => {
   return (
-    <div className="tap-header relative mb-5 flex h-[250px] flex-col overflow-hidden rounded-3xl border-4 border-gray20 md:justify-between lg:items-start">
+    <div className="tap-header relative mb-5 flex h-[250px] flex-col overflow-hidden rounded-3xl border-4 border-bg03 md:justify-between lg:items-start">
       <div className="flex w-full flex-wrap justify-center md:justify-start">
         <div className="z-10 p-5 text-2xl font-semibold tracking-[10px] text-[#AEF2D1]">
           TOKENTAP

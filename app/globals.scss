@@ -108,16 +108,66 @@ input {
   }
 }
 
+.chain-clip {
+  clip-path: polygon(50% 0%, 100% 0, 100% 50%, 98% 100%, 0 100%, 0% 60%, 0 0);
+}
+
+@keyframes changeBackground {
+  0% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: normal;
+  }
+  50% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: normal;
+  }
+  60% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: bold;
+  }
+  100% {
+    background: linear-gradient(
+      90deg,
+      #a2e9ce 0%,
+      #bcd8cd 25%,
+      #caf6e9 50%,
+      #bbefdb 75%,
+      #a2e9ce 100%
+    );
+    font-weight: bold;
+  }
+}
+
 .claim-button {
-  background: linear-gradient(198.38deg, #614262 12.47%, #331740 87.53%);
+  background: linear-gradient(90deg, #ddfef1 0%, #426464 50%, #e3fff4 100%);
+  position: relative;
 
   &:disabled {
     background: none;
     cursor: not-allowed;
-    > div {
-      background: none;
-      @apply text-primary-dark bg-primary-black;
 
+    > div {
       &::after {
         content: none;
       }
@@ -125,8 +175,50 @@ input {
   }
 
   > div {
-    background: linear-gradient(180deg, #3b1841 0%, #2a1033 50%, #190621 100%);
+    @apply text-primary transition-all;
 
+    background: linear-gradient(
+      90deg,
+      rgba(162, 233, 206, 1) 0%,
+      rgba(55, 86, 74, 1) 21%,
+      rgba(40, 57, 52, 1) 34%,
+      rgba(40, 57, 52, 1) 73%,
+      rgba(55, 86, 74, 1) 78%,
+      rgba(162, 233, 206, 1) 100%
+    );
+  }
+
+  &:hover {
+    > div {
+      @apply text-primary-black font-bold;
+      background: linear-gradient(
+        90deg,
+        #a2e9ce 0%,
+        #bcd8cd 25%,
+        #caf6e9 50%,
+        #bbefdb 75%,
+        #a2e9ce 100%
+      );
+      animation: changeBackground 0.5s linear;
+    }
+  }
+}
+
+.search-input {
+  clip-path: polygon(50% 0%, 100% 0, 100% 63%, 93% 100%, 0 100%, 0% 60%, 0 0);
+  // clip-path: polygon(
+  //   0% 0%,
+  //   100% 1%,
+  //   100% 64%,
+  //   99% 70%,
+  //   92% 98%,
+  //   90% 100%,
+  //   0% 98%
+  // );
+}
+
+.claim-button {
+  > div {
     position: relative;
 
     &::after {

@@ -38,7 +38,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   };
 
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
@@ -83,9 +83,8 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Token name"
         $pl={7}
         $p={1.5}
-        className="!rounded-3xl"
+        className="!rounded-xl !bg-bg02 placeholder:!text-txt2"
         $mb={0}
-        $backgroundColor="black1"
       ></Input>
       <Icon
         iconSrc="assets/images/claim/slash-icon.svg"

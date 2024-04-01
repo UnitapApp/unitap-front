@@ -18,7 +18,7 @@ const TokenTapPage = () => {
   return (
     <>
       <Header />
-      <SearchInput className="mt-1 w-full md:w-1/3 lg:mt-0" />
+      <SearchInput className="mt-1 w-full md:!w-72 lg:mt-0" />
       <TokensList />
 
       <ClaimTokenModal />
