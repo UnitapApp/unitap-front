@@ -31,6 +31,7 @@ import {
   thunderTestnet,
   baseGoerli,
   mantleTestnet,
+  rootstock,
 } from "viem/chains";
 
 const IDChain = {
@@ -153,6 +154,7 @@ export const supportedChains: Chain[] = [
   { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
+  rootstock,
 ];
 
 /**

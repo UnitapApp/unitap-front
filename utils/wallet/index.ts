@@ -4,7 +4,6 @@ import { Chain, ChainType } from "@/types";
 import { Address, Client, PublicClient } from "viem";
 import { switchChain } from "viem/actions";
 import {
-  Connector,
   useAccount,
   useBalance,
   useConnect,
