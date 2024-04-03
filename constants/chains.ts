@@ -155,6 +155,7 @@ export const supportedChains: Chain[] = [
   { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
+  rootstock,
 ];
 
 /**
