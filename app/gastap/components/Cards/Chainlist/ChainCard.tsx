@@ -10,8 +10,7 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 import { PK, ClaimReceipt, ClaimReceiptState, ChainType, Chain } from "@/types";
 import { formatChainBalance, numberWithCommas } from "@/utils";
 import { getChainIcon } from "@/utils/chain";
-import { useNetworkSwitcher, useWalletAccount } from "@/utils/wallet";
-import { FC, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { FundContext } from "../../Modals/FundGasModal";
 import Icon from "@/components/ui/Icon";
@@ -23,6 +22,7 @@ import GasBalanceRenderer from "./GasBalanceRenderer";
 type ChainCardProps = {
   chain: Chain;
   isHighlighted?: boolean;
+  isThisRound: boolean;
 };
 
 export const AddMetamaskButton = styled(SecondaryButton)`
@@ -42,7 +42,7 @@ export const AddMetamaskButton = styled(SecondaryButton)`
   }
 `;
 
-const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
+const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
   const {
     openClaimModal,
     activeClaimHistory,
@@ -72,9 +72,6 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
 
   const { setChainId, setIsOpen } = useContext(FundContext);
 
-  const { addAndSwitchChain } = useNetworkSwitcher();
-  const { isConnected } = useWalletAccount();
-
   const handleRefillButtonClicked = (chainId: PK) => {
     setChainId(chainId);
     setIsOpen(true);
@@ -85,30 +82,30 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
       <div
         className={`chain-card ${
           isHighlighted
-            ? "before:!inset-[1.5px] p-0 gradient-outline-card mb-20"
+            ? "gradient-outline-card mb-20 p-0 before:!inset-[1.5px]"
             : "mb-4"
-        } rounded-xl flex flex-col items-center justify-center w-full`}
+        } flex w-full flex-col items-center justify-center rounded-xl`}
       >
         <div
-          className={`pt-4 pr-6 pb-4 pl-3 w-full ${
+          className={`w-full pb-4 pl-3 pr-6 pt-4 ${
             isHighlighted ? "bg-g-primary-low" : "bg-gray20"
-          } flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center rounded-t-xl`}
+          } flex flex-col items-center justify-between gap-2 rounded-t-xl sm:flex-row sm:gap-0`}
         >
           <div
             onClick={() => window.open(chain.blockScanAddress, "_blank")}
             className={`cursor-pointer ${
               isOneTimeCollected ? "opacity-60" : ""
-            } items-center flex mb-6 sm:mb-0`}
+            } mb-6 flex items-center sm:mb-0`}
           >
-            <span className="chain-logo-container w-10 h-10 flex justify-center">
+            <span className="chain-logo-container flex h-10 w-10 justify-center">
               <img
-                className="chain-logo w-auto h-[100%]"
+                className="chain-logo h-[100%] w-auto"
                 src={getChainIcon(chain)}
-                alt="polygon logo"
+                alt={chain.chainName}
               />
             </span>
             <p
-              className=" text-white ml-3 text-center sm:text-left"
+              className=" ml-3 text-center text-white sm:text-left"
               data-testid={`chain-name-${chain.pk}`}
             >
               {chain.chainName}
@@ -116,32 +113,33 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             <Image
               width={8}
               height={8}
-              className="arrow-icon mt-1 ml-1.5 w-2 h-2"
+              className="arrow-icon ml-1.5 mt-1 h-2 w-2"
               src="/assets/images/arrow-icon.svg"
               alt="arrow"
             />
-            <p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
+            <p className="ml-2 rounded bg-gray30 px-2 py-1 text-2xs text-gray">
               {chain.chainType}
             </p>
-            <p className="text-gray ml-2 text-2xs px-2 py-1 rounded bg-gray30">
+            <p className="ml-2 rounded bg-gray30 px-2 py-1 text-2xs text-gray">
               {chain.isTestnet ? "Testnet" : "Mainnet"}
             </p>
           </div>
 
           <div
             className={
-              "flex items-center justify-end flex-col sm:flex-row gap-2 sm:gap-0 sm:w-auto"
+              "flex flex-col items-center justify-end gap-2 sm:w-auto sm:flex-row sm:gap-0"
             }
           >
-            <div className="action flex flex-col md:flex-row w-full sm:w-auto items-center sm:items-end">
+            <div className="action flex w-full flex-col items-center sm:w-auto sm:items-end md:flex-row">
               {chain.chainType !== ChainType.SOLANA && (
                 <button
+                  disabled={chain.isDeprecated}
                   onClick={() => handleRefillButtonClicked(chain.pk)}
                   className={`${
                     chain.needsFunding ? "bg-unitap-galaxy" : "bg-gray30"
-                  } relative text-sm font-semibold mr-4 rounded-xl p-[2px]`}
+                  } relative mr-4 rounded-xl p-[2px] text-sm font-semibold disabled:opacity-60`}
                 >
-                  <div className="bg-gray50 h-11 text-secondary-text rounded-xl p-2 flex items-center gap-3">
+                  <div className="flex h-11 items-center gap-3 rounded-xl bg-gray50 p-2 text-secondary-text">
                     <Image
                       src="/assets/images/gas-tap/refuel-logo.svg"
                       width={17}
@@ -158,10 +156,10 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   data-testid={`chain-claimed-${chain.pk}`}
                   $mlAuto
                   onClick={() => openClaimModal(chain.pk)}
-                  className={`text-sm ${Styles.claimedButton} !w-[220px] !py-2 m-auto`}
+                  className={`text-sm ${Styles.claimedButton} m-auto !w-[220px] !py-2`}
                 >
                   <div className="flex-[2] text-left text-xs">
-                    <p className="text-space-green font-semibold">
+                    <p className="font-semibold text-space-green">
                       Gas Claimed!
                     </p>
                     <p
@@ -191,7 +189,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 <ClaimButton
                   data-testid={`chain-refuel-claim-${chain.pk}`}
                   $mlAuto
-                  className="text-sm !h-11 !cursor-not-allowed m-auto bg-g-dark-primary-gradient"
+                  className="m-auto !h-11 !cursor-not-allowed bg-g-dark-primary-gradient text-sm"
                 >
                   <p className="!bg-g-dark-primary-gradient">{`Claim ${formatChainBalance(
                     chain.maxClaimAmount,
@@ -206,8 +204,9 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                 <ClaimButton
                   data-testid={`chain-show-claim-${chain.pk}`}
                   $mlAuto
+                  disabled={chain.isDeprecated}
                   onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm !h-11 m-auto"
+                  className="m-auto !h-11 text-sm"
                 >
                   <p>{`Claim ${formatChainBalance(
                     chain.maxClaimAmount,
@@ -219,7 +218,7 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
                   data-testid={`chain-show-claim-${chain.pk}`}
                   $mlAuto
                   onClick={() => openClaimModal(chain.pk)}
-                  className="text-sm !h-11 before:!bg-gray30 opacity-90 m-auto"
+                  className="m-auto !h-11 text-sm opacity-90 before:!bg-gray30"
                 >
                   <p>Pending ...</p>
                 </ClaimButton>
@@ -230,17 +229,17 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-1 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl justify-between`}
+          } flex w-full flex-col items-center justify-between gap-1 rounded-b-xl md:flex-row md:gap-0`}
         >
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl pl-4 justify-between md:justify-start`}
+            } flex w-full items-center justify-between rounded-b-xl pl-4 md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Currency
             </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
+            <p className="chain-card__info__value ml-1.5 font-mono text-sm text-white">
               {chain.symbol}
             </p>
           </div>
@@ -248,17 +247,17 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
           <div
             className={`${
               isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl pl-4 justify-between md:justify-start`}
+            } flex w-full items-center justify-between rounded-b-xl pl-4 md:justify-start`}
           >
             <p className="chain-card__info__title text-sm text-gray90">
               Fuel Champion{" "}
             </p>
-            <p className="text-sm font-normal text-white ml-1.5">
+            <p className="ml-1.5 text-sm font-normal text-white">
               {!!fuelChampionObj[chain.pk] && `@${fuelChampionObj[chain.pk]}`}
             </p>
           </div>
           <Tooltip
-            className={`text-xs !cursor-default py-3 w-full max-w-[180px] ${
+            className={`w-full max-w-[180px] !cursor-default py-3 text-xs ${
               isHighlighted
                 ? "bg-transparent"
                 : chain.isOneTimeClaim
@@ -273,57 +272,58 @@ const ChainCard = ({ chain, isHighlighted }: ChainCardProps) => {
             }
           >
             {chain.isOneTimeClaim ? (
-              <div className="items-center font-semibold pl-4 text-secondary-text flex rounded-none justify-between md:justify-center">
+              <div className="flex items-center justify-between rounded-none pl-4 font-semibold text-secondary-text md:justify-center">
                 <p className="flex-1">Single-Claim Tap</p>
                 <Icon
-                  className="text-white mx-4"
+                  className="mx-4 text-white"
                   iconSrc="/assets/images/gas-tap/claimable-once.svg"
                 />
               </div>
             ) : (
-              <div className="items-center font-semibold px-4 text-gray100 flex rounded-none justify-between md:justify-center">
+              <div className="flex items-center justify-between rounded-none px-4 font-semibold text-gray100 md:justify-center">
                 <p className="flex-1">Periodic Tap</p>
                 <Icon
-                  className="text-white mx-auto"
+                  className="mx-auto text-white"
                   iconSrc="/assets/images/gas-tap/periodic-tap.svg"
                 />
               </div>
             )}
           </Tooltip>
           <div
+            key={isThisRound && !chain.isDeprecated ? 1 : 0}
             className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-center`}
+              isThisRound ? "bg-transparent" : "bg-gray30"
+            } ${chain.isDeprecated ? "" : "animate-fadeToggle"} flex w-full items-center justify-between rounded-b-xl px-4 transition-opacity duration-300 ease-in-out md:justify-center`}
           >
-            <p className="chain-card__info__title text-sm text-gray90">
-              This Round Claims
+            <p className="text-sm text-gray90">
+              {isThisRound && !chain.isDeprecated
+                ? "This Round Claims"
+                : "Total Claims"}
             </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
-              {numberWithCommas(chain.totalClaimsThisRound)}
+            <p className="ml-1.5 font-mono text-sm text-white">
+              {isThisRound && !chain.isDeprecated
+                ? numberWithCommas(chain.totalClaimsThisRound)
+                : numberWithCommas(chain.totalClaims)}
             </p>
           </div>
-          <div
-            className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
+
+          <Tooltip
+            text={`${chain.remainingClaimNumber} amount of claims are left`}
+            withoutImage
           >
-            <p className="chain-card__info__title text-sm text-gray90">
-              Total Claims
-            </p>
-            <p className="chain-card__info__value font-mono text-sm text-white ml-1.5">
-              {numberWithCommas(chain.totalClaims)}
-            </p>
-          </div>
-          <div
-            className={`${
-              isHighlighted ? "bg-transparent" : "bg-gray30"
-            } w-full items-center flex rounded-b-xl px-4 justify-between md:justify-end`}
-          >
-            <p className="chain-card__info__title text-sm text-gray90">
-              Balance:
-            </p>
-            <GasBalanceRenderer balance={chain.currentFuelLevel} />
-          </div>
+            <div
+              className={`${
+                isHighlighted ? "bg-transparent" : "bg-gray30"
+              } flex w-full items-center justify-between rounded-b-xl px-4 md:justify-end`}
+            >
+              <p
+                className={`text-sm ${chain.currentFuelLevel > 4 ? "text-gray90" : chain.currentFuelLevel >= 2 ? "text-[#EBD14A]" : "text-[#F16E35]"} `}
+              >
+                Balance:
+              </p>
+              <GasBalanceRenderer balance={chain.currentFuelLevel} />
+            </div>
+          </Tooltip>
         </div>
       </div>
     </div>

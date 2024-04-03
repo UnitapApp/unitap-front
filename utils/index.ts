@@ -40,7 +40,7 @@ export function formatChainId(chainId: string) {
 }
 
 export * from "./time";
-
+export * from "./errorHandler"
 export * from "./numbers";
 
 export const uppercaseFirstLetter = (str: string): string => {

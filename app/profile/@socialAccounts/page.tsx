@@ -1,45 +1,29 @@
-"use client";
-
-import { UserConnection } from "@/types";
-import { FC, useState } from "react";
-import SocialAccount from "../components/socialAccount";
-import { useFastRefresh } from "@/utils/hooks/refresh";
+import { cookies } from "next/headers";
 import { getAllConnections } from "@/utils/serverApis";
-import { useUserProfileContext } from "@/context/userProfile";
-import { SocialAccountContext } from "@/context/socialAccountContext";
+import { UserConnection } from "@/types";
+import { redirect } from "next/navigation";
+import { FC, PropsWithChildren } from "react";
+import SocialAccountContent from "./content";
 
-const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
-  initialConnections,
-}) => {
-  const [connections, setConnections] = useState(initialConnections ?? []);
+const SocialAccountsLayout: FC<PropsWithChildren> = async () => {
+  const cookiesStore = cookies();
 
-  const { userToken } = useUserProfileContext();
+  let connections: UserConnection;
 
-  useFastRefresh(() => {
-    if (!userToken) return;
-
-    getAllConnections(userToken).then((res) => {
-      setConnections(res);
-    });
-  }, [userToken]);
+  try {
+    connections = await getAllConnections(cookiesStore.get("userToken")?.value);
+    console.log(cookiesStore.get("userToken"));
+  } catch (e) {
+    redirect("/");
+  }
 
   return (
-    <SocialAccountContext.Provider
-      value={{
-        connections,
-        addConnection: (key: string, data: any) =>
-          setConnections({ ...connections, [key]: data }),
-      }}
-    >
-      <div className="mt-10 grid grid-cols-2 gap-4">
-        <SocialAccount
-          title={"Bright ID"}
-          icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
-          isConnected={!!connections["BrightID"]}
-        />
-      </div>
-    </SocialAccountContext.Provider>
+    <div className="mt-5 rounded-xl bg-gray20 p-5">
+      <p>Social Accounts </p>
+
+      <SocialAccountContent initialConnections={connections} />
+    </div>
   );
 };
 
-export default SocialAccountsPage;
+export default SocialAccountsLayout;

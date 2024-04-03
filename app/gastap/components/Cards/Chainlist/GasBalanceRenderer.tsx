@@ -1,38 +1,41 @@
 import { FC } from "react";
 
+import "@/styles/gastap.scss";
+
 const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
-  if (balance > 1) {
+  if (balance > 6) {
     return (
-      <div className="flex items-center ml-3 gap-2">
+      <div className="ml-3 flex items-center gap-[2px]">
         {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-space-green" key={key} />
+          <span className="gas-level-fine h-4 w-1" key={key} />
         ))}
-        {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+        {Array.from(new Array(10 - balance)).map((_, key) => (
+          <span className="h-4 w-1 bg-[#13131A]" key={key} />
         ))}
       </div>
     );
   }
 
-  if (balance == 1)
+  if (balance >= 4)
     return (
-      <div className="flex items-center ml-3 gap-2">
+      <div className="ml-3 flex items-center gap-[2px]">
         {Array.from(new Array(balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-yellow-600" key={key} />
+          <span className="gas-level-low h-4 w-1" key={key} />
         ))}
-        {Array.from(new Array(5 - balance)).map((_, key) => (
-          <span className="w-3 h-1 rounded-[2px] bg-gray60" key={key} />
+        {Array.from(new Array(10 - balance)).map((_, key) => (
+          <span className="h-4 w-1 bg-[#13131A]" key={key} />
         ))}
       </div>
     );
 
   return (
-    <div className="flex items-center ml-3 gap-2">
-      {Array.from(new Array(5)).map((_, key) => (
-        <span
-          className="w-3 h-[5px] rounded-[8px] border-[1px] bg-gray60 border-error"
-          key={key}
-        />
+    <div className="ml-3 flex items-center gap-[2px]">
+      {Array.from(new Array(balance)).map((_, key) => (
+        <span className="gas-level-empty h-4 w-1" key={key} />
+      ))}
+
+      {Array.from(new Array(10 - balance)).map((_, key) => (
+        <span className="h-4 w-1 bg-[#13131A]" key={key} />
       ))}
     </div>
   );

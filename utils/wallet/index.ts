@@ -130,42 +130,8 @@ export const useWalletConnection = () => {
 
   const { disconnect, isPending: isDisconnectLoading } = useDisconnect();
 
-  const onConnect = async (args: {
-    connector: Connector;
-    chainId?: number;
-  }) => {
-    if (
-      (args?.connector?.id === "injected" ||
-        args?.connector?.id === "metamask") &&
-      (window as any).ethereum.selectedAddress
-    ) {
-      await (window as any).ethereum.request({
-        method: "eth_requestAccounts",
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
-
-      await (window as any).ethereum.request({
-        method: "wallet_requestPermissions",
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
-    }
-
-    connect({
-      connector: args?.connector,
-      chainId: args?.chainId,
-    });
-  };
-
   return {
-    connect: onConnect,
+    connect,
     isLoading: isPending,
     connectors,
     isSuccess,
@@ -210,7 +176,7 @@ export const useEstimateContractGas = ({
 
 export const callProvider = (
   provider: PublicClient,
-  { from, to, value, data }: EstimateGasProps
+  { from, to, value, data }: EstimateGasProps,
 ) => {
   return provider.call({
     account: from as `0x{string}`,
