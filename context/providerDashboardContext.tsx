@@ -441,15 +441,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -540,15 +540,15 @@ const ProviderDashboard: FC<
       errorObject.endDateStatusMessage = errorMessages.required;
     }
 
-    // if (
-    //   endTimeStamp &&
-    //   startTimeStamp &&
-    //   (endTimeStamp <= startTimeStamp ||
-    //     endTimeStamp - startTimeStamp < 60 * 60)
-    // ) {
-    //   errorObject.endDateStatus = false;
-    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-    // }
+    if (
+      endTimeStamp &&
+      startTimeStamp &&
+      (endTimeStamp <= startTimeStamp ||
+        endTimeStamp - startTimeStamp < 60 * 60)
+    ) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    }
 
     if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
       errorObject.maximumLimitationStatus = false;
@@ -758,7 +758,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {

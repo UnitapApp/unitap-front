@@ -451,15 +451,15 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, isValidContractAddress],
@@ -550,15 +550,15 @@ const TokenTapProvider: FC<
       errorObject.endDateStatusMessage = errorMessages.required;
     }
 
-    // if (
-    //   endTimeStamp &&
-    //   startTimeStamp &&
-    //   (endTimeStamp <= startTimeStamp ||
-    //     endTimeStamp - startTimeStamp < 60 * 60)
-    // ) {
-    //   errorObject.endDateStatus = false;
-    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-    // }
+    if (
+      endTimeStamp &&
+      startTimeStamp &&
+      (endTimeStamp <= startTimeStamp ||
+        endTimeStamp - startTimeStamp < 60 * 60)
+    ) {
+      errorObject.endDateStatus = false;
+      errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    }
 
     return errorObject;
   };
@@ -721,7 +721,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {
