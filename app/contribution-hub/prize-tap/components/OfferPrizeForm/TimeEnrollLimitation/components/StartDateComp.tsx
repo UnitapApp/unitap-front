@@ -23,7 +23,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
       setStartDate(data.startTimeStamp * 1000);
     }
 
-    setMinDate(Date.now());
+    setMinDate(Date.now() - 10 * 60 * 1000);
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
@@ -43,8 +43,8 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     <div className="relative w-full">
       <div
         className={`flex text-xs bg-gray40 border ${showErrors && showErrors.startDateStatus == false
-            ? "border-error"
-            : "border-gray50"
+          ? "border-error"
+          : "border-gray50"
           } rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
       >
         <p className="text-gray100 text-xs w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
