@@ -308,7 +308,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
           </div>
 
           <Tooltip
-            text={`${chain.remainingClaimNumber} amount of claims are left`}
+            text={`${chain.remainingClaimNumber} claims are left`}
             withoutImage
           >
             <div
