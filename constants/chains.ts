@@ -31,6 +31,7 @@ import {
   thunderTestnet,
   baseGoerli,
   mantleTestnet,
+  rootstock,
 } from "viem/chains";
 
 const IDChain = {
@@ -99,6 +100,7 @@ export const supportedChains: Chain[] = [
   mantleTestnet,
   { ...thunderTestnet, name: "5ireChain Thunder" },
   { ...polygon, name: "Polygon Mainnet" },
+  { ...rootstock, name: "Rootstock Mainnet" },
   {
     ...fantom,
     name: "Fantom Opera",
