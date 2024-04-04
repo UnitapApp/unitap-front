@@ -23,6 +23,7 @@ const QuizCard = () => {
 	const maxUserEntry = 1400
 	const title = 'Optimism Quiz Tap'
 	const description = 'Get ready for a fun ride into the future'
+
 	return (
 		<div className="quiz_card_wrap relative bg-quiz-header-bg rounded-2xl flex items-center justify-center border-2 border-gray60 border-l-gray10">
 			<div className="left-side quiz_icon flex items-center">
@@ -211,32 +212,32 @@ const CardTimer = ({
 
 	return (
 		<div className="flex items-center justify-between gap-4 rounded-xl py-2 md:px-3">
-			<div className="prize-card__timer-item flex flex-col items-center justify-between text-2xs">
-				<p className="prize-card__timer-item-value font-semibold text-white">
+			<div className="flex flex-col items-center justify-between text-2xs">
+				<p className="font-semibold text-white">
 					{days}
 				</p>
-				<p className="prize-card__timer-item-label text-gray90">d</p>
+				<p className="text-gray90">d</p>
 			</div>
 			<p className="text-sm text-white">:</p>
-			<div className="prize-card__timer-item flex flex-col items-center justify-between text-2xs">
-				<p className="prize-card__timer-item-value font-semibold text-white">
+			<div className=" flex flex-col items-center justify-between text-2xs">
+				<p className="font-semibold text-white">
 					{hours}
 				</p>
-				<p className="prize-card__timer-item-label text-gray90">h</p>
+				<p className=" text-gray90">h</p>
 			</div>
 			<p className="text-sm text-white">:</p>
-			<div className="prize-card__timer-item flex flex-col items-center justify-between text-2xs">
-				<p className="prize-card__timer-item-value font-semibold text-white">
+			<div className=" flex flex-col items-center justify-between text-2xs">
+				<p className="font-semibold text-white">
 					{minutes}
 				</p>
-				<p className="prize-card__timer-item-label text-gray90">m</p>
+				<p className="text-gray90">m</p>
 			</div>
 			<p className="text-sm text-white">:</p>
-			<div className="prize-card__timer-item flex flex-col items-center justify-between text-2xs">
-				<p className="prize-card__timer-item-value font-semibold text-white">
+			<div className=" flex flex-col items-center justify-between text-2xs">
+				<p className="font-semibold text-white">
 					{seconds}
 				</p>
-				<p className="prize-card__timer-item-label text-gray90">s</p>
+				<p className="text-gray90">s</p>
 			</div>
 		</div>
 	);
