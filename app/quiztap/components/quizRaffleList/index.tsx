@@ -71,11 +71,12 @@ const QuizCard = () => {
 				<div className="footer flex w-full justify-between items-center mt-3 gap-4 ">
 					<div className="counter flex items-center justify-between bg-gray10 border-2 rounded-xl border-gray60 w-full max-w-[520px] pl-16 pr-12">
 						<p className="font-medium text-2xs leading-[13.62px] text-gray100">{peopleEnrolled + '/' + maxUserEntry} people enrolled</p>
-						<CardTimer startTime={'19000'} FinishTime={'19000000000'} />
+						<CardTimer startTime={'0'} FinishTime={'0'} />
 					</div>
 					<ClaimAndEnrollButton
 						height="48px"
 						$fontSize="14px"
+						$width="252px"
 						// disabled={!start}
 						className="!w-full min-w-[552px] md:!w-[352px]"
 					>
