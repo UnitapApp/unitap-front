@@ -14,7 +14,7 @@ enum RoutePath {
   PROVIDER_TOKENTAP_CREATE = "/contribution-hub/token-tap/create",
   PROVIDER_TOKENTAP_DETAILS = "/contribution-hub/token-tap/details",
   PROVIDER_TOKENTAP_VERIFICATION = "/contribution-hub/token-tap/verification",
-
+  QuizTap = "/quiztap",
   PROVIDER_PRIZETAP = "/contribution-hub/prize-tap",
   PROVIDER_PRIZETAP_CREATE = "/contribution-hub/prize-tap/create",
   PROVIDER_PRIZETAP_DETAILS = "/contribution-hub/prize-tap/details",
