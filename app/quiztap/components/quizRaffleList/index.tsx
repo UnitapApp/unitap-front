@@ -42,7 +42,7 @@ const QuizCard = () => {
 					</svg>
 				</div>
 			</div>
-			<div className="right-side w-full p-5 pl-10 rounded-2xl">
+			<div className="right-side w-full p-5  rounded-2xl">
 				<div className="top flex items-start justify-between">
 					<div className="title-wrap flex items-center justify-center gap-1">
 						<div className="title text-white text-base font-semibold leading-5">{title}</div>
