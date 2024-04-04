@@ -2,7 +2,10 @@
 
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
+import Tooltip from "@/components/ui/Tooltip";
 import { useEffect, useMemo, useState } from "react";
+import { getAssetUrl, replacePlaceholders, shortenAddress } from "@/utils";
+import Image from "next/image";
 
 const QuizRaffleList = () => {
 	return (
@@ -11,16 +14,17 @@ const QuizRaffleList = () => {
 }
 
 const QuizCard = () => {
+	const [showAllPermissions, setShowAllPermissions] = useState(false);
 	const sponsors: any = ['test', 'test', 'test'];
 	const prize_amount = 1200.00;
 	const prize_symbol = 'USDT';
-	const requirements = ['Aura Authentication', 'Connected Metamask', 'Owner', 'Aura Authentication', 'Connected Metamask']
+	const constraints = ['Aura Authentication', 'Connected Metamask', 'Owner', 'Aura Authentication', 'Connected Metamask']
 	const peopleEnrolled = 1398
 	const maxUserEntry = 1400
 	const title = 'Optimism Quiz Tap'
 	const description = 'Get ready for a fun ride into the future'
 	return (
-		<div className="quiz_card_wrap relative bg-quiz-header-bg rounded-2xl flex items-center h-[205px] justify-center border-2 border-gray60 border-l-gray10">
+		<div className="quiz_card_wrap relative bg-quiz-header-bg rounded-2xl flex items-center justify-center border-2 border-gray60 border-l-gray10">
 			<div className="left-side quiz_icon flex items-center">
 				<div className="circle">
 					<svg width="135" height="133" viewBox="0 0 135 133" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,12 +46,15 @@ const QuizCard = () => {
 					</svg>
 				</div>
 			</div>
-			<div className="right-side w-full p-5  rounded-2xl">
-				<div className="top flex items-start justify-between">
-					<div className="title-wrap flex items-center justify-center gap-1">
-						<div className="title text-white text-base font-semibold leading-5">{title}</div>
-						<div className="h-1 w-1 bg-[#D9D9D9] rounded-full"></div>
-						<div className="text-gray100 text-sm font-normal leading-5">{description}</div>
+			<div className="right-side w-full p-5 rounded-2xl">
+				<div className="top flex flex-col lg:flex-row gap-3 lg:gap-0 items-start justify-between mb-3 lg:mb-0">
+					<div className="title-wrap flex flex-col md:flex-row md:items-center justify-center gap-1">
+						<div className="title flex items-center gap-1 text-white text-base font-semibold leading-5">
+							{title}
+							<div className="h-1 w-1 bg-[#D9D9D9] rounded-full"></div>
+						</div>
+						<div className="text-gray100 text-sm font-normal leading-5">{description}
+						</div>
 					</div>
 					{sponsors.length ?
 						<div className="sponsors flex items-center justify-between bg-gray10 rounded-xl h-[38px] gap-5 px-5">
@@ -60,17 +67,64 @@ const QuizCard = () => {
 					<p className="text-xs text-gray100 font-normal leading-[22px]">Prize</p>
 					<p className="text-sm bg-prize-text-gradient bg-clip-text text-transparent font-semibold leading-[20px]">{prize_amount + ' ' + prize_symbol} </p>
 				</div>
-				<div className="requirements flex mt-4 gap-2">
-					{requirements.length ? requirements.map((requirement, index) => <div key={index} className="flex items-center justify-center text-2xs text-gray100 leading-[14px] rounded-md bg-gray50 border border-gray70 h-[22px] px-3">{requirement}</div>) : <></>}
-					<div className="show_more_btn cursor-pointer flex items-center text-2xs text-gray100 leading-[14px] font-medium h-[22px] w-[95px] bg-gray70 border border-gray80 rounded-md justify-center gap-2">Show More <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M11.2802 5.96667L6.93355 10.3133C6.42021 10.8267 5.58022 10.8267 5.06688 10.3133L0.720215 5.96667" stroke="#B5B5C6" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
-					</div>
+				<div className="requirements flex mt-4 gap-2 h-[22px]">
+					{(showAllPermissions
+						? constraints
+						: constraints
+						// .filter((permission) => permission.type === "VER")
+						// .slice(0, 6)
+					).map((permission, key) => (
+						<Tooltip
+							// onClick={openEnrollModal.bind(null, raffle, "Verify")}
+							onClick={() => { console.log('') }}
+							className={
+								"rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
+							}
+							key={key}
+							// text={replacePlaceholders(
+							// 	(permission.isReversed
+							// 		? permission.negativeDescription
+							// 		: permission.description)!,
+							// 	params[permission.name],
+							// )}
+							text={''}
+						>
+							<div className="flex items-center gap-3">
+								{/* {permission.isReversed && "Not "} */}
+								{/* {permission.title} */}
+							</div>
+						</Tooltip>
+					))}
+
+					{constraints.length > 6 && (
+						<button
+							onClick={setShowAllPermissions.bind(
+								null,
+								!showAllPermissions,
+							)}
+							className="z-10 flex items-center rounded-lg border border-gray70 bg-gray60 px-3 py-2 transition-colors"
+						>
+							<span>
+								{showAllPermissions ? "Show less" : "Show more"}
+							</span>
+							<Image
+								width={12}
+								height={7}
+								alt="angle down"
+								src="/assets/images/token-tap/angle-down.svg"
+								className={`ml-2 ${showAllPermissions ? "rotate-180" : ""
+									} transition-transform`}
+							/>
+						</button>
+					)}
+
 				</div>
 
-				<div className="footer flex w-full justify-between items-center mt-3 gap-4 ">
-					<div className="counter flex items-center justify-between bg-gray10 border-2 rounded-xl border-gray60 w-full max-w-[520px] pl-16 pr-12">
-						<p className="font-medium text-2xs leading-[13.62px] text-gray100">{peopleEnrolled + '/' + maxUserEntry} people enrolled</p>
+				<div className="footer flex flex-col lg:flex-row w-full justify-between lg:items-center mt-3 gap-4 ">
+					<div className="counter flex flex-col md:flex-row px-4 py-2 md:items-center justify-between bg-gray10 border-2 rounded-xl border-gray60 w-full max-w-[520px] md:p-0 md:pl-16 md:pr-12">
+						<p className="font-medium text-2xs leading-[13.62px] text-gray100">
+							{peopleEnrolled + '/' + maxUserEntry} people enrolled
+						</p>
 						<CardTimer startTime={'0'} FinishTime={'0'} />
 					</div>
 					<ClaimAndEnrollButton
