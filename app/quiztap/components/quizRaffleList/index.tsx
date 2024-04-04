@@ -58,7 +58,7 @@ const QuizCard = () => {
 				</div>
 				<div className="prize_amount  flex gap-[10px] bg-gray50 border border-gray70 h-[30px] rounded-md max-w-[149px] justify-center items-center">
 					<p className="text-xs text-gray100 font-normal leading-[22px]">Prize</p>
-					<p className="text-sm">{prize_amount + ' ' + prize_symbol} </p>
+					<p className="text-sm bg-prize-text-gradient bg-clip-text text-transparent font-semibold leading-[20px]">{prize_amount + ' ' + prize_symbol} </p>
 				</div>
 				<div className="requirements flex mt-4 gap-2">
 					{requirements.length ? requirements.map((requirement, index) => <div key={index} className="flex items-center justify-center text-2xs text-gray100 leading-[14px] rounded-md bg-gray50 border border-gray70 h-[22px] px-3">{requirement}</div>) : <></>}
