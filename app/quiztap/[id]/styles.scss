@@ -1,0 +1,32 @@
+.quiztap-header {
+  background: url("/assets/images/quizTap/header-bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.quiz-sidebar {
+  background: linear-gradient(
+    89.71deg,
+    rgba(42, 56, 55, 0.2) 9.89%,
+    rgba(63, 43, 68, 0.2) 44.04%,
+    rgba(50, 40, 55, 0.2) 90.84%
+  );
+}
+
+.quiz-main-content {
+  background: url("/assets/images/quizTap/main-bg.png");
+  background-color: #10101b;
+  background-size: contain;
+}
+
+.quiz-main-wrapper {
+  background: radial-gradient(
+    174.04% 3217.67% at 17.05% 37.02%,
+    rgba(42, 56, 55, 0.2) 0%,
+    rgba(63, 43, 68, 0.2) 42.19%,
+    rgba(50, 40, 55, 0.2) 100%
+  );
+  width: 800px;
+  padding: 4px;
+  border-radius: 20px;
+}

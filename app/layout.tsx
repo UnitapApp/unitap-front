@@ -21,6 +21,7 @@ import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { Providers } from "./providers";
 import AxiosApiManager from "@/components/axios-api-manager";
+import EventContextProvider from "@/context/eventProvider";
 
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -47,14 +48,16 @@ export default async function RootLayout({
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
-              <div id="app">
-                <Header />
-                <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
-                  {children}
-                </main>
+              <EventContextProvider>
+                <div id="app">
+                  <Header />
+                  <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
+                    {children}
+                  </main>
 
-                <Footer />
-              </div>
+                  <Footer />
+                </div>
+              </EventContextProvider>
 
               <ConnectBrightIdModal />
               <BrightConnectionModal />

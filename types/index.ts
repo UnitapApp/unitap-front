@@ -9,3 +9,4 @@ export * from "./transaction";
 export * from "./brightId";
 export * from "./provider-dashboard";
 export * from "./lens";
+export * from "./quiztap";

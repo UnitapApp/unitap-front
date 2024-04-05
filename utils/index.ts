@@ -1,7 +1,11 @@
 import { Chain } from "@/types";
 
 export const EmptyCallback = () => {};
-export const NullCallback = () => null;
+export const NullCallback = () => {
+  console.warn("[!] Null callback has been called! ignoring");
+
+  return null;
+};
 
 export const shortenAddress = (address: string | null | undefined) => {
   if (!address) return "";
@@ -40,7 +44,7 @@ export function formatChainId(chainId: string) {
 }
 
 export * from "./time";
-export * from "./errorHandler"
+export * from "./errorHandler";
 export * from "./numbers";
 
 export const uppercaseFirstLetter = (str: string): string => {
