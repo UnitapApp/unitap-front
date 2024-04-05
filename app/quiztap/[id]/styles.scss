@@ -26,7 +26,14 @@
     rgba(63, 43, 68, 0.2) 42.19%,
     rgba(50, 40, 55, 0.2) 100%
   );
-  width: 800px;
   padding: 4px;
   border-radius: 20px;
+}
+.progress {
+  height: 36px;
+  width: 36px;
+}
+.progress svg {
+  height: 100%;
+  width: 100%;
 }

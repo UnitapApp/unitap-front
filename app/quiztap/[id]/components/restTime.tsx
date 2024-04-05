@@ -23,7 +23,7 @@ const RestTime: FC<{}> = () => {
       </p>
 
       <p className="mt-5 text-gray100">
-        <strong className="text-white underline">21</strong>
+        <strong className="text-white underline">21</strong>{" "}
         <span>people lost the game in the previous round</span>
       </p>
       <p className="mt-3 text-sm text-gray90">
