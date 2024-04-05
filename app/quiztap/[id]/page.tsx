@@ -1,17 +1,26 @@
+"use client";
+
 import Icon from "@/components/ui/Icon";
 import Timer from "./components/timer";
 import QuestionsList from "./components/questionsList";
 import WaitingIdle from "./components/waitingIdle";
+import { useQuizContext } from "@/context/quizProvider";
+import QuestionPrompt from "./components/questionPrompt";
 
 const QuizItemPage = () => {
+  const { stateIndex, hint } = useQuizContext();
+
   return (
-    <div className="quiz-main-wrapper ">
+    <div className="quiz-main-wrapper relative">
       <main className="quiz-main-content h-full w-full flex-1 rounded-2xl p-3">
-        <div className="flex items-center justify-between px-5">
+        <div className="mt-5 flex items-center justify-between px-5">
           <p className="text-[#997EA4]">Quiz</p>
           <Timer />
 
-          <button className="flex items-center rounded-xl border-2 border-gray70 bg-gray00 px-2 text-gray100">
+          <button
+            disabled={hint <= 0 || stateIndex <= 0}
+            className="flex items-center rounded-xl border-2 border-gray70 bg-gray00 px-2 text-gray100 disabled:opacity-60"
+          >
             <Icon
               alt="hint"
               className="py-1"
@@ -26,10 +35,20 @@ const QuizItemPage = () => {
 
         <QuestionsList />
 
-        <WaitingIdle />
+        <RenderQuizItemBody />
       </main>
     </div>
   );
+};
+
+const RenderQuizItemBody = () => {
+  const { stateIndex } = useQuizContext();
+
+  return <QuestionPrompt />;
+
+  if (stateIndex <= 0) {
+    return <WaitingIdle />;
+  }
 };
 
 export default QuizItemPage;

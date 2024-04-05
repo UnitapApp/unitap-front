@@ -19,7 +19,7 @@ export const fetchQuizApi = async (id: number): Promise<Competition> => {
       chainType: "EVM",
     },
     createdAt: "2024-04-05T09:05:52.331Z",
-    startAt: "2024-04-05T09:05:52.331Z",
+    startAt: "2024-04-07T09:17:52.331Z",
     isActive: true,
     prizeAmount: 200000,
     restTimeSeconds: 10,

@@ -6,7 +6,9 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -20,6 +22,8 @@ export type QuizContextProps = {
   question: QuestionWithChoices | null;
   scoresHistory: number[];
   answerQuestion: (answerIndex: number) => void;
+  timer: number;
+  stateIndex: number;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -29,6 +33,8 @@ export const QuizContext = createContext<QuizContextProps>({
   remainingPeople: -1,
   scoresHistory: [],
   answerQuestion: NullCallback,
+  timer: 0,
+  stateIndex: -1,
 });
 
 export const useQuizContext = () => useContext(QuizContext);
@@ -42,10 +48,52 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionWithChoices | null>(null);
-
+  const [activeQuestionChoice, setActiveQuestionChoice] = useState<
+    number | null
+  >(null);
   const [timer, setTimer] = useState(0);
+  const [stateIndex, setStateIndex] = useState(-1);
 
   const answerQuestion = (choiceIndex: number) => {};
+
+  const askForHint = () => {};
+
+  const handleNextCallback = useCallback(() => {
+    console.log("Handle Next Callback Has been Called");
+    const startAt = new Date(quiz.startAt);
+    const now = new Date();
+
+    if (startAt > now) {
+      setStateIndex(-1);
+      setTimer(startAt.getTime() - now.getTime());
+    } else {
+      const timePassed = now.getTime() - startAt.getTime();
+      setStateIndex(Math.floor(timePassed / 10000));
+    }
+  }, [quiz]);
+
+  useEffect(() => {
+    if (timer <= 0) {
+      handleNextCallback();
+      return;
+    }
+
+    const timerInterval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 0) {
+          clearInterval(timerInterval);
+
+          return 0;
+        }
+
+        return prev - 10;
+      });
+    }, 10);
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [handleNextCallback, timer]);
 
   return (
     <QuizContext.Provider
@@ -57,6 +105,8 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
         scoresHistory,
         quiz,
         answerQuestion,
+        timer,
+        stateIndex,
       }}
     >
       {children}
