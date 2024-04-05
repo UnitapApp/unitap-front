@@ -24,8 +24,6 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
     });
   }, [userToken]);
 
-  console.log(connections);
-
   return (
     <SocialAccountContext.Provider
       value={{
