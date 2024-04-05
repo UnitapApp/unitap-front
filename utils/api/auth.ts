@@ -148,5 +148,5 @@ export const connectGitCoinPassport = async (address: string) => {
     },
   );
 
-  return response;
+  return response.data;
 };

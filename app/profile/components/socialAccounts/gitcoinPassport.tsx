@@ -1,6 +1,7 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
+import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { parseServerError } from "@/utils";
 import { connectGitCoinPassport } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
@@ -16,14 +17,17 @@ export const GitCoinPassportAccount: FC<{
 
   const { address } = useWalletAccount();
 
+  const { addConnection } = useSocialACcountContext();
+
   const onConnect = () => {
     if (!address) return;
 
     setLoading(true);
+    setError("");
 
     connectGitCoinPassport(address)
       .then((res) => {
-        console.log(res);
+        addConnection("GitcoinPassport", res);
       })
       .catch((err: any) => {
         setError(parseServerError(err.response.data));

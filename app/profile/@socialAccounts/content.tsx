@@ -24,6 +24,8 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
     });
   }, [userToken]);
 
+  console.log(connections);
+
   return (
     <SocialAccountContext.Provider
       value={{
@@ -39,10 +41,9 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
           isConnected={!!connections["BrightID"]}
         />
         <GitCoinPassportAccount
-        
           title={"Gitcoin Passport"}
           icon={"/assets/images/up-profile/gitcoin-passport.svg"}
-          isConnected={!!connections["GitCoinPassport"]}
+          isConnected={!!connections["GitcoinPassport"]}
         />
       </div>
     </SocialAccountContext.Provider>
