@@ -35,14 +35,6 @@ const Modal = ({
 }: props) => {
   const { getError } = React.useContext(ErrorsContext);
 
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-  }, [isOpen]);
-
   return (
     <>
       {isOpen && (
