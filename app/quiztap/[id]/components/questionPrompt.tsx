@@ -1,9 +1,29 @@
 import Icon from "@/components/ui/Icon";
 import { useQuizContext } from "@/context/quizProvider";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 const QuestionPrompt: FC = () => {
-  const { stateIndex } = useQuizContext();
+  const { stateIndex, answerQuestion } = useQuizContext();
+
+  useEffect(() => {
+    const onKeyPressed = (e: KeyboardEvent) => {
+      if (e.key === "A") {
+        answerQuestion(1);
+      } else if (e.key === "B") {
+        answerQuestion(2);
+      } else if (e.key === "C") {
+        answerQuestion(3);
+      } else if (e.key === "D") {
+        answerQuestion(4);
+      }
+    };
+
+    document.addEventListener("keypress", onKeyPressed);
+
+    return () => {
+      document.removeEventListener("keypress", onKeyPressed);
+    };
+  }, [answerQuestion]);
 
   return (
     <div className="mt-10">
@@ -32,8 +52,13 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
   index,
   title,
 }) => {
+  const { answerQuestion, activeQuestionChoiceIndex } = useQuizContext();
+
   return (
-    <button className="relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white">
+    <button
+      onClick={() => answerQuestion(index)}
+      className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${activeQuestionChoiceIndex === index ? "!border-gray100 bg-gray60" : ""}`}
+    >
       <span>{title}</span>
 
       <div className="absolute left-4 top-1/2 flex -translate-y-1/2 items-center gap-2 text-gray70">

@@ -1,3 +1,4 @@
+import { useQuizContext } from "@/context/quizProvider";
 import { FC } from "react";
 
 const QuestionsList = () => {
@@ -27,12 +28,14 @@ const QuestionsList = () => {
 };
 
 const Separator = () => {
+  const {} = useQuizContext();
+
   return <div className="mx-2 my-auto h-[2px] w-7 rounded-lg bg-gray100"></div>;
 };
 
 const QuestionItem: FC<{ index: number }> = ({ index }) => {
   return (
-    <div className="grid h-9 w-9 place-content-center rounded-lg border-2 border-dark-space-green bg-gray20 text-gray100">
+    <div className="active-question relative grid h-9 w-9 place-content-center rounded-lg border-2 border-dark-space-green bg-gray20 text-gray100">
       {index}
     </div>
   );

@@ -16,7 +16,7 @@ const QuizLayout: FC<PropsWithChildren & { params: { id: string } }> = async ({
     <QuizContextProvider quiz={quiz}>
       <Header />
 
-      <div className="mt-5 flex flex-col gap-2 md:flex-row">
+      <div className="mt-5 flex flex-col gap-4 md:flex-row">
         {children}
 
         <QuizTapSidebar />

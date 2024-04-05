@@ -24,6 +24,9 @@ export type QuizContextProps = {
   answerQuestion: (answerIndex: number) => void;
   timer: number;
   stateIndex: number;
+  activeQuestionChoiceIndex: number;
+  isRestTime: boolean;
+  setIsRestTime: (value: boolean) => void;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -35,7 +38,13 @@ export const QuizContext = createContext<QuizContextProps>({
   answerQuestion: NullCallback,
   timer: 0,
   stateIndex: -1,
+  activeQuestionChoiceIndex: -1,
+  isRestTime: false,
+  setIsRestTime: NullCallback,
 });
+
+const statePeriod = 10000;
+const restPeriod = 5000;
 
 export const useQuizContext = () => useContext(QuizContext);
 
@@ -48,13 +57,14 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionWithChoices | null>(null);
-  const [activeQuestionChoice, setActiveQuestionChoice] = useState<
-    number | null
-  >(null);
+  const [activeQuestionChoice, setActiveQuestionChoice] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [stateIndex, setStateIndex] = useState(-1);
+  const [isRestTime, setIsRestTime] = useState(false);
 
-  const answerQuestion = (choiceIndex: number) => {};
+  const answerQuestion = (choiceIndex: number) => {
+    setActiveQuestionChoice(choiceIndex);
+  };
 
   const askForHint = () => {};
 
@@ -66,9 +76,21 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     if (startAt > now) {
       setStateIndex(-1);
       setTimer(startAt.getTime() - now.getTime());
+      return;
+    }
+
+    const timePassed = now.getTime() - startAt.getTime();
+
+    const timeInCycle = timePassed % (restPeriod + statePeriod);
+
+    setStateIndex(Math.floor(timePassed / (restPeriod + statePeriod)));
+
+    if (timeInCycle >= 10000) {
+      setTimer(15000 - timeInCycle);
+      setIsRestTime(true);
     } else {
-      const timePassed = now.getTime() - startAt.getTime();
-      setStateIndex(Math.floor(timePassed / 10000));
+      setTimer(10000 - timeInCycle);
+      setIsRestTime(false);
     }
   }, [quiz]);
 
@@ -78,7 +100,7 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
       return;
     }
 
-    const timerInterval = setInterval(() => {
+    const timerInterval = setTimeout(() => {
       setTimer((prev) => {
         if (prev <= 0) {
           clearInterval(timerInterval);
@@ -91,7 +113,7 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     }, 10);
 
     return () => {
-      clearInterval(timerInterval);
+      clearTimeout(timerInterval);
     };
   }, [handleNextCallback, timer]);
 
@@ -107,6 +129,9 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
         answerQuestion,
         timer,
         stateIndex,
+        activeQuestionChoiceIndex: activeQuestionChoice,
+        isRestTime,
+        setIsRestTime,
       }}
     >
       {children}

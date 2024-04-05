@@ -6,6 +6,7 @@ import QuestionsList from "./components/questionsList";
 import WaitingIdle from "./components/waitingIdle";
 import { useQuizContext } from "@/context/quizProvider";
 import QuestionPrompt from "./components/questionPrompt";
+import RestTime from "./components/restTime";
 
 const QuizItemPage = () => {
   const { stateIndex, hint } = useQuizContext();
@@ -43,6 +44,8 @@ const QuizItemPage = () => {
 
 const RenderQuizItemBody = () => {
   const { stateIndex } = useQuizContext();
+
+  return <RestTime />;
 
   return <QuestionPrompt />;
 
