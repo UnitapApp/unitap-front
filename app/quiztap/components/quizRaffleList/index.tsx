@@ -25,7 +25,7 @@ const QuizCard = () => {
 	const description = 'Get ready for a fun ride into the future'
 
 	return (
-		<div className="quiz_card_wrap relative bg-quiz-header-bg rounded-2xl flex items-center justify-center border-2 border-gray60 lg:border-l-gray10 ">
+		<div className="quiz_card_wrap relative bg-quiz-header-bg rounded-2xl flex flex-col sm:flex-row items-center justify-center border-2 border-gray60 lg:border-l-gray10 ">
 			<div className="left-side flex items-center relative min-w-[165px] min-h-[175px] lg:bg-[#10101B] lg:shadow-[inset_-2px_0px_0_2px_#242431] rounded-tr-[100px] rounded-br-[100px] before:content-[''] lg:before:absolute lg:before:bg-[#1e1e273a] lg:before:top-[-18px] before:w-5 before:h-[21px] lg:before:shadow-[-26px_-0px_0_15px_#10101B,inset_1px_1px_0_1px_#242431] before:rounded-tl-[150px] before:rounded-bl-[150px] lg:before:left-20  after:content-['']  after:absolute  lg:after:bg-[#1d1d273f]  lg:after:bottom-[-19px]  after:w-5  after:h-[23px]  lg:after:shadow-[-23px_-0px_0_15px_#10101B,inset_1px_0px_0_1px_#242431]  after:rounded-tl-[100px]  after:rounded-bl-[100px]  lg:after:left-[80px]">
 				<div className="relative h-[135px] w-[135px] rounded-[100%] lg:before:absolute lg:before:content-[''] lg:before:bg-[#10101B] lg:before:w-[60px] lg:before:h-[30px] lg:before:bottom-[-45px] lg:after:absolute content-[''] lg:after:bg-[#10101B] lg:after:w-[60px] lg:after:h-[30px] lg:after:top-[-45px]">
 					<svg width="135" height="133" viewBox="0 0 135 133" fill="none" xmlns="http://www.w3.org/2000/svg">
