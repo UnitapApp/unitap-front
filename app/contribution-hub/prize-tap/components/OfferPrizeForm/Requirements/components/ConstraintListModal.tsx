@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import ConstraintDetailsModal from "../../../../../components/ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
@@ -8,6 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Input from "@/components/ui/input";
 import ConstraintAppDetailModal from "@/app/contribution-hub/components/constraintAppDetailModal";
 import { appInfos } from "@/app/contribution-hub/constants/integrations";
+import { ConstraintProps } from "@/types";
 
 const ModalBody = () => {
   const {
@@ -18,6 +19,7 @@ const ModalBody = () => {
     updateRequirement,
     allChainList,
     selectedApp,
+    setSelectedApp,
   } = usePrizeOfferFormContext();
 
   return (
@@ -33,6 +35,8 @@ const ModalBody = () => {
         />
       ) : selectedApp ? (
         <ConstraintAppDetailModal
+          selectedApp={selectedApp}
+          setSelectedApp={setSelectedApp}
           handleBackToConstraintListModal={handleBackToConstraintListModal}
           requirementList={requirementList}
           insertRequirement={insertRequirement}
@@ -46,15 +50,17 @@ const ModalBody = () => {
   );
 };
 
-export const SelectCoreIntegrations = () => {
-  const { handleSelectConstraint, constraintsListApi } =
-    usePrizeOfferFormContext();
-
+export const SelectCoreIntegrations: FC<{
+  constraintsListApi: {
+    [key: string]: ConstraintProps[];
+  };
+  handleSelectConstraint: (constraint: ConstraintProps) => void;
+}> = ({ constraintsListApi, handleSelectConstraint }) => {
   return (
     <div className="flex flex-col gap-2 ">
       <p className="text-sm text-white">General</p>
       <div className="mt-3 grid w-full grid-cols-2 items-center justify-center gap-2.5 p-1 text-center">
-        {constraintsListApi!.general.map((constraint, key) => (
+        {constraintsListApi?.general.map((constraint, key) => (
           <div
             key={key}
             className="requireModal"
@@ -82,7 +88,6 @@ export const SelectCoreIntegrations = () => {
 export const ConstraintInitialBody = () => {
   const { handleSelectConstraint, constraintsListApi, setSelectedApp } =
     usePrizeOfferFormContext();
-
   const [searchBar, setSearchBar] = useState("");
 
   const availableIntegrations = Object.keys(constraintsListApi!).filter((key) =>
@@ -91,7 +96,12 @@ export const ConstraintInitialBody = () => {
 
   return (
     <>
-      <SelectCoreIntegrations />
+      {constraintsListApi && (
+        <SelectCoreIntegrations
+          handleSelectConstraint={handleSelectConstraint}
+          constraintsListApi={constraintsListApi}
+        />
+      )}
       <p className="my-3 text-sm font-semibold text-white">Integrations</p>
       <div className="mt-2 gap-2">
         <Input

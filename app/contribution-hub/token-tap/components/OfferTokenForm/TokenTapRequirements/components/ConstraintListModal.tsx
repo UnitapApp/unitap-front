@@ -35,6 +35,8 @@ const RequirementModalBody = () => {
         />
       ) : selectedApp ? (
         <ConstraintAppDetailModal
+          selectedApp={selectedApp}
+          setSelectedApp={setSelectedApp}
           handleBackToConstraintListModal={handleBackToConstraintListModal}
           requirementList={requirementList}
           insertRequirement={insertRequirement}
@@ -64,7 +66,12 @@ const InitialBody = () => {
 
   return (
     <>
-      <SelectCoreIntegrations />
+      {constraintsListApi && (
+        <SelectCoreIntegrations
+          handleSelectConstraint={handleSelectConstraint}
+          constraintsListApi={constraintsListApi}
+        />
+      )}
       <p className="my-3 text-sm font-semibold text-white">Integrations</p>
       <div className="mt-2 gap-2">
         <Input

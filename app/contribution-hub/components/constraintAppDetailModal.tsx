@@ -5,7 +5,7 @@ import { RequirementProps, ConstraintProps, Chain } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
 import { CreateParams } from "./ConstraintDetailsModal";
-import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
+
 import Select from "@/components/ui/Select";
 
 type DetailsModal = {
@@ -14,6 +14,14 @@ type DetailsModal = {
   insertRequirement: any;
   updateRequirement: any;
   allChainList: Chain[];
+  selectedApp?: {
+    label: string;
+    constraints: ConstraintProps[];
+  };
+  setSelectedApp: (value?: {
+    label: string;
+    constraints: ConstraintProps[];
+  }) => void;
 };
 
 const ConstraintAppDetailModal: FC<DetailsModal> = ({
@@ -22,14 +30,14 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   insertRequirement,
   updateRequirement,
   allChainList,
+  selectedApp,
+  setSelectedApp,
 }) => {
   const addRequirements = useAddRequirement(
     handleBackToConstraintListModal,
     insertRequirement,
     updateRequirement,
   );
-
-  const { selectedApp, setSelectedApp } = usePrizeOfferFormContext();
 
   const [existRequirement, setExistRequirement] =
     useState<RequirementProps | null>(null);
