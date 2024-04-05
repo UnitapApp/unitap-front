@@ -1,7 +1,21 @@
+"use client";
+
 import Icon from "@/components/ui/Icon";
-import { FC } from "react";
+import { useQuizContext } from "@/context/quizProvider";
+import { useNumberLinearInterpolate } from "@/utils/interpolate";
+import { FC, useEffect } from "react";
 
 const QuizTapSidebar: FC = () => {
+  const { onChange, value } = useNumberLinearInterpolate({
+    duration: 1000,
+    initial: 100,
+  });
+
+  useEffect(() => {
+    // @ts-ignore
+    window.onChangeValue = (value: number) => onChange(value);
+  }, [onChange]);
+
   return (
     <aside className="quiz-sidebar flex w-60 flex-col rounded-2xl p-1">
       <div className="flex items-center justify-between rounded-lg bg-gray10 p-5">
@@ -24,7 +38,7 @@ const QuizTapSidebar: FC = () => {
           <p>In game people</p>
 
           <p className="mt-2">
-            <strong className="text-white">100</strong> / 150
+            <strong className="text-white">{value}</strong> / 150
           </p>
         </div>
 

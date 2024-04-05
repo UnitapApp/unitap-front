@@ -60,6 +60,9 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
   const [activeQuestionChoice, setActiveQuestionChoice] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [stateIndex, setStateIndex] = useState(-1);
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState<number | null>(
+    null,
+  );
   const [isRestTime, setIsRestTime] = useState(false);
 
   const answerQuestion = (choiceIndex: number) => {
