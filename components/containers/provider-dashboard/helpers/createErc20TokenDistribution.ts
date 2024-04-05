@@ -4,7 +4,7 @@ import {
 } from "@/types/provider-dashboard";
 import { Address, parseEther, PublicClient, zeroAddress } from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
-import { deadline, startAt } from "./deadlineAndStartAt";
+import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
 import { tokenTapAbi } from "@/types/abis/contracts";
@@ -22,7 +22,7 @@ const txCallBack = async (
   totalAmount: string,
   startTime: bigint,
   endTime: bigint,
-  isNativeToken: boolean
+  isNativeToken: boolean,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: tokenTapAbi,
@@ -69,7 +69,7 @@ export const createErc20TokenDistribution = async (
   userToken: string,
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
-  clamPeriodic: any
+  clamPeriodic: any,
 ) => {
   // const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -86,7 +86,7 @@ export const createErc20TokenDistribution = async (
   const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
   const prizeAmount = toWei(
     data.tokenAmount,
-    data.isNativeToken ? 18 : data.tokenDecimals
+    data.isNativeToken ? 18 : data.tokenDecimals,
   );
   const twitter = data.twitter
     ? "https://twitter.com/" + data.twitter?.replace("@", "")
@@ -114,7 +114,8 @@ export const createErc20TokenDistribution = async (
   }, {});
 
   const token = data.isNativeToken ? zeroAddress : data.tokenContractAddress;
-  const startTime = startAt(data.startTimeStamp);
+
+  // const startTime = startAt(data.startTimeStamp);
   const endTime = deadline(data.endTimeStamp);
 
   const formData = new FormData();
@@ -123,8 +124,8 @@ export const createErc20TokenDistribution = async (
     reversed_constraints.length > 1
       ? reversed_constraints.join(",")
       : reversed_constraints.length == 1
-      ? reversed_constraints[0].toString()
-      : "";
+        ? reversed_constraints[0].toString()
+        : "";
 
   for (let i = 0; i < constraints.length; i++) {
     formData.append("constraints", constraints[i]);
@@ -140,6 +141,8 @@ export const createErc20TokenDistribution = async (
     formData.append("reversed_constraints", reversed);
   }
 
+  const startTime = checkStartTimeStamp(data.startTimeStamp);
+
   formData.append("name", prizeName);
   formData.append("distributor", data.provider!);
   formData.append("distributor_address", address);
@@ -154,13 +157,13 @@ export const createErc20TokenDistribution = async (
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
   formData.append("contract", contractAddresses.tokenTap as any);
-  formData.append("start_at", startTime);
+  formData.append("start_at", startAt(startTime));
   formData.append("deadline", endTime);
   formData.append("max_number_of_claims", maxNumClaim);
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
   formData.append("decimals", decimals);
-  formData.append("is_one_time_claim", clamPeriodic)
+  formData.append("is_one_time_claim", clamPeriodic);
 
   try {
     setCreateRaffleLoading(true);
@@ -173,9 +176,9 @@ export const createErc20TokenDistribution = async (
       BigInt(maxNumClaim),
       data.tokenAmount,
       data.totalAmount,
-      data.startTimeStamp,
+      BigInt(startTime),
       data.endTimeStamp,
-      data.isNativeToken
+      data.isNativeToken,
     );
 
     if (!response) throw new Error("Contract hash not found");

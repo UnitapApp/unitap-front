@@ -108,7 +108,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className="flex items-center justify-center gap-1 text-white text-2xs mb-[9px] cursor-pointer max-w-[140px]"
-              onClick={() => handleSelectNativeToken(data.isNativeToken)}
+              onClick={() => {
+                if (!isRightChain) return
+                handleSelectNativeToken(data.isNativeToken);
+              }}
             >
               <Icon
                 height="16px"
@@ -446,9 +449,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
           )}
         </div>
-      )}
+      )
+      }
       <AddNftIdListModal />
-    </div>
+    </div >
   );
 };
 

@@ -19,3 +19,13 @@ export const startAt = (startTimeStamp: number) =>
   new Date(startTimeStamp * 1000).getUTCHours() +
   ":" +
   new Date(startTimeStamp * 1000).getUTCMinutes();
+
+export const checkStartTimeStamp = (startTimeStamp: number) => {
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  const instantaneousTimestamp = currentTimestamp + 5 * 60;
+  const startTime =
+    startTimeStamp < instantaneousTimestamp
+      ? instantaneousTimestamp
+      : startTimeStamp;
+  return startTime;
+};

@@ -28,9 +28,8 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
               if (isShowingDetails || !data.startTimeStamp) return;
               handleSetEnrollDuration(item.id);
             }}
-            className={`enrollment-duration flex h-full w-full cursor-pointer items-center justify-center  border-r-2 border-gray50 ${
-              item.selected ? "bg-gray40 text-white" : ""
-            } `}
+            className={`enrollment-duration flex h-full w-full cursor-pointer items-center justify-center  border-r-2 border-gray50 ${item.selected ? "bg-gray40 text-white" : ""
+              } `}
           >
             <div>{item.name}</div>
           </div>

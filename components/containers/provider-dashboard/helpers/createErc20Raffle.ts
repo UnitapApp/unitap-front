@@ -9,7 +9,7 @@ import {
   parseEther,
 } from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
-import { deadline, startAt } from "./deadlineAndStartAt";
+import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import Big from "big.js";
 
@@ -26,7 +26,7 @@ const createErc20RaffleCallback = async (
   endTime: bigint,
   isNativeToken: boolean,
   winnersCount: bigint,
-  totalAmount: string
+  totalAmount: string,
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
@@ -38,7 +38,7 @@ const createErc20RaffleCallback = async (
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
         : BigInt(
-            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
           ),
       currencyAddress,
       maxParticipants,
@@ -61,7 +61,7 @@ const createErc20RaffleCallback = async (
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
         : BigInt(
-            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
           ),
       currencyAddress,
       maxParticipants,
@@ -83,7 +83,7 @@ export const createErc20Raffle = async (
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
-  setCreteRaffleResponse: any
+  setCreteRaffleResponse: any,
 ) => {
   const raffleContractAddress = contractAddresses.prizeTapErc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -98,7 +98,7 @@ export const createErc20Raffle = async (
   const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
   const prizeAmount = toWei(
     data.tokenAmount,
-    data.isNativeToken ? 18 : data.tokenDecimals
+    data.isNativeToken ? 18 : data.tokenDecimals,
   );
   const twitter = data.twitter
     ? "https://twitter.com/" + data.twitter?.replace("@", "")
@@ -134,8 +134,8 @@ export const createErc20Raffle = async (
     reversed_constraints.length > 1
       ? reversed_constraints.join(",")
       : reversed_constraints.length == 1
-      ? reversed_constraints[0].toString()
-      : "";
+        ? reversed_constraints[0].toString()
+        : "";
 
   for (let i = 0; i < constraints.length; i++) {
     formData.append("constraints", constraints[i]);
@@ -151,6 +151,8 @@ export const createErc20Raffle = async (
     formData.append("reversed_constraints", reversed);
   }
 
+  const startTime = checkStartTimeStamp(data.startTimeStamp);
+
   formData.append("name", prizeName);
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
@@ -164,7 +166,7 @@ export const createErc20Raffle = async (
   formData.append("prize_symbol", prizeSymbol);
   formData.append("deadline", deadline(data.endTimeStamp));
   formData.append("max_number_of_entries", maxNumberOfEntries);
-  formData.append("start_at", startAt(data.startTimeStamp));
+  formData.append("start_at", startAt(startTime));
   formData.append("winners_count", data.winnersCount.toString());
   formData.append("discord_url", discord! ?? "");
   formData.append("twitter_url", twitter! ?? "");
@@ -191,11 +193,11 @@ export const createErc20Raffle = async (
       decimals,
       data.tokenContractAddress as any,
       BigInt(maxNumberOfEntries),
-      data.startTimeStamp,
+      BigInt(startTime),
       data.endTimeStamp,
       data.isNativeToken,
       BigInt(data.winnersCount),
-      data.totalAmount
+      data.totalAmount,
     );
 
     if (!response) throw new Error("Contract hash not found");
@@ -225,7 +227,7 @@ export const createErc20Raffle = async (
     await updateCreateRaffleTx(
       userToken,
       rafflePk,
-      transactionInfo.transactionHash
+      transactionInfo.transactionHash,
     );
   } catch (e: any) {
     console.log(e);
