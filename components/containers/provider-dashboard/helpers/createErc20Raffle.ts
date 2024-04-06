@@ -174,6 +174,7 @@ export const createErc20Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
+  formData.append("decimals", decimals);
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
