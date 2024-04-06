@@ -1,13 +1,30 @@
-import { Metadata } from "next"
-import { FC, PropsWithChildren } from "react"
+import QuizTapListProvider from "@/context/quiztapListProvider";
+import { fetchQuizzesApi } from "@/utils/api";
+import { Metadata } from "next";
+import { FC, PropsWithChildren } from "react";
+import Header from "./components/header";
+
+import "./styles.scss";
 
 export const metadata: Metadata = {
-	title: "Unitap | Quiz Tap",
-	description: "",
-}
+  title: "Unitap | Quiz Tap ❓❔",
+  description: "",
+};
 
-const PassLayout: FC<PropsWithChildren> = ({ children }) => {
-	return <>{children}</>
-}
+const QuizListLayout: FC<PropsWithChildren> = async ({ children }) => {
+  const res = await fetchQuizzesApi();
 
-export default PassLayout
+  return (
+    <QuizTapListProvider
+      competitionInitialList={res.results}
+      countInitial={res.count}
+      nextInitial={res.next}
+      previousInitial={res.previous}
+    >
+      <Header />
+      {children}
+    </QuizTapListProvider>
+  );
+};
+
+export default QuizListLayout;

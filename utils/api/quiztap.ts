@@ -1,7 +1,32 @@
 import { Competition, CompetitionStatus } from "@/types";
+import { WithPagination } from "../pagination";
+import { serverFetch } from ".";
+import { axiosInstance } from "./base";
+
+export const fetchQuizzesApi = async (
+  pageIndex?: number,
+): Promise<WithPagination<Competition>> => {
+  const response: WithPagination<Competition> = await serverFetch(
+    "/api/quiztap/competitions/" + (pageIndex ? `?page=${pageIndex}` : ""),
+  );
+
+  return response;
+};
+
+export const enrollQuizApi = async (id: number) => {
+  const response: WithPagination<Competition> = await axiosInstance.post(
+    "/api/quiztap/competitions/enroll/",
+    {
+      competition: id,
+    },
+  );
+
+  return response;
+};
 
 export const fetchQuizApi = async (id: number): Promise<Competition> => {
   return {
+    title: "Optimism Quiz Tap",
     chain: {
       pk: 17,
       chainName: "Rootstock Mainnet",
@@ -35,6 +60,6 @@ export const fetchQuizApi = async (id: number): Promise<Competition> => {
       username: "alimak",
       wallets: [],
     },
-    detail: "Get ready for a fun ride into the future",
+    details: "Get ready for a fun ride into the future",
   };
 };

@@ -9,8 +9,9 @@ export enum CompetitionStatus {
 
 export type Competition = {
   sponsor?: string;
+  title: string;
   userProfile: UserProfile;
-  detail?: string;
+  details?: string;
   createdAt: string;
   startAt: string;
   status: CompetitionStatus;

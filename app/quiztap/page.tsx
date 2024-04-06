@@ -1,13 +1,11 @@
-import Header from "./components/header"
-import QuizRaffleList from "./components/quizRaffleList"
+import QuizRaffleList from "./components/quizRaffleList";
 
 const QuizTapPage = () => {
-	return (
-		<>
-			<Header />
-			<QuizRaffleList />
-		</>
-	)
-}
+  return (
+    <>
+      <QuizRaffleList />
+    </>
+  );
+};
 
-export default QuizTapPage
+export default QuizTapPage;
