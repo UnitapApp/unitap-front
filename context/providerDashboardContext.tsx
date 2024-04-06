@@ -527,17 +527,6 @@ const ProviderDashboard: FC<
       errorObject.startDateStatus = false;
       errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     }
-    // const sevenDaysLaterAfterNow: Date = new Date(
-    //   Date.now() + 7 * 24 * 60 * 59 * 1000,
-    // );
-    // const sevenDaysLaterAfterNowTimeStamp = Math.round(
-    //   sevenDaysLaterAfterNow.getTime() / 1000,
-    // );
-
-    // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
-    //   errorObject.startDateStatus = false;
-    //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
-    // }
 
     if (!endTimeStamp) {
       errorObject.endDateStatus = false;
