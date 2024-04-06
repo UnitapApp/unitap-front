@@ -53,8 +53,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     !data.tokenContractAddress;
 
   const totalAmountError =
-    insufficientBalance ||
-    // Number(data.winnersCount) > 500 ||
+    data.tokenAmount && insufficientBalance ||
     (showErrors && (!data.totalAmount || Number(data.totalAmount) <= 0));
 
   const tokenAddressError =
@@ -268,7 +267,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               //   </p>
               // )
               : (
-                insufficientBalance && (
+                data.tokenAmount && insufficientBalance && (
                   <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
                     Insufficient Balance
                   </p>

@@ -53,7 +53,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     !data.tokenContractAddress;
 
   const totalAmountError =
-    insufficientBalance ||
+    data.tokenAmount && insufficientBalance ||
     Number(data.winnersCount) > 500 ||
     (showErrors && (!data.totalAmount || Number(data.totalAmount) <= 0));
 
@@ -147,7 +147,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   placeholder="paste here"
                   value={
                     data.tokenContractAddress &&
-                    data.tokenContractAddress != ZERO_ADDRESS
+                      data.tokenContractAddress != ZERO_ADDRESS
                       ? data.tokenContractAddress
                       : ""
                   }
@@ -167,23 +167,23 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
-                <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  </div>
+                )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.Valid && (
-                <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
+                  </div>
+                )}
             </div>
             {tokenContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
-                Invalid Token Contract Address
-              </p>
-            )}
+                <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+                  Invalid Token Contract Address
+                </p>
+              )}
 
             {showErrors && !data.tokenContractAddress && (
               <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
@@ -194,9 +194,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
           <div className="total_amount_box relative">
             <div
-              className={`relative rounded-2xl  border p-5 ${
-                totalAmountError ? "border-error" : "border-gray50"
-              } `}
+              className={`relative rounded-2xl  border p-5 ${totalAmountError ? "border-error" : "border-gray50"
+                } `}
             >
               <div
                 className={`flex h-[43px] w-full max-w-[452px] items-center justify-between gap-2 overflow-hidden rounded-xl border border-gray50 bg-gray40 pr-4 text-xs text-gray100`}
@@ -264,7 +263,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
 
             {showErrors &&
-            (!data.totalAmount || Number(data.totalAmount) <= 0) ? (
+              (!data.totalAmount || Number(data.totalAmount) <= 0) ? (
               <p className="absolute -bottom-4 m-0 mt-[2px] p-0 text-2xs text-error">
                 Required
               </p>
@@ -273,7 +272,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 The maximum number of winners is 500.
               </p>
             ) : (
-              insufficientBalance && (
+              data.tokenAmount && insufficientBalance && (
                 <p className="absolute -bottom-4 m-0 mt-[2px] p-0 text-2xs text-error">
                   Insufficient Balance
                 </p>
@@ -286,11 +285,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           <div className="relative">
             <div
               className={`
-							 flex border bg-gray40 text-xs text-gray100 ${
-                 nftAddressError ? "border-error" : "border-gray50"
-               } ${
-                 data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
-               } h-[43px] max-w-[452px]  overflow-hidden rounded-xl`}
+							 flex border bg-gray40 text-xs text-gray100 ${nftAddressError ? "border-error" : "border-gray50"
+                } ${data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
+                } h-[43px] max-w-[452px]  overflow-hidden rounded-xl`}
             >
               <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>NFT Contract address</p>
@@ -317,10 +314,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
               {nftContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
-                <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  </div>
+                )}
               {nftContractStatus.isValid === ContractValidationStatus.Valid && (
                 <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
                   <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
@@ -334,10 +331,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             )}
             {nftContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
-                Invalid NFT Contract Address
-              </p>
-            )}
+                <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+                  Invalid NFT Contract Address
+                </p>
+              )}
           </div>
 
           <div className="relative mt-1">
@@ -349,13 +346,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
             <div
               className={`
-							 flex border bg-gray40 text-xs text-gray100 ${
-                 Number(numberOfNfts) > 500 ||
-                 (data.nftTokenIds.length > 0 &&
-                   data.nftTokenIds.length != Number(numberOfNfts))
-                   ? "border-error"
-                   : "border-gray50"
-               } h-[43px] max-w-[452px]  items-center justify-between overflow-hidden rounded-xl pr-4`}
+							 flex border bg-gray40 text-xs text-gray100 ${Number(numberOfNfts) > 500 ||
+                  (data.nftTokenIds.length > 0 &&
+                    data.nftTokenIds.length != Number(numberOfNfts))
+                  ? "border-error"
+                  : "border-gray50"
+                } h-[43px] max-w-[452px]  items-center justify-between overflow-hidden rounded-xl pr-4`}
             >
               <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>Number of Nfts</p>
@@ -429,18 +425,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   if (!numberOfNfts) return;
                   openAddNftIdListModal();
                 }}
-                className={`flex text-xs text-white ${
-                  nftContractStatus.isValid ===
-                    ContractValidationStatus.NotValid ||
+                className={`flex text-xs text-white ${nftContractStatus.isValid ===
+                  ContractValidationStatus.NotValid ||
                   !numberOfNfts ||
                   Number(numberOfNfts) > 500
-                    ? "opacity-[0.4]"
-                    : "cursor-pointer"
-                } ${
-                  data.nftTokenIds.length == 0 && showErrors
+                  ? "opacity-[0.4]"
+                  : "cursor-pointer"
+                  } ${data.nftTokenIds.length == 0 && showErrors
                     ? "border-error"
                     : "border-gray50"
-                } h-[44px] w-full  max-w-[452px] items-center overflow-hidden  rounded-xl border bg-gray40`}
+                  } h-[44px] w-full  max-w-[452px] items-center overflow-hidden  rounded-xl border bg-gray40`}
               >
                 <div className="flex h-full w-full max-w-[148px] items-center gap-2 p-3">
                   <Icon
