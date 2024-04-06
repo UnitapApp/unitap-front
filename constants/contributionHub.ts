@@ -80,6 +80,6 @@ export const errorMessages = {
   startTimeDuration: "The start time cannot precede the current time",
   endDateUnacceptable: "End date is unacceptable.",
   period: "The minimum period is one week.",
-  endLessThanStart: "The end time cannot be less than the start time.",
+  endLessThanStart: "The minimum duration is 1 hour.",
   invalidInput: "Invalid input",
 };

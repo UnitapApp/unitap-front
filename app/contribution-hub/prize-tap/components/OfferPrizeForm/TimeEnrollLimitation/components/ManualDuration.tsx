@@ -46,7 +46,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
             (data.startTimeStamp >= data.endTimeStamp ||
               data.endTimeStamp - data.startTimeStamp < 60 * 60) && (
               <p className="absolute m-0 -mt-1 p-0 text-[11px] text-error ">
-                The end time cannot be less than the start time.
+                The minimum duration is 1 hour.
               </p>
             )}
         </div>

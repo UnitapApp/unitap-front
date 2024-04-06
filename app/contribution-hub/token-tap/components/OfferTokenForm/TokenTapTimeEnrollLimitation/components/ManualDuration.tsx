@@ -28,9 +28,8 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
               if (isShowingDetails || !data.startTimeStamp) return;
               handleSetEnrollDuration(item.id);
             }}
-            className={`enrollment-duration flex h-full w-full cursor-pointer items-center justify-center  border-r-2 border-gray50 ${
-              item.selected ? "bg-gray40 text-white" : ""
-            } `}
+            className={`enrollment-duration flex h-full w-full cursor-pointer items-center justify-center  border-r-2 border-gray50 ${item.selected ? "bg-gray40 text-white" : ""
+              } `}
           >
             <div>{item.name}</div>
           </div>
@@ -47,7 +46,7 @@ const ManualDuration = ({ showErrors }: ManualDurationProp) => {
             (data.startTimeStamp >= data.endTimeStamp ||
               data.endTimeStamp - data.startTimeStamp < 60 * 60) && (
               <p className="absolute m-0 -mt-1 p-0 text-[11px] text-error ">
-                The end time cannot be less than the start time.
+                The minimum duration is 1 hour.
               </p>
             )}
         </div>
