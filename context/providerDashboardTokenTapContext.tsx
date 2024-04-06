@@ -534,7 +534,7 @@ const TokenTapProvider: FC<
       errorObject.statDateStatusMessage = errorMessages.required;
     }
 
-    if (startTimeStamp && startTimeStamp < Math.floor(Date.now() / 1000)) {
+    if (startTimeStamp && startTimeStamp + 60 < Math.floor(Date.now() / 1000)) {
       errorObject.startDateStatus = false;
       errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     }
