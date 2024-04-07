@@ -76,6 +76,8 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     const startAt = new Date(quiz.startAt);
     const now = new Date();
 
+    const totalPeriod = restPeriod + statePeriod;
+
     if (startAt > now) {
       setStateIndex(-1);
       setTimer(startAt.getTime() - now.getTime());
@@ -84,33 +86,27 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
 
     const timePassed = now.getTime() - startAt.getTime();
 
-    const timeInCycle = timePassed % (restPeriod + statePeriod);
+    const timeInCycle = timePassed % totalPeriod;
 
     setStateIndex(Math.floor(timePassed / (restPeriod + statePeriod)));
 
     if (timeInCycle >= 10000) {
-      setTimer(15000 - timeInCycle);
+      setTimer(totalPeriod - timeInCycle);
       setIsRestTime(true);
       // answer
       // fetch next question
       // .............
     } else {
-      setTimer(10000 - timeInCycle);
+      setTimer(statePeriod - timeInCycle);
       setIsRestTime(false);
     }
   }, [quiz]);
 
   useEffect(() => {
-    if (timer <= 0) {
-      handleNextCallback();
-      return;
-    }
-
-    const timerInterval = setTimeout(() => {
+    const timerInterval = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 0) {
-          clearInterval(timerInterval);
-
+          handleNextCallback();
           return 0;
         }
 
@@ -119,9 +115,9 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     }, 10);
 
     return () => {
-      clearTimeout(timerInterval);
+      clearInterval(timerInterval);
     };
-  }, [handleNextCallback, timer]);
+  }, [handleNextCallback]);
 
   return (
     <QuizContext.Provider
