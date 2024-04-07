@@ -223,8 +223,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
         address: selectedRaffleForEnroll?.isPrizeNft
-          ? contractAddresses.prizeTapErc20
-          : contractAddresses.prizeTapErc721,
+          ? contractAddresses.prizeTapErc721
+          : contractAddresses.prizeTapErc20,
       });
 
       if (response) {

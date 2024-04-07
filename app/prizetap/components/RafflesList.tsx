@@ -191,7 +191,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 							)} */}
             </div>
           </div>
-          <div className="absolute bottom-[-10px] left-[40px] flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
+          <div className="absolute bottom-[-10px] left-[40px] z-10 flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
             <p className="p-1 text-2xs text-gray100"> on {chain.chainName} </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
@@ -263,9 +263,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               </p>
             </span>
             <ReactMarkdown
-              className={`prize-card__description mb-2 shrink-0 grow basis-auto text-xs leading-5 text-gray100 ${
-                isHighlighted ? "bg-g-primary-low" : "!bg-gray30"
-              } text-justify`}
+              className={`prize-card__description text-gray100bg-transparent mb-2 shrink-0 grow basis-auto text-justify text-xs leading-5`}
             >
               {description}
             </ReactMarkdown>

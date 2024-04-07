@@ -12,6 +12,7 @@ import { Address, isAddressEqual } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useReadContracts } from "wagmi";
+import { contractAddresses } from "@/constants";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -52,8 +53,8 @@ const WinnersModal = () => {
       contracts.push({
         abi: isNft ? prizeTap721Abi : prizeTapAbi,
         address: (selectedRaffleForEnroll.isPrizeNft
-          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994") as Address,
+          ? contractAddresses.prizeTapErc721
+          : contractAddresses.prizeTapErc20) as Address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
         chainId: Number(selectedRaffleForEnroll.chain.chainId ?? 1),
