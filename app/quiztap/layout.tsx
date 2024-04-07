@@ -21,7 +21,6 @@ const QuizListLayout: FC<PropsWithChildren> = async ({ children }) => {
       nextInitial={res.next}
       previousInitial={res.previous}
     >
-      <Header />
       {children}
     </QuizTapListProvider>
   );

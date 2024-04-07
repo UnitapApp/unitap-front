@@ -43,15 +43,15 @@ const QuizItemPage = () => {
 };
 
 const RenderQuizItemBody = () => {
-  const { stateIndex } = useQuizContext();
+  const { stateIndex, isRestTime } = useQuizContext();
 
-  return <RestTime />;
-
-  return <QuestionPrompt />;
+  if (isRestTime) return <RestTime />;
 
   if (stateIndex <= 0) {
     return <WaitingIdle />;
   }
+
+  return <QuestionPrompt />;
 };
 
 export default QuizItemPage;

@@ -8,6 +8,8 @@ export enum CompetitionStatus {
 }
 
 export type Competition = {
+  id: number;
+  pk: number;
   sponsor?: string;
   title: string;
   userProfile: UserProfile;
