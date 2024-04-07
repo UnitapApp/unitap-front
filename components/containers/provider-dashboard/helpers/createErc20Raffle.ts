@@ -7,6 +7,7 @@ import {
 import { prizeTapAbi } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
 import {
+  Address,
   GetContractReturnType,
   PublicClient,
   getContract,
@@ -24,7 +25,7 @@ const createErc20RaffleCallback = async (
   provider: PublicClient,
   payableAmount: string,
   tokenDecimals: number,
-  currencyAddress: `0x${string}`,
+  currencyAddress: Address,
   maxParticipants: bigint,
   startTime: bigint,
   endTime: bigint,
