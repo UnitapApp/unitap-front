@@ -55,7 +55,7 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
     }
   }, [stateIndex]);
 
-  if (index === stateIndex || isRestTime)
+  if (index > stateIndex || isRestTime)
     return (
       <div
         className={`relative grid h-9 w-9 place-content-center rounded-lg border-2 ${index > stateIndex ? "border-gray50" : "border-dark-space-green"} bg-gray20 text-gray100`}

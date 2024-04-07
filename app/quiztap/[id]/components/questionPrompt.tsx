@@ -3,7 +3,7 @@ import { useQuizContext } from "@/context/quizProvider";
 import { FC, useEffect } from "react";
 
 const QuestionPrompt: FC = () => {
-  const { stateIndex, answerQuestion } = useQuizContext();
+  const { stateIndex, answerQuestion, question } = useQuizContext();
 
   useEffect(() => {
     const onKeyPressed = (e: KeyboardEvent) => {
@@ -28,11 +28,13 @@ const QuestionPrompt: FC = () => {
   return (
     <div className="mt-10">
       <h3 className="text-base font-normal">
-        {stateIndex} - Why can{"'"}t wee use fork for eating soup?
+        {stateIndex} - {question?.text}
       </h3>
 
       <div className="mt-10 grid grid-cols-2 gap-5 font-semibold">
-        <QuestionChoice title="Yes" index={1} />
+        {question?.choices.map((item, key) => (
+          <QuestionChoice title={item.text} index={key + 1} key={key} />
+        ))}
         <QuestionChoice index={2} title="No" />
         <QuestionChoice index={3} title="I don't know actually" />
         <QuestionChoice index={4} title="Maybe" />
@@ -52,7 +54,8 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
   index,
   title,
 }) => {
-  const { answerQuestion, activeQuestionChoiceIndex } = useQuizContext();
+  const { answerQuestion, activeQuestionChoiceIndex, question } =
+    useQuizContext();
 
   return (
     <button

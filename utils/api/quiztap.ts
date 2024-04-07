@@ -1,4 +1,4 @@
-import { Competition, CompetitionStatus } from "@/types";
+import { Competition, CompetitionStatus, QuestionResponse } from "@/types";
 import { WithPagination } from "../pagination";
 import { serverFetch } from ".";
 import { axiosInstance } from "./base";
@@ -11,6 +11,31 @@ export const fetchQuizzesApi = async (
   );
 
   return response;
+};
+
+export const fetchQuizQuestionApi = async (questionId: number) => {
+  const response = await axiosInstance.get<QuestionResponse>(
+    "/api/quiztap/questions/" + questionId,
+  );
+
+  return response.data;
+};
+
+export const submitAnswerApi = async (
+  questionId: number,
+  competition: number,
+  choicePk: number,
+) => {
+  const response = await axiosInstance.post(
+    "api/quiztap/competitions/submit-answer/",
+    {
+      competition,
+      selectedChoice: choicePk,
+      question: questionId,
+    },
+  );
+
+  return response.data;
 };
 
 export const enrollQuizApi = async (id: number) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuizTapListContext } from "@/context/quiztapListProvider";
-import QuizCard from "./quizCard";
+import QuizCard from "./QuizCard.1";
 
 const QuizRaffleList = () => {
   const { quizList } = useQuizTapListContext();

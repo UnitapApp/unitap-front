@@ -6,9 +6,19 @@ export enum CompetitionStatus {
   FINISHED = "finished",
 }
 
-export type QuestionPrevious = {
+export type QuestionPreview = {
   number: number;
   pk: number;
+};
+
+export type QuestionResponse = {
+  id: number;
+  competition: Competition;
+  choices: Choice[];
+  number: number;
+  canBeShown: boolean;
+  answerCanBeShown: boolean;
+  text: string;
 };
 
 export type Competition = {
@@ -16,6 +26,7 @@ export type Competition = {
   pk: number;
   sponsor?: string;
   title: string;
+  questions: QuestionPreview[];
   userProfile: UserProfile;
   details?: string;
   createdAt: string;
@@ -53,6 +64,7 @@ export type Choice = {
   question: number;
   text: string;
   isCorrect?: boolean;
+  id: number;
 };
 
 export type UserAnswer = {

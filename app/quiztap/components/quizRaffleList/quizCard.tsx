@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import CompetitionCardTimer from "../timer";
 import Image from "next/image";
 import Icon from "@/components/ui/Icon";
+import { enrollQuizApi } from "@/utils/api";
 
 const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
   const [showAllPermissions, setShowAllPermissions] = useState(false);
@@ -23,6 +24,10 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
 
   const onEnroll = () => {
     setLoading(true);
+
+    enrollQuizApi(competition.id).finally(() => {
+      setLoading(false);
+    });
   };
 
   return (
