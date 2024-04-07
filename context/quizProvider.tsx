@@ -2,7 +2,7 @@
 
 import { Choice, Competition, Question, QuestionResponse } from "@/types";
 import { NullCallback } from "@/utils";
-import { fetchQuizQuestionApi } from "@/utils/api";
+import { fetchQuizQuestionApi, submitAnswerApi } from "@/utils/api";
 import {
   FC,
   PropsWithChildren,
@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -28,6 +29,7 @@ export type QuizContextProps = {
   activeQuestionChoiceIndex: number;
   isRestTime: boolean;
   setIsRestTime: (value: boolean) => void;
+  correctAnswerIndex: number | null;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -42,17 +44,22 @@ export const QuizContext = createContext<QuizContextProps>({
   activeQuestionChoiceIndex: -1,
   isRestTime: false,
   setIsRestTime: NullCallback,
+  correctAnswerIndex: -1,
 });
 
-const statePeriod = 10000;
-const restPeriod = 5000;
+export const statePeriod = 60000;
+export const restPeriod = 5000;
+const totalPeriod = restPeriod + statePeriod;
 
 export const useQuizContext = () => useContext(QuizContext);
 
-const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
-  children,
-  quiz,
-}) => {
+const refreshState = (setTimer: any, previousState: number) => {
+  setTimer((prev: number) => {});
+};
+
+const QuizContextProvider: FC<
+  PropsWithChildren & { quiz: Competition; userEnrollmentPk: number }
+> = ({ children, quiz, userEnrollmentPk }) => {
   const [health, setHealth] = useState(1);
   const [hint, setHint] = useState(1);
   const [remainingPeople, setRemainingPeople] = useState(1);
@@ -67,13 +74,15 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
   );
   const [isRestTime, setIsRestTime] = useState(false);
 
+  const startAt = useMemo(() => new Date(quiz.startAt), [quiz.startAt]);
+
   const answerQuestion = (choiceIndex: number) => {
     setActiveQuestionChoice(choiceIndex);
   };
 
   const askForHint = () => {};
 
-  const getNextQuestionApi = useCallback(
+  const getNextQuestionPk = useCallback(
     (index: number) => {
       const result = quiz.questions.find((item) => item.number === index)?.pk;
 
@@ -82,36 +91,40 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     [quiz.questions],
   );
 
-  const handleNextCallback = useCallback(async () => {
-    console.log("Handle Next Callback Has been Called");
-    const startAt = new Date(quiz.startAt);
+  const recalculateState = useCallback(() => {
     const now = new Date();
 
-    const totalPeriod = restPeriod + statePeriod;
-
     if (startAt > now) {
-      setStateIndex(-1);
-      setTimer(startAt.getTime() - now.getTime());
-
-      const res = await fetchQuizQuestionApi(getNextQuestionApi(1)!);
-      setQuestion(res);
-      return;
+      return -1;
     }
 
     const timePassed = now.getTime() - startAt.getTime();
 
-    const timeInCycle = timePassed % totalPeriod;
+    const newState = Math.floor(timePassed / (restPeriod + statePeriod)) + 1;
 
-    const newState = Math.floor(timePassed / (restPeriod + statePeriod));
+    return newState;
+  }, [startAt]);
 
-    setStateIndex(newState);
+  const submitUserAnswer = useCallback(async () => {
+    const currentQuestionIndex = getNextQuestionPk(stateIndex);
 
-    if (timeInCycle >= 10000) {
-      setTimer(totalPeriod - timeInCycle);
-      setIsRestTime(true);
-      // answer
-      const questionIndex = getNextQuestionApi(newState + 1);
+    if (
+      activeQuestionChoice &&
+      activeQuestionChoice !== -1 &&
+      currentQuestionIndex
+    ) {
+      const answerRes = await submitAnswerApi(
+        currentQuestionIndex!,
+        userEnrollmentPk,
+        activeQuestionChoice,
+      );
+      setActiveQuestionChoice(-1);
+    }
+  }, [activeQuestionChoice, getNextQuestionPk, stateIndex, userEnrollmentPk]);
 
+  const getQuestion = useCallback(
+    async (stateIndex: number) => {
+      const questionIndex = getNextQuestionPk(stateIndex);
       if (!questionIndex) {
         return;
       }
@@ -119,54 +132,53 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
       const res = await fetchQuizQuestionApi(questionIndex);
 
       setQuestion(res);
-
-      // .............
-    } else {
-      setQuestion((prev) => {
-        if (prev) return prev;
-
-        const questionIndex = getNextQuestionApi(newState + 1);
-
-        if (!questionIndex) {
-          return prev;
-        }
-
-        fetchQuizQuestionApi(questionIndex).then((res) => {
-          setQuestion(res);
-        });
-
-        return prev;
-      });
-
-      setTimer(statePeriod - timeInCycle);
-      setIsRestTime(false);
-    }
-  }, [getNextQuestionApi, quiz.startAt]);
+    },
+    [getNextQuestionPk],
+  );
 
   useEffect(() => {
-    let isRequestingNextState = false;
+    if (question) return;
 
+    getQuestion(stateIndex);
+  }, [getQuestion, question, stateIndex]);
+
+  useEffect(() => {
     const timerInterval = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 0) {
-          if (isRequestingNextState) return 0;
+      const newState = recalculateState();
+      setStateIndex(newState);
 
-          isRequestingNextState = true;
-          handleNextCallback().finally(() => {
-            isRequestingNextState = false;
-          });
+      if (newState !== stateIndex) {
+        setQuestion(null);
+      }
 
-          return 0;
+      setTimer(() => {
+        const now = new Date().getTime();
+
+        if (totalPeriod * newState + startAt.getTime() - now >= statePeriod) {
+          setIsRestTime(true);
+        } else {
+          setIsRestTime(false);
         }
 
-        return prev - 10;
+        const estimatedRemaining =
+          newState <= 0
+            ? startAt.getTime() - now
+            : totalPeriod * newState + startAt.getTime() - now;
+
+        return estimatedRemaining;
       });
-    }, 10);
+    }, 20);
 
     return () => {
       clearInterval(timerInterval);
     };
-  }, [handleNextCallback]);
+  }, [getQuestion, recalculateState, startAt, stateIndex]);
+
+  useEffect(() => {
+    if (!isRestTime) return;
+
+    submitUserAnswer();
+  }, [isRestTime, submitUserAnswer]);
 
   return (
     <QuizContext.Provider
@@ -183,6 +195,7 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
         activeQuestionChoiceIndex: activeQuestionChoice,
         isRestTime,
         setIsRestTime,
+        correctAnswerIndex,
       }}
     >
       {children}

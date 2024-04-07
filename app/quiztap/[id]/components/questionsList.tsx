@@ -1,4 +1,4 @@
-import { useQuizContext } from "@/context/quizProvider";
+import { statePeriod, useQuizContext } from "@/context/quizProvider";
 import { FC, useEffect, useRef } from "react";
 
 const QuestionsList = () => {
@@ -46,11 +46,11 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
     progress.style.strokeDashoffset = borderLen;
     progress.style.strokeDasharray = borderLen + "," + borderLen;
 
-    const durationInSeconds = 11;
+    const durationInSeconds =
+      statePeriod / 1000 - (statePeriod / 1000 - timer / 1000);
 
-    const framesPerSecond = 60; // Assuming 60 frames per second for smooth animation
+    const framesPerSecond = 60;
 
-    // Calculate the number of frames needed to achieve the desired duration
     const totalFrames = durationInSeconds * framesPerSecond;
     const decrementAmount = borderLen / totalFrames;
 

@@ -33,11 +33,8 @@ const QuestionPrompt: FC = () => {
 
       <div className="mt-10 grid grid-cols-2 gap-5 font-semibold">
         {question?.choices.map((item, key) => (
-          <QuestionChoice title={item.text} index={key + 1} key={key} />
+          <QuestionChoice title={item.text} index={item.id} key={key} />
         ))}
-        <QuestionChoice index={2} title="No" />
-        <QuestionChoice index={3} title="I don't know actually" />
-        <QuestionChoice index={4} title="Maybe" />
       </div>
     </div>
   );
@@ -54,12 +51,12 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
   index,
   title,
 }) => {
-  const { answerQuestion, activeQuestionChoiceIndex, question } =
+  const { answerQuestion, activeQuestionChoiceIndex, question, isRestTime } =
     useQuizContext();
 
   return (
     <button
-      onClick={() => answerQuestion(index)}
+      onClick={() => isRestTime || answerQuestion(index)}
       className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${activeQuestionChoiceIndex === index ? "!border-gray100 bg-gray60" : ""}`}
     >
       <span>{title}</span>

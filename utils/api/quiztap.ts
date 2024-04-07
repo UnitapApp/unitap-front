@@ -23,13 +23,13 @@ export const fetchQuizQuestionApi = async (questionId: number) => {
 
 export const submitAnswerApi = async (
   questionId: number,
-  competition: number,
+  userEnrollmentPk: number,
   choicePk: number,
 ) => {
   const response = await axiosInstance.post(
     "api/quiztap/competitions/submit-answer/",
     {
-      competition,
+      userCompetition: userEnrollmentPk,
       selectedChoice: choicePk,
       question: questionId,
     },
@@ -89,4 +89,20 @@ export const fetchQuizApi = async (id: number): Promise<Competition> => {
   //   },
   //   details: "Get ready for a fun ride into the future",
   // };
+};
+
+export const fetchUserQuizEnrollment = async (
+  userToken: string,
+  competitionPk: number,
+) => {
+  const res = await axiosInstance.get<WithPagination<{ id: number }>>(
+    "/api/quiztap/competitions/enroll/?competition_pk=" + competitionPk,
+    {
+      headers: {
+        Authorization: `TOKEN ${userToken}`,
+      },
+    },
+  );
+
+  return res.data.results[0].id;
 };

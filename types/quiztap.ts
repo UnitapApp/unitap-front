@@ -72,3 +72,11 @@ export type UserAnswer = {
   question: number;
   selectedChoice: number;
 };
+
+export type QuizAnswerQuestionResponse = {
+  id: number;
+  userCompetition: UserCompetition;
+
+  selectedChoice: Choice;
+  question: number;
+};
