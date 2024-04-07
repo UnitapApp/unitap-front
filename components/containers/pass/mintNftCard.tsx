@@ -243,7 +243,7 @@ const MintNFTCard = () => {
             </p>
           ) : (
             <p className="mx-auto mb-3 text-sm font-medium text-rose-800">
-              {error?.message}!
+              {error?.message.slice(0, 300)}!
             </p>
           )}
           {isSuccess || isError ? (
