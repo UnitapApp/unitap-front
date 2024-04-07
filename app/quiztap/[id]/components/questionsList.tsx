@@ -46,7 +46,8 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
     progress.style.strokeDashoffset = borderLen;
     progress.style.strokeDasharray = borderLen + "," + borderLen;
 
-    const durationInSeconds = timer / 1000; // Replace X with the desired duration in seconds
+    const durationInSeconds = 11;
+
     const framesPerSecond = 60; // Assuming 60 frames per second for smooth animation
 
     // Calculate the number of frames needed to achieve the desired duration
