@@ -10,6 +10,7 @@ import { createTokenDistribution } from "@/utils/api";
 import { tokenTapAbi } from "@/types/abis/contracts";
 import Big from "big.js";
 import { contractAddresses } from "@/constants";
+import { Chain } from "@/types";
 
 const txCallBack = async (
   address: string,
@@ -23,6 +24,7 @@ const txCallBack = async (
   startTime: bigint,
   endTime: bigint,
   isNativeToken: boolean,
+  selectedChain: Chain,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: tokenTapAbi,
@@ -40,7 +42,25 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
-
+  if (selectedChain.chainId === "42161") {
+    return signer?.writeContract({
+      abi: tokenTapAbi,
+      account: address as any,
+      address: contractAddresses.tokenTap as any,
+      functionName: "distributeToken",
+      // gasPrice: gasEstimate,
+      args: [
+        tokenContractAddress as any,
+        maxNumClaim,
+        isNativeToken
+          ? parseEther(new Big(tokenAmount).toFixed())
+          : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+        startTime,
+        endTime,
+      ],
+      value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+    });
+  }
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
@@ -179,6 +199,7 @@ export const createErc20TokenDistribution = async (
       BigInt(startTime),
       data.endTimeStamp,
       data.isNativeToken,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");

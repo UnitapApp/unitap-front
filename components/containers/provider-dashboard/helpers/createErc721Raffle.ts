@@ -1,4 +1,8 @@
-import { RequirementProps, ProviderDashboardFormDataProp } from "@/types";
+import {
+  RequirementProps,
+  ProviderDashboardFormDataProp,
+  Chain,
+} from "@/types";
 import { prizeTap721Abi } from "@/types/abis/contracts";
 import { getContract, PublicClient } from "viem";
 import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
@@ -17,6 +21,7 @@ export const createErc721RaffleCallback = async (
   maxParticipants: bigint,
   startTime: bigint,
   endTime: bigint,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
 
@@ -36,7 +41,25 @@ export const createErc721RaffleCallback = async (
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
   });
-
+  if (selectedChain.chainId === "42161") {
+    return signer?.writeContract({
+      abi: prizeTap721Abi,
+      account: account as any,
+      address: raffleContract.address,
+      functionName: "createRaffle",
+      args: [
+        currencyAddress,
+        nftIds.map((item) => BigInt(item)),
+        maxParticipants,
+        1n,
+        startTime,
+        endTime,
+        BigInt(nftIds.length),
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      // gasPrice: gasEstimate,
+    });
+  }
   return signer?.writeContract({
     abi: prizeTap721Abi,
     account: account as any,
@@ -170,6 +193,7 @@ export const createErc721Raffle = async (
       BigInt(maxNumberOfEntries),
       BigInt(startTime),
       data.endTimeStamp,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");
