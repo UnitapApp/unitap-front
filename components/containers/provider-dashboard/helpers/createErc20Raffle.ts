@@ -1,5 +1,9 @@
 import { ZERO_ADDRESS, contractAddresses } from "@/constants";
-import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
+import {
+  Chain,
+  ProviderDashboardFormDataProp,
+  RequirementProps,
+} from "@/types";
 import { prizeTapAbi } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
 import {
@@ -27,6 +31,7 @@ const createErc20RaffleCallback = async (
   isNativeToken: boolean,
   winnersCount: bigint,
   totalAmount: string,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
@@ -51,6 +56,30 @@ const createErc20RaffleCallback = async (
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 
+  if (selectedChain.chainId === "42161") {
+    return signer?.writeContract({
+      abi: prizeTapAbi,
+      account: account as any,
+      address: raffleContract.address,
+      functionName: "createRaffle",
+      // gasPrice: gasEstimate,
+      args: [
+        isNativeToken
+          ? parseEther(new Big(payableAmount).toFixed())
+          : BigInt(
+              toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+            ),
+        currencyAddress,
+        maxParticipants,
+        1n,
+        startTime,
+        endTime,
+        winnersCount,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+    });
+  }
   return signer?.writeContract({
     abi: prizeTapAbi,
     account: account as any,
@@ -199,6 +228,7 @@ export const createErc20Raffle = async (
       data.isNativeToken,
       BigInt(data.winnersCount),
       data.totalAmount,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");
