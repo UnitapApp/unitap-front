@@ -19,7 +19,7 @@ import {
 } from "react";
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL } from "@/constants";
+import { FAST_INTERVAL, contractAddresses } from "@/constants";
 import {
   useClient,
   useWaitForTransactionReceipt,
@@ -155,7 +155,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       const enrollInApi = await getEnrollmentApi(
         userToken,
         selectedRaffleForEnroll.pk,
-        address
+        address,
       );
       setSelectedRaffleForEnroll({
         ...selectedRaffleForEnroll,
@@ -211,7 +211,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           owner: enrollOrClaimPayload?.result?.signatures[0].owner,
           nonce: enrollOrClaimPayload?.result?.data.init.nonceAddress,
         },
-        enrollOrClaimPayload?.result?.shieldSignature
+        enrollOrClaimPayload?.result?.shieldSignature,
       );
     }
 
@@ -223,8 +223,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
         address: selectedRaffleForEnroll?.isPrizeNft
-          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+          ? contractAddresses.prizeTapErc20
+          : contractAddresses.prizeTapErc721,
       });
 
       if (response) {
@@ -274,7 +274,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setMethod(method);
       setSelectedRaffleForEnroll(raffle);
     },
-    [isConnected, setIsWalletPromptOpen]
+    [isConnected, setIsWalletPromptOpen],
   );
 
   const closeEnrollModal = useCallback(() => {
