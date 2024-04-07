@@ -13,8 +13,15 @@ const Timer = () => {
 
     const formattedMilliseconds = String(milliseconds).padStart(2, "0");
     const formattedSeconds = String(seconds).padStart(2, "0");
-    return `${formattedSeconds}:${formattedMilliseconds.slice(-3, -1)}`;
+
+    return {
+      seconds,
+      formattedSeconds: formattedSeconds,
+      formattedMilliSeconds: formattedMilliseconds.slice(-3, -1),
+    };
   };
+
+  const time = formatTime(timer);
 
   return (
     <div className="absolute left-1/2 top-5 flex -translate-x-1/2 items-center gap-3 rounded-xl border-2 border-gray20 bg-[#1E1E2C33] p-2">
@@ -25,8 +32,10 @@ const Timer = () => {
         height="31px"
       />
 
-      <p className="font-digital-numbers text-2xl text-white">
-        {formatTime(timer)}
+      <p
+        className={`font-digital-numbers text-2xl ${time.seconds > 5 ? "text-white" : time.seconds > 2 ? "text-warn" : "text-error"} `}
+      >
+        {`${time.formattedSeconds}:${time.formattedMilliSeconds}`}
       </p>
     </div>
   );

@@ -1,11 +1,15 @@
 import { UserProfile } from "./auth";
-import { ChainApi } from "./gastap";
 
 export enum CompetitionStatus {
   NOT_STARTED = "not_started",
   HOLDING = "holding",
   FINISHED = "finished",
 }
+
+export type QuestionPrevious = {
+  number: number;
+  pk: number;
+};
 
 export type Competition = {
   id: number;
@@ -18,7 +22,7 @@ export type Competition = {
   startAt: string;
   status: CompetitionStatus;
   prizeAmount: number;
-  chain: ChainApi;
+  chain: number;
   token: string;
   tokenAddress: string;
   discordUrl?: string;
