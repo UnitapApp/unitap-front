@@ -1,6 +1,6 @@
 "use client";
 
-import { CompetitionStatus, Competition } from "@/types";
+import { Competition } from "@/types";
 import {
   FC,
   PropsWithChildren,

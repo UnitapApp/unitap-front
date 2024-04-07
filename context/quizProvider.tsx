@@ -91,6 +91,9 @@ const QuizContextProvider: FC<PropsWithChildren & { quiz: Competition }> = ({
     if (timeInCycle >= 10000) {
       setTimer(15000 - timeInCycle);
       setIsRestTime(true);
+      // answer
+      // fetch next question
+      // .............
     } else {
       setTimer(10000 - timeInCycle);
       setIsRestTime(false);
