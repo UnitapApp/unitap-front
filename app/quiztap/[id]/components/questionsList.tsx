@@ -45,14 +45,37 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
       offset = borderLen;
     progress.style.strokeDashoffset = borderLen;
     progress.style.strokeDasharray = borderLen + "," + borderLen;
-    let anim = window.requestAnimationFrame(progressBar);
+
+    const durationInSeconds = timer / 1000; // Replace X with the desired duration in seconds
+    const framesPerSecond = 60; // Assuming 60 frames per second for smooth animation
+
+    // Calculate the number of frames needed to achieve the desired duration
+    const totalFrames = durationInSeconds * framesPerSecond;
+    const decrementAmount = borderLen / totalFrames;
+
+    let frameCount = 0;
+    let anim: number;
 
     function progressBar() {
-      offset -= 1;
+      offset -= decrementAmount;
       progress.style.strokeDashoffset = offset;
-      anim = window.requestAnimationFrame(progressBar);
-      if (offset < 0) window.cancelAnimationFrame(anim);
+      frameCount++;
+
+      // Stop animation when duration is reached
+      if (frameCount < totalFrames) {
+        anim = window.requestAnimationFrame(progressBar);
+      } else {
+        window.cancelAnimationFrame(anim);
+      }
     }
+
+    // Start animation
+    anim = window.requestAnimationFrame(progressBar);
+
+    // Clean up on component unmount or state change
+    return () => {
+      window.cancelAnimationFrame(anim);
+    };
   }, [stateIndex]);
 
   if (index > stateIndex || isRestTime)
