@@ -4,9 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 
 type CompetitionCardTimerProps = {
   startTime: string;
+  setEnterState: (value: number) => void;
 };
 
-const CompetitionCardTimer = ({ startTime }: CompetitionCardTimerProps) => {
+const CompetitionCardTimer = ({
+  startTime,
+  setEnterState,
+}: CompetitionCardTimerProps) => {
   const [now, setNow] = useState(new Date());
   const [days, setDays] = useState("00");
   const [hours, setHours] = useState("00");
@@ -19,6 +23,15 @@ const CompetitionCardTimer = ({ startTime }: CompetitionCardTimerProps) => {
 
   useEffect(() => {
     const diff = deadline.getTime() - now.getTime();
+
+    if (diff <= 60000 && diff >= -30000) {
+      setEnterState(1);
+    } else if (diff < -30000) {
+      setEnterState(-1);
+    } else {
+      setEnterState(0);
+    }
+
     if (diff <= 0) {
       setDays("00");
       setHours("00");
@@ -27,7 +40,7 @@ const CompetitionCardTimer = ({ startTime }: CompetitionCardTimerProps) => {
 
       return;
     }
-    // time calculations for days, hours, minutes and seconds
+
     const newDays = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -37,7 +50,7 @@ const CompetitionCardTimer = ({ startTime }: CompetitionCardTimerProps) => {
     setMinutes(minutes < 10 ? `0${minutes}` : minutes.toString());
     setHours(hours < 10 ? `0${hours}` : hours.toString());
     setDays(newDays < 10 ? `0${newDays}` : newDays.toString());
-  }, [now, deadline]);
+  }, [now, deadline, setEnterState]);
 
   useEffect(() => {
     const interval = setInterval(() => {

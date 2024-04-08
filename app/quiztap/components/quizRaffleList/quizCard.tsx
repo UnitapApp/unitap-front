@@ -4,12 +4,13 @@ import {
 } from "@/components/ui/Button/button";
 import Tooltip from "@/components/ui/Tooltip";
 import { Competition } from "@/types";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import CompetitionCardTimer from "../timer";
 import Image from "next/image";
 import Icon from "@/components/ui/Icon";
 import { enrollQuizApi } from "@/utils/api";
 import { useQuizTapListContext } from "@/context/quiztapListProvider";
+import Link from "next/link";
 
 const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
   const [showAllPermissions, setShowAllPermissions] = useState(false);
@@ -25,7 +26,7 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
   const title = "Optimism Quiz Tap";
 
   const [loading, setLoading] = useState(false);
-
+  const [enterState, setEnterState] = useState(0);
   const { enrollmentsList, addEnrollment } = useQuizTapListContext();
 
   const onEnroll = () => {
@@ -39,6 +40,11 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
         setLoading(false);
       });
   };
+
+  const isEnrolled =
+    enrollmentsList.findIndex(
+      (raffle) => raffle.competition.id === competition.id,
+    ) !== -1;
 
   return (
     <div className="quiz_card_wrap relative !mb-5 flex flex-col items-center justify-center rounded-2xl border-2 border-gray60 bg-quiz-header-bg sm:flex-row lg:border-l-gray10 ">
@@ -159,30 +165,67 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
             <p className="text-2xs font-medium leading-[13.62px] text-gray100">
               {peopleEnrolled + "/" + maxUserEntry} people enrolled
             </p>
-            <CompetitionCardTimer startTime={competition.startAt} />
+            <CompetitionCardTimer
+              setEnterState={setEnterState}
+              startTime={competition.startAt}
+            />
           </div>
 
-          {enrollmentsList.findIndex(
-            (raffle) => raffle.competition.id === competition.id,
-          ) !== -1 ? (
-            <EnrolledButton
+          {enterState === -1 ? (
+            <ClaimAndEnrollButton
               disabled={true}
-              className="!w-full  min-w-[552px] md:!w-[352px]"
+              className="!w-full min-w-[552px] md:!w-[352px]"
               height="48px"
               $fontSize="14px"
             >
-              <div className="relative flex w-full">
-                <span className={`bg-g-primary bg-clip-text text-transparent`}>
-                  Enrolled
-                </span>
+              <div className="relative w-full">
+                <p> Closed</p>
                 <Icon
                   className="absolute right-0 top-[-2px]"
-                  iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
+                  iconSrc="assets/images/prize-tap/header-prize-logo.svg"
                   width="27px"
                   height="24px"
                 />
               </div>
-            </EnrolledButton>
+            </ClaimAndEnrollButton>
+          ) : isEnrolled ? (
+            enterState === 1 ? (
+              <Link href={`/quiztap/${competition.id}`}>
+                <ClaimAndEnrollButton
+                  height="48px"
+                  $fontSize="14px"
+                  $width="252px"
+                  className="!w-full min-w-[552px] md:!w-[352px]"
+                >
+                  <div className="relative w-full">
+                    <p className="bg-g-primary bg-clip-text text-transparent">
+                      {"Enter Quiz"}
+                    </p>
+                  </div>
+                </ClaimAndEnrollButton>
+              </Link>
+            ) : (
+              <EnrolledButton
+                disabled={true}
+                className="!w-full  min-w-[552px] md:!w-[352px]"
+                height="48px"
+                $fontSize="14px"
+              >
+                <div className="relative flex w-full">
+                  <span
+                    className={`bg-g-primary bg-clip-text text-transparent`}
+                  >
+                    Enrolled
+                  </span>
+                  <Icon
+                    className="absolute right-0 top-[-2px]"
+                    iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
+                    width="27px"
+                    height="24px"
+                  />
+                </div>
+              </EnrolledButton>
+            )
           ) : (
             <ClaimAndEnrollButton
               onClick={onEnroll}
