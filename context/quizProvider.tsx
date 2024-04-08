@@ -171,8 +171,8 @@ const QuizContextProvider: FC<
 
       const res = await fetchQuizQuestionApi(questionIndex);
 
-      setRemainingPeople(res.remainPartisipantsCount);
-      setTotalParticipantsCount(res.totalPartisipantsCount);
+      setRemainingPeople(res.remainParticipantsCount);
+      setTotalParticipantsCount(res.totalParticipantsCount);
       setAmountWinPerUser(res.amountWonPerUser);
 
       setQuestion((prev) => {

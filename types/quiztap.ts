@@ -20,8 +20,8 @@ export type QuestionResponse = {
   answerCanBeShown: boolean;
   isEligible: boolean;
   text: string;
-  remainPartisipantsCount: number;
-  totalPartisipantsCount: number;
+  remainParticipantsCount: number;
+  totalParticipantsCount: number;
   amountWonPerUser: number;
 };
 
