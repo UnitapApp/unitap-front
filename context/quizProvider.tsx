@@ -197,12 +197,7 @@ const QuizContextProvider: FC<
       setStateIndex(newState);
 
       if (newState > quiz.questions.length) {
-        setFinished((prev) => {
-          if (!prev) {
-            submitUserAnswer();
-          }
-          return true;
-        });
+        setFinished(true);
         setTimer(0);
         return;
       }
