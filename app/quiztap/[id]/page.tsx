@@ -7,6 +7,7 @@ import WaitingIdle from "./components/waitingIdle";
 import { useQuizContext } from "@/context/quizProvider";
 import QuestionPrompt from "./components/questionPrompt";
 import RestTime from "./components/restTime";
+import QuizFinished from "./components/finished";
 
 const QuizItemPage = () => {
   const { stateIndex, hint } = useQuizContext();
@@ -43,7 +44,9 @@ const QuizItemPage = () => {
 };
 
 const RenderQuizItemBody = () => {
-  const { stateIndex, isRestTime } = useQuizContext();
+  const { stateIndex, isRestTime, finished } = useQuizContext();
+
+  if (finished) return <QuizFinished />;
 
   if (stateIndex <= 0) {
     return <WaitingIdle />;

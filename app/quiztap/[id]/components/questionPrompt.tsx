@@ -71,19 +71,20 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
   return (
     <button
       onClick={() => isRestTime || answerQuestion(index)}
-      className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${activeQuestionChoiceIndex === index ? "border-gray100 bg-gray60" : ""} ${
+      className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${
+        question &&
+        answersHistory[question.id] &&
+        answersHistory[question.id] !== index &&
+        activeQuestionChoiceIndex === index
+          ? "!border-error !bg-error/40"
+          : ""
+      } ${
         question &&
         answersHistory[question.id] === index &&
         activeQuestionChoiceIndex !== -1
           ? "!border-space-green !bg-dark-space-green"
           : ""
-      } ${
-        question &&
-        answersHistory[question.id] !== index &&
-        activeQuestionChoiceIndex === index
-          ? "!border-error !bg-error/40"
-          : ""
-      }`}
+      } ${activeQuestionChoiceIndex === index ? "!border-gray100 bg-gray60" : ""} `}
     >
       <span>{title}</span>
 

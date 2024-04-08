@@ -30,6 +30,8 @@ export type QuizContextProps = {
   correctAnswerIndex: number | null;
   previousQuestion: QuestionResponse | null;
   answersHistory: Record<number, number>;
+  userAnswersHistory: Record<number, number>;
+  finished: boolean;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -47,17 +49,15 @@ export const QuizContext = createContext<QuizContextProps>({
   correctAnswerIndex: -1,
   previousQuestion: null,
   answersHistory: {},
+  userAnswersHistory: {},
+  finished: false,
 });
 
-export const statePeriod = 60000;
+export const statePeriod = 10000;
 export const restPeriod = 5000;
 const totalPeriod = restPeriod + statePeriod;
 
 export const useQuizContext = () => useContext(QuizContext);
-
-const refreshState = (setTimer: any, previousState: number) => {
-  setTimer((prev: number) => {});
-};
 
 const QuizContextProvider: FC<
   PropsWithChildren & { quiz: Competition; userEnrollmentPk: number }
@@ -88,13 +88,16 @@ const QuizContextProvider: FC<
 
   const startAt = useMemo(() => new Date(quiz.startAt), [quiz.startAt]);
 
-  const answerQuestion = (choiceIndex: number) => {
-    userAnswersHistory[question!.id] = choiceIndex;
+  const answerQuestion = useCallback(
+    (choiceIndex: number) => {
+      userAnswersHistory[question!.id] = choiceIndex;
 
-    setUserAnswersHistory({
-      ...userAnswersHistory,
-    });
-  };
+      setUserAnswersHistory({
+        ...userAnswersHistory,
+      });
+    },
+    [question, userAnswersHistory],
+  );
 
   const getNextQuestionPk = useCallback(
     (index: number) => {
@@ -134,13 +137,28 @@ const QuizContextProvider: FC<
         userEnrollmentPk,
         userAnswersHistory[question.id],
       );
-      userAnswersHistory[question.id] = answerRes.id;
 
-      setUserAnswersHistory({
-        ...userAnswersHistory,
+      setUserAnswersHistory((userAnswerHistory) => {
+        userAnswerHistory[question.id] = answerRes.id;
+        return {
+          ...userAnswerHistory,
+        };
+      });
+
+      fetchQuizQuestionApi(question.id).then((res) => {
+        setAnswersHistory((answersHistory) => {
+          res.choices.forEach((choice) => {
+            if (choice.isCorrect) {
+              answersHistory[res.id] = choice.id;
+            }
+          });
+
+          return { ...answerQuestion };
+        });
       });
     }
   }, [
+    answerQuestion,
     getNextQuestionPk,
     question?.id,
     question?.isEligible,
@@ -159,31 +177,26 @@ const QuizContextProvider: FC<
       const res = await fetchQuizQuestionApi(questionIndex);
 
       setQuestion(res);
-
-      res.choices.forEach((choice) => {
-        if (choice.isCorrect) {
-          answersHistory[res.id] = choice.id;
-
-          setAnswersHistory({
-            ...answersHistory,
-          });
-        }
-      });
     },
-    [answersHistory, getNextQuestionPk],
+    [getNextQuestionPk],
   );
 
   useEffect(() => {
     if (question) return;
-
-    getQuestion(stateIndex);
     setPreviousQuestion(question);
+    getQuestion(stateIndex);
   }, [getQuestion, question, stateIndex]);
 
   useEffect(() => {
     const timerInterval = setInterval(() => {
       const newState = recalculateState();
       setStateIndex(newState);
+
+      if (newState > quiz.questions.length) {
+        setFinished(true);
+        setTimer(0);
+        return;
+      }
 
       if (newState !== stateIndex) {
         setQuestion(null);
@@ -210,7 +223,13 @@ const QuizContextProvider: FC<
     return () => {
       clearInterval(timerInterval);
     };
-  }, [getQuestion, recalculateState, startAt, stateIndex]);
+  }, [
+    getQuestion,
+    quiz.questions.length,
+    recalculateState,
+    startAt,
+    stateIndex,
+  ]);
 
   useEffect(() => {
     if (!isRestTime) return;
@@ -238,6 +257,8 @@ const QuizContextProvider: FC<
         correctAnswerIndex,
         previousQuestion,
         answersHistory,
+        userAnswersHistory,
+        finished,
       }}
     >
       {children}

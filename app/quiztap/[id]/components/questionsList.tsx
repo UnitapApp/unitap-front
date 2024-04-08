@@ -1,34 +1,52 @@
-import { statePeriod, useQuizContext } from "@/context/quizProvider";
+import {
+  restPeriod,
+  statePeriod,
+  useQuizContext,
+} from "@/context/quizProvider";
 import { FC, useEffect, useRef } from "react";
 
 const QuestionsList = () => {
   return (
     <div className="mt-10 flex rounded-xl border-2 border-gray50 bg-gray20 p-4">
       <QuestionItem index={1} />
-      <Separator />
+      <Separator index={1} />
       <QuestionItem index={2} />
-      <Separator />
+      <Separator index={2} />
       <QuestionItem index={3} />
-      <Separator />
+      <Separator index={3} />
       <QuestionItem index={4} />
-      <Separator />
+      <Separator index={4} />
       <QuestionItem index={5} />
-      <Separator />
+      <Separator index={5} />
       <QuestionItem index={6} />
-      <Separator />
+      <Separator index={6} />
       <QuestionItem index={7} />
-      <Separator />
+      <Separator index={7} />
       <QuestionItem index={8} />
-      <Separator />
+      <Separator index={8} />
       <QuestionItem index={9} />
-      <Separator />
+      <Separator index={9} />
       <QuestionItem index={10} />
     </div>
   );
 };
 
-const Separator = () => {
-  return <div className="mx-2 my-auto h-[2px] w-7 rounded-lg bg-gray100"></div>;
+const Separator: FC<{ index: number }> = ({ index }) => {
+  const { stateIndex, timer, isRestTime } = useQuizContext();
+
+  const width =
+    isRestTime && index === stateIndex
+      ? Math.min((28 * (restPeriod - timer)) / restPeriod, restPeriod)
+      : 28;
+
+  return (
+    <div
+      className="mx-2 my-auto h-[2px] rounded-lg bg-gray100"
+      style={{
+        width: `${width}px`,
+      }}
+    ></div>
+  );
 };
 
 const QuestionItem: FC<{ index: number }> = ({ index }) => {

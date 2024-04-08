@@ -5,7 +5,7 @@ import { useQuizContext } from "@/context/quizProvider";
 import { FC } from "react";
 
 const RestTime: FC<{}> = () => {
-  const { timer } = useQuizContext();
+  const { timer, previousQuestion, userAnswersHistory } = useQuizContext();
 
   const totalSeconds = Math.floor(timer / 1000);
   const seconds = totalSeconds % 60;
