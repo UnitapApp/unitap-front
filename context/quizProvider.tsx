@@ -31,6 +31,8 @@ export type QuizContextProps = {
   answersHistory: (number | null)[];
   userAnswersHistory: (number | null)[];
   finished: boolean;
+  totalParticipantsCount: number;
+  amountWinPerUser: number;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -49,6 +51,8 @@ export const QuizContext = createContext<QuizContextProps>({
   answersHistory: [],
   userAnswersHistory: [],
   finished: false,
+  totalParticipantsCount: 0,
+  amountWinPerUser: 0,
 });
 
 export const statePeriod = 58000;
@@ -64,7 +68,8 @@ const QuizContextProvider: FC<
   const [hint, setHint] = useState(1);
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
-
+  const [totalParticipantsCount, setTotalParticipantsCount] = useState(0);
+  const [amountWinPerUser, setAmountWinPerUser] = useState(0);
   const [finished, setFinished] = useState(false);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
   const [timer, setTimer] = useState(0);
@@ -139,20 +144,6 @@ const QuizContextProvider: FC<
         userAnswerHistory[question.number - 1] = answerRes.id;
         return [...userAnswerHistory];
       });
-
-      fetchQuizQuestionApi(question.id).then((res) => {
-        setAnswersHistory((answersHistory) => {
-          res.choices.forEach((choice) => {
-            if (choice.isCorrect) {
-              if (!previousQuestion) return;
-
-              answersHistory[previousQuestion.number - 1] = choice.id;
-            }
-          });
-
-          return [...answersHistory];
-        });
-      });
     }
   }, [
     getNextQuestionPk,
@@ -171,7 +162,9 @@ const QuizContextProvider: FC<
 
       const res = await fetchQuizQuestionApi(questionIndex);
 
-      // setRemainingPeople(res.)
+      setRemainingPeople(res.remainPartisipantsCount);
+      setTotalParticipantsCount(res.totalPartisipantsCount);
+      setAmountWinPerUser(res.wonAmountPerUser);
 
       setQuestion((prev) => {
         if (prev) {
@@ -271,6 +264,8 @@ const QuizContextProvider: FC<
         answersHistory,
         userAnswersHistory,
         finished,
+        totalParticipantsCount,
+        amountWinPerUser,
       }}
     >
       {children}

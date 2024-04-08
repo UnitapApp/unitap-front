@@ -1,19 +1,35 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
+import { useQuizContext } from "@/context/quizProvider";
 import { useNumberLinearInterpolate } from "@/utils/interpolate";
 import { FC, useEffect } from "react";
 
 const QuizTapSidebar: FC = () => {
+  const { totalParticipantsCount, remainingPeople, amountWinPerUser, quiz } =
+    useQuizContext();
+
+  const amountWinCount = useNumberLinearInterpolate({
+    duration: 6000,
+    initial: amountWinPerUser,
+  });
+
   const { onChange, value } = useNumberLinearInterpolate({
-    duration: 1000,
-    initial: 100,
+    duration: 6000,
+    initial: remainingPeople,
   });
 
   useEffect(() => {
-    // @ts-ignore
-    window.onChangeValue = (value: number) => onChange(value);
-  }, [onChange]);
+    if (remainingPeople === value) return;
+
+    onChange(remainingPeople);
+  }, [onChange, remainingPeople, value]);
+
+  useEffect(() => {
+    if (amountWinPerUser === amountWinCount.value) return;
+
+    amountWinCount.onChange(amountWinPerUser);
+  }, [amountWinCount, amountWinPerUser]);
 
   return (
     <aside className="quiz-sidebar flex w-60 flex-col rounded-2xl p-1">
@@ -37,7 +53,8 @@ const QuizTapSidebar: FC = () => {
           <p>In game people</p>
 
           <p className="mt-2">
-            <strong className="text-white">{value}</strong> / 150
+            <strong className="text-white">{value}</strong> /{" "}
+            {totalParticipantsCount}
           </p>
         </div>
 
@@ -55,8 +72,8 @@ const QuizTapSidebar: FC = () => {
           <p>Your Prize so Far</p>
 
           <p className="mt-2">
-            <strong className="text-white">12.00</strong>{" "}
-            <span className="text-space-green">USDT</span>
+            <strong className="text-white">{amountWinPerUser}</strong>{" "}
+            <span className="text-space-green">{quiz?.token}</span>
           </p>
         </div>
 
