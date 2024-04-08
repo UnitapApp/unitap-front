@@ -23,7 +23,7 @@ export const useNumberLinearInterpolate = ({
     let currentNumber = number;
     const interval = setInterval(() => {
       currentNumber += increment;
-      setNumber(Math.floor(currentNumber));
+      setNumber(currentNumber);
       if (Math.abs(currentNumber - value) < Math.abs(increment)) {
         clearInterval(interval);
         setNumber(value);

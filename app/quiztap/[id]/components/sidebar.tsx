@@ -19,13 +19,13 @@ const QuizTapSidebar: FC = () => {
     initial: remainingPeople,
   });
 
-  // useEffect(() => {
-  //   onChange(remainingPeople);
-  // }, [remainingPeople]);
+  useEffect(() => {
+    onChange(remainingPeople);
+  }, [remainingPeople]);
 
-  // useEffect(() => {
-  //   amountWinCount.onChange(amountWinPerUser);
-  // }, [amountWinPerUser]);
+  useEffect(() => {
+    amountWinCount.onChange(amountWinPerUser);
+  }, [amountWinPerUser]);
 
   return (
     <aside className="quiz-sidebar flex w-60 flex-col rounded-2xl p-1">
@@ -49,7 +49,7 @@ const QuizTapSidebar: FC = () => {
           <p>In game people</p>
 
           <p className="mt-2">
-            <strong className="text-white">{value}</strong> /{" "}
+            <strong className="text-white">{value.toFixed(2)}</strong> /{" "}
             {totalParticipantsCount}
           </p>
         </div>
@@ -69,7 +69,7 @@ const QuizTapSidebar: FC = () => {
 
           <p className="mt-2">
             <strong className="text-white">
-              {amountWinPerUser.toFixed(4)}
+              {amountWinCount.value.toFixed(2)}
             </strong>{" "}
             <span className="text-space-green">{quiz?.token}</span>
           </p>

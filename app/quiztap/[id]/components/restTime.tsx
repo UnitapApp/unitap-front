@@ -26,16 +26,18 @@ const RestTime: FC<{}> = () => {
   }, [answersHistory, userAnswersHistory]);
 
   if (answersHistory[stateIndex - 1] === null) {
-    <div className="mt-10 text-center">
-      <p className="text-lg font-semibold text-white">
-        Processing the results....
-      </p>
+    return (
+      <div className="mt-10 text-center">
+        <p className="text-lg font-semibold text-white">
+          Processing the results....
+        </p>
 
-      <p className="mt-5 text-gray100"></p>
-      <p className="mt-3 text-sm text-gray90">
-        Next Questions in {seconds} seconds...
-      </p>
-    </div>;
+        <p className="mt-5 text-gray100"></p>
+        <p className="mt-3 text-sm text-gray90">
+          Next Questions in {seconds} seconds...
+        </p>
+      </div>
+    );
   }
 
   if (isLost) {

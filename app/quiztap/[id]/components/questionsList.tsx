@@ -8,7 +8,7 @@ import { FC, Fragment, useEffect, useRef } from "react";
 const QuestionsList = () => {
   const { quiz } = useQuizContext();
   return (
-    <div className="mt-10 flex rounded-xl border-2 border-gray50 bg-gray20 p-4">
+    <div className="mt-10 flex justify-center rounded-xl border-2 border-gray50 bg-gray20 p-4">
       {quiz?.questions.map((question, index) => (
         <Fragment key={index}>
           <QuestionItem index={index + 1} />
@@ -23,7 +23,7 @@ const Separator: FC<{ index: number }> = ({ index }) => {
   const { stateIndex, timer, isRestTime } = useQuizContext();
 
   const width =
-    isRestTime && index === stateIndex - 2
+    isRestTime && index === stateIndex
       ? Math.min((28 * (restPeriod - timer)) / restPeriod, restPeriod)
       : 28;
 
@@ -31,7 +31,7 @@ const Separator: FC<{ index: number }> = ({ index }) => {
     <div className="relative mx-2 my-auto h-[2px] w-7 rounded-lg bg-gray50">
       <div
         className="absolute bottom-0 left-0 top-0 h-[2px] bg-gray100"
-        style={{ width: width }}
+        style={{ width }}
       ></div>
     </div>
   );
