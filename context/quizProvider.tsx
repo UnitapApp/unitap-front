@@ -1,6 +1,6 @@
 "use client";
 
-import { Competition, Question, QuestionResponse } from "@/types";
+import { Competition, QuestionResponse } from "@/types";
 import { NullCallback } from "@/utils";
 import { fetchQuizQuestionApi, submitAnswerApi } from "@/utils/api";
 import {
@@ -151,7 +151,7 @@ const QuizContextProvider: FC<
             return [...userAnswerHistory];
           });
         });
-      }, 500);
+      }, 1000);
     }
   }, [
     getNextQuestionPk,

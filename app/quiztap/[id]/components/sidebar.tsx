@@ -49,7 +49,7 @@ const QuizTapSidebar: FC = () => {
           <p>In game people</p>
 
           <p className="mt-2">
-            <strong className="text-white">{value.toFixed(2)}</strong> /{" "}
+            <strong className="text-white">{value}</strong> /{" "}
             {totalParticipantsCount}
           </p>
         </div>

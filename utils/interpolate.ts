@@ -20,11 +20,14 @@ export const useNumberLinearInterpolate = ({
 
     const increment = (value - number) / frames;
 
+    const minIncrement =
+      Math.sign(increment) * Math.max(Math.abs(increment), 1);
+
     let currentNumber = number;
     const interval = setInterval(() => {
-      currentNumber += increment;
+      currentNumber += minIncrement;
       setNumber(currentNumber);
-      if (Math.abs(currentNumber - value) < Math.abs(increment)) {
+      if (Math.abs(currentNumber - value) < Math.abs(minIncrement)) {
         clearInterval(interval);
         setNumber(value);
       }
