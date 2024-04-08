@@ -51,7 +51,7 @@ export const QuizContext = createContext<QuizContextProps>({
   finished: false,
 });
 
-export const statePeriod = 60000;
+export const statePeriod = 58000;
 export const restPeriod = 5000;
 const totalPeriod = restPeriod + statePeriod;
 
@@ -156,9 +156,7 @@ const QuizContextProvider: FC<
     }
   }, [
     getNextQuestionPk,
-    question?.id,
-    question?.isEligible,
-    question?.number,
+    previousQuestion,
     stateIndex,
     userAnswersHistory,
     userEnrollmentPk,
