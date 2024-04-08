@@ -69,6 +69,9 @@ const QuizContextProvider: FC<
   const [activeQuestionChoice, setActiveQuestionChoice] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [stateIndex, setStateIndex] = useState(-1);
+  const [previousQuestion, setPreviousQuestion] =
+    useState<QuestionResponse | null>(null);
+
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState<number | null>(
     null,
   );
@@ -108,6 +111,8 @@ const QuizContextProvider: FC<
   const submitUserAnswer = useCallback(async () => {
     const currentQuestionIndex = getNextQuestionPk(stateIndex);
 
+    if (!question?.isEligible) return;
+
     if (
       activeQuestionChoice &&
       activeQuestionChoice !== -1 &&
@@ -120,7 +125,13 @@ const QuizContextProvider: FC<
       );
       setActiveQuestionChoice(-1);
     }
-  }, [activeQuestionChoice, getNextQuestionPk, stateIndex, userEnrollmentPk]);
+  }, [
+    activeQuestionChoice,
+    getNextQuestionPk,
+    question?.isEligible,
+    stateIndex,
+    userEnrollmentPk,
+  ]);
 
   const getQuestion = useCallback(
     async (stateIndex: number) => {
@@ -140,6 +151,7 @@ const QuizContextProvider: FC<
     if (question) return;
 
     getQuestion(stateIndex);
+    setPreviousQuestion(question);
   }, [getQuestion, question, stateIndex]);
 
   useEffect(() => {

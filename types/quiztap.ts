@@ -18,6 +18,7 @@ export type QuestionResponse = {
   number: number;
   canBeShown: boolean;
   answerCanBeShown: boolean;
+  isEligible: boolean;
   text: string;
 };
 

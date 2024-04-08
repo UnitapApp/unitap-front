@@ -39,12 +39,10 @@ export const submitAnswerApi = async (
 };
 
 export const enrollQuizApi = async (id: number) => {
-  const response: WithPagination<Competition> = await axiosInstance.post(
-    "/api/quiztap/competitions/enroll/",
-    {
+  const response: { id: number; competition: Competition } =
+    await axiosInstance.post("/api/quiztap/competitions/enroll/", {
       competition: id,
-    },
-  );
+    });
 
   return response;
 };
@@ -105,4 +103,12 @@ export const fetchUserQuizEnrollment = async (
   );
 
   return res.data.results[0].id;
+};
+
+export const fetchUsersQuizEnrollments = async () => {
+  const res = await axiosInstance.get<
+    WithPagination<{ id: number; competition: Competition }>
+  >("/api/quiztap/competitions/enroll/");
+
+  return res.data.results;
 };

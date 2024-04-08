@@ -1,6 +1,9 @@
 "use client";
 
 import { Competition } from "@/types";
+import { NullCallback } from "@/utils";
+import { fetchUsersQuizEnrollments } from "@/utils/api";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 import {
   FC,
   PropsWithChildren,
@@ -15,10 +18,14 @@ export const QuizTapListContext = createContext<{
   next?: string;
   previous?: string;
   count: number;
+  enrollmentsList: { id: number; competition: Competition }[];
+  addEnrollment: (value: { id: number; competition: Competition }) => void;
 }>({
   quizList: [],
   pageIndex: 1,
   count: 0,
+  enrollmentsList: [],
+  addEnrollment: NullCallback,
 });
 
 export const useQuizTapListContext = () => useContext(QuizTapListContext);
@@ -41,6 +48,13 @@ const QuizTapListProvider: FC<
     competitionInitialList,
   );
 
+  const [enrollmentsList, setEnrollmentsList] = useState<
+    {
+      id: number;
+      competition: Competition;
+    }[]
+  >([]);
+
   const [paginateStatus, setPaginateStatus] = useState({
     previous: previousInitial,
     next: nextInitial,
@@ -50,6 +64,12 @@ const QuizTapListProvider: FC<
 
   const refreshCompetitionList = (currentPage: number) => {};
 
+  useFastRefresh(() => {
+    fetchUsersQuizEnrollments().then((res) => {
+      setEnrollmentsList(res);
+    });
+  }, []);
+
   return (
     <QuizTapListContext.Provider
       value={{
@@ -58,6 +78,9 @@ const QuizTapListProvider: FC<
         quizList: competitionList,
         next: paginateStatus.next,
         previous: paginateStatus.previous,
+        enrollmentsList,
+        addEnrollment: (value) =>
+          setEnrollmentsList([...enrollmentsList, value]),
       }}
     >
       {children}

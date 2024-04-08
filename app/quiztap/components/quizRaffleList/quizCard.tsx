@@ -1,4 +1,7 @@
-import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
+import {
+  ClaimAndEnrollButton,
+  EnrolledButton,
+} from "@/components/ui/Button/button";
 import Tooltip from "@/components/ui/Tooltip";
 import { Competition } from "@/types";
 import { FC, useState } from "react";
@@ -6,6 +9,7 @@ import CompetitionCardTimer from "../timer";
 import Image from "next/image";
 import Icon from "@/components/ui/Icon";
 import { enrollQuizApi } from "@/utils/api";
+import { useQuizTapListContext } from "@/context/quiztapListProvider";
 
 const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
   const [showAllPermissions, setShowAllPermissions] = useState(false);
@@ -22,12 +26,18 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
 
   const [loading, setLoading] = useState(false);
 
+  const { enrollmentsList, addEnrollment } = useQuizTapListContext();
+
   const onEnroll = () => {
     setLoading(true);
 
-    enrollQuizApi(competition.id).finally(() => {
-      setLoading(false);
-    });
+    enrollQuizApi(competition.id)
+      .then((res) => {
+        addEnrollment(res);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -151,20 +161,44 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
             </p>
             <CompetitionCardTimer startTime={competition.startAt} />
           </div>
-          <ClaimAndEnrollButton
-            onClick={onEnroll}
-            height="48px"
-            $fontSize="14px"
-            $width="252px"
-            disabled={loading}
-            className="!w-full min-w-[552px] md:!w-[352px]"
-          >
-            <div className="relative w-full">
-              <p className="bg-g-primary bg-clip-text text-transparent">
-                {loading ? "Enrolling..." : "Enroll"}
-              </p>
-            </div>
-          </ClaimAndEnrollButton>
+
+          {enrollmentsList.findIndex(
+            (raffle) => raffle.competition.id === competition.id,
+          ) !== -1 ? (
+            <EnrolledButton
+              disabled={true}
+              className="!w-full  min-w-[552px] md:!w-[352px]"
+              height="48px"
+              $fontSize="14px"
+            >
+              <div className="relative flex w-full">
+                <span className={`bg-g-primary bg-clip-text text-transparent`}>
+                  Enrolled
+                </span>
+                <Icon
+                  className="absolute right-0 top-[-2px]"
+                  iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
+                  width="27px"
+                  height="24px"
+                />
+              </div>
+            </EnrolledButton>
+          ) : (
+            <ClaimAndEnrollButton
+              onClick={onEnroll}
+              height="48px"
+              $fontSize="14px"
+              $width="252px"
+              disabled={loading}
+              className="!w-full min-w-[552px] md:!w-[352px]"
+            >
+              <div className="relative w-full">
+                <p className="bg-g-primary bg-clip-text text-transparent">
+                  {loading ? "Enrolling..." : "Enroll"}
+                </p>
+              </div>
+            </ClaimAndEnrollButton>
+          )}
         </div>
       </div>
     </div>
