@@ -23,7 +23,7 @@ const Separator: FC<{ index: number }> = ({ index }) => {
   const { stateIndex, timer, isRestTime } = useQuizContext();
 
   const width =
-    isRestTime && index === stateIndex - 1
+    isRestTime && index === stateIndex - 2
       ? Math.min((28 * (restPeriod - timer)) / restPeriod, restPeriod)
       : 28;
 
@@ -56,8 +56,10 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
       progress.style.strokeDashoffset = borderLen;
       progress.style.strokeDasharray = borderLen + "," + borderLen;
 
-      const durationInSeconds =
+      let durationInSeconds =
         statePeriod / 1000 - (statePeriod / 1000 - timer / 1000);
+
+      durationInSeconds += durationInSeconds / 4;
 
       const framesPerSecond = 60;
 

@@ -68,7 +68,9 @@ const QuizTapSidebar: FC = () => {
           <p>Your Prize so Far</p>
 
           <p className="mt-2">
-            <strong className="text-white">{amountWinPerUser}</strong>{" "}
+            <strong className="text-white">
+              {amountWinPerUser.toFixed(4)}
+            </strong>{" "}
             <span className="text-space-green">{quiz?.token}</span>
           </p>
         </div>
