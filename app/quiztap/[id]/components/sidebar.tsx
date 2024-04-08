@@ -19,13 +19,13 @@ const QuizTapSidebar: FC = () => {
     initial: remainingPeople,
   });
 
-  useEffect(() => {
-    onChange(remainingPeople);
-  }, [remainingPeople]);
+  // useEffect(() => {
+  //   onChange(remainingPeople);
+  // }, [remainingPeople]);
 
-  useEffect(() => {
-    amountWinCount.onChange(amountWinPerUser);
-  }, [amountWinPerUser]);
+  // useEffect(() => {
+  //   amountWinCount.onChange(amountWinPerUser);
+  // }, [amountWinPerUser]);
 
   return (
     <aside className="quiz-sidebar flex w-60 flex-col rounded-2xl p-1">

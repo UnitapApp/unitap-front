@@ -206,18 +206,17 @@ const QuizContextProvider: FC<
       setTimer(() => {
         const now = new Date().getTime();
 
-        let estimatedRemaining =
-          newState <= 0
-            ? startAt.getTime() - now
-            : totalPeriod * newState + startAt.getTime() - now;
+        if (newState <= 0) {
+          return startAt.getTime() - now;
+        }
 
-        if (
-          totalPeriod * newState + startAt.getTime() - now >= statePeriod &&
-          newState !== 1
-        ) {
+        let estimatedRemaining =
+          totalPeriod * newState + startAt.getTime() - now;
+
+        if (estimatedRemaining < restPeriod) {
           setIsRestTime(true);
-          estimatedRemaining -= statePeriod;
         } else {
+          estimatedRemaining -= statePeriod;
           setIsRestTime(false);
         }
 
