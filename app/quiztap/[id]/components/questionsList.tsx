@@ -3,30 +3,18 @@ import {
   statePeriod,
   useQuizContext,
 } from "@/context/quizProvider";
-import { FC, useEffect, useRef } from "react";
+import { FC, Fragment, useEffect, useRef } from "react";
 
 const QuestionsList = () => {
+  const { quiz } = useQuizContext();
   return (
     <div className="mt-10 flex rounded-xl border-2 border-gray50 bg-gray20 p-4">
-      <QuestionItem index={1} />
-      <Separator index={1} />
-      <QuestionItem index={2} />
-      <Separator index={2} />
-      <QuestionItem index={3} />
-      <Separator index={3} />
-      <QuestionItem index={4} />
-      <Separator index={4} />
-      <QuestionItem index={5} />
-      <Separator index={5} />
-      <QuestionItem index={6} />
-      <Separator index={6} />
-      <QuestionItem index={7} />
-      <Separator index={7} />
-      <QuestionItem index={8} />
-      <Separator index={8} />
-      <QuestionItem index={9} />
-      <Separator index={9} />
-      <QuestionItem index={10} />
+      {quiz?.questions.map((question, index) => (
+        <Fragment key={index}>
+          <QuestionItem index={index + 1} />
+          {index < quiz.questions.length - 1 && <Separator index={index + 1} />}
+        </Fragment>
+      ))}
     </div>
   );
 };

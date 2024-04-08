@@ -8,13 +8,14 @@ const AxiosApiManager = () => {
   const { userToken } = useUserProfileContext();
 
   useEffect(() => {
-    if (!userToken) {
+    const token = userToken ?? localStorage.getItem("userToken");
+
+    if (!token) {
       axiosInstance.defaults.headers.common["Authorization"] = null;
       return;
     }
 
-    axiosInstance.defaults.headers.common["Authorization"] =
-      `TOKEN ${userToken}`;
+    axiosInstance.defaults.headers.common["Authorization"] = `TOKEN ${token}`;
   }, [userToken]);
 
   return null;

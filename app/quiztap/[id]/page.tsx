@@ -13,7 +13,7 @@ const QuizItemPage = () => {
   const { stateIndex, hint } = useQuizContext();
 
   return (
-    <div className="quiz-main-wrapper relative">
+    <div className="quiz-main-wrapper relative w-full">
       <main className="quiz-main-content h-full w-full flex-1 rounded-2xl p-3">
         <div className="mt-5 flex items-center justify-between px-5">
           <p className="text-[#997EA4]">Quiz</p>

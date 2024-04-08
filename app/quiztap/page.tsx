@@ -1,13 +1,22 @@
-import Header from "./components/header";
-import QuizRaffleList from "./components/quizRaffleList";
+import QuizTapListProvider from "@/context/quiztapListProvider";
+import { fetchQuizzesApi } from "@/utils/api";
+import { FC } from "react";
 
-const QuizTapPage = () => {
+import QuizTapMain from "./components/main";
+
+const QuizListPage: FC = async () => {
+  const res = await fetchQuizzesApi();
+
   return (
-    <>
-      <Header />
-      <QuizRaffleList />
-    </>
+    <QuizTapListProvider
+      competitionInitialList={res.results}
+      countInitial={res.count}
+      nextInitial={res.next}
+      previousInitial={res.previous}
+    >
+      <QuizTapMain />
+    </QuizTapListProvider>
   );
 };
 
-export default QuizTapPage;
+export default QuizListPage;

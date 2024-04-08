@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 export const useFastRefresh = (
   callback: () => void,
   dependencies: any[] = [],
-  fastInterval: number = FAST_INTERVAL
+  fastInterval: number = FAST_INTERVAL,
 ) => {
   const callbackRef = useRef<() => void>();
 
@@ -31,7 +31,7 @@ export const useFastRefresh = (
 export const useMediumRefresh = (
   callback: () => void,
   dependencies: any[] = [],
-  mediumInterval: number = MEDIUM_INTERVAL
+  mediumInterval: number = MEDIUM_INTERVAL,
 ) => {
   const callbackRef = useRef<() => void>();
 
@@ -53,7 +53,7 @@ export const useMediumRefresh = (
 export const useSlowRefresh = (
   callback: () => void,
   dependencies: any[] = [],
-  slowInterval: number = SLOW_INTERVAL
+  slowInterval: number = SLOW_INTERVAL,
 ) => {
   const callbackRef = useRef<() => void>();
 
@@ -75,7 +75,7 @@ export const useSlowRefresh = (
 export const useRefreshWithInitial = (
   callback: () => void,
   interval: IntervalType,
-  dependencies: any[] = []
+  dependencies: any[] = [],
 ) => {
   const callbackRef = useRef<() => void>();
 
@@ -86,7 +86,7 @@ export const useRefreshWithInitial = (
   useEffect(() => {
     if (interval && callbackRef.current) {
       const intervalId = setInterval(callbackRef.current, interval);
-      callbackRef.current(); // Initial callback execution
+      setTimeout(callbackRef.current, 0);
 
       return () => clearInterval(intervalId);
     }
@@ -105,7 +105,7 @@ export const usePreventNavigation = (isActive: boolean, message?: string) => {
         event.stopPropagation();
 
         const prompt = window.confirm(
-          message || "Your changes won't be saved. Are you leaving?"
+          message || "Your changes won't be saved. Are you leaving?",
         );
 
         if (!prompt) return;
