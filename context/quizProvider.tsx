@@ -93,9 +93,7 @@ const QuizContextProvider: FC<
     (choiceIndex: number) => {
       userAnswersHistory[question!.number - 1] = choiceIndex;
 
-      setUserAnswersHistory({
-        ...userAnswersHistory,
-      });
+      setUserAnswersHistory([...userAnswersHistory]);
     },
     [question, userAnswersHistory],
   );
@@ -145,7 +143,7 @@ const QuizContextProvider: FC<
         if (!currentQuestion) return;
 
         fetchQuizQuestionApi(currentQuestion).then((res) => {
-          setUserAnswersHistory((userAnswerHistory) => {
+          setAnswersHistory((userAnswerHistory) => {
             userAnswerHistory[questionNumber] = res.choices.find(
               (choice) => choice.isCorrect,
             )?.id!;
