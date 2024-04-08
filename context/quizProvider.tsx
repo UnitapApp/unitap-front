@@ -173,7 +173,7 @@ const QuizContextProvider: FC<
 
       setRemainingPeople(res.remainPartisipantsCount);
       setTotalParticipantsCount(res.totalPartisipantsCount);
-      setAmountWinPerUser(res.wonAmountPerUser);
+      setAmountWinPerUser(res.amountWonPerUser);
 
       setQuestion((prev) => {
         if (prev) {

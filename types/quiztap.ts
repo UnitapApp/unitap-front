@@ -22,7 +22,7 @@ export type QuestionResponse = {
   text: string;
   remainPartisipantsCount: number;
   totalPartisipantsCount: number;
-  wonAmountPerUser: number;
+  amountWonPerUser: number;
 };
 
 export type Competition = {
