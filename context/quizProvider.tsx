@@ -65,6 +65,11 @@ const QuizContextProvider: FC<
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
 
+  // remainPartisipantsCount: 2;
+  // text: "Ali Teswt";
+  // totalPartisipantsCount: 2;
+  // wonAmountPerUser: 5;
+
   const [finished, setFinished] = useState(false);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
   const [timer, setTimer] = useState(0);
@@ -125,7 +130,7 @@ const QuizContextProvider: FC<
 
     if (
       userAnswersHistory[question.number - 1] !== -1 &&
-      currentQuestionIndex
+      currentQuestionIndex !== -1
     ) {
       const answerRes = await submitAnswerApi(
         currentQuestionIndex!,
@@ -191,7 +196,12 @@ const QuizContextProvider: FC<
       setStateIndex(newState);
 
       if (newState > quiz.questions.length) {
-        setFinished(true);
+        setFinished((prev) => {
+          if (!prev) {
+            submitUserAnswer();
+          }
+          return true;
+        });
         setTimer(0);
         return;
       }
@@ -211,7 +221,7 @@ const QuizContextProvider: FC<
 
         if (
           totalPeriod * newState + startAt.getTime() - now >= statePeriod &&
-          stateIndex !== 0
+          newState !== 1
         ) {
           setIsRestTime(true);
           estimatedRemaining -= statePeriod;

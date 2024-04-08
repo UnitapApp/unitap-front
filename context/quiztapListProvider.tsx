@@ -1,9 +1,10 @@
 "use client";
 
+import { FAST_INTERVAL } from "@/constants";
 import { Competition } from "@/types";
 import { NullCallback } from "@/utils";
 import { fetchUsersQuizEnrollments } from "@/utils/api";
-import { useFastRefresh } from "@/utils/hooks/refresh";
+import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import {
   FC,
   PropsWithChildren,
@@ -64,11 +65,15 @@ const QuizTapListProvider: FC<
 
   const refreshCompetitionList = (currentPage: number) => {};
 
-  useFastRefresh(() => {
-    fetchUsersQuizEnrollments().then((res) => {
-      setEnrollmentsList(res);
-    });
-  }, []);
+  useRefreshWithInitial(
+    () => {
+      fetchUsersQuizEnrollments().then((res) => {
+        setEnrollmentsList(res);
+      });
+    },
+    FAST_INTERVAL,
+    [],
+  );
 
   return (
     <QuizTapListContext.Provider
