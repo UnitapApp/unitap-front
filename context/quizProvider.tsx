@@ -1,6 +1,6 @@
 "use client";
 
-import { Choice, Competition, Question, QuestionResponse } from "@/types";
+import { Competition, Question, QuestionResponse } from "@/types";
 import { NullCallback } from "@/utils";
 import { fetchQuizQuestionApi, submitAnswerApi } from "@/utils/api";
 import {
@@ -24,13 +24,12 @@ export type QuizContextProps = {
   answerQuestion: (answerIndex: number) => void;
   timer: number;
   stateIndex: number;
-  activeQuestionChoiceIndex: number;
+  activeQuestionChoiceIndex: number | null;
   isRestTime: boolean;
   setIsRestTime: (value: boolean) => void;
-  correctAnswerIndex: number | null;
   previousQuestion: QuestionResponse | null;
-  answersHistory: Record<number, number>;
-  userAnswersHistory: Record<number, number>;
+  answersHistory: (number | null)[];
+  userAnswersHistory: (number | null)[];
   finished: boolean;
 };
 
@@ -46,14 +45,13 @@ export const QuizContext = createContext<QuizContextProps>({
   activeQuestionChoiceIndex: -1,
   isRestTime: false,
   setIsRestTime: NullCallback,
-  correctAnswerIndex: -1,
   previousQuestion: null,
-  answersHistory: {},
-  userAnswersHistory: {},
+  answersHistory: [],
+  userAnswersHistory: [],
   finished: false,
 });
 
-export const statePeriod = 10000;
+export const statePeriod = 60000;
 export const restPeriod = 5000;
 const totalPeriod = restPeriod + statePeriod;
 
@@ -65,24 +63,22 @@ const QuizContextProvider: FC<
   const [health, setHealth] = useState(1);
   const [hint, setHint] = useState(1);
   const [remainingPeople, setRemainingPeople] = useState(1);
-  const [finished, setFinished] = useState(false);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
+
+  const [finished, setFinished] = useState(false);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
   const [timer, setTimer] = useState(0);
   const [stateIndex, setStateIndex] = useState(-1);
   const [previousQuestion, setPreviousQuestion] =
     useState<QuestionResponse | null>(null);
 
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState<number | null>(
-    null,
-  );
-  const [answersHistory, setAnswersHistory] = useState<Record<number, number>>(
-    {},
+  const [answersHistory, setAnswersHistory] = useState<(number | null)[]>(
+    Array.from(new Array(quiz.questions.length).fill(null)),
   );
 
   const [userAnswersHistory, setUserAnswersHistory] = useState<
-    Record<number, number>
-  >({});
+    (number | null)[]
+  >(Array.from(new Array(quiz.questions.length).fill(null)));
 
   const [isRestTime, setIsRestTime] = useState(false);
 
@@ -90,7 +86,7 @@ const QuizContextProvider: FC<
 
   const answerQuestion = useCallback(
     (choiceIndex: number) => {
-      userAnswersHistory[question!.id] = choiceIndex;
+      userAnswersHistory[question!.number - 1] = choiceIndex;
 
       setUserAnswersHistory({
         ...userAnswersHistory,
@@ -128,40 +124,37 @@ const QuizContextProvider: FC<
     if (!question?.isEligible) return;
 
     if (
-      userAnswersHistory[question.id] &&
-      userAnswersHistory[question.id] !== -1 &&
+      userAnswersHistory[question.number - 1] !== -1 &&
       currentQuestionIndex
     ) {
       const answerRes = await submitAnswerApi(
         currentQuestionIndex!,
         userEnrollmentPk,
-        userAnswersHistory[question.id],
+        userAnswersHistory[question.number - 1]!,
       );
 
       setUserAnswersHistory((userAnswerHistory) => {
-        userAnswerHistory[question.id] = answerRes.id;
-        return {
-          ...userAnswerHistory,
-        };
+        userAnswerHistory[question.number - 1] = answerRes.id;
+        return [...userAnswerHistory];
       });
 
       fetchQuizQuestionApi(question.id).then((res) => {
         setAnswersHistory((answersHistory) => {
           res.choices.forEach((choice) => {
             if (choice.isCorrect) {
-              answersHistory[res.id] = choice.id;
+              answersHistory[question.number - 1] = choice.id;
             }
           });
 
-          return { ...answerQuestion };
+          return [...answersHistory];
         });
       });
     }
   }, [
-    answerQuestion,
     getNextQuestionPk,
     question?.id,
     question?.isEligible,
+    question?.number,
     stateIndex,
     userAnswersHistory,
     userEnrollmentPk,
@@ -176,14 +169,19 @@ const QuizContextProvider: FC<
 
       const res = await fetchQuizQuestionApi(questionIndex);
 
-      setQuestion(res);
+      setQuestion((prev) => {
+        if (prev) {
+          setPreviousQuestion(prev);
+        }
+
+        return res;
+      });
     },
     [getNextQuestionPk],
   );
 
   useEffect(() => {
     if (question) return;
-    setPreviousQuestion(question);
     getQuestion(stateIndex);
   }, [getQuestion, question, stateIndex]);
 
@@ -199,22 +197,27 @@ const QuizContextProvider: FC<
       }
 
       if (newState !== stateIndex) {
+        setPreviousQuestion(question);
         setQuestion(null);
       }
 
       setTimer(() => {
         const now = new Date().getTime();
 
-        if (totalPeriod * newState + startAt.getTime() - now >= statePeriod) {
-          setIsRestTime(true);
-        } else {
-          setIsRestTime(false);
-        }
-
-        const estimatedRemaining =
+        let estimatedRemaining =
           newState <= 0
             ? startAt.getTime() - now
             : totalPeriod * newState + startAt.getTime() - now;
+
+        if (
+          totalPeriod * newState + startAt.getTime() - now >= statePeriod &&
+          stateIndex !== 0
+        ) {
+          setIsRestTime(true);
+          estimatedRemaining -= statePeriod;
+        } else {
+          setIsRestTime(false);
+        }
 
         return estimatedRemaining;
       });
@@ -225,6 +228,7 @@ const QuizContextProvider: FC<
     };
   }, [
     getQuestion,
+    question,
     quiz.questions.length,
     recalculateState,
     startAt,
@@ -249,12 +253,11 @@ const QuizContextProvider: FC<
         answerQuestion,
         timer,
         stateIndex,
-        activeQuestionChoiceIndex: question?.id
-          ? userAnswersHistory[question?.id]
+        activeQuestionChoiceIndex: question
+          ? userAnswersHistory[question?.number - 1]
           : -1,
         isRestTime,
         setIsRestTime,
-        correctAnswerIndex,
         previousQuestion,
         answersHistory,
         userAnswersHistory,

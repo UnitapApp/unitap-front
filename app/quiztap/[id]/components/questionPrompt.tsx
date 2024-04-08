@@ -70,7 +70,9 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
 
   return (
     <button
-      onClick={() => isRestTime || answerQuestion(index)}
+      onClick={() =>
+        isRestTime || !question?.isEligible || answerQuestion(index)
+      }
       className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${
         question &&
         answersHistory[question.id] &&

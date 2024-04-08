@@ -35,22 +35,23 @@ const Separator: FC<{ index: number }> = ({ index }) => {
   const { stateIndex, timer, isRestTime } = useQuizContext();
 
   const width =
-    isRestTime && index === stateIndex
+    isRestTime && index === stateIndex - 1
       ? Math.min((28 * (restPeriod - timer)) / restPeriod, restPeriod)
       : 28;
 
   return (
-    <div
-      className="mx-2 my-auto h-[2px] rounded-lg bg-gray100"
-      style={{
-        width: `${width}px`,
-      }}
-    ></div>
+    <div className="relative mx-2 my-auto h-[2px] w-7 rounded-lg bg-gray50">
+      <div
+        className="absolute bottom-0 left-0 top-0 h-[2px] bg-gray100"
+        style={{ width: width }}
+      ></div>
+    </div>
   );
 };
 
 const QuestionItem: FC<{ index: number }> = ({ index }) => {
-  const { stateIndex, timer, isRestTime } = useQuizContext();
+  const { stateIndex, timer, isRestTime, answersHistory, userAnswersHistory } =
+    useQuizContext();
 
   const ref = useRef<SVGRectElement>(null);
 
@@ -58,49 +59,51 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
     var progress: any = ref.current;
 
     if (!progress) return;
-
-    var borderLen = progress.getTotalLength() + 5,
-      offset = borderLen;
-    progress.style.strokeDashoffset = borderLen;
-    progress.style.strokeDasharray = borderLen + "," + borderLen;
-
-    const durationInSeconds =
-      statePeriod / 1000 - (statePeriod / 1000 - timer / 1000);
-
-    const framesPerSecond = 60;
-
-    const totalFrames = durationInSeconds * framesPerSecond;
-    const decrementAmount = borderLen / totalFrames;
-
     let frameCount = 0;
     let anim: number;
 
-    function progressBar() {
-      offset -= decrementAmount;
-      progress.style.strokeDashoffset = offset;
-      frameCount++;
+    const timeout = setTimeout(() => {
+      var borderLen = progress.getTotalLength() + 5,
+        offset = borderLen;
+      progress.style.strokeDashoffset = borderLen;
+      progress.style.strokeDasharray = borderLen + "," + borderLen;
 
-      // Stop animation when duration is reached
-      if (frameCount < totalFrames) {
-        anim = window.requestAnimationFrame(progressBar);
-      } else {
-        window.cancelAnimationFrame(anim);
+      const durationInSeconds =
+        statePeriod / 1000 - (statePeriod / 1000 - timer / 1000);
+
+      const framesPerSecond = 60;
+
+      const totalFrames = durationInSeconds * framesPerSecond;
+      const decrementAmount = borderLen / totalFrames;
+
+      function progressBar() {
+        offset -= decrementAmount;
+        progress.style.strokeDashoffset = offset;
+        frameCount++;
+
+        // Stop animation when duration is reached
+        if (frameCount < totalFrames) {
+          anim = window.requestAnimationFrame(progressBar);
+        } else {
+          window.cancelAnimationFrame(anim);
+        }
       }
-    }
 
-    // Start animation
-    anim = window.requestAnimationFrame(progressBar);
+      // Start animation
+      anim = window.requestAnimationFrame(progressBar);
+    }, 0);
 
     // Clean up on component unmount or state change
     return () => {
       window.cancelAnimationFrame(anim);
+      clearTimeout(timeout);
     };
   }, [stateIndex]);
 
   if (index > stateIndex || isRestTime)
     return (
       <div
-        className={`relative grid h-9 w-9 place-content-center rounded-lg border-2 ${index > stateIndex ? "border-gray50" : "border-dark-space-green"} bg-gray20 text-gray100`}
+        className={`relative grid h-9 w-9 place-content-center rounded-lg border-2 ${index > stateIndex ? "border-gray50" : userAnswersHistory[index] === answersHistory[index] ? "border-dark-space-green" : "border-error/40"} bg-gray20 text-gray100`}
       >
         {index}
       </div>
@@ -129,7 +132,7 @@ const QuestionItem: FC<{ index: number }> = ({ index }) => {
             height="34"
             rx="7"
             stroke="#b5b5c6"
-            stroke-width="2"
+            strokeWidth="2"
           />
         </svg>
       )}

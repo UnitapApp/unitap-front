@@ -43,7 +43,10 @@ const QuizCard: FC<{ competition: Competition }> = ({ competition }) => {
 
   const isEnrolled =
     enrollmentsList.findIndex(
-      (raffle) => raffle.competition.id === competition.id,
+      (raffle) =>
+        (typeof raffle.competition === "number"
+          ? raffle.competition
+          : raffle.competition.id) === competition.id,
     ) !== -1;
 
   return (
