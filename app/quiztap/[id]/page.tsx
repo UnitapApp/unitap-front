@@ -52,12 +52,9 @@ const RenderQuizItemBody = () => {
     return <WaitingIdle />;
   }
 
-  return (
-    <>
-      <QuestionPrompt />
-      {isRestTime && <RestTime />}
-    </>
-  );
+  if (isRestTime) return <RestTime />;
+
+  return <QuestionPrompt />;
 };
 
 export default QuizItemPage;
