@@ -20,6 +20,10 @@ export type QuestionResponse = {
   answerCanBeShown: boolean;
   isEligible: boolean;
   text: string;
+  remainPartisipantsCount: 2;
+  // text: "Ali Teswt";
+  // totalPartisipantsCount: 2;
+  // wonAmountPerUser: 5;
 };
 
 export type Competition = {

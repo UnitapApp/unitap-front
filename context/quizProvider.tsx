@@ -65,11 +65,6 @@ const QuizContextProvider: FC<
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
 
-  // remainPartisipantsCount: 2;
-  // text: "Ali Teswt";
-  // totalPartisipantsCount: 2;
-  // wonAmountPerUser: 5;
-
   const [finished, setFinished] = useState(false);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
   const [timer, setTimer] = useState(0);
@@ -126,6 +121,8 @@ const QuizContextProvider: FC<
   const submitUserAnswer = useCallback(async () => {
     const currentQuestionIndex = getNextQuestionPk(stateIndex);
 
+    const question = previousQuestion;
+
     if (!question?.isEligible) return;
 
     if (
@@ -147,7 +144,9 @@ const QuizContextProvider: FC<
         setAnswersHistory((answersHistory) => {
           res.choices.forEach((choice) => {
             if (choice.isCorrect) {
-              answersHistory[question.number - 1] = choice.id;
+              if (!previousQuestion) return;
+
+              answersHistory[previousQuestion.number - 1] = choice.id;
             }
           });
 
@@ -173,6 +172,8 @@ const QuizContextProvider: FC<
       }
 
       const res = await fetchQuizQuestionApi(questionIndex);
+
+      // setRemainingPeople(res.)
 
       setQuestion((prev) => {
         if (prev) {
