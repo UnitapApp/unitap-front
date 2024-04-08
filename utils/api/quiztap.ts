@@ -27,7 +27,7 @@ export const submitAnswerApi = async (
   choicePk: number,
 ) => {
   const response = await axiosInstance.post(
-    "api/quiztap/competitions/submit-answer/",
+    "/api/quiztap/competitions/submit-answer/",
     {
       userCompetition: userEnrollmentPk,
       selectedChoice: choicePk,

@@ -52,7 +52,7 @@ export type Competition = {
 
 export type UserCompetition = {
   userProfile: UserProfile;
-  competition: number;
+  competition: number | Competition;
   isWinner: boolean;
   amountWon?: number;
 };

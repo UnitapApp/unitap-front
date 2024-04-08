@@ -55,7 +55,7 @@ export const QuizContext = createContext<QuizContextProps>({
   amountWinPerUser: 0,
 });
 
-export const statePeriod = 15000;
+export const statePeriod = 14500;
 export const restPeriod = 5000;
 const totalPeriod = restPeriod + statePeriod;
 
@@ -68,8 +68,8 @@ const QuizContextProvider: FC<
   const [hint, setHint] = useState(1);
   const [remainingPeople, setRemainingPeople] = useState(1);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
-  const [totalParticipantsCount, setTotalParticipantsCount] = useState(0);
-  const [amountWinPerUser, setAmountWinPerUser] = useState(0);
+  const [totalParticipantsCount, setTotalParticipantsCount] = useState(1);
+  const [amountWinPerUser, setAmountWinPerUser] = useState(quiz.prizeAmount);
   const [finished, setFinished] = useState(false);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
   const [timer, setTimer] = useState(0);
@@ -126,8 +126,6 @@ const QuizContextProvider: FC<
   const submitUserAnswer = useCallback(async () => {
     const currentQuestionIndex = getNextQuestionPk(stateIndex);
 
-    const question = previousQuestion;
-
     if (!question?.isEligible) return;
 
     if (
@@ -140,14 +138,26 @@ const QuizContextProvider: FC<
         userAnswersHistory[question.number - 1]!,
       );
 
-      setUserAnswersHistory((userAnswerHistory) => {
-        userAnswerHistory[question.number - 1] = answerRes.id;
-        return [...userAnswerHistory];
-      });
+      const currentQuestion = currentQuestionIndex;
+
+      setTimeout(() => {
+        if (!currentQuestion) return;
+
+        fetchQuizQuestionApi(currentQuestion).then((res) => {
+          setUserAnswersHistory((userAnswerHistory) => {
+            userAnswerHistory[question.number - 1] = res.choices.find(
+              (choice) => choice.isCorrect,
+            )?.id!;
+
+            return [...userAnswerHistory];
+          });
+        });
+      }, 500);
     }
   }, [
     getNextQuestionPk,
-    previousQuestion,
+    question?.isEligible,
+    question?.number,
     stateIndex,
     userAnswersHistory,
     userEnrollmentPk,
@@ -216,7 +226,7 @@ const QuizContextProvider: FC<
         if (estimatedRemaining < restPeriod) {
           setIsRestTime(true);
         } else {
-          estimatedRemaining -= statePeriod;
+          estimatedRemaining -= restPeriod;
           setIsRestTime(false);
         }
 
