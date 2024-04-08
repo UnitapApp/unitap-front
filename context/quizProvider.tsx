@@ -55,7 +55,7 @@ export const QuizContext = createContext<QuizContextProps>({
   amountWinPerUser: 0,
 });
 
-export const statePeriod = 58000;
+export const statePeriod = 15000;
 export const restPeriod = 5000;
 const totalPeriod = restPeriod + statePeriod;
 
@@ -235,6 +235,7 @@ const QuizContextProvider: FC<
     recalculateState,
     startAt,
     stateIndex,
+    submitUserAnswer,
   ]);
 
   useEffect(() => {
