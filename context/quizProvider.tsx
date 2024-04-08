@@ -132,20 +132,21 @@ const QuizContextProvider: FC<
       userAnswersHistory[question.number - 1] !== -1 &&
       currentQuestionIndex !== -1
     ) {
+      const currentQuestion = currentQuestionIndex;
+      const questionNumber = question.number - 1;
+
       const answerRes = await submitAnswerApi(
         currentQuestionIndex!,
         userEnrollmentPk,
-        userAnswersHistory[question.number - 1]!,
+        userAnswersHistory[questionNumber]!,
       );
-
-      const currentQuestion = currentQuestionIndex;
 
       setTimeout(() => {
         if (!currentQuestion) return;
 
         fetchQuizQuestionApi(currentQuestion).then((res) => {
           setUserAnswersHistory((userAnswerHistory) => {
-            userAnswerHistory[question.number - 1] = res.choices.find(
+            userAnswerHistory[questionNumber] = res.choices.find(
               (choice) => choice.isCorrect,
             )?.id!;
 
