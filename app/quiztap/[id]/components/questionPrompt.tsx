@@ -3,10 +3,19 @@ import { useQuizContext } from "@/context/quizProvider";
 import { FC, useEffect } from "react";
 
 const QuestionPrompt: FC = () => {
-  const { stateIndex, answerQuestion, question } = useQuizContext();
+  const {
+    stateIndex,
+    answerQuestion,
+    question: currentQuestion,
+    previousQuestion,
+    isRestTime,
+  } = useQuizContext();
+
+  const question = isRestTime ? previousQuestion : currentQuestion;
 
   useEffect(() => {
     const onKeyPressed = (e: KeyboardEvent) => {
+      if (isRestTime || !question?.isEligible) return;
       if (e.key === "A") {
         answerQuestion(1);
       } else if (e.key === "B") {
@@ -23,7 +32,7 @@ const QuestionPrompt: FC = () => {
     return () => {
       document.removeEventListener("keypress", onKeyPressed);
     };
-  }, [answerQuestion]);
+  }, [answerQuestion, isRestTime, question?.isEligible]);
 
   return (
     <div className="mt-10">
@@ -51,13 +60,30 @@ const QuestionChoice: FC<{ index: number; title: string }> = ({
   index,
   title,
 }) => {
-  const { answerQuestion, activeQuestionChoiceIndex, question, isRestTime } =
-    useQuizContext();
+  const {
+    answerQuestion,
+    activeQuestionChoiceIndex,
+    question,
+    isRestTime,
+    answersHistory,
+  } = useQuizContext();
 
   return (
     <button
       onClick={() => isRestTime || answerQuestion(index)}
-      className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${activeQuestionChoiceIndex === index ? "!border-gray100 bg-gray60" : ""}`}
+      className={`relative rounded-xl border-2 border-gray40 bg-gray20 py-3 text-center text-white transition-colors ${activeQuestionChoiceIndex === index ? "border-gray100 bg-gray60" : ""} ${
+        question &&
+        answersHistory[question.id] === index &&
+        activeQuestionChoiceIndex !== -1
+          ? "!border-space-green !bg-dark-space-green"
+          : ""
+      } ${
+        question &&
+        answersHistory[question.id] !== index &&
+        activeQuestionChoiceIndex === index
+          ? "!border-error !bg-error/40"
+          : ""
+      }`}
     >
       <span>{title}</span>
 

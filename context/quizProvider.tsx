@@ -14,8 +14,6 @@ import {
   useState,
 } from "react";
 
-type QuestionWithChoices = Question & { choices: Choice[] };
-
 export type QuizContextProps = {
   remainingPeople: number;
   quiz?: Competition;
@@ -30,6 +28,8 @@ export type QuizContextProps = {
   isRestTime: boolean;
   setIsRestTime: (value: boolean) => void;
   correctAnswerIndex: number | null;
+  previousQuestion: QuestionResponse | null;
+  answersHistory: Record<number, number>;
 };
 
 export const QuizContext = createContext<QuizContextProps>({
@@ -45,6 +45,8 @@ export const QuizContext = createContext<QuizContextProps>({
   isRestTime: false,
   setIsRestTime: NullCallback,
   correctAnswerIndex: -1,
+  previousQuestion: null,
+  answersHistory: {},
 });
 
 export const statePeriod = 60000;
@@ -66,7 +68,6 @@ const QuizContextProvider: FC<
   const [finished, setFinished] = useState(false);
   const [scoresHistory, setScoresHistory] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionResponse | null>(null);
-  const [activeQuestionChoice, setActiveQuestionChoice] = useState<number>(-1);
   const [timer, setTimer] = useState(0);
   const [stateIndex, setStateIndex] = useState(-1);
   const [previousQuestion, setPreviousQuestion] =
@@ -75,15 +76,25 @@ const QuizContextProvider: FC<
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState<number | null>(
     null,
   );
+  const [answersHistory, setAnswersHistory] = useState<Record<number, number>>(
+    {},
+  );
+
+  const [userAnswersHistory, setUserAnswersHistory] = useState<
+    Record<number, number>
+  >({});
+
   const [isRestTime, setIsRestTime] = useState(false);
 
   const startAt = useMemo(() => new Date(quiz.startAt), [quiz.startAt]);
 
   const answerQuestion = (choiceIndex: number) => {
-    setActiveQuestionChoice(choiceIndex);
-  };
+    userAnswersHistory[question!.id] = choiceIndex;
 
-  const askForHint = () => {};
+    setUserAnswersHistory({
+      ...userAnswersHistory,
+    });
+  };
 
   const getNextQuestionPk = useCallback(
     (index: number) => {
@@ -114,22 +125,27 @@ const QuizContextProvider: FC<
     if (!question?.isEligible) return;
 
     if (
-      activeQuestionChoice &&
-      activeQuestionChoice !== -1 &&
+      userAnswersHistory[question.id] &&
+      userAnswersHistory[question.id] !== -1 &&
       currentQuestionIndex
     ) {
       const answerRes = await submitAnswerApi(
         currentQuestionIndex!,
         userEnrollmentPk,
-        activeQuestionChoice,
+        userAnswersHistory[question.id],
       );
-      setActiveQuestionChoice(-1);
+      userAnswersHistory[question.id] = answerRes.id;
+
+      setUserAnswersHistory({
+        ...userAnswersHistory,
+      });
     }
   }, [
-    activeQuestionChoice,
     getNextQuestionPk,
+    question?.id,
     question?.isEligible,
     stateIndex,
+    userAnswersHistory,
     userEnrollmentPk,
   ]);
 
@@ -143,8 +159,18 @@ const QuizContextProvider: FC<
       const res = await fetchQuizQuestionApi(questionIndex);
 
       setQuestion(res);
+
+      res.choices.forEach((choice) => {
+        if (choice.isCorrect) {
+          answersHistory[res.id] = choice.id;
+
+          setAnswersHistory({
+            ...answersHistory,
+          });
+        }
+      });
     },
-    [getNextQuestionPk],
+    [answersHistory, getNextQuestionPk],
   );
 
   useEffect(() => {
@@ -204,10 +230,14 @@ const QuizContextProvider: FC<
         answerQuestion,
         timer,
         stateIndex,
-        activeQuestionChoiceIndex: activeQuestionChoice,
+        activeQuestionChoiceIndex: question?.id
+          ? userAnswersHistory[question?.id]
+          : -1,
         isRestTime,
         setIsRestTime,
         correctAnswerIndex,
+        previousQuestion,
+        answersHistory,
       }}
     >
       {children}

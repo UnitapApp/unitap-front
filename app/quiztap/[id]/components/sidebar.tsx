@@ -1,7 +1,6 @@
 "use client";
 
 import Icon from "@/components/ui/Icon";
-import { useQuizContext } from "@/context/quizProvider";
 import { useNumberLinearInterpolate } from "@/utils/interpolate";
 import { FC, useEffect } from "react";
 
