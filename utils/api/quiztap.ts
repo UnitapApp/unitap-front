@@ -39,10 +39,11 @@ export const submitAnswerApi = async (
 };
 
 export const enrollQuizApi = async (id: number) => {
-  const response: { id: number; competition: Competition } =
+  const response: { id: number; competition: Competition } = (
     await axiosInstance.post("/api/quiztap/competitions/enroll/", {
       competition: id,
-    });
+    })
+  ).data;
 
   return response;
 };
