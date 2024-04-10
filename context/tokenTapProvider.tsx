@@ -159,7 +159,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
-        tokenTapContractAddressList[selectedTokenForClaim.token];
+        tokenTapContractAddressList[selectedTokenForClaim.token] ??
+        contractAddresses.tokenTap;
 
       if (!contractAddress) return;
 
