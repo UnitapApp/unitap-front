@@ -19,7 +19,7 @@ const QuizItemPage = () => {
           <p className="text-[#997EA4]">Quiz</p>
           <Timer />
 
-          <button
+          {/* <button
             disabled={hint <= 0 || stateIndex <= 0}
             className="flex items-center rounded-xl border-2 border-gray70 bg-gray00 px-2 text-gray100 disabled:opacity-60"
           >
@@ -32,7 +32,7 @@ const QuizItemPage = () => {
             />
             <span className="py-1">Hint</span>
             <span className="ml-4 border-l-2 border-gray70 py-1 pl-2">1</span>
-          </button>
+          </button> */}
         </div>
 
         <QuestionsList />
