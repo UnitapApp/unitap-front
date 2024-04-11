@@ -10,6 +10,7 @@ import {
   Address,
   GetContractReturnType,
   PublicClient,
+  getAddress,
   getContract,
   parseEther,
 } from "viem";
@@ -115,6 +116,8 @@ export const createErc20Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
 ) => {
+  console.log(getAddress(data.tokenContractAddress));
+
   const raffleContractAddress = contractAddresses.prizeTapErc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
@@ -188,7 +191,7 @@ export const createErc20Raffle = async (
   formData.append("creator_name", data.provider!);
   formData.append("creator_address", address);
   formData.append("prize_amount", prizeAmount.toString());
-  formData.append("prize_asset", data.tokenContractAddress);
+  formData.append("prize_asset", getAddress(data.tokenContractAddress));
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
   formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));

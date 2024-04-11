@@ -2,7 +2,13 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { Address, parseEther, PublicClient, zeroAddress } from "viem";
+import {
+  Address,
+  getAddress,
+  parseEther,
+  PublicClient,
+  zeroAddress,
+} from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
 import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
@@ -173,7 +179,7 @@ export const createErc20TokenDistribution = async (
   formData.append("email_url", data.email!);
   formData.append("telegram_url", telegram! ?? "");
   formData.append("token", prizeName);
-  formData.append("token_address", data.tokenContractAddress);
+  formData.append("token_address", getAddress(data.tokenContractAddress));
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
   formData.append("contract", contractAddresses.tokenTap as any);

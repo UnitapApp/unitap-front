@@ -4,7 +4,7 @@ import {
   Chain,
 } from "@/types";
 import { prizeTap721Abi } from "@/types/abis/contracts";
-import { getContract, PublicClient } from "viem";
+import { getAddress, getContract, PublicClient } from "viem";
 import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import { GetWalletClientReturnType } from "wagmi/actions";
@@ -157,7 +157,7 @@ export const createErc721Raffle = async (
   formData.append("creator_name", data.provider!);
   formData.append("prize_amount", "1");
   formData.append("creator_address", address);
-  formData.append("prize_asset", data.nftContractAddress);
+  formData.append("prize_asset", getAddress(data.nftContractAddress));
   formData.append("prize_name", prizeName!);
   formData.append("prize_symbol", data.nftSymbol!);
   formData.append("chain", data.selectedChain.pk);
