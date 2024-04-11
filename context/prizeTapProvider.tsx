@@ -144,6 +144,9 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           shieldSignature: "1",
         },
         multiplier: undefined,
+        userEntry: {
+          pk: selectedRaffleForEnroll.pk,
+        },
       };
     }
 
@@ -198,7 +201,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const enrollOrClaimPayload = await getSignature();
 
-    const id = enrollOrClaimPayload?.userEntry?.pk;
+    const id = enrollOrClaimPayload?.userEntry.pk;
 
     setClaimOrEnrollLoading(true);
 
