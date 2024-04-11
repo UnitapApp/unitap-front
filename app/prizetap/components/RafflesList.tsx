@@ -155,9 +155,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 
   return (
     <div
-      className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
-        isHighlighted ? "mb-20" : "mb-4"
-      }`}
+      className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${isHighlighted ? "mb-20" : "mb-4"
+        }`}
     >
       <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-gray30 p-5 lg:flex-row lg:bg-inherit lg:p-0">
         <div className="prize-card__image relative mb-3 lg:mb-0">
@@ -169,11 +168,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
             }
           >
             <div
-              className={`prize-card__container flex h-[212px] w-[212px] flex-col ${
-                isHighlighted
-                  ? "bg-g-primary-low "
-                  : "border-2 border-gray40 bg-gray30"
-              } items-center justify-center rounded-xl p-5`}
+              className={`prize-card__container flex h-[212px] w-[212px] flex-col ${isHighlighted
+                ? "bg-g-primary-low "
+                : "border-2 border-gray40 bg-gray30"
+                } items-center justify-center rounded-xl p-5`}
             >
               {imageUrl && (
                 <img
@@ -204,11 +202,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
           }
         >
           <div
-            className={`card prize-card__content relative z-10 h-full md:max-h-[225px] md:min-h-[212px] ${
-              isHighlighted
-                ? "bg-g-primary-low"
-                : "border-2 border-gray40 bg-gray30"
-            } flex h-full w-full flex-col rounded-xl p-4 pt-3`}
+            className={`card prize-card__content relative z-10 h-full md:max-h-[225px] md:min-h-[212px] ${isHighlighted
+              ? "bg-g-primary-low"
+              : "border-2 border-gray40 bg-gray30"
+              } flex h-full w-full flex-col rounded-xl p-4 pt-3`}
           >
             <span className="mb-1 flex w-full items-center">
               <p
@@ -278,8 +275,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     {(showAllPermissions
                       ? raffle.constraints
                       : raffle.constraints
-                          .filter((permission) => permission.type === "VER")
-                          .slice(0, 6)
+                        .filter((permission) => permission.type === "VER")
+                        .slice(0, 6)
                     ).map((permission, key) => (
                       <Tooltip
                         onClick={openEnrollModal.bind(null, raffle, "Verify")}
@@ -318,9 +315,8 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           height={7}
                           alt="angle down"
                           src="/assets/images/token-tap/angle-down.svg"
-                          className={`ml-2 ${
-                            showAllPermissions ? "rotate-180" : ""
-                          } transition-transform`}
+                          className={`ml-2 ${showAllPermissions ? "rotate-180" : ""
+                            } transition-transform`}
                         />
                       </button>
                     )}
@@ -330,9 +326,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 
             <Action className={"w-full items-center sm:w-auto sm:items-end "}>
               {(isExpired && !winnersEntry.length && !userEntry?.txHash) ||
-              (!winnersEntry.length &&
-                !userEntry?.txHash &&
-                maxNumberOfEntries === numberOfOnchainEntries) ? (
+                (!winnersEntry.length &&
+                  !userEntry?.txHash &&
+                  maxNumberOfEntries === numberOfOnchainEntries) ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
                   <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
                     <div className="flex flex-col gap-1">
@@ -342,18 +338,18 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              numberOfOnchainEntries,
-                            )} people enrolled`
+                            numberOfOnchainEntries,
+                          )} people enrolled`
                           : !isRemainingPercentLessThanTen
                             ? `
 											${numberOfOnchainEntries} / ${numberWithCommas(
-                        maxNumberOfEntries,
-                      )} people enrolled`
+                              maxNumberOfEntries,
+                            )} people enrolled`
                             : remainingPeople > 0
                               ? `${remainingPeople} people remains`
                               : `${numberWithCommas(
-                                  maxNumberOfEntries,
-                                )} people enrolled`}
+                                maxNumberOfEntries,
+                              )} people enrolled`}
                       </p>
                     </div>
                     <RaffleCardTimer
@@ -371,9 +367,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     <div className="relative w-full">
                       {maxNumberOfEntries === numberOfOnchainEntries ? (
                         <p> Full</p>
-                      ) : (
+                      ) : numberOfOnchainEntries == 0 ? (
                         <p> Unavailable</p>
-                      )}
+                      ) : new Date(deadline) < new Date()
+                        ? <p className="bg-g-primary bg-clip-text text-transparent text-sm mr-[2em]">Raffle is being processed</p> : ""}
                       <Icon
                         className="absolute right-0 top-[-2px]"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
@@ -393,18 +390,18 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              numberOfOnchainEntries,
-                            )} people enrolled`
+                            numberOfOnchainEntries,
+                          )} people enrolled`
                           : !isRemainingPercentLessThanTen
                             ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
-                            maxNumberOfEntries,
-                          )} people enrolled`
+                              maxNumberOfEntries,
+                            )} people enrolled`
                             : remainingPeople > 0
                               ? `${remainingPeople} people remains`
                               : `${numberWithCommas(
-                                  maxNumberOfEntries,
-                                )} people enrolled`}
+                                maxNumberOfEntries,
+                              )} people enrolled`}
                       </p>
                     </div>
                     <RaffleCardTimer
@@ -443,18 +440,18 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       <p className="text-2xs text-gray100">
                         {maxNumberOfEntries >= 1_000_000_000
                           ? `${numberWithCommas(
-                              numberOfOnchainEntries,
-                            )} people enrolled`
+                            numberOfOnchainEntries,
+                          )} people enrolled`
                           : !isRemainingPercentLessThanTen
                             ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
-                            maxNumberOfEntries,
-                          )} people enrolled`
+                              maxNumberOfEntries,
+                            )} people enrolled`
                             : remainingPeople > 0
                               ? `${remainingPeople} people remains`
                               : `${numberWithCommas(
-                                  maxNumberOfEntries,
-                                )} people enrolled`}
+                                maxNumberOfEntries,
+                              )} people enrolled`}
                       </p>
                     </div>
                     <RaffleCardTimer
@@ -470,12 +467,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   >
                     <div className="relative flex w-full">
                       <span
-                        className={`${
-                          !winnersEntry.length &&
+                        className={`${!winnersEntry.length &&
                           new Date(deadline) < new Date()
-                            ? "text-sm"
-                            : ""
-                        } bg-g-primary bg-clip-text text-transparent`}
+                          ? "text-sm"
+                          : ""
+                          } bg-g-primary bg-clip-text text-transparent text-sm mr-[2em]`}
                       >
                         {!winnersEntry.length && new Date(deadline) < new Date()
                           ? "Raffle is being processed"
@@ -496,16 +492,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     <p className="ml-4 text-2xs text-gray100">
                       {maxNumberOfEntries >= 1_000_000_000
                         ? `${numberWithCommas(
-                            numberOfOnchainEntries,
-                          )} people enrolled`
+                          numberOfOnchainEntries,
+                        )} people enrolled`
                         : !isRemainingPercentLessThanTen
                           ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
                             maxNumberOfEntries,
                           )} people enrolled`
                           : `${numberWithCommas(
-                              maxNumberOfEntries,
-                            )} people enrolled`}
+                            maxNumberOfEntries,
+                          )} people enrolled`}
                     </p>
                     <Icon
                       className="mt-[-25px] opacity-[.3]  md:mt-[-10px] "
