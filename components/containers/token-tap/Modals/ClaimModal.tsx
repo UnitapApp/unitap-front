@@ -109,7 +109,9 @@ const ClaimTokenModal = () => {
     selectedTokenForClaim.chain.chainName === "Lightning"
       ? selectedTokenForClaim.amount
       : selectedTokenForClaim.amount /
-        10 ** selectedTokenForClaim.chain.decimals;
+        10 **
+          (selectedTokenForClaim.decimals ??
+            selectedTokenForClaim.chain.decimals);
 
   return (
     <Modal
