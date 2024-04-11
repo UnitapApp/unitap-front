@@ -74,17 +74,17 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   const collectedToken = useMemo(
     () =>
       claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
-    [claimedTokensList, token]
+    [claimedTokensList, token],
   );
 
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
       ? token.amount
-      : token.amount / 10 ** token.chain.decimals;
+      : token.amount / 10 ** (token.decimals ?? token.chain.decimals);
 
   const timePermissionVerification = useMemo(
     () => token.constraints.find((permission) => permission.type === "TIME"),
-    [token]
+    [token],
   );
 
   return (
@@ -92,42 +92,42 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       <div
         className={`token-card flex ${
           isHighlighted
-            ? "before:!inset-[3px] p-0 gradient-outline-card mb-20"
+            ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
-        } flex-col items-center justify-center w-full mb-4`}
+        } mb-4 w-full flex-col items-center justify-center`}
       >
-        <span className="flex flex-col w-full">
+        <span className="flex w-full flex-col">
           <div
-            className={`pt-4 pr-6 pb-4 pl-3 ${
+            className={`pb-4 pl-3 pr-6 pt-4 ${
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
-            } w-full flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center rounded-t-xl`}
+            } flex w-full flex-col items-center justify-between gap-2 rounded-t-xl md:flex-row md:gap-0`}
           >
             <div
               onClick={onTokenClicked}
-              className="hover:cursor-pointer items-center flex mb-6 sm:mb-0"
+              className="mb-6 flex items-center hover:cursor-pointer sm:mb-0"
             >
-              <span className="chain-logo-container w-11 h-11 flex justify-center mr-3">
+              <span className="chain-logo-container mr-3 flex h-11 w-11 justify-center">
                 <img
-                  className="chain-logo w-auto h-full"
+                  className="chain-logo h-full w-auto"
                   src={token.imageUrl}
                   alt="chain logo"
                 />
               </span>
               <span className="w-max">
                 <p
-                  className="text-white text-center md:text-left flex mb-2"
+                  className="mb-2 flex text-center text-white md:text-left"
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
                   <Image
                     width={8}
                     height={8}
-                    className="arrow-icon mt-1 ml-1 w-2"
+                    className="arrow-icon ml-1 mt-1 w-2"
                     src="/assets/images/arrow-icon.svg"
                     alt="arrow"
                   />
                 </p>
-                <p className="text-xs text-white font-medium">
+                <p className="text-xs font-medium text-white">
                   {token.distributor}
                 </p>
               </span>
@@ -135,14 +135,14 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
 
             <div
               className={
-                "flex items-center gap-2 justify-end flex-col md:flex-row !w-full sm:w-auto"
+                "flex !w-full flex-col items-center justify-end gap-2 sm:w-auto md:flex-row"
               }
             >
-              <div className="w-full sm:w-auto items-center sm:items-end">
+              <div className="w-full items-center sm:w-auto sm:items-end">
                 {token.chain.chainName === "Lightning" || (
                   <AddMetamaskButton
                     onClick={addToken}
-                    className="font-medium hover:cursor-pointer mx-auto sm:mr-4 text-sm !w-[220px] sm:!w-auto"
+                    className="mx-auto !w-[220px] text-sm font-medium hover:cursor-pointer sm:mr-4 sm:!w-auto"
                   >
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -152,12 +152,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   </AddMetamaskButton>
                 )}
               </div>
-              <Action className={"w-full sm:w-auto items-center sm:items-end"}>
-                {token.isMaxedOut ? (
-                  <NoCurrencyButton disabled $fontSize="13px">
-                    Empty
-                  </NoCurrencyButton>
-                ) : collectedToken ? (
+              <Action className={"w-full items-center sm:w-auto sm:items-end"}>
+                {collectedToken ? (
                   claimingTokenPk === token.id ||
                   (token.chain.chainName === "Lightning" &&
                     collectedToken.status === "Pending") ? (
@@ -165,7 +161,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       data-testid={`chain-pending-claim-${token.id}`}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
-                      className="text-sm m-auto"
+                      className="m-auto text-sm"
                     >
                       <p>{`Pending...`}</p>
                     </ClaimButton>
@@ -174,10 +170,14 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       data-testid={`chain-show-claim-${token.id}`}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
-                      className="text-sm m-auto"
+                      className="m-auto text-sm"
                     >
                       <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
+                  ) : token.isMaxedOut ? (
+                    <NoCurrencyButton disabled $fontSize="13px">
+                      Empty
+                    </NoCurrencyButton>
                   ) : (
                     <ClaimedButton
                       data-testid={`chain-claimed-${token.id}`}
@@ -186,9 +186,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       $iconWidth={24}
                       $iconHeight={24}
                       onClick={() => openClaimModal(token)}
-                      className="text-sm bg-g-primary-low border-2 border-space-green m-auto"
+                      className="m-auto border-2 border-space-green bg-g-primary-low text-sm"
                     >
-                      <p className="text-gradient-primary flex-[2] font-semibold text-sm">
+                      <p className="text-gradient-primary flex-[2] text-sm font-semibold">
                         Claimed!
                       </p>
                     </ClaimedButton>
@@ -198,7 +198,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     data-testid={`chain-show-claim-${token.id}`}
                     $mlAuto
                     onClick={() => openClaimModal(token)}
-                    className="text-sm m-auto"
+                    className="m-auto text-sm"
                   >
                     <p
                       data-testid={`token-claim-text-${token.id}`}
@@ -212,9 +212,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     $iconWidth={24}
                     $iconHeight={20}
                     onClick={() => openClaimModal(token)}
-                    className="text-sm bg-dark-space-green border-2 border-space-green m-auto"
+                    className="m-auto border-2 border-space-green bg-dark-space-green text-sm"
                   >
-                    <p className="text-space-green flex-[2] font-medium text-sm">
+                    <p className="flex-[2] text-sm font-medium text-space-green">
                       Claimed!
                     </p>
                   </ClaimedButton>
@@ -226,7 +226,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           <div
             className={`${
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
-            } pl-6 md:pl-16 pr-6 text-justify pb-3 flex items-center flex-wrap text-xs gap-2 text-white`}
+            } flex flex-wrap items-center gap-2 pb-3 pl-6 pr-6 text-justify text-xs text-white md:pl-16`}
           >
             {(showAllPermissions
               ? token.constraints
@@ -236,7 +236,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             ).map((permission, key) => (
               <Tooltip
                 className={
-                  "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
+                  "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                 }
                 data-testid={`token-verification-${token.id}-${permission.name}`}
                 key={key}
@@ -251,7 +251,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             {token.constraints.length > 6 && (
               <button
                 onClick={setShowAllPermissions.bind(null, !showAllPermissions)}
-                className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+                className="z-10 flex items-center rounded-lg border border-gray70 bg-gray60 px-3 py-2 transition-colors"
               >
                 <span>{showAllPermissions ? "Show less" : "Show more"}</span>
                 <Image
@@ -270,13 +270,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         <div
           className={`${
             isHighlighted ? "bg-g-primary-low" : "bg-gray30"
-          } w-full gap-4 md:gap-0 items-center flex flex-col md:flex-row rounded-b-xl px-4 py-2.5 pr-6 justify-between relative`}
+          } relative flex w-full flex-col items-center justify-between gap-4 rounded-b-xl px-4 py-2.5 pr-6 md:flex-row md:gap-0`}
         >
-          <div className="flex gap-x-2 items-center text-xs sm:text-sm">
+          <div className="flex items-center gap-x-2 text-xs sm:text-sm">
             <p className="text-gray100">
               <span className="text-white">
                 {numberWithCommas(
-                  token.maxNumberOfClaims - token.numberOfClaims
+                  token.maxNumberOfClaims - token.numberOfClaims,
                 )}{" "}
               </span>{" "}
               of{" "}
@@ -296,7 +296,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
 
           {!!timePermissionVerification && (
             <Tooltip
-              className="px-5 py-2 md:absolute rounded top-0 bottom-0 static left-1/2 md:-translate-x-1/2 text-xs text-gray80 flex items-center justify-center bg-gray20"
+              className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
               withoutImage
               text={timePermissionVerification.description}
             >
@@ -318,7 +318,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             </Tooltip>
           )}
 
-          <div className="flex gap-x-6 items-center">
+          <div className="flex items-center gap-x-6">
             <a target="_blank" rel="noreferrer" href={token.twitterUrl}>
               <Icon
                 className="cursor-pointer"

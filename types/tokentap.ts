@@ -5,6 +5,7 @@ export type Token = {
   id: PK;
   name: string;
   distributor: string;
+  decimals?: number;
   distributorUrl: string;
   discordUrl: string;
   twitterUrl: string;
