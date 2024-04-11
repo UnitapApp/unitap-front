@@ -1,5 +1,5 @@
 import { contractAddresses } from "@/constants";
-import { ProviderDashboardFormDataProp } from "@/types";
+import { Chain, ProviderDashboardFormDataProp } from "@/types";
 import {
   PublicClient,
   Address,
@@ -15,7 +15,8 @@ export const approveErc721TokenCallback = async (
   spenderAddress: Address,
   tokenAddress: Address,
   provider: PublicClient,
-  signer: GetWalletClientReturnType
+  signer: GetWalletClientReturnType,
+  selectedChain: Chain,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: erc721Abi,
@@ -31,7 +32,7 @@ export const approveErc721TokenCallback = async (
     account: address,
     functionName: "setApprovalForAll",
     args: [spenderAddress, true],
-    gasPrice: gasEstimate,
+    gasPrice: selectedChain.chainId === "42161" ? undefined : gasEstimate,
   });
 
   if (!response) return;
@@ -52,7 +53,8 @@ export const approveErc721Token = async (
   signer: GetWalletClientReturnType,
   address: Address,
   setApproveLoading: any,
-  setIsApprovedAll: any
+  setIsApprovedAll: any,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
 
@@ -70,7 +72,8 @@ export const approveErc721Token = async (
       contractAddresses.prizeTapErc721 as any,
       data.nftContractAddress as Address,
       provider,
-      signer
+      signer,
+      selectedChain,
     );
 
     setApproveLoading(false);

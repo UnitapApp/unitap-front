@@ -411,6 +411,7 @@ const TokenTapProvider: FC<
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance,
+      selectedChain,
     );
   };
 
@@ -451,15 +452,15 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, isValidContractAddress],
@@ -715,7 +716,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {

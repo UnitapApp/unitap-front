@@ -441,15 +441,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -751,7 +751,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -855,6 +855,7 @@ const ProviderDashboard: FC<
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance,
+      selectedChain,
     );
   };
 
@@ -867,6 +868,7 @@ const ProviderDashboard: FC<
       address,
       setApproveLoading,
       setIsApprovedAll,
+      selectedChain,
     );
   };
 

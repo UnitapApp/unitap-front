@@ -1,4 +1,4 @@
-import { ProviderDashboardFormDataProp } from "@/types";
+import { Chain, ProviderDashboardFormDataProp } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
   GetContractReturnType,
@@ -17,7 +17,8 @@ export const approveErc20TokenCallback = async (
   provider: PublicClient,
   signer: GetWalletClientReturnType,
   decimals: number,
-  totalAmount: string
+  totalAmount: string,
+  selectedChain: Chain,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
     abi: erc20Abi,
@@ -26,6 +27,28 @@ export const approveErc20TokenCallback = async (
     account: address,
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
   });
+
+  if (selectedChain.chainId === "42161") {
+    const response = await signer?.writeContract({
+      abi: erc20Abi,
+      address: erc20Contract.address,
+      account: address,
+      functionName: "approve",
+      args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
+      //  gasPrice: gasEstimate,
+    });
+
+    if (!response) return;
+
+    await provider.waitForTransactionReceipt({
+      hash: response,
+      confirmations: 1,
+    });
+
+    return {
+      hash: response,
+    };
+  }
 
   const response = await signer?.writeContract({
     abi: erc20Abi,
@@ -56,7 +79,8 @@ export const approveErc20Token = async (
   spenderAddress: any,
   setApproveLoading: (e: boolean) => void,
   setIsErc20Approved: (e: boolean) => void,
-  setApproveAllowance: (e: number) => void
+  setApproveAllowance: (e: number) => void,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
   const contract = getContract({
@@ -74,7 +98,8 @@ export const approveErc20Token = async (
       provider,
       signer,
       data.tokenDecimals,
-      data.totalAmount
+      data.totalAmount,
+      selectedChain,
     );
 
     setApproveLoading(false);
