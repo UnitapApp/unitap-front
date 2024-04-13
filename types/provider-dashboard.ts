@@ -268,3 +268,16 @@ export interface filterProps {
   mainnetFilter: MainnetFilters;
   evmFilter: EvmFilters;
 }
+
+export type TokenOnChain = {
+  tokenAddress: string;
+  tokenDecimals: string;
+  tokenName: string;
+  tokenSymbol: string;
+};
+
+export interface TokenInformation {
+  chainId: string;
+  chainName: string;
+  tokenList: TokenOnChain[];
+}

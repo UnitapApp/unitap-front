@@ -13,6 +13,7 @@ import {
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
+  TokenOnChain,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -156,6 +157,9 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: (date: any) => void;
   userRaffle: UserRafflesProps | undefined;
   allChainList: Chain[] | undefined;
+  setData: (item: any) => void;
+  selectedToken: TokenOnChain | null;
+  setSelectedToken: (token: TokenOnChain) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -250,6 +254,9 @@ export const ProviderDashboardContext = createContext<{
   userRaffle: {} as any,
   allChainList: [] as any,
   setSelectedApp: NullCallback,
+  setData: NullCallback,
+  selectedToken: null,
+  setSelectedToken: NullCallback
 });
 
 const ProviderDashboard: FC<
@@ -360,6 +367,8 @@ const ProviderDashboard: FC<
     enrollmentDurationsInit,
   );
 
+  const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
+
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
@@ -441,15 +450,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -751,7 +760,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {
@@ -1160,6 +1169,9 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
+        setData,
+        selectedToken,
+        setSelectedToken,
         setSelectedApp: (arg) => {
           if (!arg) {
             setSelectedConstraintTitle(null);

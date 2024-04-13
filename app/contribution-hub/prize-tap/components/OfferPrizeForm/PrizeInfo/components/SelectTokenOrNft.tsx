@@ -10,9 +10,11 @@ interface Prop {
 import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { ZERO_ADDRESS } from "@/constants";
-import { useState } from "react";
-import { ContractValidationStatus } from "@/types";
+import { ZERO_ADDRESS, tokensInformation } from "@/constants";
+import { useRef, useState } from "react";
+import { ContractValidationStatus, TokenOnChain } from "@/types";
+import { zeroAddress } from "viem";
+import { useOutsideClick } from "@/utils/hooks/dom";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,7 +30,19 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     nftContractStatus,
     numberOfNfts,
     setNumberOfNfts,
+    setData,
+    selectedToken,
+    setSelectedToken
   } = usePrizeOfferFormContext();
+
+
+  const [showItems, setShowItems] = useState(false)
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    if (showItems) setShowItems(false);
+  });
 
   const isTokenFieldDisabled =
     isShowingDetails ||
@@ -79,6 +93,21 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   };
 
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const tokenList = data.selectedChain ? tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList : null
+
+
+  const handleSetTokenAddress = (item: TokenOnChain) => {
+    setSelectedToken(item)
+    setShowItems(false)
+    setData((prevData: any) => ({
+      ...prevData,
+      isNativeToken: item.tokenAddress === zeroAddress,
+      tokenContractAddress: item.tokenAddress,
+      decimal: item.tokenAddress === zeroAddress ? 18 : null
+    }));
+  }
+
   return (
     <div
       className={
@@ -130,7 +159,26 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               />
               <p className="ml-1 text-sm text-gray100">use native token</p>
             </div>
-
+            {/* select token */}
+            {tokenList?.length && tokenList!.length > 0 &&
+              <div ref={ref} className="h-[43px] max-w-[452px]  rounded-xl 
+              border-[1.4px] bg-gray40 text-xs text-gray100 border-gray50 flex cursor-pointer mb-3 relative text-white" onClick={() => setShowItems(!showItems)}>
+                <div className="flex justify-between w-full items-center px-5">
+                  <p>{selectedToken?.tokenSymbol ? selectedToken.tokenSymbol : 'Select Token'}</p>
+                  <Icon
+                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    className={`${showItems ? 'rotate-180' : ''}`}
+                    width="12px"
+                    height="12px"
+                  />
+                </div>
+                {showItems && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-10 top-[45px] border-gray60 border-2 max-h-28 overflow-y-scroll">
+                  {tokenList?.map(((item, index) =>
+                    <p className="flex items-center text-sm cursor-pointer hover:bg-gray70 h-10 w-full pl-2 rounded-lg" onClick={() => handleSetTokenAddress(item)} key={index}>{item.tokenSymbol}</p>
+                  ))}
+                </div>}
+              </div>
+            }
             <div
               className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl 
               border-[1.4px] bg-gray40 text-xs text-gray100 
