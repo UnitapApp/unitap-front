@@ -58,10 +58,10 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     const items = !searchPhraseInput
       ? winnersResultRaffle?.winnerEntries
       : winnersResultRaffle?.winnerEntries?.filter((item) =>
-          item.userWalletAddress
-            .toLocaleLowerCase()
-            .includes(searchPhraseInput.toLocaleLowerCase()),
-        ) ?? [];
+        item.userWalletAddress
+          .toLocaleLowerCase()
+          .includes(searchPhraseInput.toLocaleLowerCase()),
+      ) ?? [];
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);
@@ -115,6 +115,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
             claimTx={item.txHash}
             key={key}
             raffle={winnersResultRaffle.pk}
+            selectedRaffleCh={winnersResultRaffle}
           />
         ))}
 
