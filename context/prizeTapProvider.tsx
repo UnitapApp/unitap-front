@@ -129,7 +129,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const getSignature = useCallback(async () => {
     if (
       !selectedRaffleForEnroll ||
-      selectedRaffleForEnroll.isExpired ||
+      (selectedRaffleForEnroll.isExpired && method !== "Claim") ||
       !userToken ||
       !address
     )

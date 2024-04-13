@@ -523,25 +523,25 @@ const ProviderDashboard: FC<
       errorObject.startDateStatus = false;
       errorObject.statDateStatusMessage = errorMessages.required;
     }
-    if (startTimeStamp && startTimeStamp + 60 < Math.floor(Date.now() / 1000)) {
-      errorObject.startDateStatus = false;
-      errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
-    }
+    // if (startTimeStamp && startTimeStamp + 60 < Math.floor(Date.now() / 1000)) {
+    //   errorObject.startDateStatus = false;
+    //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
+    // }
 
     if (!endTimeStamp) {
       errorObject.endDateStatus = false;
       errorObject.endDateStatusMessage = errorMessages.required;
     }
 
-    if (
-      endTimeStamp &&
-      startTimeStamp &&
-      (endTimeStamp <= startTimeStamp ||
-        endTimeStamp - startTimeStamp < 60 * 60)
-    ) {
-      errorObject.endDateStatus = false;
-      errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-    }
+    // if (
+    //   endTimeStamp &&
+    //   startTimeStamp &&
+    //   (endTimeStamp <= startTimeStamp ||
+    //     endTimeStamp - startTimeStamp < 60 * 60)
+    // ) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    // }
 
     if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
       errorObject.maximumLimitationStatus = false;
