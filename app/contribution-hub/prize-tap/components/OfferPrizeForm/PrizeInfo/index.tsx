@@ -76,15 +76,13 @@ const PrizeInfo = ({
       className={`flex w-full animate-fadeIn flex-col items-center justify-center`}
     >
       <div
-        className={`mb-5 flex min-h-[340px] w-full max-w-[452px] select-none flex-col items-center gap-5 ${
-          data.isNft ? "mb-[45px]" : ""
-        } ${!address ? "opacity-[.5]" : "opacity-1"}`}
+        className={`mb-5 flex min-h-[340px] w-full max-w-[452px] select-none flex-col items-center gap-5 ${data.isNft ? "mb-[45px]" : ""
+          } ${!address ? "opacity-[.5]" : "opacity-1"}`}
       >
         <section className="relative w-full">
           <div
-            className={`flex gap-2 border bg-gray40 text-xs text-gray80 ${
-              showErrors && !data.provider ? "border-error" : "border-gray50 "
-            } h-[43px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
+            className={`flex gap-2 border bg-gray40 text-xs text-gray80 ${showErrors && !data.provider ? "border-error" : "border-gray50 "
+              } h-[43px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
             <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-gray100">
               <p>Provider</p>
@@ -113,11 +111,10 @@ const PrizeInfo = ({
 
         <section className="relative w-full">
           <div
-            className={`flex gap-2 border bg-gray40 text-xs text-gray100 ${
-              showErrors && !data.description
+            className={`flex gap-2 border bg-gray40 text-xs text-gray100 ${showErrors && !data.description
                 ? "border-error"
                 : "border-gray50 "
-            } h-[63px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
+              } h-[63px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
             <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 ">
               <p>Description</p>

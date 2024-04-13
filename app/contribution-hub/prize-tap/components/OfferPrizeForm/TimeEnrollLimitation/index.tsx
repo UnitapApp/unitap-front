@@ -59,7 +59,7 @@ const TimeEnrollLimitation = ({
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
         <PeopleLimitation showErrors={showErrors} />
-        <div className="absolute top-[35em] flex w-full max-w-[452px] items-center justify-center px-2 text-center text-xs text-gray100">
+        {/* <div className="absolute top-[35em] flex w-full max-w-[452px] items-center justify-center px-2 text-center text-xs text-gray100">
           <div className="flex">
             <Icon
               className="mt-[-1px]"
@@ -80,7 +80,7 @@ const TimeEnrollLimitation = ({
               </a>
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

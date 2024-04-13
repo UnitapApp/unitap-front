@@ -61,10 +61,10 @@ const TokenInformationVerification = () => {
             <div className="flex items-center justify-center gap-1">
               <a
                 target="_blank"
-                href="mailto:unitap.support@gmail.com"
+                href="mailto:Support@unitap.app"
                 className="flex items-center justify-center gap-1 text-white"
               >
-                unitap.support@gmail.com
+                Support@unitap.app
                 <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
               </a>
             </div>
@@ -89,11 +89,11 @@ const TokenInformationVerification = () => {
               </p>
               <div className="flex items-center justify-center gap-1">
                 <a
-                  href="mailto:unitap.support@gmail.com"
+                  href="mailto:Support@unitap.app"
                   target="_black"
                   className="flex gap-1 text-white"
                 >
-                  unitap.support@gmail.com
+                  Support@unitap.app
                   <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
                 </a>
               </div>

@@ -68,21 +68,18 @@ const TokenTapTimeEnrollLimitation = ({
               if (isShowingDetails) return;
               handleSetClaimPeriodic(false);
             }}
-            className={`${
-              claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex h-[43px] w-full cursor-pointer flex-col items-center justify-center rounded-[12px_0px_0px_12px] border border-gray50`}
+            className={`${claimPeriodic ? "bg-gray30" : "bg-gray40"
+              } flex h-[43px] w-full cursor-pointer flex-col items-center justify-center rounded-[12px_0px_0px_12px] border border-gray50`}
           >
             <p
-              className={`${
-                !claimPeriodic ? "text-white" : "text-gray90"
-              } text-xs`}
+              className={`${!claimPeriodic ? "text-white" : "text-gray90"
+                } text-xs`}
             >
               Single Claim Tap
             </p>
             <p
-              className={`${
-                !claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-2xs`}
+              className={`${!claimPeriodic ? "text-gray100" : "text-gray90"
+                } text-2xs`}
             >
               ( Users can only claim once)
             </p>
@@ -92,21 +89,18 @@ const TokenTapTimeEnrollLimitation = ({
               if (isShowingDetails) return;
               handleSetClaimPeriodic(true);
             }}
-            className={`${
-              !claimPeriodic ? "bg-gray30" : "bg-gray40"
-            } flex h-[43px] w-full cursor-pointer  flex-col items-center justify-center rounded-[0px_12px_12px_0px] border border-gray50`}
+            className={`${!claimPeriodic ? "bg-gray30" : "bg-gray40"
+              } flex h-[43px] w-full cursor-pointer  flex-col items-center justify-center rounded-[0px_12px_12px_0px] border border-gray50`}
           >
             <p
-              className={`${
-                claimPeriodic ? "text-white" : "text-gray90"
-              } text-xs`}
+              className={`${claimPeriodic ? "text-white" : "text-gray90"
+                } text-xs`}
             >
               Periodic Tap
             </p>
             <p
-              className={`${
-                claimPeriodic ? "text-gray100" : "text-gray90"
-              } text-2xs`}
+              className={`${claimPeriodic ? "text-gray100" : "text-gray90"
+                } text-2xs`}
             >
               (Users can claim once per round.)
             </p>
@@ -115,7 +109,7 @@ const TokenTapTimeEnrollLimitation = ({
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
 
-        <div className="absolute top-[35em] flex w-full max-w-[452px] items-center justify-center px-2 text-center text-xs text-gray100">
+        {/* <div className="absolute top-[35em] flex w-full max-w-[452px] items-center justify-center px-2 text-center text-xs text-gray100">
           <div className="flex">
             <Icon
               className="mt-[-1px]"
@@ -136,7 +130,7 @@ const TokenTapTimeEnrollLimitation = ({
               </a>
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}
