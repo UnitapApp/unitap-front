@@ -29,7 +29,7 @@ const QuizTapSidebar: FC = () => {
 
   return (
     <aside className="quiz-sidebar flex w-60 flex-col rounded-2xl p-1">
-      <div className="flex items-center justify-between rounded-lg bg-gray10 p-5">
+      {/* <div className="flex items-center justify-between rounded-lg bg-gray10 p-5">
         <p className="text-gray100">Health</p>
 
         <div className="flex items-center gap-4">
@@ -42,7 +42,7 @@ const QuizTapSidebar: FC = () => {
             alt="health"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="mt-1 flex justify-between rounded-lg bg-gray10 p-5">
         <div className="text-gray100">

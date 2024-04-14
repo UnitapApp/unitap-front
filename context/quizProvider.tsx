@@ -2,7 +2,11 @@
 
 import { Competition, QuestionResponse } from "@/types";
 import { NullCallback } from "@/utils";
-import { fetchQuizQuestionApi, submitAnswerApi } from "@/utils/api";
+import {
+  fetchQuizApi,
+  fetchQuizQuestionApi,
+  submitAnswerApi,
+} from "@/utils/api";
 import {
   FC,
   PropsWithChildren,
@@ -162,6 +166,16 @@ const QuizContextProvider: FC<
     userEnrollmentPk,
   ]);
 
+  const fetchFinalResults = useCallback(async () => {
+    const res = (await fetchQuizApi(quiz.id)) as Competition & {
+      winnerCount: number;
+      amountWon: number;
+    };
+
+    setAmountWinPerUser(res.amountWon);
+    setRemainingPeople(res.winnerCount);
+  }, [quiz.id]);
+
   const getQuestion = useCallback(
     async (stateIndex: number) => {
       const questionIndex = getNextQuestionPk(stateIndex);
@@ -199,6 +213,7 @@ const QuizContextProvider: FC<
       if (newState > quiz.questions.length) {
         setFinished(true);
         setTimer(0);
+        // fetchFinalResults();
         return;
       }
 
@@ -239,6 +254,7 @@ const QuizContextProvider: FC<
     startAt,
     stateIndex,
     submitUserAnswer,
+    fetchFinalResults,
   ]);
 
   useEffect(() => {

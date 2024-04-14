@@ -10,8 +10,6 @@ import RestTime from "./components/restTime";
 import QuizFinished from "./components/finished";
 
 const QuizItemPage = () => {
-  const { stateIndex, hint } = useQuizContext();
-
   return (
     <div className="quiz-main-wrapper relative w-full">
       <main className="quiz-main-content h-full w-full flex-1 rounded-2xl p-3">
