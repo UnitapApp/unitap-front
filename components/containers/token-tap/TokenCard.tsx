@@ -52,20 +52,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         },
         type: "ERC20",
       });
-
-      // await (window.ethereum as any).request({
-      //   method: "wallet_watchAsset",
-      //   params: {
-      //     type: "ERC20",
-      //     options: {
-      //       name: token.name,
-      //       address: token.tokenAddress,
-      //       symbol: token.token,
-      //       decimals: token.chain.decimals,
-      //       image: token.imageUrl,
-      //     },
-      //   },
-      // })
     } catch (error) {
       console.log(error);
     }
@@ -107,10 +93,14 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               className="mb-6 flex items-center hover:cursor-pointer sm:mb-0"
             >
               <span className="chain-logo-container mr-3 flex h-11 w-11 justify-center">
-                <img
+                <Image
+                  width={44}
+                  height={44}
                   className="chain-logo h-full w-auto"
-                  src={token.imageUrl}
-                  alt="chain logo"
+                  src={
+                    token.imageUrl ?? "/assets/images/prizetap/bright-token.svg"
+                  }
+                  alt={token.name}
                 />
               </span>
               <span className="w-max">

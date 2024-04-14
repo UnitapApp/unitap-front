@@ -42,9 +42,22 @@ const InitialBody: FC<{
         </p>
       ) : (
         <div className="text-left text-white">
-          <p className="mb-2 text-center text-lg leading-loose">
-            Your claim is ready.
-          </p>
+          {claimTokenSignatureLoading ? (
+            <p className="my-4 mb-6 px-3 text-center text-sm text-white">
+              Preparing your Enroll signature...
+            </p>
+          ) : claimTokenResponse?.state === "Retry" ? (
+            <p className="my-4 mb-6 px-3 text-center text-sm text-error">
+              {claimTokenResponse?.message}
+            </p>
+          ) : claimTokenLoading ? (
+            <p className="mb-2 text-center text-lg leading-loose">
+              Your claim is ready.
+            </p>
+          ) : (
+            <p></p>
+          )}
+
           <p className="mb-2 text-xs">
             If you have not already claimed your tokens, you can claim them now.
           </p>
@@ -73,16 +86,17 @@ const InitialBody: FC<{
       </WalletAddress>
 
       <ClaimButton
-        onClick={() => handleClaimToken()}
+        onClick={handleClaimToken}
         $width="100%"
         $fontSize="16px"
+        disabled={claimTokenSignatureLoading || claimTokenLoading}
         className="!w-full"
         data-testid={`token-claim-action-${token.chain.pk}`}
       >
         {claimTokenLoading ? (
           <p>Claiming...</p>
         ) : claimTokenSignatureLoading ? (
-          <p>Preparing...</p>
+          <p>Preparing Signature...</p>
         ) : claimTokenResponse?.state === "Retry" ? (
           <p>Retry</p>
         ) : (

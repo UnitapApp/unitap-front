@@ -241,7 +241,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           state: "Retry",
           message: error.shortMessage,
         });
-        console.log(error.cause, error.details, error.shortMessage);
+        console.log(error);
       } finally {
         setClaimingTokenPk(null);
         setLoading(false);
