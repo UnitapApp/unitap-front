@@ -469,7 +469,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     />
                   </div>
                   <EnrolledButton
-                    disabled={true}
+                    onClick={() => openEnrollModal(raffle, "Enroll")}
                     className="!w-full  min-w-[552px] md:!w-[352px]"
                     height="48px"
                     $fontSize="14px"

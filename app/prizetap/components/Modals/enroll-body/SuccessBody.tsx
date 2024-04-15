@@ -21,7 +21,7 @@ const SuccessBody: FC<{
       `I won ${raffle.name} from @Unitap_app among ${
         raffle.numberOfOnchainEntries
       } participants. 🤩🎉 (raffled off by @${raffle.twitterUrl
-        .split("/")
+        ?.split("/")
         .at(-1)}) 
 				Try your luck to win valuable prizes at `,
     )}&url=${encodeURIComponent("unitap.app/prize-tap")}`;
