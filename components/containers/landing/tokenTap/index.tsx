@@ -21,11 +21,13 @@ const TokenTapLanding = async () => {
           icon={"tokentap-icon.svg"}
           iconSize={"w-8"}
           className={
-            "h-full after:bg-tokentap-texture relative z-20 hover:bg-gray00 cursor-pointer flex-1 "
+            "relative z-20 h-full flex-1 cursor-pointer after:bg-tokentap-texture hover:bg-gray00 "
           }
           title={"Token Tap"}
-          buttonTitle={"Beta"}
-          buttonClass={"green-text-button text-gray100"}
+          buttonTitle={"Go to Tap"}
+          buttonClass={
+            "gradient-outline-button before:inset-[2px] text-gray100"
+          }
         >
           <div className="mt-8">
             {tokensList.length > 0 &&
@@ -33,19 +35,19 @@ const TokenTapLanding = async () => {
                 <div
                   key={key}
                   className={
-                    "flex text-xs text-white bg-gray30 rounded-xl py-3 px-3 items-center mb-2"
+                    "mb-2 flex items-center rounded-xl bg-gray30 px-3 py-3 text-xs text-white"
                   }
                 >
-                  <span className="token-logo-container w-6 h-6">
+                  <span className="token-logo-container h-6 w-6">
                     <img
                       width={24}
                       height={24}
                       src={token.imageUrl}
                       alt={token.name}
-                      className="token-logo w-auto h-[100%]"
+                      className="token-logo h-[100%] w-auto"
                     />
                   </span>
-                  <p className="text-xs ml-4">{token.name}</p>
+                  <p className="ml-4 text-xs">{token.name}</p>
                   <p className="ml-auto">
                     {numberWithCommas(token.numberOfClaims)} <span>claims</span>
                   </p>

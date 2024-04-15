@@ -20,9 +20,9 @@ const Header = () => {
             className="gas-tap mb-1 h-12 w-auto"
             iconSrc="assets/images/token-tap/token-tap-typo-logo.svg"
           />
-          <div className="rounded-lg border border-gray50 bg-gray10 px-3 py-2 text-xs font-bold text-white">
+          {/* <div className="rounded-lg border border-gray50 bg-gray10 px-3 py-2 text-xs font-bold text-white">
             <p className="text-gradient-primary">Beta</p>
-          </div>
+          </div> */}
         </span>
         <p className="text-xs text-gray100">
           Where everyone can claim any kind of tokens such as community tokens,
