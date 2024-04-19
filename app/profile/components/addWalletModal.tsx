@@ -77,7 +77,7 @@ export const AddWalletPrompt = () => {
           connect({
             connector: connectors.find(
               (connector) => connector.id === "injected"
-            ),
+            )!,
           });
         }}
       />
@@ -91,7 +91,7 @@ export const AddWalletPrompt = () => {
           connect({
             connector: connectors.find(
               (connector) => connector.id === "walletConnect"
-            ),
+            )!,
           });
         }}
       />

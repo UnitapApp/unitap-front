@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProviderFormPaginationProp } from "@/types";
 import SelectChainDropDown from "./components/SelectChainDropDown";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import SelectTokenOrNft from "./components/SelectTokenOrNft";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import {
@@ -73,20 +73,18 @@ const PrizeInfo = ({
 
   return (
     <div
-      className={`flex flex-col justify-center w-full items-center animate-fadeIn`}
+      className={`flex w-full animate-fadeIn flex-col items-center justify-center`}
     >
       <div
-        className={`flex flex-col select-not min-h-[340px] mb-5 gap-5 w-full items-center max-w-[452px] ${
-          data.isNft ? "mb-[45px]" : ""
-        } ${!address ? "opacity-[.5]" : "opacity-1"}`}
+        className={`mb-5 flex min-h-[340px] w-full max-w-[452px] select-none flex-col items-center gap-5 ${data.isNft ? "mb-[45px]" : ""
+          } ${!address ? "opacity-[.5]" : "opacity-1"}`}
       >
-        <section className="w-full relative">
+        <section className="relative w-full">
           <div
-            className={`flex gap-2 text-gray80 text-xs bg-gray40 border ${
-              showErrors && !data.provider ? "border-error" : "border-gray50 "
-            } rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+            className={`flex gap-2 border bg-gray40 text-xs text-gray80 ${showErrors && !data.provider ? "border-error" : "border-gray50 "
+              } h-[43px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
-            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-gray100">
+            <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-gray100">
               <p>Provider</p>
             </div>
             <input
@@ -101,7 +99,7 @@ const PrizeInfo = ({
             <p>{data.provider?.length}/30</p>
           </div>
           {showErrors && !data.provider && (
-            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
+            <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
               Required
             </p>
           )}
@@ -111,30 +109,29 @@ const PrizeInfo = ({
 
         <SelectTokenOrNft showErrors={showErrors} isRightChain={isRightChain} />
 
-        <section className="w-full relative">
+        <section className="relative w-full">
           <div
-            className={`flex gap-2 text-gray100 text-xs bg-gray40 border ${
-              showErrors && !data.description
+            className={`flex gap-2 border bg-gray40 text-xs text-gray100 ${showErrors && !data.description
                 ? "border-error"
                 : "border-gray50 "
-            } rounded-xl h-[63px] items-center justify-between pr-4 w-full max-w-[452px] overflow-hidden`}
+              } h-[63px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
-            <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center">
+            <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 ">
               <p>Description</p>
             </div>
-            <input
-              type="text"
+            <textarea
               placeholder="will be shown on card"
-              className="provider-dashboard-input"
+              className="h-full max-h-[55px] w-full border-none bg-gray40 bg-none p-1 !outline-none focus:ring-0"
               name="description"
               onChange={handleChange}
               disabled={isShowingDetails || !address}
               value={data.description ? data.description : ""}
             />
+
             <p>{data.description?.length}/100</p>
           </div>
           {showErrors && !data.description && (
-            <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute left-1">
+            <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
               Required
             </p>
           )}
@@ -145,7 +142,7 @@ const PrizeInfo = ({
         <ClaimButton
           onClick={handleCheckConnection}
           height="2.8rem"
-          className="!w-full text-white max-w-[452px] "
+          className="!w-full max-w-[452px] text-white "
           $fontSize="14px"
           data-testid="fund-action"
         >
@@ -154,7 +151,7 @@ const PrizeInfo = ({
       ) : address && !isRightChain && !data.selectedChain ? (
         <ClaimButton
           height="2.8rem"
-          className="!w-full  text-white max-w-[452px] "
+          className="!w-full  max-w-[452px] text-white "
           $fontSize="14px"
           data-testid="fund-action"
           disabled={true}
@@ -165,7 +162,7 @@ const PrizeInfo = ({
         <ClaimButton
           onClick={handleCheckConnection}
           height="2.8rem"
-          className="!w-full  text-white max-w-[452px] "
+          className="!w-full  max-w-[452px] text-white "
           $fontSize="14px"
           data-testid="fund-action"
         >

@@ -1,6 +1,6 @@
 import { ProviderFormPaginationProp } from "@/types";
 import NewAddedConstraint from "../NewAddedConstraint";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import ConstraintListModal from "./components/ConstraintListModal";
@@ -13,17 +13,19 @@ const Requirements = ({
     usePrizeOfferFormContext();
 
   return (
-    <div className="flex flex-col justify-center items-center w-full animate-fadeIn">
-      <div className="text-gray100 min-h-[424px] text-xs font-medium flex flex-col w-full  max-w-[452px] min-w-[300px] select-not">
+    <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
+      <div className="flex min-h-[424px] w-full min-w-[300px] max-w-[452px] select-none flex-col  text-xs font-medium text-gray100">
         <p className="mb-4">
-          Add any requirements for Enrolling or leave it free.
+          Add enrollment requirements. You can skip this part but it is advised
+          to have at least one requirement to prevent bot attacks and fake
+          accounts.
         </p>
         {requirementList.map((requirement, key) => (
           <NewAddedConstraint key={key} requirement={requirement} />
         ))}
         <div
           onClick={openRequirementModal}
-          className=" flex cursor-pointer items-center gap-2 bg-gray40 h-[44px] rounded-xl px-4 text-white text-xs"
+          className=" flex h-[44px] cursor-pointer items-center gap-2 rounded-xl bg-gray40 px-4 text-xs text-white"
         >
           <Icon
             iconSrc="/assets/images/provider-dashboard/add-requirement.svg"

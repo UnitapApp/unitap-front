@@ -1,6 +1,6 @@
 "use client";
 
-import DisplaySteps from "../../../DisplaySteps";
+import DisplaySteps from "../../../components/DisplaySteps";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import {
   prizeTapForms,
 } from "@/app/contribution-hub/constants/forms";
 import { usePreventNavigation } from "@/utils/hooks/refresh";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface FromProp {
   detailRafflePk?: string | undefined;
@@ -37,8 +38,10 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
 
   usePreventNavigation(
     process.env.NODE_ENV === "development" ? false : isFormFilled,
-    "You have unsaved changes. Refreshing the page may result in data loss."
+    "You have unsaved changes. Refreshing the page may result in data loss.",
   );
+
+  useScrollToTop();
 
   const { display, prevPage } = usePagination(page, setPage, prizeTapForms);
 
@@ -51,17 +54,17 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
   }, [detailRafflePk, userRaffle]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 select-none">
+    <div className="flex select-none flex-col gap-5 md:flex-row">
       <DisplaySteps page={page} displaySteps={PrizeTapDisplaySteps} />
-      <div className="offerPrize-form relative bg-gray20 w-full rounded-xl py-[4em] min-h-[504px] flex flex-col items-center px-5">
+      <div className="offerPrize-form relative flex min-h-[504px] w-full flex-col items-center rounded-xl bg-gray20 px-5 py-[4em]">
         {page >= 1 && page < 5 && (
           <Icon
             onClick={prevPage}
-            className="absolute text-white text-xl top-5 left-5 cursor-pointer select-not"
+            className="absolute left-5 top-5 cursor-pointer select-none text-xl text-white"
             iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
           />
         )}
-        <div className="w-full flex  justify-center min-h-[320px]">
+        <div className="flex min-h-[320px]  w-full justify-center">
           {display}
         </div>
       </div>

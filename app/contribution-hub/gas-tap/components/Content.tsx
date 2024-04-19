@@ -4,7 +4,7 @@ import {
   ProviderDashboardButton,
   ProviderDashboardButtonRejected,
   ProviderDashboardButtonSuccess,
-} from "../../Buttons";
+} from "../../components/Buttons";
 import Icon from "@/components/ui/Icon";
 import SearchInput from "../../prize-tap/components/SearchInput";
 import Link from "next/link";
@@ -21,6 +21,7 @@ import {
   UserDonation,
   filterProps,
 } from "@/types";
+import useScrollToTop from "@/utils/hooks/scrollTop";
 
 interface DonationProps {
   donation: UserDonation;
@@ -37,33 +38,37 @@ const DonationCard = ({ donation }: DonationProps) => {
   const status = donation.status;
   return (
     <div>
-      <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
-        <div className="flex justify-between items-center text-gray90">
-          <div className="flex items-center text-white gap-2 font-medium text-base;">
-            <Icon iconSrc={donation.faucet.gasImageUrl} />
+      <div className="w-full rounded-xl border-2 border-gray40 bg-gray30 p-4">
+        <div className="flex items-center justify-between text-gray90">
+          <div className="text-base; flex items-center gap-2 font-medium text-white">
+            <Icon
+              iconSrc={donation.faucet.gasImageUrl}
+              width="30px"
+              height="27px"
+            />
             <p>{donation.faucet.chain.chainName}</p>
           </div>
-          <div className="flex gap-2 text-2xs items-center justify-center">
-            <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-md">
+          <div className="flex items-center justify-center gap-2 text-2xs">
+            <div className="w-[50px] rounded-md bg-gray50 px-1 py-[3px] text-center">
               {donation.faucet.chain.chainType}
             </div>
-            <div className="text-center w-[50px] bg-gray50 px-1 py-[3px] rounded-md">
+            <div className="w-[50px] rounded-md bg-gray50 px-1 py-[3px] text-center">
               {isTestnet ? "Testnet" : "Mainnet"}
             </div>
           </div>
         </div>
-        <div className="flex mt-4 justify-between items-center">
-          <div className="text-gray90 text-xs">
+        <div className="mt-4 flex items-center justify-between">
+          <div className="text-xs text-gray90">
             <div className="mb-2">
               Currency{" "}
-              <span className="text-white ml-2">
+              <span className="ml-2 text-white">
                 {" "}
                 {donation.faucet.chain.nativeCurrencyName}
               </span>
             </div>
             <div>
               Refill Amount{" "}
-              <span className="text-white ml-2">{donation.value}</span>
+              <span className="ml-2 text-white">{donation.value}</span>
             </div>
           </div>
           <div>
@@ -104,12 +109,15 @@ const GasTapContent = () => {
 
   const [filteredItem, setFilteredItem] = useState<UserDonation[]>([]);
 
+  const [firstCheck, setFirstCheck] = useState(false);
+
   const handleGetUserDonations = useCallback(async () => {
     if (!userToken) return;
     try {
       const donations = await getUserDonations(userToken);
       setUserDonations(donations.results);
       setLoading(false);
+      setFirstCheck(true);
     } catch (e: any) {
       setLoading(false);
     }
@@ -137,13 +145,15 @@ const GasTapContent = () => {
               .toLocaleLowerCase()
               .includes(searchPhrase.toLocaleLowerCase()) ||
             item.faucet.chain.chainId.includes(searchPhrase) ||
-            item.value.includes(searchPhrase)
-        )
+            item.value.includes(searchPhrase),
+        ),
       );
     } else {
       setFilteredItem(filteredItem);
     }
   };
+
+  useScrollToTop();
 
   useEffect(() => {
     if (canDisplayAll) {
@@ -154,20 +164,20 @@ const GasTapContent = () => {
       let filteredItem = userDonations.filter((item) =>
         selectedFilter.statusFilter != "All"
           ? item.status === selectedFilter.statusFilter
-          : item
+          : item,
       );
 
       filteredItem = filteredItem.filter((item) =>
         selectedFilter.evmFilter != "All"
           ? item.faucet.chain.chainType === selectedFilter.evmFilter
-          : item
+          : item,
       );
 
       const isTestnet = selectedFilter.mainnetFilter === MainnetFilters.Testnet;
       filteredItem = filteredItem.filter((item) =>
         selectedFilter.mainnetFilter != "All"
           ? item.faucet.chain.isTestnet === isTestnet
-          : item
+          : item,
       );
 
       filterByPhrase(filteredItem);
@@ -187,19 +197,19 @@ const GasTapContent = () => {
       handleGetUserDonations();
     },
     FAST_INTERVAL,
-    []
+    [],
   );
 
   return (
-    <div>
+    <div className="min-h-[600px]">
       <div>
-        <div className="flex flex-col lg:flex-row  items-center gap-2 lg:gap-2 justify-between">
+        <div className="flex flex-col items-center  justify-between gap-2 lg:flex-row lg:gap-2">
           <SearchInput
-            className="w-full  sm:max-w-[270px] st"
+            className="st  w-full sm:max-w-[270px]"
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
-          <div className="flex flex-col lg:flex-row gap-2 lg:gap-1 w-full sm:w-auto select-none">
-            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+          <div className="flex w-full select-none flex-col gap-2 sm:w-auto lg:flex-row lg:gap-1">
+            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
               <div
                 className={`${
                   selectedFilter.statusFilter == StatusFilters.All &&
@@ -237,7 +247,7 @@ const GasTapContent = () => {
                 rejected
               </div>
             </div>
-            <div className="provider-dashboard__status justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
               <div
                 className={`${
                   selectedFilter.mainnetFilter == MainnetFilters.All &&
@@ -266,7 +276,7 @@ const GasTapContent = () => {
                 Mainnet
               </div>
             </div>
-            <div className="provider-dashboard__status  justify-center md:mt-0 flex h-[40px] text-xs items-center align-center text-gray90 bg-gray40 border-2 border-gray30 rounded-xl w-full  md:w-auto">
+            <div className="provider-dashboard__status  align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
               <div
                 className={`${
                   selectedFilter.evmFilter == EvmFilters.All && "text-gray100"
@@ -295,42 +305,48 @@ const GasTapContent = () => {
             </div>
           </div>
         </div>
-        <div className="refill-token h-auto md:h-[78px] mt-4 flex w-full justify-between overflow-hidden items-center">
-          <div className="flex flex-col sm:flex-row justify-between w-full items-center py-5 px-7 text-white">
-            <div className="flex items-center relative">
+        <div className="refill-token mt-4 flex h-auto w-full items-center justify-between overflow-hidden md:h-[78px]">
+          <div className="flex w-full flex-col items-center justify-between px-7 py-5 text-white sm:flex-row">
+            <div className="relative flex items-center">
               <div>
-                <p className="text-base font-semibold">Refill Gas Tap Tokens</p>{" "}
-                <p className="text-sm text-gray100">Provide Gas Fee.</p>
+                <p className="text-base font-semibold">Refuel Gas Tap</p>{" "}
+                <p className="text-sm text-gray100">
+                  Fill the taps of Gas Tap to help users get started on their
+                  journey.
+                </p>
               </div>
               <Icon
-                className="absolute right-0 sm:right-[-45px] top-[-17px]  h-[150px] sm:h-[80px]"
+                className="absolute right-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
                 iconSrc="/assets/images/provider-dashboard/gas-bg.png"
               />
             </div>
             <Link
               href={RoutePath.PROVIDER_GASTAP_CREATE}
-              className="flex mt-5 sm:mt-0 items-center justify-center cursor-pointer border-2 border-white rounded-[12px] bg-[#0C0C17] w-[226px] h-[46px]"
+              className="mt-5 flex h-[46px] w-[226px] cursor-pointer items-center justify-center rounded-[12px] border-2 border-white bg-[#0C0C17] sm:mt-0"
             >
               + Provide Gas Fee
             </Link>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredItem.length > 0 &&
             filteredItem.map((item, index) => (
               <DonationCard donation={item} key={index} />
             ))}
         </div>
-        {filteredItem.length == 0 && loading && canDisplayAll && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-fadeInOut">
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-          </div>
-        )}
+        {filteredItem.length == 0 &&
+          loading &&
+          canDisplayAll &&
+          !firstCheck && (
+            <div className="mt-4 grid animate-fadeInOut grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+          )}
 
         {filteredItem.length == 0 && !loading && (
-          <div className="w-full text-center animate-fadeIn">
+          <div className="w-full animate-fadeIn text-center">
             No items found{" "}
           </div>
         )}
@@ -343,24 +359,24 @@ export default GasTapContent;
 
 const Skeleton = () => {
   return (
-    <div className="bg-gray30 border-2 border-gray40 w-full p-4 rounded-xl">
-      <div className="flex justify-between items-center">
+    <div className="w-full rounded-xl border-2 border-gray40 bg-gray30 p-4">
+      <div className="flex items-center justify-between">
         <div className="flex gap-2">
-          <div className="w-[30px] h-[30px] bg-gray50 rounded-md"></div>
-          <p className="w-[80px] h-[30px] bg-gray50 rounded-md"></p>
+          <div className="h-[30px] w-[30px] rounded-md bg-gray50"></div>
+          <p className="h-[30px] w-[80px] rounded-md bg-gray50"></p>
         </div>
-        <div className="flex gap-2 items-center justify-center">
-          <div className="h-[20px] w-[50px] bg-gray50 px-1 py-[3px] rounded-md"></div>
-          <div className="h-[20px] w-[50px] bg-gray50 px-1 py-[3px] rounded-md"></div>
+        <div className="flex items-center justify-center gap-2">
+          <div className="h-[20px] w-[50px] rounded-md bg-gray50 px-1 py-[3px]"></div>
+          <div className="h-[20px] w-[50px] rounded-md bg-gray50 px-1 py-[3px]"></div>
         </div>
       </div>
-      <div className="flex mt-4 justify-between items-center">
+      <div className="mt-4 flex items-center justify-between">
         <div>
-          <div className="mb-2 w-[70px] h-[20px] bg-gray50 rounded-md"></div>
-          <div className="w-[70px] h-[20px] bg-gray50 rounded-md"></div>
+          <div className="mb-2 h-[20px] w-[70px] rounded-md bg-gray50"></div>
+          <div className="h-[20px] w-[70px] rounded-md bg-gray50"></div>
         </div>
         <div>
-          <div className="w-[100px] h-[30px] bg-gray50 rounded-md"></div>
+          <div className="h-[30px] w-[100px] rounded-md bg-gray50"></div>
         </div>
       </div>
     </div>

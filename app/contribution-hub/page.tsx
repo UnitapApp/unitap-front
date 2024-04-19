@@ -1,8 +1,3 @@
-import PrizeTapContent from "./prize-tap/components/Content";
-import { FC } from "react";
+import GasTapContent from "./gas-tap/components/Content";
 
-const ProviderDashboardPrizeTapLayout: FC = ({}) => {
-  return <PrizeTapContent />;
-};
-
-export default ProviderDashboardPrizeTapLayout;
+export default GasTapContent;

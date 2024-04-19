@@ -20,17 +20,17 @@ const PrizeTapLanding: FC = async () => {
     await serverFetch("/api/prizetap/raffle-list/")
   ).filter(
     (raffle: Prize) =>
-      raffle.status !== "PENDING" && raffle.status !== "REJECTED"
+      raffle.status !== "PENDING" && raffle.status !== "REJECTED",
   );
 
   const validRaffles = rafflesList.sort(
-    (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+    (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime(),
   );
 
   const availableRaffles = rafflesList.filter(
     (raffle) =>
       new Date(raffle.deadline).getTime() > new Date().getTime() &&
-      new Date().getTime() > new Date(raffle.startAt).getTime()
+      new Date().getTime() > new Date(raffle.startAt).getTime(),
   );
 
   return (
@@ -42,17 +42,19 @@ const PrizeTapLanding: FC = async () => {
             availableRaffles.length === 0
               ? "No raffles are live on Prize Tap"
               : availableRaffles.length === 1
-              ? "1 raffle is live on Prize Tap"
-              : availableRaffles.length + " Raffles are live on PrizeTap..."
+                ? "1 raffle is live on Prize Tap"
+                : availableRaffles.length + " Raffles are live on PrizeTap..."
           }
           className={
-            "h-full after:w-full after:-top-8 relative z-20 hover:bg-gray00"
+            "relative z-20 h-full after:-top-8 after:w-full hover:bg-gray00"
           }
           icon={"/prizetap-icon.png"}
           iconSize={"w-8 h-7"}
           title={"Prize Tap"}
-          buttonTitle={"Beta"}
-          buttonClass={"green-text-button text-gray100"}
+          buttonTitle={"Go to Tap"}
+          buttonClass={
+            "gradient-outline-button before:inset-[2px] text-gray100"
+          }
         >
           <div className="mt-14">
             {validRaffles.length > 0 &&
@@ -60,13 +62,13 @@ const PrizeTapLanding: FC = async () => {
                 <div
                   key={key}
                   className={
-                    "flex relative text-xs text-white bg-gray30 rounded-xl py-2 px-2 mb-2 overflow-hidden h-[80px] "
+                    "relative mb-2 flex h-[80px] overflow-hidden rounded-xl bg-gray30 px-2 py-2 text-xs text-white "
                   }
                 >
                   <div className="z-100 w-full">
                     <div className="flex gap-4">
-                      <div className="raffle-logo-container w-[64px] h-[63px] relative z-100 overflow-hidden">
-                        <span className=" w-[62px] left-[1px] h-[62px] rounded-[13px] bg-gray40 absolute overflow-hidden">
+                      <div className="raffle-logo-container relative z-100 h-[63px] w-[64px] overflow-hidden">
+                        <span className=" absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40">
                           <img
                             width="62px"
                             height="63px"
@@ -77,19 +79,20 @@ const PrizeTapLanding: FC = async () => {
                       </div>
                       <div>
                         <p className="">
-                          {raffle.isPrizeNft
+                          {/* {raffle.isPrizeNft
                             ? raffle.prizeAmount
                             : raffle.prizeAmount / 10 ** raffle.decimals}{" "}
-                          {raffle.prizeSymbol}
+                          {raffle.prizeSymbol} */}
+                          {raffle.name}
                         </p>
-                        <p className="text-secondary-text mt-2">
+                        <p className="mt-2 text-secondary-text">
                           {"by " +
                             (raffle.creatorName ||
                               raffle.creatorProfile?.username)}
                         </p>
                       </div>
                     </div>
-                    <div className="flex mt-[-1.2em] ml-[6em] justify-between">
+                    <div className="ml-[6em] mt-[-1.2em] flex justify-between">
                       {raffle.winnerEntry ? (
                         <p className="text-gray90">
                           Congratulations, @
@@ -97,7 +100,7 @@ const PrizeTapLanding: FC = async () => {
                         </p>
                       ) : (
                         <>
-                          <p className="text-gray90 ml-2">
+                          <p className="ml-2 text-gray90">
                             Winners Announced in:
                           </p>
                           <RaffleCardTimerLandingPage
@@ -108,7 +111,7 @@ const PrizeTapLanding: FC = async () => {
                       )}
                     </div>
                   </div>
-                  <div className="w-full bg-gray40 absolute bottom-0 left-0 h-[30px] flex items-center justify-between px-10"></div>
+                  <div className="absolute bottom-0 left-0 flex h-[30px] w-full items-center justify-between bg-gray40 px-10"></div>
                 </div>
               ))}
           </div>

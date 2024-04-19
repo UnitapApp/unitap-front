@@ -36,7 +36,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
     if (e?.unix) {
       handleSetDate(
         Math.round(new Date(e.unix * 1000).setSeconds(0) / 1000),
-        "endTime"
+        "endTime",
       );
     }
     setEndDateState(e);
@@ -78,7 +78,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           render={(value, openCalendar) => {
             return (
               <p
-                className="select-not"
+                className="select-none"
                 onClick={() => timePickerClick(openCalendar)}
               >
                 or Select Date & Time Manually
@@ -91,7 +91,7 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
           className="rmdp-mobile animate-fadeIn"
         />
       </div>
-      <p className="text-error text-[11px] m-0 p-0 -mt-[.5px] absolute ">
+      <p className="absolute m-0 -mt-[.5px] p-0 text-[11px] text-error ">
         {showErrors && !data.endTimeStamp && showErrors.endDateStatusMessage}
       </p>
     </div>

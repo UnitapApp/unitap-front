@@ -41,20 +41,20 @@ const Tooltip: FC<
       <span>{children}</span>
 
       <div
-        className={`absolute bottom-full mb-3 -translate-x-1/2 left-1/2 w-full p-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs transition-opacity opacity-0 ${toolTipClassName} ${
+        className={`absolute bottom-full left-1/2 z-20 mb-3 w-full -translate-x-1/2 rounded-md border border-gray70 bg-gray10 p-2 text-center text-xs text-gray100 opacity-0 transition-opacity ${toolTipClassName} ${
           showTooltip
-            ? "opacity-100 pointer-events-auto"
+            ? "pointer-events-auto opacity-100"
             : "pointer-events-none"
         }`}
       >
-        <div className="absolute top-full -mt-[0.3rem] transform -translate-x-1/2 left-1/2 rounded-bl bg-gray10 border-b border-l border-gray70 w-3 h-3 -rotate-45" />
+        <div className="absolute left-1/2 top-full -mt-[0.3rem] h-3 w-3 -translate-x-1/2 -rotate-45 transform rounded-bl border-b border-l border-gray70 bg-gray10" />
         <div>
           {withoutImage || (
             <Image
               alt="tooltip"
               width={12}
               height={12}
-              className="inline-block w-3 h-3"
+              className="inline-block h-3 w-3"
               src={imageUrl ?? "/assets/images/tooltip.svg"}
             />
           )}

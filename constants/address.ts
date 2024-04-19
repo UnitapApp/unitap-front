@@ -1,5 +1,6 @@
-import { Address } from "wagmi";
+import { Address } from "viem";
 import { SupportedChainId } from "./chains";
+import { polygon } from "viem/chains";
 
 export type AddressMap = { [chainId: number]: Address | undefined };
 
@@ -39,4 +40,12 @@ export const tokenTapContractAddressList: { [key: string]: Address } = {
   SONG: "0x3d1b1D14333D56472f7ADf044598d1605C67609f",
   Bright: "0xB67ec856346b22e4BDA2ab2B53d70D61a2014358",
   OP: "0x54a839FF128DC1891a03d7a81724bD5D51A5902b",
+  USDC: "0x3a798714Af3dB4E2517cf122d5Cd7B18599f5dBC",
+  LINK: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
+};
+
+export const contractAddresses = {
+  tokenTap: "0x785996054151487B296005aAeC8CAE7C209D1385" as Address,
+  prizeTapErc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C" as Address,
+  prizeTapErc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce" as Address,
 };

@@ -1,9 +1,11 @@
+import { Address } from "viem";
 import { Chain, PK, Permission } from ".";
 
 export type Token = {
   id: PK;
   name: string;
   distributor: string;
+  decimals?: number;
   distributorUrl: string;
   discordUrl: string;
   twitterUrl: string;
@@ -21,6 +23,7 @@ export type Token = {
   isClaimable: boolean;
   tokenImageUrl?: string;
   contract?: string;
+  status: "VERIFIED" | "PENDING" | "REJECTED";
   chain: Chain;
   constraints: Permission[];
 };
@@ -36,11 +39,11 @@ export type ClaimedToken = {
 };
 
 export type TokenClaimPayload = {
-  userWalletAddress: `0x{string}`;
+  userWalletAddress: Address;
   amount: number;
   nonce: number;
-  signature: `0x{string}`;
-  token: `0x{string}`;
+  signature: Address;
+  token: Address;
 };
 
 export type ClaimTokenResponse = {
@@ -52,5 +55,66 @@ export type ClaimTokenResponse = {
     payload: TokenClaimPayload;
     tokenDistribution: Token;
     userProfile: number;
+  };
+};
+
+// ------ signature types
+
+type ResultType = {
+  chain: string;
+  contract: string;
+  wallet: string;
+  distributionId: bigint;
+  claimId: bigint;
+};
+
+type SignParamType = {
+  name?: string;
+  type: string;
+  value: string | number;
+};
+
+type OwnerPubKeyType = {
+  x: string;
+  yParity: string;
+};
+
+type SignatureType = {
+  owner: Address;
+  ownerPubKey: OwnerPubKeyType;
+  timestamp: number;
+  signature: Address;
+};
+
+type DataType = {
+  uid: string;
+  params: {
+    claimId: string;
+  };
+  timestamp: number;
+  result: ResultType;
+  signParams: SignParamType[];
+  init: {
+    nonceAddress: Address;
+  };
+};
+
+export type ShieldSignatureResponse = {
+  success: boolean;
+  result: {
+    confirmed: boolean;
+    reqId: Address;
+    app: string;
+    appId: string;
+    method: string;
+    nSign: bigint;
+    gwAddress: string;
+    data: DataType;
+    startedAt: number;
+    confirmedAt: number;
+    signatures: SignatureType[];
+    shieldAddress: Address;
+    shieldSignature: Address;
+    nodeSignature: Address;
   };
 };

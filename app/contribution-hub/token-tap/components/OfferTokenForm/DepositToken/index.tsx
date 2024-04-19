@@ -3,11 +3,11 @@
 import { ProviderFormPaginationProp } from "@/types";
 import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/components/Buttons";
 import {
   useNetworkSwitcher,
   useWalletAccount,
@@ -40,6 +40,9 @@ const DepositToken = ({
     data,
     page,
     createRaffleResponse,
+    isErc20Approved,
+    handleApproveErc20Token,
+    approveLoading,
     isShowingDetails,
   } = useTokenTapFromContext();
 
@@ -81,13 +84,14 @@ const DepositToken = ({
     setIsWalletPromptOpen,
   ]);
 
+  const approve = data.isNativeToken ? true : isErc20Approved;
   useEffect(() => {
     createRaffleResponse?.state === "Done" ? handleChangeFormPageNext() : null;
   }, [createRaffleResponse, handleChangeFormPageNext]);
 
   return (
-    <div className="flex flex-col w-full justify-center items-center animate-fadeIn">
-      <div className="flex flex-col min-h-[424px] gap-5 w-full max-w-[452px] min-w-[300px]">
+    <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
+      <div className="flex min-h-[424px] w-full min-w-[300px] max-w-[452px] flex-col gap-5">
         <section>
           <div className="text-center">
             {data.isNft ? (
@@ -118,7 +122,7 @@ const DepositToken = ({
       ) : address && !isRightChain && data.selectedChain ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="text-sm max-w-[452px] mt-[2px]"
+          className="mt-[2px] max-w-[452px] text-sm"
           data-testid="fund-action"
         >
           Switch Network
@@ -126,11 +130,21 @@ const DepositToken = ({
       ) : !address ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="!w-full  text-white max-w-[452px] "
+          className="!w-full  max-w-[452px] text-white "
           $fontSize="14px"
           data-testid="fund-action"
         >
           Connect Wallet
+        </ProviderDashboardButtonSubmit>
+      ) : !approve && !isShowingDetails ? (
+        <ProviderDashboardButtonSubmit
+          $width="100%"
+          height="42px"
+          className="mt-[2px] max-w-[452px]"
+          onClick={() => handleApproveErc20Token()}
+          disabled={approveLoading}
+        >
+          <p>{approveLoading ? "Approving Contract..." : "Approve Contract"}</p>
         </ProviderDashboardButtonSubmit>
       ) : (
         <Pagination

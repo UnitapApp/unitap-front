@@ -1,4 +1,3 @@
-import { WagmiConfig } from "wagmi";
 import type { Metadata } from "next";
 import { config } from "@/utils/wallet/wagmi";
 import { Noto_Sans } from "next/font/google";
@@ -18,6 +17,11 @@ import GoogleAnalytics from "@/components/google-analytics";
 
 import "./globals.scss";
 
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
+import { Providers } from "./providers";
+import AxiosApiManager from "@/components/axios-api-manager";
+
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
@@ -35,15 +39,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const initialState = cookieToInitialState(config, headers().get("cookie"));
+
   return (
     <html lang="en" dir="ltr" className="dark">
       <body className={`dark:bg-gray10 dark:text-white ${notoSansFont}`}>
-        <WagmiConfig config={config}>
+        <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
               <div id="app">
                 <Header />
-                <main className="px-4 sm:px-6 lg:px-8 xl1440:px-60 xl:px-40 py-14 max-w-screen-2xl m-auto flex flex-col w-full min-h-[calc(100vh_-_130px)]">
+                <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
                   {children}
                 </main>
 
@@ -55,8 +61,9 @@ export default async function RootLayout({
               <CreateBrightIdAccountModal />
               <ConnectWalletModal />
             </StyledJsxRegistry>
+            <AxiosApiManager />
           </UnitapProvider>
-        </WagmiConfig>
+        </Providers>
 
         <Progressbar />
 

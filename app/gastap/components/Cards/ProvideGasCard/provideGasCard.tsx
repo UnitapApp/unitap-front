@@ -8,7 +8,9 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 
 const ProvideGasCard = () => {
   const [chainListIndex, setChainListIndex] = React.useState(0);
-  const { chainList } = useGasTapContext();
+  const { chainList: chainListUnfiltered } = useGasTapContext();
+
+  const chainList = chainListUnfiltered.filter((chain) => !chain.isDeprecated);
 
   const { setIsOpen } = useContext(FundContext);
 
@@ -24,7 +26,7 @@ const ProvideGasCard = () => {
 
   if (chainList.length > 0) {
     return (
-      <div className="provide-gas pb-4 sm:pb-0 w-full flex flex-col sm:flex-row items-center bg-gray40 border-2 border-gray30 rounded-xl">
+      <div className="provide-gas flex w-full flex-col items-center rounded-xl border-2 border-gray30 bg-gray40 pb-4 sm:flex-row sm:pb-0">
         <section className={"flex flex-col md:flex-row"}>
           <ChainCard key={chainListIndex} chain={chainList[chainListIndex]} />
           <ChainCard
@@ -44,7 +46,7 @@ const ProvideGasCard = () => {
         </section>
         <span className="m-auto" onClick={setIsOpen.bind(null, true)}>
           <LightOutlinedButton
-            className={"!bg-gray00 !w-48 lg:!w-60"}
+            className={"!w-48 !bg-gray00 lg:!w-60"}
             $fontSize="14"
             height="46px"
           >

@@ -73,9 +73,9 @@ export const UserProfileContext = createContext<
 });
 
 export const UserContextProvider: FC<
-  PropsWithChildren & { settings: Settings }
-> = ({ children, settings }) => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  PropsWithChildren & { settings: Settings; initial: UserProfile | null }
+> = ({ children, settings, initial }) => {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(initial);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useLocalStorageState("userToken");
   const [holdUserLogout, setHoldUserLogout] = useState(false);
@@ -176,7 +176,7 @@ export const UserContextProvider: FC<
   const deleteWallet = async (address: Address) => {
     if (!userProfile || !userToken) return;
     const selectedWalletIndex = userProfile.wallets.findIndex((wallet) =>
-      isAddressEqual(wallet.address, address)
+      isAddressEqual(wallet.address, address),
     );
 
     const selectedWallet = userProfile.wallets[selectedWalletIndex];
@@ -201,7 +201,7 @@ export const UserContextProvider: FC<
       }
     },
     IntervalType.MEDIUM,
-    [userToken && userProfile]
+    [userToken && userProfile],
   );
 
   const logout = () => {
@@ -213,12 +213,17 @@ export const UserContextProvider: FC<
   };
 
   useEffect(() => {
-    if (holdUserLogout || !userToken || !userProfile) return;
+    if (holdUserLogout || !userToken || !userProfile) {
+      // if (isConnected && !userToken) {
+      //   disconnect?.();
+      // }
+      return;
+    }
 
     if (
       isConnected &&
       userProfile.wallets.find((wallet) =>
-        isAddressEqual(wallet.address, address!)
+        isAddressEqual(wallet.address, address!),
       )
     )
       return;

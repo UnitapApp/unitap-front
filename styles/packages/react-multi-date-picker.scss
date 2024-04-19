@@ -1,0 +1,160 @@
+.rmdp-wrapper {
+  background-color: #1b1b29 !important;
+  @apply text-gray100;
+  border: 2px solid #4c4c5c !important;
+  border-radius: 16px !important;
+}
+
+.sd {
+  color: #b5b5c6 !important;
+  background-color: #242431;
+}
+
+.sd:hover {
+  background-color: #303043 !important;
+  color: #b5b5c6 !important;
+}
+
+.rmdp-arrow-container {
+  display: flex !important;
+  align-items: center !important;
+  height: 25px !important;
+  width: 25px !important;
+}
+
+.rmdp-day {
+  font-weight: 600;
+}
+.rmdp-day > span:hover {
+  background-color: #303043 !important;
+  color: white !important;
+}
+
+.rmdp-arrow-container:hover {
+  background-color: #16161b !important;
+}
+
+.rmdp-arrow {
+  border-right: 2px solid #b5b5c6 !important;
+  border-bottom: 2px solid #b5b5c6 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.rmdp-header-values,
+.rmdp-day {
+  color: white !important;
+  font-size: 0 !important;
+  display: flex;
+  column-gap: 10px;
+}
+// .rmdp-arrow
+
+.rmdp-header-values > span {
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  border-radius: 6px !important;
+  background-color: #242431 !important;
+  height: 27px !important;
+  min-width: 81px !important;
+  font-weight: 500 !important;
+}
+
+.rmdp-week > div {
+  color: #67677b !important;
+  font-weight: 500;
+  letter-spacing: 0.42px;
+}
+
+.rmdp-week {
+  column-gap: 10px !important;
+}
+
+.rmdp-month-picker,
+.rmdp-year-picker {
+  background: #1e1e2c !important;
+  border-radius: 16px !important;
+}
+
+.rmdp-selected > span {
+  background: #4ce6a1 !important;
+  color: #161623 !important;
+  z-index: 1000000 !important;
+}
+
+.rmdp-selected > span:hover {
+  background: #4ce6a1 !important;
+  color: #161623 !important;
+}
+
+.rmdp-today > span {
+  // background: #242431 !important;
+  // border: 2px solid #67677b;
+  // color: #b5b5c6 !important;
+}
+
+.rmdp-time-picker input {
+  background: none !important;
+  color: white !important;
+  letter-spacing: 0.42px;
+  font-weight: 600;
+}
+
+.rmdp-time-picker {
+  margin: 5px !important;
+}
+
+.date-picker-input {
+  padding-left: 20px;
+  background: none;
+  color: #b5b5c6;
+  width: 100%;
+  height: 48px;
+}
+
+.date-picker-input::placeholder {
+  color: #b5b5c664;
+}
+
+.rmdp-action-buttons > button,
+.rmdp-am {
+  color: white !important;
+  font-weight: 600;
+}
+
+.rmdp-action-buttons {
+  border-top: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rmdp-top-class {
+  border-bottom: 2px solid #4c4c5c !important;
+}
+
+.rmdp-action-buttons > button {
+  width: 155px;
+  border-radius: 8px;
+  border: 1px solid #242431;
+  color: white !important;
+}
+
+.rmdp-action-buttons > button:nth-child(2) {
+  background: #212130 !important;
+}
+
+.rmdp-day-picker {
+  margin-top: 20px;
+}
+.rmdp-month-picker,
+.rmdp-year-picker {
+  margin-left: 10px;
+  background-color: #161623 !important;
+  border: 2px solid #1e1e2c !important;
+  max-width: 325px;
+}

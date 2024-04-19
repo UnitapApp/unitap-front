@@ -77,9 +77,9 @@ export const enrollmentDurationsInit: EnrollmentDurationsProps[] = [
 export const errorMessages = {
   required: "Required",
   invalidFormat: "Invalid Format",
-  startTimeDuration: "The start time must be at least 7 days after now.",
+  startTimeDuration: "The start time cannot precede the current time",
   endDateUnacceptable: "End date is unacceptable.",
   period: "The minimum period is one week.",
-  endLessThanStart: "The end time cannot be less than the start time.",
+  endLessThanStart: "The minimum duration is 1 hour.",
   invalidInput: "Invalid input",
 };

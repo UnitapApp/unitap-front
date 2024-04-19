@@ -11,7 +11,7 @@ import { useGlobalContext } from "@/context/globalProvider";
 import { getTxUrl, shortenAddress } from "@/utils";
 import { LineaRaffleEntry } from "@/types";
 
-const LineaWinnersModal: FC<{}> = ({}) => {
+const LineaWinnersModal: FC<{}> = ({ }) => {
   const { isLineaWinnersOpen, setIsLineaWinnersOpen, lineaEnrolledUsers } =
     usePrizeTapContext();
 
@@ -34,10 +34,10 @@ const LineaWinnersModal: FC<{}> = ({}) => {
     const items = !searchPhraseInput
       ? lineaEnrolledUsers
       : lineaEnrolledUsers.filter((item) =>
-          item.walletAddress
-            .toLocaleLowerCase()
-            .includes(searchPhraseInput.toLocaleLowerCase())
-        );
+        item.walletAddress
+          .toLocaleLowerCase()
+          .includes(searchPhraseInput.toLocaleLowerCase())
+      );
 
     return items.sort((x, y) => {
       return x.isWinner === y.isWinner ? 0 : x.isWinner ? -1 : 1;
@@ -121,8 +121,10 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
   walletAddress,
   isWinner,
   claimingPrizeTx,
+  selectedRaffleCh,
 }) => {
   const { selectedRaffleForEnroll } = usePrizeTapContext();
+  const raffle = selectedRaffleCh ? selectedRaffleCh : selectedRaffleForEnroll
   return (
     <div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
       <a
@@ -138,7 +140,7 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
       {claimingPrizeTx ? (
         <a
           target="_blank"
-          href={getTxUrl(selectedRaffleForEnroll!.chain, claimingPrizeTx)}
+          href={getTxUrl(raffle!.chain, claimingPrizeTx)}
           className="ml-auto text-xs font-semibold border-mid-dark-space-green border-2 rounded-lg bg-dark-space-green px-2 text-space-green flex items-center gap-1 py-1 underline"
         >
           Claimed

@@ -7,6 +7,7 @@ import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { useSearchParams } from "next/navigation";
 import ChainCard from "./ChainCard";
+import { useFastRefresh } from "@/utils/hooks/refresh";
 
 const ChainList = () => {
   const {
@@ -41,7 +42,7 @@ const ChainList = () => {
 
         return 0;
       }),
-    [chainListSearchResult, highlightedChain]
+    [chainListSearchResult, highlightedChain],
   );
 
   useEffect(() => {
@@ -55,13 +56,20 @@ const ChainList = () => {
     setHighlightedChain(highlightedChain || "");
   }, [params, setHighlightedChain, setSelectedNetwork]);
 
+  const [isThisRound, setIsThisRound] = useState(true);
+
+  useFastRefresh(() => {
+    setIsThisRound((prevIsThisRound) => !prevIsThisRound);
+  }, []);
+
   return (
-    <div className="chain-list-wrapper pt-5 pb-2 w-full mb-20">
+    <div className="chain-list-wrapper mb-20 w-full pb-2 pt-5">
       <div>
         {!chainList.length || isGasTapAvailable ? (
           <>
             {!!chainListMemo.length && (
               <ChainCard
+                isThisRound={isThisRound}
                 isHighlighted={
                   chainListMemo[0].chainName.toLowerCase() ===
                   highlightedChain.toLowerCase()
@@ -71,12 +79,16 @@ const ChainList = () => {
             )}
 
             {chainListMemo.slice(1).map((chain) => (
-              <ChainCard chain={chain} key={chain.pk} />
+              <ChainCard
+                isThisRound={isThisRound}
+                chain={chain}
+                key={chain.pk}
+              />
             ))}
           </>
         ) : (
           <div
-            className="text-white text-center mt-20"
+            className="mt-20 text-center text-white"
             data-testid="chain-list-loading"
           >
             Gas Tap is not available right now

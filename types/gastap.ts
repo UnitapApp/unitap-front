@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { PK } from ".";
 
 export enum Network {
@@ -27,6 +28,9 @@ export type Faucet = {
   needsFunding: boolean;
   blockScanAddress: string;
   isOneTimeClaim: boolean;
+  currentFuelLevel: number;
+  isDeprecated: boolean;
+  remainingClaimNumber: number;
 };
 
 export type ChainApi = {
@@ -57,7 +61,7 @@ export type Chain = {
   rpcUrl: string;
   maxClaimAmount: number;
   decimals: number;
-  fundManagerAddress: string;
+  fundManagerAddress: Address;
   totalClaims: number;
   gasImageUrl: string;
   totalClaimsThisRound: number;
@@ -67,6 +71,9 @@ export type Chain = {
   blockScanAddress: string;
   tokentapContractAddress?: string;
   isOneTimeClaim: boolean;
+  currentFuelLevel: number;
+  isDeprecated: boolean;
+  remainingClaimNumber: number;
 };
 
 export enum ClaimReceiptState {

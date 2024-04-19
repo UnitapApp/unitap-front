@@ -72,7 +72,7 @@ const WalletPrompt: FC<{
           connect({
             connector: connectors.find(
               (connector) => connector.id === "injected"
-            ),
+            )!,
           });
         }}
       />
@@ -86,7 +86,7 @@ const WalletPrompt: FC<{
           connect({
             connector: connectors.find(
               (connector) => connector.id === "walletConnect"
-            ),
+            )!,
           });
         }}
       />

@@ -2,13 +2,14 @@
 
 import { UserConnection } from "@/types";
 import { FC, useState } from "react";
-import SocialAccount from "../../components/socialAccount";
+import SocialAccount from "../components/socialAccounts";
 import { useFastRefresh } from "@/utils/hooks/refresh";
 import { getAllConnections } from "@/utils/serverApis";
 import { useUserProfileContext } from "@/context/userProfile";
 import { SocialAccountContext } from "@/context/socialAccountContext";
+import GitCoinPassportAccount from "../components/socialAccounts/gitcoinPassport";
 
-const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
+const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
 }) => {
   const [connections, setConnections] = useState(initialConnections ?? []);
@@ -37,9 +38,14 @@ const SocialAccountsPage: FC<{ initialConnections: UserConnection }> = ({
           icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
           isConnected={!!connections["BrightID"]}
         />
+        <GitCoinPassportAccount
+          title={"Gitcoin Passport"}
+          icon={"/assets/images/up-profile/gitcoin-passport.svg"}
+          isConnected={!!connections["GitcoinPassport"]}
+        />
       </div>
     </SocialAccountContext.Provider>
   );
 };
 
-export default SocialAccountsPage;
+export default SocialAccountContent;

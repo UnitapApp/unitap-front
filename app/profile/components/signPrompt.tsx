@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import { useUserProfileContext } from "@/context/userProfile";
 import { checkUserExists, loginOrRegister, setWalletAPI } from "@/utils/api";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useSignTypedData } from "wagmi";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { WalletState } from "../../../components/containers/modals/ConnectWalletModal";
@@ -48,71 +48,52 @@ const SignPrompt: FC<{
 
   const isMounted = useRef(false);
 
-  const onSuccess = async (hashed: string) => {
-    if (!address || !userToken) return;
+  const onSuccess = useCallback(
+    async (hashed: string) => {
+      if (!address || !userToken) return;
 
-    const res = await setWalletAPI(
-      userToken,
-      address,
-      "EVM",
-      JSON.stringify({
-        message: {
-          message: "Unitap Sign In",
-          URI: "https://unitap.app",
-          IssuedAt: now,
-        },
-        primaryType: "Unitap",
-        account: address,
-        domain: {
-          name: "Unitap Connect",
-          version: "1",
-          chainId: chainId ?? 1,
-          verifyingContract: "0x0000000000000000000000000000000000000000",
-        },
-        types: {
-          EIP712Domain: [
-            { name: "name", type: "string" },
-            { name: "version", type: "string" },
-            { name: "chainId", type: "uint256" },
-            { name: "verifyingContract", type: "address" },
-          ],
-          Unitap: [
-            { name: "message", type: "string" },
-            { name: "URI", type: "string" },
-            { name: "IssuedAt", type: "string" },
-          ],
-        },
-      }),
-      hashed
-    );
+      const res = await setWalletAPI(
+        userToken,
+        address,
+        "EVM",
+        JSON.stringify({
+          message: {
+            message: "Unitap Sign In",
+            URI: "https://unitap.app",
+            IssuedAt: now,
+          },
+          primaryType: "Unitap",
+          account: address,
+          domain: {
+            name: "Unitap Connect",
+            version: "1",
+            chainId: chainId ?? 1,
+            verifyingContract: "0x0000000000000000000000000000000000000000",
+          },
+          types: {
+            EIP712Domain: [
+              { name: "name", type: "string" },
+              { name: "version", type: "string" },
+              { name: "chainId", type: "uint256" },
+              { name: "verifyingContract", type: "address" },
+            ],
+            Unitap: [
+              { name: "message", type: "string" },
+              { name: "URI", type: "string" },
+              { name: "IssuedAt", type: "string" },
+            ],
+          },
+        }),
+        hashed
+      );
 
-    addNewWallet(address, res.pk);
-    setAddModalState("complete");
-  };
+      addNewWallet(address, res.pk);
+      setAddModalState("complete");
+    },
+    [addNewWallet, address, chainId, now, setAddModalState, userToken]
+  );
 
-  const { isError, signTypedDataAsync, variables } = useSignTypedData({
-    message: {
-      message: "Unitap Sign In",
-      URI: "https://unitap.app",
-      IssuedAt: now,
-    },
-    primaryType: "Unitap",
-    account: address,
-    domain: {
-      name: "Unitap Connect",
-      version: "1",
-      chainId: chainId ?? 1,
-      verifyingContract: "0x0000000000000000000000000000000000000000",
-    },
-    types: {
-      Unitap: [
-        { name: "message", type: "string" },
-        { name: "URI", type: "string" },
-        { name: "IssuedAt", type: "string" },
-      ],
-    },
-    onSuccess,
-  });
+  const { isError, signTypedDataAsync, variables } = useSignTypedData({});
 
   useEffect(() => {
     if (!address) return;
@@ -164,22 +145,48 @@ const SignPrompt: FC<{
       return;
     }
 
-    signTypedDataAsync().catch((err) => {
-      if (err instanceof AxiosError) {
-        const error = err.response?.data;
-        setError(error.address?.[0] ?? error.message?.[0] ?? err.message);
-      } else {
-        setError(err.message);
-      }
-    });
+    signTypedDataAsync({
+      message: {
+        message: "Unitap Sign In",
+        URI: "https://unitap.app",
+        IssuedAt: now,
+      },
+      primaryType: "Unitap",
+      // account: address,
+      domain: {
+        name: "Unitap Connect",
+        version: "1",
+        chainId: chainId ?? 1,
+        verifyingContract: "0x0000000000000000000000000000000000000000",
+      },
+      types: {
+        Unitap: [
+          { name: "message", type: "string" },
+          { name: "URI", type: "string" },
+          { name: "IssuedAt", type: "string" },
+        ],
+      },
+    })
+      .then((res) => onSuccess(res))
+      .catch((err) => {
+        if (err instanceof AxiosError) {
+          const error = err.response?.data;
+          setError(error.address?.[0] ?? error.message?.[0] ?? err.message);
+        } else {
+          setError(err.message);
+        }
+      });
 
     isMounted.current = true;
 
     return () => {};
   }, [
     address,
+    chainId,
     duplicateWalletRaiseError,
     lastCheckDuplicateWallet,
+    now,
+    onSuccess,
     setAddModalState,
     setError,
     signTypedDataAsync,

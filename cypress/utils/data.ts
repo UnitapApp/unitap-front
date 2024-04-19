@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import {
   BrightIdVerificationStatus,
   Chain,
@@ -21,10 +22,11 @@ export const SIGNED_MESSAGE =
 
 // address of the above key
 export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address;
-export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2).address;
+export const TEST_ADDRESS_NEVER_USE_2 = new Wallet(TEST_PRIVATE_KEY_2)
+  .address as Address;
 
 export const TEST_ADDRESS_NEVER_USE_SHORTENED = shortenAddress(
-  TEST_ADDRESS_NEVER_USE
+  TEST_ADDRESS_NEVER_USE,
 );
 
 export const SAMPLE_ERROR_MESSAGE = "An error occurred";
@@ -175,11 +177,11 @@ export const emptyClaimHistoryResponse: ClaimReceipt[] = [];
 export const createClaimHistory: (
   chainPk: number,
   claimStatus: ClaimReceiptState,
-  pk: number
+  pk: number,
 ) => Omit<ClaimReceipt, "chain"> & { chain: number } = (
   chainPk,
   claimStatus,
-  pk
+  pk,
 ) => {
   const date = new Date();
   // const claimAmount: BigInt = BigInt('10000000000000000');

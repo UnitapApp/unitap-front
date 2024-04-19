@@ -1,31 +1,43 @@
-import { ZERO_ADDRESS } from "@/constants";
-import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
-import { prizeTapABI } from "@/types/abis/contracts";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
+import {
+  Chain,
+  ProviderDashboardFormDataProp,
+  RequirementProps,
+} from "@/types";
+import { prizeTapAbi } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
-import { PublicClient, getContract, parseEther } from "viem";
-import { GetContractResult, GetWalletClientResult } from "wagmi/dist/actions";
-import { deadline, startAt } from "./deadlineAndStartAt";
+import {
+  Address,
+  GetContractReturnType,
+  PublicClient,
+  getAddress,
+  getContract,
+  parseEther,
+} from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
+import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import Big from "big.js";
 
 const createErc20RaffleCallback = async (
   account: string,
-  raffleContract: GetContractResult,
-  signer: GetWalletClientResult,
+  raffleContract: GetContractReturnType,
+  signer: GetWalletClientReturnType,
   provider: PublicClient,
   payableAmount: string,
   tokenDecimals: number,
-  currencyAddress: `0x${string}`,
+  currencyAddress: Address,
   maxParticipants: bigint,
   startTime: bigint,
   endTime: bigint,
   isNativeToken: boolean,
   winnersCount: bigint,
-  totalAmount: string
+  totalAmount: string,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
-    abi: prizeTapABI,
+    abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -33,7 +45,7 @@ const createErc20RaffleCallback = async (
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
         : BigInt(
-            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
           ),
       currencyAddress,
       maxParticipants,
@@ -46,8 +58,33 @@ const createErc20RaffleCallback = async (
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 
+  if (selectedChain.chainId === "42161") {
+    return signer?.writeContract({
+      abi: prizeTapAbi,
+      account: account as any,
+      address: raffleContract.address,
+      functionName: "createRaffle",
+      // gasPrice: gasEstimate,
+      args: [
+        isNativeToken
+          ? parseEther(new Big(payableAmount).toFixed())
+          : BigInt(
+              toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+            ),
+        currencyAddress,
+        maxParticipants,
+        1n,
+        startTime,
+        endTime,
+        winnersCount,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+    });
+  }
+
   return signer?.writeContract({
-    abi: prizeTapABI,
+    abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
@@ -56,7 +93,7 @@ const createErc20RaffleCallback = async (
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
         : BigInt(
-            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals)
+            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
           ),
       currencyAddress,
       maxParticipants,
@@ -73,14 +110,16 @@ const createErc20RaffleCallback = async (
 export const createErc20Raffle = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   requirementList: RequirementProps[],
   address: string,
   userToken: string,
   setCreateRaffleLoading: any,
-  setCreteRaffleResponse: any
+  setCreteRaffleResponse: any,
 ) => {
-  const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
+  console.log(getAddress(data.tokenContractAddress));
+
+  const raffleContractAddress = contractAddresses.prizeTapErc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";
@@ -93,7 +132,7 @@ export const createErc20Raffle = async (
   const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
   const prizeAmount = toWei(
     data.tokenAmount,
-    data.isNativeToken ? 18 : data.tokenDecimals
+    data.isNativeToken ? 18 : data.tokenDecimals,
   );
   const twitter = data.twitter
     ? "https://twitter.com/" + data.twitter?.replace("@", "")
@@ -104,7 +143,11 @@ export const createErc20Raffle = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
   const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList
     .filter((item) => item.isNotSatisfy)
@@ -125,8 +168,8 @@ export const createErc20Raffle = async (
     reversed_constraints.length > 1
       ? reversed_constraints.join(",")
       : reversed_constraints.length == 1
-      ? reversed_constraints[0].toString()
-      : "";
+        ? reversed_constraints[0].toString()
+        : "";
 
   for (let i = 0; i < constraints.length; i++) {
     formData.append("constraints", constraints[i]);
@@ -142,12 +185,14 @@ export const createErc20Raffle = async (
     formData.append("reversed_constraints", reversed);
   }
 
+  const startTime = checkStartTimeStamp(data.startTimeStamp);
+
   formData.append("name", prizeName);
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
   formData.append("creator_address", address);
   formData.append("prize_amount", prizeAmount.toString());
-  formData.append("prize_asset", data.tokenContractAddress);
+  formData.append("prize_asset", getAddress(data.tokenContractAddress));
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
   formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
@@ -155,7 +200,7 @@ export const createErc20Raffle = async (
   formData.append("prize_symbol", prizeSymbol);
   formData.append("deadline", deadline(data.endTimeStamp));
   formData.append("max_number_of_entries", maxNumberOfEntries);
-  formData.append("start_at", startAt(data.startTimeStamp));
+  formData.append("start_at", startAt(startTime));
   formData.append("winners_count", data.winnersCount.toString());
   formData.append("discord_url", discord! ?? "");
   formData.append("twitter_url", twitter! ?? "");
@@ -163,11 +208,12 @@ export const createErc20Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
+  formData.append("decimals", decimals);
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
-    abi: prizeTapABI,
-    publicClient: provider,
+    abi: prizeTapAbi,
+    client: provider,
   });
 
   try {
@@ -182,11 +228,12 @@ export const createErc20Raffle = async (
       decimals,
       data.tokenContractAddress as any,
       BigInt(maxNumberOfEntries),
-      data.startTimeStamp,
+      BigInt(startTime),
       data.endTimeStamp,
       data.isNativeToken,
       BigInt(data.winnersCount),
-      data.totalAmount
+      data.totalAmount,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");
@@ -216,7 +263,7 @@ export const createErc20Raffle = async (
     await updateCreateRaffleTx(
       userToken,
       rafflePk,
-      transactionInfo.transactionHash
+      transactionInfo.transactionHash,
     );
   } catch (e: any) {
     console.log(e);

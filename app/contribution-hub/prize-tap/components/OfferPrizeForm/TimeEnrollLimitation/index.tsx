@@ -3,8 +3,9 @@ import { ErrorProps, ProviderFormPaginationProp } from "@/types";
 import StartDateComp from "./components/StartDateComp";
 import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
+import Icon from "@/components/ui/Icon";
 
 export const TimeEnrollLimitationDescription = {
   id: 1,
@@ -50,14 +51,36 @@ const TimeEnrollLimitation = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center w-full animate-fadeIn ${fadeClass}`}
+      className={`flex w-full animate-fadeIn flex-col items-center justify-center ${fadeClass}`}
     >
       <div
-        className={`flex flex-col min-h-[340px] gap-5 w-full items-center max-w-[452px] mb-[84px]`}
+        className={`mb-[84px] flex min-h-[340px] w-full max-w-[452px] flex-col items-center gap-5`}
       >
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />
         <PeopleLimitation showErrors={showErrors} />
+        {/* <div className="absolute top-[35em] flex w-full max-w-[452px] items-center justify-center px-2 text-center text-xs text-gray100">
+          <div className="flex">
+            <Icon
+              className="mt-[-1px]"
+              width="18px"
+              height="18px"
+              iconSrc="/assets/images/provider-dashboard/exclamationMark.svg"
+            />
+            <p>
+              Validating requests usually takes around 1 week. if you need for
+              your raffle to go live sooner, please contact us at
+              <a
+                target="_blank"
+                href="mailto: support@unitap.app"
+                className="text-white"
+              >
+                {" "}
+                help@unitap.app
+              </a>
+            </p>
+          </div>
+        </div> */}
       </div>
       <Pagination
         handleChangeFormPagePrev={handleChangeFormPagePrev}

@@ -66,9 +66,9 @@ export const getUserDistributions = async (token: string) => {
 };
 
 export async function getConstraintsApi() {
-  const response = await axiosInstance.get<ConstraintProps[]>(
-    `/api/prizetap/get-constraints/`
-  );
+  const response = await axiosInstance.get<{
+    [key: string]: ConstraintProps[];
+  }>(`/api/prizetap/get-constraints/`);
   return response.data;
 }
 

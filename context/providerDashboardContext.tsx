@@ -37,7 +37,7 @@ import {
 import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 import { isAddress, zeroAddress } from "viem";
-import { ZERO_ADDRESS } from "@/constants";
+import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getProviderDashboardValidChain } from "@/utils/api";
 import { createErc721Raffle } from "@/components/containers/provider-dashboard/helpers/createErc721Raffle";
 import { createErc20Raffle } from "@/components/containers/provider-dashboard/helpers/createErc20Raffle";
@@ -60,6 +60,12 @@ export const ProviderDashboardContext = createContext<{
   setPage: (page: number) => void;
   data: ProviderDashboardFormDataProp;
   selectedConstrains: ConstraintProps | null;
+  selectedApp?: { label: string; constraints: ConstraintProps[] };
+  setSelectedApp: (arg?: {
+    label: string;
+    constraints: ConstraintProps[];
+  }) => void;
+
   handleChange: (e: any) => void;
   handleSelectTokenOrNft: (e: boolean) => void;
   openRequirementModal: () => void;
@@ -93,14 +99,14 @@ export const ProviderDashboardContext = createContext<{
     name: string,
     title: string,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
   ) => void;
   requirementList: RequirementProps[];
   deleteRequirement: (pk: number) => void;
   updateRequirement: (
     requirement: RequirementProps,
     isNotSatisfy: boolean,
-    requirementValues: any
+    requirementValues: any,
   ) => void;
   handleSelectNativeToken: (e: boolean) => void;
   handleCreateRaffle: () => void;
@@ -113,7 +119,7 @@ export const ProviderDashboardContext = createContext<{
   isErc20Approved: boolean;
   isApprovedAll: boolean;
   approveLoading: boolean;
-  constraintsListApi: ConstraintProps[] | undefined;
+  constraintsListApi: { [key: string]: ConstraintProps[] } | undefined;
   handleApproveErc721Token: () => void;
   updateChainList: () => void;
   handleCheckForReason: (raffle: UserRafflesProps) => void;
@@ -243,18 +249,23 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: NullCallback,
   userRaffle: {} as any,
   allChainList: [] as any,
+  setSelectedApp: NullCallback,
 });
 
 const ProviderDashboard: FC<
   PropsWithChildren & {
     rafflesInitial?: UserRafflesProps;
     allChains?: Chain[];
-    constraintListApi?: ConstraintProps[];
+    constraintListApi?: { [key: string]: ConstraintProps[] };
   }
 > = ({ children, rafflesInitial, allChains, constraintListApi }) => {
   const [requirementList, setRequirementList] = useState<RequirementProps[]>(
-    []
+    [],
   );
+
+  const [selectedApp, setSelectedApp] = useState<
+    { label: string; constraints: ConstraintProps[] } | undefined
+  >();
 
   const [allChainList] = useState<Chain[] | undefined>(allChains);
   const [selectNewOffer, setSelectNewOffer] = useState<boolean>(false);
@@ -295,7 +306,7 @@ const ProviderDashboard: FC<
     useState<boolean>(false);
 
   const [createRaffleResponse, setCreteRaffleResponse] = useState<any | null>(
-    null
+    null,
   );
 
   const [createRaffleLoading, setCreateRaffleLoading] =
@@ -311,7 +322,7 @@ const ProviderDashboard: FC<
   >(null);
 
   const [userRaffle, setUserRaffle] = useState<UserRafflesProps | undefined>(
-    rafflesInitial
+    rafflesInitial,
   );
 
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
@@ -323,7 +334,7 @@ const ProviderDashboard: FC<
     useState<UserRafflesProps | null>(null);
 
   const [uploadedFile, setUploadedFile] = useState<UploadedFileProps | null>(
-    null
+    null,
   );
   const [isShowingDetails, setIsShowingDetails] = useState<boolean>(false);
   const [nftStatus, setNftStatus] = useState<NftStatusProp[]>([]);
@@ -346,7 +357,7 @@ const ProviderDashboard: FC<
   });
 
   const [enrollmentDurations, setEnrollmentDurations] = useState(
-    enrollmentDurationsInit
+    enrollmentDurationsInit,
   );
 
   const handleSetEnrollDuration = (id: number) => {
@@ -354,13 +365,13 @@ const ProviderDashboard: FC<
       enrollmentDurations.map((item) =>
         item.id == id
           ? { ...item, selected: true }
-          : { ...item, selected: false }
-      )
+          : { ...item, selected: false },
+      ),
     );
   };
 
   const [constraintsListApi, setConstraintsListApi] = useState<
-    ConstraintProps[] | undefined
+    { [key: string]: ConstraintProps[] } | undefined
   >(constraintListApi);
 
   const { userToken } = useUserProfileContext();
@@ -378,7 +389,7 @@ const ProviderDashboard: FC<
     return chainList.filter((chain) =>
       chain.chainName
         .toLocaleLowerCase()
-        .includes(searchPhrase.toLocaleLowerCase())
+        .includes(searchPhrase.toLocaleLowerCase()),
     );
   }, [chainList, searchPhrase]);
 
@@ -399,7 +410,7 @@ const ProviderDashboard: FC<
         setData,
         setIsErc20Approved,
         setTokenContractStatus,
-        setApproveAllowance
+        setApproveAllowance,
       );
     }
 
@@ -410,17 +421,19 @@ const ProviderDashboard: FC<
         provider,
         setData,
         setIsApprovedAll,
-        setNftContractStatus
+        setNftContractStatus,
       );
     }
   }, [address, data, provider]);
 
   const checkContractAddress = useCallback(
     async (contractAddress: string) => {
+      if (!provider) return;
+
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider
+        provider,
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
@@ -439,7 +452,7 @@ const ProviderDashboard: FC<
             }));
       }
     },
-    [checkContractInfo, data.isNft, isValidContractAddress]
+    [checkContractInfo, data.isNft, provider, isValidContractAddress],
   );
 
   const handleSetDate = (timeStamp: number, label: string) => {
@@ -510,14 +523,7 @@ const ProviderDashboard: FC<
       errorObject.startDateStatus = false;
       errorObject.statDateStatusMessage = errorMessages.required;
     }
-    const sevenDaysLaterAfterNow: Date = new Date(
-      Date.now() + 7 * 24 * 60 * 59 * 1000
-    );
-    const sevenDaysLaterAfterNowTimeStamp = Math.round(
-      sevenDaysLaterAfterNow.getTime() / 1000
-    );
-
-    // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
+    // if (startTimeStamp && startTimeStamp + 60 < Math.floor(Date.now() / 1000)) {
     //   errorObject.startDateStatus = false;
     //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     // }
@@ -600,7 +606,7 @@ const ProviderDashboard: FC<
       twitter,
       discord,
       email,
-      telegram
+      telegram,
     );
     setSocialMediaValidation({
       creatorUrl: isUrlVerified,
@@ -691,7 +697,7 @@ const ProviderDashboard: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) >= Number(data.userTokenBalance!)
+          : Number(data.totalAmount) >= Number(data.userTokenBalance!),
       );
     }
   }, [
@@ -845,9 +851,11 @@ const ProviderDashboard: FC<
       provider,
       signer,
       address,
+      contractAddresses.prizeTapErc20,
       setApproveLoading,
       setIsErc20Approved,
-      setApproveAllowance
+      setApproveAllowance,
+      selectedChain,
     );
   };
 
@@ -859,7 +867,8 @@ const ProviderDashboard: FC<
       signer,
       address,
       setApproveLoading,
-      setIsApprovedAll
+      setIsApprovedAll,
+      selectedChain,
     );
   };
 
@@ -879,7 +888,7 @@ const ProviderDashboard: FC<
         address,
         userToken,
         setCreateRaffleLoading,
-        setCreteRaffleResponse
+        setCreteRaffleResponse,
       );
     } else {
       createErc721Raffle(
@@ -890,7 +899,7 @@ const ProviderDashboard: FC<
         address,
         userToken,
         setCreateRaffleLoading,
-        setCreteRaffleResponse
+        setCreteRaffleResponse,
       );
     }
   };
@@ -902,7 +911,7 @@ const ProviderDashboard: FC<
     isNotSatisfy: boolean,
     requirementValues: any,
     file?: [],
-    decimals?: number
+    decimals?: number,
   ) => {
     setRequirementList([
       ...requirementList,
@@ -917,6 +926,7 @@ const ProviderDashboard: FC<
         decimals: decimals,
       },
     ]);
+    closeRequirementModal();
   };
 
   const updateRequirement = (
@@ -924,7 +934,7 @@ const ProviderDashboard: FC<
     isNotSatisfy: boolean,
     requirementValues: any,
     file?: [],
-    decimals?: number
+    decimals?: number,
   ) => {
     if (!requirement) return;
     const newItem = requirementList.map((item) => {
@@ -940,6 +950,7 @@ const ProviderDashboard: FC<
       return item;
     });
     setRequirementList(newItem);
+    closeRequirementModal();
   };
 
   const handleCheckForReason = (raffle: UserRafflesProps) => {
@@ -957,7 +968,7 @@ const ProviderDashboard: FC<
       isNft: raffle.isPrizeNft,
       isNativeToken: raffle.prizeAsset == ZERO_ADDRESS,
       tokenAmount: new Big(
-        fromWei(raffle.prizeAmount, raffle.decimals)
+        fromWei(raffle.prizeAmount, raffle.decimals),
       ).toFixed(),
       tokenContractAddress: raffle.isPrizeNft ? "" : raffle.prizeAsset,
       nftContractAddress: raffle.isPrizeNft ? raffle.prizeAsset : "",
@@ -983,15 +994,15 @@ const ProviderDashboard: FC<
     setIsShowingDetails(true);
     setSelectNewOffer(true);
     setNumberOfNfts(
-      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : ""
+      raffle.nftIds ? raffle.nftIds.split(",").length.toString() : "",
     );
     setConstraintsListApi(await getConstraintsApi());
     setRequirementList(
       raffle.constraints.map((constraint) =>
         constraint.isReversed
           ? { ...constraint, isNotSatisfy: true }
-          : { ...constraint, isNotSatisfy: false }
-      )
+          : { ...constraint, isNotSatisfy: false },
+      ),
     );
     handleSetEnrollDuration(-1);
   };
@@ -1055,8 +1066,8 @@ const ProviderDashboard: FC<
 
         newEndTimeStamp = Math.round(
           currentDate.setMonth(
-            Number(currentDate.getMonth()) + selectedDuration.value
-          ) / 1000
+            Number(currentDate.getMonth()) + selectedDuration.value,
+          ) / 1000,
         );
       }
     }
@@ -1149,6 +1160,16 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
+        setSelectedApp: (arg) => {
+          if (!arg) {
+            setSelectedConstraintTitle(null);
+          } else {
+            setSelectedConstraintTitle(arg.label);
+          }
+
+          setSelectedApp(arg);
+        },
+        selectedApp,
       }}
     >
       {children}

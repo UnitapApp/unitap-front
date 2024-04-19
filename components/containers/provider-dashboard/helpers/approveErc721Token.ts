@@ -1,12 +1,13 @@
-import { ProviderDashboardFormDataProp } from "@/types";
+import { contractAddresses } from "@/constants";
+import { Chain, ProviderDashboardFormDataProp } from "@/types";
 import {
   PublicClient,
   Address,
   getContract,
   GetContractReturnType,
 } from "viem";
-import { erc20ABI, erc721ABI } from "wagmi";
-import { GetWalletClientResult } from "wagmi/dist/actions";
+import { erc20Abi, erc721Abi } from "viem";
+import { GetWalletClientReturnType } from "wagmi/actions";
 
 export const approveErc721TokenCallback = async (
   address: Address,
@@ -14,10 +15,11 @@ export const approveErc721TokenCallback = async (
   spenderAddress: Address,
   tokenAddress: Address,
   provider: PublicClient,
-  signer: GetWalletClientResult
+  signer: GetWalletClientReturnType,
+  selectedChain: Chain,
 ) => {
   const gasEstimate = await provider.estimateContractGas({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: erc721Contract.address,
     functionName: "setApprovalForAll",
     account: address,
@@ -25,12 +27,12 @@ export const approveErc721TokenCallback = async (
   });
 
   const response = await signer?.writeContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: erc721Contract.address,
     account: address,
     functionName: "setApprovalForAll",
     args: [spenderAddress, true],
-    gasPrice: gasEstimate,
+    gasPrice: selectedChain.chainId === "42161" ? undefined : gasEstimate,
   });
 
   if (!response) return;
@@ -48,17 +50,18 @@ export const approveErc721TokenCallback = async (
 export const approveErc721Token = async (
   data: ProviderDashboardFormDataProp,
   provider: PublicClient,
-  signer: GetWalletClientResult,
+  signer: GetWalletClientReturnType,
   address: Address,
   setApproveLoading: any,
-  setIsApprovedAll: any
+  setIsApprovedAll: any,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
 
   const contract = getContract({
-    abi: erc721ABI,
+    abi: erc721Abi,
     address: data.nftContractAddress as Address,
-    publicClient: provider,
+    client: provider,
   });
 
   try {
@@ -66,10 +69,11 @@ export const approveErc721Token = async (
     const response = await approveErc721TokenCallback(
       address,
       contract,
-      data.selectedChain.erc721PrizetapAddr,
+      contractAddresses.prizeTapErc721 as any,
       data.nftContractAddress as Address,
       provider,
-      signer
+      signer,
+      selectedChain,
     );
 
     setApproveLoading(false);

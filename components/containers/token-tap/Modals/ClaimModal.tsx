@@ -1,46 +1,43 @@
-"use client"
+"use client";
 
-import { useCallback, useMemo, useState } from "react"
-import { Chain } from "@/types"
-import ClaimLightningContent from "./ClaimLightningContent"
+import { useCallback, useMemo, useState } from "react";
+import { Chain } from "@/types";
+import ClaimLightningContent from "./ClaimLightningContent";
 
-import TokenPermissions from "../Permissions"
-import { useWalletNetwork } from "@/utils/wallet"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { useUserProfileContext } from "@/context/userProfile"
-import Modal from "@/components/ui/Modal/modal"
-import MaxedOutBody from "./MaxedOutBody"
-import BrightNotConnectedBody from "./BrightNotConnectedBody"
-import SuccessBody from "./SuccessBody"
-import WrongNetworkBody from "./WrongNetworkBody"
-import PendingBody from "./PendingBody"
-import NotRemainingClaimsBody from "./NoRemainingClaimsBody"
-import InitialBody from "./InitialBody"
+import TokenPermissions from "../Permissions";
+import { useWalletNetwork } from "@/utils/wallet";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import Modal from "@/components/ui/Modal/modal";
+import MaxedOutBody from "./MaxedOutBody";
+import BrightNotConnectedBody from "./BrightNotConnectedBody";
+import SuccessBody from "./SuccessBody";
+import WrongNetworkBody from "./WrongNetworkBody";
+import PendingBody from "./PendingBody";
+import NotRemainingClaimsBody from "./NoRemainingClaimsBody";
+import InitialBody from "./InitialBody";
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
-  const { chain: activatedChain } = useWalletNetwork()
+  const { chain: activatedChain } = useWalletNetwork();
 
-  const chainId = activatedChain?.id
+  const chainId = activatedChain?.id;
 
-  const [isPermissionsVerified, setIsPermissionsVerified] = useState(false)
+  const [isPermissionsVerified, setIsPermissionsVerified] = useState(false);
 
   const {
     selectedTokenForClaim,
     claimedTokensList,
     claimTokenLoading,
     claimTokenResponse,
-  } = useTokenTapContext()
+  } = useTokenTapContext();
 
-  const { userProfile, tokentapRoundClaimLimit } = useUserProfileContext()
+  const { userProfile, tokentapRoundClaimLimit } = useUserProfileContext();
 
   const collectedToken = claimedTokensList.find(
-    (item) => item.tokenDistribution.id === selectedTokenForClaim!.id
-  )
+    (item) => item.tokenDistribution.id === selectedTokenForClaim!.id,
+  );
 
-  if (!selectedTokenForClaim) return null
-
-  if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut)
-    return <MaxedOutBody token={selectedTokenForClaim} />
+  if (!selectedTokenForClaim) return null;
 
   if (!userProfile)
     return (
@@ -48,13 +45,26 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
         chainPk={selectedTokenForClaim.chain.pk}
         imageUrl={selectedTokenForClaim.imageUrl}
       />
-    )
+    );
 
   if (
     claimTokenResponse?.state === "Done" ||
     collectedToken?.status === "Verified"
   )
-    return <SuccessBody token={selectedTokenForClaim} />
+    return <SuccessBody token={selectedTokenForClaim} />;
+
+  if (
+    claimTokenResponse?.state === "Pending" ||
+    collectedToken?.status === "Pending"
+  ) {
+    return <InitialBody token={selectedTokenForClaim} />;
+  }
+
+  // if (claimTokenLoading)
+  //   return <PendingBody tokenId={selectedTokenForClaim.id} />;
+
+  if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut)
+    return <MaxedOutBody token={selectedTokenForClaim} />;
 
   if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
     return (
@@ -62,16 +72,13 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
         chain={selectedTokenForClaim.chain}
         imageUrl={selectedTokenForClaim.imageUrl}
       />
-    )
-
-  if (claimTokenLoading)
-    return <PendingBody tokenId={selectedTokenForClaim.id} />
+    );
 
   if (
     claimedTokensList.length >= (tokentapRoundClaimLimit ?? 4) &&
     !collectedToken
   )
-    return <NotRemainingClaimsBody />
+    return <NotRemainingClaimsBody />;
 
   if (!isPermissionsVerified)
     return (
@@ -79,30 +86,32 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
         token={selectedTokenForClaim}
         onClose={() => setIsPermissionsVerified(true)}
       />
-    )
+    );
 
-  return <InitialBody token={selectedTokenForClaim} />
-}
+  return <InitialBody token={selectedTokenForClaim} />;
+};
 
 const ClaimTokenModal = () => {
   const { selectedTokenForClaim, setSelectedTokenForClaim } =
-    useTokenTapContext()
+    useTokenTapContext();
 
   const closeClaimTokenModal = useCallback(() => {
-    setSelectedTokenForClaim(null)
-  }, [setSelectedTokenForClaim])
+    setSelectedTokenForClaim(null);
+  }, [setSelectedTokenForClaim]);
 
   const isOpen = useMemo(() => {
-    return !!selectedTokenForClaim
-  }, [selectedTokenForClaim])
+    return !!selectedTokenForClaim;
+  }, [selectedTokenForClaim]);
 
-  if (!selectedTokenForClaim) return null
+  if (!selectedTokenForClaim) return null;
 
   const tokenAmount =
     selectedTokenForClaim.chain.chainName === "Lightning"
       ? selectedTokenForClaim.amount
       : selectedTokenForClaim.amount /
-        10 ** selectedTokenForClaim.chain.decimals
+        10 **
+          (selectedTokenForClaim.decimals ??
+            selectedTokenForClaim.chain.decimals);
 
   return (
     <Modal
@@ -119,6 +128,6 @@ const ClaimTokenModal = () => {
         )}
       </div>
     </Modal>
-  )
-}
-export default ClaimTokenModal
+  );
+};
+export default ClaimTokenModal;

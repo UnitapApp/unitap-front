@@ -80,7 +80,7 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
   return (
     <div
       ref={ref}
-      className={`absolute z-10 top-14 right-8 cursor-default bg-gray20 rounded-lg border-2 px-3 pb-1 pt-2.5 border-gray00 ${
+      className={`absolute right-8 top-14 z-30 cursor-default rounded-lg border-2 border-gray00 bg-gray20 px-3 pb-1 pt-2.5 ${
         className ? className : ""
       }`}
     >
@@ -90,27 +90,22 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
             key={item.name}
             href={item.link}
             onClick={() => closeDropdown()}
-            className={`w-52 flex items-center h-11 justify-between bg-gray30 rounded-lg border-2 px-4 mb-2 cursor-pointer transition-all duration-75 ${
+            className={`mb-2 flex h-11 w-52 cursor-pointer items-center justify-between rounded-lg border-2 bg-gray30 px-4 transition-all duration-75 ${
               path === item.route
-                ? "bg-gray10 rounded-lg border-gray100 px-4 mb-2"
-                : item.link && "hover:bg-gray20 border-gray40"
+                ? "mb-2 rounded-lg border-gray100 bg-gray10 px-4"
+                : item.link && "border-gray40 hover:bg-gray20"
             } ${!item.link && "cursor-default"}`}
           >
             <p
               className={`text-sm font-semibold ${
                 path === item.route
-                  ? "bg-primaryGradient text-transparent bg-clip-text"
+                  ? "bg-primaryGradient bg-clip-text text-transparent"
                   : "text-white"
               }`}
             >
               {item.name}
             </p>
-            <img
-              alt={item.name}
-              src={item.icon}
-              width={item.iconWidth}
-              height={item.iconHeight}
-            />
+            <Image alt={item.name} src={item.icon} width={20} height={28} />
           </Link>
         );
       })}
@@ -118,9 +113,9 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
       <Link
         onClick={() => closeDropdown()}
         href={RoutePath.NFT}
-        className={`navbar-dropdown__item cursor-pointer bg-g-primary relative z-10 before:content-[''] p-1 rounded-xl overflow-hidden before:block before:-z-10 before:absolute before:inset-[2px] before:rounded-lg before:bg-gray00 flex items-center justify-between !h-auto bg-gray00 transition-all duration-75 hover:bg-gray20 border-gray00 pl-4 pr-2 py-2.5 mt-12`}
+        className={`navbar-dropdown__item relative z-10 mt-12 flex !h-auto cursor-pointer items-center justify-between overflow-hidden rounded-xl border-gray00 bg-gray00 bg-g-primary p-1 py-2.5 pl-4 pr-2 transition-all duration-75 before:absolute before:inset-[2px] before:-z-10 before:block before:rounded-lg before:bg-gray00 before:content-[''] hover:bg-gray20`}
       >
-        <p className="text-sm font-semibold bg-primaryGradient text-transparent bg-clip-text">
+        <p className="bg-primaryGradient bg-clip-text text-sm font-semibold text-transparent">
           Unitap Pass NFT
         </p>
         <img
