@@ -89,7 +89,12 @@ export const createErc721Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
 ) => {
-  const raffleContractAddress = contractAddresses.prizeTapErc721;
+  const raffleContractAddress =
+    contractAddresses.prizeTap[data.selectedChain.chainId].erc721;
+
+  if (!raffleContractAddress)
+    throw new Error("Error finding erc721 contract address");
+
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";

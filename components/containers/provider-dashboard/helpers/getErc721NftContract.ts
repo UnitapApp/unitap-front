@@ -11,7 +11,7 @@ export const getErc721TokenContract = async (
   provider: PublicClient,
   setData: any,
   setIsApprovedAll: any,
-  setNftContractStatus: any
+  setNftContractStatus: any,
 ) => {
   if (!provider || !address) return;
 
@@ -40,7 +40,7 @@ export const getErc721TokenContract = async (
     contract.read.balanceOf([address as any]),
     contract.read.isApprovedForAll([
       address as Address,
-      contractAddresses.prizeTapErc721 as any,
+      contractAddresses.prizeTap[data.selectedChain.chainId].erc721 as any,
     ]),
   ]).then(([r1, r2, r3, r5]) => {
     setData((prevData: any) => ({

@@ -159,8 +159,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
-        tokenTapContractAddressList[selectedTokenForClaim.token] ??
-        contractAddresses.tokenTap;
+        contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId].erc20;
 
       if (!contractAddress) return;
 
@@ -214,7 +213,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           account: address,
           address:
             tokenTapContractAddressList[selectedTokenForClaim.token]! ??
-            contractAddresses.tokenTap,
+            contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
+              .erc20,
           functionName: "claimToken",
           gas: contractGas,
         });

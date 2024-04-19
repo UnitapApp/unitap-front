@@ -218,6 +218,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       );
     }
 
+    const address = selectedRaffleForEnroll?.isPrizeNft
+      ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc721
+      : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc20;
+
+    if (!address) throw new Error("Address is not supported");
+
     try {
       const response = await writeContractAsync({
         args,
@@ -225,9 +231,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
-        address: selectedRaffleForEnroll?.isPrizeNft
-          ? contractAddresses.prizeTapErc721
-          : contractAddresses.prizeTapErc20,
+        address,
       });
 
       if (response) {

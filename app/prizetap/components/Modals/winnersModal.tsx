@@ -50,11 +50,17 @@ const WinnersModal = () => {
     const contracts = [];
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
+      const address = selectedRaffleForEnroll.isPrizeNft
+        ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
+            .erc721
+        : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
+            .erc20;
+
+      if (!address) continue;
+
       contracts.push({
         abi: isNft ? prizeTap721Abi : prizeTapAbi,
-        address: (selectedRaffleForEnroll.isPrizeNft
-          ? contractAddresses.prizeTapErc721
-          : contractAddresses.prizeTapErc20) as Address,
+        address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
         chainId: Number(selectedRaffleForEnroll.chain.chainId ?? 1),

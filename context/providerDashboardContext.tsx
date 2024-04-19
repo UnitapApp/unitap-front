@@ -851,7 +851,7 @@ const ProviderDashboard: FC<
       provider,
       signer,
       address,
-      contractAddresses.prizeTapErc20,
+      contractAddresses.prizeTap[selectedChain.chainId].erc20,
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance,
