@@ -407,7 +407,7 @@ const TokenTapProvider: FC<
       provider,
       signer,
       address,
-      contractAddresses.tokenTap,
+      contractAddresses.tokenTap[data.selectedChain.chainId].erc20,
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance,
