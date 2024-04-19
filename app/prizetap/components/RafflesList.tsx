@@ -121,7 +121,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   } = raffle;
 
   const params = useMemo(
-    () => JSON.parse(raffle.constraintParams),
+    () => JSON.parse(raffle.constraintParams || "{}"),
     [raffle.constraintParams],
   );
 
