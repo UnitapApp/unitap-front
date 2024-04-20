@@ -167,7 +167,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   <p>{selectedToken?.tokenSymbol ? selectedToken.tokenSymbol : 'Select Token'}</p>
                   <Icon
                     iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
-                    className={`${showItems ? 'rotate-180' : ''}`}
+                    className={`${showItems ? '' : 'rotate-180'}`}
                     width="12px"
                     height="12px"
                   />
