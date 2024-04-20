@@ -212,7 +212,6 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           abi: unitapEvmTokenTapAbi,
           account: address,
           address:
-            tokenTapContractAddressList[selectedTokenForClaim.token]! ??
             contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
               .erc20,
           functionName: "claimToken",

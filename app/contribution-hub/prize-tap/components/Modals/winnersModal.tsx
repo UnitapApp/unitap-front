@@ -32,8 +32,9 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
       const address = winnersResultRaffle.isPrizeNft
-        ? contractAddresses.prizeTap[winnersResultRaffle.chain.chainId].erc721
-        : contractAddresses.prizeTap[winnersResultRaffle.chain.chainId].erc20;
+        ? contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]?.erc721
+        : contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]
+            ?.erc20 || winnersResultRaffle.contract;
 
       if (!address) continue;
 
