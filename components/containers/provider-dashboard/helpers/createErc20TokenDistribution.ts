@@ -35,7 +35,7 @@ const txCallBack = async (
   const gasEstimate = await provider.estimateContractGas({
     abi: tokenTapAbi,
     account: address as any,
-    address: contractAddresses.tokenTap as any,
+    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
     args: [
       tokenContractAddress as any,
@@ -52,7 +52,7 @@ const txCallBack = async (
     return signer?.writeContract({
       abi: tokenTapAbi,
       account: address as any,
-      address: contractAddresses.tokenTap as any,
+      address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
       functionName: "distributeToken",
       // gasPrice: gasEstimate,
       args: [
@@ -70,7 +70,7 @@ const txCallBack = async (
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
-    address: contractAddresses.tokenTap as any,
+    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
     gasPrice: gasEstimate,
     args: [
@@ -182,7 +182,10 @@ export const createErc20TokenDistribution = async (
   formData.append("token_address", getAddress(data.tokenContractAddress));
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
-  formData.append("contract", contractAddresses.tokenTap as any);
+  formData.append(
+    "contract",
+    contractAddresses.tokenTap[data.selectedChain.chainId].erc20,
+  );
   formData.append("start_at", startAt(startTime));
   formData.append("deadline", endTime);
   formData.append("max_number_of_claims", maxNumClaim);

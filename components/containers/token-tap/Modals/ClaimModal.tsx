@@ -60,8 +60,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     return <InitialBody token={selectedTokenForClaim} />;
   }
 
-  if (claimTokenLoading)
-    return <PendingBody tokenId={selectedTokenForClaim.id} />;
+  // if (claimTokenLoading)
+  //   return <PendingBody tokenId={selectedTokenForClaim.id} />;
 
   if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut)
     return <MaxedOutBody token={selectedTokenForClaim} />;

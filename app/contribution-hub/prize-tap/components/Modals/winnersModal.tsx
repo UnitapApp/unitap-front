@@ -23,17 +23,24 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const provider = useWalletProvider();
 
   const exportEnrollmentWallets = useCallback(async () => {
+    if (!winnersResultRaffle) return;
+
     const isNft = winnersResultRaffle!.isPrizeNft;
     const raffleId = Number(winnersResultRaffle!.raffleId);
     const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
     const contracts = [];
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
+      const address = winnersResultRaffle.isPrizeNft
+        ? contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]?.erc721
+        : contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]
+            ?.erc20 || winnersResultRaffle.contract;
+
+      if (!address) continue;
+
       contracts.push({
         abi: isNft ? prizeTap721Abi : prizeTapAbi,
-        address: isNft
-          ? contractAddresses.prizeTapErc721
-          : contractAddresses.prizeTapErc20,
+        address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
         chainId: Number(winnersResultRaffle?.chain.chainId ?? 1),
@@ -58,10 +65,10 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     const items = !searchPhraseInput
       ? winnersResultRaffle?.winnerEntries
       : winnersResultRaffle?.winnerEntries?.filter((item) =>
-        item.userWalletAddress
-          .toLocaleLowerCase()
-          .includes(searchPhraseInput.toLocaleLowerCase()),
-      ) ?? [];
+          item.userWalletAddress
+            .toLocaleLowerCase()
+            .includes(searchPhraseInput.toLocaleLowerCase()),
+        ) ?? [];
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);

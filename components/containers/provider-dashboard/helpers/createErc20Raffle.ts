@@ -82,6 +82,7 @@ const createErc20RaffleCallback = async (
       value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
     });
   }
+
   return signer?.writeContract({
     abi: prizeTapAbi,
     account: account as any,
@@ -118,7 +119,8 @@ export const createErc20Raffle = async (
 ) => {
   console.log(getAddress(data.tokenContractAddress));
 
-  const raffleContractAddress = contractAddresses.prizeTapErc20;
+  const raffleContractAddress =
+    contractAddresses.prizeTap[data.selectedChain.chainId].erc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";

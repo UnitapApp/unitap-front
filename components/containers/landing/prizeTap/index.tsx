@@ -51,8 +51,10 @@ const PrizeTapLanding: FC = async () => {
           icon={"/prizetap-icon.png"}
           iconSize={"w-8 h-7"}
           title={"Prize Tap"}
-          buttonTitle={"Beta"}
-          buttonClass={"green-text-button text-gray100"}
+          buttonTitle={"Go to Tap"}
+          buttonClass={
+            "gradient-outline-button before:inset-[2px] text-gray100"
+          }
         >
           <div className="mt-14">
             {validRaffles.length > 0 &&

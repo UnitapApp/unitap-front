@@ -159,8 +159,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
-        tokenTapContractAddressList[selectedTokenForClaim.token] ??
-        contractAddresses.tokenTap;
+        contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId].erc20;
 
       if (!contractAddress) return;
 
@@ -213,8 +212,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           abi: unitapEvmTokenTapAbi,
           account: address,
           address:
-            tokenTapContractAddressList[selectedTokenForClaim.token]! ??
-            contractAddresses.tokenTap,
+            contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
+              .erc20,
           functionName: "claimToken",
           gas: contractGas,
         });
@@ -241,7 +240,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           state: "Retry",
           message: error.shortMessage,
         });
-        console.log(error.cause, error.details, error.shortMessage);
+        console.log(error);
       } finally {
         setClaimingTokenPk(null);
         setLoading(false);

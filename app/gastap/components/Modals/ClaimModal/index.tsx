@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Icon from "@/components/ui/Icon";
 import { ClaimButton } from "@/components/ui/Button/button";
 import { BrightIdModalState, Chain, ClaimReceiptState } from "@/types";
@@ -39,23 +39,22 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
   } = useGasTapContext();
 
   const { userProfile, remainingClaims } = useUserProfileContext();
+  const { setIsWalletPromptOpen } = useGlobalContext();
 
   const [isWalletChoosing, setIsWalletChoosing] = useState(false);
 
   const oneTimeReceipt = useMemo(
     () => oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
-    [chain, oneTimeClaimedGasList]
+    [chain, oneTimeClaimedGasList],
   );
 
-  if (!userProfile)
-    return (
-      <BrightIdNotConnectedBody
-        chainPk={chain.pk}
-        iconSrc={getChainClaimIcon(chain)}
-      />
-    );
+  useEffect(() => {
+    if (userProfile) return;
 
-  if (!userProfile.isMeetVerified) return <BrightConnectionModalBody />;
+    setIsWalletPromptOpen(true);
+  }, [setIsWalletPromptOpen, userProfile]);
+
+  if (!userProfile?.isMeetVerified) return <BrightConnectionModalBody />;
 
   if (!isConnected) return <WalletNotConnectedBody chainPk={chain.pk} />;
 
@@ -99,7 +98,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
     <>
       <DropIconWrapper data-testid={`chain-claim-initial-${chain.pk}`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
           iconSrc={getChainClaimIcon(chain)}
@@ -108,7 +107,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
       </DropIconWrapper>
       <button
         onClick={() => setIsWalletChoosing(true)}
-        className="bg-gray50 font-semibold text-gray100 mb-10 text-base rounded-xl w-full flex items-center p-4"
+        className="mb-10 flex w-full items-center rounded-xl bg-gray50 p-4 text-base font-semibold text-gray100"
       >
         Selected Wallet: {shortenAddress(claimWalletAddress || address)}
         <Image
@@ -168,7 +167,7 @@ const ClaimModal = () => {
           data-testid={`chain-claim-modal-${activeChain.pk}`}
         >
           {!userProfile?.isMeetVerified ? (
-            <div className="my-5 font-semibold text-error text-sm">
+            <div className="my-5 text-sm font-semibold text-error">
               You need to connect your brightID first before claiming gas
             </div>
           ) : null}

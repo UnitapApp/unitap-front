@@ -44,8 +44,36 @@ export const tokenTapContractAddressList: { [key: string]: Address } = {
   LINK: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
 };
 
-export const contractAddresses = {
-  tokenTap: "0x785996054151487B296005aAeC8CAE7C209D1385" as Address,
-  prizeTapErc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C" as Address,
-  prizeTapErc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce" as Address,
+type ChainAddressManager = {
+  [chainId: string]: {
+    erc20: Address;
+    erc721?: Address;
+  };
+};
+
+export const contractAddresses: {
+  tokenTap: ChainAddressManager;
+  prizeTap: ChainAddressManager;
+} = {
+  tokenTap: {
+    "42161": {
+      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    },
+    "30": {
+      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    },
+    "10": {
+      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    },
+  },
+  prizeTap: {
+    "42161": {
+      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    },
+    "30": {
+      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    },
+  },
 };

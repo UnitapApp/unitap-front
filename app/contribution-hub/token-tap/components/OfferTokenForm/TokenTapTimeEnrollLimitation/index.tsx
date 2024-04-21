@@ -68,23 +68,26 @@ const TokenTapTimeEnrollLimitation = ({
               if (isShowingDetails) return;
               handleSetClaimPeriodic(false);
             }}
-            className={`${claimPeriodic ? "bg-gray30" : "bg-gray40"
-              } flex h-[43px] w-full cursor-pointer flex-col items-center justify-center rounded-[12px_0px_0px_12px] border border-gray50`}
+            className={`${
+              claimPeriodic ? "bg-gray30" : "bg-gray40"
+            } flex h-[43px] w-full cursor-pointer flex-col items-center justify-center rounded-[12px_0px_0px_12px] border border-gray50`}
           >
             <p
-              className={`${!claimPeriodic ? "text-white" : "text-gray90"
-                } text-xs`}
+              className={`${
+                !claimPeriodic ? "text-white" : "text-gray90"
+              } text-xs`}
             >
               Single Claim Tap
             </p>
             <p
-              className={`${!claimPeriodic ? "text-gray100" : "text-gray90"
-                } text-2xs`}
+              className={`${
+                !claimPeriodic ? "text-gray100" : "text-gray90"
+              } text-2xs`}
             >
               ( Users can only claim once)
             </p>
           </div>
-          <div
+          {/* <div
             onClick={() => {
               if (isShowingDetails) return;
               handleSetClaimPeriodic(true);
@@ -104,7 +107,7 @@ const TokenTapTimeEnrollLimitation = ({
             >
               (Users can claim once per round.)
             </p>
-          </div>
+          </div> */}
         </div>
         <StartDateComp showErrors={showErrors} />
         <ManualDuration showErrors={showErrors} />

@@ -1,60 +1,60 @@
-"use client"
+"use client";
 
-import { useUserProfileContext } from "@/context/userProfile"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import Icon from "@/components/ui/Icon"
-import { range } from "@/utils"
+import { useUserProfileContext } from "@/context/userProfile";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import Icon from "@/components/ui/Icon";
+import { range } from "@/utils";
 
-import Styles from "./header.module.scss"
+import Styles from "./header.module.scss";
 
 const Header = () => {
-  const { userProfile } = useUserProfileContext()
+  const { userProfile } = useUserProfileContext();
 
   return (
     <div
-      className={`${Styles["token-tap-header"]} bg-right h-[202px] w-full rounded-2xl flex flex-col md:flex-row lg:items-end md:justify-between overflow-hidden relative p-4 mb-5 border-4 border-gray20`}
+      className={`${Styles["token-tap-header"]} relative mb-5 flex h-[202px] w-full flex-col overflow-hidden rounded-2xl border-4 border-gray20 bg-right p-4 md:flex-row md:justify-between lg:items-end`}
     >
-      <div className="header-left z-10 flex flex-col justify-end items-start h-[100%]">
-        <span className="flex items-center mb-2">
+      <div className="header-left z-10 flex h-[100%] flex-col items-start justify-end">
+        <span className="mb-2 flex items-center">
           <Icon
-            className="gas-tap h-12 w-auto mb-1"
+            className="gas-tap mb-1 h-12 w-auto"
             iconSrc="assets/images/token-tap/token-tap-typo-logo.svg"
           />
-          <div className="bg-gray10 px-3 py-2 border font-bold border-gray50 text-white text-xs rounded-lg">
+          {/* <div className="rounded-lg border border-gray50 bg-gray10 px-3 py-2 text-xs font-bold text-white">
             <p className="text-gradient-primary">Beta</p>
-          </div>
+          </div> */}
         </span>
         <p className="text-xs text-gray100">
           Where everyone can claim any kind of tokens such as community tokens,
           NFTs, UBI token.
         </p>
       </div>
-      <div className="header-right  flex mt-2 justify-center md:justify-start">
+      <div className="header-right  mt-2 flex justify-center md:justify-start">
         <div className="claim-stat z-10">
-          {userProfile ? <TokenCoins /> : <RenderConnectBrightID />}
+          {/* {userProfile ? <TokenCoins /> : <RenderConnectBrightID />} */}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const RenderConnectBrightID = () => {
   return (
-    <div className="claim-stat__not-claimed rounded-lg bg-gray30 border-2 border-gray50">
-      <p className="claim-stat__not-claimed__text px-4 py-3.5 text-gray80 text-xs font-bold">
+    <div className="claim-stat__not-claimed rounded-lg border-2 border-gray50 bg-gray30">
+      <p className="claim-stat__not-claimed__text px-4 py-3.5 text-xs font-bold text-gray80">
         Connect BrightID to See Your Claims
       </p>
     </div>
-  )
-}
+  );
+};
 
 const TokenCoins = () => {
-  const { openClaimModal, claimedTokensList } = useTokenTapContext()
+  const { openClaimModal, claimedTokensList } = useTokenTapContext();
 
-  const { tokentapRoundClaimLimit } = useUserProfileContext()
+  const { tokentapRoundClaimLimit } = useUserProfileContext();
 
   return (
-    <div className="claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+    <div className="claim-stat__claimed flex gap-x-3 rounded-lg border-2 border-gray80 bg-primaryGradient px-3 py-[2px]">
       <>
         {claimedTokensList.map((claim, key) => {
           return (
@@ -71,11 +71,11 @@ const TokenCoins = () => {
               width="36px"
               height="40px"
             />
-          )
+          );
         })}
         {range(
           0,
-          (tokentapRoundClaimLimit ?? 4) - claimedTokensList.length
+          (tokentapRoundClaimLimit ?? 4) - claimedTokensList.length,
         ).map((i, key) => {
           return (
             <Icon
@@ -84,11 +84,11 @@ const TokenCoins = () => {
               width="36px"
               height="36px"
             />
-          )
+          );
         })}
       </>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

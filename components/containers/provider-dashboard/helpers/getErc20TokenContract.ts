@@ -14,7 +14,7 @@ export const getErc20TokenContract = async (
   setData: any,
   setIsErc20Approved: any,
   setTokenContractStatus: any,
-  setApproveAllowance: any
+  setApproveAllowance: any,
 ) => {
   if (!provider || !address) return;
 
@@ -45,7 +45,7 @@ export const getErc20TokenContract = async (
     contract.read.balanceOf([address as Address]),
     contract.read.allowance([
       address as Address,
-      contractAddresses.prizeTapErc20 as any,
+      contractAddresses.prizeTap[data.selectedChain.chainId].erc20,
     ]),
   ]).then(([r1, r2, r3, r4, r5]) => {
     setData((prevData: any) => ({

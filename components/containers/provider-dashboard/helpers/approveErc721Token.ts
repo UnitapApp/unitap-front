@@ -64,12 +64,16 @@ export const approveErc721Token = async (
     client: provider,
   });
 
+  if (!contractAddresses.prizeTap[selectedChain.chainId].erc721) {
+    throw new Error("Error finding address for erc721");
+  }
+
   try {
     setApproveLoading(true);
     const response = await approveErc721TokenCallback(
       address,
       contract,
-      contractAddresses.prizeTapErc721 as any,
+      contractAddresses.prizeTap[selectedChain.chainId].erc721!,
       data.nftContractAddress as Address,
       provider,
       signer,
