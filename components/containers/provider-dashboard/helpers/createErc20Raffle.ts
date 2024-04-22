@@ -58,13 +58,37 @@ const createErc20RaffleCallback = async (
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 
-  // if (selectedChain.chainId === "42161") {
+  if (selectedChain.chainId === "42161") {
+    return signer?.writeContract({
+      abi: prizeTapAbi,
+      account: account as any,
+      address: raffleContract.address,
+      functionName: "createRaffle",
+      // gasPrice: gasEstimate,
+      args: [
+        isNativeToken
+          ? parseEther(new Big(payableAmount).toFixed())
+          : BigInt(
+              toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+            ),
+        currencyAddress,
+        maxParticipants,
+        1n,
+        startTime,
+        endTime,
+        winnersCount,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+    });
+  }
+
   return signer?.writeContract({
     abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
-    // gasPrice: gasEstimate,
+    gasPrice: gasEstimate,
     args: [
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
@@ -81,30 +105,6 @@ const createErc20RaffleCallback = async (
     ],
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
-  // }
-
-  // return signer?.writeContract({
-  //   abi: prizeTapAbi,
-  //   account: account as any,
-  //   address: raffleContract.address,
-  //   functionName: "createRaffle",
-  //   gasPrice: gasEstimate,
-  //   args: [
-  //     isNativeToken
-  //       ? parseEther(new Big(payableAmount).toFixed())
-  //       : BigInt(
-  //           toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
-  //         ),
-  //     currencyAddress,
-  //     maxParticipants,
-  //     1n,
-  //     startTime,
-  //     endTime,
-  //     winnersCount,
-  //     "0x0000000000000000000000000000000000000000000000000000000000000000",
-  //   ],
-  //   value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
-  // });
 };
 
 export const createErc20Raffle = async (

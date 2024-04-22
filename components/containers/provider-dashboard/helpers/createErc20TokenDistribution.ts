@@ -48,31 +48,24 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
-  if (selectedChain.chainId === "42161") {
-    return signer?.writeContract({
-      abi: tokenTapAbi,
-      account: address as any,
-      address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
-      functionName: "distributeToken",
-      // gasPrice: gasEstimate,
-      args: [
-        tokenContractAddress as any,
-        maxNumClaim,
-        isNativeToken
-          ? parseEther(new Big(tokenAmount).toFixed())
-          : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-        startTime,
-        endTime,
-      ],
-      value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-    });
-  }
+  // if (selectedChain.chainId === "42161") {
+
+  console.log("Attempting to call the contract with values: ", [
+    tokenContractAddress as any,
+    maxNumClaim,
+    isNativeToken
+      ? parseEther(new Big(tokenAmount).toFixed())
+      : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+    startTime,
+    endTime,
+  ]);
+
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
     address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
-    gasPrice: gasEstimate,
+    // gasPrice: gasEstimate,
     args: [
       tokenContractAddress as any,
       maxNumClaim,
@@ -84,6 +77,24 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
+  // }
+  // return signer?.writeContract({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   gasPrice: gasEstimate,
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
 };
 
 export const createErc20TokenDistribution = async (
