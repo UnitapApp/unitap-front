@@ -52,9 +52,9 @@ const WinnersModal = () => {
     for (let i = 0; i <= entriesNumber / 100; i++) {
       const address = selectedRaffleForEnroll.isPrizeNft
         ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
-            .erc721
+            ?.erc721
         : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
-            .erc20;
+            ?.erc20 || selectedRaffleForEnroll.contract;
 
       if (!address) continue;
 
