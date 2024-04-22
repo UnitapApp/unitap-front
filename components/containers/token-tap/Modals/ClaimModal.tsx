@@ -74,12 +74,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
       />
     );
 
-  if (
-    claimedTokensList.length >= (tokentapRoundClaimLimit ?? 4) &&
-    !collectedToken
-  )
-    return <NotRemainingClaimsBody />;
-
   if (!isPermissionsVerified)
     return (
       <TokenPermissions
