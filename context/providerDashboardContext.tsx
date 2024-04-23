@@ -473,7 +473,6 @@ const ProviderDashboard: FC<
   const canGoStepTwo = () => {
     if (isShowingDetails) return true;
     const {
-      provider,
       description,
       selectedChain,
       nftContractAddress,
@@ -505,8 +504,6 @@ const ProviderDashboard: FC<
     };
 
     return !!(
-      provider &&
-      description &&
       selectedChain &&
       checkNft() &&
       checkToken()
@@ -600,7 +597,7 @@ const ProviderDashboard: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram } = data;
+    const { email, twitter, creatorUrl, discord, telegram, provider, description } = data;
     if (!email) {
       return false;
     }
@@ -625,6 +622,8 @@ const ProviderDashboard: FC<
       telegram: isTelegramVerified,
     });
     return !!(
+      provider &&
+      description &&
       isUrlVerified &&
       isTwitterVerified &&
       isDiscordVerified &&
@@ -662,7 +661,7 @@ const ProviderDashboard: FC<
 
   //check token contract address
   useEffect(() => {
-    if (isShowingDetails || data.isNft) return;
+    if (isShowingDetails || data.isNft || data.tokenContractAddress.length < 42) return;
     if (!data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
@@ -706,7 +705,7 @@ const ProviderDashboard: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) >= Number(data.userTokenBalance!),
+          : Number(data.totalAmount) > Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -791,7 +790,11 @@ const ProviderDashboard: FC<
         telegram: true,
       });
     }
+
     let value = type == "checkbox" ? e.target.checked : e.target.value;
+    if (name == 'tokenContractAddress') {
+      console.log(value)
+    }
     if (name === "provider" && value.length > 30) return;
     if (name === "description" && value.length > 100) return;
     if (name === "winnersCount" || name === "maxNumberOfEntries") {

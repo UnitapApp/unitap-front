@@ -15,6 +15,7 @@ import { useRef, useState } from "react";
 import { ContractValidationStatus, TokenOnChain } from "@/types";
 import { zeroAddress } from "viem";
 import { useOutsideClick } from "@/utils/hooks/dom";
+import { fromWei } from "@/utils";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -32,7 +33,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     setNumberOfNfts,
     setData,
     selectedToken,
-    setSelectedToken
+    setSelectedToken,
+    userBalance
   } = usePrizeOfferFormContext();
 
 
@@ -46,7 +48,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
   const isTokenFieldDisabled =
     isShowingDetails ||
-    data.isNativeToken ||
+    // data.isNativeToken ||
     !data.selectedChain ||
     tokenContractStatus.checking ||
     !isRightChain ||
@@ -104,7 +106,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
       ...prevData,
       isNativeToken: item.tokenAddress === zeroAddress,
       tokenContractAddress: item.tokenAddress,
-      decimal: item.tokenAddress === zeroAddress ? 18 : null
+      decimal: item.tokenAddress === zeroAddress ? 18 : null,
+      tokenSymbol: item.tokenSymbol
     }));
   }
 
@@ -141,7 +144,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
       {!data.isNft ? (
         <div className="mt-4 flex w-full flex-col gap-5">
           <div className="relative">
-            <div
+            {/* <div
               className="mb-[9px] flex max-w-[140px] cursor-pointer items-center justify-center gap-1 text-2xs text-white"
               onClick={() => {
                 if (!isRightChain) return;
@@ -158,13 +161,24 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 }
               />
               <p className="ml-1 text-sm text-gray100">use native token</p>
-            </div>
+            </div> */}
             {/* select token */}
-            {tokenList?.length && tokenList!.length > 0 &&
-              <div ref={ref} className="h-[43px] max-w-[452px]  rounded-xl 
-              border-[1.4px] bg-gray40 text-xs text-gray100 border-gray50 flex cursor-pointer mb-3 relative text-white" onClick={() => setShowItems(!showItems)}>
+            {/* {tokenList?.length && tokenList!.length > 0 &&
+              <div ref={ref} className="h-[43px] max-w-[452px] rounded-xl 
+              border-[1.4px] bg-gray40 text-xs border-gray50 flex cursor-pointer mb-3 relative text-white" onClick={() => setShowItems(!showItems)}>
                 <div className="flex justify-between w-full items-center px-5">
-                  <p>{selectedToken?.tokenSymbol ? selectedToken.tokenSymbol : 'Select Token'}</p>
+                  {!selectedToken?.tokenSymbol && 'Select Token'}
+                  <div className="flex">
+                    {selectedToken?.tokenSymbol &&
+                      <p className="text-gray100 flex items-center">
+                        <span className="text-white text-sm">{selectedToken.tokenSymbol}</span>
+                        <span className="h-1 w-1 bg-gray100 ml-2 rounded-full"></span>
+                        <span className="mx-2">Balance:</span>
+                        {tokenContractStatus.isValid ===
+                          ContractValidationStatus.Valid && !tokenContractStatus.checking
+                          ? selectedToken?.tokenAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''}
+                      </p>}
+                  </div>
                   <Icon
                     iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
                     className={`${showItems ? '' : 'rotate-180'}`}
@@ -178,31 +192,59 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   ))}
                 </div>}
               </div>
-            }
+            } */}
             <div
               className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl 
               border-[1.4px] bg-gray40 text-xs text-gray100 
-              ${data.isNativeToken ? "opacity-[.5]" : "opacity-1"} 
+
               ${tokenAddressError ? "border-error" : "border-gray50"}`}
             >
-              <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
+              {/* <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>Token address</p>
-              </div>
-              <div className="w-full max-w-[254px] overflow-hidden px-2">
+              </div> */}
+              <div
+                className="flex justify-between w-full pl-5 items-center  cursor-pointer"
+                ref={ref}
+              >
                 <input
                   disabled={isTokenFieldDisabled}
                   name="tokenContractAddress"
-                  placeholder="paste here"
+                  placeholder="Search or paste token contract address"
                   value={
                     data.tokenContractAddress &&
-                      data.tokenContractAddress != ZERO_ADDRESS
+                      data.tokenContractAddress != ZERO_ADDRESS && !selectedToken
                       ? data.tokenContractAddress
                       : ""
                   }
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full"
                   type="text"
                   onChange={handleChange}
                 />
+                <div className="h-full flex items-center justify-center w-[55px]" onClick={() => setShowItems(!showItems)}>
+                  <Icon
+
+                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    className={`${showItems ? '' : 'rotate-180'}`}
+                    width="12px"
+                    height="12px"
+                  />
+                </div>
+                {showItems && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-[11] left-0 top-[45px] border-gray60 border-2 max-h-28 overflow-y-scroll">
+                  {tokenList?.map(((item, index) =>
+                    <p className="flex items-center text-sm cursor-pointer hover:bg-gray70 h-10 w-full pl-2 rounded-lg" onClick={() => handleSetTokenAddress(item)} key={index}>{item.tokenSymbol}</p>
+                  ))}
+                </div>}
+                {/* <div className="flex">
+                  {selectedToken?.tokenSymbol || data.tokenSymbol &&
+                    <p className="text-gray100 flex items-center">
+                      <span className="text-white text-sm">{selectedToken?.tokenSymbol ? selectedToken.tokenSymbol : data.tokenSymbol}</span>
+                      <span className="h-1 w-1 bg-gray100 ml-2 rounded-full"></span>
+                      <span className="mx-2">Balance:</span>
+                      {tokenContractStatus.isValid ===
+                        ContractValidationStatus.Valid && !tokenContractStatus.checking
+                        ? selectedToken?.tokenAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''}
+                    </p>}
+                </div> */}
               </div>
               {tokenContractStatus.checking && (
                 <div className="m-0 flex h-full w-[50px] items-center bg-gray30 p-0">

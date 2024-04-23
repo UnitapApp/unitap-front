@@ -14,6 +14,7 @@ import {
   UploadedFileProps,
   UserRafflesProps,
   UserTokenDistribution,
+  TokenOnChain,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -153,6 +154,9 @@ export const TokenTapContext = createContext<{
     label: string;
     constraints: ConstraintProps[];
   }) => void;
+  selectedToken: TokenOnChain | null;
+  setSelectedToken: (token: TokenOnChain) => void;
+  setData: (item: any) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -247,6 +251,9 @@ export const TokenTapContext = createContext<{
   isErc20Approved: false,
   approveLoading: false,
   setSelectedApp: NullCallback,
+  selectedToken: null,
+  setSelectedToken: NullCallback,
+  setData: NullCallback,
 });
 
 const TokenTapProvider: FC<
@@ -377,6 +384,7 @@ const TokenTapProvider: FC<
   const provider = useWalletProvider();
   const { address } = useWalletAccount();
   const { chain } = useWalletNetwork();
+  const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
 
   const { data: userBalance } = useWalletBalance({
     address,
@@ -452,15 +460,15 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, isValidContractAddress],
@@ -716,7 +724,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {
@@ -1084,6 +1092,9 @@ const TokenTapProvider: FC<
         approveLoading,
         setSelectedApp,
         selectedApp,
+        selectedToken,
+        setSelectedToken,
+        setData
       }}
     >
       {children}

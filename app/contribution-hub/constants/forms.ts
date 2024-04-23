@@ -73,9 +73,9 @@ export const TokenTapDisplaySteps: DisplayStepsProps[] = [
 ];
 
 export const prizeTapForms = [
+  Requirements,
   PrizeInfo,
   TimeEnrollLimitation,
-  Requirements,
   ContactInformation,
   DepositPrize,
   InformationVerification,
@@ -84,28 +84,28 @@ export const prizeTapForms = [
 export const PrizeTapDisplaySteps: DisplayStepsProps[] = [
   {
     id: 0,
-    prevIcon:
-      "/assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
-    activeIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.png",
-    nextIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.svg",
-    title: "Prize info",
-    description: "Information on your prize",
-  },
-  {
-    id: 1,
-    prevIcon: "/assets/images/provider-dashboard/step-1-green.svg",
-    activeIcon: "/assets/images/provider-dashboard/step-1-active.svg",
-    nextIcon: "/assets/images/provider-dashboard/step-1-off.svg",
-    title: "Time and Enrollment Limitations",
-    description: "Set time and date, and enrollment rules",
-  },
-  {
-    id: 2,
     prevIcon: "/assets/images/provider-dashboard/step-2-green.png",
     activeIcon: "/assets/images/provider-dashboard/step-2-active.png",
     nextIcon: "/assets/images/provider-dashboard/step-2-off.png",
     title: "Requirements",
     description: "Set enrollment requirements",
+  },
+  {
+    id: 1,
+    prevIcon:
+      "/assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
+    activeIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.png",
+    nextIcon: "/assets/images/provider-dashboard/prize-off.svg",
+    title: "Prize info",
+    description: "Information on your prize",
+  },
+  {
+    id: 2,
+    prevIcon: "/assets/images/provider-dashboard/step-1-green.svg",
+    activeIcon: "/assets/images/provider-dashboard/step-1-active.svg",
+    nextIcon: "/assets/images/provider-dashboard/step-1-off.svg",
+    title: "Time and Enrollment Limitations",
+    description: "Set time and date, and enrollment rules",
   },
   {
     id: 3,

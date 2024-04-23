@@ -10,9 +10,12 @@ interface Prop {
 import { loadAnimationOption } from "@/constants/lottieCode";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
-import { ZERO_ADDRESS } from "@/constants";
-import { useState } from "react";
-import { ContractValidationStatus } from "@/types";
+import { ZERO_ADDRESS, tokensInformation } from "@/constants";
+import { useRef, useState } from "react";
+import { ContractValidationStatus, TokenOnChain } from "@/types";
+import { useOutsideClick } from "@/utils/hooks/dom";
+import { zeroAddress } from "viem";
+import { fromWei } from "@/utils";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,6 +31,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     nftContractStatus,
     numberOfNfts,
     setNumberOfNfts,
+    selectedToken,
+    userBalance,
+    setData,
+    setSelectedToken
   } = useTokenTapFromContext();
 
   const isTokenFieldDisabled =
@@ -71,11 +78,30 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     !isRightChain ||
     !data.nftContractAddress;
 
+  const tokenList = data.selectedChain ? tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList : null
+
+  const handleSetTokenAddress = (item: TokenOnChain) => {
+    setSelectedToken(item)
+    setShowItems(false)
+    setData((prevData: any) => ({
+      ...prevData,
+      isNativeToken: item.tokenAddress === zeroAddress,
+      tokenContractAddress: item.tokenAddress,
+      decimal: item.tokenAddress === zeroAddress ? 18 : null
+    }));
+  }
+
   const handleKeyDown = (event: any) => {
     if (event.key === "-" || event.key === "e") {
       event.preventDefault();
     }
   };
+  const [showItems, setShowItems] = useState(false)
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    if (showItems) setShowItems(false);
+  });
 
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   return (
@@ -96,16 +122,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         <div
           className={`
           ${data.isNft && "text-white font-medium  bg-gray40 border-gray50"}
-           flex cursor-pointer items-center justify-center border-l border-l-gray50 w-[50%] h-full`}
+           flex cursor-pointer items-center justify-center border-l font-semibold border-l-gray50 w-[50%] h-full text-gray90`}
         // onClick={() => handleSelectTokenOrNft(true)}
         >
-          NFT
+          NFT<span className="text-gray100 text-2xs ml-1">(Coming soon...)</span>
         </div>
       </section>
       {!data.isNft ? (
         <div className="flex flex-col gap-5 w-full mt-4">
           <div className="relative">
-            <div
+            {/* <div
               className="flex items-center justify-center gap-1 text-white text-2xs mb-[9px] cursor-pointer max-w-[140px]"
               onClick={() => {
                 if (!isRightChain) return
@@ -122,8 +148,38 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 }
               />
               <p className="text-sm text-gray100 ml-1">use native token</p>
-            </div>
+            </div> */}
 
+            {tokenList?.length && tokenList!.length > 0 &&
+              <div ref={ref} className="h-[43px] max-w-[452px] rounded-xl 
+              border-[1.4px] bg-gray40 text-xs border-gray50 flex cursor-pointer mb-3 relative text-white" onClick={() => setShowItems(!showItems)}>
+                <div className="flex justify-between w-full items-center px-5">
+                  {!selectedToken?.tokenSymbol && 'Select Token'}
+                  <div className="flex">
+                    {selectedToken?.tokenSymbol &&
+                      <p className="text-gray100 flex items-center">
+                        <span className="text-white text-sm">{selectedToken.tokenSymbol}</span>
+                        <span className="h-1 w-1 bg-gray100 ml-2 rounded-full"></span>
+                        <span className="mx-2">Balance:</span>
+                        {tokenContractStatus.isValid ===
+                          ContractValidationStatus.Valid && !tokenContractStatus.checking
+                          ? selectedToken?.tokenAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''}
+                      </p>}
+                  </div>
+                  <Icon
+                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    className={`${showItems ? '' : 'rotate-180'}`}
+                    width="12px"
+                    height="12px"
+                  />
+                </div>
+                {showItems && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-10 top-[45px] border-gray60 border-2 max-h-28 overflow-y-scroll">
+                  {tokenList?.map(((item, index) =>
+                    <p className="flex items-center text-sm cursor-pointer hover:bg-gray70 h-10 w-full pl-2 rounded-lg" onClick={() => handleSetTokenAddress(item)} key={index}>{item.tokenSymbol}</p>
+                  ))}
+                </div>}
+              </div>
+            }
             <div
               className={`flex text-gray100 text-xs bg-gray40 border-[1.4px] 
               rounded-xl h-[43px] max-w-[452px] overflow-hidden 
