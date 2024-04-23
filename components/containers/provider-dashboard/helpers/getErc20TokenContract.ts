@@ -48,6 +48,7 @@ export const getErc20TokenContract = async (
       contractAddresses.prizeTap[data.selectedChain.chainId].erc20,
     ]),
   ]).then(([r1, r2, r3, r4, r5]) => {
+    console.log(r4?.toString());
     setData((prevData: any) => ({
       ...prevData,
       tokenName: r1,

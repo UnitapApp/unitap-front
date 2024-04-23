@@ -671,7 +671,7 @@ const TokenTapProvider: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) >= Number(data.userTokenBalance!),
+          : Number(data.totalAmount) > Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [

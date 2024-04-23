@@ -274,6 +274,7 @@ export type TokenOnChain = {
   tokenDecimals: string;
   tokenName: string;
   tokenSymbol: string;
+  logoUrl: string;
 };
 
 export interface TokenInformation {

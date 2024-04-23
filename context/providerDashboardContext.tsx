@@ -159,7 +159,9 @@ export const ProviderDashboardContext = createContext<{
   allChainList: Chain[] | undefined;
   setData: (item: any) => void;
   selectedToken: TokenOnChain | null;
-  setSelectedToken: (token: TokenOnChain) => void;
+  setSelectedToken: (token: TokenOnChain | null) => void;
+  tokenName: string | null;
+  setTokenName: (name: string) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -256,7 +258,9 @@ export const ProviderDashboardContext = createContext<{
   setSelectedApp: NullCallback,
   setData: NullCallback,
   selectedToken: null,
-  setSelectedToken: NullCallback
+  setSelectedToken: NullCallback,
+  tokenName: null,
+  setTokenName: NullCallback
 });
 
 const ProviderDashboard: FC<
@@ -368,6 +372,7 @@ const ProviderDashboard: FC<
   );
 
   const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
+  const [tokenName, setTokenName] = useState<string | null>(null);
 
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
@@ -661,8 +666,8 @@ const ProviderDashboard: FC<
 
   //check token contract address
   useEffect(() => {
-    if (isShowingDetails || data.isNft || data.tokenContractAddress.length < 42) return;
-    if (!data.tokenContractAddress) {
+    console.log('_+_+_')
+    if (!isShowingDetails && !data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
@@ -672,6 +677,9 @@ const ProviderDashboard: FC<
       setInsufficientBalance(false);
       return;
     }
+    if (isShowingDetails || data.isNft || data.tokenContractAddress.length != 42) return;
+    console.log(data.tokenContractAddress)
+
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
@@ -792,9 +800,6 @@ const ProviderDashboard: FC<
     }
 
     let value = type == "checkbox" ? e.target.checked : e.target.value;
-    if (name == 'tokenContractAddress') {
-      console.log(value)
-    }
     if (name === "provider" && value.length > 30) return;
     if (name === "description" && value.length > 100) return;
     if (name === "winnersCount" || name === "maxNumberOfEntries") {
@@ -1175,6 +1180,8 @@ const ProviderDashboard: FC<
         setData,
         selectedToken,
         setSelectedToken,
+        tokenName,
+        setTokenName,
         setSelectedApp: (arg) => {
           if (!arg) {
             setSelectedConstraintTitle(null);
