@@ -32,22 +32,22 @@ const txCallBack = async (
   isNativeToken: boolean,
   selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: tokenTapAbi,
-    account: address as any,
-    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
-    functionName: "distributeToken",
-    args: [
-      tokenContractAddress as any,
-      maxNumClaim,
-      isNativeToken
-        ? parseEther(new Big(tokenAmount).toFixed())
-        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-      startTime,
-      endTime,
-    ],
-    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
   // if (selectedChain.chainId === "42161") {
 
   console.log("Attempting to call the contract with values: ", [
