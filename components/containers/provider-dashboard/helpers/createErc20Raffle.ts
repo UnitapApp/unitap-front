@@ -117,8 +117,6 @@ export const createErc20Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
 ) => {
-  console.log(getAddress(data.tokenContractAddress));
-
   const raffleContractAddress =
     contractAddresses.prizeTap[data.selectedChain.chainId].erc20;
   const maxNumberOfEntries = data.maxNumberOfEntries

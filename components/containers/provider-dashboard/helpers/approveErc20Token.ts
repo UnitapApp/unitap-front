@@ -20,43 +20,22 @@ export const approveErc20TokenCallback = async (
   totalAmount: string,
   selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: erc20Abi,
-    address: erc20Contract.address,
-    functionName: "approve",
-    account: address,
-    args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: erc20Abi,
+  //   address: erc20Contract.address,
+  //   functionName: "approve",
+  //   account: address,
+  //   args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
+  // });
 
-  if (selectedChain.chainId === "42161") {
-    const response = await signer?.writeContract({
-      abi: erc20Abi,
-      address: erc20Contract.address,
-      account: address,
-      functionName: "approve",
-      args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
-      //  gasPrice: gasEstimate,
-    });
-
-    if (!response) return;
-
-    await provider.waitForTransactionReceipt({
-      hash: response,
-      confirmations: 1,
-    });
-
-    return {
-      hash: response,
-    };
-  }
-
+  // if (selectedChain.chainId === "42161") {
   const response = await signer?.writeContract({
     abi: erc20Abi,
     address: erc20Contract.address,
     account: address,
     functionName: "approve",
     args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
-    gasPrice: gasEstimate,
+    //  gasPrice: gasEstimate,
   });
 
   if (!response) return;
@@ -69,6 +48,27 @@ export const approveErc20TokenCallback = async (
   return {
     hash: response,
   };
+  // }
+
+  // const response = await signer?.writeContract({
+  //   abi: erc20Abi,
+  //   address: erc20Contract.address,
+  //   account: address,
+  //   functionName: "approve",
+  //   args: [spenderAddress, BigInt(toWei(totalAmount.toString(), decimals))],
+  //   gasPrice: gasEstimate,
+  // });
+
+  // if (!response) return;
+
+  // await provider.waitForTransactionReceipt({
+  //   hash: response,
+  //   confirmations: 1,
+  // });
+
+  // return {
+  //   hash: response,
+  // };
 };
 
 export const approveErc20Token = async (

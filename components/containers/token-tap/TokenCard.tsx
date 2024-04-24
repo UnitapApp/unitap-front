@@ -100,6 +100,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   src={
                     token.imageUrl ?? "/assets/images/prizetap/bright-token.svg"
                   }
+                  unoptimized={true}
                   alt={token.name}
                 />
               </span>

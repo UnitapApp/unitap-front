@@ -32,47 +32,40 @@ const txCallBack = async (
   isNativeToken: boolean,
   selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: tokenTapAbi,
-    account: address as any,
-    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
-    functionName: "distributeToken",
-    args: [
-      tokenContractAddress as any,
-      maxNumClaim,
-      isNativeToken
-        ? parseEther(new Big(tokenAmount).toFixed())
-        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-      startTime,
-      endTime,
-    ],
-    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-  });
-  if (selectedChain.chainId === "42161") {
-    return signer?.writeContract({
-      abi: tokenTapAbi,
-      account: address as any,
-      address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
-      functionName: "distributeToken",
-      // gasPrice: gasEstimate,
-      args: [
-        tokenContractAddress as any,
-        maxNumClaim,
-        isNativeToken
-          ? parseEther(new Big(tokenAmount).toFixed())
-          : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-        startTime,
-        endTime,
-      ],
-      value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-    });
-  }
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
+  // if (selectedChain.chainId === "42161") {
+
+  console.log("Attempting to call the contract with values: ", [
+    tokenContractAddress as any,
+    maxNumClaim,
+    isNativeToken
+      ? parseEther(new Big(tokenAmount).toFixed())
+      : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+    startTime,
+    endTime,
+  ]);
+
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
     address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
-    gasPrice: gasEstimate,
+    // gasPrice: gasEstimate,
     args: [
       tokenContractAddress as any,
       maxNumClaim,
@@ -84,6 +77,24 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
+  // }
+  // return signer?.writeContract({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   gasPrice: gasEstimate,
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
 };
 
 export const createErc20TokenDistribution = async (
@@ -123,7 +134,12 @@ export const createErc20TokenDistribution = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
 
   const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList

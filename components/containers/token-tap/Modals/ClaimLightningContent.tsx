@@ -1,14 +1,14 @@
-import { FC, useMemo, useState } from "react"
-import { Chain } from "@/types"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { useUserProfileContext } from "@/context/userProfile"
-import SuccessBody from "./SuccessBody"
-import BrightNotConnectedBody from "./BrightNotConnectedBody"
-import PendingBody from "./PendingBody"
-import MaxedOutBody from "./MaxedOutBody"
-import TokenPermissions from "../Permissions"
-import Icon from "@/components/ui/Icon"
-import ClaimFailedBody from "./ClaimFailedBody"
+import { FC, useMemo, useState } from "react";
+import { Chain } from "@/types";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { useUserProfileContext } from "@/context/userProfile";
+import SuccessBody from "./SuccessBody";
+import BrightNotConnectedBody from "./BrightNotConnectedBody";
+import PendingBody from "./PendingBody";
+import MaxedOutBody from "./MaxedOutBody";
+import TokenPermissions from "../Permissions";
+import Icon from "@/components/ui/Icon";
+import ClaimFailedBody from "./ClaimFailedBody";
 
 const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
   const {
@@ -17,26 +17,26 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
     claimTokenSignatureLoading,
     claimError,
     claimedTokensList,
-  } = useTokenTapContext()
+  } = useTokenTapContext();
 
-  const [isPermissionsVerified, setIsPermissionsVerified] = useState(false)
+  const [isPermissionsVerified, setIsPermissionsVerified] = useState(false);
 
   const token = useMemo(
     () =>
       claimedTokensList.find(
-        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id
+        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id,
       ),
-    [claimedTokensList, selectedTokenForClaim]
-  )
+    [claimedTokensList, selectedTokenForClaim],
+  );
 
   const {
     userProfile,
     nonEVMWalletAddress,
     setNonEVMWalletAddress,
     tokentapRoundClaimLimit,
-  } = useUserProfileContext()
+  } = useUserProfileContext();
 
-  if (!selectedTokenForClaim) return null
+  if (!selectedTokenForClaim) return null;
 
   if (!userProfile)
     return (
@@ -44,20 +44,15 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
         chainPk={selectedTokenForClaim.chain.pk}
         imageUrl={selectedTokenForClaim.imageUrl}
       />
-    )
+    );
 
   if (token?.status === "Verified")
-    return <SuccessBody token={selectedTokenForClaim} />
+    return <SuccessBody token={selectedTokenForClaim} />;
 
-  if (token?.status === "Pending") return <PendingBody tokenId={token.id} />
-
-  if (claimedTokensList.length >= (tokentapRoundClaimLimit ?? 4))
-    return <MaxedOutBody token={selectedTokenForClaim} />
-
-  // if (claimError) return
+  if (token?.status === "Pending") return <PendingBody tokenId={token.id} />;
 
   if (selectedTokenForClaim?.isMaxedOut || selectedTokenForClaim?.isExpired)
-    return <MaxedOutBody token={selectedTokenForClaim} />
+    return <MaxedOutBody token={selectedTokenForClaim} />;
 
   if (!isPermissionsVerified)
     return (
@@ -65,20 +60,20 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
         token={selectedTokenForClaim!}
         onClose={() => setIsPermissionsVerified(true)}
       />
-    )
+    );
 
-  if (claimError) return <ClaimFailedBody token={selectedTokenForClaim} />
+  if (claimError) return <ClaimFailedBody token={selectedTokenForClaim} />;
 
   return (
     <>
       <Icon
         data-testid="chain-logo"
-        className="chain-logo z-10 mt-14 mb-10"
+        className="chain-logo z-10 mb-10 mt-14"
         iconSrc={selectedTokenForClaim!.imageUrl}
         width="auto"
         height="110px"
       />
-      <div className="mt-3 text-gray100 text-sm leading-5">
+      <div className="mt-3 text-sm leading-5 text-gray100">
         <p>1. Install wallet of satoshi:</p>
         <div className="mt-2">
           <a
@@ -99,9 +94,9 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
         <p className="mt-2">2. Create an invoice for 100 Sats</p>
         <p className="mt-2">3. Paste the invoice here</p>
       </div>
-      <div className="address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center">
+      <div className="address-input my-6 flex w-full items-center rounded-xl bg-gray30 p-2.5">
         <input
-          className="address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white"
+          className="address-input__input mx-1.5 w-full bg-transparent text-sm text-white placeholder:text-gray80"
           type="text"
           placeholder="Paste your lightning invoice "
           value={nonEVMWalletAddress}
@@ -138,7 +133,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
         )}
       </button>
     </>
-  )
-}
+  );
+};
 
-export default ClaimLightningContent
+export default ClaimLightningContent;
