@@ -155,8 +155,10 @@ export const TokenTapContext = createContext<{
     constraints: ConstraintProps[];
   }) => void;
   selectedToken: TokenOnChain | null;
-  setSelectedToken: (token: TokenOnChain) => void;
+  setSelectedToken: (token: TokenOnChain | null) => void;
   setData: (item: any) => void;
+  tokenName: string | null;
+  setTokenName: (name: string) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -254,6 +256,8 @@ export const TokenTapContext = createContext<{
   selectedToken: null,
   setSelectedToken: NullCallback,
   setData: NullCallback,
+  tokenName: null,
+  setTokenName: NullCallback
 });
 
 const TokenTapProvider: FC<
@@ -385,7 +389,7 @@ const TokenTapProvider: FC<
   const { address } = useWalletAccount();
   const { chain } = useWalletNetwork();
   const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
-
+  const [tokenName, setTokenName] = useState<string | null>(null);
   const { data: userBalance } = useWalletBalance({
     address,
     chainId: chain?.id,
@@ -629,7 +633,17 @@ const TokenTapProvider: FC<
 
   //check token contract address
   useEffect(() => {
-    if (isShowingDetails || data.isNft) return;
+    if (!isShowingDetails && !data.tokenContractAddress) {
+      setIsErc20Approved(false);
+      setTokenContractStatus((prev) => ({
+        ...prev,
+        isValid: ContractValidationStatus.Empty,
+        checking: false,
+      }));
+      setInsufficientBalance(false);
+      return;
+    }
+    if (isShowingDetails || data.isNft || data.tokenContractAddress.length != 42) return;
     if (!data.tokenContractAddress) {
       setTokenContractStatus((prev) => ({
         ...prev,
@@ -1094,7 +1108,9 @@ const TokenTapProvider: FC<
         selectedApp,
         selectedToken,
         setSelectedToken,
-        setData
+        setData,
+        tokenName,
+        setTokenName,
       }}
     >
       {children}

@@ -666,7 +666,6 @@ const ProviderDashboard: FC<
 
   //check token contract address
   useEffect(() => {
-    console.log('_+_+_')
     if (!isShowingDetails && !data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({

@@ -105,6 +105,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     if (data.selectedChain) {
       let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
       setTokenList(list!)
+      setSelectedToken(null);
+      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+      setTokenName('')
     }
     else {
       setTokenList(null)
@@ -151,10 +154,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     if (address.substring(0, 2) != "0x") {
       setShowItems(true)
     }
-
   }
-
-
   return (
     <div
       className={
