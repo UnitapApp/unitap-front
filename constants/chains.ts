@@ -127,7 +127,14 @@ export const supportedChains: Chain[] = [
   },
   gnosis,
   IDChain,
-  optimism,
+  {
+    ...optimism,
+    rpcUrls: {
+      ...optimism.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/optimism"] },
+      public: { http: ["https://optimism.llamarpc.com"] },
+    },
+  },
   meter,
   {
     ...zetachainAthensTestnet,
