@@ -441,15 +441,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }))
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }))
           : setTokenContractStatus((prev) => ({
-              ...prev,
-              isValid: ContractValidationStatus.NotValid,
-              checking: false,
-            }));
+            ...prev,
+            isValid: ContractValidationStatus.NotValid,
+            checking: false,
+          }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -698,7 +698,7 @@ const ProviderDashboard: FC<
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
           : Number(data.totalAmount) >
-              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
+          Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -752,7 +752,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
   const handleSearchChain = (e: {

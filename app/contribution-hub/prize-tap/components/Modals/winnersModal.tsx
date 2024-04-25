@@ -2,15 +2,15 @@
 
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Address } from "viem";
 import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
-import { useReadContracts } from "wagmi";
 import { CSVLink } from "react-csv";
 import { UserRafflesProps } from "@/types";
 import { useProvider, useWalletProvider } from "@/utils/wallet";
 import { contractAddresses } from "@/constants";
+import { readContracts } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
 
 interface Props {
   winnersResultRaffle: UserRafflesProps | null;
@@ -47,8 +47,8 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       });
     }
 
-    const data = await (provider?.multicall as any)({
-      contracts,
+    const data = await readContracts(config, {
+      contracts: contracts as any,
     });
 
     const allWallet = (data.map((item: any) => item.result) as any)
