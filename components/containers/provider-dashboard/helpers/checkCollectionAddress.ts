@@ -43,8 +43,6 @@ export const checkTokenContractAddress = async (
   chainId: number,
   setDecimals: (decimal: number) => void,
 ) => {
-  if (!provider) return false;
-  console.log(chainId);
   const contracts = [
     {
       abi: erc20Abi,
