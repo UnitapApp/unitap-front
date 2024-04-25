@@ -132,7 +132,7 @@ export const supportedChains: Chain[] = [
     rpcUrls: {
       ...optimism.rpcUrls,
       default: { http: ["https://rpc.ankr.com/optimism"] },
-      public: { http: ["https://optimism.llamarpc.com	"] },
+      public: { http: ["https://optimism.llamarpc.com"] },
     },
   },
   meter,
