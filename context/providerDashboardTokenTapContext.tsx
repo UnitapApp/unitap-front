@@ -519,8 +519,8 @@ const TokenTapProvider: FC<
     };
 
     return !!(
-      provider &&
-      description &&
+      // provider &&
+      // description &&
       selectedChain &&
       checkNft() &&
       checkToken()
@@ -572,7 +572,7 @@ const TokenTapProvider: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram } = data;
+    const { email, twitter, creatorUrl, discord, telegram, provider, description } = data;
     if (!email) {
       return false;
     }
@@ -597,6 +597,8 @@ const TokenTapProvider: FC<
       telegram: isTelegramVerified,
     });
     return !!(
+      provider &&
+      description &&
       isUrlVerified &&
       isTwitterVerified &&
       isDiscordVerified &&
