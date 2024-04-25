@@ -87,7 +87,7 @@ export const PrizeTapDisplaySteps: DisplayStepsProps[] = [
     prevIcon:
       "/assets/images/provider-dashboard/prizerForm-step-diamond-green.svg",
     activeIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.png",
-    nextIcon: "/assets/images/provider-dashboard/prizeForm-step-diamond.svg",
+    nextIcon: "/assets/images/provider-dashboard/prize-off.svg",
     title: "Prize info",
     description: "Information on your prize",
   },
