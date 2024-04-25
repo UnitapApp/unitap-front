@@ -16,6 +16,7 @@ import { ContractValidationStatus, TokenOnChain } from "@/types";
 import { zeroAddress } from "viem";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { fromWei } from "@/utils";
+import { useWalletNetwork } from "@/utils/wallet";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -82,7 +83,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const nftAddressError =
     (showErrors && !data.nftContractAddress) ||
     nftContractStatus.isValid === ContractValidationStatus.NotValid;
-
+  const { chain } = useWalletNetwork();
   const nftNumberFieldDisabled =
     isShowingDetails ||
     !data.selectedChain ||
@@ -102,12 +103,17 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
 
   useEffect(() => {
+
     if (data.selectedChain) {
       let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
-      setTokenList(list!)
-      setSelectedToken(null);
-      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
-      setTokenName('')
+      if (list)
+        setTokenList(list!)
+      if (Number(data.selectedChain.chainId) !== Number(chain!.id)) {
+        setSelectedToken(null);
+        setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+        setTokenName('')
+
+      }
     }
     else {
       setTokenList(null)

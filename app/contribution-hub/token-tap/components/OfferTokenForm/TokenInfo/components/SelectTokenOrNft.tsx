@@ -17,6 +17,7 @@ import { useOutsideClick } from "@/utils/hooks/dom";
 import { zeroAddress } from "viem";
 import { fromWei } from "@/utils";
 import { useBalance } from "wagmi";
+import { useWalletNetwork } from "@/utils/wallet";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -42,7 +43,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
   const isTokenFieldDisabled =
     isShowingDetails ||
-    data.isNativeToken ||
+    // data.isNativeToken ||
     !data.selectedChain ||
     tokenContractStatus.checking ||
     !isRightChain ||
@@ -82,14 +83,17 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     !data.nftContractAddress;
 
   const [tokenList, setTokenList] = useState<TokenOnChain[] | null>(null);
-
+  const { chain } = useWalletNetwork();
   useEffect(() => {
     if (data.selectedChain) {
       let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
       setTokenList(list!)
-      setSelectedToken(null);
-      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
-      setTokenName('')
+      if (Number(data.selectedChain.chainId) !== Number(chain!.id)) {
+        setSelectedToken(null);
+        setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+        setTokenName('')
+
+      }
     }
     else {
       setTokenList(null)
