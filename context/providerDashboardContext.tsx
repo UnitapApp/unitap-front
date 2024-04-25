@@ -260,7 +260,7 @@ export const ProviderDashboardContext = createContext<{
   selectedToken: null,
   setSelectedToken: NullCallback,
   tokenName: null,
-  setTokenName: NullCallback
+  setTokenName: NullCallback,
 });
 
 const ProviderDashboard: FC<
@@ -455,15 +455,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -508,11 +508,7 @@ const ProviderDashboard: FC<
       return !!isValid;
     };
 
-    return !!(
-      selectedChain &&
-      checkNft() &&
-      checkToken()
-    );
+    return !!(selectedChain && checkNft() && checkToken());
   };
 
   const canGoStepThree = () => {
@@ -602,7 +598,15 @@ const ProviderDashboard: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram, provider, description } = data;
+    const {
+      email,
+      twitter,
+      creatorUrl,
+      discord,
+      telegram,
+      provider,
+      description,
+    } = data;
     if (!email) {
       return false;
     }
@@ -676,7 +680,12 @@ const ProviderDashboard: FC<
       setInsufficientBalance(false);
       return;
     }
-    if (isShowingDetails || data.isNft || data.tokenContractAddress.length != 42) return;
+    if (
+      isShowingDetails ||
+      data.isNft ||
+      data.tokenContractAddress.length != 42
+    )
+      return;
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
@@ -710,7 +719,8 @@ const ProviderDashboard: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) > Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
+          : Number(data.totalAmount) >
+              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -764,7 +774,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {

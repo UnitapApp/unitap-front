@@ -137,7 +137,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   const handleAddRequirement = () => {
     if (
       constraint.name === "core.HasNFTVerification" ||
-      constraint.name === "core.HasTokenVerification"
+      constraint.name === "core.HasTokenVerification" ||
+      constraint.name === "core.HasTokenTransferVerification"
     ) {
       const res = checkingParamsValidation();
       if (!res) return;
@@ -181,9 +182,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${
-              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
-            } absolute h-full w-full`}
+            className={`${!isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
+              } absolute h-full w-full`}
           ></div>
           <p className="absolute text-white">Should satisfy</p>
         </div>
@@ -192,9 +192,8 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${
-              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
-            } absolute h-full w-full `}
+            className={`${isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
+              } absolute h-full w-full `}
           ></div>
           <p className="absolute text-white">Should not satisfy</p>
         </div>
@@ -301,6 +300,16 @@ export const CreateParams: FC<CreateModalParam> = ({
         setDecimals,
       );
     }
+
+    if (constraint.name === "core.HasTokenTransferVerification") {
+      res = await checkTokenContractAddress(
+        provider!,
+        requirementParamsList.ADDRESS,
+        Number(selectedChain.chainId),
+        setDecimals,
+      );
+    }
+
     !res && setErrorMessage("Invalid contract address.");
     setIsCollectionValid(res);
   };
@@ -344,9 +353,8 @@ export const CreateParams: FC<CreateModalParam> = ({
         {!isNft && (
           <div
             onClick={() => handleSelectNativeToken(isNativeToken)}
-            className={`${
-              !selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
-            } -mb-1 mt-2 flex min-h-[20px] max-w-[110px] items-center gap-2`}
+            className={`${!selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
+              } -mb-1 mt-2 flex min-h-[20px] max-w-[110px] items-center gap-2`}
           >
             <Icon
               iconSrc={
@@ -360,9 +368,8 @@ export const CreateParams: FC<CreateModalParam> = ({
         )}
 
         <div
-          className={`${
-            isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
-          } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
+          className={`${isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
+            } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
         >
           <input
             name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
@@ -382,6 +389,51 @@ export const CreateParams: FC<CreateModalParam> = ({
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={isNft}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={decimals}
+        />
+      </div>
+    );
+  }
+
+
+  if (
+    constraint.name === "core.HasTokenTransferVerification"
+  ) {
+
+    return (
+      <div className="flex flex-col gap-3">
+        <ChainList
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          allChainList={allChainList}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
+        />
+
+        <div
+          className={`${!selectedChain ? "opacity-50" : "opacity-1"
+            } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
+        >
+          <input
+            name={"tokenAddressRequirement"}
+            disabled={!selectedChain}
+            placeholder={"Paste Token address"}
+            className="h-full w-full bg-inherit"
+            value={
+              collectionAddress && collectionAddress != zeroAddress
+                ? collectionAddress
+                : ""
+            }
+            onChange={(e) => handleChangeCollection(e.target.value)}
+          />
+        </div>
+
+        <SelectMethodInput
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          isNft={false}
           requirement={requirement}
           isDisabled={!collectionAddress}
           decimals={decimals}
@@ -572,9 +624,8 @@ export const FarcasterUserFinder: FC<UserParams> = ({
                   <div
                     onClickCapture={() => onUserClick(user.fid, user.username)}
                     key={key}
-                    className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${
-                      params[featuredName] == user.fid ? "bg-gray60" : ""
-                    }`}
+                    className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${params[featuredName] == user.fid ? "bg-gray60" : ""
+                      }`}
                   >
                     <div>
                       <div className="text font-semibold">{user.username}</div>
@@ -681,9 +732,8 @@ export const LensUserFinder: FC<UserParams> = ({
                         onUserClick(user.id, user.metadata!.displayName)
                       }
                       key={user.id}
-                      className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${
-                        params[featuredName] == user.id ? "bg-gray60" : ""
-                      }`}
+                      className={`flex cursor-pointer items-center p-4 transition-colors hover:bg-gray60 ${params[featuredName] == user.id ? "bg-gray60" : ""
+                        }`}
                     >
                       <img
                         src={

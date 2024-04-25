@@ -13,6 +13,7 @@ import { useGlobalContext } from "@/context/globalProvider";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useReadContracts } from "wagmi";
 import { contractAddresses } from "@/constants";
+import { config } from "@/utils/wallet/wagmi";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -75,6 +76,7 @@ const WinnersModal = () => {
 
   const { data } = useReadContracts({
     contracts: fetchEnrollmentWallets(),
+    config: config,
   }) as any;
 
   const enrollmentWallets = useMemo(() => {
