@@ -48,7 +48,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     }
 
     const data = await readContracts(config, {
-      contracts,
+      contracts: contracts as any,
     });
 
     const allWallet = (data.map((item: any) => item.result) as any)
