@@ -677,8 +677,6 @@ const ProviderDashboard: FC<
       return;
     }
     if (isShowingDetails || data.isNft || data.tokenContractAddress.length != 42) return;
-    console.log(data.tokenContractAddress)
-
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
