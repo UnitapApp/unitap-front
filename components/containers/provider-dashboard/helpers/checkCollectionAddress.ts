@@ -3,7 +3,7 @@ import { PublicClient, erc721Abi, erc20Abi } from "viem";
 export const checkNftCollectionAddress = async (
   provider: PublicClient,
   collectionAddress: string,
-  chainId: number
+  chainId: number,
 ) => {
   if (!provider) return false;
 
@@ -40,7 +40,7 @@ export const checkTokenContractAddress = async (
   provider: PublicClient,
   collectionAddress: string,
   chainId: number,
-  setDecimals: (decimal: number) => void
+  setDecimals: (decimal: number) => void,
 ) => {
   if (!provider) return false;
 

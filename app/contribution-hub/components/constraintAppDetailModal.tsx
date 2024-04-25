@@ -118,7 +118,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
 
     if (
       constraint.name === "core.HasNFTVerification" ||
-      constraint.name === "core.HasTokenVerification"
+      constraint.name === "core.HasTokenVerification" ||
+      constraint.name === "core.HasTokenTransferVerification"
     ) {
       const res = checkingParamsValidation();
       if (!res) return;
@@ -164,9 +165,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${
-              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
-            } absolute h-full w-full`}
+            className={`${!isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
+              } absolute h-full w-full`}
           ></div>
           <p className="absolute text-white">Should satisfy</p>
         </div>
@@ -175,9 +175,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${
-              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
-            } absolute h-full w-full `}
+            className={`${isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
+              } absolute h-full w-full `}
           ></div>
           <p className="absolute text-white">Should not satisfy</p>
         </div>
@@ -190,9 +189,9 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
         options={
           selectedApp
             ? selectedApp?.constraints.map((item) => ({
-                label: item.title,
-                value: item,
-              }))
+              label: item.title,
+              value: item,
+            }))
             : []
         }
         value={constraint}
