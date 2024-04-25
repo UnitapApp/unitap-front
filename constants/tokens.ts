@@ -647,7 +647,8 @@ export const tokensInformation: TokenInformation[] = [
         tokenDecimals: "18",
         tokenSymbol: "Optimism",
         tokenName: "Optimism",
-        logoUrl: "",
+        logoUrl:
+          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
       },
       {
         tokenAddress: "0x4200000000000000000000000000000000000006",
