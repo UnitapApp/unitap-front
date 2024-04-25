@@ -151,7 +151,14 @@ export const supportedChains: Chain[] = [
   },
   scroll,
   xdc,
-  arbitrum,
+  {
+    ...arbitrum,
+    rpcUrls: {
+      ...arbitrum.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/arbitrum"] },
+      public: { http: ["https://arbitrum.llamarpc.com"] },
+    },
+  },
   telos,
   { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
