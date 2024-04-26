@@ -68,8 +68,9 @@ const PrizeTapLanding: FC = async () => {
                   <div className="z-100 w-full">
                     <div className="flex gap-4">
                       <div className="raffle-logo-container relative z-100 h-[63px] w-[64px] overflow-hidden">
-                        <span className=" absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40">
+                        <span className=" absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40 p-1">
                           <img
+                            className="object-contain"
                             width="62px"
                             height="63px"
                             src={raffle.imageUrl}
