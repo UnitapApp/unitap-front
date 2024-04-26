@@ -122,7 +122,12 @@ export const createErc721Raffle = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
 
   const reversed =
     reversed_constraints.length > 1

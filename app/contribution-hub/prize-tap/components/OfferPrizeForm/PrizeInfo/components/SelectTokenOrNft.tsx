@@ -10,9 +10,13 @@ interface Prop {
 import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { ZERO_ADDRESS } from "@/constants";
-import { useState } from "react";
-import { ContractValidationStatus } from "@/types";
+import { ZERO_ADDRESS, tokensInformation } from "@/constants";
+import { useEffect, useRef, useState } from "react";
+import { ContractValidationStatus, TokenOnChain } from "@/types";
+import { zeroAddress } from "viem";
+import { useOutsideClick } from "@/utils/hooks/dom";
+import { fromWei } from "@/utils";
+import { useWalletNetwork } from "@/utils/wallet";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,11 +32,26 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     nftContractStatus,
     numberOfNfts,
     setNumberOfNfts,
+    setData,
+    selectedToken,
+    setSelectedToken,
+    userBalance,
+    tokenName,
+    setTokenName
   } = usePrizeOfferFormContext();
+
+
+  const [showItems, setShowItems] = useState(false)
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    if (showItems) setShowItems(false);
+  });
 
   const isTokenFieldDisabled =
     isShowingDetails ||
-    data.isNativeToken ||
+    // data.isNativeToken ||
     !data.selectedChain ||
     tokenContractStatus.checking ||
     !isRightChain ||
@@ -64,7 +83,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const nftAddressError =
     (showErrors && !data.nftContractAddress) ||
     nftContractStatus.isValid === ContractValidationStatus.NotValid;
-
+  const { chain } = useWalletNetwork();
   const nftNumberFieldDisabled =
     isShowingDetails ||
     !data.selectedChain ||
@@ -79,6 +98,69 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   };
 
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const [tokenList, setTokenList] = useState<TokenOnChain[] | null>(null);
+
+
+  useEffect(() => {
+
+    if (data.selectedChain) {
+      let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
+      if (list)
+        setTokenList(list!)
+      if (Number(data.selectedChain.chainId) !== Number(chain!.id)) {
+        setSelectedToken(null);
+        setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+        setTokenName('')
+
+      }
+    }
+    else {
+      setTokenList(null)
+    }
+  }, [data.selectedChain])
+
+  useEffect(() => {
+    if (!data.selectedChain) return;
+    let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
+    if (tokenName && tokenName.substring(0, 2) != "0x" && data.selectedChain && selectedToken?.tokenSymbol !== tokenName) {
+
+      let filteredList = list?.filter((item) => item.tokenSymbol.toLowerCase().includes(tokenName.toLowerCase()))
+      setTokenList(filteredList!)
+
+    }
+    else {
+      setTokenList(list!)
+    }
+  }, [tokenName])
+
+  const handleSetTokenAddress = (item: TokenOnChain) => {
+    setSelectedToken(item)
+    setShowItems(false)
+    setTokenName(item.tokenSymbol)
+    setData((prevData: any) => ({
+      ...prevData,
+      isNativeToken: item.tokenAddress === zeroAddress,
+      tokenContractAddress: item.tokenAddress,
+      decimal: item.tokenAddress === zeroAddress ? 18 : null,
+      tokenSymbol: item.tokenSymbol
+    }));
+  }
+
+  const handleCheckTokenAddress = (address: string) => {
+    setTokenName(address)
+    if (!address) {
+      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+      setSelectedToken(null)
+    }
+    if (address.substring(0, 2) == "0x" && data.selectedChain) {
+      setData((prev: any) => ({ ...prev, tokenContractAddress: address }))
+      return
+    }
+    if (address.substring(0, 2) != "0x") {
+      setShowItems(true)
+    }
+  }
   return (
     <div
       className={
@@ -112,49 +194,68 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
       {!data.isNft ? (
         <div className="mt-4 flex w-full flex-col gap-5">
           <div className="relative">
-            <div
-              className="mb-[9px] flex max-w-[140px] cursor-pointer items-center justify-center gap-1 text-2xs text-white"
-              onClick={() => {
-                if (!isRightChain) return;
-                handleSelectNativeToken(data.isNativeToken);
-              }}
-            >
-              <Icon
-                height="16px"
-                width="16px"
-                iconSrc={
-                  !data.isNativeToken
-                    ? "/assets/images/provider-dashboard/checkbox.svg"
-                    : "/assets/images/provider-dashboard/check-true.svg"
-                }
-              />
-              <p className="ml-1 text-sm text-gray100">use native token</p>
-            </div>
 
             <div
               className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl 
               border-[1.4px] bg-gray40 text-xs text-gray100 
-              ${data.isNativeToken ? "opacity-[.5]" : "opacity-1"} 
+
               ${tokenAddressError ? "border-error" : "border-gray50"}`}
             >
-              <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
-                <p>Token address</p>
-              </div>
-              <div className="w-full max-w-[254px] overflow-hidden px-2">
+              <div
+                className={`flex justify-between w-full items-center  cursor-pointer`}
+                ref={ref}
+                onClick={() => setShowItems(!showItems)}
+              >
+                <div className="min-w-[50px]">
+                  {tokenName && !tokenName.includes('0x') && selectedToken &&
+                    <Icon iconSrc={selectedToken?.logoUrl} height="24px" width="24px" />
+                  }
+                </div>
                 <input
                   disabled={isTokenFieldDisabled}
                   name="tokenContractAddress"
-                  placeholder="paste here"
+                  placeholder="Search or paste token contract address"
+                  autoComplete="off"
                   value={
-                    data.tokenContractAddress &&
-                      data.tokenContractAddress != ZERO_ADDRESS
-                      ? data.tokenContractAddress
+                    tokenName
+                      ? tokenName
                       : ""
                   }
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full"
                   type="text"
-                  onChange={handleChange}
+                  onChange={(e) => handleCheckTokenAddress(e.target.value)}
                 />
+
+                <div className="flex pr-5">
+                  <div className="text-gray100 flex items-center">
+                    <span className="h-1 w-1 bg-gray100 mx-2 rounded-full"></span>
+                    <span className="mr-1">Balance:</span>
+                    {tokenContractStatus.isValid ===
+                      ContractValidationStatus.Valid && !tokenContractStatus.checking
+                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''
+                    }
+                  </div>
+                </div>
+
+                <div className="h-full flex items-center justify-center w-[55px]">
+                  <Icon
+
+                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    className={`${showItems ? '' : 'rotate-180'}`}
+                    width="12px"
+                    height="12px"
+                  />
+                </div>
+                {showItems && tokenList && tokenList.length > 0 && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-[11] left-0 top-[45px] border-gray60 border-2 max-h-40 overflow-y-scroll">
+                  {tokenList?.map(((item, index) =>
+                    <div key={index} className="flex items-center hover:bg-gray70 pl-2 rounded-lg gap-2" onClick={() => handleSetTokenAddress(item)}>
+                      <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
+                      <p className="flex items-center text-sm cursor-pointer  h-10 w-full "
+                      >{item.tokenSymbol}</p>
+                    </div>
+                  ))}
+                </div>}
+
               </div>
               {tokenContractStatus.checking && (
                 <div className="m-0 flex h-full w-[50px] items-center bg-gray30 p-0">
@@ -167,13 +268,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
-                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                  <div className="m-0 flex h-full w-[50px] items-center justify-center bg-gray30 p-0">
                     <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
                   </div>
                 )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.Valid && (
-                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                  <div className="m-0 flex h-full w-[50px] items-center justify-center bg-gray30 p-0">
                     <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
                   </div>
                 )}

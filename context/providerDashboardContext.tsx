@@ -13,6 +13,7 @@ import {
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
+  TokenOnChain,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -156,6 +157,11 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: (date: any) => void;
   userRaffle: UserRafflesProps | undefined;
   allChainList: Chain[] | undefined;
+  setData: (item: any) => void;
+  selectedToken: TokenOnChain | null;
+  setSelectedToken: (token: TokenOnChain | null) => void;
+  tokenName: string | null;
+  setTokenName: (name: string) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -250,6 +256,11 @@ export const ProviderDashboardContext = createContext<{
   userRaffle: {} as any,
   allChainList: [] as any,
   setSelectedApp: NullCallback,
+  setData: NullCallback,
+  selectedToken: null,
+  setSelectedToken: NullCallback,
+  tokenName: null,
+  setTokenName: NullCallback,
 });
 
 const ProviderDashboard: FC<
@@ -360,6 +371,9 @@ const ProviderDashboard: FC<
     enrollmentDurationsInit,
   );
 
+  const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
+  const [tokenName, setTokenName] = useState<string | null>(null);
+
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
@@ -441,15 +455,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -464,7 +478,6 @@ const ProviderDashboard: FC<
   const canGoStepTwo = () => {
     if (isShowingDetails) return true;
     const {
-      provider,
       description,
       selectedChain,
       nftContractAddress,
@@ -495,13 +508,7 @@ const ProviderDashboard: FC<
       return !!isValid;
     };
 
-    return !!(
-      provider &&
-      description &&
-      selectedChain &&
-      checkNft() &&
-      checkToken()
-    );
+    return !!(selectedChain && checkNft() && checkToken());
   };
 
   const canGoStepThree = () => {
@@ -591,7 +598,15 @@ const ProviderDashboard: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram } = data;
+    const {
+      email,
+      twitter,
+      creatorUrl,
+      discord,
+      telegram,
+      provider,
+      description,
+    } = data;
     if (!email) {
       return false;
     }
@@ -616,6 +631,8 @@ const ProviderDashboard: FC<
       telegram: isTelegramVerified,
     });
     return !!(
+      provider &&
+      description &&
       isUrlVerified &&
       isTwitterVerified &&
       isDiscordVerified &&
@@ -653,8 +670,7 @@ const ProviderDashboard: FC<
 
   //check token contract address
   useEffect(() => {
-    if (isShowingDetails || data.isNft) return;
-    if (!data.tokenContractAddress) {
+    if (!isShowingDetails && !data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
@@ -664,6 +680,12 @@ const ProviderDashboard: FC<
       setInsufficientBalance(false);
       return;
     }
+    if (
+      isShowingDetails ||
+      data.isNft ||
+      data.tokenContractAddress.length != 42
+    )
+      return;
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
@@ -698,7 +720,7 @@ const ProviderDashboard: FC<
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance?.formatted)
           : Number(data.totalAmount) >
-          Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
+              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -752,7 +774,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -783,6 +805,7 @@ const ProviderDashboard: FC<
         telegram: true,
       });
     }
+
     let value = type == "checkbox" ? e.target.checked : e.target.value;
     if (name === "provider" && value.length > 30) return;
     if (name === "description" && value.length > 100) return;
@@ -1161,6 +1184,11 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
+        setData,
+        selectedToken,
+        setSelectedToken,
+        tokenName,
+        setTokenName,
         setSelectedApp: (arg) => {
           if (!arg) {
             setSelectedConstraintTitle(null);
