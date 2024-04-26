@@ -62,12 +62,12 @@ const PrizeTapLanding: FC = async () => {
                 <div
                   key={key}
                   className={
-                    "relative mb-2 flex h-[80px] overflow-hidden rounded-xl bg-gray30 px-2 py-2 text-xs text-white "
+                    "relative mb-2 flex h-[90px] overflow-hidden rounded-xl bg-gray30 px-2 py-2 text-xs text-white "
                   }
                 >
                   <div className="z-100 w-full">
                     <div className="flex gap-4">
-                      <div className="raffle-logo-container relative z-100 h-[63px] w-[64px] overflow-hidden">
+                      <div className="raffle-logo-container relative z-100 min-h-[63px] w-[64px] overflow-hidden">
                         <span className=" absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40 p-1">
                           <img
                             className="object-contain"
@@ -101,9 +101,7 @@ const PrizeTapLanding: FC = async () => {
                         </p>
                       ) : (
                         <>
-                          <p className="ml-2 text-gray90">
-                            Winners Announced in:
-                          </p>
+                          <p className="text-gray90">Winners Announced in:</p>
                           <RaffleCardTimerLandingPage
                             startTime={raffle.createdAt}
                             FinishTime={raffle.deadline}
