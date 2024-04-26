@@ -62,7 +62,7 @@ const PrizeTapLanding: FC = async () => {
                 <div
                   key={key}
                   className={
-                    "relative mb-2 flex h-[90px] overflow-hidden rounded-xl bg-gray30 px-2 py-2 text-xs text-white "
+                    "relative mb-2 flex h-[80px] overflow-hidden rounded-xl bg-gray30 px-2 py-2 text-xs text-white "
                   }
                 >
                   <div className="z-100 w-full">
@@ -101,7 +101,7 @@ const PrizeTapLanding: FC = async () => {
                         </p>
                       ) : (
                         <>
-                          <p className="text-gray90">Winners Announced in:</p>
+                          <p className="text-gray90">Winners in:</p>
                           <RaffleCardTimerLandingPage
                             startTime={raffle.createdAt}
                             FinishTime={raffle.deadline}
