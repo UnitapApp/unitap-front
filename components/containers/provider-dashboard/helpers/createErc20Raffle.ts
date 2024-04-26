@@ -58,7 +58,7 @@ const createErc20RaffleCallback = async (
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
 
-  if (selectedChain.chainId === "42161") {
+  if (selectedChain.chainId === "42161" || selectedChain.chainId === "10") {
     return signer?.writeContract({
       abi: prizeTapAbi,
       account: account as any,
