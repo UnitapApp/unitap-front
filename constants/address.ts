@@ -75,6 +75,10 @@ export const contractAddresses: {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
+    "59144": {
+      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    },
     "10": {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
