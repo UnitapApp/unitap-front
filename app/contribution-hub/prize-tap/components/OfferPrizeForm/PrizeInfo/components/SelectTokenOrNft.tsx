@@ -204,7 +204,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div
                 className={`flex justify-between w-full items-center  cursor-pointer`}
                 ref={ref}
-                onClick={() => setShowItems(!showItems)}
+                onClick={() => { !isShowingDetails && setShowItems(!showItems) }}
               >
                 <div className="min-w-[50px]">
                   {tokenName && !tokenName.includes('0x') && selectedToken &&
