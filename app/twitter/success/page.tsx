@@ -4,12 +4,12 @@ import { useEffect } from "react";
 
 const TwitterSuccessPage = () => {
   useEffect(() => {
-    window.parent.postMessage(
-      { type: "domainVerified" },
-      "https://dev.unitap.app",
-    );
+    window.postMessage("salam");
+    window.opener.postMessage("Message verified");
 
-    window.close();
+    // setTimeout(() => {
+    //   window.close();
+    // }, 5000);
   }, []);
 
   return (
