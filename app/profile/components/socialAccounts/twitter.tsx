@@ -5,7 +5,7 @@ import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { parseServerError } from "@/utils";
 import { connectGitCoinPassport, getTwitterOAuthUrlApi } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const verifiedDomains = ["unitap.app", "localhost:5678"];
 
@@ -27,38 +27,29 @@ export const TwitterAccount: FC<{
     setLoading(true);
     setError("");
 
-    getTwitterOAuthUrlApi()
-      .then((url) => {
-        const twitterWindow = window.open(
-          url,
-          "Unitap | Login with twitter",
-          "width=600,height=800",
-        );
+    getTwitterOAuthUrlApi().then((url) => {
+      const twitterWindow = window.open(
+        url,
+        "Unitap | Login with twitter",
+        "width=600,height=800",
+      );
 
-        if (!twitterWindow) return;
-
-        const checkWindow = setInterval(() => {
-          if (twitterWindow.closed) {
-            clearInterval(checkWindow);
-            setLoading(false);
-          }
-
-          const currentDomain = twitterWindow.location.hostname;
-          const isVerified = verifiedDomains.some((verifiedDomain) =>
-            currentDomain.includes(verifiedDomain),
-          );
-
-          if (isVerified) {
-            clearInterval(checkWindow);
-            twitterWindow.close();
-            setLoading(false);
-          }
-        }, 1000);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      if (!twitterWindow) return;
+    });
   };
+
+  useEffect(() => {
+    window.addEventListener("message", (event) => {
+      const message = event.data;
+      if (message.type === "domainVerified") {
+        console.log("Child window domain is verified.");
+        setLoading(false);
+      } else if (message.type === "domainNotVerified") {
+        console.log("Child window domain is not verified.");
+        setLoading(false);
+      }
+    });
+  }, []);
 
   return (
     <>
