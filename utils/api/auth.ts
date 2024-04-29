@@ -1,5 +1,6 @@
 import { UserProfile } from "@/types";
 import { axiosInstance } from "./base";
+import { AxiosError } from "axios";
 
 export async function getUserProfile(address: string, signature: string) {
   const response = await axiosInstance.post<UserProfile>(
@@ -149,4 +150,10 @@ export const connectGitCoinPassport = async (address: string) => {
   );
 
   return response.data;
+};
+
+export const getTwitterOAuthUrlApi = () => {
+  return axiosInstance
+    .get("/api/auth/twitter/")
+    .then((res) => res.data.url as string);
 };
