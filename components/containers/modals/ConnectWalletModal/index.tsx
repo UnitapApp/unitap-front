@@ -13,6 +13,8 @@ import AddNewWalletFailed from "./addNewWalletFailed";
 import LoginSuccessBody from "./LoginSuccess";
 import { parseCookies } from "@/utils/cookies";
 import { useDisconnect } from "wagmi";
+import RecoverWithBrightIDPromptBody from "./RecoverWithBrightIDPrompt";
+import RecoverConnectBrightIDBody from "./RecoverConnectBrightID";
 
 export enum ConnectionProvider {
   Metamask,
@@ -39,7 +41,7 @@ export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.Prompt
+    WalletState.Prompt,
   );
 
   const [previousState, setPreviousState] = useState<WalletState | null>(null);
@@ -49,7 +51,7 @@ export const RenderWalletBody: FC<{
   const [isNewUser, setIsNewUser] = useState(false);
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
-    ConnectionProvider.Metamask
+    ConnectionProvider.Metamask,
   );
 
   const currentWallet = useMemo(() => {
@@ -110,6 +112,9 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.UnknownWallet)
     return <UnknownWalletBody setWalletState={setNewWalletState} />;
 
+  if (walletState === WalletState.RecoverBrightConnect)
+    return <RecoverConnectBrightIDBody setWalletState={setNewWalletState} />;
+
   if (walletState === WalletState.AddNewWallet)
     return (
       <AddNewWalletBody
@@ -124,6 +129,14 @@ export const RenderWalletBody: FC<{
   if (walletState === WalletState.SetUsername)
     return (
       <SetUsernameBody
+        setWalletState={setNewWalletState}
+        walletProvider={walletProvider}
+      />
+    );
+
+  if (walletState === WalletState.RecoverPrompt)
+    return (
+      <RecoverWithBrightIDPromptBody
         setWalletState={setNewWalletState}
         walletProvider={walletProvider}
       />
@@ -147,6 +160,8 @@ export enum WalletState {
   AddNewWallet,
   AddWalletFailed,
   AddWalletSuccess,
+  RecoverPrompt,
+  RecoverBrightConnect,
 }
 
 const walletStateTitles = {
@@ -160,6 +175,8 @@ const walletStateTitles = {
   [WalletState.SetUsername]: "Register",
   [WalletState.AddWalletFailed]: "Conenct Wallet",
   [WalletState.AddWalletSuccess]: "Adding wallet",
+  [WalletState.RecoverPrompt]: "Recover With BrightID",
+  [WalletState.RecoverBrightConnect]: "Connect BrightID",
 };
 
 export const ConnectWalletModal = () => {

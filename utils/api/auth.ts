@@ -150,3 +150,18 @@ export const connectGitCoinPassport = async (address: string) => {
 
   return response.data;
 };
+
+export const checkRecoveryStateApi = async (
+  address: string,
+  signature: string,
+) => {
+  const response = await axiosInstance.post(
+    "api/auth/user/recover/brightid-status/",
+    {
+      brightidAddress: address,
+      brightidSignature: signature,
+    },
+  );
+
+  return response.data.isVerified as boolean;
+};
