@@ -46,7 +46,7 @@ export const TwitterAccount: FC<{
     const messageEvent = (event: MessageEvent) => {
       const message = event.data;
 
-      if (message.type === "unitap-token-verification") return;
+      if (message.type !== "unitap-token-verification") return;
 
       const { authToken, authVerifier } = message.data;
 

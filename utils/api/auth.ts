@@ -159,15 +159,13 @@ export const getTwitterOAuthUrlApi = async () => {
 };
 
 export const verifyTwitterApi = async (
-  authToken: string,
-  authVerifier: string,
+  oauthToken: string,
+  oauthVerifier: string,
 ) => {
   const res = await axiosInstance.get(`/api/auth/twitter/callback/`, {
     params: {
-      // auth_verifier: authVerifier,
-      // auth_token: authToken
-      authVerifier,
-      authToken,
+      oauth_verifier: oauthVerifier,
+      oauth_token: oauthToken,
     },
   });
 
