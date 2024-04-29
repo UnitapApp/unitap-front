@@ -152,8 +152,24 @@ export const connectGitCoinPassport = async (address: string) => {
   return response.data;
 };
 
-export const getTwitterOAuthUrlApi = () => {
-  return axiosInstance
-    .get("/api/auth/twitter/")
-    .then((res) => res.data.url as string);
+export const getTwitterOAuthUrlApi = async () => {
+  const res = await axiosInstance.get("/api/auth/twitter/");
+
+  return res.data.url as string;
+};
+
+export const verifyTwitterApi = async (
+  authToken: string,
+  authVerifier: string,
+) => {
+  const res = await axiosInstance.get(`/api/auth/twitter/callback/`, {
+    params: {
+      // auth_verifier: authVerifier,
+      // auth_token: authToken
+      authVerifier,
+      authToken,
+    },
+  });
+
+  return res.data;
 };

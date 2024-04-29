@@ -3,7 +3,11 @@
 import Icon from "@/components/ui/Icon";
 import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { parseServerError } from "@/utils";
-import { connectGitCoinPassport, getTwitterOAuthUrlApi } from "@/utils/api";
+import {
+  connectGitCoinPassport,
+  getTwitterOAuthUrlApi,
+  verifyTwitterApi,
+} from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
 import { FC, useEffect, useState } from "react";
 
@@ -39,16 +43,24 @@ export const TwitterAccount: FC<{
   };
 
   useEffect(() => {
-    window.addEventListener("message", (event) => {
+    const messageEvent = (event: MessageEvent) => {
       const message = event.data;
-      if (message.type === "domainVerified") {
-        console.log("Child window domain is verified.");
+
+      if (message.type === "unitap-token-verification") return;
+
+      const { authToken, authVerifier } = message.data;
+
+      verifyTwitterApi(authToken, authVerifier).then((res) => {
+        console.log(res);
         setLoading(false);
-      } else if (message.type === "domainNotVerified") {
-        console.log("Child window domain is not verified.");
-        setLoading(false);
-      }
-    });
+      });
+    };
+
+    window.addEventListener("message", messageEvent, false);
+
+    return () => {
+      window.removeEventListener("message", messageEvent);
+    };
   }, []);
 
   return (

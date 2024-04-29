@@ -1,16 +1,27 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const TwitterSuccessPage = () => {
-  useEffect(() => {
-    window.postMessage("salam", "*");
-    window.opener.postMessage("Message verified", "*");
+  const searchParams = useSearchParams();
 
-    // setTimeout(() => {
-    //   window.close();
-    // }, 5000);
-  }, []);
+  useEffect(() => {
+    const authToken = searchParams.get("oauth_token");
+    const authVerifier = searchParams.get("oauth_verifier");
+
+    if (!authToken || !authVerifier) return;
+
+    window.opener.postMessage(
+      {
+        type: "unitap-token-verification",
+        data: { authToken, authVerifier },
+      },
+      "*",
+    );
+
+    window.close();
+  }, [searchParams]);
 
   return (
     <div className="text-center">
