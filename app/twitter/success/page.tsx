@@ -4,8 +4,8 @@ import { useEffect } from "react";
 
 const TwitterSuccessPage = () => {
   useEffect(() => {
-    window.postMessage("salam");
-    window.opener.postMessage("Message verified");
+    window.postMessage("salam", "*");
+    window.opener.postMessage("Message verified", "*");
 
     // setTimeout(() => {
     //   window.close();
