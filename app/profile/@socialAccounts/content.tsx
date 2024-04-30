@@ -8,6 +8,7 @@ import { getAllConnections } from "@/utils/serverApis";
 import { useUserProfileContext } from "@/context/userProfile";
 import { SocialAccountContext } from "@/context/socialAccountContext";
 import GitCoinPassportAccount from "../components/socialAccounts/gitcoinPassport";
+import TwitterAccount from "../components/socialAccounts/twitter";
 
 const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
@@ -42,6 +43,11 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
           title={"Gitcoin Passport"}
           icon={"/assets/images/up-profile/gitcoin-passport.svg"}
           isConnected={!!connections["GitcoinPassport"]}
+        />
+        <TwitterAccount
+          title={"Twitter"}
+          icon={"/assets/images/landing/twitter-icon.svg"}
+          isConnected={!!connections["Twitter"]}
         />
       </div>
     </SocialAccountContext.Provider>

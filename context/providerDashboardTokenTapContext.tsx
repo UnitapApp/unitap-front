@@ -951,6 +951,7 @@ const TokenTapProvider: FC<
       ),
     );
     handleSetEnrollDuration(-1);
+    setTokenName(raffle.name)
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {

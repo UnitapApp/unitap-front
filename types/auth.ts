@@ -37,6 +37,7 @@ export type UserConnection = {
     id: number;
     userProfile: UserProfile;
     createdAt: string;
+    isConnected: boolean;
   };
 };
 
