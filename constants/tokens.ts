@@ -938,4 +938,98 @@ export const tokensInformation: TokenInformation[] = [
       },
     ],
   },
+  {
+    chainId: "8453",
+    chainName: "base",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenSymbol: "Base",
+        tokenName: "Base",
+        logoUrl: "",
+      },
+      {
+        tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        tokenDecimals: "6",
+        tokenSymbol: "USDC",
+        tokenName: "USD Coin",
+        logoUrl: "https://basescan.org/token/images/centre-usdc_28.png",
+      },
+      {
+        tokenAddress: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+        tokenDecimals: "18",
+        tokenSymbol: "DAI",
+        tokenName: "Dai Stablecoin",
+        logoUrl: "https://basescan.org/token/images/daistablecoin_32.png",
+      },
+      {
+        tokenAddress: "0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c",
+        tokenDecimals: "18",
+        tokenSymbol: "rETH",
+        tokenName: "Rocket Pool ETH",
+        logoUrl: "https://basescan.org/token/images/rocketpooleth_32.png",
+      },
+      {
+        tokenAddress: "0xB0fFa8000886e57F86dd5264b9582b2Ad87b2b91",
+        tokenDecimals: "18",
+        tokenSymbol: "W",
+        tokenName: "Wormhole Token",
+        logoUrl: "https://basescan.org/token/images/w_32.png",
+      },
+    ],
+  },
+  {
+    chainId: "7777777",
+    chainName: "zora",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenSymbol: "ZORA",
+        tokenName: "ZORA",
+        logoUrl: "",
+      },
+      {
+        tokenAddress: "0xD838D5b87439e17B0194fd43e37300cD99Aa3DE0",
+        tokenDecimals: "18",
+        tokenSymbol: "MERK",
+        tokenName: "Merkly OFT",
+        logoUrl: "",
+      },
+      {
+        tokenAddress: "0xCccCCccc7021b32EBb4e8C08314bD62F7c653EC4",
+        tokenDecimals: "18",
+        tokenSymbol: "ZORA",
+        tokenName: "USD Coin (Bridged from Ethereum)",
+        logoUrl: "USDzC",
+      },
+    ],
+  },
+  {
+    chainId: "204",
+    chainName: "opBnb",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenSymbol: "opBnb",
+        tokenName: "opBnb",
+        logoUrl: "",
+      },
+    ],
+  },
+  {
+    chainId: "42220",
+    chainName: "Celo",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenSymbol: "Celo",
+        tokenName: "Celo",
+        logoUrl: "",
+      },
+    ],
+  },
 ];
