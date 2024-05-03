@@ -170,8 +170,8 @@ export const tokensInformation: TokenInformation[] = [
       {
         tokenAddress: "0x0000000000000000000000000000000000000000",
         tokenDecimals: "18",
-        tokenName: "Arbitrum",
-        tokenSymbol: "Arbitrum",
+        tokenName: "ETH",
+        tokenSymbol: "ETH",
         logoUrl:
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
@@ -645,10 +645,18 @@ export const tokensInformation: TokenInformation[] = [
       {
         tokenAddress: "0x0000000000000000000000000000000000000000",
         tokenDecimals: "18",
-        tokenSymbol: "Optimism",
-        tokenName: "Optimism",
+        tokenSymbol: "ETH",
+        tokenName: "ETH",
         logoUrl:
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+      },
+      {
+        tokenAddress: "0x4F604735c1cF31399C6E711D5962b2B3E0225AD3",
+        tokenDecimals: "18",
+        tokenSymbol: "USDGLO",
+        tokenName: "Glo Dollar",
+        logoUrl:
+          "https://optimistic.etherscan.io/token/images/glodollar_32.png",
       },
       {
         tokenAddress: "0x4200000000000000000000000000000000000006",
