@@ -170,8 +170,8 @@ export const tokensInformation: TokenInformation[] = [
       {
         tokenAddress: "0x0000000000000000000000000000000000000000",
         tokenDecimals: "18",
-        tokenName: "Arbitrum",
-        tokenSymbol: "Arbitrum",
+        tokenName: "ETH",
+        tokenSymbol: "ETH",
         logoUrl:
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
