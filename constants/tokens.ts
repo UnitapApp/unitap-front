@@ -645,8 +645,8 @@ export const tokensInformation: TokenInformation[] = [
       {
         tokenAddress: "0x0000000000000000000000000000000000000000",
         tokenDecimals: "18",
-        tokenSymbol: "Optimism",
-        tokenName: "Optimism",
+        tokenSymbol: "ETH",
+        tokenName: "ETH",
         logoUrl:
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
       },
