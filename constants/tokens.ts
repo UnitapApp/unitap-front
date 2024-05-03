@@ -651,6 +651,14 @@ export const tokensInformation: TokenInformation[] = [
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
       },
       {
+        tokenAddress: "0x4F604735c1cF31399C6E711D5962b2B3E0225AD3",
+        tokenDecimals: "18",
+        tokenSymbol: "USDGLO",
+        tokenName: "Glo Dollar",
+        logoUrl:
+          "https://optimistic.etherscan.io/token/images/glodollar_32.png",
+      },
+      {
         tokenAddress: "0x4200000000000000000000000000000000000006",
         tokenDecimals: "18",
         tokenSymbol: "WETH",
