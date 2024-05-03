@@ -77,6 +77,9 @@ export const contractAddresses: {
     "42220": {
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
+    "137": {
+      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    },
   },
   prizeTap: {
     "42161": {
@@ -108,6 +111,10 @@ export const contractAddresses: {
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
     "42220": {
+      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    },
+    "137": {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
