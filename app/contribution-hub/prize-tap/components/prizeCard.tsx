@@ -80,9 +80,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-            (prize.status === RaffleStatus.VERIFIED ||
-              prize.status === RaffleStatus.WS) &&
-            diff > 0 ? (
+              (prize.status === RaffleStatus.VERIFIED ||
+                prize.status === RaffleStatus.WS) &&
+              diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
@@ -111,23 +111,31 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         </div>
         {prize.status === RaffleStatus.REJECTED ? (
-          <Link
-            className="absolute bottom-3 left-4 right-4"
-            href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
-          >
-            <ProviderDashboardButtonCheck>
-              Check For Reasons
-            </ProviderDashboardButtonCheck>
-          </Link>
+          <div>
+            {/* <RefundRemainingPrize /> */}
+            <Link
+              className="absolute bottom-3 left-4 right-4"
+              href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
+            >
+              <ProviderDashboardButtonCheck>
+                Check For Reasons
+              </ProviderDashboardButtonCheck>
+            </Link>
+          </div>
         ) : prize.status === RaffleStatus.PENDING ? (
-          <Link
-            className="absolute bottom-3 left-4 right-4"
-            href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
-          >
-            <ProviderDashboardButtonShowDetails>
-              Show Details
-            </ProviderDashboardButtonShowDetails>
-          </Link>
+          <div>
+            {/* {new Date(prize.deadline) < new Date() &&
+              <RefundRemainingPrize />
+            } */}
+            <Link
+              className="absolute bottom-3 left-4 right-4"
+              href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
+            >
+              <ProviderDashboardButtonShowDetails>
+                Show Details
+              </ProviderDashboardButtonShowDetails>
+            </Link>
+          </div>
         ) : day >= 1 ||
           (prize.status == RaffleStatus.VERIFIED &&
             new Date(prize.startAt) > new Date() &&
@@ -201,7 +209,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
-                !prize.winnerEntries?.length
+                  !prize.winnerEntries?.length
                   ? "Raffle is being processed"
                   : "Check Winners"}
               </p>
@@ -212,5 +220,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
     </div>
   );
 };
+
+// const RefundRemainingPrize = () => {
+//   return <div className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">Refound your prize</div>
+// }
 
 export default PrizeCard;
