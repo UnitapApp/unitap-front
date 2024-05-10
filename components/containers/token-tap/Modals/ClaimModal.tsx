@@ -47,6 +47,14 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
       />
     );
 
+  if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
+    return (
+      <WrongNetworkBody
+        chain={selectedTokenForClaim.chain}
+        imageUrl={selectedTokenForClaim.imageUrl}
+      />
+    );
+
   if (
     claimTokenResponse?.state === "Done" ||
     collectedToken?.status === "Verified"
@@ -60,19 +68,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     return <InitialBody token={selectedTokenForClaim} />;
   }
 
-  // if (claimTokenLoading)
-  //   return <PendingBody tokenId={selectedTokenForClaim.id} />;
-
   if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut)
     return <MaxedOutBody token={selectedTokenForClaim} />;
-
-  if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
-    return (
-      <WrongNetworkBody
-        chain={selectedTokenForClaim.chain}
-        imageUrl={selectedTokenForClaim.imageUrl}
-      />
-    );
 
   if (!isPermissionsVerified)
     return (

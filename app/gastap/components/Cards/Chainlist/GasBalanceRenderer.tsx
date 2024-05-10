@@ -30,7 +30,7 @@ const GasBalanceRenderer: FC<{ balance: number }> = ({ balance }) => {
 
   return (
     <div className="ml-3 flex items-center gap-[2px]">
-      {Array.from(new Array(balance)).map((_, key) => (
+      {Array.from(new Array(balance < 0 ? 0 : balance)).map((_, key) => (
         <span className="gas-level-empty h-4 w-1" key={key} />
       ))}
 

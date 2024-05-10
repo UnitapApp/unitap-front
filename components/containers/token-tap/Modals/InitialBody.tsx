@@ -3,17 +3,21 @@ import Icon from "@/components/ui/Icon";
 import { shortenAddress } from "@/utils";
 import Link from "next/link";
 import { Text } from "@/components/ui/text.style";
-import { useWalletAccount } from "@/utils/wallet";
+import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { FC } from "react";
 import { Token } from "@/types";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { DropIconWrapper } from "../../modals/claimModal.style";
 import WalletAddress from "../../../../app/prizetap/components/Modals/wallet-address";
+import WrongNetworkBody from "./WrongNetworkBody";
 
 const InitialBody: FC<{
   token: Token;
 }> = ({ token }) => {
   const { isConnected, address } = useWalletAccount();
+  const { chain: activatedChain } = useWalletNetwork();
+
+  const chainId = activatedChain?.id;
 
   const {
     handleClaimToken,
@@ -84,7 +88,6 @@ const InitialBody: FC<{
       <WalletAddress fontSize="12">
         {isConnected ? shortenAddress(address) : ""}
       </WalletAddress>
-
       <ClaimButton
         onClick={handleClaimToken}
         $width="100%"
