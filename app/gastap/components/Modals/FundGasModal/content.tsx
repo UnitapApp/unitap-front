@@ -145,19 +145,19 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
     if (!data) return;
 
-    const estimatedGas = data;
+    // let estimatedGas: bigint | undefined = data;
 
-    if (typeof estimatedGas !== "bigint") {
-      handleTransactionError(estimatedGas);
-      setSubmittingFundTransaction(false);
-      return;
-    }
+    // if (typeof estimatedGas !== "bigint") {
+    //   handleTransactionError(estimatedGas);
+    //   setSubmittingFundTransaction(false);
+    //   return;
+    // }
 
     signer
       ?.sendTransaction({
         ...tx,
-        ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
-        // gasPrice /// TODO add gasPrice based on EIP 1559
+        // ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
+        // gasPrice
       })
       .then(async (tx) => {
         await provider.waitForTransactionReceipt({
