@@ -61,6 +61,9 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   )
     return <SuccessBody token={selectedTokenForClaim} />;
 
+  if (selectedTokenForClaim.isExpired)
+    return <MaxedOutBody token={selectedTokenForClaim} />;
+
   if (
     claimTokenResponse?.state === "Pending" ||
     collectedToken?.status === "Pending"
@@ -68,7 +71,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     return <InitialBody token={selectedTokenForClaim} />;
   }
 
-  if (selectedTokenForClaim.isExpired || selectedTokenForClaim.isMaxedOut)
+  if (selectedTokenForClaim.isMaxedOut)
     return <MaxedOutBody token={selectedTokenForClaim} />;
 
   if (!isPermissionsVerified)
