@@ -317,7 +317,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
               } flex w-full items-center justify-between rounded-b-xl px-4 md:justify-end`}
             >
               <p
-                className={`text-sm ${chain.currentFuelLevel > 4 ? "text-gray90" : chain.currentFuelLevel >= 2 ? "text-[#EBD14A]" : "text-[#F16E35]"} `}
+                className={`text-sm ${chain.currentFuelLevel > 4 ? "text-gray90" : chain.currentFuelLevel >= 2 ? "text-[#EBD14A]" : "text-error"} `}
               >
                 Balance:
               </p>
