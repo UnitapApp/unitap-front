@@ -1,7 +1,7 @@
 "use client";
 
 import { UserRafflesProps } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/ui/Icon";
 
 import {
@@ -18,6 +18,13 @@ import "./content.module.scss";
 import WinnersModal from "./Modals/winnersModal";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
+import { useWalletAccount, useWalletNetwork, useWalletProvider, useWalletSigner } from "@/utils/wallet"
+import { refundRemainingPrize } from "@/components/containers/provider-dashboard/helpers/refundRemainingPrize";
+import { useNetworkSwitcher } from "@/utils/wallet";
+import { readContract } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
+import { contractAddresses } from "@/constants";
+import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 
 export type PrizeCardProp = {
   prize: UserRafflesProps;
@@ -112,7 +119,6 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
         </div>
         {prize.status === RaffleStatus.REJECTED ? (
           <div>
-            {/* <RefundRemainingPrize /> */}
             <Link
               className="absolute bottom-3 left-4 right-4"
               href={RoutePath.PROVIDER_PRIZETAP_VERIFICATION + "/" + prize.pk}
@@ -124,9 +130,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : prize.status === RaffleStatus.PENDING ? (
           <div>
-            {/* {new Date(prize.deadline) < new Date() &&
-              <RefundRemainingPrize />
-            } */}
+            {/* {new Date(prize.deadline) < new Date() && */}
+            <RefundRemainingPrize prize={prize} />
+            {/* } */}
             <Link
               className="absolute bottom-3 left-4 right-4"
               href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
@@ -221,8 +227,70 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
   );
 };
 
-// const RefundRemainingPrize = () => {
-//   return <div className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">Refound your prize</div>
-// }
+export const RefundRemainingPrize = ({ prize }: { prize: UserRafflesProps }) => {
+  const { address } = useWalletAccount();
+  const { chain: activatedChain } = useWalletNetwork();
+  const { switchChain, addAndSwitchChain } = useNetworkSwitcher();
+
+  const signer = useWalletSigner();
+  const provider = useWalletProvider();
+  const [refundRes, setRefundRes] = useState<any | null>(null)
+  const raffleId = prize.raffleId;
+  const hasWinner = prize.winnerEntries!.length !== 0;
+  const chainId = activatedChain?.id;
+  const [btnLabel, setBtnLabel] = useState('Refound your prize')
+  const [raffleStatus, setRaffleStatus] = useState<number>(3)
+
+  const getRaffleStatus = async () => {
+    if (!prize) return;
+    const data = await readContract(config, {
+      abi: prizeTapAbi,
+      address: contractAddresses.prizeTap[prize.chain.chainId]
+        ?.erc20,
+      functionName: "raffles",
+      args: [BigInt(prize.raffleId!)],
+      chainId: Number(prize?.chain.chainId ?? 1),
+    })
+    console.log(data[12])
+    setRaffleStatus(Number(data[12]))
+  }
+
+  useEffect(() => {
+    getRaffleStatus()
+  }, [])
+
+
+  const handelRefundPrize = async () => {
+    if (!provider || !signer || !address || !chainId || !raffleId || !prize) return
+    if (chainId?.toString() !== prize?.chain.chainId) {
+      setBtnLabel('Switching network...')
+      await switchChain(Number(prize?.chain.chainId))
+      setBtnLabel('Refound your prize')
+      return
+    }
+    setBtnLabel('Refound your prize...')
+    try {
+      await refundRemainingPrize(provider, signer, address, chainId, raffleId, setRefundRes, hasWinner);
+    }
+    finally {
+      getRaffleStatus()
+      setBtnLabel('Refound your prize')
+    }
+  }
+
+  return (
+    <div>
+      {raffleStatus != 3 && prize.numberOfOnchainEntries < prize.winnersCount ?
+        <div>
+          <div onClick={() => handelRefundPrize()} className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">
+            {btnLabel}
+          </div>
+        </div>
+        :
+        ''
+      }
+    </div>
+  )
+}
 
 export default PrizeCard;

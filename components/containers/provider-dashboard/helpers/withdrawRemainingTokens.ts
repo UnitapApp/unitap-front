@@ -5,25 +5,24 @@ import {
   Address,
 } from "viem";
 
-import { prizeTapAbi } from "@/types/abis/contracts";
+import { tokenTapAbi } from "@/types/abis/contracts";
 import { GetWalletClientReturnType } from "wagmi/actions";
 import { contractAddresses } from "@/constants";
 
-export const refundRemainingPrizeCallback = async (
+export const withdrawRemainingTokensCallback = async (
   address: Address,
   erc20Contract: GetContractReturnType,
   provider: PublicClient,
   signer: GetWalletClientReturnType,
-  raffleId: bigint,
+  distributionId: bigint,
   setRefundRes: any,
-  hasWinner: boolean,
 ) => {
   const response = await signer?.writeContract({
-    abi: prizeTapAbi,
+    abi: tokenTapAbi,
     address: erc20Contract.address,
     account: address,
-    functionName: hasWinner ? "refundRemainingPrizes" : "refundPrize",
-    args: [raffleId],
+    functionName: "withdrawReaminingTokens",
+    args: [address, distributionId],
   });
 
   if (response) {
@@ -51,31 +50,29 @@ export const refundRemainingPrizeCallback = async (
   return;
 };
 
-export const refundRemainingPrize = async (
+export const withdrawRemainingTokens = async (
   provider: PublicClient,
   signer: GetWalletClientReturnType,
   address: Address,
   chainId: number,
-  raffleId: string,
+  distributionId: number,
   setRefundRes: any,
-  hasWinner: boolean,
 ) => {
   if (!provider || !signer) return;
   const contract = getContract({
-    abi: prizeTapAbi,
-    address: contractAddresses.prizeTap[chainId].erc20 as `0x${string}`,
+    abi: tokenTapAbi,
+    address: contractAddresses.tokenTap[chainId].erc20 as `0x${string}`,
     client: provider,
   });
 
   try {
-    const response = await refundRemainingPrizeCallback(
+    const response = await withdrawRemainingTokensCallback(
       address,
       contract,
       provider,
       signer,
-      BigInt(raffleId),
+      BigInt(distributionId),
       setRefundRes,
-      hasWinner,
     );
     return response;
   } catch (e: any) {

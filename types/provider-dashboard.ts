@@ -211,6 +211,7 @@ export interface UserTokenDistribution {
   distributor: string;
   distributorUrl: string;
   emailUrl: string;
+  distributionId: number;
   imageUrl: string;
   isActive: boolean;
   isClaimable: boolean;

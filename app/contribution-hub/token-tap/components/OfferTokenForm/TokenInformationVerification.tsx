@@ -5,6 +5,7 @@ import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapConte
 import { ProviderDashboardGoToDashBoard } from "@/app/contribution-hub/components/Buttons";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
+import { WithDrawRemainingTokens } from "../Content";
 
 const TokenInformationVerification = () => {
   const { selectedRaffleForCheckReason } = useTokenTapFromContext();
@@ -98,6 +99,7 @@ const TokenInformationVerification = () => {
                 </a>
               </div>
             </div>
+            <WithDrawRemainingTokens distribution={selectedRaffleForCheckReason} />
           </div>
         )}
       </div>

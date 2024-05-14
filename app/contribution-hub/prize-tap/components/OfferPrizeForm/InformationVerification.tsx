@@ -5,6 +5,7 @@ import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import { ProviderDashboardGoToDashBoard } from "@/app/contribution-hub/components/Buttons";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
+import { RefundRemainingPrize } from "../prizeCard";
 
 const InformationVerification = () => {
   const { selectedRaffleForCheckReason } = usePrizeOfferFormContext();
@@ -70,7 +71,7 @@ const InformationVerification = () => {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="relative">
             <div className="relative rounded-xl bg-gray50 p-4 leading-5">
               <div className="flex flex-col items-center justify-center md:flex-row">
                 <Icon
@@ -98,18 +99,25 @@ const InformationVerification = () => {
                 </a>
               </div>
             </div>
+            <div className="w-full absolute -bottom-36 max-w-[452px]">
+              {selectedRaffleForCheckReason &&
+                <RefundRemainingPrize prize={selectedRaffleForCheckReason} />
+              }
+            </div>
           </div>
         )}
       </div>
-      <Link
-        // onClick={handleGOToDashboard}
-        href={RoutePath.PROVIDER_PRIZETAP}
-        className="mt-[111px] flex w-full max-w-[452px] flex-col items-center lg:flex-row"
-      >
-        <ProviderDashboardGoToDashBoard>
-          Go To Dashboard
-        </ProviderDashboardGoToDashBoard>
-      </Link>
+      <div className="mt-[90px]">
+        <Link
+          // onClick={handleGOToDashboard}
+          href={RoutePath.PROVIDER_PRIZETAP}
+          className='flex mt-2 w-full max-w-[452px] flex-col items-center lg:flex-row'
+        >
+          <ProviderDashboardGoToDashBoard>
+            Go To Dashboard
+          </ProviderDashboardGoToDashBoard>
+        </Link>
+      </div>
     </div>
   );
 };

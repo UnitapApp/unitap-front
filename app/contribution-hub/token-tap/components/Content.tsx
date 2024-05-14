@@ -16,13 +16,18 @@ import Link from "next/link";
 import RoutePath from "@/utils/routes";
 import { getUserDistributions } from "@/utils/api/provider-dashboard";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL } from "@/constants";
+import { FAST_INTERVAL, contractAddresses } from "@/constants";
 import { useCallback, useEffect, useState } from "react";
 import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
 import { zeroAddress } from "viem";
 import useScrollToTop from "@/utils/hooks/scrollTop";
+import { useNetworkSwitcher, useWalletAccount, useWalletNetwork, useWalletProvider, useWalletSigner } from "@/utils/wallet";
+import { readContract } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
+import { prizeTapAbi, tokenTapAbi } from "@/types/abis/contracts";
+import { withdrawRemainingTokens } from "@/components/containers/provider-dashboard/helpers/withdrawRemainingTokens";
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
@@ -69,9 +74,12 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               </ProviderDashboardButtonVerifying>
             )}
             {isStart && !isFinished && status == Filters.Verified && (
-              <ProviderDashboardButton className="animate-blinking">
-                <p>Ongoing...</p>
-              </ProviderDashboardButton>
+              <div className="flex items-center gap-2">
+                <ExtendToken distribution={distribution} />
+                <ProviderDashboardButton className="animate-blinking">
+                  <p>Ongoing...</p>
+                </ProviderDashboardButton>
+              </div>
             )}
             {!isStart && status == Filters.Verified && (
               <ProviderDashboardButtonSuccess>
@@ -157,7 +165,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           </Link>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -291,33 +299,29 @@ const TokenTapContent = () => {
             All
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Pending && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Pending && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Pending)}
           >
             ongoing
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Verified && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Verified && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Verified)}
           >
             verified
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Rejected && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Rejected && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Rejected)}
           >
             rejected
           </div>
           <div
-            className={`${
-              selectedFilter === Filters.Finished && "text-gray100"
-            }`}
+            className={`${selectedFilter === Filters.Finished && "text-gray100"
+              }`}
             onClick={() => handleSelectFilter(Filters.Finished)}
           >
             finished
@@ -377,6 +381,100 @@ const TokenTapContent = () => {
   );
 };
 
+export const WithDrawRemainingTokens = ({ distribution }: DistributionCardProp) => {
+  const { address } = useWalletAccount();
+  const { chain: activatedChain } = useWalletNetwork();
+  const { switchChain, addAndSwitchChain } = useNetworkSwitcher();
+
+  const signer = useWalletSigner();
+  const provider = useWalletProvider();
+  const [refundRes, setRefundRes] = useState<any | null>(null);
+  const distributionId = distribution.distributionId;
+  const chainId = activatedChain?.id;
+  const [btnLabel, setBtnLabel] = useState('Withdraw remaining tokens')
+  const [isRefunded, setIsRefunded] = useState<boolean>(true)
+  const isFinished = new Date(distribution.deadline) < new Date();
+
+  const getDistributeStatus = async () => {
+    if (!distribution) return;
+    const data = await readContract(config, {
+      abi: tokenTapAbi,
+      address: contractAddresses.tokenTap[distribution.chain.chainId]
+        ?.erc20,
+      functionName: "distributions",
+      args: [BigInt(distribution.distributionId!)],
+      chainId: Number(distribution?.chain.chainId ?? 1),
+    })
+    console.log(data)
+    setIsRefunded(data[7])
+  }
+
+  useEffect(() => {
+    getDistributeStatus()
+  }, [])
+
+
+  const handelWithdrawRemainingTokens = async () => {
+    if (!provider || !signer || !address || !chainId || !distributionId || !distribution) return
+    if (chainId?.toString() !== distribution?.chain.chainId) {
+      setBtnLabel('Switching network...')
+      await switchChain(Number(distribution?.chain.chainId))
+      setBtnLabel('Withdraw remaining tokens')
+      return
+    }
+    setBtnLabel('Withdraw remaining tokens...')
+    try {
+      await withdrawRemainingTokens(provider, signer, address, chainId, distributionId, setRefundRes);
+    }
+    finally {
+      getDistributeStatus()
+      setBtnLabel('Withdraw remaining tokens')
+    }
+  }
+
+  return (
+    <div>
+      {!isRefunded && distribution.numberOfClaims < distribution.maxNumberOfClaims && isFinished &&
+        <div>
+          <div onClick={() => handelWithdrawRemainingTokens()} className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">
+            {btnLabel}
+          </div>
+        </div>
+      }
+    </div>
+  )
+}
+
+export const ExtendToken = ({ distribution }: DistributionCardProp) => {
+  console.log(distribution)
+  const [isRefunded, setIsRefunded] = useState<boolean>(true)
+  const isFinished = new Date(distribution.deadline) < new Date();
+  const endTime = distribution.deadline;
+  const maxNumberOfClaims = distribution.maxNumberOfClaims;
+  const decimals = distribution.decimals;
+  const amount = distribution.amount
+  const getDistributeStatus = async () => {
+    if (!distribution) return;
+    const data = await readContract(config, {
+      abi: tokenTapAbi,
+      address: contractAddresses.tokenTap[distribution.chain.chainId]
+        ?.erc20,
+      functionName: "distributions",
+      args: [BigInt(distribution.distributionId!)],
+      chainId: Number(distribution?.chain.chainId ?? 1),
+    })
+    console.log(data, amount)
+    setIsRefunded(data[7])
+  }
+
+
+  useEffect(() => { getDistributeStatus() }, [])
+
+  return (
+    <div className="flex justify-center items-center text-2xs border border-gray90 rounded-sm p-1 h-[22px] cursor-pointer">Extend</div>
+  )
+
+}
 export default TokenTapContent;
 
 const Skeleton = () => {

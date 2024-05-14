@@ -773,7 +773,7 @@ const TokenTapProvider: FC<
     }
     let value = type == "checkbox" ? e.target.checked : e.target.value;
     if (name === "provider" && value.length > 30) return;
-    if (name === "description" && value.length > 100) return;
+    if (name === "description" && value.length > 340) return;
     if (name === "winnersCount" || name === "maxNumberOfEntries") {
       value = value.replace(/[^0-9]/g, "");
     }

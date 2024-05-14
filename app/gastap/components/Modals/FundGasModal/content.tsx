@@ -216,9 +216,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   const helpAmount =
     fundAmount && selectedChain
       ? Math.floor(
-          (Number(fundAmount) * 0.75) /
-            (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals),
-        )
+        (Number(fundAmount) * 0.75) /
+        (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals),
+      )
       : 0;
 
   return (
@@ -299,9 +299,9 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                     Balance:{" "}
                     {balance.data
                       ? formatUnits(
-                          balance.data?.value,
-                          balance.data.decimals,
-                        ).slice(0, 5)
+                        balance.data?.value,
+                        balance.data.decimals,
+                      ).slice(0, 5)
                       : "..."}{" "}
                     {selectedChain?.symbol}{" "}
                   </p>
@@ -328,7 +328,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                 text="All of your contributions will go to onboarding users to this network. The majority of the donations will be transferred straight to users as gas tokens and a smaller part will cover the network transaction fees."
                 toolTipClassName="!w-[300px]"
                 className="cursor-pointer"
-                // title=""
+              // title=""
               >
                 <b>approximately</b>
               </Tooltip>{" "}
@@ -365,6 +365,6 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
   );
 };
 
-const TooltipContent = () => {};
+const TooltipContent = () => { };
 
 export default Content;

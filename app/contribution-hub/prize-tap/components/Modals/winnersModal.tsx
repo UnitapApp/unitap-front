@@ -7,10 +7,11 @@ import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { CSVLink } from "react-csv";
 import { UserRafflesProps } from "@/types";
-import { useProvider, useWalletProvider } from "@/utils/wallet";
+import { useWalletProvider } from "@/utils/wallet";
 import { contractAddresses } from "@/constants";
 import { readContracts } from "wagmi/actions";
 import { config } from "@/utils/wallet/wagmi";
+import { RefundRemainingPrize } from "../prizeCard";
 
 interface Props {
   winnersResultRaffle: UserRafflesProps | null;
@@ -19,7 +20,7 @@ interface Props {
 const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState("");
   const [enrollmentWallets, setEnrollmentWallets] = useState<[]>([]);
-
+  const [raffleStatus, setRaffleStatus] = useState<number>(3)
   const provider = useWalletProvider();
 
   const exportEnrollmentWallets = useCallback(async () => {
@@ -34,7 +35,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       const address = winnersResultRaffle.isPrizeNft
         ? contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]?.erc721
         : contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]
-            ?.erc20 || winnersResultRaffle.contract;
+          ?.erc20 || winnersResultRaffle.contract;
 
       if (!address) continue;
 
@@ -65,10 +66,10 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
     const items = !searchPhraseInput
       ? winnersResultRaffle?.winnerEntries
       : winnersResultRaffle?.winnerEntries?.filter((item) =>
-          item.userWalletAddress
-            .toLocaleLowerCase()
-            .includes(searchPhraseInput.toLocaleLowerCase()),
-        ) ?? [];
+        item.userWalletAddress
+          .toLocaleLowerCase()
+          .includes(searchPhraseInput.toLocaleLowerCase()),
+      ) ?? [];
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);
@@ -130,6 +131,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
           <p className="text-white">No users found</p>
         )}
       </div>
+      <RefundRemainingPrize prize={winnersResultRaffle} />
     </div>
   );
 };

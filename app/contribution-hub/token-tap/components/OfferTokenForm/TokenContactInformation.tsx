@@ -113,7 +113,7 @@ const ContactInformation = ({
               disabled={isShowingDetails || !address}
               value={data.description ? data.description : ""}
             />
-            <p className="text-gray80">{data.description?.length}/100</p>
+            <p className="text-gray80">{data.description?.length}/340</p>
           </div>
           {showErrors && !data.description && (
             <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
