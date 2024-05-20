@@ -16,18 +16,14 @@ import Link from "next/link";
 import RoutePath from "@/utils/routes";
 import { getUserDistributions } from "@/utils/api/provider-dashboard";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL, contractAddresses } from "@/constants";
+import { FAST_INTERVAL } from "@/constants";
 import { useCallback, useEffect, useState } from "react";
 import { useUserProfileContext } from "@/context/userProfile";
 import { UserTokenDistribution } from "@/types/provider-dashboard";
 import { CardTimerTokenTap } from "./CardTimerTokenTap";
-import { zeroAddress } from "viem";
 import useScrollToTop from "@/utils/hooks/scrollTop";
-import { useNetworkSwitcher, useWalletAccount, useWalletNetwork, useWalletProvider, useWalletSigner } from "@/utils/wallet";
-import { readContract } from "wagmi/actions";
-import { config } from "@/utils/wallet/wagmi";
-import { prizeTapAbi, tokenTapAbi } from "@/types/abis/contracts";
-import { withdrawRemainingTokens } from "@/components/containers/provider-dashboard/helpers/withdrawRemainingTokens";
+// import { withdrawRemainingTokens } from "@/components/containers/provider-dashboard/helpers/withdrawRemainingTokens";
+import ExtendTokenModal from "./ExtendTokenModal/ExtendTokenModal";
 
 interface DistributionCardProp {
   distribution: UserTokenDistribution;
@@ -47,9 +43,15 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const isStart = new Date(distribution.startAt) < new Date();
   const isFinished = new Date(distribution.deadline) < new Date();
   const status = distribution.status;
+  const [selectedDistribute, setSelectedDistribute] = useState<UserTokenDistribution | null>(null)
+
+  const handleExtendModal = () => {
+    setSelectedDistribute(distribution)
+  }
 
   return (
     <div className="relative h-[264px] w-full select-none rounded-xl border-2 border-gray40 bg-gray30 p-4 ">
+      <ExtendTokenModal distribute={selectedDistribute} setSelectedDistribute={setSelectedDistribute} />
       <div className="provideToken-item-container">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -75,7 +77,6 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
             )}
             {isStart && !isFinished && status == Filters.Verified && (
               <div className="flex items-center gap-2">
-                <ExtendToken distribution={distribution} />
                 <ProviderDashboardButton className="animate-blinking">
                   <p>Ongoing...</p>
                 </ProviderDashboardButton>
@@ -87,8 +88,10 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               </ProviderDashboardButtonSuccess>
             )}
             {isFinished && status == Filters.Verified && (
-              <div className="flex h-6 w-[100px] items-center justify-center rounded-md border border-gray70 bg-gray50 text-2xs text-gray100">
-                Finished
+              <div className="flex gap-2">
+                <div className="flex h-6 w-[100px] items-center justify-center rounded-md border border-gray70 bg-gray50 text-2xs text-gray100">
+                  Finished
+                </div>
               </div>
             )}
           </div>
@@ -120,16 +123,26 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         </div>
         <div className="pt-2">
           {isStart && !isFinished && status === Filters.Verified && (
-            <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50  text-sm font-medium text-white ">
-              {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
+            <div className="flex gap-2 h-[48px] items-center justify-between px-5 rounded-xl bg-gray50  text-sm font-medium text-white ">
+              {distribution.maxNumberOfClaims - distribution.numberOfOnchainClaims}{" "}
               claims left
+              <div>
+                <p className="flex justify-center items-center text-2xs border border-gray90 rounded-lg p-1 h-[25px] px-2 cursor-pointer"
+                  onClick={() => handleExtendModal()}>Extend / Withdraw</p>
+              </div>
             </div>
           )}
         </div>
         <div className="absolute bottom-2 left-4 right-4">
           {isStart && isFinished && status === Filters.Verified && (
-            <div className="flex h-[48px] items-center  justify-center rounded-xl bg-gray50 text-sm font-medium text-white ">
-              {distribution.numberOfClaims} claimed
+            <div>
+              <div>
+                <p className="flex font-semibold justify-center items-center text-2xs border border-gray90 rounded-lg p-1 h-[48px] mb-2 px-2 cursor-pointer"
+                  onClick={() => handleExtendModal()}>Extend / Withdraw</p>
+              </div>
+              <div className="flex h-[48px] items-center  justify-center rounded-xl bg-gray50 text-sm font-medium text-white ">
+                {distribution.numberOfOnchainClaims} claimed
+              </div>
             </div>
           )}
           {status == Filters.Verified && !isFinished && (
@@ -143,13 +156,15 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
           )}
 
           {status == Filters.Pending && (
-            <Link
-              href={RoutePath.PROVIDER_TOKENTAP_DETAILS + "/" + distribution.id}
-            >
-              <ProviderDashboardButtonShowDetails>
-                Show Details
-              </ProviderDashboardButtonShowDetails>
-            </Link>
+            <div>
+              <Link
+                href={RoutePath.PROVIDER_TOKENTAP_DETAILS + "/" + distribution.id}
+              >
+                <ProviderDashboardButtonShowDetails>
+                  Show Details
+                </ProviderDashboardButtonShowDetails>
+              </Link>
+            </div>
           )}
 
           <Link
@@ -381,100 +396,6 @@ const TokenTapContent = () => {
   );
 };
 
-export const WithDrawRemainingTokens = ({ distribution }: DistributionCardProp) => {
-  const { address } = useWalletAccount();
-  const { chain: activatedChain } = useWalletNetwork();
-  const { switchChain, addAndSwitchChain } = useNetworkSwitcher();
-
-  const signer = useWalletSigner();
-  const provider = useWalletProvider();
-  const [refundRes, setRefundRes] = useState<any | null>(null);
-  const distributionId = distribution.distributionId;
-  const chainId = activatedChain?.id;
-  const [btnLabel, setBtnLabel] = useState('Withdraw remaining tokens')
-  const [isRefunded, setIsRefunded] = useState<boolean>(true)
-  const isFinished = new Date(distribution.deadline) < new Date();
-
-  const getDistributeStatus = async () => {
-    if (!distribution) return;
-    const data = await readContract(config, {
-      abi: tokenTapAbi,
-      address: contractAddresses.tokenTap[distribution.chain.chainId]
-        ?.erc20,
-      functionName: "distributions",
-      args: [BigInt(distribution.distributionId!)],
-      chainId: Number(distribution?.chain.chainId ?? 1),
-    })
-    console.log(data)
-    setIsRefunded(data[7])
-  }
-
-  useEffect(() => {
-    getDistributeStatus()
-  }, [])
-
-
-  const handelWithdrawRemainingTokens = async () => {
-    if (!provider || !signer || !address || !chainId || !distributionId || !distribution) return
-    if (chainId?.toString() !== distribution?.chain.chainId) {
-      setBtnLabel('Switching network...')
-      await switchChain(Number(distribution?.chain.chainId))
-      setBtnLabel('Withdraw remaining tokens')
-      return
-    }
-    setBtnLabel('Withdraw remaining tokens...')
-    try {
-      await withdrawRemainingTokens(provider, signer, address, chainId, distributionId, setRefundRes);
-    }
-    finally {
-      getDistributeStatus()
-      setBtnLabel('Withdraw remaining tokens')
-    }
-  }
-
-  return (
-    <div>
-      {!isRefunded && distribution.numberOfClaims < distribution.maxNumberOfClaims && isFinished &&
-        <div>
-          <div onClick={() => handelWithdrawRemainingTokens()} className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">
-            {btnLabel}
-          </div>
-        </div>
-      }
-    </div>
-  )
-}
-
-export const ExtendToken = ({ distribution }: DistributionCardProp) => {
-  console.log(distribution)
-  const [isRefunded, setIsRefunded] = useState<boolean>(true)
-  const isFinished = new Date(distribution.deadline) < new Date();
-  const endTime = distribution.deadline;
-  const maxNumberOfClaims = distribution.maxNumberOfClaims;
-  const decimals = distribution.decimals;
-  const amount = distribution.amount
-  const getDistributeStatus = async () => {
-    if (!distribution) return;
-    const data = await readContract(config, {
-      abi: tokenTapAbi,
-      address: contractAddresses.tokenTap[distribution.chain.chainId]
-        ?.erc20,
-      functionName: "distributions",
-      args: [BigInt(distribution.distributionId!)],
-      chainId: Number(distribution?.chain.chainId ?? 1),
-    })
-    console.log(data, amount)
-    setIsRefunded(data[7])
-  }
-
-
-  useEffect(() => { getDistributeStatus() }, [])
-
-  return (
-    <div className="flex justify-center items-center text-2xs border border-gray90 rounded-sm p-1 h-[22px] cursor-pointer">Extend</div>
-  )
-
-}
 export default TokenTapContent;
 
 const Skeleton = () => {
