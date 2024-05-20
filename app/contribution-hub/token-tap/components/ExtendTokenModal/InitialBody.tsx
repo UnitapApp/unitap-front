@@ -73,7 +73,6 @@ const InitialBody = ({ distribute }: { distribute: UserTokenDistribution }) => {
 		const maxNumberOfClaims = updatedNumberOfClaims ? updatedNumberOfClaims + currentMaxNumClaims : currentMaxNumClaims;
 		const amount = distribute.tokenAddress === zeroAddress && updatedNumberOfClaims ? toWei(extraPayment) : 0
 		if (!provider || !signer || !address || !chainId || !distributionId || !newEndTime) return
-		console.log(Date.now(), Number(newEndTime) * 1000)
 		if (Date.now() > Number(newEndTime) * 1000 || Number(newEndTime) < Date.parse(distribute.deadline) / 1000) {
 			setExtendErrorMessage('Invalid time entry. The new time must be later than both the current time and the previously entered time. Please enter a valid time')
 			return
