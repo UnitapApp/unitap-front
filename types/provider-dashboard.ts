@@ -222,6 +222,7 @@ export interface UserTokenDistribution {
   necessaryInformation: string | null;
   notes: string;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   rejectionReason: string | null;
   startAt: string;
   status: string;
