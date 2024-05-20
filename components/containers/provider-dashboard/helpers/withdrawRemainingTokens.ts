@@ -18,7 +18,6 @@ export const withdrawRemainingTokensCallback = async (
   setRefundRes: any,
   withdrawWalletAddress: `0x${string}`,
 ) => {
-  console.log(address, distributionId, withdrawWalletAddress);
   const response = await signer?.writeContract({
     abi: tokenTapAbi,
     address: erc20Contract.address,
