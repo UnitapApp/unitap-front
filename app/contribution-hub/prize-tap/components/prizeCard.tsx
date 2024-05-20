@@ -24,7 +24,7 @@ import { useNetworkSwitcher } from "@/utils/wallet";
 import { readContract } from "wagmi/actions";
 import { config } from "@/utils/wallet/wagmi";
 import { contractAddresses } from "@/constants";
-import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
+import { prizeTapAbi } from "@/types/abis/contracts";
 
 export type PrizeCardProp = {
   prize: UserRafflesProps;
@@ -130,9 +130,6 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
           </div>
         ) : prize.status === RaffleStatus.PENDING ? (
           <div>
-            {/* {new Date(prize.deadline) < new Date() && */}
-            <RefundRemainingPrize prize={prize} />
-            {/* } */}
             <Link
               className="absolute bottom-3 left-4 right-4"
               href={RoutePath.PROVIDER_PRIZETAP_DETAILS + "/" + prize.pk}
@@ -238,7 +235,7 @@ export const RefundRemainingPrize = ({ prize }: { prize: UserRafflesProps }) => 
   const raffleId = prize.raffleId;
   const hasWinner = prize.winnerEntries!.length !== 0;
   const chainId = activatedChain?.id;
-  const [btnLabel, setBtnLabel] = useState('Refound your prize')
+  const [btnLabel, setBtnLabel] = useState('Refund your prize')
   const [raffleStatus, setRaffleStatus] = useState<number>(3)
 
   const getRaffleStatus = async () => {
@@ -251,7 +248,6 @@ export const RefundRemainingPrize = ({ prize }: { prize: UserRafflesProps }) => 
       args: [BigInt(prize.raffleId!)],
       chainId: Number(prize?.chain.chainId ?? 1),
     })
-    console.log(data[12])
     setRaffleStatus(Number(data[12]))
   }
 
@@ -259,22 +255,21 @@ export const RefundRemainingPrize = ({ prize }: { prize: UserRafflesProps }) => 
     getRaffleStatus()
   }, [])
 
-
   const handelRefundPrize = async () => {
     if (!provider || !signer || !address || !chainId || !raffleId || !prize) return
     if (chainId?.toString() !== prize?.chain.chainId) {
       setBtnLabel('Switching network...')
       await switchChain(Number(prize?.chain.chainId))
-      setBtnLabel('Refound your prize')
+      setBtnLabel('Refund your prize')
       return
     }
-    setBtnLabel('Refound your prize...')
+    setBtnLabel('Refund your prize...')
     try {
       await refundRemainingPrize(provider, signer, address, chainId, raffleId, setRefundRes, hasWinner);
     }
     finally {
       getRaffleStatus()
-      setBtnLabel('Refound your prize')
+      setBtnLabel('Refund your prize')
     }
   }
 
