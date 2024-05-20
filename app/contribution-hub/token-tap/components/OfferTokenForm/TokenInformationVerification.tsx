@@ -5,10 +5,17 @@ import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapConte
 import { ProviderDashboardGoToDashBoard } from "@/app/contribution-hub/components/Buttons";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
-import { WithDrawRemainingTokens } from "../Content";
+import ExtendTokenModal from "../ExtendTokenModal/ExtendTokenModal";
+import { UserTokenDistribution } from "@/types";
+import { useState } from "react";
 
 const TokenInformationVerification = () => {
   const { selectedRaffleForCheckReason } = useTokenTapFromContext();
+  const [selectedDistribute, setSelectedDistribute] = useState<UserTokenDistribution | null>(null)
+
+  const handleExtendModal = () => {
+    setSelectedDistribute(selectedRaffleForCheckReason)
+  }
   return (
     <div className="flex w-full max-w-[452px] animate-fadeIn flex-col gap-5 text-center text-xs font-medium text-gray100">
       <div className="flex min-h-[292px] flex-col gap-5">
@@ -99,19 +106,23 @@ const TokenInformationVerification = () => {
                 </a>
               </div>
             </div>
-            <WithDrawRemainingTokens distribution={selectedRaffleForCheckReason} />
+            <ExtendTokenModal distribute={selectedDistribute} setSelectedDistribute={setSelectedDistribute} />
           </div>
         )}
       </div>
-      <Link
-        // onClick={handleGOToDashboard}
-        href={RoutePath.PROVIDER_TOKENTAP}
-        className="mt-[111px] flex w-full max-w-[452px] flex-col items-center lg:flex-row"
-      >
-        <ProviderDashboardGoToDashBoard>
-          Go To Dashboard
-        </ProviderDashboardGoToDashBoard>
-      </Link>
+      <div className="mt-[90px] ">
+        <Link
+          href={RoutePath.PROVIDER_TOKENTAP}
+          className="flex w-full max-w-[452px] flex-col items-center lg:flex-row"
+        >
+          <ProviderDashboardGoToDashBoard>
+            Go To Dashboard
+          </ProviderDashboardGoToDashBoard>
+        </Link>
+        <div className="w-full h-[43px] flex items-center justify-center text-white">
+          <span className="cursor-pointer underline" onClick={() => handleExtendModal()}>Refund Tokens</span>
+        </div>
+      </div>
     </div>
   );
 };
