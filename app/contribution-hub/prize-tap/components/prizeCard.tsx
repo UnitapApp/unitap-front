@@ -18,10 +18,15 @@ import "./content.module.scss";
 import WinnersModal from "./Modals/winnersModal";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
-import { useWalletAccount, useWalletNetwork, useWalletProvider, useWalletSigner } from "@/utils/wallet"
+import {
+  useWalletAccount,
+  useWalletNetwork,
+  useWalletProvider,
+  useWalletSigner,
+} from "@/utils/wallet";
 import { refundRemainingPrize } from "@/components/containers/provider-dashboard/helpers/refundRemainingPrize";
 import { useNetworkSwitcher } from "@/utils/wallet";
-import { readContract } from "wagmi/actions";
+import { getPublicClient, getWalletClient, readContract } from "wagmi/actions";
 import { config } from "@/utils/wallet/wagmi";
 import { contractAddresses } from "@/constants";
 import { prizeTapAbi } from "@/types/abis/contracts";
@@ -87,9 +92,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-              (prize.status === RaffleStatus.VERIFIED ||
-                prize.status === RaffleStatus.WS) &&
-              diff > 0 ? (
+            (prize.status === RaffleStatus.VERIFIED ||
+              prize.status === RaffleStatus.WS) &&
+            diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
@@ -212,7 +217,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
-                  !prize.winnerEntries?.length
+                !prize.winnerEntries?.length
                   ? "Raffle is being processed"
                   : "Check Winners"}
               </p>
@@ -224,68 +229,94 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
   );
 };
 
-export const RefundRemainingPrize = ({ prize }: { prize: UserRafflesProps }) => {
+export const RefundRemainingPrize = ({
+  prize,
+}: {
+  prize: UserRafflesProps;
+}) => {
   const { address } = useWalletAccount();
   const { chain: activatedChain } = useWalletNetwork();
   const { switchChain, addAndSwitchChain } = useNetworkSwitcher();
 
   const signer = useWalletSigner();
   const provider = useWalletProvider();
-  const [refundRes, setRefundRes] = useState<any | null>(null)
+  const [refundRes, setRefundRes] = useState<any | null>(null);
   const raffleId = prize.raffleId;
   const hasWinner = prize.winnerEntries!.length !== 0;
   const chainId = activatedChain?.id;
-  const [btnLabel, setBtnLabel] = useState('Refund your prize')
-  const [raffleStatus, setRaffleStatus] = useState<number>(3)
+  const [btnLabel, setBtnLabel] = useState("Refund your prize");
+  const [raffleStatus, setRaffleStatus] = useState<number>(3);
 
   const getRaffleStatus = async () => {
     if (!prize) return;
     const data = await readContract(config, {
       abi: prizeTapAbi,
-      address: contractAddresses.prizeTap[prize.chain.chainId]
-        ?.erc20,
+      address: contractAddresses.prizeTap[prize.chain.chainId]?.erc20,
       functionName: "raffles",
       args: [BigInt(prize.raffleId!)],
       chainId: Number(prize?.chain.chainId ?? 1),
-    })
-    setRaffleStatus(Number(data[12]))
-  }
+    });
+    setRaffleStatus(Number(data[12]));
+  };
 
   useEffect(() => {
-    getRaffleStatus()
-  }, [])
+    getRaffleStatus();
+  }, []);
 
   const handelRefundPrize = async () => {
-    if (!provider || !signer || !address || !chainId || !raffleId || !prize) return
+    if (!provider || !signer || !address || !chainId || !raffleId || !prize)
+      return;
+    let newProvider = provider;
+    let newSigner = signer;
+
     if (chainId?.toString() !== prize?.chain.chainId) {
-      setBtnLabel('Switching network...')
-      await switchChain(Number(prize?.chain.chainId))
-      setBtnLabel('Refund your prize')
-      return
+      setBtnLabel("Switching network...");
+      await switchChain(Number(prize?.chain.chainId));
+
+      await new Promise((resolve) => {
+        setTimeout(resolve, 100);
+      });
+
+      newProvider = getPublicClient(config)!;
+      newSigner = getWalletClient(config)!;
+
+      setBtnLabel("Refund your prize");
     }
-    setBtnLabel('Refund your prize...')
+
+    setBtnLabel("Refund your prize...");
     try {
-      await refundRemainingPrize(provider, signer, address, chainId, raffleId, setRefundRes, hasWinner);
+      await refundRemainingPrize(
+        newProvider,
+        newSigner,
+        address,
+        await newProvider.getChainId(),
+        raffleId,
+        setRefundRes,
+        hasWinner,
+      );
+    } finally {
+      getRaffleStatus();
+      setBtnLabel("Refund your prize");
     }
-    finally {
-      getRaffleStatus()
-      setBtnLabel('Refund your prize')
-    }
-  }
+  };
 
   return (
     <div>
-      {raffleStatus != 3 && prize.numberOfOnchainEntries < prize.winnersCount ?
+      {raffleStatus != 3 &&
+      prize.numberOfOnchainEntries < prize.winnersCount ? (
         <div>
-          <div onClick={() => handelRefundPrize()} className="w-full flex items-center bg-gray50 justify-center h-12 rounded-xl border border-gray70 text-xs text-gray100 mt-7 font-medium cursor-pointer">
+          <div
+            onClick={() => handelRefundPrize()}
+            className="mt-7 flex h-12 w-full cursor-pointer items-center justify-center rounded-xl border border-gray70 bg-gray50 text-xs font-medium text-gray100"
+          >
             {btnLabel}
           </div>
         </div>
-        :
-        ''
-      }
+      ) : (
+        ""
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default PrizeCard;
