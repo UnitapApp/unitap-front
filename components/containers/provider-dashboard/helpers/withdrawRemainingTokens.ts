@@ -16,13 +16,15 @@ export const withdrawRemainingTokensCallback = async (
   signer: GetWalletClientReturnType,
   distributionId: bigint,
   setRefundRes: any,
+  withdrawWalletAddress: `0x${string}`,
 ) => {
+  console.log(address, distributionId, withdrawWalletAddress);
   const response = await signer?.writeContract({
     abi: tokenTapAbi,
     address: erc20Contract.address,
     account: address,
     functionName: "withdrawReaminingTokens",
-    args: [address, distributionId],
+    args: [withdrawWalletAddress, distributionId],
   });
 
   if (response) {
@@ -57,6 +59,7 @@ export const withdrawRemainingTokens = async (
   chainId: number,
   distributionId: number,
   setRefundRes: any,
+  withdrawWalletAddress: `0x${string}`,
 ) => {
   if (!provider || !signer) return;
   const contract = getContract({
@@ -73,6 +76,7 @@ export const withdrawRemainingTokens = async (
       signer,
       BigInt(distributionId),
       setRefundRes,
+      withdrawWalletAddress,
     );
     return response;
   } catch (e: any) {
