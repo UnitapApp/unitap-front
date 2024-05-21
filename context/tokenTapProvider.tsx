@@ -86,8 +86,6 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const [selectedTokenForClaim, setSelectedTokenForClaim] =
     useState<Token | null>(null);
   const [claimingTokenPk, setClaimingTokenPk] = useState<PK | null>(null);
-  const [hash, setHash] = useState<Address>();
-  const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
 
   const tokenListSearchResult = useMemo(() => {
     const searchPhraseLowerCase = searchPhrase.toLowerCase();
@@ -205,6 +203,17 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           address: contractAddress,
           functionName: "claimToken",
           args: contractArgs,
+        });
+
+        const simulateRes = await provider.simulateContract({
+          args: contractArgs,
+          abi: unitapEvmTokenTapAbi,
+          account: address,
+          address:
+            contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
+              .erc20,
+          functionName: "claimToken",
+          gas: contractGas,
         });
 
         const claimRes = await writeContractAsync?.({
