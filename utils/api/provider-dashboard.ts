@@ -1,5 +1,6 @@
 import { ConstraintProps } from "@/types";
 import { axiosInstance } from "./base";
+import { headers } from "next/headers";
 
 export async function createRaffleApi(token: string, raffleData: any) {
   const response = await axiosInstance.post<any>(
@@ -10,7 +11,7 @@ export async function createRaffleApi(token: string, raffleData: any) {
         Authorization: `Token ${token}`,
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
   return response.data;
 }
@@ -18,7 +19,7 @@ export async function createRaffleApi(token: string, raffleData: any) {
 export async function updateCreateRaffleTx(
   token: string,
   raffleID: number | undefined,
-  txHash: string
+  txHash: string,
 ) {
   const response = await axiosInstance.post<any>(
     `api/prizetap/set-raffle-tx/${raffleID}/`,
@@ -27,7 +28,7 @@ export async function updateCreateRaffleTx(
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
   return response.data;
 }
@@ -59,7 +60,7 @@ export const getUserDistributions = async (token: string) => {
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
 
   return response.data;
@@ -81,7 +82,7 @@ export async function createTokenDistribution(token: string, data: any) {
         Authorization: `Token ${token}`,
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
   return response.data;
 }
@@ -93,8 +94,13 @@ export const getUserDonations = async (token: string) => {
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
-
   return response.data;
+};
+
+export const extendedDistributeTokenApi = async (pk: number) => {
+  const response = await axiosInstance.get(
+    `api/tokentap/extend-distribution/${pk}`,
+  );
 };

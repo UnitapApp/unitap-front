@@ -17,6 +17,7 @@ import Big from "big.js"
 import { checkErc20Approve } from "@/components/containers/provider-dashboard/helpers/checkErc20Approve"
 import { getBalance } from '@wagmi/core'
 import { approveErc20 } from "@/components/containers/provider-dashboard/helpers/approveErc20"
+import { extendedDistributeTokenApi } from "@/utils/api"
 
 const InitialBody = ({ distribute }: { distribute: UserTokenDistribution }) => {
 	const { address } = useWalletAccount();
@@ -80,6 +81,7 @@ const InitialBody = ({ distribute }: { distribute: UserTokenDistribution }) => {
 		setTxLoading(true);
 		try {
 			await extendDistribution(provider, signer, address, chainId, distributionId, setRefundRes, BigInt(maxNumberOfClaims), BigInt(newEndTime), BigInt(amount));
+			await extendedDistributeTokenApi(distribute.id)
 		}
 		finally {
 			setTxLoading(false);
