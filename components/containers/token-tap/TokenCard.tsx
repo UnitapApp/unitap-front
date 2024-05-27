@@ -13,7 +13,11 @@ import {
   ClaimButton,
   ClaimedButton,
 } from "@/components/ui/Button/button";
-import { useWalletAccount } from "@/utils/wallet";
+import {
+  useWalletAccount,
+  useWalletProvider,
+  useWalletSigner,
+} from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
@@ -24,28 +28,41 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
   isHighlighted,
 }) => {
-  const { openClaimModal, claimedTokensList, claimingTokenPk } =
-    useTokenTapContext();
+  const {
+    openClaimModal,
+    claimedTokensList,
+    claimingTokenPk,
+    claimTokenResponse,
+  } = useTokenTapContext();
+
+  const collectedToken = useMemo(
+    () =>
+      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
+    [claimedTokensList, token],
+  );
 
   const { isConnected, connector } = useWalletAccount();
+  const provider = useWalletSigner();
 
   const [showAllPermissions, setShowAllPermissions] = useState(false);
+
+  const isExpired =
+    token.isExpired ||
+    (token.isMaxedOut &&
+      claimTokenResponse?.state !== "Pending" &&
+      collectedToken?.status !== "Pending");
 
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
   };
 
   const addToken = async () => {
-    if (!isConnected) return;
-
-    const provider = await connector?.getClient?.();
-
-    if (!provider) return;
+    if (!isConnected || !provider) return;
 
     try {
       watchAsset(provider, {
         options: {
-          decimals: token.chain.decimals,
+          decimals: token.decimals ?? token.chain.decimals,
           symbol: token.token,
           image: token.imageUrl,
           address: token.tokenAddress,
@@ -56,12 +73,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       console.log(error);
     }
   };
-
-  const collectedToken = useMemo(
-    () =>
-      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
-    [claimedTokensList, token],
-  );
 
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
@@ -76,7 +87,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   return (
     <div>
       <div
-        className={`token-card flex ${
+        className={`token-card ${isExpired ? "opacity-80" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
@@ -88,9 +99,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
             } flex w-full flex-col items-center justify-between gap-2 rounded-t-xl md:flex-row md:gap-0`}
           >
-            <div
+            <button
+              disabled={isExpired}
               onClick={onTokenClicked}
-              className="mb-6 flex items-center hover:cursor-pointer sm:mb-0"
+              className="mb-6 flex items-center sm:mb-0"
             >
               <span className="chain-logo-container mr-3 flex h-11 w-11 justify-center">
                 <Image
@@ -122,7 +134,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   {token.distributor}
                 </p>
               </span>
-            </div>
+            </button>
 
             <div
               className={
@@ -132,8 +144,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               <div className="w-full items-center sm:w-auto sm:items-end">
                 {token.chain.chainName === "Lightning" || (
                   <AddMetamaskButton
+                    disabled={isExpired}
                     onClick={addToken}
-                    className="mx-auto !w-[220px] text-sm font-medium hover:cursor-pointer sm:mr-4 sm:!w-auto"
+                    className="mx-auto !w-[220px] text-sm font-medium sm:mr-4 sm:!w-auto"
                   >
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -159,11 +172,12 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
+                      // disabled={isExpired}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
-                      className="m-auto text-sm"
+                      className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
-                      <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+                      <p className="!bg-g-dark-primary-gradient bg-clip-text">{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
                   ) : token.isMaxedOut ? (
                     <NoCurrencyButton disabled $fontSize="13px">
