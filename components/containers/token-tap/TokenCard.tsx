@@ -87,7 +87,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   return (
     <div>
       <div
-        className={`token-card ${isExpired ? "opacity-80" : ""} flex ${
+        className={`token-card ${isExpired ? "opacity-60" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
