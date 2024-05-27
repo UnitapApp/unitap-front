@@ -274,12 +274,11 @@ export const RefundRemainingPrize = ({
       await switchChain(Number(prize?.chain.chainId));
 
       await new Promise((resolve) => {
-        setTimeout(resolve, 100);
+        setTimeout(resolve, 1000);
       });
 
-      newProvider = getPublicClient(config)!;
-      newSigner = getWalletClient(config)!;
-
+      newProvider = getPublicClient(config)! as any;
+      newSigner = (await getWalletClient(config)) as any;
       setBtnLabel("Refund your prize");
     }
 
