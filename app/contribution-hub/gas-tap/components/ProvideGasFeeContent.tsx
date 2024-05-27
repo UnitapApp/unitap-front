@@ -214,7 +214,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
       return "Connect Wallet";
     }
     if (loading) {
-      return "Loading...";
+      return "Pending...";
     }
     return !isRightChain ? "Switch Network" : "Submit Contribution";
   }, [isConnected, isRightChain, loading]);
