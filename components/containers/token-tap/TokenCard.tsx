@@ -118,7 +118,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </span>
               <span className="w-max">
                 <p
-                  className="mb-2 flex text-center text-white md:text-left"
+                  className={`mb-2 flex text-center text-white  md:text-left ${isExpired ? "text-opacity-40" : ""}`}
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
@@ -130,7 +130,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     alt="arrow"
                   />
                 </p>
-                <p className="text-xs font-medium text-white">
+                <p
+                  className={`text-xs font-medium text-white  ${isExpired ? "text-opacity-40" : ""}`}
+                >
                   {token.distributor}
                 </p>
               </span>
@@ -227,7 +229,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </Action>
             </div>
           </div>
-          <Markdown isHighlighted={isHighlighted} content={token.notes} />
+          <Markdown
+            className={`${isExpired ? "text-opacity-40" : ""}`}
+            isHighlighted={isHighlighted}
+            content={token.notes}
+          />
           <div
             className={`${
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
@@ -247,7 +253,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 key={key}
                 text={permission.description}
               >
-                <div className="flex items-center gap-3">
+                <div
+                  className={`flex items-center gap-3 ${isExpired ? "text-opacity-40" : ""}`}
+                >
                   {permission.title}
                 </div>
               </Tooltip>
@@ -278,14 +286,18 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           } relative flex w-full flex-col items-center justify-between gap-4 rounded-b-xl px-4 py-2.5 pr-6 md:flex-row md:gap-0`}
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
-            <p className="text-gray100">
-              <span className="text-white">
+            <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
+              <span
+                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
+              >
                 {numberWithCommas(
                   token.maxNumberOfClaims - token.numberOfClaims,
                 )}{" "}
               </span>{" "}
               of{" "}
-              <span className="text-white">
+              <span
+                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
+              >
                 {" "}
                 {numberWithCommas(token.maxNumberOfClaims)}{" "}
               </span>{" "}
@@ -299,28 +311,36 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             />
           </div>
 
-          {!!timePermissionVerification && (
-            <Tooltip
-              className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
-              withoutImage
-              text={timePermissionVerification.description}
-            >
-              <div
-                data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-                className="flex items-center justify-center"
-              >
-                {timePermissionVerification.title}
-                <Icon
-                  iconSrc={`/assets/images/token-tap/${
-                    timePermissionVerification.name ===
-                    "tokenTap.OnceInALifeTimeVerification"
-                      ? "non-repeat.svg"
-                      : "repeat.svg"
-                  }`}
-                  className="ml-3"
-                />
+          {isExpired ? (
+            <div className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2">
+              <div className="flex items-center justify-center">
+                From Archive
               </div>
-            </Tooltip>
+            </div>
+          ) : (
+            !!timePermissionVerification && (
+              <Tooltip
+                className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
+                withoutImage
+                text={timePermissionVerification.description}
+              >
+                <div
+                  data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+                  className="flex items-center justify-center"
+                >
+                  {timePermissionVerification.title}
+                  <Icon
+                    iconSrc={`/assets/images/token-tap/${
+                      timePermissionVerification.name ===
+                      "tokenTap.OnceInALifeTimeVerification"
+                        ? "non-repeat.svg"
+                        : "repeat.svg"
+                    }`}
+                    className="ml-3"
+                  />
+                </div>
+              </Tooltip>
+            )
           )}
 
           <div className="flex items-center gap-x-6">
