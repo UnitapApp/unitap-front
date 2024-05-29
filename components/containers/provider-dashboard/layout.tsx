@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import { FC, PropsWithChildren } from "react";
-import Header from "./Header";
-import { usePathname } from "next/navigation";
-import RoutePath from "@/utils/routes";
-import Icon from "@/components/ui/Icon";
-import Link from "next/link";
-import { useGlobalContext } from "@/context/globalProvider";
-import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "../../../app/contribution-hub/components/Buttons";
+import { FC, PropsWithChildren } from "react"
+import Header from "./Header"
+import { usePathname } from "next/navigation"
+import RoutePath from "@/utils/routes"
+import Icon from "@/components/ui/Icon"
+import Link from "next/link"
+import { useGlobalContext } from "@/context/globalProvider"
+import { useUserProfileContext } from "@/context/userProfile"
+import { BackToHomeButton } from "../../../app/(base)/contribution-hub/components/Buttons"
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
-  const { userToken } = useUserProfileContext();
-  const { openBrightIdModal } = useGlobalContext();
+  const { userToken } = useUserProfileContext()
+  const { openBrightIdModal } = useGlobalContext()
 
   return (
     <>
@@ -51,11 +51,11 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
 const ProviderTabs: FC = () => {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   const borderPosition =
     pathname.includes(RoutePath.PROVIDER_GASTAP) ||
@@ -63,7 +63,7 @@ const ProviderTabs: FC = () => {
       ? "after:left-0"
       : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
         ? "after:left-[33.33%]"
-        : "after:left-[67%]";
+        : "after:left-[67%]"
 
   return (
     <div
@@ -103,7 +103,7 @@ const ProviderTabs: FC = () => {
         <Icon iconSrc="/assets/images/provider-dashboard/prize-tap.svg" />
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default ProviderDashboardLayout;
+export default ProviderDashboardLayout

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import AddWalletModal from "@/app/profile/components/addWalletModal";
-import { NullCallback } from "@/utils";
+import AddWalletModal from "@/app/(base)/profile/components/addWalletModal"
+import { NullCallback } from "@/utils"
 import {
   FC,
   PropsWithChildren,
@@ -9,15 +9,15 @@ import {
   useContext,
   useEffect,
   useState,
-} from "react";
+} from "react"
 
 export const WalletManagementContext = createContext<{
-  isAddModalOpen: boolean;
-  setIsAddModalOpen: (value: boolean) => void;
-  addModalState: string;
-  setAddModalState: (value: string) => void;
-  duplicateWalletRaiseError: boolean;
-  setDuplicateWalletRaiseError: (arg: boolean) => void;
+  isAddModalOpen: boolean
+  setIsAddModalOpen: (value: boolean) => void
+  addModalState: string
+  setAddModalState: (value: string) => void
+  duplicateWalletRaiseError: boolean
+  setDuplicateWalletRaiseError: (arg: boolean) => void
 }>({
   isAddModalOpen: false,
   setIsAddModalOpen: NullCallback,
@@ -25,22 +25,22 @@ export const WalletManagementContext = createContext<{
   addModalState: "",
   duplicateWalletRaiseError: false,
   setDuplicateWalletRaiseError: NullCallback,
-});
+})
 
 export const useWalletManagementContext = () =>
-  useContext(WalletManagementContext);
+  useContext(WalletManagementContext)
 
 const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [addModalState, setAddModalState] = useState("");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [addModalState, setAddModalState] = useState("")
   const [duplicateWalletRaiseError, setDuplicateWalletRaiseError] =
-    useState(false);
+    useState(false)
 
   useEffect(() => {
     if (isAddModalOpen) {
-      setAddModalState("idle");
+      setAddModalState("idle")
     }
-  }, [isAddModalOpen]);
+  }, [isAddModalOpen])
 
   return (
     <WalletManagementContext.Provider
@@ -57,7 +57,7 @@ const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
       <AddWalletModal />
     </WalletManagementContext.Provider>
-  );
-};
+  )
+}
 
-export default WalletProvider;
+export default WalletProvider
