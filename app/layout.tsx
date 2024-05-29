@@ -21,6 +21,7 @@ import "./globals.scss";
 import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { Providers } from "./providers";
+import AxiosApiManager from "@/components/axios-api-manager";
 
 const notoSansFont = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -72,6 +73,7 @@ export default async function RootLayout({
               <CreateBrightIdAccountModal />
               <ConnectWalletModal />
             </StyledJsxRegistry>
+            <AxiosApiManager />
           </UnitapProvider>
         </Providers>
 

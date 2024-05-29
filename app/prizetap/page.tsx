@@ -8,11 +8,13 @@ import { FC } from "react";
 
 import "./styles.scss";
 import ContributionPrizetap from "./components/footer-button";
+import SearchInput from "./components/searchInput";
 
 const PrizeTapPage: FC = () => {
   return (
     <>
       <Header />
+      <SearchInput className="mt-1 w-full md:w-1/3 lg:mt-0" />
       <RafflesList />
       <ContributionPrizetap />
       <LineaCheckWalletsModal />

@@ -2,17 +2,17 @@
 
 import Icon from "@/components/ui/Icon";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
-import { ProviderDashboardGoToDashBoard } from "@/app/contribution-hub/Buttons";
+import { ProviderDashboardGoToDashBoard } from "@/app/contribution-hub/components/Buttons";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
 
 const TokenInformationVerification = () => {
   const { selectedRaffleForCheckReason } = useTokenTapFromContext();
   return (
-    <div className="flex flex-col gap-5 w-full max-w-[452px] text-gray100 font-medium text-xs text-center animate-fadeIn">
-      <div className="flex flex-col gap-5 min-h-[292px]">
+    <div className="flex w-full max-w-[452px] animate-fadeIn flex-col gap-5 text-center text-xs font-medium text-gray100">
+      <div className="flex min-h-[292px] flex-col gap-5">
         <Icon iconSrc="/assets/images/landing/tokentap-icon.png" />
-        <div className="flex items-center text-sm justify-center text-white font-semibold gap-2">
+        <div className="flex items-center justify-center gap-2 text-sm font-semibold text-white">
           {!selectedRaffleForCheckReason ? (
             <div className="flex items-center gap-2">
               {" "}
@@ -41,8 +41,8 @@ const TokenInformationVerification = () => {
           </p>
         ) : null}
         {!selectedRaffleForCheckReason ? (
-          <div className="bg-gray50 p-4 rounded-xl leading-5 relative">
-            <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="relative rounded-xl bg-gray50 p-4 leading-5">
+            <div className="flex flex-col items-center justify-center md:flex-row">
               <Icon
                 className="ml-[-5px] mr-[5px]"
                 width="12px"
@@ -61,18 +61,18 @@ const TokenInformationVerification = () => {
             <div className="flex items-center justify-center gap-1">
               <a
                 target="_blank"
-                href="mailto:unitap.support@gmail.com"
-                className="text-white flex gap-1 items-center justify-center"
+                href="mailto:Support@unitap.app"
+                className="flex items-center justify-center gap-1 text-white"
               >
-                unitap.support@gmail.com
+                Support@unitap.app
                 <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
               </a>
             </div>
           </div>
         ) : (
           <div>
-            <div className="bg-gray50 p-4 rounded-xl leading-5 relative">
-              <div className="flex flex-col md:flex-row items-center justify-center">
+            <div className="relative rounded-xl bg-gray50 p-4 leading-5">
+              <div className="flex flex-col items-center justify-center md:flex-row">
                 <Icon
                   className="ml-[-5px] mr-[5px]"
                   width="12px"
@@ -87,13 +87,13 @@ const TokenInformationVerification = () => {
                 Send your request again and we will check it again or contact us
                 via this email address:
               </p>
-              <div className="flex gap-1 items-center justify-center">
+              <div className="flex items-center justify-center gap-1">
                 <a
-                  href="mailto:unitap.support@gmail.com"
+                  href="mailto:Support@unitap.app"
                   target="_black"
-                  className="text-white gap-1 flex"
+                  className="flex gap-1 text-white"
                 >
-                  unitap.support@gmail.com
+                  Support@unitap.app
                   <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
                 </a>
               </div>
@@ -104,7 +104,7 @@ const TokenInformationVerification = () => {
       <Link
         // onClick={handleGOToDashboard}
         href={RoutePath.PROVIDER_TOKENTAP}
-        className="flex flex-col lg:flex-row w-full max-w-[452px] mt-[111px] items-center"
+        className="mt-[111px] flex w-full max-w-[452px] flex-col items-center lg:flex-row"
       >
         <ProviderDashboardGoToDashBoard>
           Go To Dashboard

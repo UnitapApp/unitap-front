@@ -2,14 +2,15 @@
 
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Address } from "viem";
 import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
-import { useReadContracts } from "wagmi";
 import { CSVLink } from "react-csv";
 import { UserRafflesProps } from "@/types";
 import { useProvider, useWalletProvider } from "@/utils/wallet";
+import { contractAddresses } from "@/constants";
+import { readContracts } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
 
 interface Props {
   winnersResultRaffle: UserRafflesProps | null;
@@ -22,23 +23,32 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const provider = useWalletProvider();
 
   const exportEnrollmentWallets = useCallback(async () => {
+    if (!winnersResultRaffle) return;
+
     const isNft = winnersResultRaffle!.isPrizeNft;
     const raffleId = Number(winnersResultRaffle!.raffleId);
     const entriesNumber = winnersResultRaffle!.numberOfOnchainEntries;
     const contracts = [];
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
+      const address = winnersResultRaffle.isPrizeNft
+        ? contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]?.erc721
+        : contractAddresses.prizeTap[winnersResultRaffle.chain.chainId]
+            ?.erc20 || winnersResultRaffle.contract;
+
+      if (!address) continue;
+
       contracts.push({
         abi: isNft ? prizeTap721Abi : prizeTapAbi,
-        address: winnersResultRaffle!.contract as Address,
+        address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
         chainId: Number(winnersResultRaffle?.chain.chainId ?? 1),
       });
     }
 
-    const data = await (provider?.multicall as any)({
-      contracts,
+    const data = await readContracts(config, {
+      contracts: contracts as any,
     });
 
     const allWallet = (data.map((item: any) => item.result) as any)
@@ -57,7 +67,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       : winnersResultRaffle?.winnerEntries?.filter((item) =>
           item.userWalletAddress
             .toLocaleLowerCase()
-            .includes(searchPhraseInput.toLocaleLowerCase())
+            .includes(searchPhraseInput.toLocaleLowerCase()),
         ) ?? [];
 
     return items ?? [];
@@ -75,11 +85,11 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
 
   return (
     <div>
-      <div className="sm:flex sm:flex-row items-center sm:justify-between w-full px-1  mt-2 mb-2">
+      <div className="mb-2 mt-2 w-full items-center px-1 sm:flex  sm:flex-row sm:justify-between">
         <p className="text-xs  text-gray90">Winners</p>
         {!!winnersResultRaffle.numberOfOnchainEntries && (
           <CSVLink
-            className="text-gray90 bg-none text-xs m-0 p-0 w-full underline max-w-[204px]"
+            className="m-0 w-full max-w-[204px] bg-none p-0 text-xs text-gray90 underline"
             filename={`${winnersResultRaffle.prizeName}_raffleEntry_wallets.csv`}
             data={enrollmentWallets}
           >
@@ -87,7 +97,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
           </CSVLink>
         )}
       </div>
-      <div className="flex bg-gray50 p-4 py-3.5 border-2 rounded-xl !border-gray30 items-center w-full mt-1">
+      <div className="mt-1 flex w-full items-center rounded-xl border-2 !border-gray30 bg-gray50 p-4 py-3.5">
         <Icon
           className="mr-5"
           iconSrc="/assets/images/modal/search-icon.svg"
@@ -95,14 +105,14 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
           height="20px"
         />
         <input
-          className="bg-transparent placeholder:text-gray90 text-white w-full z-1"
+          className="z-1 w-full bg-transparent text-white placeholder:text-gray90"
           value={searchPhraseInput}
           onChange={(e) => setSearchPhraseInput(e.target.value)}
           placeholder="Search Wallet"
         />
       </div>
 
-      <div className="mt-4 h-72 text-sm styled-scroll w-full overflow-auto">
+      <div className="styled-scroll mt-4 h-72 w-full overflow-auto text-sm">
         {userEnrollments.map((item, key) => (
           <WalletWinner
             claimingPrizeTx={item.claimingPrizeTx}
@@ -112,6 +122,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
             claimTx={item.txHash}
             key={key}
             raffle={winnersResultRaffle.pk}
+            selectedRaffleCh={winnersResultRaffle}
           />
         ))}
 

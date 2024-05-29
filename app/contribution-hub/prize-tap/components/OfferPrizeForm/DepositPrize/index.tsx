@@ -3,12 +3,12 @@
 import { ProviderFormPaginationProp } from "@/types";
 import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
-import Pagination from "@/app/contribution-hub/pagination";
+import Pagination from "@/app/contribution-hub/components/pagination";
 import CreateRaffleModal from "../../CreateRaffleModal";
 import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/contribution-hub/components/Buttons";
 import {
   useNetworkSwitcher,
   useWalletAccount,
@@ -88,16 +88,16 @@ const DepositPrize = ({
   const approve = data.isNativeToken
     ? true
     : data.isNft
-    ? isApprovedAll
-    : isErc20Approved;
+      ? isApprovedAll
+      : isErc20Approved;
 
   useEffect(() => {
     createRaffleResponse?.state === "Done" ? handleChangeFormPageNext() : null;
   }, [createRaffleResponse, handleChangeFormPageNext]);
 
   return (
-    <div className="flex flex-col w-full justify-center items-center animate-fadeIn">
-      <div className="flex flex-col min-h-[424px] gap-5 w-full max-w-[452px] min-w-[300px]">
+    <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
+      <div className="flex min-h-[424px] w-full min-w-[300px] max-w-[452px] flex-col gap-5">
         <section>
           <div className="text-center">
             <DepositContent
@@ -125,7 +125,7 @@ const DepositPrize = ({
       ) : address && !isRightChain && data.selectedChain ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="text-sm max-w-[452px] mt-[2px]"
+          className="mt-[2px] max-w-[452px] text-sm"
           data-testid="fund-action"
         >
           Switch Network
@@ -133,7 +133,7 @@ const DepositPrize = ({
       ) : !address ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="!w-full  text-white max-w-[452px] "
+          className="!w-full  max-w-[452px] text-white "
           $fontSize="14px"
           data-testid="fund-action"
         >
@@ -143,7 +143,7 @@ const DepositPrize = ({
         <ProviderDashboardButtonSubmit
           $width="100%"
           height="42px"
-          className="max-w-[452px] mt-[2px]"
+          className="mt-[2px] max-w-[452px]"
           onClick={
             data.isNft && !isApprovedAll
               ? handleApproveErc721Token

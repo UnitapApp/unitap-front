@@ -10,6 +10,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useGasTapContext } from "@/context/gasTapProvider";
+import Icon from "@/components/ui/Icon";
 
 type SearchInputProps = {
   className?: string;
@@ -24,6 +25,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const router = useRouter();
 
   const previousTimeout = useRef<any>(null);
+  const ref = useRef<HTMLInputElement>(null);
 
   const searchPhraseChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -58,9 +60,24 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     changeSearchPhrase?.(queryParam);
   }, [params]);
 
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      if (e.key == "/" && ref.current) {
+        ref.current.focus();
+      }
+    };
+
+    document.addEventListener("keyup", onKeyPress);
+
+    return () => {
+      document.removeEventListener("keyup", onKeyPress);
+    };
+  }, []);
+
   return (
     <div className={`search-input relative h-12 rounded-2xl ${className}`}>
       <Input
+        ref={ref}
         data-testid="search-box"
         $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
@@ -72,8 +89,13 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Chain name, Currency, ID"
         $pl={7}
         $p={1.5}
-        className="gastap-search mb-0 h-12 !rounded-2xl !bg-bg04"
+        className="gastap-search !bg-bg04 mb-0 h-12 !rounded-2xl"
       ></Input>
+      <Icon
+        iconSrc="/assets/images/claim/slash-icon.svg"
+        hoverable
+        className="icon-right absolute right-4 top-[10px] z-10"
+      ></Icon>
     </div>
   );
 };

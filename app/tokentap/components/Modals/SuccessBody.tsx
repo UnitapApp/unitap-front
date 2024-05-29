@@ -10,7 +10,8 @@ import { DropIconWrapper } from "@/components/containers/modals/claimModal.style
 const SuccessBody: FC<{
   token: Token;
 }> = ({ token }) => {
-  const calculateClaimAmount = token.amount / 10 ** token.chain.decimals;
+  const calculateClaimAmount =
+    token.amount / 10 ** (token.decimals ?? token.chain.decimals);
 
   const { claimedTokensList, claimTokenResponse } = useTokenTapContext();
 

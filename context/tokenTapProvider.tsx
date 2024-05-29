@@ -25,7 +25,11 @@ import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { unitapEvmTokenTapAbi } from "@/types/abis/contracts";
 import { useGlobalContext } from "./globalProvider";
-import { FAST_INTERVAL, tokenTapContractAddressList } from "@/constants";
+import {
+  FAST_INTERVAL,
+  contractAddresses,
+  tokenTapContractAddressList,
+} from "@/constants";
 import { Address, TransactionExecutionError } from "viem";
 
 export const TokenTapContext = createContext<{
@@ -78,7 +82,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     useState<boolean>(false);
   const [searchPhrase, setSearchPhrase] = useState<string>("");
   const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>(
-    []
+    [],
   );
   const [selectedTokenForClaim, setSelectedTokenForClaim] =
     useState<Token | null>(null);
@@ -89,7 +93,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const tokenListSearchResult = useMemo(() => {
     const searchPhraseLowerCase = searchPhrase.toLowerCase();
     return tokensList.filter((token) =>
-      token.name.toLowerCase().includes(searchPhraseLowerCase)
+      token.name.toLowerCase().includes(searchPhraseLowerCase),
     );
   }, [searchPhrase, tokensList]);
 
@@ -148,7 +152,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       // refetch,
       address,
       setClaimTokenSignatureLoading,
-    ]
+    ],
   );
 
   const claimWithWallet = useCallback(
@@ -156,7 +160,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       if (!userToken || !selectedTokenForClaim || !provider) return;
 
       const contractAddress =
-        tokenTapContractAddressList[selectedTokenForClaim.token];
+        contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId].erc20;
 
       if (!contractAddress) return;
 
@@ -176,7 +180,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         const shieldRes = await tokenClaimSignatureApi(
           claimId,
           res!.tokenDistribution.id,
-          contractAddress
+          contractAddress,
         );
 
         if (!shieldRes.success) {
@@ -208,7 +212,9 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           args: contractArgs,
           abi: unitapEvmTokenTapAbi,
           account: address,
-          address: tokenTapContractAddressList[selectedTokenForClaim.token]!,
+          address:
+            contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
+              .erc20,
           functionName: "claimToken",
           gas: contractGas,
         });
@@ -235,7 +241,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           state: "Retry",
           message: error.shortMessage,
         });
-        console.log(error.cause, error.details, error.shortMessage);
+        console.log(error);
       } finally {
         setClaimingTokenPk(null);
         setLoading(false);
@@ -248,7 +254,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       selectedTokenForClaim,
       userToken,
       writeContractAsync,
-    ]
+    ],
   );
 
   const handleClaimToken = useCallback(async () => {
@@ -256,7 +262,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
 
     const relatedClaimedToken = claimedTokensList.find(
       (claimedToken) =>
-        claimedToken.tokenDistribution.id === selectedTokenForClaim.id
+        claimedToken.tokenDistribution.id === selectedTokenForClaim.id,
     );
 
     claimWithWallet(relatedClaimedToken?.payload, relatedClaimedToken?.id);
@@ -272,7 +278,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
       setClaimTokenResponse(null);
       setSelectedTokenForClaim(token);
     },
-    [isConnected, setIsWalletPromptOpen]
+    [isConnected, setIsWalletPromptOpen],
   );
 
   const closeClaimModal = useCallback(() => {

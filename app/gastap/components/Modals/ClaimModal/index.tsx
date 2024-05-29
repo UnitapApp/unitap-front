@@ -41,21 +41,20 @@ const ClaimModalBody: FC<{
   } = useGasTapContext();
 
   const { userProfile, remainingClaims } = useUserProfileContext();
+  const { setIsWalletPromptOpen } = useGlobalContext();
 
   const oneTimeReceipt = useMemo(
     () => oneTimeClaimedGasList.find((item) => item.chain.pk === chain.pk),
     [chain, oneTimeClaimedGasList],
   );
 
-  if (!userProfile)
-    return (
-      <BrightIdNotConnectedBody
-        chainPk={chain.pk}
-        iconSrc={getChainClaimIcon(chain)}
-      />
-    );
+  useEffect(() => {
+    if (userProfile) return;
 
-  if (!userProfile.isMeetVerified) return <BrightConnectionModalBody />;
+    setIsWalletPromptOpen(true);
+  }, [setIsWalletPromptOpen, userProfile]);
+
+  if (!userProfile?.isMeetVerified) return <BrightConnectionModalBody />;
 
   if (!activeClaimReceipt && (!remainingClaims || remainingClaims <= 0))
     return <ClaimNotAvailable />;

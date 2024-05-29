@@ -229,12 +229,6 @@
   z-index: -1;
 }
 
-.select-not {
-  @apply select-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
 .rmdp-wrapper {
   background-color: #1b1b29 !important;
   @apply text-gray100;
@@ -394,10 +388,6 @@
   background-color: #161623 !important;
   border: 2px solid #1e1e2c !important;
   max-width: 325px;
-}
-
-.setOpacity {
-  opacity: 0.3;
 }
 
 .providePrize__amount_modal {

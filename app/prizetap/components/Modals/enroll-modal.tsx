@@ -42,6 +42,13 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
   if (!chainId || chainId.toString() !== selectedRaffleForEnroll?.chain.chainId)
     return <WrongNetworkBody raffle={selectedRaffleForEnroll} />;
 
+  if (
+    selectedRaffleForEnroll.userEntry?.txHash &&
+    !selectedRaffleForEnroll.winnerEntries.length
+  ) {
+    return <SuccessBody method={method!} raffle={selectedRaffleForEnroll} />;
+  }
+
   return <InitialBody method={method!} raffle={selectedRaffleForEnroll} />;
 };
 

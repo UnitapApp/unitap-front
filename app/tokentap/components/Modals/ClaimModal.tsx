@@ -34,7 +34,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const { userProfile, tokentapRoundClaimLimit } = useUserProfileContext();
 
   const collectedToken = claimedTokensList.find(
-    (item) => item.tokenDistribution.id === selectedTokenForClaim!.id
+    (item) => item.tokenDistribution.id === selectedTokenForClaim!.id,
   );
 
   if (!selectedTokenForClaim) return null;
@@ -68,8 +68,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     return <PendingBody tokenId={selectedTokenForClaim.id} />;
 
   if (
-    claimedTokensList.length >= (tokentapRoundClaimLimit ?? 4) &&
-    !collectedToken
+    claimTokenResponse?.state === "Done" ||
+    collectedToken?.status === "Verified"
   )
     return <NotRemainingClaimsBody />;
 
@@ -102,7 +102,9 @@ const ClaimTokenModal = () => {
     selectedTokenForClaim.chain.chainName === "Lightning"
       ? selectedTokenForClaim.amount
       : selectedTokenForClaim.amount /
-        10 ** selectedTokenForClaim.chain.decimals;
+        10 **
+          (selectedTokenForClaim.decimals ??
+            selectedTokenForClaim.chain.decimals);
 
   return (
     <Modal

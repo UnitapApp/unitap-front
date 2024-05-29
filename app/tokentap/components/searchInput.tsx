@@ -20,6 +20,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const ref = useRef<HTMLInputElement>(null);
 
   const updateURLQuery = (phrase: string) => {
     const urlParams = new URLSearchParams();
@@ -83,11 +84,11 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         placeholder="Token name"
         $pl={7}
         $p={1.5}
-        className="!rounded-xl !bg-bg02 placeholder:!text-txt2"
+        className="!bg-bg02 placeholder:!text-txt2 !rounded-xl"
         $mb={0}
       ></Input>
       <Icon
-        iconSrc="assets/images/claim/slash-icon.svg"
+        iconSrc="/assets/images/claim/slash-icon.svg"
         hoverable
         className="icon-right absolute right-4 top-[10px] z-10"
       ></Icon>

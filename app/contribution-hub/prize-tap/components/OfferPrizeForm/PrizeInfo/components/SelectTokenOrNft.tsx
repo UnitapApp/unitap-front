@@ -10,9 +10,13 @@ interface Prop {
 import { loadAnimationOption } from "@/constants/lottieCode";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { ZERO_ADDRESS } from "@/constants";
-import { useState } from "react";
-import { ContractValidationStatus } from "@/types";
+import { ZERO_ADDRESS, tokensInformation } from "@/constants";
+import { useEffect, useRef, useState } from "react";
+import { ContractValidationStatus, TokenOnChain } from "@/types";
+import { zeroAddress } from "viem";
+import { useOutsideClick } from "@/utils/hooks/dom";
+import { fromWei } from "@/utils";
+import { useWalletNetwork } from "@/utils/wallet";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -28,11 +32,26 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     nftContractStatus,
     numberOfNfts,
     setNumberOfNfts,
+    setData,
+    selectedToken,
+    setSelectedToken,
+    userBalance,
+    tokenName,
+    setTokenName
   } = usePrizeOfferFormContext();
+
+
+  const [showItems, setShowItems] = useState(false)
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(ref, () => {
+    if (showItems) setShowItems(false);
+  });
 
   const isTokenFieldDisabled =
     isShowingDetails ||
-    data.isNativeToken ||
+    // data.isNativeToken ||
     !data.selectedChain ||
     tokenContractStatus.checking ||
     !isRightChain ||
@@ -53,7 +72,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     !data.tokenContractAddress;
 
   const totalAmountError =
-    insufficientBalance ||
+    data.tokenAmount && insufficientBalance ||
     Number(data.winnersCount) > 500 ||
     (showErrors && (!data.totalAmount || Number(data.totalAmount) <= 0));
 
@@ -64,7 +83,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const nftAddressError =
     (showErrors && !data.nftContractAddress) ||
     nftContractStatus.isValid === ContractValidationStatus.NotValid;
-
+  const { chain } = useWalletNetwork();
   const nftNumberFieldDisabled =
     isShowingDetails ||
     !data.selectedChain ||
@@ -79,17 +98,80 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   };
 
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const [tokenList, setTokenList] = useState<TokenOnChain[] | null>(null);
+
+
+  useEffect(() => {
+
+    if (data.selectedChain) {
+      let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
+      if (list)
+        setTokenList(list!)
+      if (Number(data.selectedChain.chainId) !== Number(chain!.id)) {
+        setSelectedToken(null);
+        setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+        setTokenName('')
+
+      }
+    }
+    else {
+      setTokenList(null)
+    }
+  }, [data.selectedChain])
+
+  useEffect(() => {
+    if (!data.selectedChain) return;
+    let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
+    if (tokenName && tokenName.substring(0, 2) != "0x" && data.selectedChain && selectedToken?.tokenSymbol !== tokenName) {
+
+      let filteredList = list?.filter((item) => item.tokenSymbol.toLowerCase().includes(tokenName.toLowerCase()))
+      setTokenList(filteredList!)
+
+    }
+    else {
+      setTokenList(list!)
+    }
+  }, [tokenName])
+
+  const handleSetTokenAddress = (item: TokenOnChain) => {
+    setSelectedToken(item)
+    setShowItems(false)
+    setTokenName(item.tokenSymbol)
+    setData((prevData: any) => ({
+      ...prevData,
+      isNativeToken: item.tokenAddress === zeroAddress,
+      tokenContractAddress: item.tokenAddress,
+      decimal: item.tokenAddress === zeroAddress ? 18 : null,
+      tokenSymbol: item.tokenSymbol
+    }));
+  }
+
+  const handleCheckTokenAddress = (address: string) => {
+    setTokenName(address)
+    if (!address) {
+      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+      setSelectedToken(null)
+    }
+    if (address.substring(0, 2) == "0x" && data.selectedChain) {
+      setData((prev: any) => ({ ...prev, tokenContractAddress: address }))
+      return
+    }
+    if (address.substring(0, 2) != "0x") {
+      setShowItems(true)
+    }
+  }
   return (
     <div
       className={
-        data.selectedChain && isRightChain ? "w-full" : "setOpacity w-full"
+        data.selectedChain && isRightChain ? "w-full" : "w-full opacity-30"
       }
     >
-      <section className="flex text-gray80 text-xs bg-gray30 border border-gray50 rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden">
+      <section className="flex h-[43px] w-full max-w-[452px] items-center overflow-hidden rounded-xl border border-gray50 bg-gray30 text-xs text-gray80">
         <div
           className={`
-          ${!data.isNft && "text-white font-medium bg-gray40 border-gray50"}
-           flex cursor-pointer items-center justify-center border-r border-r-gray50 w-[50%] h-full `}
+          ${!data.isNft && "border-gray50 bg-gray40 font-medium text-white"}
+           flex h-full w-[50%] cursor-pointer items-center justify-center border-r border-r-gray50 `}
           onClick={() => {
             if (!isRightChain) return;
             handleSelectTokenOrNft(false);
@@ -99,8 +181,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         </div>
         <div
           className={`
-          ${data.isNft && "text-white font-medium  bg-gray40 border-gray50"}
-           flex cursor-pointer items-center justify-center border-l border-l-gray50 w-[50%] h-full`}
+          ${data.isNft && "border-gray50 bg-gray40  font-medium text-white"}
+           flex h-full w-[50%] cursor-pointer items-center justify-center border-l border-l-gray50`}
           onClick={() => {
             if (!isRightChain) return;
             handleSelectTokenOrNft(true);
@@ -110,54 +192,73 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         </div>
       </section>
       {!data.isNft ? (
-        <div className="flex flex-col gap-5 w-full mt-4">
+        <div className="mt-4 flex w-full flex-col gap-5">
           <div className="relative">
-            <div
-              className="flex items-center justify-center gap-1 text-white text-2xs mb-[9px] cursor-pointer max-w-[140px]"
-              onClick={() => {
-                if (!isRightChain) return;
-                handleSelectNativeToken(data.isNativeToken);
-              }}
-            >
-              <Icon
-                height="16px"
-                width="16px"
-                iconSrc={
-                  !data.isNativeToken
-                    ? "/assets/images/provider-dashboard/checkbox.svg"
-                    : "/assets/images/provider-dashboard/check-true.svg"
-                }
-              />
-              <p className="text-sm text-gray100 ml-1">use native token</p>
-            </div>
 
             <div
-              className={`flex text-gray100 text-xs bg-gray40 border-[1.4px] 
-              rounded-xl h-[43px] max-w-[452px] overflow-hidden 
-              ${data.isNativeToken ? "opacity-[.5]" : "opacity-1"} 
+              className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl 
+              border-[1.4px] bg-gray40 text-xs text-gray100 
+
               ${tokenAddressError ? "border-error" : "border-gray50"}`}
             >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
-                <p>Token address</p>
-              </div>
-              <div className="w-full max-w-[254px] overflow-hidden px-2">
+              <div
+                className={`flex justify-between w-full items-center  cursor-pointer`}
+                ref={ref}
+                onClick={() => { !isShowingDetails && setShowItems(!showItems) }}
+              >
+                <div className="min-w-[50px]">
+                  {tokenName && !tokenName.includes('0x') && selectedToken &&
+                    <Icon iconSrc={selectedToken?.logoUrl} height="24px" width="24px" />
+                  }
+                </div>
                 <input
                   disabled={isTokenFieldDisabled}
                   name="tokenContractAddress"
-                  placeholder="paste here"
+                  placeholder="Search or paste token contract address"
+                  autoComplete="off"
                   value={
-                    data.tokenContractAddress &&
-                    data.tokenContractAddress != ZERO_ADDRESS
-                      ? data.tokenContractAddress
+                    tokenName
+                      ? tokenName
                       : ""
                   }
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full"
                   type="text"
-                  onChange={handleChange}
+                  onChange={(e) => handleCheckTokenAddress(e.target.value)}
                 />
+
+                <div className="flex pr-5">
+                  <div className="text-gray100 flex items-center">
+                    <span className="h-1 w-1 bg-gray100 mx-2 rounded-full"></span>
+                    <span className="mr-1">Balance:</span>
+                    {tokenContractStatus.isValid ===
+                      ContractValidationStatus.Valid && !tokenContractStatus.checking
+                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''
+                    }
+                  </div>
+                </div>
+
+                <div className="h-full flex items-center justify-center w-[55px]">
+                  <Icon
+
+                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    className={`${showItems ? '' : 'rotate-180'}`}
+                    width="12px"
+                    height="12px"
+                  />
+                </div>
+                {showItems && tokenList && tokenList.length > 0 && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-[11] left-0 top-[45px] border-gray60 border-2 max-h-40 overflow-y-scroll">
+                  {tokenList?.map(((item, index) =>
+                    <div key={index} className="flex items-center hover:bg-gray70 pl-2 rounded-lg gap-2" onClick={() => handleSetTokenAddress(item)}>
+                      <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
+                      <p className="flex items-center text-sm cursor-pointer  h-10 w-full "
+                      >{item.tokenSymbol}</p>
+                    </div>
+                  ))}
+                </div>}
+
               </div>
               {tokenContractStatus.checking && (
-                <div className="w-[50px] h-full bg-gray30 p-0 m-0 flex items-center">
+                <div className="m-0 flex h-full w-[50px] items-center bg-gray30 p-0">
                   <Lottie
                     width={45}
                     height={45}
@@ -167,41 +268,40 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
-                <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[50px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  </div>
+                )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.Valid && (
-                <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
-                  <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[50px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
+                  </div>
+                )}
             </div>
             {tokenContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute ">
-                Invalid Token Contract Address
-              </p>
-            )}
+                <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+                  Invalid Token Contract Address
+                </p>
+              )}
 
             {showErrors && !data.tokenContractAddress && (
-              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute left-1">
+              <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
                 Required
               </p>
             )}
           </div>
 
-          <div className="relative total_amount_box">
+          <div className="total_amount_box relative">
             <div
-              className={`relative border  p-5 rounded-2xl ${
-                totalAmountError ? "border-error" : "border-gray50"
-              } `}
+              className={`relative rounded-2xl  border p-5 ${totalAmountError ? "border-error" : "border-gray50"
+                } `}
             >
               <div
-                className={`flex gap-2 text-gray100 text-xs bg-gray40 border-gray50 border rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex h-[43px] w-full max-w-[452px] items-center justify-between gap-2 overflow-hidden rounded-xl border border-gray50 bg-gray40 pr-4 text-xs text-gray100`}
               >
-                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                   Number of Winners
                 </div>
                 <input
@@ -225,9 +325,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray100 text-xs bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex h-[43px] w-full max-w-[452px] items-center justify-between gap-2 overflow-hidden rounded-xl border border-gray50 bg-gray40 pr-4 text-xs text-gray100`}
               >
-                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                   <p>Amount Per Winner</p>
                 </div>
                 <input
@@ -248,9 +348,9 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 className="py-2"
               />
               <div
-                className={`flex gap-2 text-gray100 opacity-50 text-xs bg-gray40 border border-gray50 rounded-xl h-[43px] pr-4 items-center justify-between overflow-hidden w-full max-w-[452px]`}
+                className={`flex h-[43px] w-full max-w-[452px] items-center justify-between gap-2 overflow-hidden rounded-xl border border-gray50 bg-gray40 pr-4 text-xs text-gray100 opacity-50`}
               >
-                <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center justify-center text-center">
+                <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                   <p>Total Amount</p>
                 </div>
                 <input
@@ -264,17 +364,17 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             </div>
 
             {showErrors &&
-            (!data.totalAmount || Number(data.totalAmount) <= 0) ? (
-              <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
+              (!data.totalAmount || Number(data.totalAmount) <= 0) ? (
+              <p className="absolute -bottom-4 m-0 mt-[2px] p-0 text-2xs text-error">
                 Required
               </p>
             ) : Number(data.winnersCount) > 500 ? (
-              <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
+              <p className="absolute -bottom-4 m-0 mt-[2px] p-0 text-2xs text-error">
                 The maximum number of winners is 500.
               </p>
             ) : (
-              insufficientBalance && (
-                <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
+              data.tokenAmount && insufficientBalance && (
+                <p className="absolute -bottom-4 m-0 mt-[2px] p-0 text-2xs text-error">
                   Insufficient Balance
                 </p>
               )
@@ -282,17 +382,15 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-4 w-full mt-5">
+        <div className="mt-5 flex w-full flex-col gap-4">
           <div className="relative">
             <div
               className={`
-							 flex text-gray100 text-xs bg-gray40 border ${
-                 nftAddressError ? "border-error" : "border-gray50"
-               } ${
-                data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
-              } rounded-xl h-[43px]  max-w-[452px] overflow-hidden`}
+							 flex border bg-gray40 text-xs text-gray100 ${nftAddressError ? "border-error" : "border-gray50"
+                } ${data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
+                } h-[43px] max-w-[452px]  overflow-hidden rounded-xl`}
             >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
+              <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>NFT Contract address</p>
               </div>
               <div className="w-full max-w-[254px] overflow-hidden px-2">
@@ -307,7 +405,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
               {nftContractStatus.checking && (
-                <div className="w-[50px] h-full bg-gray30 p-0 m-0 flex items-center">
+                <div className="m-0 flex h-full w-[50px] items-center bg-gray30 p-0">
                   <Lottie
                     width={45}
                     height={45}
@@ -317,56 +415,55 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               )}
               {nftContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
-                <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
-                </div>
-              )}
+                  <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
+                    <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  </div>
+                )}
               {nftContractStatus.isValid === ContractValidationStatus.Valid && (
-                <div className="w-[70px] h-full bg-gray30 p-0 m-0 flex items-center justify-center">
+                <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
                   <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
                 </div>
               )}
             </div>
             {showErrors && !data.nftContractAddress && (
-              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute left-1">
+              <p className="absolute left-1 m-0 mt-[2px] p-0 text-2xs text-error">
                 Required
               </p>
             )}
             {nftContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="text-error text-2xs m-0 p-0 mt-[2px] absolute ">
-                Invalid NFT Contract Address
-              </p>
-            )}
+                <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+                  Invalid NFT Contract Address
+                </p>
+              )}
           </div>
 
           <div className="relative mt-1">
             <div className={`tooltip ${showTooltip ? "flex" : "hidden"}`}>
-              <div className="absolute flex items-center justify-center -right-6 z-100 rounded-sm -top-4 w-[100px] h-[20px] text-xs bg-gray100">
+              <div className="absolute -right-6 -top-4 z-100 flex h-[20px] w-[100px] items-center justify-center rounded-sm bg-gray100 text-xs">
                 tooltip message
               </div>
-              <div className="absolute w-[5px] h-[5px] right-6 rotate-45 top-[1px]  bg-green-100"></div>
+              <div className="absolute right-6 top-[1px] h-[5px] w-[5px] rotate-45  bg-green-100"></div>
             </div>
             <div
               className={`
-							 flex text-gray100 text-xs bg-gray40 border ${
-                 Number(numberOfNfts) > 500 ||
-                 (data.nftTokenIds.length > 0 &&
-                   data.nftTokenIds.length != Number(numberOfNfts))
-                   ? "border-error"
-                   : "border-gray50"
-               } rounded-xl h-[43px]  max-w-[452px] overflow-hidden items-center justify-between pr-4`}
+							 flex border bg-gray40 text-xs text-gray100 ${Number(numberOfNfts) > 500 ||
+                  (data.nftTokenIds.length > 0 &&
+                    data.nftTokenIds.length != Number(numberOfNfts))
+                  ? "border-error"
+                  : "border-gray50"
+                } h-[43px] max-w-[452px]  items-center justify-between overflow-hidden rounded-xl pr-4`}
             >
-              <div className="bg-gray30 flex h-full w-full max-w-[148px] items-center text-center justify-center">
+              <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>Number of Nfts</p>
               </div>
-              <div className="w-full max-w-[254px] overflow-hidden px-2 h-full">
+              <div className="h-full w-full max-w-[254px] overflow-hidden px-2">
                 <input
                   disabled={nftNumberFieldDisabled}
                   name="NumberOfNfts"
                   placeholder="Number Of Nfts"
                   value={numberOfNfts}
-                  className="provider-dashboard-input w-full h-full"
+                  className="provider-dashboard-input h-full w-full"
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]"
@@ -375,7 +472,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   }
                 />
               </div>
-              <div className="min-w-[20px] relative">
+              <div className="relative min-w-[20px]">
                 <Icon
                   iconSrc="/assets/images/provider-dashboard/exclamation.svg"
                   className="cursor-pointer"
@@ -384,23 +481,23 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
               {Number(numberOfNfts) > 500 && (
-                <p className="absolute text-error text-2xs m-0 p-0 -bottom-4 left-0">
+                <p className="absolute -bottom-4 left-0 m-0 p-0 text-2xs text-error">
                   Maximum is 500
                 </p>
               )}
             </div>
             {data.nftTokenIds.length > 0 &&
               data.nftTokenIds.length != Number(numberOfNfts) && (
-                <p className="absolute text-error text-2xs m-0 p-0 -bottom-4 left-0">
+                <p className="absolute -bottom-4 left-0 m-0 p-0 text-2xs text-error">
                   Number of NFTs are not equal with Number of NFts you added.
                 </p>
               )}
           </div>
           {data.nftTokenIds.length > 0 ? (
-            <div className="flex relative justify-between items-center mt-[4px] bg-gray50 border max-h-[44px] border-gray60 rounded-xl p-2 px-5">
-              <div className="text-white text-xs">
+            <div className="relative mt-[4px] flex max-h-[44px] items-center justify-between rounded-xl border border-gray60 bg-gray50 p-2 px-5">
+              <div className="text-xs text-white">
                 <p>{data.nftTokenIds.length} NFT ID added</p>
-                <div className="flex text-gray90 text-2xs">
+                <div className="flex text-2xs text-gray90">
                   <p>
                     {data.nftTokenIds.length > 1
                       ? data.nftTokenIds.join(", ")
@@ -411,7 +508,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div className="flex gap-3">
                 <button
                   onClick={() => openAddNftIdListModal()}
-                  className="text-gray90 text-2xs w-[60px] h-[20px] rounded bg-gray70 border border-gray80 flex items-center justify-center"
+                  className="flex h-[20px] w-[60px] items-center justify-center rounded border border-gray80 bg-gray70 text-2xs text-gray90"
                 >
                   Edit
                 </button>
@@ -429,18 +526,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   if (!numberOfNfts) return;
                   openAddNftIdListModal();
                 }}
-                className={`flex text-white text-xs ${
-                  nftContractStatus.isValid ===
-                    ContractValidationStatus.NotValid ||
+                className={`flex text-xs text-white ${nftContractStatus.isValid ===
+                  ContractValidationStatus.NotValid ||
                   !numberOfNfts ||
                   Number(numberOfNfts) > 500
-                    ? "opacity-[0.4]"
-                    : "cursor-pointer"
-                } ${
-                  data.nftTokenIds.length == 0 && showErrors
+                  ? "opacity-[0.4]"
+                  : "cursor-pointer"
+                  } ${data.nftTokenIds.length == 0 && showErrors
                     ? "border-error"
                     : "border-gray50"
-                } bg-gray40 border  rounded-xl h-[44px] items-center  overflow-hidden w-full max-w-[452px]`}
+                  } h-[44px] w-full  max-w-[452px] items-center overflow-hidden  rounded-xl border bg-gray40`}
               >
                 <div className="flex h-full w-full max-w-[148px] items-center gap-2 p-3">
                   <Icon
@@ -452,7 +547,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </div>
               </div>
               {data.nftTokenIds.length == 0 && showErrors && (
-                <p className="absolute text-error text-2xs m-0 p-0 mt-[2px] ml-1">
+                <p className="absolute m-0 ml-1 mt-[2px] p-0 text-2xs text-error">
                   Required
                 </p>
               )}

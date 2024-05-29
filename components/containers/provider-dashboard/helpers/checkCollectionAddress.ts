@@ -1,9 +1,10 @@
 import { PublicClient, erc721Abi, erc20Abi } from "viem";
-
+import { config } from "../../../../utils/wallet/wagmi";
+import { readContracts } from "wagmi/actions";
 export const checkNftCollectionAddress = async (
   provider: PublicClient,
   collectionAddress: string,
-  chainId: number
+  chainId: number,
 ) => {
   if (!provider) return false;
 
@@ -40,10 +41,8 @@ export const checkTokenContractAddress = async (
   provider: PublicClient,
   collectionAddress: string,
   chainId: number,
-  setDecimals: (decimal: number) => void
+  setDecimals: (decimal: number) => void,
 ) => {
-  if (!provider) return false;
-
   const contracts = [
     {
       abi: erc20Abi,
@@ -65,9 +64,12 @@ export const checkTokenContractAddress = async (
     },
   ];
 
-  const data = await provider.multicall({
-    contracts,
-  });
+  const data = await readContracts(config, { contracts });
+
+  // console.log(result);
+  // const data = await provider.multicall({
+  //   contracts,
+  // });
 
   const res = data.filter((item) => item.status === "success");
   if (!res[2]) {

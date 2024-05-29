@@ -8,7 +8,7 @@ export const getUserHistory = async (token?: string) => {
       headers: {
         Authorization: `token ${token}`,
       },
-    }
+    },
   );
 
   const data = await res.json();
@@ -24,7 +24,7 @@ export const getAllConnections = async (token?: string) => {
       headers: {
         Authorization: `TOKEN ${token}`,
       },
-    }
+    },
   );
 
   const data = (await res.json()) as UserConnection[];
@@ -32,8 +32,10 @@ export const getAllConnections = async (token?: string) => {
   const transformedData = data.reduce((prev, curr) => {
     const name = Object.keys(curr)[0];
 
+    if (!curr[name].isConnected) return prev;
+
     prev[name] = curr[name];
-    return curr;
+    return prev;
   }, {} as UserConnection);
 
   return transformedData;

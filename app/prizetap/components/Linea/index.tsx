@@ -310,7 +310,7 @@ export const LineaRaffleCard: FC<{
                           <p> Unavailable</p>
                         )}
                         <Icon
-                          className="absolute right-0 top-[-2px]"
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
                           iconSrc="assets/images/prize-tap/header-prize-logo.svg"
                           width="27px"
                           height="24px"

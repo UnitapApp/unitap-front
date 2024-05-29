@@ -19,7 +19,7 @@ import {
 } from "react";
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL } from "@/constants";
+import { FAST_INTERVAL, contractAddresses } from "@/constants";
 import {
   useClient,
   useWaitForTransactionReceipt,
@@ -51,6 +51,8 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
   isLineaCheckEnrolledModalOpen: boolean;
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
+  searchPhrase: string;
+  changeSearchPhrase: (value: string) => void;
 }>({
   claimError: null,
   rafflesList: [],
@@ -71,6 +73,8 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: NullCallback,
   isLineaCheckEnrolledModalOpen: false,
   setIsLineaCheckEnrolledModalOpen: NullCallback,
+  searchPhrase: "",
+  changeSearchPhrase: NullCallback,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -97,20 +101,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     useState<any | null>(null);
   const [method, setMethod] = useState<string | null>(null);
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
+  const [searchPhrase, changeSearchPhrase] = useState("");
 
   const { userToken } = useUserProfileContext();
   const { setIsWalletPromptOpen } = useGlobalContext();
 
   const { isConnected, address, chainId } = useWalletAccount();
-
-  // const { isLoading } = useWaitForTransactionReceipt({
-  //   confirmations: 1,
-  //   hash,
-  //   chainId,
-  //   onReplaced: async (res) => {
-
-  //   },
-  // });
 
   const { writeContractAsync } = useWriteContract({});
 
@@ -129,7 +125,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const getSignature = useCallback(async () => {
     if (
       !selectedRaffleForEnroll ||
-      selectedRaffleForEnroll.isExpired ||
+      (selectedRaffleForEnroll.isExpired && method !== "Claim") ||
       !userToken ||
       !address
     )
@@ -144,6 +140,9 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           shieldSignature: "1",
         },
         multiplier: undefined,
+        userEntry: {
+          pk: selectedRaffleForEnroll.pk,
+        },
       };
     }
 
@@ -200,9 +199,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const enrollOrClaimPayload = await getSignature();
 
-    console.log(enrollOrClaimPayload);
-
-    const id = enrollOrClaimPayload?.userEntry?.pk;
+    const id = enrollOrClaimPayload?.userEntry.pk;
 
     setClaimOrEnrollLoading(true);
 
@@ -220,6 +217,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       );
     }
 
+    const contractAddress = selectedRaffleForEnroll?.isPrizeNft
+      ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc721
+      : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc20;
+
+    if (!contractAddress) throw new Error("Address is not supported");
+
     try {
       console.log("tx");
       const response = await writeContractAsync({
@@ -228,9 +231,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
-        address: selectedRaffleForEnroll?.isPrizeNft
-          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+        address: contractAddress,
       });
 
       console.log(response);
@@ -327,6 +328,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaWinnersOpen,
         lineaEnrolledUsers,
         isLineaCheckEnrolledModalOpen,
+        searchPhrase,
+        changeSearchPhrase,
       }}
     >
       {children}

@@ -45,17 +45,17 @@ export default defineConfig({
     {
       name: "PrizeTap",
       abi: PrizeTap as any,
-      address: "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+      address: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
     },
     {
       name: "PrizeTap721",
       abi: PrizeTap721 as any,
-      address: "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0",
+      address: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
     {
       name: "TokenTap",
       abi: TokenTap as any,
-      address: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
+      address: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
   ],
   plugins: [

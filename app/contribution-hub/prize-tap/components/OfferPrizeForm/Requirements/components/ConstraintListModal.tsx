@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import ConstraintDetailsModal from "../../../../../ConstraintDetailsModal";
+import { FC, useMemo, useState } from "react";
+import ConstraintDetailsModal from "../../../../../components/ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
-import { uppercaseFirstLetter } from "@/utils";
+import Input from "@/components/ui/input";
+import ConstraintAppDetailModal from "@/app/contribution-hub/components/constraintAppDetailModal";
+import { appInfos } from "@/app/contribution-hub/constants/integrations";
+import { ConstraintProps } from "@/types";
 
 const ModalBody = () => {
   const {
@@ -15,11 +18,13 @@ const ModalBody = () => {
     insertRequirement,
     updateRequirement,
     allChainList,
+    selectedApp,
+    setSelectedApp,
   } = usePrizeOfferFormContext();
 
-  const getModalBody = () => {
-    if (selectedConstrains) {
-      return (
+  return (
+    <div className="claim-modal-wrapper flex max-h-[550px] flex-col overflow-auto pt-5">
+      {selectedConstrains ? (
         <ConstraintDetailsModal
           constraint={selectedConstrains}
           handleBackToConstraintListModal={handleBackToConstraintListModal}
@@ -28,61 +33,126 @@ const ModalBody = () => {
           updateRequirement={updateRequirement}
           allChainList={allChainList!}
         />
-      );
-    } else {
-      return <InitialBody />;
-    }
-  };
-  return (
-    <div className="claim-modal-wrapper flex max-h-[550px] flex-col pt-5">
-      {getModalBody()}
+      ) : selectedApp ? (
+        <ConstraintAppDetailModal
+          selectedApp={selectedApp}
+          setSelectedApp={setSelectedApp}
+          handleBackToConstraintListModal={handleBackToConstraintListModal}
+          requirementList={requirementList}
+          insertRequirement={insertRequirement}
+          updateRequirement={updateRequirement}
+          allChainList={allChainList!}
+        />
+      ) : (
+        <ConstraintInitialBody />
+      )}
     </div>
   );
 };
 
-export const InitialBody = () => {
-  const { handleSelectConstraint, constraintsListApi } =
-    usePrizeOfferFormContext();
-
-  const [selectedApp, setSelectedApp] = useState("");
-
+export const SelectCoreIntegrations: FC<{
+  constraintsListApi: {
+    [key: string]: ConstraintProps[];
+  };
+  handleSelectConstraint: (constraint: ConstraintProps) => void;
+}> = ({ constraintsListApi, handleSelectConstraint }) => {
   return (
     <div className="flex flex-col gap-2 ">
-      <div className="absolute top-5 z-[999] cursor-pointer">
-        <Icon
-          onClick={() => setSelectedApp("")}
-          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
-          className="z-[999999] cursor-pointer"
-        />
-      </div>
-      {!!selectedApp && (
-        <p className="text-sm font-medium text-white">
-          {uppercaseFirstLetter(selectedApp)}
-        </p>
-      )}
-      <div className="row-gap-2 grid w-full grid-cols-2 items-center justify-center gap-2.5 text-center">
-        {selectedApp
-          ? constraintsListApi![selectedApp].map((constraint, key) => (
-              <div
-                key={key}
-                className="requireModal"
-                onClick={() => handleSelectConstraint(constraint)}
-              >
-                {constraint.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
-                {constraint.title}
-              </div>
-            ))
-          : Object.keys(constraintsListApi!).map((constraintKey, index) => (
-              <div
-                key={index}
-                className="requireModal"
-                onClick={() => setSelectedApp(constraintKey)}
-              >
-                {uppercaseFirstLetter(constraintKey)}
-              </div>
-            ))}
+      <p className="text-sm text-white">General</p>
+      <div className="mt-3 grid w-full grid-cols-2 items-center justify-center gap-2.5 p-1 text-center">
+        {constraintsListApi?.general.map((constraint, key) => (
+          <div
+            key={key}
+            className="requireModal"
+            onClick={() => handleSelectConstraint(constraint)}
+          >
+            {constraint.iconUrl && (
+              <Icon
+                alt={constraint.title}
+                width="32px"
+                height="32px"
+                iconSrc={constraint.iconUrl}
+              />
+            )}
+            <p>{constraint.title}</p>
+            <small className="text-2xs font-[400] text-gray90">
+              {constraint.explanation}
+            </small>
+          </div>
+        ))}
       </div>
     </div>
+  );
+};
+
+export const ConstraintInitialBody = () => {
+  const { handleSelectConstraint, constraintsListApi, setSelectedApp } =
+    usePrizeOfferFormContext();
+  const [searchBar, setSearchBar] = useState("");
+
+  const availableIntegrations = Object.keys(constraintsListApi!).filter((key) =>
+    key.toLowerCase().includes(searchBar.toLowerCase()),
+  );
+
+  return (
+    <>
+      {constraintsListApi && (
+        <SelectCoreIntegrations
+          handleSelectConstraint={handleSelectConstraint}
+          constraintsListApi={constraintsListApi}
+        />
+      )}
+      <p className="my-3 text-sm font-semibold text-white">Integrations</p>
+      <div className="mt-2 gap-2">
+        <Input
+          data-testid="search-box"
+          $icon="/assets/images/modal/search-icon.svg"
+          $width="100%"
+          $fontSize="12px"
+          $iconWidth="20px"
+          $iconHeight="20px"
+          value={searchBar}
+          onChange={(e) => setSearchBar(e.target.value)}
+          placeholder="Search Integration"
+          $pl={7}
+          className="mb-0 !rounded-xl border border-gray50 bg-gray40 !py-4 placeholder:text-gray80"
+        ></Input>
+        <div className="w-full text-center">
+          {availableIntegrations.map((constraintKey, index) =>
+            constraintKey === "general" ? null : (
+              <button
+                key={index}
+                className="mb-3 flex w-full items-center gap-4 rounded-xl border border-gray60 bg-gray30 p-2 text-gray100"
+                onClick={() =>
+                  setSelectedApp({
+                    constraints: constraintsListApi![constraintKey],
+                    label: appInfos[constraintKey].label,
+                  })
+                }
+              >
+                <Icon
+                  iconSrc={appInfos[constraintKey].logo}
+                  alt={appInfos[constraintKey].label}
+                  width="28px"
+                  height="28px"
+                />
+                <p>{appInfos[constraintKey].label}</p>
+                <Icon
+                  className="ml-auto -rotate-90"
+                  iconSrc={"/assets/images/token-tap/angle-down.svg"}
+                  alt={"angle-down"}
+                  width="12px"
+                />
+              </button>
+            ),
+          )}
+
+          {availableIntegrations.length === 0 ? (
+            <p>No Integrations Found</p>
+          ) : null}
+        </div>
+      </div>
+    </>
   );
 };
 

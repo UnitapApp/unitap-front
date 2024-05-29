@@ -1,24 +1,28 @@
-"use client";
+import { cookies } from "next/headers";
+import { getAllConnections } from "@/utils/serverApis";
+import { UserConnection } from "@/types";
+import { redirect } from "next/navigation";
+import { FC, PropsWithChildren } from "react";
+import SocialAccountContent from "./content";
 
-import { FC } from "react";
-import { useProfileEditContext } from "../components/profileEditContext";
-import SocialAccount from "../components/socialAccount";
+const SocialAccountsLayout: FC<PropsWithChildren> = async () => {
+  const cookiesStore = cookies();
 
-const SocialAccountsPage: FC = ({}) => {
-  const { connections } = useProfileEditContext();
+  let connections: UserConnection;
+
+  try {
+    connections = await getAllConnections(cookiesStore.get("userToken")?.value);
+  } catch (e) {
+    redirect("/");
+  }
 
   return (
     <div className="mt-5 rounded-xl bg-gray20 p-5">
       <p>Social Accounts </p>
-      <div className="mt-10 grid grid-cols-2 gap-4">
-        <SocialAccount
-          title={"Bright ID"}
-          icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
-          isConnected={!!connections["BrightID"]}
-        />
-      </div>
+
+      <SocialAccountContent initialConnections={connections} />
     </div>
   );
 };
 
-export default SocialAccountsPage;
+export default SocialAccountsLayout;

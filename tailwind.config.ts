@@ -169,6 +169,12 @@ const config: Config = {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        fadeToggle: {
+          "0%": { opacity: "0" },
+          "10%": { opacity: "1" },
+          "95%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
         blinking: {
           "50%": { opacity: ".3" },
         },

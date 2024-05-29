@@ -29,7 +29,7 @@ const ShowPreviewModal = () => {
     <>
       <Modal
         // $backgroundColor="bg-gray20"
-        title="Form you Filled"
+        title="Your Token Tap Card"
         size="large"
         closeModalHandler={closeShowPreviewModal}
         isOpen={isOpen}

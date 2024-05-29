@@ -62,6 +62,10 @@ const ChainList = () => {
     setHighlightedChain(highlightedChain || "");
   }, [params, setHighlightedChain, setSelectedNetwork]);
 
+  useFastRefresh(() => {
+    setIsThisRound((prevIsThisRound) => !prevIsThisRound);
+  }, []);
+
   return (
     <section className="mb-20 w-full pb-2 pt-5">
       {!chainList.length || isGasTapAvailable ? (

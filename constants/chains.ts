@@ -31,6 +31,7 @@ import {
   thunderTestnet,
   baseGoerli,
   mantleTestnet,
+  rootstock,
 } from "viem/chains";
 
 const IDChain = {
@@ -99,6 +100,7 @@ export const supportedChains: Chain[] = [
   mantleTestnet,
   { ...thunderTestnet, name: "5ireChain Thunder" },
   { ...polygon, name: "Polygon Mainnet" },
+  { ...rootstock, name: "Rootstock Mainnet" },
   {
     ...fantom,
     name: "Fantom Opera",
@@ -125,7 +127,14 @@ export const supportedChains: Chain[] = [
   },
   gnosis,
   IDChain,
-  optimism,
+  {
+    ...optimism,
+    rpcUrls: {
+      ...optimism.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/optimism"] },
+      public: { http: ["https://optimism.llamarpc.com"] },
+    },
+  },
   meter,
   {
     ...zetachainAthensTestnet,
@@ -142,7 +151,14 @@ export const supportedChains: Chain[] = [
   },
   scroll,
   xdc,
-  arbitrum,
+  {
+    ...arbitrum,
+    rpcUrls: {
+      ...arbitrum.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/arbitrum"] },
+      public: { http: ["https://arbitrum.llamarpc.com"] },
+    },
+  },
   telos,
   { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
@@ -153,6 +169,7 @@ export const supportedChains: Chain[] = [
   { ...scrollSepolia, name: "Scroll Sepolia Testnet" },
   kccMainnet,
   opBNB,
+  rootstock,
 ];
 
 /**

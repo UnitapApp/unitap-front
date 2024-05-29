@@ -2,14 +2,21 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { Address, parseEther, PublicClient, zeroAddress } from "viem";
+import {
+  Address,
+  getAddress,
+  parseEther,
+  PublicClient,
+  zeroAddress,
+} from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
-import { deadline, startAt } from "./deadlineAndStartAt";
+import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
 import { createTokenDistribution } from "@/utils/api";
 import { tokenTapAbi } from "@/types/abis/contracts";
 import Big from "big.js";
 import { contractAddresses } from "@/constants";
+import { Chain } from "@/types";
 
 const txCallBack = async (
   address: string,
@@ -22,31 +29,43 @@ const txCallBack = async (
   totalAmount: string,
   startTime: bigint,
   endTime: bigint,
-  isNativeToken: boolean
+  isNativeToken: boolean,
+  selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: tokenTapAbi,
-    account: address as any,
-    address: contractAddresses.tokenTap as any,
-    functionName: "distributeToken",
-    args: [
-      tokenContractAddress as any,
-      maxNumClaim,
-      isNativeToken
-        ? parseEther(new Big(tokenAmount).toFixed())
-        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-      startTime,
-      endTime,
-    ],
-    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
+  // if (selectedChain.chainId === "42161") {
+
+  console.log("Attempting to call the contract with values: ", [
+    tokenContractAddress as any,
+    maxNumClaim,
+    isNativeToken
+      ? parseEther(new Big(tokenAmount).toFixed())
+      : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+    startTime,
+    endTime,
+  ]);
 
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
-    address: contractAddresses.tokenTap as any,
+    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
-    gasPrice: gasEstimate,
+    // gasPrice: gasEstimate,
     args: [
       tokenContractAddress as any,
       maxNumClaim,
@@ -58,6 +77,24 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
+  // }
+  // return signer?.writeContract({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   gasPrice: gasEstimate,
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
 };
 
 export const createErc20TokenDistribution = async (
@@ -69,7 +106,7 @@ export const createErc20TokenDistribution = async (
   userToken: string,
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
-  clamPeriodic: any
+  clamPeriodic: any,
 ) => {
   // const raffleContractAddress = data.selectedChain?.erc20PrizetapAddr;
   const maxNumberOfEntries = data.maxNumberOfEntries
@@ -86,7 +123,7 @@ export const createErc20TokenDistribution = async (
   const decimals = data.isNativeToken ? 18 : data.tokenDecimals;
   const prizeAmount = toWei(
     data.tokenAmount,
-    data.isNativeToken ? 18 : data.tokenDecimals
+    data.isNativeToken ? 18 : data.tokenDecimals,
   );
   const twitter = data.twitter
     ? "https://twitter.com/" + data.twitter?.replace("@", "")
@@ -97,7 +134,12 @@ export const createErc20TokenDistribution = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
 
   const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList
@@ -114,7 +156,8 @@ export const createErc20TokenDistribution = async (
   }, {});
 
   const token = data.isNativeToken ? zeroAddress : data.tokenContractAddress;
-  const startTime = startAt(data.startTimeStamp);
+
+  // const startTime = startAt(data.startTimeStamp);
   const endTime = deadline(data.endTimeStamp);
 
   const formData = new FormData();
@@ -123,8 +166,8 @@ export const createErc20TokenDistribution = async (
     reversed_constraints.length > 1
       ? reversed_constraints.join(",")
       : reversed_constraints.length == 1
-      ? reversed_constraints[0].toString()
-      : "";
+        ? reversed_constraints[0].toString()
+        : "";
 
   for (let i = 0; i < constraints.length; i++) {
     formData.append("constraints", constraints[i]);
@@ -140,6 +183,8 @@ export const createErc20TokenDistribution = async (
     formData.append("reversed_constraints", reversed);
   }
 
+  const startTime = checkStartTimeStamp(data.startTimeStamp);
+
   formData.append("name", prizeName);
   formData.append("distributor", data.provider!);
   formData.append("distributor_address", address);
@@ -150,17 +195,20 @@ export const createErc20TokenDistribution = async (
   formData.append("email_url", data.email!);
   formData.append("telegram_url", telegram! ?? "");
   formData.append("token", prizeName);
-  formData.append("token_address", data.tokenContractAddress);
+  formData.append("token_address", getAddress(data.tokenContractAddress));
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
-  formData.append("contract", contractAddresses.tokenTap as any);
-  formData.append("start_at", startTime);
+  formData.append(
+    "contract",
+    contractAddresses.tokenTap[data.selectedChain.chainId].erc20,
+  );
+  formData.append("start_at", startAt(startTime));
   formData.append("deadline", endTime);
   formData.append("max_number_of_claims", maxNumClaim);
   formData.append("notes", data.description! ?? "");
   formData.append("necessary_information", data.necessaryInfo! ?? "");
   formData.append("decimals", decimals);
-  formData.append("is_one_time_claim", clamPeriodic)
+  formData.append("is_one_time_claim", clamPeriodic);
 
   try {
     setCreateRaffleLoading(true);
@@ -173,9 +221,10 @@ export const createErc20TokenDistribution = async (
       BigInt(maxNumClaim),
       data.tokenAmount,
       data.totalAmount,
-      data.startTimeStamp,
+      BigInt(startTime),
       data.endTimeStamp,
-      data.isNativeToken
+      data.isNativeToken,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");

@@ -60,7 +60,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
   const chainList = useMemo(() => {
     return originalChainList.filter(
-      (chain) => chain.chainType !== ChainType.SOLANA
+      (chain) => chain.chainType !== ChainType.SOLANA,
     );
   }, [originalChainList]);
 
@@ -68,7 +68,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     if (chainList.length > 0 && !selectedChain) {
       if (initialChainId) {
         const chain = chainList.find(
-          (chain) => chain.pk === Number(initialChainId)
+          (chain) => chain.pk === Number(initialChainId),
         );
         if (chain) {
           setSelectedChain(chain);
@@ -99,7 +99,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
       }
     } else {
       setFundTransactionError(
-        "Unexpected error. Could not estimate gas for this transaction."
+        "Unexpected error. Could not estimate gas for this transaction.",
       );
     }
   }, []);
@@ -137,7 +137,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
       value: BigInt(
         selectedChain.symbol === "SOL"
           ? parseToLamports(fundAmount)
-          : parseEther(fundAmount)
+          : parseEther(fundAmount),
       ),
     };
 
@@ -145,19 +145,19 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
     if (!data) return;
 
-    const estimatedGas = data;
+    // let estimatedGas: bigint | undefined = data;
 
-    if (typeof estimatedGas !== "bigint") {
-      handleTransactionError(estimatedGas);
-      setSubmittingFundTransaction(false);
-      return;
-    }
+    // if (typeof estimatedGas !== "bigint") {
+    //   handleTransactionError(estimatedGas);
+    //   setSubmittingFundTransaction(false);
+    //   return;
+    // }
 
     signer
       ?.sendTransaction({
         ...tx,
-        ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
-        // gasPrice /// TODO add gasPrice based on EIP 1559
+        // ...(estimatedGas ? { gasLimit: estimatedGas } : {}),
+        // gasPrice
       })
       .then(async (tx) => {
         await provider.waitForTransactionReceipt({
@@ -204,7 +204,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
       return "Connect Wallet";
     }
     if (loading) {
-      return "Loading...";
+      return "Pending...";
     }
     return !isRightChain ? "Switch Network" : "Submit Contribution";
   }, [isConnected, isRightChain, loading]);
@@ -217,7 +217,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
     fundAmount && selectedChain
       ? Math.floor(
           (Number(fundAmount) * 0.75) /
-            (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals)
+            (selectedChain?.maxClaimAmount / 10 ** selectedChain.decimals),
         )
       : 0;
 
@@ -235,39 +235,40 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
           setSelectedChain={setSelectedChain}
         ></SelectChainModal>
       </Modal>
-      <div className="rounded-xl py-6 px-4 z-0">
-        <Image
-          width={661}
-          height={665}
-          alt="gas fee planet"
-          src="/assets/images/fund/provide-gas-fee-planet.svg"
-          className="absolute -left-64 -top-16 scale-150 -z-10"
+      {!!fundTransactionError || !!txHash ? (
+        <FundTransactionModal
+          fundAmount={fundAmount}
+          closeModalHandler={closeModalHandler}
+          provideGasFeeError={fundTransactionError}
+          txHash={txHash}
+          selectedChain={selectedChain}
         />
-        <span className="z-100 w-full">
-          <Icon
-            className="mb-2"
-            iconSrc="./assets/images/fund/provide-gas-fee-battery.svg"
-            width="146px"
-            height="auto"
-            alt="gas fee battery"
+      ) : (
+        <div className="z-0 rounded-xl px-4 py-6">
+          <Image
+            width={661}
+            height={665}
+            alt="gas fee planet"
+            src="/assets/images/fund/provide-gas-fee-planet.svg"
+            className="absolute -left-64 -top-16 -z-10 scale-150"
           />
-          <p className="text-white font-bold text-xl mb-3 z-1">
+          <p className="z-1 mb-3 text-xl font-bold text-white">
             Contribute Gas
           </p>
-          <p className="text-gray100 text-xs mb-3 z-1">
+          <p className="z-1 mb-3 text-xs text-gray100">
             100% of contributions will fund distributions and transaction costs
             of the gas tap.
           </p>
           {!userToken && (
-            <p className="text-warn text-xs mb-3 z-1">
+            <p className="z-1 mb-3 text-xs text-warn">
               You must login in order for your contribution to be counted in
               leaderboard
             </p>
           )}
 
-          <div className="select-box w-full flex rounded-xl overflow-hidden mt-5 mb-2 bg-gray40">
+          <div className="select-box mb-2 mt-5 flex w-full overflow-hidden rounded-xl bg-gray40">
             <div
-              className="select-box__token flex justify-evenly items-center w-24 h-16 cursor-pointer transition-all duration-50 bg-gray30 hover:bg-gray60"
+              className="select-box__token duration-50 flex h-16 w-24 cursor-pointer items-center justify-evenly bg-gray30 transition-all hover:bg-gray60"
               onClick={() => setModalState(true)}
             >
               {selectedChain ? (
@@ -278,7 +279,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                   height="32px"
                 />
               ) : (
-                <span className="w-8 h-8 rounded-full bg-gray50"></span>
+                <span className="h-8 w-8 rounded-full bg-gray50"></span>
               )}
               <Icon
                 iconSrc="/assets/images/fund/arrow-down.png"
@@ -286,18 +287,20 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                 height="auto"
               />
             </div>
-            <div className="select-box__info w-full flex flex-col justify-between my-2 ml-3 mr-4 bg-gray40">
-              <div className="select-box__info__top w-full flex items-center justify-between">
-                <p className="select-box__info__coin-symbol text-white text-xs font-semibold">
+            <div className="select-box__info my-2 ml-3 mr-4 flex w-full flex-col justify-between bg-gray40">
+              <div className="select-box__info__top flex w-full items-center justify-between">
+                <p className="select-box__info__coin-symbol text-xs font-semibold text-white">
                   {selectedChain?.symbol}
                 </p>
-                {(balance.isLoading && balance.data?.formatted) || (
+                {(balance.isLoading && (balance.data as any)?.formatted) || (
                   <p
                     // onClick={() => setFundAmount(balance.toString())}
-                    className="select-box__info__coin-balance text-gray100 text-xs font-semibold"
+                    className="select-box__info__coin-balance text-xs font-semibold text-gray100"
                   >
                     Balance:{" "}
-                    {(balance.data ? formatUnits(balance.data.value, balance.data.decimals) :"...") +
+                    {(balance.data
+                      ? formatUnits(balance.data.value, balance.data.decimals)
+                      : "...") +
                       " " +
                       selectedChain?.symbol}{" "}
                   </p>
@@ -305,7 +308,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
               </div>
               <div className="select-box__info__amount w-full">
                 <input
-                  className="fund-input w-full text-xl bg-transparent text-white"
+                  className="fund-input w-full bg-transparent text-xl text-white"
                   type="number"
                   step="0.001"
                   min="0"
@@ -318,7 +321,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
             </div>
           </div>
           {!!fundAmount && !!helpAmount && (
-            <div className="mt-2 ml-5 text-sm text-gray90">
+            <div className="ml-5 mt-2 text-sm text-gray90">
               You will help onboard{" "}
               <Tooltip
                 text="75% of your donation will be distributed among users. the rest is used for transaction fees. and depending on the network gas fees, the number might not be exact."
@@ -335,7 +338,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
 
           <ClaimButton
             height="3.5rem"
-            className="!w-full text-white mt-5"
+            className="mt-5 !w-full text-white"
             $fontSize="20px"
             onClick={handleSendFunds}
             disabled={
@@ -356,9 +359,105 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
               txHash={txHash}
               selectedChain={selectedChain}
             />
+            <p className="z-1 mb-3 text-xl font-bold text-white">
+              Contribute Gas
+            </p>
+            <p className="z-1 mb-3 text-xs text-gray100">
+              100% of contributions will fund distributions and transaction
+              costs of the gas tap.
+            </p>
+            {!userToken && (
+              <p className="z-1 mb-3 text-xs text-warn">
+                You must login in order for your contribution to be counted in
+                leaderboard
+              </p>
+            )}
+
+            <div className="select-box mb-2 mt-5 flex w-full overflow-hidden rounded-xl bg-gray40">
+              <div
+                className="select-box__token duration-50 flex h-16 w-24 cursor-pointer items-center justify-evenly bg-gray30 transition-all hover:bg-gray60"
+                onClick={() => setModalState(true)}
+              >
+                {selectedChain ? (
+                  <Icon
+                    alt={selectedChain.chainName}
+                    iconSrc={getChainIcon(selectedChain)}
+                    width="auto"
+                    height="32px"
+                  />
+                ) : (
+                  <span className="h-8 w-8 rounded-full bg-gray50"></span>
+                )}
+                <Icon
+                  iconSrc="/assets/images/fund/arrow-down.png"
+                  width="14px"
+                  height="auto"
+                />
+              </div>
+              <div className="select-box__info my-2 ml-3 mr-4 flex w-full flex-col justify-between bg-gray40">
+                <div className="select-box__info__top flex w-full items-center justify-between">
+                  <p className="select-box__info__coin-symbol text-xs font-semibold text-white">
+                    {selectedChain?.symbol}
+                  </p>
+                  {(balance.isLoading && (balance.data as any)?.formatted) || (
+                    <p
+                      // onClick={() => setFundAmount(balance.toString())}
+                      className="select-box__info__coin-balance text-xs font-semibold text-gray100"
+                    >
+                      Balance:{" "}
+                      {balance.data
+                        ? formatUnits(
+                            balance.data?.value,
+                            balance.data.decimals,
+                          ).slice(0, 5)
+                        : "..."}{" "}
+                      {selectedChain?.symbol}{" "}
+                    </p>
+                  )}
+                </div>
+                <div className="select-box__info__amount w-full">
+                  <input
+                    className="fund-input w-full bg-transparent text-xl text-white"
+                    type="number"
+                    step="0.001"
+                    min="0"
+                    autoFocus={true}
+                    placeholder="Enter Amount"
+                    value={fundAmount}
+                    onChange={(e) => setFundAmount(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+            {!!fundAmount && !!helpAmount && (
+              <div className="ml-5 mt-2 text-sm text-gray90">
+                You will help onboard{" "}
+                <Tooltip
+                  text="All of your contributions will go to onboarding users to this network. The majority of the donations will be transferred straight to users as gas tokens and a smaller part will cover the network transaction fees."
+                  toolTipClassName="!w-[300px]"
+                  className="cursor-pointer"
+                  // title=""
+                >
+                  <b>approximately</b>
+                </Tooltip>{" "}
+                <span className="text-green-500">{helpAmount}</span> users to
+                this network!
+              </div>
+            )}
+
+            <ClaimButton
+              height="3.5rem"
+              className="mt-5 !w-full text-white"
+              $fontSize="20px"
+              onClick={handleSendFunds}
+              disabled={!Number(fundAmount) && isRightChain && isConnected}
+              data-testid="fund-action"
+            >
+              {fundActionButtonLabel}
+            </ClaimButton>
           </Modal>
-        </span>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

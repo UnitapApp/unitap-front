@@ -7,13 +7,13 @@ export const RemainingRaffleComponent = () => {
   const { prizetapRoundClaimLimit } = useUserProfileContext();
 
   return (
-    <div className="header__info cursor-pointer border-2 border-gray80 bg-gray60 inline-flex px-3 py-2 justify-between items-center rounded-lg gap-x-5">
+    <div className="header__info inline-flex cursor-pointer items-center justify-between gap-x-5 rounded-lg border-2 border-gray80 bg-gray60 px-3 py-2">
       <Icon
         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
         width="36px"
         height="32px"
       />
-      <p className="header__info__prize-count text-white font-semibold mr-1">
+      <p className="header__info__prize-count mr-1 font-semibold text-white">
         {prizetapRoundClaimLimit ?? 3}
       </p>
       <Icon
@@ -27,10 +27,10 @@ export const RemainingRaffleComponent = () => {
 
 const Header = () => {
   return (
-    <div className="header bg-no-repeat bg-cover relative bg-center bg-[url('/assets/images/prize-tap/header-bg.svg')] w-full h-[199px] bg-gray20 rounded-3xl flex justify-between items-end overflow-hidden p-4 mb-6 border-3 border-gray30">
-      <div className="header__left items-center h-auto">
-        <span className="items-center flex mb-3 gap-3">
-          <p className="leading-[24.38px] font-semibold tracking-[10px] absolute top-[12px] left-[24px] text-[20px] text-[#AEF2D1]">
+    <div className="header relative mb-6 flex h-[199px] w-full items-end justify-between overflow-hidden rounded-3xl border-3 border-gray30 bg-gray20 bg-[url('/assets/images/prize-tap/header-bg.svg')] bg-cover bg-center bg-no-repeat p-4">
+      <div className="header__left h-auto items-center">
+        <span className="mb-3 flex items-center gap-3">
+          <p className="absolute left-[24px] top-[12px] text-[20px] font-semibold leading-[24.38px] tracking-[10px] text-[#AEF2D1]">
             PRIZETAP
           </p>
           {/* <img
@@ -45,6 +45,9 @@ const Header = () => {
 
           {/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
         </span>
+        <p className="text-xs text-gray100">
+          Enjoy surfing Web3 without the worry of gas fees
+        </p>
       </div>
     </div>
   );

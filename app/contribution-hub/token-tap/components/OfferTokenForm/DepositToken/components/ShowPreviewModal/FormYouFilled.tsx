@@ -8,18 +8,18 @@ interface Prop {
   data: ProviderDashboardFormDataProp;
 }
 const FormYouFilled = ({ data }: Prop) => {
-  const { requirementList } = useTokenTapFromContext();
+  const { requirementList, claimPeriodic } = useTokenTapFromContext();
   const prizeName = data.isNft
     ? data.nftName
     : data.isNativeToken
-    ? data.selectedChain.symbol
-    : data.tokenSymbol;
+      ? data.selectedChain.symbol
+      : data.tokenSymbol;
 
   return (
     <div
-      className={`bg-gray40  rounded-xl min-w-[348px] select-not flex-row gap-4 mt-5 overflow-hidden styled-scroll `}
+      className={`styled-scroll  mt-5 min-w-[348px] select-none flex-row gap-4 overflow-hidden rounded-xl bg-gray40 `}
     >
-      <div className="flex gap-3 m-3">
+      <div className="m-3 flex gap-3">
         <div>
           <Icon
             iconSrc={data.selectedChain.logoUrl}
@@ -38,16 +38,16 @@ const FormYouFilled = ({ data }: Prop) => {
                   className="cursor-pointer"
                 />
               </div>
-              <p className="text-2xs">Decentralized verification system</p>
+              <p className="text-2xs">{data.provider}</p>
             </div>
           </div>
-          <div className="text-gray100 text-2xs mt-3">{data.description}</div>
-          <div className="flex gap-2  mt-3">
+          <div className="mt-3 text-2xs text-gray100">{data.description}</div>
+          <div className="mt-3 flex  gap-2">
             {requirementList.length > 0
               ? requirementList.map((item, index) => {
                   return (
                     <div
-                      className="text-gray100 border border-gray70 bg-gray50 p-1 px-2 text-2xs rounded"
+                      className="rounded border border-gray70 bg-gray50 p-1 px-2 text-2xs text-gray100"
                       key={index}
                     >
                       {item.isNotSatisfy && "Not "} {item.title}
@@ -59,8 +59,8 @@ const FormYouFilled = ({ data }: Prop) => {
         </div>
       </div>
 
-      <div className="h-[32px] flex items-center pl-4 justify-between bg-gray30">
-        <div className="text-xs text-gray100 flex items-center gap-2">
+      <div className="flex h-[32px] items-center justify-between bg-gray30 pl-4">
+        <div className="flex items-center gap-2 text-xs text-gray100">
           Claim on {data.selectedChain.chainName}
           <Icon
             iconSrc={data.selectedChain.logoUrl}
@@ -68,8 +68,8 @@ const FormYouFilled = ({ data }: Prop) => {
             height="12px"
           />
         </div>
-        <div className="flex text-gray90 text-2xs bg-gray20 h-full items-center gap-2 px-2">
-          Repeats Weekly
+        <div className="flex h-full items-center gap-2 bg-gray20 px-2 text-2xs text-gray90">
+          {claimPeriodic ? "Periodic-Claim" : "Single-Claim"}
           <div className="opacity-50">
             <Icon
               iconSrc="/assets/images/provider-dashboard/warn-loading.svg"

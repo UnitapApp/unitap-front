@@ -21,21 +21,29 @@ export const Action = styled.div`
 
 const RafflesList = () => {
   const params = useSearchParams();
-  const { rafflesList } = usePrizeTapContext();
+  const { rafflesList, searchPhrase } = usePrizeTapContext();
   const [highlightedPrize, setHighlightedPrize] = useState("");
 
-  const prizesSortListMemo = useMemo(
-    () =>
-      rafflesList.sort((a, b) => {
-        const lowerHighlightChainName = highlightedPrize.toLowerCase();
+  const prizesSortListMemo = useMemo(() => {
+    const raffleList = rafflesList.sort((a, b) => {
+      const lowerHighlightChainName = highlightedPrize.toLowerCase();
 
-        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
-        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
+      if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+      if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
 
-        return 0;
-      }),
-    [rafflesList, highlightedPrize],
-  );
+      return 0;
+    });
+    const searchPhraseLowerCase = searchPhrase.toLowerCase();
+
+    return raffleList.filter(
+      (raffle) =>
+        raffle.name.toLowerCase().includes(searchPhraseLowerCase) ||
+        raffle.creatorProfile?.username
+          .toLowerCase()
+          .includes(searchPhraseLowerCase) ||
+        raffle.creatorName?.toLowerCase().includes(searchPhraseLowerCase),
+    );
+  }, [rafflesList, searchPhrase, highlightedPrize]);
 
   useEffect(() => {
     const highlightedPrize = params.get("icebox");
