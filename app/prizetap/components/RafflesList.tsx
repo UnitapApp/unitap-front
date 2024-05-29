@@ -48,8 +48,13 @@ const RafflesList = () => {
     });
     const searchPhraseLowerCase = searchPhrase.toLowerCase();
 
-    return raffleList.filter((raffle) =>
-      raffle.name.toLowerCase().includes(searchPhraseLowerCase),
+    return raffleList.filter(
+      (raffle) =>
+        raffle.name.toLowerCase().includes(searchPhraseLowerCase) ||
+        raffle.creatorProfile?.username
+          .toLowerCase()
+          .includes(searchPhraseLowerCase) ||
+        raffle.creatorName?.toLowerCase().includes(searchPhraseLowerCase),
     );
   }, [rafflesList, searchPhrase, highlightedPrize]);
 

@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import Input from "@/components/ui/input";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type SearchInputProps = {
   className?: string;
@@ -18,6 +18,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const ref = useRef<HTMLInputElement>(null);
 
   const updateURLQuery = (phrase: string) => {
     const urlParams = new URLSearchParams();
@@ -36,7 +37,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   };
 
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
@@ -52,11 +53,26 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     }
   }, [params, changeSearchPhrase]);
 
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      if (e.key == "/" && ref.current) {
+        ref.current.focus();
+      }
+    };
+
+    document.addEventListener("keyup", onKeyPress);
+
+    return () => {
+      document.removeEventListener("keyup", onKeyPress);
+    };
+  }, []);
+
   return (
     <div
-      className={`search-input relative border-gray30 border-2 bg-gray40 rounded-xl ${className}`}
+      className={`search-input relative rounded-xl border-2 border-gray30 bg-gray40 ${className}`}
     >
       <Input
+        ref={ref}
         data-testid="search-box"
         $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
@@ -72,7 +88,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         $backgroundColor="black1"
       ></Input>
       <Icon
-        iconSrc="assets/images/claim/slash-icon.svg"
+        iconSrc="/assets/images/claim/slash-icon.svg"
         hoverable
         className="icon-right absolute right-4 top-[10px] z-10"
       ></Icon>

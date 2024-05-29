@@ -42,7 +42,9 @@ const Header = () => {
 
           {/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
         </span>
-        <p className="text-sm">Win win win win win win win win win win</p>
+        <p className="text-xs text-gray100">
+          Enjoy surfing Web3 without the worry of gas fees
+        </p>
       </div>
     </div>
   );

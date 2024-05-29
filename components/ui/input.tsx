@@ -34,7 +34,7 @@ const RawInput = styled.input<InputProps>`
     styleType === "success" ? DV.colors.darkgreen : DV.colors.dark};
   background: ${({ $backgroundColor: backgroundColor }): string => {
     const xyz: string | undefined = Object.keys(DV.colors).find(
-      (x) => x === backgroundColor
+      (x) => x === backgroundColor,
     );
     if (xyz) {
       return `${DV.colors[xyz]}!important`;
@@ -90,7 +90,7 @@ const InputWrapper = styled.div<InputProps>`
   }
 `;
 
-const Input = (props: InputProps) => {
+const Input = (props: InputProps, ref: any) => {
   const {
     $icon: icon,
     $width: width,
@@ -112,10 +112,10 @@ const Input = (props: InputProps) => {
           className="input-icon"
         />
       )}
-      <RawInput data-testid={testid} {...props} />
+      <RawInput ref={ref} data-testid={testid} {...props} />
       {postfix && <p className="input-postfix">{postfix}</p>}
     </InputWrapper>
   );
 };
 
-export default Input;
+export default React.forwardRef(Input);
