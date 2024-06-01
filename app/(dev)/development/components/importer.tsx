@@ -2,6 +2,10 @@
 import dynamic from "next/dynamic"
 import { FC, useEffect, useState } from "react"
 
+// Define the type for dynamic component props
+type DynamicComponentProps = { [key: string]: any } | null
+
+// Function to get the dynamic component
 const getDynamicComponent = (c: string) =>
   dynamic(
     () =>
@@ -18,12 +22,48 @@ const getDynamicComponent = (c: string) =>
     },
   )
 
-const Importer: FC<{
+interface ImporterProps {
   componentName: string
-}> = ({ componentName }) => {
+}
+
+const Importer: FC<ImporterProps> = ({ componentName }) => {
+  const [dynamicComponentProps, setDynamicComponentProps] =
+    useState<DynamicComponentProps>(null)
   const DynamicComponent = getDynamicComponent(componentName)
 
-  return <DynamicComponent />
+  useEffect(() => {
+    const fetchComponentProps = async () => {
+      try {
+        const component = await import(`@/components/${componentName}`)
+        console.log(component)
+        if (component.default?.propTypes) {
+          setDynamicComponentProps(component.default.propTypes)
+        } else if ((Object.values(component)?.[0] as any)?.propTypes) {
+          setDynamicComponentProps(
+            (Object.values(component)?.[0] as any).propTypes,
+          )
+        } else if (component.propTypes) {
+          setDynamicComponentProps(component.propTypes)
+        } else {
+          setDynamicComponentProps(null)
+        }
+      } catch (error) {
+        console.error("Error fetching component props:", error)
+        setDynamicComponentProps(null)
+      }
+    }
+
+    fetchComponentProps()
+  }, [componentName])
+
+  return (
+    <>
+      {dynamicComponentProps && (
+        <pre>{JSON.stringify(dynamicComponentProps, null, 2)}</pre>
+      )}
+      <DynamicComponent />
+    </>
+  )
 }
 
 export default Importer

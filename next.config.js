@@ -1,11 +1,11 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enabled: process.env.ANALYZE === 'true'
+const path = require("path")
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
 })
 
-
-
 /** @type {import('next').NextConfig} */
-const nextConfig =withBundleAnalyzer({
+const nextConfig = withBundleAnalyzer({
   compiler: {
     styledComponents: true,
   },
@@ -34,16 +34,29 @@ const nextConfig =withBundleAnalyzer({
         destination: "/prizetap",
         permanent: true,
       },
-    ];
+    ]
   },
-});
+  webpack: (config, { isServer, dev }) => {
+    if (dev)
+      config.module.rules.push({
+        test: /\.(|ts|tsx)$/,
+        use: [
+          {
+            loader: path.resolve(__dirname, "loaders/type-check-loader.js"),
+          },
+        ],
+        exclude: /node_modules/,
+      })
 
-module.exports = nextConfig;
+    return config
+  },
+})
 
+module.exports = nextConfig
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require("@sentry/nextjs")
 
 module.exports = withSentryConfig(
   module.exports,
@@ -83,5 +96,5 @@ module.exports = withSentryConfig(
     // https://docs.sentry.io/product/crons/
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
-  }
-);
+  },
+)

@@ -14,7 +14,7 @@ const DevComponentsEditor = () => {
         <div className="mt-5">
           <LineRenderer>
             <div className="w-full h-full">
-              <Importer componentName="ui/Button/button" />
+              <Importer componentName="ui/Select" />
             </div>
           </LineRenderer>
         </div>

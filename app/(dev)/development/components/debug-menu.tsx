@@ -72,6 +72,28 @@ const DebugMenu = () => {
         }
         type="number"
       />
+      <Input
+        $label={"Start Block X (" + debugMenuToolbar.startBlockX + ")"}
+        value={debugMenuToolbar.startBlockX}
+        onChange={(e) =>
+          setDebugMenuToolbar((debugMenuToolbar) => ({
+            ...debugMenuToolbar,
+            startBlockX: Number(e.target.value),
+          }))
+        }
+        type="range"
+      />
+      <Input
+        $label={"Start Block Y (" + debugMenuToolbar.startBlockY + ")"}
+        value={debugMenuToolbar.startBlockY}
+        onChange={(e) =>
+          setDebugMenuToolbar((debugMenuToolbar) => ({
+            ...debugMenuToolbar,
+            startBlockY: Number(e.target.value),
+          }))
+        }
+        type="range"
+      />
       <p className="mt-4">Rendering Size:</p>
       <div className="flex border mt-3 rounded-xl border-gray100 items-center">
         <Button>Mobile</Button>

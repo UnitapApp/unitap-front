@@ -1,10 +1,13 @@
 "use client"
 
 import {
+  Dispatch,
   FC,
   PropsWithChildren,
+  SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react"
 
@@ -13,6 +16,10 @@ export type DebugMenuToolbarType = {
   liningMargin: number
   liningEnabled: boolean
   rendererSize: "mobile" | "tablet" | "desktop"
+  startBlockX: number
+  startBlockY: number
+  canvasWidth: number
+  canvasHeight: number
 }
 
 export const ComponentsContext = createContext({
@@ -21,8 +28,14 @@ export const ComponentsContext = createContext({
     liningMargin: 20,
     liningEnabled: true,
     rendererSize: "mobile" as "mobile" | "tablet" | "desktop",
+    startBlockX: 0,
+    startBlockY: 0,
+    canvasWidth: 100,
+    canvasHeight: 100,
   },
-  setDebugMenuToolbar: (value: DebugMenuToolbarType) => {},
+  setDebugMenuToolbar: ((value: DebugMenuToolbarType) => {}) as Dispatch<
+    SetStateAction<DebugMenuToolbarType>
+  >,
 })
 
 export const useComponentsContext = () => useContext(ComponentsContext)
@@ -33,7 +46,19 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
     liningMargin: 20,
     liningEnabled: true,
     rendererSize: "mobile" as "mobile" | "tablet" | "desktop",
+    startBlockX: 0,
+    startBlockY: 0,
+    canvasWidth: 100,
+    canvasHeight: 100,
   })
+
+  useEffect(() => {
+    setDebugMenuToolbar((debugMenuToolbar) => ({
+      ...debugMenuToolbar,
+      canvasWidth: window.innerWidth,
+      canvasHeight: window.innerHeight,
+    }))
+  }, [])
 
   return (
     <ComponentsContext.Provider

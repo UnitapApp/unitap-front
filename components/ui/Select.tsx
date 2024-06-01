@@ -1,17 +1,23 @@
-"use client";
+"use client"
 
-import Icon from "@/components/ui/Icon";
-import { useOutsideClick } from "@/utils/hooks/dom";
-import { FC, useMemo, useRef, useState } from "react";
+import Icon from "@/components/ui/Icon"
+import { useOutsideClick } from "@/utils/hooks/dom"
+import { FC, useMemo, useRef, useState } from "react"
 
 export type SelectProps = {
-  hasError?: boolean;
-  value: any;
-  label?: string;
-  onChange: (value: any) => void;
-  placeholder?: string;
-  options: { icon?: string; label: string; value: any }[];
-};
+  hasError?: boolean
+  value: any
+  label?: string
+  onChange: (value: any) => void
+  placeholder?: string
+  options: {
+    icon?: string
+
+    label: string
+
+    value: any
+  }[]
+}
 
 const Select: FC<SelectProps> = ({
   hasError,
@@ -21,48 +27,48 @@ const Select: FC<SelectProps> = ({
   label,
   placeholder,
 }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
 
-  const [showItems, setShowItems] = useState(false);
+  const [showItems, setShowItems] = useState(false)
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref, () => {
-    if (showItems) setShowItems(false);
-  });
+    if (showItems) setShowItems(false)
+  })
 
   const handleSearch = (e: any) => {
-    setShowItems(true);
-    setSearch(e.target.value);
-  };
+    setShowItems(true)
+    setSearch(e.target.value)
+  }
 
   const handleValueChanged = (item: {
-    icon?: string;
-    label: string;
-    value: any;
+    icon?: string
+    label: string
+    value: any
   }) => {
-    setSearch(item.label);
+    setSearch(item.label)
 
-    onChange(item.value);
-  };
+    onChange(item.value)
+  }
 
   const selectedItem = useMemo(() => {
-    return options.find((item) => item.value === value);
-  }, [options, value]);
+    return options.find((item) => item.value === value)
+  }, [options, value])
 
   const filteredItems = useMemo(() => {
-    const existingElement = options.find((item) => item.value === value);
+    const existingElement = options.find((item) => item.value === value)
     if (
       existingElement &&
       existingElement.label.toLowerCase() === search?.toLowerCase()
     ) {
-      return options;
+      return options
     }
 
     return options.filter((item) =>
       item.label.toLowerCase().includes(search.toLowerCase()),
-    );
-  }, [options, search, value]);
+    )
+  }, [options, search, value])
 
   return (
     <div className="relative w-full font-normal">
@@ -99,8 +105,8 @@ const Select: FC<SelectProps> = ({
               <div
                 key={index}
                 onClick={() => {
-                  setShowItems(false);
-                  handleValueChanged(item);
+                  setShowItems(false)
+                  handleValueChanged(item)
                 }}
                 className={`flex p-2 ${item.value === value ? "bg-gray60" : ""} w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70`}
               >
@@ -117,7 +123,11 @@ const Select: FC<SelectProps> = ({
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Select;
+Select.defaultProps = {
+  options: [],
+}
+
+export default Select
