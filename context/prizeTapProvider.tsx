@@ -51,6 +51,8 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
   isLineaCheckEnrolledModalOpen: boolean;
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
+  searchPhrase: string;
+  changeSearchPhrase: (value: string) => void;
 }>({
   claimError: null,
   rafflesList: [],
@@ -71,6 +73,8 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: NullCallback,
   isLineaCheckEnrolledModalOpen: false,
   setIsLineaCheckEnrolledModalOpen: NullCallback,
+  searchPhrase: "",
+  changeSearchPhrase: NullCallback,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -97,20 +101,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     useState<any | null>(null);
   const [method, setMethod] = useState<string | null>(null);
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
+  const [searchPhrase, changeSearchPhrase] = useState("");
 
   const { userToken } = useUserProfileContext();
   const { setIsWalletPromptOpen } = useGlobalContext();
 
   const { isConnected, address, chainId } = useWalletAccount();
-
-  // const { isLoading } = useWaitForTransactionReceipt({
-  //   confirmations: 1,
-  //   hash,
-  //   chainId,
-  //   onReplaced: async (res) => {
-
-  //   },
-  // });
 
   const { writeContractAsync } = useWriteContract({});
 
@@ -326,6 +322,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaWinnersOpen,
         lineaEnrolledUsers,
         isLineaCheckEnrolledModalOpen,
+        searchPhrase,
+        changeSearchPhrase,
       }}
     >
       {children}

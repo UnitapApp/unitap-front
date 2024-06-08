@@ -3,13 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Input from "@/components/ui/input";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { useGasTapContext } from "@/context/gasTapProvider";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import Icon from "@/components/ui/Icon";
 
 type SearchInputProps = {
@@ -18,13 +13,14 @@ type SearchInputProps = {
 
 const SearchInput = ({ className = "" }: SearchInputProps) => {
   const [searchPhraseInput, setSearchPhraseInput] = useState<string>("");
-  const { changeSearchPhrase } = useGasTapContext();
+  const { changeSearchPhrase } = usePrizeTapContext();
 
   const pathname = usePathname();
   const params = useSearchParams();
   const router = useRouter();
 
   const previousTimeout = useRef<any>(null);
+
   const ref = useRef<HTMLInputElement>(null);
 
   const searchPhraseChangeHandler = (
@@ -54,13 +50,6 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   };
 
   useEffect(() => {
-    const queryParam = params.get("query") ?? params.get("q") ?? "";
-
-    setSearchPhraseInput(queryParam);
-    changeSearchPhrase?.(queryParam);
-  }, [params]);
-
-  useEffect(() => {
     const onKeyPress = (e: KeyboardEvent) => {
       if (e.key == "/" && ref.current) {
         ref.current.focus();
@@ -74,9 +63,16 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    const queryParam = params.get("query") ?? params.get("q") ?? "";
+
+    setSearchPhraseInput(queryParam);
+    changeSearchPhrase?.(queryParam);
+  }, [params]);
+
   return (
     <div
-      className={`search-input relative h-12 rounded-xl border-2 border-gray30 bg-gray40 ${className}`}
+      className={`search-input relative mb-10 h-12 rounded-xl border-2 border-gray30 bg-gray40 ${className}`}
     >
       <Input
         ref={ref}
@@ -88,14 +84,15 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         $iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
-        placeholder="Chain name, Currency, ID"
+        placeholder="Raffle name, creator"
         $pl={7}
         $p={1.5}
         className="mb-0"
         $backgroundColor="black1"
       ></Input>
+
       <Icon
-        iconSrc="/assets/images/claim/slash-icon.svg"
+        iconSrc="assets/images/claim/slash-icon.svg"
         hoverable
         className="icon-right absolute right-4 top-[10px] z-10"
       ></Icon>

@@ -26,14 +26,14 @@ const FundTransactionModal = ({
       const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         `I donated to @Unitap_app's ${
           selectedChain!.chainName
-        } faucet 💚💜\nJoin me in making Web3 more accessible for everyone!\nDonate: `
+        } faucet 💚💜\nJoin me in making Web3 more accessible for everyone!\nDonate: `,
       )}&url=${encodeURIComponent(
-        "unitap.app/fund?chain=" + encodeURIComponent(selectedChain!.pk)
+        "unitap.app/fund?chain=" + encodeURIComponent(selectedChain!.pk),
       )}`;
       window.open(twitterUrl, "_blank");
     };
     return (
-      <>
+      <div className="w-full">
         <Icon
           mb={3}
           iconSrc="/assets/images/fund/success-provide-spaceman.svg"
@@ -57,7 +57,7 @@ const FundTransactionModal = ({
               width="100%"
               fontSize="14"
               color="second_gray_light"
-              className="underline cursor-pointer"
+              className="cursor-pointer underline"
               mb={3}
               $textAlign="center"
               onClick={() => {
@@ -70,7 +70,7 @@ const FundTransactionModal = ({
             <div className="relative w-full">
               <button
                 onClick={handleClick}
-                className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+                className={`gradient-outline-twitter-button flex w-full items-center justify-center rounded-xl border-gray00 bg-gray00 px-3 py-4 transition-all duration-75 hover:bg-gray20`}
               >
                 <p className="text-sm font-semibold text-twitter">
                   Share on Twitter
@@ -78,14 +78,14 @@ const FundTransactionModal = ({
               </button>
               <Icon
                 iconSrc="/assets/images/gas-tap/twitter-share.svg"
-                className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+                className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
                 width="auto"
                 height="26px"
               />
             </div>
           </>
         )}
-      </>
+      </div>
     );
   }
 
@@ -118,7 +118,10 @@ const FundTransactionModal = ({
   }
 
   return (
-    <FundTransactionModalWrapper data-testid="fund-transaction-modal">
+    <FundTransactionModalWrapper
+      className="w-full"
+      data-testid="fund-transaction-modal"
+    >
       {provideGasFeeError ? failed() : successful()}
     </FundTransactionModalWrapper>
   );
