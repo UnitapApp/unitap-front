@@ -13,7 +13,11 @@ import {
   ClaimButton,
   ClaimedButton,
 } from "@/components/ui/Button/button";
-import { useWalletAccount } from "@/utils/wallet";
+import {
+  useWalletAccount,
+  useWalletProvider,
+  useWalletSigner,
+} from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
@@ -24,28 +28,41 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
   isHighlighted,
 }) => {
-  const { openClaimModal, claimedTokensList, claimingTokenPk } =
-    useTokenTapContext();
+  const {
+    openClaimModal,
+    claimedTokensList,
+    claimingTokenPk,
+    claimTokenResponse,
+  } = useTokenTapContext();
+
+  const collectedToken = useMemo(
+    () =>
+      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
+    [claimedTokensList, token],
+  );
 
   const { isConnected, connector } = useWalletAccount();
+  const provider = useWalletSigner();
 
   const [showAllPermissions, setShowAllPermissions] = useState(false);
+
+  const isExpired =
+    token.isExpired ||
+    (token.isMaxedOut &&
+      claimTokenResponse?.state !== "Pending" &&
+      collectedToken?.status !== "Pending");
 
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
   };
 
   const addToken = async () => {
-    if (!isConnected) return;
-
-    const provider = await connector?.getClient?.();
-
-    if (!provider) return;
+    if (!isConnected || !provider) return;
 
     try {
       watchAsset(provider, {
         options: {
-          decimals: token.chain.decimals,
+          decimals: token.decimals ?? token.chain.decimals,
           symbol: token.token,
           image: token.imageUrl,
           address: token.tokenAddress,
@@ -56,12 +73,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
       console.log(error);
     }
   };
-
-  const collectedToken = useMemo(
-    () =>
-      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
-    [claimedTokensList, token],
-  );
 
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
@@ -76,7 +87,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   return (
     <div>
       <div
-        className={`token-card flex ${
+        className={`token-card ${isExpired ? "opacity-60" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
@@ -88,9 +99,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
             } flex w-full flex-col items-center justify-between gap-2 rounded-t-xl md:flex-row md:gap-0`}
           >
-            <div
+            <button
+              disabled={isExpired}
               onClick={onTokenClicked}
-              className="mb-6 flex items-center hover:cursor-pointer sm:mb-0"
+              className="mb-6 flex items-center sm:mb-0"
             >
               <span className="chain-logo-container mr-3 flex h-11 w-11 justify-center">
                 <Image
@@ -106,7 +118,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </span>
               <span className="w-max">
                 <p
-                  className="mb-2 flex text-center text-white md:text-left"
+                  className={`mb-2 flex text-center text-white  md:text-left ${isExpired ? "text-opacity-40" : ""}`}
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
@@ -118,11 +130,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     alt="arrow"
                   />
                 </p>
-                <p className="text-xs font-medium text-white">
+                <p
+                  className={`text-xs font-medium text-white  ${isExpired ? "text-opacity-40" : ""}`}
+                >
                   {token.distributor}
                 </p>
               </span>
-            </div>
+            </button>
 
             <div
               className={
@@ -132,8 +146,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               <div className="w-full items-center sm:w-auto sm:items-end">
                 {token.chain.chainName === "Lightning" || (
                   <AddMetamaskButton
+                    disabled={isExpired}
                     onClick={addToken}
-                    className="mx-auto !w-[220px] text-sm font-medium hover:cursor-pointer sm:mr-4 sm:!w-auto"
+                    className="mx-auto !w-[220px] text-sm font-medium sm:mr-4 sm:!w-auto"
                   >
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -159,11 +174,12 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
+                      // disabled={isExpired}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
-                      className="m-auto text-sm"
+                      className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
-                      <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+                      <p className="!bg-g-dark-primary-gradient bg-clip-text">{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
                   ) : token.isMaxedOut ? (
                     <NoCurrencyButton disabled $fontSize="13px">
@@ -213,7 +229,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </Action>
             </div>
           </div>
-          <Markdown isHighlighted={isHighlighted} content={token.notes} />
+          <Markdown
+            className={`${isExpired ? "text-opacity-40" : ""}`}
+            isHighlighted={isHighlighted}
+            content={token.notes}
+          />
           <div
             className={`${
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
@@ -233,7 +253,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 key={key}
                 text={permission.description}
               >
-                <div className="flex items-center gap-3">
+                <div
+                  className={`flex items-center gap-3 ${isExpired ? "text-opacity-40" : ""}`}
+                >
                   {permission.title}
                 </div>
               </Tooltip>
@@ -264,14 +286,18 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           } relative flex w-full flex-col items-center justify-between gap-4 rounded-b-xl px-4 py-2.5 pr-6 md:flex-row md:gap-0`}
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
-            <p className="text-gray100">
-              <span className="text-white">
+            <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
+              <span
+                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
+              >
                 {numberWithCommas(
                   token.maxNumberOfClaims - token.numberOfClaims,
                 )}{" "}
               </span>{" "}
               of{" "}
-              <span className="text-white">
+              <span
+                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
+              >
                 {" "}
                 {numberWithCommas(token.maxNumberOfClaims)}{" "}
               </span>{" "}
@@ -285,28 +311,36 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             />
           </div>
 
-          {!!timePermissionVerification && (
-            <Tooltip
-              className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
-              withoutImage
-              text={timePermissionVerification.description}
-            >
-              <div
-                data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-                className="flex items-center justify-center"
-              >
-                {timePermissionVerification.title}
-                <Icon
-                  iconSrc={`/assets/images/token-tap/${
-                    timePermissionVerification.name ===
-                    "tokenTap.OnceInALifeTimeVerification"
-                      ? "non-repeat.svg"
-                      : "repeat.svg"
-                  }`}
-                  className="ml-3"
-                />
+          {isExpired ? (
+            <div className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2">
+              <div className="flex items-center justify-center">
+                From Archive
               </div>
-            </Tooltip>
+            </div>
+          ) : (
+            !!timePermissionVerification && (
+              <Tooltip
+                className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
+                withoutImage
+                text={timePermissionVerification.description}
+              >
+                <div
+                  data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+                  className="flex items-center justify-center"
+                >
+                  {timePermissionVerification.title}
+                  <Icon
+                    iconSrc={`/assets/images/token-tap/${
+                      timePermissionVerification.name ===
+                      "tokenTap.OnceInALifeTimeVerification"
+                        ? "non-repeat.svg"
+                        : "repeat.svg"
+                    }`}
+                    className="ml-3"
+                  />
+                </div>
+              </Tooltip>
+            )
           )}
 
           <div className="flex items-center gap-x-6">

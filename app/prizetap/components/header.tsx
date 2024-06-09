@@ -31,7 +31,7 @@ const Header = () => {
       <div className="header__left h-auto items-center">
         <span className="header__left__type-logo mb-3 flex items-center gap-3">
           <img
-            className="h-12 w-auto"
+            className="h-12"
             src="assets/images/prize-tap/header-typography.png"
           />
           {/* <div>
@@ -42,6 +42,9 @@ const Header = () => {
 
           {/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
         </span>
+        <p className="text-xs text-gray100">
+          Enjoy surfing Web3 without the worry of gas fees
+        </p>
       </div>
     </div>
   );
