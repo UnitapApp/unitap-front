@@ -27,9 +27,12 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
-  const handleChange = () => { };
+  const handleChange = () => {
+    console.log('----')
+  };
 
   const timeChange = (e: any) => {
+    console.log(e)
     if (e?.unix) {
       handleSetDate(
         Math.round(new Date(e.unix * 1000).setSeconds(0) / 1000),
@@ -51,7 +54,13 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           Start Date & Time
         </p>
         <DatePicker
+          highlightToday={false}
+          onOpenPickNewDate={false}
           disabled={isShowingDetails}
+          mobileLabels={{
+            OK: "OK",
+            CANCEL: "Close",
+          }}
           style={{
             border: "none",
             width: "100%",
@@ -65,7 +74,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           name="startTime"
           format="DD/MM/YYYY - hh:mm A"
           inputClass="custom-input"
-          plugins={[<TimePicker key={0} position="bottom" hideSeconds />]}
+          plugins={[<TimePicker key={0} position="bottom" hideSeconds disabled />]}
           render={
             <Input
               className="date-picker-input"

@@ -13,6 +13,7 @@ import {
 } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
 import { ClaimButton } from "@/components/ui/Button/button";
+import { SwitchNetworkModal } from "@/components/containers/modals/ConnectWalletModal/switchNetworkModal";
 
 const PrizeInfo = ({
   handleChangeFormPagePrev,
@@ -35,6 +36,7 @@ const PrizeInfo = ({
   const chainId = chain?.id;
   const { switchChain } = useNetworkSwitcher();
   const { setIsWalletPromptOpen } = useGlobalContext();
+  const [isNetWorkWrong, setIsNetworkWrong] = useState<boolean>(false)
 
   const isRightChain = useMemo(() => {
     if (!isConnected || !chainId || !data.selectedChain) return false;
@@ -60,6 +62,17 @@ const PrizeInfo = ({
     switchChain,
     setIsWalletPromptOpen,
   ]);
+
+  useEffect(() => {
+    if (!data.selectedChain || !chainId) return;
+    if (data.selectedChain.chainId != chainId) {
+      setIsNetworkWrong(true);
+    }
+    else {
+      setIsNetworkWrong(false)
+    }
+  }, [chainId, data.selectedChain])
+
 
   const handleNextPage = () => {
     const res = canGoStepTwo();
@@ -126,6 +139,8 @@ const PrizeInfo = ({
           }
         />
       )}
+      {address && data.selectedChain &&
+        <SwitchNetworkModal chain={data.selectedChain} isNetWorkWrong={isNetWorkWrong} setIsNetWorkWrong={setIsNetworkWrong} />}
     </div>
   );
 };
