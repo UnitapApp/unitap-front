@@ -113,10 +113,8 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     if (!data.selectedChain) return;
     let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
     if (tokenName && tokenName.substring(0, 2) != "0x" && data.selectedChain && selectedToken?.tokenSymbol !== tokenName) {
-
       let filteredList = list?.filter((item) => item.tokenSymbol.toLowerCase().includes(tokenName.toLowerCase()))
       setTokenList(filteredList!)
-
     }
     else {
       setTokenList(list!)
@@ -128,25 +126,28 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     const selectedChainId = Number(data.selectedChain.chainId);
     const currentChainId = Number(chain!.id);
     let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList;
-    if (list) {
-      if (selectedChainId === currentChainId) {
-        setTokenList(list!)
-        const addresses = list.map(address => address.tokenAddress);
-        const res = await handleFetchBalances(addresses);
-
-        const balances = res?.reduce((acc: { [tokenAddress: string]: string }, balancesResult, index: number) => {
-          const tokenAddress = addresses[index].toLowerCase();
-          if (balancesResult.error) {
-            acc[tokenAddress] = '';
-          } else {
-            acc[tokenAddress] = fromWei(balancesResult.result!.toString(), Number(list[index].tokenDecimals));
-          }
-          return acc;
-        }, {});
-        setTokenBalances(balances!);
-
-      }
+    if (!list) {
+      setTokenBalances(null);
+      setTokenList(null);
+      return;
     }
+
+    if (selectedChainId === currentChainId) {
+      setTokenList(list)
+      const addresses = list.map(address => address.tokenAddress);
+      const res = await handleFetchBalances(addresses);
+      const balances = res?.reduce((acc: { [tokenAddress: string]: string }, balancesResult, index: number) => {
+        const tokenAddress = addresses[index].toLowerCase();
+        if (balancesResult.error) {
+          acc[tokenAddress] = '';
+        } else {
+          acc[tokenAddress] = fromWei(balancesResult.result!.toString(), Number(list![index].tokenDecimals));
+        }
+        return acc;
+      }, {});
+      setTokenBalances(balances!);
+    }
+
     if (selectedChainId !== currentChainId) {
       setSelectedToken(null);
       setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
