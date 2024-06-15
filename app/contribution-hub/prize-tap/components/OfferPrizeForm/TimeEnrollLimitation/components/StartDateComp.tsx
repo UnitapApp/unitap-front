@@ -57,10 +57,6 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           highlightToday={false}
           onOpenPickNewDate={false}
           disabled={isShowingDetails}
-          mobileLabels={{
-            OK: "OK",
-            CANCEL: "Close",
-          }}
           style={{
             border: "none",
             width: "100%",

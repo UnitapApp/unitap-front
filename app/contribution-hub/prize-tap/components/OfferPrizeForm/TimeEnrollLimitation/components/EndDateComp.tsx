@@ -61,6 +61,8 @@ const EndDateComp = ({ showErrors }: EndDateCompProp) => {
     <div className="relative w-full">
       <div className={`flex`}>
         <DatePicker
+          highlightToday={false}
+          onOpenPickNewDate={false}
           disabled={!data.startTimeStamp || isShowingDetails}
           style={{
             border: "none",
