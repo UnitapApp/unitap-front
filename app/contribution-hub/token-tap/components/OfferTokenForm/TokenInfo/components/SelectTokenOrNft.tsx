@@ -12,18 +12,17 @@ import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapConte
 import Icon from "@/components/ui/Icon";
 import { ZERO_ADDRESS, tokensInformation } from "@/constants";
 import { useEffect, useRef, useState } from "react";
-import { ContractValidationStatus, TokenOnChain } from "@/types";
+import { ContractValidationStatus, TokenBalance, TokenOnChain } from "@/types";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { zeroAddress } from "viem";
 import { fromWei } from "@/utils";
-import { useBalance } from "wagmi";
-import { useWalletNetwork } from "@/utils/wallet";
+import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
+import { fetchBalances } from "@/components/containers/provider-dashboard/helpers/fetchBalances";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
     data,
     handleSelectTokenOrNft,
-    handleSelectNativeToken,
     handleChange,
     openAddNftIdListModal,
     isShowingDetails,
@@ -43,7 +42,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
   const isTokenFieldDisabled =
     isShowingDetails ||
-    // data.isNativeToken ||
     !data.selectedChain ||
     tokenContractStatus.checking ||
     !isRightChain ||
@@ -84,21 +82,17 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
   const [tokenList, setTokenList] = useState<TokenOnChain[] | null>(null);
   const { chain } = useWalletNetwork();
+  const { address } = useWalletAccount();
+  const [tokenBalances, setTokenBalances] = useState<TokenBalance | null>(null);
+
   useEffect(() => {
     if (data.selectedChain) {
-      let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList
-      setTokenList(list!)
-      if (Number(data.selectedChain.chainId) !== Number(chain!.id)) {
-        setSelectedToken(null);
-        setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
-        setTokenName('')
-
-      }
+      handleGetTokenList()
     }
     else {
       setTokenList(null)
     }
-  }, [data.selectedChain])
+  }, [data.selectedChain, chain])
 
   useEffect(() => {
     if (!data.selectedChain) return;
@@ -113,6 +107,42 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
       setTokenList(list!)
     }
   }, [tokenName])
+
+  const handleGetTokenList = async () => {
+    const selectedChainId = Number(data.selectedChain.chainId);
+    const currentChainId = Number(chain!.id);
+    let list = tokensInformation.find(item => item.chainId === data.selectedChain.chainId)?.tokenList;
+    if (list) {
+      if (selectedChainId === currentChainId) {
+        setTokenList(list!)
+        const addresses = list.map(address => address.tokenAddress);
+        const res = await handleFetchBalances(addresses);
+
+        const balances = res?.reduce((acc: { [tokenAddress: string]: string }, balancesResult, index: number) => {
+          const tokenAddress = addresses[index].toLowerCase();
+          if (balancesResult.error) {
+            acc[tokenAddress] = '';
+          } else {
+            acc[tokenAddress] = fromWei(balancesResult.result!.toString(), Number(list[index].tokenDecimals));
+          }
+          return acc;
+        }, {});
+        setTokenBalances(balances!);
+
+      }
+    }
+    if (selectedChainId !== currentChainId) {
+      setSelectedToken(null);
+      setData((prev: any) => ({ ...prev, tokenContractAddress: '' }))
+      setTokenName('')
+    }
+  }
+
+  const handleFetchBalances = async (addresses: string[]) => {
+    if (!address || Number(chain?.id) !== Number(data.selectedChain.chainId)) return;
+    const res = await fetchBalances(addresses, address, data.selectedChain.chainId);
+    return res;
+  }
 
   const handleSetTokenAddress = (item: TokenOnChain) => {
     setSelectedToken(item)
@@ -231,12 +261,14 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     height="12px"
                   />
                 </div>
-                {showItems && tokenList && tokenList.length > 0 && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-[11] left-0 top-[45px] border-gray60 border-2 max-h-40 overflow-y-scroll">
+                {showItems && tokenList && tokenList.length > 0 && tokenBalances && <div className="flex-col bg-gray40 w-full rounded-lg absolute z-[11] left-0 top-[45px] border-gray60 border-2 max-h-40 overflow-y-scroll">
                   {tokenList?.map(((item, index) =>
                     <div key={index} className="flex items-center hover:bg-gray70 pl-2 rounded-lg gap-2" onClick={() => handleSetTokenAddress(item)}>
                       <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
                       <p className="flex items-center text-sm cursor-pointer  h-10 w-full "
                       >{item.tokenSymbol}</p>
+                      {Number(tokenBalances[item.tokenAddress.toLowerCase()]) > 0 && <p className="mr-4"> {tokenBalances[item.tokenAddress.toLowerCase()]}</p>}
+                      {item.tokenAddress === zeroAddress && Number(userBalance) > 0 && <p className="mr-4"> {Number(userBalance).toFixed(4)}</p>}
                     </div>
                   ))}
                 </div>}
@@ -353,11 +385,6 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 Required
               </p>
             )
-              // : Number(data.winnersCount) > 500 ? (
-              //   <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
-              //     The maximum number of winners is 500.
-              //   </p>
-              // )
               : (
                 data.tokenAmount && insufficientBalance && (
                   <p className="text-error text-2xs mt-[2px] m-0 p-0 absolute -bottom-4">
