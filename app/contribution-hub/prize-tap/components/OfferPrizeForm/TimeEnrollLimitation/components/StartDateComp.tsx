@@ -74,7 +74,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           name="startTime"
           format="DD/MM/YYYY - hh:mm A"
           inputClass="custom-input"
-          plugins={[<TimePicker key={0} position="bottom" hideSeconds disabled />]}
+          plugins={[<TimePicker key={0} position="bottom" hideSeconds />]}
           render={
             <Input
               className="date-picker-input"
