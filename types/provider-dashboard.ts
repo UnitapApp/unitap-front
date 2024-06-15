@@ -275,8 +275,12 @@ export type TokenOnChain = {
   tokenName: string;
   tokenSymbol: string;
   logoUrl: string;
+  balance?: string;
 };
 
+export type TokenBalance = {
+  [tokenAddress: string]: string;
+};
 export interface TokenInformation {
   chainId: string;
   chainName: string;
