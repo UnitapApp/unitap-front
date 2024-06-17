@@ -149,7 +149,7 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
   };
 
   return (
-    <div className="min-h[200px] mt-5 flex flex-col gap-2">
+    <div className="mt-5 flex min-h-[200px] flex-col gap-2">
       <div
         className="absolute top-5 z-30 cursor-pointer"
         onClick={() => setSelectedApp()}
@@ -165,8 +165,9 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${!isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
-              } absolute h-full w-full`}
+            className={`${
+              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
+            } absolute h-full w-full`}
           ></div>
           <p className="absolute text-white">Should satisfy</p>
         </div>
@@ -175,8 +176,9 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
           className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
         >
           <div
-            className={`${isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
-              } absolute h-full w-full `}
+            className={`${
+              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
+            } absolute h-full w-full `}
           ></div>
           <p className="absolute text-white">Should not satisfy</p>
         </div>
@@ -189,9 +191,9 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
         options={
           selectedApp
             ? selectedApp?.constraints.map((item) => ({
-              label: item.title,
-              value: item,
-            }))
+                label: item.title,
+                value: item,
+              }))
             : []
         }
         value={constraint}
