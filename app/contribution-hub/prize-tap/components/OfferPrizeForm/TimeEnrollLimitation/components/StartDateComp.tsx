@@ -28,7 +28,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   }, []);
 
   const handleChange = () => {
-    console.log('----')
+
   };
 
   const timeChange = (e: any) => {
