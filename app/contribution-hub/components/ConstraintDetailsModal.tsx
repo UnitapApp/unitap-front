@@ -714,7 +714,7 @@ export const FarcasterChannelFinder: FC<UserParams> = ({
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search a user to follow/Paste Farcaster link/Paste Farcaster link"
+          placeholder="Search a channel to follow/Paste Farcaster link/Paste Farcaster link"
           className="bg-gray40 text-lg font-normal placeholder:text-gray80"
         />
 

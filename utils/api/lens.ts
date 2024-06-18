@@ -48,5 +48,5 @@ export const fetchFarcasterChannels = async (search: string) => {
     },
   );
 
-  return res.data.result.users as FarcasterChannel[];
+  return res.data.channels as FarcasterChannel[];
 };
