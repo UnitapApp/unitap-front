@@ -422,8 +422,8 @@ const ProviderDashboard: FC<
         address,
         provider,
         setData,
-        setIsErc20Approved,
         setTokenContractStatus,
+        setIsErc20Approved,
         setApproveAllowance,
       );
     }
