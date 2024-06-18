@@ -34,7 +34,7 @@ export const fetchLensProfileUsers = async (query: string) => {
 
 export const fetchFarcasterProfiles = async (username: string) => {
   const res = await axios.get(
-    `https://api.neynar.com/v2/farcaster/user/search?api_key=NEYNAR_API_DOCS&viewer_fid=-1&q=${username}`,
+    `https://api.neynar.com/v2/farcaster/user/search?api_key=NEYNAR_API_DOCS&viewer_fid=3&q=${username}`,
   );
 
   return res.data.result.users as FarcasterProfile[];
