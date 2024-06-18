@@ -1,4 +1,4 @@
-import { FarcasterProfile, LensUserProfile } from "@/types";
+import { FarcasterChannel, FarcasterProfile, LensUserProfile } from "@/types";
 import axios from "axios";
 
 export const fetchLensProfileUsers = async (query: string) => {
@@ -38,4 +38,15 @@ export const fetchFarcasterProfiles = async (username: string) => {
   );
 
   return res.data.result.users as FarcasterProfile[];
+};
+
+export const fetchFarcasterChannels = async (search: string) => {
+  const res = await axios.get(
+    `https://api.neynar.com/v2/farcaster/channel/search?api_key=NEYNAR_API_DOCS&q=${search}`,
+    {
+      headers: { accept: "application/json", api_key: "NEYNAR_API_DOCS" },
+    },
+  );
+
+  return res.data.result.users as FarcasterChannel[];
 };
