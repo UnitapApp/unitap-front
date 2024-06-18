@@ -1,4 +1,3 @@
-import { contractAddresses } from "@/constants";
 import {
   ContractValidationStatus,
   ProviderDashboardFormDataProp,
@@ -17,6 +16,7 @@ export const getErc20TokenContract = async (
   setTokenContractStatus: any,
   setIsErc20Approved: any,
   setApproveAllowance: any,
+  spenderAddress: Address,
 ) => {
   if (!provider || !address) return;
 
@@ -38,10 +38,7 @@ export const getErc20TokenContract = async (
         functionName[i] === "balanceOf"
           ? [address as Address]
           : functionName[i] === "allowance"
-            ? [
-                address as Address,
-                contractAddresses.prizeTap[data.selectedChain.chainId].erc20,
-              ]
+            ? [address as Address, spenderAddress]
             : [],
     });
   }

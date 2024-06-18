@@ -438,6 +438,7 @@ const TokenTapProvider: FC<
         setTokenContractStatus,
         setIsErc20Approved,
         setApproveAllowance,
+        contractAddresses.tokenTap[data.selectedChain.chainId].erc20
       );
     }
 

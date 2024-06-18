@@ -425,6 +425,7 @@ const ProviderDashboard: FC<
         setTokenContractStatus,
         setIsErc20Approved,
         setApproveAllowance,
+        contractAddresses.prizeTap[data.selectedChain.chainId].erc20
       );
     }
 
