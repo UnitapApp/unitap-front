@@ -39,6 +39,16 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     setStartDate(e);
   };
 
+  const handleSetAsap = () => {
+    const currentTimestamp = Math.floor(Date.now() / 60000) * 60 + (5 * 60);
+    handleSetDate(
+      currentTimestamp,
+      "startTime"
+    );
+    setStartDate(new Date())
+  }
+
+
   return (
     <div className="relative w-full">
       <div
@@ -81,6 +91,11 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           minDate={minDate}
           className="rmdp-mobile  animate-fadeIn"
         />
+        <div
+          onClick={() => handleSetAsap()}
+          className="flex items-center justify-center w-[43px] h-[22px] border border-gray80 bg-gray60 text-gray80 rounded-md cursor-pointer px-2 mr-3 font-semibold text-2xs">
+          ASAP
+        </div>
       </div>
       {showErrors && showErrors.startDateStatus == false && (
         <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute">
