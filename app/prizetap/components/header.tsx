@@ -35,7 +35,7 @@ const Header = () => {
       <div className="header__left h-auto items-center">
         <span className="header__left__type-logo mb-3 flex items-center gap-3">
           <img
-            className="h-12"
+            className="h-14"
             src="assets/images/prize-tap/header-typography.png"
           />
           {/* <div>
