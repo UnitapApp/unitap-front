@@ -31,7 +31,6 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   };
 
   const timeChange = (e: any) => {
-    console.log(e)
     if (e?.unix) {
       handleSetDate(
         Math.round(new Date(e.unix * 1000).setSeconds(0) / 1000),
