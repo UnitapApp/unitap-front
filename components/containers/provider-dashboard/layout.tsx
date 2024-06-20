@@ -12,7 +12,7 @@ import { BackToHomeButton } from "../../../app/contribution-hub/components/Butto
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
-  const { openBrightIdModal } = useGlobalContext();
+  const { openBrightIdModal, setIsWalletPromptOpen } = useGlobalContext();
 
   return (
     <>
@@ -39,15 +39,15 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             If you have account log in to have access to Contribution Hub!
           </p>
 
-          <Link href="/">
-            <BackToHomeButton
-              height="32px"
-              className="mt-10 !w-full max-w-[120px] text-xs"
-              $fontSize="10px"
-            >
-              <p>Back to Home</p>
-            </BackToHomeButton>
-          </Link>
+          <BackToHomeButton
+            height="32px"
+            className="mt-10 !w-full max-w-[120px] text-xs"
+            $fontSize="10px"
+            onClick={() => setIsWalletPromptOpen(true)}
+          >
+            <p>Connect Wallet</p>
+          </BackToHomeButton>
+
         </div>
       )}
     </>
@@ -59,7 +59,7 @@ const ProviderTabs: FC = () => {
 
   const borderPosition =
     pathname.includes(RoutePath.PROVIDER_GASTAP) ||
-    pathname == RoutePath.PROVIDERDASHBOARD
+      pathname == RoutePath.PROVIDERDASHBOARD
       ? "after:left-0"
       : pathname.includes(RoutePath.PROVIDER_TOKENTAP)
         ? "after:left-[33.33%]"
@@ -70,33 +70,30 @@ const ProviderTabs: FC = () => {
       className={`${borderPosition} relative mb-4 flex select-none justify-between rounded-t-xl border-b-2 border-gray80  bg-gray20 text-center font-semibold text-white transition ease-in-out after:absolute after:bottom-[-1.8px] after:w-[33%] after:border after:transition-all  after:duration-[1s]`}
     >
       <Link
-        className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
-          RoutePath.PROVIDERDASHBOARD == pathname ||
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${RoutePath.PROVIDERDASHBOARD == pathname ||
           pathname.includes("gas-tap")
-            ? " text-white"
-            : "opacity-[0.2]"
-        }`}
+          ? " text-white"
+          : "opacity-[0.2]"
+          }`}
         href={RoutePath.PROVIDER_GASTAP}
-        // href={"#"}
+      // href={"#"}
       >
         Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>
       <Link
-        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
-          pathname.includes("token-tap") ? " text-white" : "opacity-[0.2]"
-        }`}
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${pathname.includes("token-tap") ? " text-white" : "opacity-[0.2]"
+          }`}
         href={RoutePath.PROVIDER_TOKENTAP}
-        // href={"#"}
+      // href={"#"}
       >
         Token Tap{" "}
         <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
       </Link>
       <Link
-        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
-          pathname.includes("prize-tap")
-            ? " opacity-1 text-white"
-            : "opacity-[0.2]"
-        }`}
+        className={`delay-260 flex w-full cursor-pointer flex-col-reverse  items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${pathname.includes("prize-tap")
+          ? " opacity-1 text-white"
+          : "opacity-[0.2]"
+          }`}
         href={RoutePath.PROVIDER_PRIZETAP}
       >
         Prize Tap

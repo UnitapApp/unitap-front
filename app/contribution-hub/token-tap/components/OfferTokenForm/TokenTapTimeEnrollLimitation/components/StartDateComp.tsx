@@ -1,9 +1,9 @@
 "use client";
 
 import { ErrorProps } from "@/types";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import "react-multi-date-picker/styles/layouts/mobile.css";
@@ -22,8 +22,8 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     if (data.startTimeStamp) {
       setStartDate(data.startTimeStamp * 1000);
     }
-
     setMinDate(Date.now() - 10 * 60 * 1000);
+
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
@@ -39,19 +39,32 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     setStartDate(e);
   };
 
+  const handleSetAsap = () => {
+    const currentTimestamp = Math.floor(Date.now() / 60000) * 60;
+    handleSetDate(
+      currentTimestamp + 5 * 60,
+      "startTime"
+    );
+    setStartDate(new Date().getTime() + (5 * 60 * 1000))
+  }
+
+
   return (
     <div className="relative w-full">
       <div
         className={`flex text-xs bg-gray40 border ${showErrors && showErrors.startDateStatus == false
-            ? "border-error"
-            : "border-gray50"
+          ? "border-error"
+          : "border-gray50"
           } rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
       >
         <p className="text-gray100 text-xs w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
           Start Date & Time
         </p>
         <DatePicker
+          currentDate={new DateObject({ date: new Date().getTime() + (5 * 60 * 1000) })}
           disabled={isShowingDetails}
+          highlightToday={false}
+          onOpenPickNewDate={false}
           style={{
             border: "none",
             width: "100%",
@@ -79,6 +92,11 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           minDate={minDate}
           className="rmdp-mobile  animate-fadeIn"
         />
+        <div
+          onClick={() => handleSetAsap()}
+          className="flex items-center justify-center w-[43px] h-[22px] border border-gray80 bg-gray60 text-gray80 rounded-md cursor-pointer px-2 mr-3 font-semibold text-2xs">
+          ASAP
+        </div>
       </div>
       {showErrors && showErrors.startDateStatus == false && (
         <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute">

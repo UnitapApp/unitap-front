@@ -36,7 +36,7 @@ import {
   useWalletProvider,
   useWalletSigner,
 } from "@/utils/wallet";
-import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
+// import { getErc721TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc721NftContract";
 import { isAddress, zeroAddress } from "viem";
 import { ZERO_ADDRESS, contractAddresses } from "@/constants";
 import { getConstraintsApi, getTokenTapValidChain } from "@/utils/api";
@@ -52,7 +52,8 @@ import {
   errorMessages,
   formInitialData,
 } from "@/constants/contributionHub";
-import { getErc20TokenContractTokenTap } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContractTokenTap";
+// import { getErc20TokenContractTokenTap } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContractTokenTap";
+import { getErc20TokenContract } from "@/components/containers/provider-dashboard/helpers/getErc20TokenContract";
 
 export const TokenTapContext = createContext<{
   page: number;
@@ -429,7 +430,7 @@ const TokenTapProvider: FC<
 
   const checkContractInfo = useCallback(async () => {
     if (!data.isNft && provider && address) {
-      await getErc20TokenContractTokenTap(
+      await getErc20TokenContract(
         data,
         address,
         provider,
@@ -437,6 +438,7 @@ const TokenTapProvider: FC<
         setTokenContractStatus,
         setIsErc20Approved,
         setApproveAllowance,
+        contractAddresses.tokenTap[data.selectedChain.chainId].erc20
       );
     }
 
@@ -456,7 +458,7 @@ const TokenTapProvider: FC<
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider!,
+        Number(data.selectedChain.chainId),
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
@@ -632,6 +634,21 @@ const TokenTapProvider: FC<
       checkContractAddress(data.nftContractAddress);
     }
   }, [data.isNft, data.nftContractAddress, isShowingDetails]);
+
+  useEffect(() => {
+    if (data.selectedChain) {
+      setSelectedToken(null);
+      setTokenName(null);
+      setData((prevData: any) => ({
+        ...prevData,
+        tokenName: '',
+        tokenSymbol: '',
+        tokenDecimals: '',
+        userTokenBalance: '',
+        tokenContractAddress: ''
+      }));
+    }
+  }, [data.selectedChain])
 
   //check token contract address
   useEffect(() => {

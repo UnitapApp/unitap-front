@@ -422,9 +422,10 @@ const ProviderDashboard: FC<
         address,
         provider,
         setData,
-        setIsErc20Approved,
         setTokenContractStatus,
+        setIsErc20Approved,
         setApproveAllowance,
+        contractAddresses.prizeTap[data.selectedChain.chainId].erc20
       );
     }
 
@@ -447,7 +448,7 @@ const ProviderDashboard: FC<
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider,
+        Number(data.selectedChain.chainId),
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
@@ -468,6 +469,21 @@ const ProviderDashboard: FC<
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
   );
+
+  useEffect(() => {
+    if (data.selectedChain) {
+      setSelectedToken(null);
+      setTokenName(null);
+      setData((prevData: any) => ({
+        ...prevData,
+        tokenName: '',
+        tokenSymbol: '',
+        tokenDecimals: '',
+        userTokenBalance: '',
+        tokenContractAddress: ''
+      }));
+    }
+  }, [data.selectedChain])
 
   const handleSetDate = (timeStamp: number, label: string) => {
     label == "startTime"

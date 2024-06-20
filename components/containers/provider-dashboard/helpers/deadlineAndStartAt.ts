@@ -22,7 +22,7 @@ export const startAt = (startTimeStamp: number) =>
 
 export const checkStartTimeStamp = (startTimeStamp: number) => {
   const currentTimestamp = Math.floor(Date.now() / 60000) * 60;
-  const instantaneousTimestamp = currentTimestamp + 5 * 60;
+  const instantaneousTimestamp = currentTimestamp + 2 * 60;
   const startTime =
     startTimeStamp < instantaneousTimestamp
       ? instantaneousTimestamp
