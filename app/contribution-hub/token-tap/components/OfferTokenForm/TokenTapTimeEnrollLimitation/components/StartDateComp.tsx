@@ -1,9 +1,9 @@
 "use client";
 
 import { ErrorProps } from "@/types";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import "react-multi-date-picker/styles/layouts/mobile.css";
@@ -22,8 +22,8 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     if (data.startTimeStamp) {
       setStartDate(data.startTimeStamp * 1000);
     }
-
     setMinDate(Date.now() - 10 * 60 * 1000);
+
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
@@ -40,12 +40,12 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   };
 
   const handleSetAsap = () => {
-    const currentTimestamp = Math.floor(Date.now() / 60000) * 60 + (5 * 60);
+    const currentTimestamp = Math.floor(Date.now() / 60000) * 60;
     handleSetDate(
-      currentTimestamp,
+      currentTimestamp + 5 * 60,
       "startTime"
     );
-    setStartDate(new Date())
+    setStartDate(new Date().getTime() + (5 * 60 * 1000))
   }
 
 
@@ -61,6 +61,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
           Start Date & Time
         </p>
         <DatePicker
+          currentDate={new DateObject({ date: new Date().getTime() + (5 * 60 * 1000) })}
           disabled={isShowingDetails}
           highlightToday={false}
           onOpenPickNewDate={false}
