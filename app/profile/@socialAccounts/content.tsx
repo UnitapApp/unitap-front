@@ -9,6 +9,9 @@ import { useUserProfileContext } from "@/context/userProfile";
 import { SocialAccountContext } from "@/context/socialAccountContext";
 import GitCoinPassportAccount from "../components/socialAccounts/gitcoinPassport";
 import TwitterAccount from "../components/socialAccounts/twitter";
+// import EnsAccount from "../components/socialAccounts/ensAccount";
+// import LensAccount from "../components/socialAccounts/lensAccount";
+// import FarcasterAccount from "../components/socialAccounts/farcasterAccount";
 
 const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
@@ -49,6 +52,21 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
           icon={"/assets/images/landing/twitter-icon.svg"}
           isConnected={!!connections["Twitter"]}
         />
+        {/* <EnsAccount
+          title={"Ens"}
+          icon={"/assets/images/provider-dashboard/requirements/ens.svg"}
+          isConnected={!!connections["Ens"]}
+        />
+        <LensAccount
+          title={"Lens"}
+          icon={"/assets/images/provider-dashboard/requirements/lens.svg"}
+          isConnected={!!connections["Lens"]}
+        />
+        <FarcasterAccount
+          title={"Farcaster"}
+          icon={"/assets/images/provider-dashboard/requirements/farcaster.svg"}
+          isConnected={!!connections["Farcaster"]}
+        /> */}
       </div>
     </SocialAccountContext.Provider>
   );
