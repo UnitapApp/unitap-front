@@ -116,7 +116,7 @@ const PrizeTapLanding: FC = async () => {
                         <p className="text-gray90">Completed</p>
                       ) : (
                         <>
-                          <p className="text-gray90">Winners Announced in:</p>
+                          <p className="text-gray90">Winners in:</p>
                           <RaffleCardTimerLandingPage
                             startTime={raffle.createdAt}
                             FinishTime={raffle.deadline}

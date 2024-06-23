@@ -36,6 +36,8 @@ const PrizeInfo = ({
   // const chainId = chain?.id;
   // const { switchChain } = useNetworkSwitcher();
   // const { setIsWalletPromptOpen } = useGlobalContext();
+
+
   // const [isNetWorkWrong, setIsNetworkWrong] = useState<boolean>(false)
 
   // const isRightChain = useMemo(() => {
