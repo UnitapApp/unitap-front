@@ -1,4 +1,4 @@
-import { BrightConnectionModal } from "@/components/containers/modals";
+// import { BrightConnectionModal } from "@/components/containers/modals";
 import LineaCheckWalletsModal from "@/app/prizetap/components/Linea/LineaCheckWalletsModal";
 import LineaWinnersModal from "@/app/prizetap/components/Linea/LineaWinnersModal";
 import EnrollModal from "@/app/prizetap/components/Modals/enroll-modal";
@@ -18,7 +18,7 @@ const PrizeTapPage: FC = () => {
       <LineaCheckWalletsModal />
       <LineaWinnersModal />
       <EnrollModal />
-      <BrightConnectionModal />
+      {/* <BrightConnectionModal /> */}
     </>
   );
 };

@@ -273,11 +273,15 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         setIsWalletPromptOpen(true);
         return;
       }
+      if (!address && method !== "Winners") {
+        setIsWalletPromptOpen(true);
+        return;
+      }
       setClaimOrEnrollWalletResponse(null);
       setMethod(method);
       setSelectedRaffleForEnroll(raffle);
     },
-    [isConnected, setIsWalletPromptOpen],
+    [isConnected, setIsWalletPromptOpen, address],
   );
 
   const closeEnrollModal = useCallback(() => {

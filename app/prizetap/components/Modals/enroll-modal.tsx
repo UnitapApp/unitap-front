@@ -13,7 +13,7 @@ import WrongNetworkBody from "./enroll-body/WrongNetworkBody";
 import WinnersModal from "./winnersModal";
 
 const EnrollModalBody = ({ chain }: { chain: Chain }) => {
-  const { userProfile } = useUserProfileContext();
+  // const { userProfile } = useUserProfileContext();
 
   const { selectedNetwork } = useNetworkSwitcher();
 
@@ -28,13 +28,13 @@ const EnrollModalBody = ({ chain }: { chain: Chain }) => {
 
   if (!selectedRaffleForEnroll) return null;
 
-  if (!userProfile)
-    return (
-      <BrightNotConnectedBody
-        method={method!}
-        raffle={selectedRaffleForEnroll}
-      />
-    );
+  // if (!userProfile)
+  //   return (
+  //     <BrightNotConnectedBody
+  //       method={method!}
+  //       raffle={selectedRaffleForEnroll}
+  //     />
+  //   );
 
   if (claimOrEnrollWalletResponse?.state === "Done")
     return <SuccessBody method={method!} raffle={selectedRaffleForEnroll} />;
@@ -68,9 +68,8 @@ const EnrollModal = () => {
 
   return (
     <Modal
-      title={`${
-        method === "Verify" ? "Requirements" : selectedRaffleForEnroll.name
-      }`}
+      title={`${method === "Verify" ? "Requirements" : selectedRaffleForEnroll.name
+        }`}
       size="small"
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
