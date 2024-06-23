@@ -55,6 +55,8 @@ import {
   errorMessages,
   formInitialData,
 } from "@/constants/contributionHub";
+import { getBalance } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
 
 export const ProviderDashboardContext = createContext<{
   page: number;
@@ -374,6 +376,8 @@ const ProviderDashboard: FC<
   const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
   const [tokenName, setTokenName] = useState<string | null>(null);
 
+  const [userBalance, setUserBalance] = useState<string | null>(null)
+
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
@@ -392,12 +396,16 @@ const ProviderDashboard: FC<
   const signer = useWalletSigner();
   const provider = useWalletProvider();
   const { address } = useWalletAccount();
-  const { chain } = useWalletNetwork();
 
-  const { data: userBalance } = useWalletBalance({
-    address,
-    chainId: chain?.id,
-  });
+  const getBalanceBySelectedChainId = async () => {
+    const chainId: number = Number(data.selectedChain.chainId);
+    const balance = await getBalance(config, {
+      address: address!,
+      chainId: chainId
+    })
+
+    setUserBalance(balance.formatted)
+  }
 
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
@@ -482,6 +490,7 @@ const ProviderDashboard: FC<
         userTokenBalance: '',
         tokenContractAddress: ''
       }));
+      getBalanceBySelectedChainId()
     }
   }, [data.selectedChain])
 
@@ -734,7 +743,7 @@ const ProviderDashboard: FC<
     ) {
       setInsufficientBalance(
         data.isNativeToken
-          ? Number(data.totalAmount) >= Number(userBalance?.formatted)
+          ? Number(data.totalAmount) >= Number(userBalance)
           : Number(data.totalAmount) >
           Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
@@ -1185,7 +1194,7 @@ const ProviderDashboard: FC<
         selectedRaffleForCheckReason,
         socialMediaValidation,
         insufficientBalance,
-        userBalance: userBalance?.formatted.toString() ?? null,
+        userBalance: null,
         tokenContractStatus,
         nftContractStatus,
         setNftStatus,

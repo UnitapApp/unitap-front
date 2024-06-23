@@ -18,6 +18,8 @@ import { zeroAddress } from "viem";
 import { fromWei } from "@/utils";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { fetchBalances } from "@/components/containers/provider-dashboard/helpers/fetchBalances";
+import { getBalance } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
 
 const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const {
@@ -33,7 +35,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     numberOfNfts,
     setNumberOfNfts,
     selectedToken,
-    userBalance,
+    // userBalance,
     setData,
     setSelectedToken,
     tokenName,
@@ -84,6 +86,22 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   const { chain } = useWalletNetwork();
   const { address } = useWalletAccount();
   const [tokenBalances, setTokenBalances] = useState<TokenBalance | null>(null);
+  const [userWalletBalance, setUserWalletBalance] = useState<string>('');
+
+  const handleGetWalletBalance = async () => {
+    const chainId: number = Number(data.selectedChain.chainId);
+    const balance = await getBalance(config, {
+      address: address!,
+      chainId: chainId
+    })
+    setUserWalletBalance(balance.formatted)
+  }
+
+  useEffect(() => {
+    if (data.selectedChain && address) {
+      handleGetWalletBalance()
+    }
+  }, [data.selectedChain, address])
 
   useEffect(() => {
     if (data.selectedChain) {
@@ -252,7 +270,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     <span className="mr-1">Balance:</span>
                     {tokenContractStatus.isValid ===
                       ContractValidationStatus.Valid && !tokenContractStatus.checking
-                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userBalance : ''
+                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : Number(userWalletBalance).toFixed(5) : ''
                     }
                   </div>
                 </div>
@@ -273,7 +291,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                       <p className="flex items-center text-sm cursor-pointer  h-10 w-full "
                       >{item.tokenSymbol}</p>
                       {Number(tokenBalances[item.tokenAddress.toLowerCase()]) > 0 && <p className="mr-4"> {tokenBalances[item.tokenAddress.toLowerCase()]}</p>}
-                      {item.tokenAddress === zeroAddress && Number(userBalance) > 0 && <p className="mr-4"> {Number(userBalance).toFixed(4)}</p>}
+                      {item.tokenAddress === zeroAddress && Number(userWalletBalance) > 0 && <p className="mr-4"> {Number(userWalletBalance).toFixed(5)}</p>}
                     </div>
                   ))}
                 </div>}

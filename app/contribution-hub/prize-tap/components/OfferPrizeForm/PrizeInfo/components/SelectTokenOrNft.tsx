@@ -39,7 +39,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     setSelectedToken,
     // userBalance,
     tokenName,
-    setTokenName
+    setTokenName,
   } = usePrizeOfferFormContext();
 
   const { address } = useWalletAccount();
@@ -49,12 +49,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
   const handleGetWalletBalance = async () => {
     const chainId: number = Number(data.selectedChain.chainId);
-
     const balance = await getBalance(config, {
       address: address!,
       chainId: chainId
     })
-
     setUserWalletBalance(balance.formatted)
   }
 
@@ -284,7 +282,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                     <span className="mr-1">Balance:</span>
                     {tokenContractStatus.isValid ===
                       ContractValidationStatus.Valid && !tokenContractStatus.checking
-                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : userWalletBalance : ''
+                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : Number(userWalletBalance).toFixed(5) : ''
                     }
                   </div>
                 </div>
@@ -306,7 +304,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                       >{item.tokenSymbol}</p>
 
                       {Number(tokenBalances[item.tokenAddress.toLowerCase()]) > 0 && <p className="mr-4"> {tokenBalances[item.tokenAddress.toLowerCase()]}</p>}
-                      {item.tokenAddress === zeroAddress && Number(userWalletBalance) > 0 && <p className="mr-4"> {Number(userWalletBalance).toFixed(4)}</p>}
+                      {item.tokenAddress === zeroAddress && Number(userWalletBalance) > 0 && <p className="mr-4"> {Number(userWalletBalance).toFixed(5)}</p>}
                     </div>
                   ))}
                 </div>}
