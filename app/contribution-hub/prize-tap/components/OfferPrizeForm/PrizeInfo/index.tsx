@@ -21,11 +21,11 @@ const PrizeInfo = ({
 }: ProviderFormPaginationProp) => {
   const {
     data,
-    handleChange,
+    // handleChange,
     page,
     canGoStepTwo,
     updateChainList,
-    isShowingDetails,
+    // isShowingDetails,
     nftContractStatus,
     tokenContractStatus,
   } = usePrizeOfferFormContext();
@@ -34,8 +34,8 @@ const PrizeInfo = ({
   // const { chain } = useWalletNetwork();
 
   // const chainId = chain?.id;
-  const { switchChain } = useNetworkSwitcher();
-  const { setIsWalletPromptOpen } = useGlobalContext();
+  // const { switchChain } = useNetworkSwitcher();
+  // const { setIsWalletPromptOpen } = useGlobalContext();
   // const [isNetWorkWrong, setIsNetworkWrong] = useState<boolean>(false)
 
   // const isRightChain = useMemo(() => {
