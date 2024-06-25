@@ -67,7 +67,7 @@ const MintNFTCard = () => {
     () =>
       contractsRes
         ? (contractsRes[2].result as number) -
-          ((contractsRes[0].result as number) ?? 0)
+        ((contractsRes[0].result as number) ?? 0)
         : undefined,
     [contractsRes],
   );
@@ -319,84 +319,84 @@ const MintNFTCard = () => {
               </div>
             </div>
           </div>
-          <div className="mint-nft-card__actions flex w-full flex-col items-center justify-between gap-2 bg-gray30 px-4 py-3 lg:flex-row">
-            {isRightChain && remainingCount && remainingCount > 0 && (
-              <div className="mint-nft-card__actions__quantity flex w-full items-center lg:w-auto">
-                <div
-                  className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-l-xl border-2 border-gray60 py-3 text-white ${
-                    count === 1
+          <div className="flex items-center justify-between bg-gray30 px-4 py-3 w-full gap-2">
+
+            <div className="mint-nft-card__actions flex w-full flex-col items-center justify-between gap-2 lg:flex-row">
+              {isRightChain && remainingCount && remainingCount > 0 && (
+                <div className="mint-nft-card__actions__quantity flex w-full items-center lg:w-auto">
+                  <div
+                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-l-xl border-2 border-gray60 py-3 text-white ${count === 1
                       ? "cursor-default"
                       : "cursor-pointer hover:bg-primaryGradient"
-                  }`}
-                  onClick={() => (count !== 1 ? setCount(count - 1) : null)}
-                >
-                  {count === 1 ? (
-                    <Icon iconSrc="/assets/images/nft/nft-minus-gray.svg" />
-                  ) : (
-                    <Icon iconSrc="/assets/images/nft/nft-minus-white.svg" />
-                  )}
-                </div>
-                <div
-                  className={`flex h-12 min-w-[48px]  flex-1 cursor-default items-center justify-center border-y-2 border-gray60 py-3 font-bold text-white`}
-                >
-                  {count}
-                </div>
-                <div
-                  className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-r-xl border-2 border-gray60 py-3 text-white ${
-                    count === remainingCount
-                      ? "cursor-default"
-                      : "cursor-pointer hover:bg-primaryGradient"
-                  }`}
-                  onClick={() =>
-                    count !== remainingCount ? setCount(count + 1) : null
-                  }
-                >
-                  {count === remainingCount ? (
-                    <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
-                  ) : (
-                    <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
-                  )}
-                </div>
-              </div>
-            )}
-            {!isConnected ? (
-              <ClaimButton
-                onClick={setIsWalletPromptOpen.bind(null, true)}
-                height="48px"
-                $width="100% !important"
-              >
-                <p>Connect Wallet</p>
-              </ClaimButton>
-            ) : isRightChain ? (
-              remainingCount ? (
-                sufficientAmount ? (
-                  <ClaimButton height="48px" $width="100% !important" disabled>
-                    <p>Insufficient ETH Amount</p>
-                  </ClaimButton>
-                ) : (
-                  <ClaimButton
-                    onClick={mintPass}
-                    height="48px"
-                    className="!w-full"
-                    disabled={isPending}
+                      }`}
+                    onClick={() => (count !== 1 ? setCount(count - 1) : null)}
                   >
-                    <p>{isPending ? "Contract Loading" : "Mint Unitap Pass"}</p>
+                    {count === 1 ? (
+                      <Icon iconSrc="/assets/images/nft/nft-minus-gray.svg" />
+                    ) : (
+                      <Icon iconSrc="/assets/images/nft/nft-minus-white.svg" />
+                    )}
+                  </div>
+                  <div
+                    className={`flex h-12 min-w-[48px]  flex-1 cursor-default items-center justify-center border-y-2 border-gray60 py-3 font-bold text-white`}
+                  >
+                    {count}
+                  </div>
+                  <div
+                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-r-xl border-2 border-gray60 py-3 text-white ${count === remainingCount
+                      ? "cursor-default"
+                      : "cursor-pointer hover:bg-primaryGradient"
+                      }`}
+                    onClick={() =>
+                      count !== remainingCount ? setCount(count + 1) : null
+                    }
+                  >
+                    {count === remainingCount ? (
+                      <Icon iconSrc="assets/images/nft/nft-plus-gray.svg" />
+                    ) : (
+                      <Icon iconSrc="assets/images/nft/nft-plus-white.svg" />
+                    )}
+                  </div>
+                </div>
+              )}
+              {!isConnected ? (
+                <button
+                  className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                  onClick={setIsWalletPromptOpen.bind(null, true)}
+                // height="46px"
+                // $width="100% !important"
+                >
+                  <p>Connect Wallet</p>
+                </button>
+              ) : isRightChain ? (
+                remainingCount ? (
+                  sufficientAmount ? (
+                    <ClaimButton height="48px" $width="100% !important" disabled>
+                      <p>Insufficient ETH Amount</p>
+                    </ClaimButton>
+                  ) : (
+                    <button
+                      className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                      onClick={mintPass}
+                      disabled={isPending}
+                    >
+                      <p>{isPending ? "Contract Loading" : "Mint Unitap Pass"}</p>
+                    </button>
+                  )
+                ) : (
+                  <ClaimButton height="48px" $width="100% !important" disabled>
+                    <p>Sold Out</p>
                   </ClaimButton>
                 )
               ) : (
-                <ClaimButton height="48px" $width="100% !important" disabled>
-                  <p>Sold Out</p>
-                </ClaimButton>
-              )
-            ) : (
-              <ClaimButton
-                onClick={switchNetwork}
-                height="48px"
-                className="!w-full"
-              >
-                <p>Switch Network</p>
-              </ClaimButton>
-            )}
+                <button
+                  className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                  onClick={switchNetwork}
+                >
+                  <p>Switch Network</p>
+                </button>
+              )}
+            </div>
           </div>
         </>
       )}
