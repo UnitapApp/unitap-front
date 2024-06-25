@@ -10,13 +10,18 @@ const Spaceship = styled.img`
 
 const Header = () => {
   return (
-    <div className="header w-full h-[202px] bg-gray20 rounded-2xl flex flex-col gap-5 justify-end items-start overflow-hidden relative pl-6 pb-5 mb-4">
-      <div className="header-top z-10 flex items-center h-auto">
+    <div className="header w-full h-[202px] bg-gray20 rounded-2xl bg-[url('../public/assets/images/pass/bg-header.svg')]  flex flex-col gap-5 justify-end items-start overflow-hidden relative pl-6 pb-5 mb-4">
+      {/* <div className="header-top z-10 flex items-center h-auto">
         <img
           className="gas-tap h-[48px] w-auto sm:w-auto"
           src="assets/images/nft/mint-header.png"
         />
-      </div>
+      </div> */}
+
+      <img
+        className="gas-tap h-[48px] w-auto sm:w-auto"
+        src="assets/images/pass/unitap-pass.svg"
+      />
 
       <p className="gradient-text z-10 text-white">
         Unitap Pass is a VIP pass for Unitap.
