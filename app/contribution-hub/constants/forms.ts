@@ -36,7 +36,7 @@ export const TokenTapDisplaySteps: DisplayStepsProps[] = [
     description: "Your Token information",
     prevIcon: "/assets/images/provider-dashboard/token-tap-green.svg",
     activeIcon: "/assets/images/provider-dashboard/token-tap-active.png",
-    nextIcon: "/assets/images/provider-dashboard/token-tap-active.png",
+    nextIcon: "/assets/images/provider-dashboard/token-tap-off.svg",
   },
   {
     id: 2,
