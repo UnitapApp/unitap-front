@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { ContractValidationStatus, TokenBalance, TokenOnChain } from "@/types";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { zeroAddress } from "viem";
-import { fromWei } from "@/utils";
+import { formatNumber, fromWei } from "@/utils";
 import { useWalletAccount, useWalletNetwork } from "@/utils/wallet";
 import { fetchBalances } from "@/components/containers/provider-dashboard/helpers/fetchBalances";
 import { getBalance } from "wagmi/actions";
@@ -210,6 +210,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
   });
 
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
   return (
     <div
       className={
@@ -268,9 +269,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   <div className="text-gray100 flex items-center">
                     <span className="h-1 w-1 bg-gray100 mx-2 rounded-full"></span>
                     <span className="mr-1">Balance:</span>
-                    {tokenContractStatus.isValid ===
-                      ContractValidationStatus.Valid && !tokenContractStatus.checking
-                      ? data.tokenContractAddress !== zeroAddress ? fromWei(data.userTokenBalance!, data.tokenDecimals) : Number(userWalletBalance).toFixed(5) : ''
+                    {
+                      tokenContractStatus.isValid === ContractValidationStatus.Valid && !tokenContractStatus.checking
+                        ? (
+                          data.tokenContractAddress !== zeroAddress
+                            ? fromWei(data.userTokenBalance!, data.tokenDecimals)
+                            : Number(userWalletBalance) > 0
+                              ? Number(userWalletBalance).toFixed(5)
+                              : '0'
+                        )
+                        : ''
                     }
                   </div>
                 </div>
@@ -290,7 +298,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                       <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
                       <p className="flex items-center text-sm cursor-pointer  h-10 w-full "
                       >{item.tokenSymbol}</p>
-                      {Number(tokenBalances[item.tokenAddress.toLowerCase()]) > 0 && <p className="mr-4"> {tokenBalances[item.tokenAddress.toLowerCase()]}</p>}
+                      {Number(tokenBalances[item.tokenAddress.toLowerCase()]) > 0 && <p className="mr-4"> {formatNumber(Number(tokenBalances[item.tokenAddress.toLowerCase()]))}</p>}
                       {item.tokenAddress === zeroAddress && Number(userWalletBalance) > 0 && <p className="mr-4"> {Number(userWalletBalance).toFixed(5)}</p>}
                     </div>
                   ))}
