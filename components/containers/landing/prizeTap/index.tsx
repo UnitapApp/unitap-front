@@ -23,9 +23,10 @@ const PrizeTapLanding: FC = async () => {
       raffle.status !== "PENDING" && raffle.status !== "REJECTED",
   );
 
-  const validRaffles = rafflesList.sort(
-    (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime(),
-  );
+  // const validRaffles = rafflesList.sort(
+  //   (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime(),
+  // );
+
 
   const availableRaffles = rafflesList.filter(
     (raffle) =>
@@ -57,8 +58,8 @@ const PrizeTapLanding: FC = async () => {
           }
         >
           <div className="mt-14">
-            {validRaffles.length > 0 &&
-              validRaffles.slice(0, 2).map((raffle, key) => (
+            {rafflesList.length > 0 &&
+              rafflesList.slice(0, 2).map((raffle, key) => (
                 <div
                   key={key}
                   className={
