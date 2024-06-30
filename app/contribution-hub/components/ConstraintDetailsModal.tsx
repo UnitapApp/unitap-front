@@ -12,7 +12,9 @@ import {
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/components/ChainList";
-import SelectMethodInput from "@/app/contribution-hub/components/SelectMethodInput";
+import SelectMethodInput, {
+  MinimumRequirementField,
+} from "@/app/contribution-hub/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
 import {
@@ -382,7 +384,15 @@ export const CreateParams: FC<CreateModalParam> = ({
           />
         </div>
 
-        <SelectMethodInput
+        {/* <SelectMethodInput
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          isNft={isNft}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={decimals}
+        /> */}
+        <MinimumRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={isNft}
@@ -424,7 +434,16 @@ export const CreateParams: FC<CreateModalParam> = ({
           />
         </div>
 
-        <SelectMethodInput
+        {/* <SelectMethodInput
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          isNft={false}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={decimals}
+        /> */}
+
+        <MinimumRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={false}
