@@ -27,6 +27,7 @@ import {
   fetchLensProfileUsers,
 } from "@/utils/api/lens";
 import { useOutsideClick } from "@/utils/hooks/dom";
+import { ShouldNotSatisfy, ShouldSatisfy } from "./ShouldSatisfy";
 
 interface CreateModalParam {
   constraint: ConstraintProps;
@@ -181,25 +182,15 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       <div className="mb-2 flex h-[32px] w-full gap-4">
         <div
           onClick={() => handleSelectNotSatisfy(false)}
-          className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
+          className="relative w-full"
         >
-          <div
-            className={`${
-              !isNotSatisfy ? "bg-dark-space-green opacity-30" : "bg-gray50"
-            } absolute h-full w-full`}
-          ></div>
-          <p className="absolute text-white">Should satisfy</p>
+          <ShouldSatisfy isSatisfy={isNotSatisfy} />
         </div>
         <div
           onClick={() => handleSelectNotSatisfy(true)}
-          className={`relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg text-white`}
+          className="relative w-full"
         >
-          <div
-            className={`${
-              isNotSatisfy ? "bg-error opacity-50" : "bg-gray50"
-            } absolute h-full w-full `}
-          ></div>
-          <p className="absolute text-white">Should not satisfy</p>
+          <ShouldNotSatisfy notSatisfy={isNotSatisfy} />
         </div>
       </div>
       <CreateParams
