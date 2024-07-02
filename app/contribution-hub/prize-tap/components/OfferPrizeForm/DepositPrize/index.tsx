@@ -146,26 +146,39 @@ const DepositPrize = ({
             </div>
           </div>
 
-          <div className="flex h-[74px] items-center justify-between overflow-hidden rounded-lg bg-gray30">
-            <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
-              <p className="mb-3 text-xs text-gray90">Number of Winners</p>
-              <p className="text-sm">{data.winnersCount}</p>
+          {!data.isNft ? (
+            <div className="flex h-[74px] items-center justify-between overflow-hidden rounded-lg bg-gray30">
+              <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
+                <p className="mb-3 text-xs text-gray90">Number of Winners</p>
+                <p className="text-sm">{data.winnersCount}</p>
+              </div>
+              <div className="flex min-w-[20px] items-center justify-center">
+                x
+              </div>
+              <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
+                <p className="mb-3 text-xs text-gray90">Amount Per Winner</p>
+                <p className="text-sm">{data.tokenAmount}</p>
+              </div>
+              <div className="flex min-w-[20px] items-center justify-center">
+                =
+              </div>
+              <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
+                <p className="mb-3 text-xs text-gray90">Total Amount</p>
+                <p className="text-sm">{data.totalAmount}</p>
+              </div>
             </div>
-            <div className="flex min-w-[20px] items-center justify-center">
-              x
+          ) : (
+            <div className="flex h-[74px] justify-between gap-3">
+              <div className="w-full rounded-xl bg-gray30 px-4 py-3">
+                <p className="mb-3 text-xs text-gray90">Number of NFTs</p>
+                <p className="text-sm">{data.nftTokenIds.length}</p>
+              </div>
+              <div className="w-full rounded-xl bg-gray30 px-4 py-3">
+                <p className="mb-3 text-xs text-gray90">NFT IDs</p>
+                <p className="text-sm">{data.nftTokenIds.join(",")}</p>
+              </div>
             </div>
-            <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
-              <p className="mb-3 text-xs text-gray90">Amount Per Winner</p>
-              <p className="text-sm">{data.tokenAmount}</p>
-            </div>
-            <div className="flex min-w-[20px] items-center justify-center">
-              =
-            </div>
-            <div className="flex h-full w-full flex-col justify-center bg-gray40 pl-3">
-              <p className="mb-3 text-xs text-gray90">Total Amount</p>
-              <p className="text-sm">{data.totalAmount}</p>
-            </div>
-          </div>
+          )}
         </div>
 
         <div className="time-limitation mt-6">
@@ -250,22 +263,6 @@ const DepositPrize = ({
             </div>
           )}
         </div>
-        {/* <section>
-          <div className="text-center">
-            <DepositContent
-              title={data.isNft ? nftDescription.title : tokenDescription.title}
-              description={
-                data.isNft
-                  ? nftDescription.description
-                  : tokenDescription.description
-              }
-              icon={data.isNft ? nftDescription.icon : tokenDescription.icon}
-              isNFT={data.isNft}
-            />
-          </div>
-        </section> */}
-        {/* <DisplaySelectedTokenOrNft data={data} /> */}
-        {/* <ShowPreviewModal /> */}
       </div>
 
       {isShowingDetails ? (
