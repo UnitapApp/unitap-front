@@ -78,6 +78,8 @@ const config: Config = {
           "linear-gradient(to right, #22222f, #21232e, #242130, #231f2f)",
         primaryGradient:
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)",
+        "primaryGradient-2":
+          "linear-gradient(91.35deg, #4BF2A2 -150.66%, #A89FE7 39.49%, #E1C3F4 150.07%)",
         "home-header-texture":
           "url('/assets/images/landing/main-bg-profile.svg')",
         "what-is-unitap-header":
