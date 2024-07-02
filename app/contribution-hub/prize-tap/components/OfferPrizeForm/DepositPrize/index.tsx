@@ -177,7 +177,7 @@ const DepositPrize = ({
           </div>
           <div className="flex gap-3">
             <div className="flex h-full w-full flex-col justify-center rounded-xl bg-gray40 p-3">
-              <p className="mb-3 text-xs text-gray90">start Enrollment time</p>
+              <p className="mb-3 text-xs text-gray90">Start Enrollment Time</p>
               <p className="text-sm">
                 {new Date(data.startTimeStamp * 1000).toLocaleString()}
               </p>
@@ -265,7 +265,7 @@ const DepositPrize = ({
           </div>
         </section> */}
         {/* <DisplaySelectedTokenOrNft data={data} /> */}
-        <ShowPreviewModal />
+        {/* <ShowPreviewModal /> */}
       </div>
 
       {isShowingDetails ? (
