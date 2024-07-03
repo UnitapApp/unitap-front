@@ -1,12 +1,12 @@
-import Icon from "@/components/ui/Icon"
-import React, { useState } from "react"
+import Icon from "@/components/ui/Icon";
+import React, { useState } from "react";
 
 interface CollapseProps {
-  title: string
-  icon: string
-  className?: string
-  children?: React.ReactNode
-  initState?: boolean
+  title: string;
+  icon: string;
+  className?: string;
+  children?: React.ReactNode;
+  initState?: boolean;
 }
 
 const Collapse = ({
@@ -16,17 +16,17 @@ const Collapse = ({
   children,
   initState,
 }: CollapseProps) => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false)
+  const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false);
 
   return (
     <div
-      className={`collapse overflow-y-hidden collapse-card w-full ${className}`}
+      className={`collapse-card collapse w-full overflow-y-hidden ${className}`}
     >
       <div
         onClick={() => {
-          setIsCollapseOpen(!isCollapseOpen)
+          setIsCollapseOpen(!isCollapseOpen);
         }}
-        className="collapse-content flex items-center cursor-pointer"
+        className="collapse-content flex cursor-pointer items-center"
       >
         <Icon
           className="mr-7 md:ml-3"
@@ -45,14 +45,14 @@ const Collapse = ({
         />
       </div>
       <div
-        className={`overflow-y-hidden collapse__data ml-1 text-justify md:text-left md:ml-16 md:mr-6 ${
+        className={`collapse__data ml-1 overflow-y-hidden text-justify md:ml-16 md:mr-6 md:text-left ${
           isCollapseOpen ? "open-collapse" : "close-collapse"
         }`}
       >
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Collapse
+export default Collapse;

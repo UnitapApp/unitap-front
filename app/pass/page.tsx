@@ -9,14 +9,10 @@ import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Icon from "@/components/ui/Icon";
-import {
-  useAccountBalance,
-  useNetworkSwitcher,
-  useWalletAccount,
-} from "@/utils/wallet";
+import { useWalletAccount } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { shortenAddress } from "@/utils";
+import { diffToNextMonday, shortenAddress } from "@/utils";
 
 const MintNFTCard = dynamic(
   () => import("@/components/containers/pass/mintNftCard"),
@@ -33,6 +29,8 @@ const NftPass = () => {
   const [displayIndex, setDisplayIndex] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+
+  const ups = 0;
 
   const advantagesItem = [
     {
@@ -63,6 +61,7 @@ const NftPass = () => {
       imgUrl: "assets/images/pass/verification.svg",
     },
   ];
+
   const { userProfile } = useUserProfileContext();
 
   const borderPosition =
@@ -118,6 +117,27 @@ const NftPass = () => {
       setIntervalId(null);
     }
   };
+
+  const [now, setNow] = useState(new Date());
+  const [days, setDays] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [minutes, setMinutes] = useState("00");
+  const [seconds, setSeconds] = useState("00");
+
+  useEffect(() => {
+    const diff = diffToNextMonday(now);
+    setSeconds(diff.seconds);
+    setMinutes(diff.minutes);
+    setHours(diff.hours);
+    setDays(diff.days);
+  }, [now]);
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className="m-auto flex w-full max-w-[990px] flex-col items-center justify-center">
@@ -287,41 +307,76 @@ const NftPass = () => {
               </div>
               <div className="flex items-center gap-1">
                 <img src="/assets/images/pass/ticket.svg" />
-                <p className="ml-1">3 TICKETS</p>
+                <p className="ml-1">
+                  {userProfile.prizetapWinningChanceNumber} TICKETS
+                </p>
               </div>
             </div>
           </div>
         )}
-        <div className="box-2 w-[438px] overflow-hidden rounded-xl bg-primaryGradient p-[1px]">
-          <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
-            <div className="mt-3 text-sm font-bold">
-              You will earn{" "}
-              <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
-                2 more tickets
-              </span>{" "}
-              next round!{" "}
-            </div>
-            <div className="mt-2 text-xs font-normal text-gray100">
-              <span className="text-[#58e6ab] ">1</span> UP ={" "}
-              <span className="text-[#7bc5c5] opacity-70">1</span> ticket in new
-              round
-            </div>
-            <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-primaryGradient bg-clip-text text-xs font-semibold text-transparent underline">
-              Mint more UP{" "}
-              <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
-            </div>
-            <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
-              <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
-              <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
+        {ups !== 0 && isConnected && userProfile ? (
+          <div className="box-2 w-[438px] overflow-hidden rounded-xl bg-primaryGradient p-[1px]">
+            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
+              <div className="mt-3 text-sm font-bold">
+                You will earn{" "}
+                <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
+                  2 more tickets
+                </span>{" "}
+                next round!{" "}
+              </div>
+              <div className="mt-2 text-xs font-normal text-gray100">
+                <span className="text-[#58e6ab] ">1</span> UP ={" "}
+                <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
+                new round
+              </div>
+              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative bg-clip-text text-xs font-semibold text-transparent">
+                  Mint more UP
+                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
+                </div>
+                <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
+              </div>
+              <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
+                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
+                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="box-2 w-[438px] overflow-hidden rounded-xl bg-primaryGradient p-[1px]">
+            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
+              <div className="mt-3 text-sm font-bold">
+                You can earn free{" "}
+                <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
+                  tickets
+                </span>{" "}
+                next round if you <span className="text-[#df86e2]">Mint</span>.
+              </div>
+              <div className="mt-2 text-xs font-normal text-gray100">
+                <span className="text-[#58e6ab] ">1</span> UP ={" "}
+                <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
+                new round
+              </div>
+              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative bg-clip-text text-xs font-semibold text-transparent">
+                  Mint UP
+                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
+                </div>
+                <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
+              </div>
+              <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
+                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
+                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
+              </div>
+            </div>
+          </div>
+        )}
         <div className="box-3 flex w-[260px] flex-col  items-center overflow-hidden rounded-xl bg-gray40">
           <div className="flex h-[40px] w-full items-center justify-center bg-gray60 text-xs text-gray100 ">
             Next Round in:
           </div>
           <div className="flex h-[58px] items-center justify-center font-digital-numbers">
-            06:23:59:59
+            {days}:{hours}:{minutes}:{seconds}
           </div>
         </div>
       </div>
