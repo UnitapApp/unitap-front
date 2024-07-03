@@ -64,7 +64,9 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           />
         </div>
       </div>
-      <p className="m-0 flex w-full items-center justify-center p-0">and</p>
+      <p className="m-0 mb-2 mt-2 flex w-full items-center justify-center p-0">
+        and
+      </p>
     </div>
   );
 };
