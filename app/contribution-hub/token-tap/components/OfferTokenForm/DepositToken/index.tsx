@@ -263,7 +263,7 @@ const DepositToken = ({
           </div>
         </section> */}
           {/* <DisplaySelectedTokenOrNft data={data} /> */}
-          <ShowPreviewModal />
+          {/* <ShowPreviewModal /> */}
         </div>
       </div>
 

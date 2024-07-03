@@ -15,7 +15,6 @@ import {
   useWalletNetwork,
 } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
-import NewAddedConstraint from "../NewAddedConstraint";
 import DisplayRequirement from "./components/DisplayRequirement/DisplayRequirments";
 import Icon from "@/components/ui/Icon";
 
