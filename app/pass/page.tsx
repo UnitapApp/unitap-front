@@ -61,7 +61,6 @@ const NftPass = () => {
       imgUrl: "assets/images/pass/verification.svg",
     },
   ];
-
   const { userProfile } = useUserProfileContext();
 
   const borderPosition =
