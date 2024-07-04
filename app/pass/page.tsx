@@ -108,7 +108,7 @@ const NftPass = () => {
     return () => clearTimeout(timer);
   }, [countClicked]);
 
-  const handleChane = (newIndex: number) => {
+  const handleChange = (newIndex: number) => {
     setDisplayIndex(newIndex);
     setAnimationKey((prev) => prev + 1);
     if (intervalId) {
@@ -167,7 +167,7 @@ const NftPass = () => {
           <div className=" absolute bottom-0 z-10 flex w-full flex-col items-center justify-center text-sm font-normal text-[#8F9A97]">
             <div className="relative">
               <div className="flex h-[54px] items-center justify-center gap-5 rounded-[16px_16px_0px_0px] bg-gray30 px-5">
-                <div className="cursor-pointer" onClick={() => handleChane(0)}>
+                <div className="cursor-pointer" onClick={() => handleChange(0)}>
                   <svg
                     width="18"
                     height="18"
@@ -179,7 +179,7 @@ const NftPass = () => {
                     <path d="M16.2828 11.0934L16.4565 9.3888C16.5492 8.4789 16.6095 7.8786 16.5618 7.4997H16.5798C17.3637 7.4997 18 6.8283 18 6.0003C18 5.1723 17.3637 4.5 16.5789 4.5C15.7941 4.5 15.1578 5.1714 15.1578 6.0003C15.1578 6.3747 15.2883 6.7176 15.5034 6.9804C15.1947 7.1811 14.7906 7.6059 14.1822 8.2449C13.7142 8.7372 13.4802 8.9829 13.2192 9.0216C13.0742 9.04255 12.9262 9.02065 12.7935 8.9586C12.5523 8.847 12.3912 8.5428 12.0699 7.9335L10.3743 4.725C10.1763 4.3497 10.0098 4.0356 9.8595 3.7827C10.4742 3.4515 10.8945 2.7774 10.8945 2.0007C10.8945 0.8946 10.0467 0 9 0C7.9533 0 7.1055 0.8955 7.1055 1.9998C7.1055 2.7774 7.5258 3.4515 8.1405 3.7818C7.9902 4.0356 7.8246 4.3497 7.6257 4.725L5.931 7.9344C5.6088 8.5428 5.4477 8.847 5.2065 8.9595C5.07377 9.02155 4.92581 9.04345 4.7808 9.0225C4.5198 8.9838 4.2858 8.7372 3.8178 8.2449C3.2094 7.6059 2.8053 7.1811 2.4966 6.9804C2.7126 6.7176 2.8422 6.3747 2.8422 5.9994C2.8422 5.1723 2.205 4.5 1.4202 4.5C0.6372 4.5 0 5.1714 0 6.0003C0 6.8283 0.6363 7.4997 1.4211 7.4997H1.4382C1.3896 7.8777 1.4508 8.4789 1.5435 9.3888L1.7172 11.0934C1.8135 12.0393 1.8936 12.9393 1.9926 13.7502H16.0074C16.1064 12.9402 16.1865 12.0393 16.2828 11.0934ZM7.9695 18H10.0305C12.717 18 14.0607 18 14.9571 17.154C15.3477 16.7832 15.5961 16.1172 15.7743 15.2496H2.2257C2.4039 16.1172 2.6514 16.7832 3.0429 17.1531C3.9393 18 5.283 18 7.9695 18Z" />
                   </svg>
                 </div>
-                <div className="cursor-pointer" onClick={() => handleChane(1)}>
+                <div className="cursor-pointer" onClick={() => handleChange(1)}>
                   <svg
                     width="20"
                     height="20"
@@ -195,7 +195,7 @@ const NftPass = () => {
                     />
                   </svg>
                 </div>
-                <div className="cursor-pointer" onClick={() => handleChane(2)}>
+                <div className="cursor-pointer" onClick={() => handleChange(2)}>
                   <svg
                     width="20"
                     height="20"
@@ -211,7 +211,7 @@ const NftPass = () => {
                     />
                   </svg>
                 </div>
-                <div className="cursor-pointer" onClick={() => handleChane(3)}>
+                <div className="cursor-pointer" onClick={() => handleChange(3)}>
                   <svg
                     width="20"
                     height="20"
@@ -273,7 +273,7 @@ const NftPass = () => {
           </div>
         )}
       </div>
-      <div className="flex w-full flex-wrap gap-2 overflow-hidden rounded-2xl bg-gray20 p-2">
+      <div className="mb-2 flex w-full flex-wrap gap-2 overflow-hidden rounded-2xl bg-gray20 p-2">
         {!isConnected || !userProfile ? (
           <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4">
             <p className=" text-xs text-gray100">

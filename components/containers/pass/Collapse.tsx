@@ -19,14 +19,12 @@ const Collapse = ({
   const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false);
 
   return (
-    <div
-      className={`collapse-card collapse w-full overflow-y-hidden ${className}`}
-    >
+    <div className="mt-3">
       <div
         onClick={() => {
           setIsCollapseOpen(!isCollapseOpen);
         }}
-        className="collapse-content flex cursor-pointer items-center"
+        className="collapse-content flex h-[60px] cursor-pointer items-center rounded-xl bg-gray20 px-4"
       >
         <Icon
           className="mr-7 md:ml-3"
@@ -45,11 +43,9 @@ const Collapse = ({
         />
       </div>
       <div
-        className={`collapse__data ml-1 overflow-y-hidden text-justify md:ml-16 md:mr-6 md:text-left ${
-          isCollapseOpen ? "open-collapse" : "close-collapse"
-        }`}
+        className={`grid grid-rows-[0fr] transition-all duration-300 ${isCollapseOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} `}
       >
-        {children}
+        <div className="mt-3 overflow-hidden">{children}</div>
       </div>
     </div>
   );
