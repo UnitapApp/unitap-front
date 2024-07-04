@@ -16,7 +16,7 @@ const Collapse = ({
   children,
   initState,
 }: CollapseProps) => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false);
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
   return (
     <div className="mt-3">
