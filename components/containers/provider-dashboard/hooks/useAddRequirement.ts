@@ -5,7 +5,7 @@ import { RequirementProps } from "@/types";
 const useAddRequirement = (
   handleBackToConstraintListModal: any,
   insertRequirement: any,
-  updateRequirement: any
+  updateRequirement: any,
 ) => {
   const addRequirements = (
     existRequirement: RequirementProps | null,
@@ -15,8 +15,9 @@ const useAddRequirement = (
     isNotSatisfy: boolean,
     requirementValues: any,
     constraintFiles: any,
-    decimals: number | undefined
+    decimals: number | undefined,
   ) => {
+    console.log(requirementValues);
     handleBackToConstraintListModal();
     if (!existRequirement) {
       insertRequirement(
@@ -26,7 +27,7 @@ const useAddRequirement = (
         isNotSatisfy,
         requirementValues,
         constraintFiles,
-        decimals
+        decimals,
       );
     } else {
       updateRequirement(
@@ -34,7 +35,7 @@ const useAddRequirement = (
         isNotSatisfy,
         requirementValues,
         constraintFiles,
-        decimals
+        decimals,
       );
     }
   };

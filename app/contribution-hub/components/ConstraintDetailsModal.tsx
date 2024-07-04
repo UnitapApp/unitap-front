@@ -13,7 +13,8 @@ import useAddRequirement from "@/components/containers/provider-dashboard/hooks/
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/components/ChainList";
 import SelectMethodInput, {
-  MinimumRequirementField,
+  MinimumNumberRequirementField,
+  MinimumWeb3AmountRequirementField,
 } from "@/app/contribution-hub/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
@@ -392,7 +393,7 @@ export const CreateParams: FC<CreateModalParam> = ({
           isDisabled={!collectionAddress}
           decimals={decimals}
         /> */}
-        <MinimumRequirementField
+        <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={isNft}
@@ -443,7 +444,7 @@ export const CreateParams: FC<CreateModalParam> = ({
           decimals={decimals}
         /> */}
 
-        <MinimumRequirementField
+        <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={false}
@@ -463,6 +464,19 @@ export const CreateParams: FC<CreateModalParam> = ({
         setConstraintFile={setConstraintFile}
         constraintFile={constraintFile}
         requirement={requirement}
+      />
+    );
+  }
+
+  if (constraint.name === "prizetap.HaveUnitapPass") {
+    return (
+      <MinimumNumberRequirementField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
       />
     );
   }

@@ -24,7 +24,7 @@ const DisplayRequirement = ({ requirement }: Props) => {
   return (
     <div className="mb-3 text-xs">
       <div className="flex h-[44px] items-center justify-between rounded-xl bg-gray30 px-4">
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           {constraint?.iconUrl && (
             <Icon iconSrc={constraint.iconUrl} width="23px" />
           )}
