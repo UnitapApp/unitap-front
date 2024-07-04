@@ -8,6 +8,7 @@ import Tooltip from "@/components/ui/Tooltip";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Permission, Prize } from "@/types";
 import { replacePlaceholders } from "@/utils";
+import Icon from "@/components/ui/Icon";
 
 // const tokenImgLink = (tokenUri: string) =>
 //   tokenUri
@@ -17,12 +18,24 @@ import { replacePlaceholders } from "@/utils";
 //     : undefined;
 
 const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
-  const { userToken } = useUserProfileContext();
+  const { userToken, userProfile } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
   const { openEnrollModal, selectedRaffleForEnroll } = usePrizeTapContext();
+  // const [userTickets, setUserTickets] = useState<number[]>([]);
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
   >([]);
+
+  // useEffect(() => {
+  //   if (userProfile) {
+  //     const items = Array.from({ length: 10 }, (_, index) => index + 1);
+  //     setUserTickets(items);
+  //     // const items = Array.from({ length: userProfile.prizetapWinningChanceNumber }, (_, index) => index + 1);
+  //     // setUserTickets(items);
+  //   }
+  // }, [userProfile]);
+
+  // const handleSelectTicket = () => {}
 
   const params = useMemo(
     () => JSON.parse(raffle.constraintParams),
@@ -56,18 +69,48 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
     <div className="w-full">
       <div className="relative mb-20 text-center">
         <div
-          className={`${raffle.isPrizeNft
-            ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
-            : "bg-[url('/assets/images/prize-tap/cover.svg')]"
-            } mx-auto h-40 w-64 rounded-lg bg-cover`}
+          className={`${
+            raffle.isPrizeNft
+              ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
+              : "bg-[url('/assets/images/prize-tap/cover.svg')]"
+          } mx-auto h-40 w-64 rounded-lg bg-cover`}
         />
         <img
           src={raffle.imageUrl}
-          className="absolute left-1/2 top-5 -translate-x-1/2 max-w-[120px]"
+          className="absolute left-1/2 top-5 max-w-[120px] -translate-x-1/2"
           alt={raffle.name}
           width={168}
         />
       </div>
+
+      {/* {userProfile && (
+        <div className="flex h-[126px] w-full flex-col overflow-hidden rounded-xl border border-gray70 bg-gray60">
+          <div className="flex h-8 items-center bg-gray50 pl-2 text-xs font-medium text-gray100">
+            Drag & Drop more tickets to increase your chance to win!
+          </div>
+          <div
+            className="relative flex h-[62px] w-full"
+            onClick={() => handleSelectTicket()}
+          >
+            {userTickets.map((item) => (
+              <Icon
+                iconSrc="/assets/images/prize-tap/userTicket.svg"
+                className="-mr-10 cursor-pointer"
+              />
+            ))}
+          </div>
+          <div className="flex h-8 items-center justify-between bg-gray50 px-2 text-xs font-bold text-gray100">
+            <div className="">
+              You have{" "}
+              <span className="text-[#a69fe5]">
+                {userProfile.prizetapWinningChanceNumber}
+              </span>{" "}
+              tickets
+            </div>
+            <div>1x chance</div>
+          </div>
+        </div>
+      )} */}
 
       {loading ? (
         <div className="relative mt-10 animate-pulse">
@@ -133,7 +176,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
               onClick={() => openEnrollModal(raffle, "Enroll")}
             >
               <div className="relative w-full">
-                <p> Enroll</p>
+                <p>Enroll</p>
               </div>
             </ClaimAndEnrollButton>
           )}

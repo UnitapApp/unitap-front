@@ -163,13 +163,13 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
       <div className="mb-2 flex h-[32px] w-full gap-4">
         <div
           onClick={() => handleSelectNotSatisfy(false)}
-          className={`relative`}
+          className={`relative w-full`}
         >
           <ShouldSatisfy isSatisfy={isNotSatisfy} />
         </div>
         <div
           onClick={() => handleSelectNotSatisfy(true)}
-          className={`relative flex h-full w-full`}
+          className={`relative w-full`}
         >
           <ShouldNotSatisfy notSatisfy={isNotSatisfy} />
         </div>
