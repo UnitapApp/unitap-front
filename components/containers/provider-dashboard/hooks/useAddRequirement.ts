@@ -17,7 +17,6 @@ const useAddRequirement = (
     constraintFiles: any,
     decimals: number | undefined,
   ) => {
-    console.log(requirementValues);
     handleBackToConstraintListModal();
     if (!existRequirement) {
       insertRequirement(

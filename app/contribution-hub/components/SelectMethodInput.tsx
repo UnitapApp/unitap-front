@@ -171,6 +171,8 @@ export const MinimumWeb3AmountRequirementField = ({
 }: Prop) => {
   const [minValue, setValue] = useState<string>("");
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     if (!requirement) return;
     setValue(
@@ -196,6 +198,18 @@ export const MinimumWeb3AmountRequirementField = ({
           : "",
     });
   };
+
+  useEffect(() => {
+    if (!requirement || decimals === requirement.decimals || isNft) return;
+    handleChange(
+      new Big(
+        fromWei(
+          requirement.params.MINIMUM,
+          requirement.decimals ? requirement.decimals : 18,
+        ),
+      ).toFixed(),
+    );
+  }, [decimals]);
 
   const handleChangeValue = (e: string) => {
     const finaleValue =
