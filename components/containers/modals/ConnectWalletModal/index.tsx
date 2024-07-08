@@ -39,7 +39,7 @@ export const RenderWalletBody: FC<{
   setWalletTitle: (title: string) => void;
 }> = ({ setWalletTitle }) => {
   const [walletState, setWalletState] = useState<WalletState>(
-    WalletState.Prompt
+    WalletState.Prompt,
   );
 
   const [previousState, setPreviousState] = useState<WalletState | null>(null);
@@ -49,7 +49,7 @@ export const RenderWalletBody: FC<{
   const [isNewUser, setIsNewUser] = useState(false);
 
   const [walletProvider, setWalletProvider] = useState<ConnectionProvider>(
-    ConnectionProvider.Metamask
+    ConnectionProvider.Metamask,
   );
 
   const currentWallet = useMemo(() => {
@@ -76,7 +76,7 @@ export const RenderWalletBody: FC<{
   useEffect(() => {
     if (cookies["tutorial"] === "false" || !isNewUser) return;
 
-    document.cookie = "tutorial=true;";
+    document.cookie = "tutorial=true;path=/;";
   }, [cookies, isNewUser]);
 
   useEffect(() => {

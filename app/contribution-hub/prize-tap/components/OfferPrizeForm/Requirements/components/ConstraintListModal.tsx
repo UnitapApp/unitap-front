@@ -56,7 +56,6 @@ export const SelectCoreIntegrations: FC<{
   };
   handleSelectConstraint: (constraint: ConstraintProps) => void;
 }> = ({ constraintsListApi, handleSelectConstraint }) => {
-  console.log(constraintsListApi);
   return (
     <div className="flex flex-col gap-2 ">
       <p className="text-sm text-white">General</p>

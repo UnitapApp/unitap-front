@@ -8,12 +8,14 @@ import {
   LensUserProfile,
   FarcasterProfile,
   FarcasterChannel,
+  TokenOnChain,
 } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/contribution-hub/components/ChainList";
 import SelectMethodInput, {
-  MinimumRequirementField,
+  MinimumNumberRequirementField,
+  MinimumWeb3AmountRequirementField,
 } from "@/app/contribution-hub/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
@@ -30,6 +32,7 @@ import {
 } from "@/utils/api/lens";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { ShouldNotSatisfy, ShouldSatisfy } from "./ShouldSatisfy";
+import { tokensInformation } from "@/constants";
 
 interface CreateModalParam {
   constraint: ConstraintProps;
@@ -113,6 +116,13 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   const checkingParamsValidation = () => {
     if (!requirementParamsList) return false;
     if (
+      requirementParamsList.ADDRESS == zeroAddress &&
+      constraint.name === "core.HasNFTVerification"
+    ) {
+      setErrorMessage("Please enter valid collection address.");
+      return false;
+    }
+    if (
       !requirementParamsList.ADDRESS ||
       !requirementParamsList.CHAIN ||
       !requirementParamsList.MINIMUM ||
@@ -125,7 +135,6 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
           : setErrorMessage("Please select minimum amount.");
       return false;
     }
-
     if (!isCollectionValid) return false;
     return true;
   };
@@ -239,8 +248,11 @@ export const CreateParams: FC<CreateModalParam> = ({
   const [isNativeToken, setIsNativeToken] = useState<boolean>(false);
   const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
   const requirement = requirementList.find((item) => item.pk == constraint.pk);
-
+  const [tokenList, setTokenList] = useState<TokenOnChain[] | null>(null);
   const provider = useWalletProvider();
+  const [showItems, setShowItems] = useState<boolean>(false);
+  const [selectedToken, setSelectedToken] = useState<TokenOnChain | null>(null);
+  const [tokenName, setTokenName] = useState<string>("");
 
   useEffect(() => {
     if (requirement) {
@@ -254,11 +266,63 @@ export const CreateParams: FC<CreateModalParam> = ({
     }
   }, []);
 
+  const handleGetTokenList = () => {
+    setSelectedToken(null);
+    setCollectionAddress("");
+    setTokenName("");
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["ADDRESS"]: "",
+    });
+    if (!selectedChain) {
+      setTokenList(null);
+      return;
+    }
+    let list = tokensInformation.find(
+      (item) => item.chainId === selectedChain.chainId,
+    )?.tokenList;
+    if (!list) {
+      setTokenList(null);
+      return;
+    }
+    setTokenList(list);
+
+    if (selectedChain && collectionAddress && !selectedToken && list) {
+      const token = list.find(
+        (item) =>
+          item.tokenAddress.toLocaleLowerCase() ===
+          collectionAddress.toLowerCase(),
+      );
+      if (token) {
+        setSelectedToken(token);
+        setTokenName(token.tokenName);
+        setRequirementParamsList({
+          ...requirementParamsList,
+          ["ADDRESS"]: token.tokenAddress,
+        });
+        checkCollectionContract();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (selectedChain) {
+      handleGetTokenList();
+    }
+  }, [selectedChain]);
+
   useEffect(() => {
     if (!collectionAddress) return;
     const isAddressValid = isAddress(collectionAddress);
     !isAddressValid && setErrorMessage("Invalid contract address.");
     isAddressValid && setErrorMessage("");
+    if (requirementParamsList.CHAIN) {
+      const chain = allChainList!.find(
+        (item) => item.pk === requirementParamsList.CHAIN,
+      );
+      setSelectedChain(chain!);
+    }
+
     if (isAddressValid) {
       if (collectionAddress === zeroAddress) {
         setIsCollectionValid(true);
@@ -270,7 +334,17 @@ export const CreateParams: FC<CreateModalParam> = ({
     } else {
       setIsCollectionValid(false);
     }
-  }, [collectionAddress, selectedChain, isNativeToken]);
+  }, [collectionAddress, isNativeToken]);
+
+  const handleSelectToken = (token: TokenOnChain) => {
+    setSelectedToken(token);
+    setTokenName(token.tokenName);
+    setCollectionAddress(token.tokenAddress);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["ADDRESS"]: token.tokenAddress,
+    });
+  };
 
   const checkCollectionContract = async () => {
     if (!selectedChain) return;
@@ -306,13 +380,15 @@ export const CreateParams: FC<CreateModalParam> = ({
         setDecimals,
       );
     }
-
     !res && setErrorMessage("Invalid contract address.");
     setIsCollectionValid(res);
   };
 
   const handleChangeCollection = (address: string) => {
     setCollectionAddress(address);
+    setTokenName(address);
+    setSelectedToken(null);
+    console.log(address.length);
     setRequirementParamsList({
       ...requirementParamsList,
       ["ADDRESS"]: address,
@@ -327,16 +403,6 @@ export const CreateParams: FC<CreateModalParam> = ({
   ) {
     const isNft: boolean = constraint.name === "core.HasNFTVerification";
 
-    const handleSelectNativeToken = (isNative: boolean) => {
-      if (!selectedChain) return;
-      setIsNativeToken((prev) => !prev);
-      !isNative ? setCollectionAddress(zeroAddress) : setCollectionAddress("");
-      setRequirementParamsList({
-        ...requirementParamsList,
-        ["ADDRESS"]: !isNative ? zeroAddress : "",
-      });
-    };
-
     return (
       <div className="flex flex-col gap-3">
         <ChainList
@@ -347,52 +413,61 @@ export const CreateParams: FC<CreateModalParam> = ({
           setSelectedChain={setSelectedChain}
         />
 
-        {!isNft && (
+        <div className="relative" onClick={() => setShowItems(!showItems)}>
           <div
-            onClick={() => handleSelectNativeToken(isNativeToken)}
-            className={`${
-              !selectedChain ? "opacity-50" : "opacity-1 cursor-pointer"
-            } -mb-1 mt-2 flex min-h-[20px] max-w-[110px] items-center gap-2`}
+            className={` ${
+              !selectedChain ? "opacity-50" : "opacity-1"
+            } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
           >
-            <Icon
-              iconSrc={
-                isNativeToken
-                  ? "/assets/images/provider-dashboard/check-true.svg"
-                  : "/assets/images/provider-dashboard/checkbox.svg"
-              }
-            />
-            is native token
-          </div>
-        )}
+            {selectedToken && (
+              <div className="mr-2">
+                <Icon
+                  iconSrc={selectedToken.logoUrl}
+                  width="22px"
+                  height="22px"
+                />
+              </div>
+            )}
 
-        <div
-          className={`${
-            isNativeToken || !selectedChain ? "opacity-50" : "opacity-1"
-          } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
-        >
-          <input
-            name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
-            disabled={isNativeToken || !selectedChain}
-            placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
-            className="h-full w-full bg-inherit"
-            value={
-              collectionAddress && collectionAddress != zeroAddress
-                ? collectionAddress
-                : ""
-            }
-            onChange={(e) => handleChangeCollection(e.target.value)}
-          />
+            <input
+              autoComplete="off"
+              name={isNft ? "nftAddressRequirement" : "tokenAddressRequirement"}
+              disabled={!selectedChain}
+              placeholder={isNft ? "Paste NFT address" : "Paste Token address"}
+              className="h-full w-full bg-inherit"
+              value={tokenName}
+              onChange={(e) => handleChangeCollection(e.target.value)}
+            />
+
+            {!isNft && (
+              <Icon
+                iconSrc="/assets/images/fund/arrow-down.png"
+                height="8px"
+                width="14px"
+                className={`mr-3 transition-all duration-300 ${showItems && "rotate-180"}`}
+              />
+            )}
+
+            {tokenList && selectedChain && showItems && !isNft && (
+              <div className="absolute left-0 top-11 max-h-40 w-full overflow-y-scroll rounded-lg border-2 border-gray70 bg-gray40">
+                {tokenList?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 rounded-lg pl-2 hover:bg-gray70"
+                    onClick={() => handleSelectToken(item)}
+                  >
+                    <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
+                    <p className="flex h-10 w-full cursor-pointer  items-center text-sm ">
+                      {item.tokenSymbol}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* <SelectMethodInput
-          setRequirementParamsList={setRequirementParamsList}
-          requirementParamsList={requirementParamsList}
-          isNft={isNft}
-          requirement={requirement}
-          isDisabled={!collectionAddress}
-          decimals={decimals}
-        /> */}
-        <MinimumRequirementField
+        <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={isNft}
@@ -414,36 +489,56 @@ export const CreateParams: FC<CreateModalParam> = ({
           selectedChain={selectedChain}
           setSelectedChain={setSelectedChain}
         />
+        <div className="relative" onClick={() => setShowItems(!showItems)}>
+          <div
+            className={`${
+              !selectedChain ? "opacity-50" : "opacity-1"
+            } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
+          >
+            {selectedToken && (
+              <div className="mr-2">
+                <Icon
+                  iconSrc={selectedToken.logoUrl}
+                  width="22px"
+                  height="22px"
+                />
+              </div>
+            )}
+            <input
+              autoComplete="false"
+              name={"tokenAddressRequirement"}
+              disabled={!selectedChain}
+              placeholder={"Paste Token address"}
+              className="h-full w-full bg-inherit"
+              value={tokenName}
+              onChange={(e) => handleChangeCollection(e.target.value)}
+            />
+            <Icon
+              iconSrc="/assets/images/fund/arrow-down.png"
+              height="8px"
+              width="14px"
+              className={`mr-3 transition-all duration-300 ${showItems && "rotate-180"}`}
+            />
 
-        <div
-          className={`${
-            !selectedChain ? "opacity-50" : "opacity-1"
-          } nftAddress_requirement_input flex h-[43px] items-center overflow-hidden rounded-2xl border border-gray50 bg-gray40 pl-4`}
-        >
-          <input
-            name={"tokenAddressRequirement"}
-            disabled={!selectedChain}
-            placeholder={"Paste Token address"}
-            className="h-full w-full bg-inherit"
-            value={
-              collectionAddress && collectionAddress != zeroAddress
-                ? collectionAddress
-                : ""
-            }
-            onChange={(e) => handleChangeCollection(e.target.value)}
-          />
+            {tokenList && selectedChain && showItems && (
+              <div className="absolute left-0 top-11 max-h-40 w-full overflow-y-scroll rounded-lg border-2 border-gray70 bg-gray40">
+                {tokenList?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 rounded-lg pl-2 hover:bg-gray70"
+                    onClick={() => handleSelectToken(item)}
+                  >
+                    <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
+                    <p className="flex h-10 w-full cursor-pointer  items-center text-sm ">
+                      {item.tokenSymbol}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* <SelectMethodInput
-          setRequirementParamsList={setRequirementParamsList}
-          requirementParamsList={requirementParamsList}
-          isNft={false}
-          requirement={requirement}
-          isDisabled={!collectionAddress}
-          decimals={decimals}
-        /> */}
-
-        <MinimumRequirementField
+        <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           isNft={false}
@@ -463,6 +558,19 @@ export const CreateParams: FC<CreateModalParam> = ({
         setConstraintFile={setConstraintFile}
         constraintFile={constraintFile}
         requirement={requirement}
+      />
+    );
+  }
+
+  if (constraint.name === "prizetap.HaveUnitapPass") {
+    return (
+      <MinimumNumberRequirementField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
       />
     );
   }
