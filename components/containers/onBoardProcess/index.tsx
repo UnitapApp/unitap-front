@@ -66,7 +66,7 @@ const OnBoardProcess = () => {
     if (step === steps.length - 1) {
       setStep(0);
       setShowIntro(false);
-      document.cookie = "tutorial=false";
+      document.cookie = "tutorial=false;path=/;";
       document.body.classList.remove("overflow-hidden");
 
       return;
@@ -80,7 +80,7 @@ const OnBoardProcess = () => {
 
   const onSkip = () => {
     setShowIntro(false);
-    document.cookie = "tutorial=false";
+    document.cookie = "tutorial=false;path=/;";
     document.body.classList.remove("overflow-hidden");
   };
 
@@ -106,7 +106,7 @@ const OnBoardProcess = () => {
       element?.classList.add("overflow-hidden", "relative", "z-50");
 
       const diagonalLength = Math.sqrt(
-        Math.pow(element.clientWidth, 2) + Math.pow(element.clientHeight, 2)
+        Math.pow(element.clientWidth, 2) + Math.pow(element.clientHeight, 2),
       );
 
       // highlightElement.style.width = `${diagonalLength}px`;
@@ -119,7 +119,7 @@ const OnBoardProcess = () => {
       highlightElement.classList.add(
         "absolute",
         "bg-g-primary",
-        "animate-spin-slow"
+        "animate-spin-slow",
       );
 
       element.appendChild(highlightElement);
@@ -169,16 +169,16 @@ const OnBoardProcess = () => {
   return (
     <div
       className={
-        "z-20 inset-0 flex flex-col px-2 items-center backdrop-blur-sm justify-center " +
-        (showIntro ? "fixed animate-fade-in" : "hidden")
+        "inset-0 z-20 flex flex-col items-center justify-center px-2 backdrop-blur-sm " +
+        (showIntro ? "animate-fade-in fixed" : "hidden")
       }
     >
       <div className="absolute inset-0 -z-10 bg-gray10 opacity-80"></div>
 
       <div
-        className={`w-[900px] max-w-full mt-52 lg:mt-8 transition-all relative z-80 border border-gray70 rounded-2xl shadow-lg overflow-hidden ${
+        className={`z-80 relative mt-52 w-[900px] max-w-full overflow-hidden rounded-2xl border border-gray70 shadow-lg transition-all lg:mt-8 ${
           currentState.position && currentState.position === "above"
-            ? "lg:!-mt-72 !-translate-y-1/2"
+            ? "!-translate-y-1/2 lg:!-mt-72"
             : ""
         }`}
       >
@@ -186,27 +186,27 @@ const OnBoardProcess = () => {
           <h3>{currentState.title}</h3>
           <p className="mt-3 text-sm">{currentState.description}</p>
         </div>
-        <div className="bg-gray20 text-sm w-full p-3 flex items-center justify-between">
+        <div className="flex w-full items-center justify-between bg-gray20 p-3 text-sm">
           <Button
             onClick={onSkip}
-            className="border bg-gray40 text-gray100 !font-normal border-gray70"
+            className="border border-gray70 bg-gray40 !font-normal text-gray100"
           >
             Skip All
           </Button>
 
-          <div className="flex gap-4 items-center">
+          <div className="flex items-center gap-4">
             <Button
               onClick={onPreviousStep}
               disabled={step === 0}
-              className="border disabled:cursor-not-allowed disabled:opacity-60 bg-gray40 text-gray100 !font-normal border-gray70"
+              className="border border-gray70 bg-gray40 !font-normal text-gray100 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Previous
             </Button>
             <button
               onClick={onNextStep}
-              className="bg-g-primary p-[1px] rounded-xl"
+              className="rounded-xl bg-g-primary p-[1px]"
             >
-              <div className="bg-gray40 flex items-center justify-center px-8 h-[40px] rounded-xl">
+              <div className="flex h-[40px] items-center justify-center rounded-xl bg-gray40 px-8">
                 {step === steps.length - 1 ? "Done" : "Next"}
               </div>
             </button>
