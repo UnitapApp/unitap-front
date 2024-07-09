@@ -67,7 +67,7 @@ const MintNFTCard = () => {
     () =>
       contractsRes
         ? (contractsRes[2].result as number) -
-        ((contractsRes[0].result as number) ?? 0)
+          ((contractsRes[0].result as number) ?? 0)
         : undefined,
     [contractsRes],
   );
@@ -319,16 +319,16 @@ const MintNFTCard = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between bg-gray30 px-4 py-3 w-full gap-2">
-
+          <div className="flex w-full items-center justify-between gap-2 bg-gray30 px-4 py-3">
             <div className="mint-nft-card__actions flex w-full flex-col items-center justify-between gap-2 lg:flex-row">
               {isRightChain && remainingCount && remainingCount > 0 && (
                 <div className="mint-nft-card__actions__quantity flex w-full items-center lg:w-auto">
                   <div
-                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-l-xl border-2 border-gray60 py-3 text-white ${count === 1
-                      ? "cursor-default"
-                      : "cursor-pointer hover:bg-primaryGradient"
-                      }`}
+                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-l-xl border-2 border-gray60 py-3 text-white ${
+                      count === 1
+                        ? "cursor-default"
+                        : "cursor-pointer hover:bg-primaryGradient"
+                    }`}
                     onClick={() => (count !== 1 ? setCount(count - 1) : null)}
                   >
                     {count === 1 ? (
@@ -343,10 +343,11 @@ const MintNFTCard = () => {
                     {count}
                   </div>
                   <div
-                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-r-xl border-2 border-gray60 py-3 text-white ${count === remainingCount
-                      ? "cursor-default"
-                      : "cursor-pointer hover:bg-primaryGradient"
-                      }`}
+                    className={`flex h-12 min-w-[48px] flex-1 items-center justify-center rounded-r-xl border-2 border-gray60 py-3 text-white ${
+                      count === remainingCount
+                        ? "cursor-default"
+                        : "cursor-pointer hover:bg-primaryGradient"
+                    }`}
                     onClick={() =>
                       count !== remainingCount ? setCount(count + 1) : null
                     }
@@ -361,26 +362,32 @@ const MintNFTCard = () => {
               )}
               {!isConnected ? (
                 <button
-                  className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                  className="btn btn--sm btn--primary h-11 w-full rounded-xl !py-0 align-baseline font-bold text-gray10"
                   onClick={setIsWalletPromptOpen.bind(null, true)}
-                // height="46px"
-                // $width="100% !important"
+                  // height="46px"
+                  // $width="100% !important"
                 >
                   <p>Connect Wallet</p>
                 </button>
               ) : isRightChain ? (
                 remainingCount ? (
                   sufficientAmount ? (
-                    <ClaimButton height="48px" $width="100% !important" disabled>
+                    <ClaimButton
+                      height="48px"
+                      $width="100% !important"
+                      disabled
+                    >
                       <p>Insufficient ETH Amount</p>
                     </ClaimButton>
                   ) : (
                     <button
-                      className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                      className="btn btn--sm btn--primary h-11 w-full rounded-xl !py-0 align-baseline font-bold text-gray10"
                       onClick={mintPass}
                       disabled={isPending}
                     >
-                      <p>{isPending ? "Contract Loading" : "Mint Unitap Pass"}</p>
+                      <p>
+                        {isPending ? "Contract Loading" : "Mint Unitap Pass"}
+                      </p>
                     </button>
                   )
                 ) : (
@@ -390,7 +397,7 @@ const MintNFTCard = () => {
                 )
               ) : (
                 <button
-                  className="btn btn--sm btn--primary w-full !py-0 align-baseline h-11 rounded-xl text-gray10 font-bold"
+                  className="btn btn--sm btn--primary h-11 w-full rounded-xl !py-0 align-baseline font-bold text-gray10"
                   onClick={switchNetwork}
                 >
                   <p>Switch Network</p>
