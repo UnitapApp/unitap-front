@@ -27,41 +27,41 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
     // setMinDate(Date.now() + 7 * 24 * 60 * 59 * 1000);
   }, []);
 
-  const handleChange = () => { };
+  const handleChange = () => {};
 
   const timeChange = (e: any) => {
     if (e?.unix) {
       handleSetDate(
         Math.round(new Date(e.unix * 1000).setSeconds(0) / 1000),
-        "startTime"
+        "startTime",
       );
     }
     setStartDate(e);
   };
 
   const handleSetAsap = () => {
+    if (isShowingDetails) return;
     const currentTimestamp = Math.floor(Date.now() / 60000) * 60;
-    handleSetDate(
-      currentTimestamp + 5 * 60,
-      "startTime"
-    );
-    setStartDate(new Date().getTime() + (5 * 60 * 1000))
-  }
-
+    handleSetDate(currentTimestamp + 5 * 60, "startTime");
+    setStartDate(new Date().getTime() + 5 * 60 * 1000);
+  };
 
   return (
     <div className="relative w-full">
       <div
-        className={`flex text-xs bg-gray40 border ${showErrors && showErrors.startDateStatus == false
-          ? "border-error"
-          : "border-gray50"
-          } rounded-xl h-[43px] items-center w-full max-w-[452px] overflow-hidden`}
+        className={`flex border bg-gray40 text-xs ${
+          showErrors && showErrors.startDateStatus == false
+            ? "border-error"
+            : "border-gray50"
+        } h-[43px] w-full max-w-[452px] items-center overflow-hidden rounded-xl`}
       >
-        <p className="text-gray100 text-xs w-full max-w-[148px] bg-gray30 h-full flex items-center justify-center">
+        <p className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-xs text-gray100">
           Start Date & Time
         </p>
         <DatePicker
-          currentDate={new DateObject({ date: new Date().getTime() + (5 * 60 * 1000) })}
+          currentDate={
+            new DateObject({ date: new Date().getTime() + 5 * 60 * 1000 })
+          }
           disabled={isShowingDetails}
           highlightToday={false}
           onOpenPickNewDate={false}
@@ -94,12 +94,13 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
         />
         <div
           onClick={() => handleSetAsap()}
-          className="flex items-center justify-center w-[43px] h-[22px] border border-gray80 bg-gray60 text-gray80 rounded-md cursor-pointer px-2 mr-3 font-semibold text-2xs">
+          className="mr-3 flex h-[22px] w-[43px] cursor-pointer items-center justify-center rounded-md border border-gray80 bg-gray60 px-2 text-2xs font-semibold text-gray80"
+        >
           ASAP
         </div>
       </div>
       {showErrors && showErrors.startDateStatus == false && (
-        <p className="text-error text-2xs m-0 mt-[2px] p-0 absolute">
+        <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error">
           {showErrors && showErrors.statDateStatusMessage}
         </p>
       )}

@@ -261,7 +261,7 @@ export const TokenTapContext = createContext<{
   setSelectedToken: NullCallback,
   setData: NullCallback,
   tokenName: null,
-  setTokenName: NullCallback
+  setTokenName: NullCallback,
 });
 
 const TokenTapProvider: FC<
@@ -394,7 +394,7 @@ const TokenTapProvider: FC<
   const { chain } = useWalletNetwork();
   const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
   const [tokenName, setTokenName] = useState<string | null>(null);
-  const [userBalance, setUserBalance] = useState<string | null>(null)
+  const [userBalance, setUserBalance] = useState<string | null>(null);
   // const { data: userBalance } = useWalletBalance({
   //   address,
   //   chainId: chain?.id,
@@ -404,11 +404,11 @@ const TokenTapProvider: FC<
     const chainId: number = Number(data.selectedChain.chainId);
     const balance = await getBalance(config, {
       address: address!,
-      chainId: chainId
-    })
+      chainId: chainId,
+    });
 
-    setUserBalance(balance.formatted)
-  }
+    setUserBalance(balance.formatted);
+  };
 
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
@@ -452,7 +452,7 @@ const TokenTapProvider: FC<
         setTokenContractStatus,
         setIsErc20Approved,
         setApproveAllowance,
-        contractAddresses.tokenTap[data.selectedChain.chainId].erc20
+        contractAddresses.tokenTap[data.selectedChain.chainId].erc20,
       );
     }
 
@@ -480,15 +480,15 @@ const TokenTapProvider: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, isValidContractAddress],
@@ -537,9 +537,7 @@ const TokenTapProvider: FC<
     return !!(
       // provider &&
       // description &&
-      selectedChain &&
-      checkNft() &&
-      checkToken()
+      (selectedChain && checkNft() && checkToken())
     );
   };
 
@@ -588,7 +586,15 @@ const TokenTapProvider: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram, provider, description } = data;
+    const {
+      email,
+      twitter,
+      creatorUrl,
+      discord,
+      telegram,
+      provider,
+      description,
+    } = data;
     if (!email) {
       return false;
     }
@@ -655,15 +661,15 @@ const TokenTapProvider: FC<
       setTokenName(null);
       setData((prevData: any) => ({
         ...prevData,
-        tokenName: '',
-        tokenSymbol: '',
-        tokenDecimals: '',
-        userTokenBalance: '',
-        tokenContractAddress: ''
+        tokenName: "",
+        tokenSymbol: "",
+        tokenDecimals: "",
+        userTokenBalance: "",
+        tokenContractAddress: "",
       }));
-      getBalanceBySelectedChainId()
+      getBalanceBySelectedChainId();
     }
-  }, [data.selectedChain])
+  }, [data.selectedChain]);
 
   //check token contract address
   useEffect(() => {
@@ -677,7 +683,12 @@ const TokenTapProvider: FC<
       setInsufficientBalance(false);
       return;
     }
-    if (isShowingDetails || data.isNft || data.tokenContractAddress.length != 42) return;
+    if (
+      isShowingDetails ||
+      data.isNft ||
+      data.tokenContractAddress.length != 42
+    )
+      return;
     if (!data.tokenContractAddress) {
       setTokenContractStatus((prev) => ({
         ...prev,
@@ -719,7 +730,8 @@ const TokenTapProvider: FC<
       setInsufficientBalance(
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance)
-          : Number(data.totalAmount) > Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
+          : Number(data.totalAmount) >
+              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -772,7 +784,7 @@ const TokenTapProvider: FC<
     try {
       const newChainList = await getTokenTapValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -983,7 +995,7 @@ const TokenTapProvider: FC<
       ),
     );
     handleSetEnrollDuration(-1);
-    setTokenName(raffle.name)
+    setTokenName(raffle.name);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
