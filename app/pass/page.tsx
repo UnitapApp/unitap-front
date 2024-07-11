@@ -35,8 +35,6 @@ const NftPass = () => {
   const [animationKey, setAnimationKey] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-  const ups = 0;
-
   const advantagesItem = [
     {
       id: 1,
@@ -70,22 +68,22 @@ const NftPass = () => {
 
   const borderPosition =
     displayIndex == 0
-      ? "left-[18px]"
+      ? "left-[25px]"
       : displayIndex == 1
-        ? "left-[58px]"
+        ? "left-[64px]"
         : displayIndex == 2
-          ? "left-[98px]"
-          : "left-[138px]";
+          ? "left-[104px]"
+          : "left-[144px]";
 
   useEffect(() => {
     const id = setInterval(() => {
       setDisplayIndex((prevIndex) => (prevIndex + 1) % advantagesItem.length);
       setAnimationKey((prevKey) => prevKey + 1);
-    }, 3000); // change index every 3 seconds
+    }, 3000);
 
     setIntervalId(id);
 
-    return () => clearInterval(id); // clean up interval on unmount
+    return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
@@ -242,7 +240,7 @@ const NftPass = () => {
                     viewBox="0 0 18 18"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${displayIndex == 0 ? "fill-[#B5B5C6]" : "fill-[#4C4C5C]"} transition-[fill] delay-[.6s] duration-[.2s] ease-[ease]`}
+                    className={`${displayIndex == 0 ? "fill-[#B5B5C6]" : "fill-[#4C4C5C]"} transition-[fill] delay-[.4s] duration-[.2s] ease-[ease]`}
                   >
                     <path d="M16.2828 11.0934L16.4565 9.3888C16.5492 8.4789 16.6095 7.8786 16.5618 7.4997H16.5798C17.3637 7.4997 18 6.8283 18 6.0003C18 5.1723 17.3637 4.5 16.5789 4.5C15.7941 4.5 15.1578 5.1714 15.1578 6.0003C15.1578 6.3747 15.2883 6.7176 15.5034 6.9804C15.1947 7.1811 14.7906 7.6059 14.1822 8.2449C13.7142 8.7372 13.4802 8.9829 13.2192 9.0216C13.0742 9.04255 12.9262 9.02065 12.7935 8.9586C12.5523 8.847 12.3912 8.5428 12.0699 7.9335L10.3743 4.725C10.1763 4.3497 10.0098 4.0356 9.8595 3.7827C10.4742 3.4515 10.8945 2.7774 10.8945 2.0007C10.8945 0.8946 10.0467 0 9 0C7.9533 0 7.1055 0.8955 7.1055 1.9998C7.1055 2.7774 7.5258 3.4515 8.1405 3.7818C7.9902 4.0356 7.8246 4.3497 7.6257 4.725L5.931 7.9344C5.6088 8.5428 5.4477 8.847 5.2065 8.9595C5.07377 9.02155 4.92581 9.04345 4.7808 9.0225C4.5198 8.9838 4.2858 8.7372 3.8178 8.2449C3.2094 7.6059 2.8053 7.1811 2.4966 6.9804C2.7126 6.7176 2.8422 6.3747 2.8422 5.9994C2.8422 5.1723 2.205 4.5 1.4202 4.5C0.6372 4.5 0 5.1714 0 6.0003C0 6.8283 0.6363 7.4997 1.4211 7.4997H1.4382C1.3896 7.8777 1.4508 8.4789 1.5435 9.3888L1.7172 11.0934C1.8135 12.0393 1.8936 12.9393 1.9926 13.7502H16.0074C16.1064 12.9402 16.1865 12.0393 16.2828 11.0934ZM7.9695 18H10.0305C12.717 18 14.0607 18 14.9571 17.154C15.3477 16.7832 15.5961 16.1172 15.7743 15.2496H2.2257C2.4039 16.1172 2.6514 16.7832 3.0429 17.1531C3.9393 18 5.283 18 7.9695 18Z" />
                   </svg>
@@ -254,7 +252,7 @@ const NftPass = () => {
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${displayIndex == 1 ? "fill-[#B5B5C6]" : "fill-[#4C4C5C]"} transition-[fill] delay-[.6s] duration-[.2s] ease-[ease]`}
+                    className={`${displayIndex == 1 ? "fill-[#B5B5C6]" : "fill-[#4C4C5C]"} transition-[fill] delay-[.4s] duration-[.2s] ease-[ease]`}
                   >
                     <path
                       fillRule="evenodd"
@@ -270,7 +268,7 @@ const NftPass = () => {
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${displayIndex == 2 ? "fill-[#B5B5C6]" : "fill-[#303043]"} transition-[fill] delay-[.6s] duration-[.2s] ease-[ease]`}
+                    className={`${displayIndex == 2 ? "fill-[#B5B5C6]" : "fill-[#303043]"} transition-[fill] delay-[.4s] duration-[.2s] ease-[ease]`}
                   >
                     <path
                       fillRule="evenodd"
@@ -291,11 +289,11 @@ const NftPass = () => {
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M10 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1ZM10.3409 7.4314C10.2505 7.34701 10.1279 7.2996 10 7.2996C9.87213 7.2996 9.74949 7.34701 9.65907 7.4314C9.56865 7.5158 9.51786 7.63026 9.51786 7.7496V12.1538C9.51786 13.3017 9.81679 14.2463 10.4976 14.9015C11.1817 15.5594 12.1721 15.8496 13.375 15.8496C13.5029 15.8496 13.6255 15.8022 13.7159 15.7178C13.8063 15.6334 13.8571 15.5189 13.8571 15.3996C13.8571 15.2803 13.8063 15.1658 13.7159 15.0814C13.6255 14.997 13.5029 14.9496 13.375 14.9496C12.3278 14.9496 11.6306 14.6985 11.1899 14.2746C10.7464 13.8485 10.4821 13.1699 10.4821 12.1538V7.7496C10.4821 7.63026 10.4313 7.5158 10.3409 7.4314ZM5.17857 7.40535C5.17857 4.94385 7.59603 3.2496 10 3.2496C12.404 3.2496 14.8214 4.94385 14.8214 7.40535V12.0449C14.8214 12.44 14.7395 12.8603 14.508 13.1978C14.2602 13.5587 13.8567 13.7949 13.3224 13.7949C13.0846 13.7968 12.8495 13.7468 12.6361 13.6487C12.4227 13.5506 12.2369 13.4073 12.0935 13.2302C11.8191 12.8999 11.6875 12.4728 11.6875 12.0449V7.8567C11.6888 7.42562 11.51 7.01106 11.189 6.7011C10.8712 6.3969 10.4436 6.2286 10 6.2286C9.77806 6.22904 9.55847 6.27104 9.35424 6.35212C9.15001 6.43321 8.9653 6.55173 8.81104 6.70065C8.49004 7.01061 8.31119 7.42517 8.3125 7.85625V13.0839C8.3125 14.2859 8.95664 15.3969 10.3987 15.8762C10.5193 15.9161 10.6178 15.9992 10.6727 16.107C10.7277 16.2148 10.7345 16.3385 10.6916 16.451C10.6488 16.5635 10.5598 16.6555 10.4443 16.7068C10.3288 16.758 10.1962 16.7644 10.0757 16.7244C8.19582 16.0989 7.34821 14.6108 7.34821 13.0839V7.8567C7.34693 7.19091 7.62405 6.55092 8.12061 6.0729C8.36465 5.83788 8.65672 5.65092 8.97953 5.52308C9.30234 5.39524 9.64933 5.32911 10 5.3286C10.3506 5.32905 10.6976 5.39511 11.0204 5.52287C11.3432 5.65064 11.6353 5.83751 11.8794 6.07245C12.376 6.55047 12.6531 7.19045 12.6518 7.85625V12.044C12.6518 12.3095 12.7347 12.5322 12.8557 12.6785C12.9695 12.8162 13.1214 12.8945 13.3224 12.8945C13.5114 12.8945 13.6166 12.8274 13.6961 12.7113C13.7925 12.5714 13.8571 12.3419 13.8571 12.0444V7.40535C13.8571 5.55495 12.0023 4.1496 10 4.1496C7.99766 4.1496 6.14286 5.55495 6.14286 7.4058V13.052C6.14286 13.5308 6.21952 14.0078 6.36705 14.4074C6.51748 14.8124 6.72528 15.0977 6.95671 15.2507C7.00956 15.2844 7.05468 15.3276 7.08944 15.3778C7.1242 15.4279 7.14791 15.4841 7.15918 15.5429C7.17046 15.6017 7.16907 15.662 7.1551 15.7203C7.14113 15.7786 7.11486 15.8338 7.07782 15.8825C7.04078 15.9312 6.99372 15.9726 6.93937 16.0041C6.88503 16.0357 6.82449 16.0569 6.76129 16.0664C6.69809 16.0759 6.63349 16.0736 6.57127 16.0595C6.50904 16.0455 6.45044 16.02 6.39887 15.9846C5.94277 15.6831 5.64239 15.2052 5.4558 14.7012C5.26728 14.1909 5.17857 13.6127 5.17857 13.0524V7.40535Z"
-                      className={`${displayIndex == 3 ? "fill-[#B5B5C6]" : "fill-[#303043]"} transition-[fill] delay-[.6s] duration-[.2s] ease-[ease]`}
+                      className={`${displayIndex == 3 ? "fill-[#B5B5C6]" : "fill-[#303043]"} transition-[fill] delay-[.4s] duration-[.2s] ease-[ease]`}
                     />
                     <path
                       d="M13.3228 13.8448C13.8732 13.8448 14.2922 13.6005 14.5494 13.226L14.5494 13.2259C14.7885 12.8773 14.8716 12.4458 14.8716 12.0448V7.40526C14.8716 4.90673 12.4212 3.19951 10.0001 3.19951C7.57904 3.19951 5.12871 4.90673 5.12871 7.40526V13.0523C5.12871 13.6175 5.21816 14.2017 5.40904 14.7184L5.40905 14.7185L9.37283 6.3985C9.57116 6.31976 9.78452 6.27893 10.0002 6.27851C10.4312 6.27854 10.8463 6.44205 11.1544 6.73705C11.466 7.03791 11.6389 7.43956 11.6376 7.85646V7.85661V12.0448C11.6376 12.4825 11.7722 12.9212 12.0549 13.2618C12.2033 13.445 12.3953 13.5929 12.6154 13.6941C12.8355 13.7952 13.0777 13.8468 13.3228 13.8448ZM13.3228 13.8448C13.3227 13.8448 13.3226 13.8448 13.3226 13.8448V13.7948L13.323 13.8448C13.3229 13.8448 13.3228 13.8448 13.3228 13.8448ZM13.655 12.6829L13.6551 12.6828C13.7438 12.5541 13.8073 12.3358 13.8073 12.0443V7.40526C13.8073 5.5915 11.9848 4.19951 10.0001 4.19951C8.01544 4.19951 6.193 5.59149 6.193 7.40571V13.0519C6.193 13.5257 6.26893 13.9967 6.4141 14.3899L6.36719 14.4073L6.41406 14.3899C6.56221 14.7887 6.76463 15.0634 6.98409 15.2086C7.04223 15.2458 7.09211 15.2935 7.13068 15.3492C7.16933 15.405 7.19582 15.4676 7.20843 15.5334C7.22104 15.5992 7.21949 15.6667 7.20387 15.7319C7.18825 15.7971 7.15892 15.8585 7.11777 15.9126C7.07663 15.9668 7.02452 16.0125 6.96463 16.0473C6.90474 16.0821 6.83819 16.1053 6.76886 16.1157C6.69954 16.1262 6.62869 16.1236 6.5604 16.1082C6.49226 16.0928 6.42789 16.0649 6.37108 16.026C6.37095 16.0259 6.37083 16.0258 6.37071 16.0257L6.39901 15.9845L13.655 12.6829ZM13.655 12.6829C13.6186 12.736 13.5782 12.7754 13.5273 12.802C13.4763 12.8287 13.4111 12.8444 13.3226 12.8444C13.1367 12.8444 12.9989 12.7729 12.8944 12.6465L12.8944 12.6465M13.655 12.6829L12.8944 12.6465M12.8944 12.6465C12.7818 12.5104 12.7019 12.2994 12.7019 12.0439L12.7019 7.85626M12.8944 12.6465L12.7019 7.85626M11.8795 6.07236L11.9142 6.03634C12.4202 6.52341 12.7032 7.17624 12.7019 7.85616C12.7019 7.85619 12.7019 7.85623 12.7019 7.85626M11.8795 6.07236L12.6519 7.85616L12.7019 7.85626M11.8795 6.07236L11.9142 6.03634C11.6653 5.79677 11.3677 5.60639 11.039 5.47629C10.7103 5.34619 10.357 5.27897 10.0002 5.27851L10.0001 5.27851M11.8795 6.07236L10.0001 5.27851M10.0001 5.27851C9.64319 5.27903 9.28996 5.34632 8.96126 5.4765M10.0001 5.27851L8.96126 5.4765M8.96126 5.4765C8.63255 5.60668 8.33492 5.79714 8.08607 6.03679L8.96126 5.4765ZM11.2247 14.2385L11.2247 14.2385C10.7942 13.8249 10.5323 13.1615 10.5323 12.1537V7.74951C10.5323 7.61575 10.4753 7.48822 10.3752 7.39476C10.2752 7.30141 10.1402 7.24951 10.0001 7.24951C9.86008 7.24951 9.72511 7.30141 9.6251 7.39476C9.52496 7.48822 9.468 7.61575 9.468 7.74951V12.1537C9.468 13.3098 9.76916 14.2696 10.463 14.9374L10.4631 14.9374C11.16 15.6076 12.165 15.8995 13.3751 15.8995C13.5152 15.8995 13.6502 15.8476 13.7502 15.7543C13.8503 15.6608 13.9073 15.5333 13.9073 15.3995C13.9073 15.2657 13.8503 15.1382 13.7502 15.0448C13.6502 14.9514 13.5152 14.8995 13.371 14.8995C12.3352 14.8995 11.6527 14.6501 11.2247 14.2385ZM8.36264 7.85601C8.36137 7.43908 8.53432 7.0374 8.8459 6.73653L10.4445 16.7067C10.56 16.6554 10.6489 16.5634 10.6918 16.4509C10.7346 16.3385 10.7278 16.2147 10.6729 16.1069C10.618 15.9991 10.5194 15.916 10.3989 15.8761L10.4146 15.8286C10.4146 15.8286 10.4146 15.8286 10.4146 15.8286C8.99411 15.3565 8.36264 14.2654 8.36264 13.0838L8.36264 7.85616L8.36264 7.85601ZM8.08606 6.0368C7.58008 6.52388 7.29704 7.17676 7.29835 7.85671L8.08606 6.0368Z"
-                      className={`${displayIndex == 3 ? "fill-[#626268]" : "fill-[#1B1B29]"} transition-[fill] delay-[.6s] duration-[0.2s] ease-[ease]`}
+                      className={`${displayIndex == 3 ? "fill-[#626268]" : "fill-[#1B1B29]"} transition-[fill] delay-[.4s] duration-[0.2s] ease-[ease]`}
                       stroke="#1B1B29"
                       strokeWidth="0.1"
                     />
@@ -303,7 +301,7 @@ const NftPass = () => {
                 </div>
               </div>
               <div
-                className={`${borderPosition} absolute bottom-2 h-[2px] w-[20px] bg-gray100 transition-all duration-[0.6s]`}
+                className={`${borderPosition} absolute bottom-2 h-[2px] w-2 bg-gray100 transition-all duration-[0.6s]`}
               ></div>
             </div>
             <div className="flex h-[54px] w-full  items-center justify-center gap-4 bg-gray30 px-5 py-2 sm:py-0 md:px-1">
@@ -341,9 +339,9 @@ const NftPass = () => {
           </div>
         )}
       </div>
-      <div className="mb-2 flex w-full flex-wrap gap-2 overflow-hidden rounded-2xl bg-gray20 p-2">
+      <div className="mb-2 flex w-full flex-wrap gap-4 overflow-hidden rounded-2xl bg-gray20 p-2 md:gap-2">
         {!isConnected || !userProfile ? (
-          <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4">
+          <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4">
             <p className=" text-xs text-gray100">
               Connect your wallet to see more details.
             </p>
@@ -359,7 +357,7 @@ const NftPass = () => {
             </div>
           </div>
         ) : (
-          <div className="box-1 h-full w-[260px] overflow-hidden  rounded-xl bg-gray40">
+          <div className="box-1 h-full w-full overflow-hidden  rounded-xl bg-gray40 md:w-[260px]">
             <div className="flex h-[40px] items-center gap-[7px] bg-gray60 pl-2 text-xs">
               <span>@ {userProfile?.username}</span>
               <span className="h-1 w-1 rounded-full bg-gray100"></span>
@@ -385,7 +383,7 @@ const NftPass = () => {
         userProfile.upBalance !== 0 &&
         isConnected &&
         userProfile ? (
-          <div className="box-2 w-[438px] overflow-hidden rounded-xl bg-primaryGradient p-[1px]">
+          <div className="box-2 w-full overflow-hidden rounded-xl bg-primaryGradient p-[1px] md:w-[438px]">
             <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
               <div className="mt-3 text-sm font-bold">
                 You will earn{" "}
@@ -403,9 +401,9 @@ const NftPass = () => {
                 onClick={() => mintPass()}
                 className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
               >
-                <div className="relative bg-primaryGradient2 bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative bg-clip-text text-xs font-semibold text-transparent">
                   Mint more UP
-                  <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
+                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
                 </div>
                 <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
               </div>
@@ -416,9 +414,9 @@ const NftPass = () => {
             </div>
           </div>
         ) : (
-          <div className="box-2 w-[438px] overflow-hidden rounded-xl bg-primaryGradient p-[1px]">
-            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
-              <div className="mt-3 text-sm font-bold">
+          <div className="box-2 w-full overflow-hidden rounded-xl bg-primaryGradient p-[1px] md:w-[438px]">
+            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40 ">
+              <div className="mt-3 text-center text-sm font-bold">
                 You can earn free{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
                   tickets
@@ -434,11 +432,14 @@ const NftPass = () => {
                 onClick={() => mintPass()}
                 className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
               >
-                <div className="relative bg-primaryGradient2 bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent">
                   Mint UP
-                  <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
+                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
                 </div>
-                <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
+                <Icon
+                  iconSrc="/assets/images/pass/ic_link_white.svg"
+                  className="mb-3"
+                />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
                 <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
@@ -447,7 +448,7 @@ const NftPass = () => {
             </div>
           </div>
         )}
-        <div className="box-3 flex w-[260px] flex-col  items-center overflow-hidden rounded-xl bg-gray40">
+        <div className="box-3 flex w-full flex-col  items-center overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
           <div className="flex h-[40px] w-full items-center justify-center bg-gray60 text-xs text-gray100 ">
             Next Round in:
           </div>
