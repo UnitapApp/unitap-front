@@ -401,11 +401,14 @@ const NftPass = () => {
                 onClick={() => mintPass()}
                 className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
               >
-                <div className="bg-primaryGradient2 relative bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint more UP
                   <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
                 </div>
-                <Icon iconSrc="/assets/images/pass/ic_link_white.svg" />
+                <Icon
+                  iconSrc="/assets/images/pass/ic_link_white.svg"
+                  className="mb-3 md:mb-0"
+                />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
                 <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
@@ -432,13 +435,13 @@ const NftPass = () => {
                 onClick={() => mintPass()}
                 className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
               >
-                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent">
+                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint UP
                   <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
                 </div>
                 <Icon
                   iconSrc="/assets/images/pass/ic_link_white.svg"
-                  className="mb-3"
+                  className="mb-3 md:mb-0 "
                 />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
