@@ -376,7 +376,7 @@ const ProviderDashboard: FC<
   const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
   const [tokenName, setTokenName] = useState<string | null>(null);
 
-  const [userBalance, setUserBalance] = useState<string | null>(null)
+  const [userBalance, setUserBalance] = useState<string | null>(null);
 
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
@@ -401,11 +401,11 @@ const ProviderDashboard: FC<
     const chainId: number = Number(data.selectedChain.chainId);
     const balance = await getBalance(config, {
       address: address!,
-      chainId: chainId
-    })
+      chainId: chainId,
+    });
 
-    setUserBalance(balance.formatted)
-  }
+    setUserBalance(balance.formatted);
+  };
 
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
@@ -433,7 +433,7 @@ const ProviderDashboard: FC<
         setTokenContractStatus,
         setIsErc20Approved,
         setApproveAllowance,
-        contractAddresses.prizeTap[data.selectedChain.chainId].erc20
+        contractAddresses.prizeTap[data.selectedChain.chainId].erc20,
       );
     }
 
@@ -464,15 +464,15 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
@@ -484,15 +484,15 @@ const ProviderDashboard: FC<
       setTokenName(null);
       setData((prevData: any) => ({
         ...prevData,
-        tokenName: '',
-        tokenSymbol: '',
-        tokenDecimals: '',
-        userTokenBalance: '',
-        tokenContractAddress: ''
+        tokenName: "",
+        tokenSymbol: "",
+        tokenDecimals: "",
+        userTokenBalance: "",
+        tokenContractAddress: "",
       }));
-      getBalanceBySelectedChainId()
+      getBalanceBySelectedChainId();
     }
-  }, [data.selectedChain])
+  }, [data.selectedChain]);
 
   const handleSetDate = (timeStamp: number, label: string) => {
     label == "startTime"
@@ -745,7 +745,7 @@ const ProviderDashboard: FC<
         data.isNativeToken
           ? Number(data.totalAmount) >= Number(userBalance)
           : Number(data.totalAmount) >
-          Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
+              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -799,7 +799,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -1053,8 +1053,9 @@ const ProviderDashboard: FC<
           : { ...constraint, isNotSatisfy: false },
       ),
     );
-    setTokenName(raffle.prizeSymbol)
+    setTokenName(raffle.prizeSymbol);
     handleSetEnrollDuration(-1);
+    setSelectedChain(raffle.chain);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
