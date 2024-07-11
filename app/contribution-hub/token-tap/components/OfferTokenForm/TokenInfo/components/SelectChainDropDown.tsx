@@ -5,7 +5,7 @@ import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapConte
 import { useUserProfileContext } from "@/context/userProfile";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { useWalletAccount } from "@/utils/wallet";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Prop {
   showErrors: boolean;
@@ -45,18 +45,18 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
   };
 
   return (
-    <div className="w-full relative">
-      <div ref={ref} className="w-full relative cursor-pointer">
+    <div className="relative w-full">
+      <div ref={ref} className="relative w-full cursor-pointer">
         <div
           onClick={handleSetShowItems}
-          className="w-full flex items-center px-5 bg-gray40 border border-gray50 rounded-xl h-[43px]"
+          className="flex h-[43px] w-full items-center rounded-xl border border-gray50 bg-gray40 px-5"
         >
           {selectedChain?.logoUrl ? (
             <Icon iconSrc={selectedChain.logoUrl} width="24px" />
           ) : null}
           <input
             disabled={isShowingDetails}
-            className="w-full bg-transparent text-white px-2 text-sm"
+            className="w-full bg-transparent px-2 text-sm text-white"
             type="text"
             value={chainName ? chainName : ""}
             placeholder="Search for Chain"
@@ -73,7 +73,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
           ></Icon>
         </div>
         {showItems && (
-          <div className="absolute styled-scroll z-[2] w-full max-h-[205px] overflow-y-scroll bg-gray40 border-2 border-gray60 rounded-xl mt-1 p-1 cursor-pointer">
+          <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 border-gray60 bg-gray40 p-1">
             {filterChainList.length == 0
               ? chainList.map((chain, index) => (
                   <div
@@ -82,7 +82,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
                       setShowItems(false);
                       handleSelectChain(chain);
                     }}
-                    className="flex w-full items-center gap-2 text-white text-sm h-[46px] px-2 hover:bg-gray70 rounded-xl"
+                    className="flex h-[46px] w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70"
                   >
                     <Icon iconSrc={chain.logoUrl} width="24px" />
                     <p>{chain.chainName}</p>
@@ -95,7 +95,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
                       setShowItems(false);
                       handleSelectChain(chain);
                     }}
-                    className="flex w-full items-center gap-2 text-white text-sm h-[46px] px-2 hover:bg-gray70 rounded-xl"
+                    className="flex h-[46px] w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70"
                   >
                     <Icon iconSrc={chain.logoUrl} width="24px" />
                     <p>{chain.chainName}</p>
@@ -105,7 +105,7 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
         )}
       </div>
       {showErrors && !data.selectedChain && (
-        <p className="text-error text-[8px] m-0 p-0 absolute left-1">
+        <p className="absolute left-1 m-0 p-0 text-[8px] text-error">
           Required
         </p>
       )}
