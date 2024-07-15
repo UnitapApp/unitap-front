@@ -1565,4 +1565,18 @@ export const tokensInformation: TokenInformation[] = [
       },
     ],
   },
+  {
+    chainId: "97",
+    chainName: "bsc test net",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenName: "bnb",
+        tokenSymbol: "BNB",
+        logoUrl:
+          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+      },
+    ],
+  },
 ];
