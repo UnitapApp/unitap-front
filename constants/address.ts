@@ -118,5 +118,9 @@ export const contractAddresses: {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
+    "97": {
+      erc20: "0x183390bE36EA575D93b5651c36cFe73DF642eD1b",
+      erc721: "0x0000000000000000000000000000000000000000",
+    },
   },
 };
