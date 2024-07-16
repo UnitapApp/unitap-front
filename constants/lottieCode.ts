@@ -1,5 +1,6 @@
 import loadingAnimation from "../lotties/loadingAnimation.json";
 import chanceAnimation from "../lotties/chanceAnimation.json";
+import arrowAnimation from "../lotties/arrowAnimation.json";
 
 export const loadAnimationOption = {
   loop: true,
@@ -15,7 +16,17 @@ export const chanceAnimationOption = {
   autoplay: true,
   animationData: chanceAnimation,
   Infinity,
-  // rendererSettings: {
-  //   preserveAspectRatio: "xMidYMid slice",
-  // },
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+export const arrowAnimationOption = {
+  loop: true,
+  autoplay: true,
+  animationData: arrowAnimation,
+  Infinity,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
 };

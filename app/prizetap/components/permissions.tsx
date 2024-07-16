@@ -9,6 +9,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { Permission, Prize } from "@/types";
 import { replacePlaceholders, shortenAddress } from "@/utils";
 import { chanceAnimationOption } from "@/constants/lottieCode";
+import { arrowAnimationOption } from "@/constants/lottieCode";
 import Lottie from "react-lottie";
 import { useWalletAccount } from "@/utils/wallet";
 // const tokenImgLink = (tokenUri: string) =>
@@ -164,7 +165,9 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 </div>
               )}
             </div>
-
+            <div className="cursor-none select-none">
+              <Lottie options={arrowAnimationOption}></Lottie>
+            </div>
             <div className="" onDragEnd={() => handelRemoveSelectedTicket()}>
               {selectedTicketCount == 0 ? (
                 <div className="mr-[10px]">
