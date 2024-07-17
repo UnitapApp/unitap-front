@@ -32,7 +32,7 @@ export function formatDate(targetDate: Date): string | number {
     (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
   );
 
-  return `claims Reserved for ${diffInDays}d : ${diffInHours}h for`;
+  return `claims Reserved for ${diffInDays}d : ${diffInHours}h for `;
 }
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
@@ -176,7 +176,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               {isExpired ||
                 !token.maxClaimNumberForUnitapPassUser ||
                 formattedDateValue === -1 || (
-                  <div className="hover:bg-dark-primary-2 group h-12 overflow-y-hidden rounded-xl  border-2 border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300">
+                  <div className="group h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300 hover:bg-dark-primary-2">
                     <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
                       <div className="transition-all duration-300 group-hover:-mt-6 group-hover:-translate-y-full">
                         <span className={``}>
