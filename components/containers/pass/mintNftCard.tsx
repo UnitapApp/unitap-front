@@ -258,8 +258,13 @@ const MintNFTCard = () => {
         </div>
       ) : (
         <>
-          <div className="mint-nft-card__nft flex h-full flex-col justify-between p-2">
-            <div className="mint-nft-card__nft__info flex w-full items-center justify-between text-xs font-medium">
+          <div className="mint-nft-card__nft relative  flex h-full flex-col justify-between p-2">
+            <div className="  absolute z-10 h-full w-full">
+              <div className="animate-unitap-pass-1 absolute h-32 w-32 rounded-full bg-[#4BF2A2] blur-[70px]"></div>
+              <div className="animate-unitap-pass-2 absolute right-0 h-32 w-32 rounded-full bg-[#DD40CD] blur-[70px]"></div>
+              <div className="animate-unitap-pass-3 absolute bottom-0 right-0 h-32 w-32 rounded-full bg-[#A89FE7] blur-[70px] "></div>
+            </div>
+            <div className="mint-nft-card__nft__info z-20 flex w-full items-center justify-between text-xs font-medium">
               <p className="flex gap-1 rounded-lg bg-gray10 px-3 py-2 text-xs text-gray100">
                 Network:
                 <span className="flex text-white">
@@ -289,7 +294,7 @@ const MintNFTCard = () => {
                 Left in current batch
               </p>
             </div>
-            <div className="mint-nft-card__nft__image my-5 flex w-full justify-center">
+            <div className="mint-nft-card__nft__image z-20 my-5 flex w-full justify-center">
               <div className="mint-nft-card__nft__image__wrapper h-auto w-[312px]">
                 <div className="h-full w-full overflow-hidden rounded-lg">
                   <video

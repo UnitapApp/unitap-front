@@ -3,22 +3,14 @@
 import Collapse from "@/components/containers/pass/Collapse";
 import NFTTimer from "@/components/containers/pass/nftTimer";
 import Header from "@/components/containers/pass/Header";
-import RoutePath from "@/utils/routes";
-import Link from "next/link";
 import { useState, useMemo, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Icon from "@/components/ui/Icon";
 import { useWalletAccount } from "@/utils/wallet";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { diffToNextMonday, shortenAddress } from "@/utils";
-import {
-  UNITAP_PASS_BATCH_SALE_ADDRESS,
-  getSupportedChainId,
-} from "@/constants";
-import { useReadContracts, useWriteContract } from "wagmi";
-import { unitapPassBatchSaleAbi } from "@/types/abis/contracts";
+
 const MintNFTCard = dynamic(
   () => import("@/components/containers/pass/mintNftCard"),
   { ssr: false },
@@ -140,69 +132,6 @@ const NftPass = () => {
       clearInterval(interval);
     };
   }, []);
-  const {
-    writeContractAsync,
-    data,
-    isPending,
-    isSuccess,
-    isError,
-    error,
-    reset,
-    isIdle,
-    status,
-    isPaused,
-  } = useWriteContract({});
-  const supportedChainId = getSupportedChainId();
-  const saleAddress = UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId];
-  const { data: contractsRes, isLoading: isContractLoading } = useReadContracts(
-    {
-      // multicallAddress: saleAddress,
-      contracts: [
-        {
-          abi: unitapPassBatchSaleAbi,
-          functionName: "batchSoldCount",
-          chainId: supportedChainId,
-          address: saleAddress,
-        },
-        {
-          abi: unitapPassBatchSaleAbi,
-          functionName: "price",
-          chainId: supportedChainId,
-          address: saleAddress,
-        },
-        {
-          abi: unitapPassBatchSaleAbi,
-          functionName: "batchSize",
-          chainId: supportedChainId,
-          address: saleAddress,
-        },
-      ],
-    },
-  );
-
-  const [loading, setLoading] = useState(false);
-
-  const mintPass = useCallback(async () => {
-    if (loading) return;
-
-    if (!UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]) return;
-
-    setLoading(true);
-
-    try {
-      await writeContractAsync({
-        args: [1, address!],
-        value: contractsRes?.[1].result! * BigInt(1),
-        abi: unitapPassBatchSaleAbi,
-        account: address,
-        functionName: "multiMint",
-        chainId: supportedChainId,
-        address: UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]!,
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [address, contractsRes, loading, writeContractAsync]);
 
   return (
     <div className="m-auto flex w-full max-w-[990px] flex-col items-center justify-center">
@@ -397,10 +326,7 @@ const NftPass = () => {
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
-              <div
-                onClick={() => mintPass()}
-                className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
-              >
+              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
                 <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint more UP
                   <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
@@ -431,10 +357,7 @@ const NftPass = () => {
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
-              <div
-                onClick={() => mintPass()}
-                className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
-              >
+              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
                 <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint UP
                   <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
