@@ -24,6 +24,9 @@ import Image from "next/image";
 import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 import { watchAsset } from "viem/actions";
 
+const unitapPassHoldPercent = 10;
+const unitapPassHoldTime = 10 * 60 * 1000;
+
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
   isHighlighted,
@@ -158,6 +161,24 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   </AddMetamaskButton>
                 )}
               </div>
+              {isExpired || (
+                <div className="group flex h-12 items-center gap-2 overflow-y-hidden rounded-xl border-2 border-gray70 bg-gray60 px-4 py-3 text-sm text-gray100 transition-all hover:bg-dark-primary">
+                  <span className={``}>
+                    {numberWithCommas(
+                      token.maxNumberOfClaims - token.numberOfClaims,
+                    )}{" "}
+                  </span>
+                  /<span> {numberWithCommas(token.maxNumberOfClaims)} </span>
+                  {" are left to claim"}
+                  <Image
+                    src="/assets/images/landing/unitap-pass.svg"
+                    alt="unitap-pass"
+                    width={20}
+                    className="ml-12 transition-all group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-50"
+                    height={20}
+                  />
+                </div>
+              )}
               <Action className={"w-full items-center sm:w-auto sm:items-end"}>
                 {collectedToken ? (
                   claimingTokenPk === token.id ||
@@ -287,22 +308,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
             <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
-              <span
-                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
-              >
-                {numberWithCommas(
-                  token.maxNumberOfClaims - token.numberOfClaims,
-                )}{" "}
-              </span>{" "}
-              of{" "}
-              <span
-                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
-              >
-                {" "}
-                {numberWithCommas(token.maxNumberOfClaims)}{" "}
-              </span>{" "}
-              are left to claim on
-              {" " + token.chain.chainName}
+              claim on
+              {" " + token.chain.chainName + " chain"}
             </p>
             <Icon
               iconSrc={getChainIcon(token.chain)}
