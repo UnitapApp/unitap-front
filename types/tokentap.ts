@@ -26,6 +26,9 @@ export type Token = {
   status: "VERIFIED" | "PENDING" | "REJECTED";
   chain: Chain;
   constraints: Permission[];
+  remainingClaimForUnitapPassUser: number | null;
+  maxClaimNumberForUnitapPassUser: number | null;
+  claimDeadlineForUnitapPassUser: string;
 };
 
 export type ClaimedToken = {
