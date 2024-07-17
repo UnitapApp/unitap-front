@@ -16,6 +16,8 @@ import WrongNetworkBody from "./WrongNetworkBody";
 import PendingBody from "./PendingBody";
 import NotRemainingClaimsBody from "./NoRemainingClaimsBody";
 import InitialBody from "./InitialBody";
+import TokenReservedBody from "./TokenReservedBody";
+import { formatDate } from "../TokenCard";
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const { chain: activatedChain } = useWalletNetwork();
@@ -46,6 +48,20 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
         imageUrl={selectedTokenForClaim.imageUrl}
       />
     );
+
+  const formattedDateValue = formatDate(
+    new Date(selectedTokenForClaim.claimDeadlineForUnitapPassUser),
+  );
+
+  if (
+    userProfile.upBalance == 0 &&
+    formattedDateValue !== -1 &&
+    selectedTokenForClaim.remainingClaimForUnitapPassUser &&
+    selectedTokenForClaim.maxNumberOfClaims -
+      selectedTokenForClaim.numberOfClaims <
+      selectedTokenForClaim.remainingClaimForUnitapPassUser
+  )
+    return <TokenReservedBody token={selectedTokenForClaim!} />;
 
   if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
     return (

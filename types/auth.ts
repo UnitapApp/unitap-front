@@ -16,6 +16,7 @@ export type UserProfile = {
   wallets: UserWallet[];
   username: string;
   prizetapWinningChanceNumber: number;
+  upBalance: number;
 };
 
 export type Settings = {
