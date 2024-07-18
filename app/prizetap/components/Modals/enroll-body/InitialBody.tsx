@@ -43,7 +43,7 @@ const InitialBody: FC<{
       <>
         <DropIconWrapper data-testid={`chain-claim-initial-${raffle.chain.pk}`}>
           <Icon
-            className="chain-logo z-10 mt-14 mb-10"
+            className="chain-logo z-10 mb-10 mt-14"
             width="auto"
             height="110px"
             iconSrc={raffle.imageUrl}
@@ -51,22 +51,22 @@ const InitialBody: FC<{
           />
         </DropIconWrapper>
         {claimOrEnrollSignatureLoading ? (
-          <p className="text-white text-sm my-4 text-center px-3 mb-6">
+          <p className="my-4 mb-6 px-3 text-center text-sm text-white">
             Preparing your Enroll signature...
           </p>
         ) : claimOrEnrollWalletResponse?.state === "Retry" ? (
-          <p className="text-white text-sm my-4 text-center px-3 mb-6">
+          <p className="my-4 mb-6 px-3 text-center text-sm text-white">
             {claimOrEnrollWalletResponse?.message}
           </p>
         ) : (
           <div className="text-left text-white"></div>
         )}
         <div className="text-left text-white">
-          <p className="text-xs mb-2">
+          <p className="mb-2 text-xs">
             You will need to sign a wallet transaction and pay a small gas fee
             to claim tokens.
           </p>
-          <p className="text-xs mb-6">
+          <p className="mb-6 text-xs">
             If you do not have sufficient gas, please visit{" "}
             <Link
               className="text-blue-500"
@@ -121,7 +121,7 @@ const InitialBody: FC<{
     <>
       <DropIconWrapper data-testid={`chain-claim-initial-${raffle.chain.pk}`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
           iconSrc={raffle.imageUrl}
@@ -129,11 +129,11 @@ const InitialBody: FC<{
         />
       </DropIconWrapper>
       {claimOrEnrollSignatureLoading ? (
-        <p className="text-white text-sm my-4 text-center px-3 mb-6">
+        <p className="my-4 mb-6 px-3 text-center text-sm text-white">
           Preparing your Claim prize signature...
         </p>
       ) : claimOrEnrollWalletResponse?.state === "Retry" ? (
-        <p className="text-white text-sm my-4 text-center px-3 mb-6">
+        <p className="my-4 mb-6 px-3 text-center text-sm text-white">
           {claimOrEnrollWalletResponse?.message}
         </p>
       ) : (

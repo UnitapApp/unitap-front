@@ -3,7 +3,7 @@
 import Icon from "@/components/ui/Icon";
 import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { parseServerError } from "@/utils";
-import { connectGitCoinPassport } from "@/utils/api";
+import { connectDynamicConnection } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
 import { FC, useState } from "react";
 
@@ -25,9 +25,9 @@ export const FarcasterAccount: FC<{
     setLoading(true);
     setError("");
 
-    connectGitCoinPassport(address)
+    connectDynamicConnection("farcaster", address)
       .then((res) => {
-        addConnection("GitcoinPassport", res);
+        addConnection("Farcaster", res);
       })
       .catch((err: any) => {
         setError(parseServerError(err.response.data));

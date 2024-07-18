@@ -13,16 +13,27 @@ import {
   ClaimButton,
   ClaimedButton,
 } from "@/components/ui/Button/button";
-import {
-  useWalletAccount,
-  useWalletProvider,
-  useWalletSigner,
-} from "@/utils/wallet";
+import { useWalletAccount, useWalletSigner } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
 import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 import { watchAsset } from "viem/actions";
+
+// TODO: migrate me
+export function formatDate(targetDate: Date): string | number {
+  const currentDate = new Date();
+  const diffInMs = targetDate.getTime() - currentDate.getTime();
+
+  if (diffInMs < 0) return -1;
+
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInHours = Math.floor(
+    (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
+
+  return `claims Reserved for ${diffInDays}d : ${diffInHours}h for `;
+}
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
@@ -78,6 +89,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     token.chain.chainName === "Lightning"
       ? token.amount
       : token.amount / 10 ** (token.decimals ?? token.chain.decimals);
+
+  const formattedDateValue = formatDate(
+    new Date(token.claimDeadlineForUnitapPassUser),
+  );
 
   const timePermissionVerification = useMemo(
     () => token.constraints.find((permission) => permission.type === "TIME"),
@@ -158,6 +173,43 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   </AddMetamaskButton>
                 )}
               </div>
+              {isExpired ||
+                !token.maxClaimNumberForUnitapPassUser ||
+                formattedDateValue === -1 || (
+                  <div className="group h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300 hover:bg-dark-primary-2">
+                    <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
+                      <div className="transition-all duration-300 group-hover:-mt-6 group-hover:-translate-y-full">
+                        <span className={``}>
+                          {numberWithCommas(
+                            token.maxNumberOfClaims - token.numberOfClaims,
+                          )}{" "}
+                        </span>
+                        /
+                        <span>
+                          {" "}
+                          {numberWithCommas(token.maxNumberOfClaims)}{" "}
+                        </span>
+                        {" are left to claim"}
+                      </div>
+                      <Image
+                        src="/assets/images/landing/unitap-pass.svg"
+                        alt="unitap-pass"
+                        width={20}
+                        className="ml-auto mr-2 transition-all duration-300 group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-30"
+                        height={20}
+                      />
+                    </div>
+                    <div className="mt-10 px-4 text-white transition-all duration-300 group-hover:-mt-4 group-hover:-translate-y-full ">
+                      <span className="text-space-green">
+                        {token.remainingClaimForUnitapPassUser}
+                      </span>{" "}
+                      {formattedDateValue}
+                      <span className="bg-g-primary bg-clip-text font-semibold text-transparent">
+                        UP Holders
+                      </span>
+                    </div>
+                  </div>
+                )}
               <Action className={"w-full items-center sm:w-auto sm:items-end"}>
                 {collectedToken ? (
                   claimingTokenPk === token.id ||
@@ -287,22 +339,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
             <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
-              <span
-                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
-              >
-                {numberWithCommas(
-                  token.maxNumberOfClaims - token.numberOfClaims,
-                )}{" "}
-              </span>{" "}
-              of{" "}
-              <span
-                className={`text-white ${isExpired ? "text-opacity-40" : ""}`}
-              >
-                {" "}
-                {numberWithCommas(token.maxNumberOfClaims)}{" "}
-              </span>{" "}
-              are left to claim on
-              {" " + token.chain.chainName}
+              claim on
+              {" " + token.chain.chainName + " chain"}
             </p>
             <Icon
               iconSrc={getChainIcon(token.chain)}

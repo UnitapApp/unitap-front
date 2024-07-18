@@ -15,6 +15,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { useUserProfileContext } from "./userProfile";
@@ -53,6 +54,7 @@ export const PrizeTapContext = createContext<{
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
   searchPhrase: string;
   changeSearchPhrase: (value: string) => void;
+  handleUserTicketChance: (func: string) => void;
 }>({
   claimError: null,
   rafflesList: [],
@@ -75,6 +77,7 @@ export const PrizeTapContext = createContext<{
   setIsLineaCheckEnrolledModalOpen: NullCallback,
   searchPhrase: "",
   changeSearchPhrase: NullCallback,
+  handleUserTicketChance: NullCallback,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -102,6 +105,18 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const [method, setMethod] = useState<string | null>(null);
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
   const [searchPhrase, changeSearchPhrase] = useState("");
+
+  const [userTicketChance, setUserTicketChance] = useState(0);
+
+  const handleUserTicketChance = (func: string) => {
+    if (func == "reset") {
+      setUserTicketChance(0);
+      return;
+    }
+    func === "increase"
+      ? setUserTicketChance((prev) => prev + 1)
+      : setUserTicketChance((prev) => prev - 1);
+  };
 
   const { userToken } = useUserProfileContext();
   const { setIsWalletPromptOpen } = useGlobalContext();
@@ -155,7 +170,10 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         userToken,
         selectedRaffleForEnroll.pk,
         address,
+        userTicketChance,
       );
+
+      console.log(enrollInApi);
       setSelectedRaffleForEnroll({
         ...selectedRaffleForEnroll,
         userEntry: enrollInApi.signature,
@@ -177,6 +195,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setClaimOrEnrollSignatureLoading(false);
     }
 
+    console.log(userEntry);
     return {
       result: response?.result,
       multiplier: userEntry?.multiplier,
@@ -196,6 +215,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
 
     const enrollOrClaimPayload = await getSignature();
+
+    console.log(enrollOrClaimPayload);
 
     const id = enrollOrClaimPayload?.userEntry.pk;
 
@@ -328,6 +349,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaCheckEnrolledModalOpen,
         searchPhrase,
         changeSearchPhrase,
+        handleUserTicketChance,
       }}
     >
       {children}

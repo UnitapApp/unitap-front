@@ -306,6 +306,7 @@ export const CreateParams: FC<CreateModalParam> = ({
   };
 
   useEffect(() => {
+    console.log("test use effect");
     if (selectedChain) {
       handleGetTokenList();
     }
