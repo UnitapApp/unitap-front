@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ClaimButton } from "@/components/ui/Button/button";
 
 import Icon from "@/components/ui/Icon";
@@ -202,7 +202,7 @@ const MintNFTCard = () => {
   }, [address, contractsRes, count, loading, writeContractAsync]);
 
   return (
-    <div className="mint-nft-card flex h-full flex-col justify-between ">
+    <div className={`mint-nft-card flex h-full flex-col justify-between`}>
       {!isIdle ? (
         <div className="mint-nft-card__success flex h-full flex-col justify-between p-4">
           <p className="text-gradient-primary mx-auto text-sm font-bold">

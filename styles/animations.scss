@@ -191,6 +191,22 @@
   }
 }
 
+@keyframes mint-effect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-mint-effect {
+  animation: mint-effect 1s linear;
+}
+
 .animate-unitap-pass-1 {
   animation: spin-unitap-1 10s linear infinite;
 }

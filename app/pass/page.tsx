@@ -27,6 +27,8 @@ const NftPass = () => {
   const [animationKey, setAnimationKey] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
+  const [mintEffect, setMintEffect] = useState(0);
+
   const advantagesItem = [
     {
       id: 1,
@@ -263,14 +265,17 @@ const NftPass = () => {
             />
           </div>
         ) : (
-          <div className="card select-none overflow-hidden p-0 md:w-[50%]">
+          <div
+            key={mintEffect}
+            className={`card ${mintEffect > 0 && "animate-mint-effect"} select-none overflow-hidden p-0 md:w-[50%]`}
+          >
             <MintNFTCard />
           </div>
         )}
       </div>
       <div className="mb-2 flex w-full flex-wrap gap-4 overflow-hidden rounded-2xl bg-gray20 p-2 md:gap-2">
         {!isConnected || !userProfile ? (
-          <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4">
+          <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4 md:w-[260px]">
             <p className=" text-xs text-gray100">
               Connect your wallet to see more details.
             </p>
@@ -326,10 +331,13 @@ const NftPass = () => {
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
-              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
-                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
+              <div
+                onClick={() => setMintEffect((prev) => prev + 1)}
+                className="z-20 mt-[15px] flex cursor-pointer select-none gap-2 bg-clip-text text-xs font-semibold text-transparent"
+              >
+                <div className="relative mb-3 bg-primaryGradient2 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint more UP
-                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
+                  <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
                   iconSrc="/assets/images/pass/ic_link_white.svg"
@@ -343,7 +351,7 @@ const NftPass = () => {
             </div>
           </div>
         ) : (
-          <div className="box-2 w-full overflow-hidden rounded-xl bg-primaryGradient p-[1px] md:w-[438px]">
+          <div className="box-2 w-full select-none overflow-hidden rounded-xl bg-primaryGradient p-[1px] md:w-[438px]">
             <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40 ">
               <div className="mt-3 text-center text-sm font-bold">
                 You can earn free{" "}
@@ -357,10 +365,13 @@ const NftPass = () => {
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
-              <div className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent">
-                <div className="bg-primaryGradient2 relative mb-3 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
+              <div
+                onClick={() => setMintEffect((prev) => prev + 1)}
+                className="z-20 mt-[15px] flex cursor-pointer gap-2 bg-clip-text text-xs font-semibold text-transparent"
+              >
+                <div className="relative mb-3 bg-primaryGradient2 bg-clip-text text-xs font-semibold text-transparent md:mb-0">
                   Mint UP
-                  <div className="bg-primaryGradient2 absolute bottom-0 h-[1px] w-full"></div>
+                  <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
                   iconSrc="/assets/images/pass/ic_link_white.svg"
@@ -374,7 +385,7 @@ const NftPass = () => {
             </div>
           </div>
         )}
-        <div className="box-3 flex w-full flex-col  items-center overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
+        <div className="box-3 flex w-full select-none  flex-col items-center overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
           <div className="flex h-[40px] w-full items-center justify-center bg-gray60 text-xs text-gray100 ">
             Next Round in:
           </div>
