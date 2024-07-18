@@ -165,7 +165,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     <div
       className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
         isHighlighted ? "mb-20" : "mb-4"
-      } ${isExpired ? "opacity-[.6]" : ""}`}
+      } ${isExpired && status != "WS" ? "opacity-[.6]" : ""}`}
     >
       <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-gray30 p-5 lg:flex-row lg:bg-inherit lg:p-0">
         <div className="prize-card__image relative mb-3 lg:mb-0">
@@ -230,7 +230,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   {winnersCount}x Winners
                 </small>
               )}
-              {isExpired ? (
+              {isExpired && status != "WS" ? (
                 <div className="ml-3 flex h-[22px] w-[92px] items-center justify-center rounded-xl border border-gray50 bg-gray20 text-2xs  font-semibold text-gray90">
                   From Archive
                 </div>
