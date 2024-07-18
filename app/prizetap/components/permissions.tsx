@@ -165,6 +165,12 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 </div>
               )}
             </div>
+            {userTicketList.length === 0 && (
+              <img
+                className="-ml-16"
+                src="/assets/images/prize-tap/emptyTicket.svg"
+              />
+            )}
             <div className="cursor-none select-none">
               <Lottie options={arrowAnimationOption}></Lottie>
             </div>
@@ -187,13 +193,18 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
             </div>
           </div>
           <div className="flex h-8 items-center justify-between border border-gray70 bg-gray50 px-2 text-xs font-bold text-gray100">
-            <div className="">
-              You have{" "}
-              <span className="text-[#a69fe5]">
-                {userProfile.prizetapWinningChanceNumber - selectedTicketCount}
-              </span>{" "}
-              tickets
-            </div>
+            {userProfile.prizetapWinningChanceNumber > 0 ? (
+              <div className="">
+                You have{" "}
+                <span className="text-[#a69fe5]">
+                  {userProfile.prizetapWinningChanceNumber -
+                    selectedTicketCount}
+                </span>{" "}
+                tickets
+              </div>
+            ) : (
+              <p>You have no ticket</p>
+            )}
             <div>{selectedTicketCount + 1}x chance</div>
           </div>
         </div>
