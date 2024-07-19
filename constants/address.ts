@@ -70,7 +70,7 @@ export const contractAddresses: {
     },
     "7777777": {
       // Zora
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+      erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
     },
     "30": {
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
