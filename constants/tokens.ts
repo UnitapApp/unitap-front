@@ -646,8 +646,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenDecimals: "18",
         tokenSymbol: "ETH",
         tokenName: "ETH",
-        logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+        logoUrl: "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=032",
       },
       {
         tokenAddress: "0x4F604735c1cF31399C6E711D5962b2B3E0225AD3",

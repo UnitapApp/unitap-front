@@ -17,6 +17,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   const { data, handleSetDate, isShowingDetails } = useTokenTapFromContext();
   const [startDate, setStartDate] = useState<any>();
   const [minDate, setMinDate] = useState<any>();
+  const [isAsap, setIsAsap] = useState(false);
 
   useEffect(() => {
     if (data.startTimeStamp) {
@@ -30,6 +31,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   const handleChange = () => {};
 
   const timeChange = (e: any) => {
+    setIsAsap(false);
     if (e?.unix) {
       handleSetDate(
         Math.round(new Date(e.unix * 1000).setSeconds(0) / 1000),
@@ -42,6 +44,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
   const handleSetAsap = () => {
     if (isShowingDetails) return;
     const currentTimestamp = Math.floor(Date.now() / 60000) * 60;
+    setIsAsap(true);
     handleSetDate(currentTimestamp + 5 * 60, "startTime");
     setStartDate(new Date().getTime() + 5 * 60 * 1000);
   };
@@ -94,7 +97,7 @@ const StartDateComp = ({ showErrors }: StartDateCompProp) => {
         />
         <div
           onClick={() => handleSetAsap()}
-          className="mr-3 flex h-[22px] w-[43px] cursor-pointer items-center justify-center rounded-md border border-gray80 bg-gray60 px-2 text-2xs font-semibold text-gray80"
+          className={`mr-3 flex h-[22px] w-[43px] cursor-pointer items-center justify-center rounded-md border border-gray80 bg-gray60 px-2 text-2xs font-semibold text-gray80 ${isAsap ? "bg-g-primary bg-clip-text text-transparent" : ""}`}
         >
           ASAP
         </div>

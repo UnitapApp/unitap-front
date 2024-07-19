@@ -394,7 +394,7 @@ const NftPass = () => {
           </div>
         </div>
       </div>
-      <Collapse
+      {/* <Collapse
         className="mb-4"
         title="Unitap Pass Sale"
         icon="assets/images/nft/nft-pass-sale-icon.svg"
@@ -472,7 +472,7 @@ const NftPass = () => {
             with over 1400 members.
           </p>
         </>
-      </Collapse>
+      </Collapse> */}
     </div>
   );
 };

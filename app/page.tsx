@@ -24,7 +24,7 @@ export default async function Home() {
       <section
         id="home-header"
         className={
-          "uni-card flex h-40 flex-col justify-center gap-4 overflow-hidden text-center text-white after:rounded-2xl after:bg-home-header-texture sm:px-12 sm:text-left"
+          "uni-card flex h-40 flex-col items-center justify-center gap-4 overflow-hidden text-center text-white after:rounded-2xl after:bg-home-header-texture sm:px-12 sm:text-left"
         }
       >
         <Image
@@ -34,10 +34,7 @@ export default async function Home() {
           height={32}
           alt={"logo"}
         />
-        <h4 className={"text-gradient-primary"}>
-          Unitap is an onboarding tool for networks and communities and a
-          gateway to web3
-        </h4>
+        <h4 className={"text-gradient-primary"}>The web3 incentive layer</h4>
       </section>
 
       <UnitapPass />

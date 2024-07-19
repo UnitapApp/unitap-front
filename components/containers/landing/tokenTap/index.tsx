@@ -15,9 +15,7 @@ const TokenTapLanding = async () => {
       <Link className={"flex--1"} href={RoutePath.TOKEN}>
         <Widget
           id="tokentap"
-          description={
-            "Where everyone can claim any kind of tokens such as community tokens, NFTs, UBI tokens"
-          }
+          description={"Get the tasks done and claim your rewards"}
           icon={"tokentap-icon.svg"}
           iconSize={"w-8"}
           className={

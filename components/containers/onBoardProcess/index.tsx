@@ -27,8 +27,7 @@ const steps = [
   {
     id: "tokentap",
     title: "Token Tap",
-    description:
-      "Where everyone can claim any kind of tokens such as community tokens, NFT, UBI token.",
+    description: "Get the tasks done and claim your rewards.",
     insetY: 220,
     insetX: 150,
   },
