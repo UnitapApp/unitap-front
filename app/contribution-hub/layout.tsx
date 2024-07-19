@@ -5,7 +5,7 @@ import { FC, PropsWithChildren } from "react";
 import "./styles.scss";
 
 export const metadata: Metadata = {
-  title: "Unitap | Contribution Hub 🖥️",
+  title: "Unitap | Incentive Center 🖥️",
   description: "If you have account log in to have access to Contribution Hub",
 };
 

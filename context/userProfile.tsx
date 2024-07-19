@@ -21,7 +21,11 @@ import {
   getRemainingClaimsAPI,
   getWeeklyChainClaimLimitAPI,
 } from "@/utils/api";
-import { useMediumRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
+import {
+  useFastRefresh,
+  useMediumRefresh,
+  useRefreshWithInitial,
+} from "@/utils/hooks/refresh";
 import { IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
 import { NullCallback } from "@/utils";
@@ -142,7 +146,7 @@ export const UserContextProvider: FC<
     setUserProfile({ ...userProfile });
   };
 
-  useEffect(() => {
+  useFastRefresh(() => {
     const getUserProfileWithToken = async () => {
       setUserProfileLoading(true);
       try {
@@ -158,7 +162,7 @@ export const UserContextProvider: FC<
 
     document.cookie = "userToken=" + userToken + ";path=/;";
 
-    if (userToken && !userProfile) {
+    if (userToken) {
       getUserProfileWithToken();
     }
   }, [userToken, userProfile, setUserProfile]);

@@ -5,15 +5,15 @@ const Header = () => {
     <div
       className={
         Styles.header +
-        " bg-no-repeat bg-cover border-3 rounded-3xl border-gray40 w-full h-[202px] flex items-center overflow-hidden p-5 mb-4"
+        " mb-4 flex h-[202px] w-full items-center overflow-hidden rounded-3xl border-3 border-gray40 bg-cover bg-no-repeat p-5"
       }
     >
-      <div className="items-center h-auto">
+      <div className="h-auto items-center">
         <img
-          className="h-auto w-375 mb-3"
-          src="/assets/images/provider-dashboard/blibk neon.png"
+          className="w-375 mb-3 h-auto"
+          src="/assets/images/provider-dashboard/blibk neon_.svg"
         />
-        <p className="z-10 text-gray100 text-xs max-w-[365px]">
+        <p className="z-10 max-w-[365px] text-xs text-gray100">
           Manage your contributions and help onboard users to Web3
         </p>
       </div>

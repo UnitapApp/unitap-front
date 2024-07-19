@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const UnitapPass = dynamic(
   () => import("@/components/containers/landing/unitapPass"),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default async function Home() {
@@ -24,12 +24,12 @@ export default async function Home() {
       <section
         id="home-header"
         className={
-          "uni-card flex flex-col gap-4 after:rounded-2xl after:bg-home-header-texture h-40 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden"
+          "uni-card flex h-40 flex-col justify-center gap-4 overflow-hidden text-center text-white after:rounded-2xl after:bg-home-header-texture sm:px-12 sm:text-left"
         }
       >
         <Image
           src={"/assets/images/landing/uni-logo.svg"}
-          className={"w-40 mx-auto sm:mx-0"}
+          className={"mx-auto w-40 sm:mx-0"}
           width={157}
           height={32}
           alt={"logo"}
@@ -45,7 +45,7 @@ export default async function Home() {
       <section
         id="home-taps"
         className={
-          "flex lg:flex-row min-h-[360px] flex-grow flex-col gap-4 justify-between"
+          "flex min-h-[360px] flex-grow flex-col justify-between gap-4 lg:flex-row"
         }
       >
         <GasTapLanding chains={chains} />
@@ -66,7 +66,7 @@ export default async function Home() {
 const socialLinks = [
   {
     img: "twitter-icon.svg",
-    localClass: "hover:bg-light-space-green sm:rounded-l-2xl",
+    localClass: "hover:bg-light-space-green",
     link: "http://twitter.com/unitap_app",
   },
   {
@@ -76,26 +76,29 @@ const socialLinks = [
   },
   {
     img: "discord-icon.svg",
-    localClass: "hover:bg-purple-200",
+    localClass: "hover:bg-dark-purple",
     link: "https://discord.gg/unitap",
   },
 ];
 
 const Footer = () => {
   return (
-    <section id="home-footer" className={"flex gap-4 md:flex-row flex-col"}>
+    <section id="home-footer" className={"flex flex-col gap-4 md:flex-row"}>
       <Link
         href={"/contribution-hub"}
         className={
-          "uni-card hover:bg-gray00 hover:after:top-3 cursor-pointer md:w-1/3 h-36 after:bg-donate-texture after:inset-auto " +
-          "after:right-0 after:top-0 after:w-28 after:h-36 flex justify-center items-center"
+          "uni-card h-36 cursor-pointer after:inset-auto after:bg-donate-texture hover:bg-gray00 hover:after:top-3 md:w-1/3 " +
+          "flex items-center justify-center after:right-0 after:top-0 after:h-36 after:w-28"
         }
       >
-        <h2 className={"text-white card-text"}>Contribution Hub</h2>
+        <div>
+          <h2 className={"card-text text-white"}>Incentive Center</h2>
+          <p className="mt-3 text-white">Build your own inventive program</p>
+        </div>
       </Link>
       <div
         className={
-          "md:w-2/3 md:h-36 uni-card after:inset-auto flex sm:flex-row flex-col gap-4 sm:gap-0"
+          "uni-card flex flex-col gap-4 after:inset-auto sm:flex-row sm:gap-0 md:h-36 md:w-2/3"
         }
       >
         {socialLinks.map((social) => (
@@ -103,7 +106,7 @@ const Footer = () => {
             href={social.link}
             target="_blank"
             key={social.link}
-            className={`${social.localClass} flex home-footer-social-link justify-center items-center cursor-pointer px-8 border-b-3 md:border-b-0 md:border-r-3 py-6 sm:py-0 border-gray40 transition duration-300 ease-in-out`}
+            className={`${social.localClass} home-footer-social-link flex cursor-pointer items-center justify-center border-b-3 border-gray40 px-8 py-6 transition duration-300 ease-in-out sm:py-0 md:border-b-0 md:border-r-3`}
           >
             <img
               className={social.localClass}
@@ -115,8 +118,8 @@ const Footer = () => {
         <Link
           href={RoutePath.ABOUT}
           className={
-            "uni-card hover:bg-gray00 hover:after:top-4 cursor-pointer after:bg-what-is-unitap after:left-auto after:!right-0 after:w-44 after:h-36" +
-            " flex flex-grow justify-center items-center text-white py-6 sm:py-0 rounded-tl-none rounded-bl-none"
+            "uni-card cursor-pointer after:!right-0 after:left-auto after:h-36 after:w-44 after:bg-what-is-unitap hover:bg-gray00 hover:after:top-4" +
+            " flex flex-grow items-center justify-center rounded-bl-none rounded-tl-none py-6 text-white sm:py-0"
           }
         >
           <h2 className={"card-text"}>What is Unitap ?</h2>
