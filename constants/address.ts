@@ -57,20 +57,28 @@ export const contractAddresses: {
 } = {
   tokenTap: {
     "42161": {
+      // Arbitrum One
+      erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
+    },
+    "10": {
+      // Optimism
+      erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
+    },
+    "59144": {
+      //Linea
+      erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
+    },
+    "7777777": {
+      // Zora
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
     "30": {
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
-    "10": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
     "8453": {
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
-    "7777777": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
+
     "204": {
       erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
@@ -83,18 +91,26 @@ export const contractAddresses: {
   },
   prizeTap: {
     "42161": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
-    "30": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+      // Arbitrum One
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
     },
     "59144": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+      // Linea
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
     },
     "10": {
+      // Op mainnet
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
+    },
+    "7777777": {
+      // Zora
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
+    },
+    "30": {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
@@ -102,10 +118,7 @@ export const contractAddresses: {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
-    "7777777": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
+
     "204": {
       erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
       erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",

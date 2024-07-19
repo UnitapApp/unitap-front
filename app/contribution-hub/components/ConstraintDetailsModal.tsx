@@ -301,12 +301,17 @@ export const CreateParams: FC<CreateModalParam> = ({
           ["ADDRESS"]: token.tokenAddress,
         });
         checkCollectionContract();
+      } else {
+        setTokenName(collectionAddress);
+        setRequirementParamsList({
+          ...requirementParamsList,
+          ["ADDRESS"]: collectionAddress,
+        });
       }
     }
   };
 
   useEffect(() => {
-    console.log("test use effect");
     if (selectedChain) {
       handleGetTokenList();
     }
