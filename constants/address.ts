@@ -14,7 +14,7 @@ export const UNITAP_PASS_BATCH_SALE_ADDRESS: AddressMap = {
   [SupportedChainId.GOERLI]: "0xC99B2Fa525E1a0C17dB4fdE3540faA1575885A8B",
   [SupportedChainId.MAINNET]: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
   [SupportedChainId.GNOSIS]: undefined,
-  [SupportedChainId.BASE]: undefined,
+  [SupportedChainId.BASE]: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
 };
 
 export const UNITAP_PASS_ADDRESS: AddressMap = {
@@ -36,7 +36,7 @@ export const getPassBatchSaleAddress = () =>
   // process.env.IS_STAGE
   // ? UNITAP_PASS_BATCH_SALE_ADDRESS[SupportedChainId.GOERLI]
   // :
-  UNITAP_PASS_BATCH_SALE_ADDRESS[SupportedChainId.MAINNET];
+  UNITAP_PASS_BATCH_SALE_ADDRESS[SupportedChainId.BASE];
 
 export const tokenTapContractAddressList: { [key: string]: Address } = {
   SONG: "0x3d1b1D14333D56472f7ADf044598d1605C67609f",

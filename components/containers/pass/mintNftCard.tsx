@@ -17,7 +17,7 @@ import {
 } from "@/utils/wallet";
 import { SupportedChainId } from "@/constants/chains";
 import { useReadContracts, useWriteContract } from "wagmi";
-import { mainnet } from "wagmi/chains";
+import { base } from "wagmi/chains";
 import { goerli } from "viem/chains";
 import { CurrencyAmount } from "@uniswap/sdk-core";
 import { nativeOnChain } from "@/constants/tokens";
@@ -89,8 +89,7 @@ const MintNFTCard = () => {
   }, [chainId]);
 
   const priceAmount = useMemo(() => {
-    const chain =
-      supportedChainId === SupportedChainId.MAINNET ? mainnet : goerli;
+    const chain = supportedChainId === SupportedChainId.BASE ? base : goerli;
 
     if (!contractsRes?.[1].result) return undefined;
 
@@ -123,34 +122,37 @@ const MintNFTCard = () => {
 
   const chainScanLink = useMemo(() => {
     if (data) {
-      if (chainId === SupportedChainId.MAINNET) {
+      if (chainId === SupportedChainId.BASE) {
         return `https://etherscan.io/tx/${data}`;
-      } else if (chainId === SupportedChainId.GOERLI) {
-        return `https://goerli.etherscan.io/tx/${data}`;
       }
+      // else if (chainId === SupportedChainId.GOERLI) {
+      //   return `https://goerli.etherscan.io/tx/${data}`;
+      // }
     }
   }, [chainId, data]);
 
   const switchNetwork = () => {
-    if (supportedChainId === SupportedChainId.MAINNET) {
-      addAndSwitchToChain(SupportedChainId.MAINNET);
-    } else if (supportedChainId === SupportedChainId.GOERLI) {
-      addAndSwitchToChain(SupportedChainId.GOERLI);
+    if (supportedChainId === SupportedChainId.BASE) {
+      addAndSwitchToChain(SupportedChainId.BASE);
     }
+    // else if (supportedChainId === SupportedChainId.GOERLI) {
+    //   addAndSwitchToChain(SupportedChainId.GOERLI);
+    // }
   };
 
   const sufficientAmount = useMemo(() => {
-    if (supportedChainId === SupportedChainId.MAINNET) {
+    if (supportedChainId === SupportedChainId.BASE) {
       return (
-        unitCost(1, mainnet.nativeCurrency.decimals) * BigInt(count) <=
-        (accountBalance?.value ?? BigInt(0))
-      );
-    } else if (supportedChainId === SupportedChainId.GOERLI) {
-      return (
-        unitCost(1, goerli.nativeCurrency.decimals) * BigInt(count) <=
+        unitCost(1, base.nativeCurrency.decimals) * BigInt(count) <=
         (accountBalance?.value ?? BigInt(0))
       );
     }
+    // else if (supportedChainId === SupportedChainId.GOERLI) {
+    //   return (
+    //     unitCost(1, goerli.nativeCurrency.decimals) * BigInt(count) <=
+    //     (accountBalance?.value ?? BigInt(0))
+    //   );
+    // }
 
     return false;
   }, [count, accountBalance]);
@@ -161,6 +163,8 @@ const MintNFTCard = () => {
     if (!UNITAP_PASS_BATCH_SALE_ADDRESS[supportedChainId]) return;
 
     setLoading(true);
+
+    console.log(count);
 
     try {
       await writeContractAsync({
@@ -232,7 +236,7 @@ const MintNFTCard = () => {
                 className="mx-auto mb-6 cursor-pointer text-sm font-medium text-white hover:underline"
               >
                 See on{" "}
-                {supportedChainId === SupportedChainId.MAINNET
+                {supportedChainId === SupportedChainId.BASE
                   ? "Etherscan"
                   : "Goerli Etherscan"}
               </p>
@@ -269,7 +273,7 @@ const MintNFTCard = () => {
                 Network:
                 <span className="flex text-white">
                   {" "}
-                  ETH{" "}
+                  BASE{" "}
                   <Image
                     width={10}
                     height={16}
