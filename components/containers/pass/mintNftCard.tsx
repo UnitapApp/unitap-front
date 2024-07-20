@@ -123,11 +123,8 @@ const MintNFTCard = () => {
   const chainScanLink = useMemo(() => {
     if (data) {
       if (chainId === SupportedChainId.BASE) {
-        return `https://etherscan.io/tx/${data}`;
+        return `https://basescan.org/tx/${data}`;
       }
-      // else if (chainId === SupportedChainId.GOERLI) {
-      //   return `https://goerli.etherscan.io/tx/${data}`;
-      // }
     }
   }, [chainId, data]);
 
@@ -135,9 +132,6 @@ const MintNFTCard = () => {
     if (supportedChainId === SupportedChainId.BASE) {
       addAndSwitchToChain(SupportedChainId.BASE);
     }
-    // else if (supportedChainId === SupportedChainId.GOERLI) {
-    //   addAndSwitchToChain(SupportedChainId.GOERLI);
-    // }
   };
 
   const [sufficientAmount, setSufficientAmount] = useState<boolean>(false);
@@ -231,7 +225,7 @@ const MintNFTCard = () => {
               >
                 See on{" "}
                 {supportedChainId === SupportedChainId.BASE
-                  ? "Etherscan"
+                  ? "basescan"
                   : "Goerli Etherscan"}
               </p>
             </>
