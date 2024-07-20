@@ -388,9 +388,15 @@ const MintNFTCard = () => {
                     </button>
                   )
                 ) : (
-                  <ClaimButton height="48px" $width="100% !important" disabled>
-                    <p>Sold Out</p>
-                  </ClaimButton>
+                  !isContractLoading && (
+                    <ClaimButton
+                      height="48px"
+                      $width="100% !important"
+                      disabled
+                    >
+                      <p>Sold Out</p>
+                    </ClaimButton>
+                  )
                 )
               ) : (
                 <button
