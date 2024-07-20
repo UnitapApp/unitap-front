@@ -73,7 +73,7 @@ const socialLinks = [
   },
   {
     img: "discord-icon.svg",
-    localClass: "hover:bg-dark-purple",
+    localClass: "hover:bg-blue-200",
     link: "https://discord.gg/unitap",
   },
 ];
