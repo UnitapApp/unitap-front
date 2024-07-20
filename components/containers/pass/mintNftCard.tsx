@@ -140,22 +140,16 @@ const MintNFTCard = () => {
     // }
   };
 
-  const sufficientAmount = useMemo(() => {
+  const [sufficientAmount, setSufficientAmount] = useState<boolean>(false);
+
+  useEffect(() => {
     if (supportedChainId === SupportedChainId.BASE) {
-      return (
-        unitCost(1, base.nativeCurrency.decimals) * BigInt(count) <=
-        (accountBalance?.value ?? BigInt(0))
+      setSufficientAmount(
+        unitCost(1, base.nativeCurrency.decimals) * BigInt(count) >
+          (accountBalance?.value ?? BigInt(0)),
       );
     }
-    // else if (supportedChainId === SupportedChainId.GOERLI) {
-    //   return (
-    //     unitCost(1, goerli.nativeCurrency.decimals) * BigInt(count) <=
-    //     (accountBalance?.value ?? BigInt(0))
-    //   );
-    // }
-
-    return false;
-  }, [count, accountBalance]);
+  }, [count, accountBalance, supportedChainId]);
 
   const mintPass = useCallback(async () => {
     if (loading) return;
