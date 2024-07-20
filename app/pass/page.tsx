@@ -73,7 +73,7 @@ const NftPass = () => {
     const id = setInterval(() => {
       setDisplayIndex((prevIndex) => (prevIndex + 1) % advantagesItem.length);
       setAnimationKey((prevKey) => prevKey + 1);
-    }, 3000);
+    }, 15000);
 
     setIntervalId(id);
 
@@ -322,7 +322,7 @@ const NftPass = () => {
               <div className="mt-3 text-sm font-bold">
                 You will earn{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
-                  2 more tickets
+                  {userProfile.upBalance} more tickets
                 </span>{" "}
                 next round!{" "}
               </div>
