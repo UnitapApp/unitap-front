@@ -21,7 +21,7 @@ export const UNITAP_PASS_ADDRESS: AddressMap = {
   [SupportedChainId.GOERLI]: "0x904018a4e9905021C1806A054E6EbD5796570131",
   [SupportedChainId.MAINNET]: "0x23826Fd930916718a98A21FF170088FBb4C30803",
   [SupportedChainId.GNOSIS]: undefined,
-  [SupportedChainId.BASE]: undefined,
+  [SupportedChainId.BASE]: "0xA27b7B65b0de0c08b002E6be828731FA865027bB",
 };
 
 export const UNITAP_TOKEN_TAP_ADDRESS: AddressMap = {
