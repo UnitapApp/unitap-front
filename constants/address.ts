@@ -14,12 +14,14 @@ export const UNITAP_PASS_BATCH_SALE_ADDRESS: AddressMap = {
   [SupportedChainId.GOERLI]: "0xC99B2Fa525E1a0C17dB4fdE3540faA1575885A8B",
   [SupportedChainId.MAINNET]: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
   [SupportedChainId.GNOSIS]: undefined,
+  [SupportedChainId.BASE]: undefined,
 };
 
 export const UNITAP_PASS_ADDRESS: AddressMap = {
   [SupportedChainId.GOERLI]: "0x904018a4e9905021C1806A054E6EbD5796570131",
   [SupportedChainId.MAINNET]: "0x23826Fd930916718a98A21FF170088FBb4C30803",
   [SupportedChainId.GNOSIS]: undefined,
+  [SupportedChainId.BASE]: undefined,
 };
 
 export const UNITAP_TOKEN_TAP_ADDRESS: AddressMap = {
@@ -28,7 +30,7 @@ export const UNITAP_TOKEN_TAP_ADDRESS: AddressMap = {
 
 export const getSupportedChainId = () =>
   // process.env.IS_STAGE ? SupportedChainId.GOERLI : SupportedChainId.MAINNET
-  SupportedChainId.MAINNET;
+  SupportedChainId.BASE;
 
 export const getPassBatchSaleAddress = () =>
   // process.env.IS_STAGE
@@ -72,22 +74,24 @@ export const contractAddresses: {
       // Zora
       erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
     },
-    "30": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
-    "8453": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
-
-    "204": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
-    "42220": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
-    },
     "137": {
-      erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+      //Polygon
+      erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
     },
+    // "30": {
+    //   erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    // },
+    // "8453": {
+    //   //Base
+    //   erc20: "0x540411EF5bb81FEBB0fD3Fd30Cbfb81985f5613B",
+    // },
+
+    // "204": {
+    //   erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    // },
+    // "42220": {
+    //   erc20: "0x785996054151487B296005aAeC8CAE7C209D1385",
+    // },
   },
   prizeTap: {
     "42161": {
@@ -110,30 +114,32 @@ export const contractAddresses: {
       erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
       erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
     },
-    "30": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
     "8453": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
-
-    "204": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
-    "42220": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    },
-    "137": {
-      erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-      erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+      //Base
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
     },
     "97": {
+      // BSC test net
       erc20: "0x183390bE36EA575D93b5651c36cFe73DF642eD1b",
       erc721: "0x0000000000000000000000000000000000000000",
     },
+    // "30": {
+    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    // },
+
+    // "204": {
+    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    // },
+    // "42220": {
+    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    // },
+    // "137": {
+    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
+    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
+    // },
   },
 };
