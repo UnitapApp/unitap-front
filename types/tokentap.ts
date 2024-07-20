@@ -17,6 +17,7 @@ export type Token = {
   deadline: string;
   maxNumberOfClaims: number;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   notes: string;
   isExpired: boolean;
   isMaxedOut: boolean;

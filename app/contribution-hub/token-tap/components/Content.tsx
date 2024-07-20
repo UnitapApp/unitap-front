@@ -113,7 +113,8 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         <div className="pt-2">
           {isStart && !isFinished && status === Filters.Verified && (
             <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50  text-sm font-medium text-white ">
-              {distribution.maxNumberOfClaims - distribution.numberOfClaims}{" "}
+              {distribution.maxNumberOfClaims -
+                distribution.numberOfOnchainClaims}{" "}
               claims left
             </div>
           )}
