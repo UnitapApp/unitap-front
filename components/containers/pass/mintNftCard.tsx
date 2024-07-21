@@ -65,11 +65,21 @@ const MintNFTCard = () => {
     },
   );
 
+  const batchSize = 500;
+  const beforeMinted = 312;
+  // const remainingCount = useMemo(
+  //   () =>
+  //     contractsRes
+  //       ? (contractsRes[2].result as number) -
+  //         ((contractsRes[0].result as number) ?? 0)
+  //       : undefined,
+  //   [contractsRes],
+  // );
+
   const remainingCount = useMemo(
     () =>
       contractsRes
-        ? (contractsRes[2].result as number) -
-          ((contractsRes[0].result as number) ?? 0)
+        ? batchSize - ((contractsRes[0].result as number) + beforeMinted ?? 0)
         : undefined,
     [contractsRes],
   );
@@ -259,7 +269,7 @@ const MintNFTCard = () => {
               <div className="animate-unitap-pass-3 absolute bottom-0 right-0 h-32 w-32 rounded-full bg-[#A89FE7] blur-[70px] "></div>
             </div>
             <div className="mint-nft-card__nft__info z-20 flex w-full items-center justify-between text-xs font-medium">
-              <p className="flex gap-1 rounded-lg bg-gray10 px-3 py-2 text-xs text-gray100">
+              <p className="flex gap-1 rounded-lg bg-gray10 px-2 py-2 text-xs text-gray100">
                 Network:
                 <span className="flex text-white">
                   {" "}
@@ -273,7 +283,7 @@ const MintNFTCard = () => {
                   />
                 </span>
               </p>
-              <p className="text-gray100">
+              <p className=" text-gray100">
                 <span className="text-white">
                   {" "}
                   {remainingCount === undefined ? "..." : remainingCount}{" "}
@@ -281,9 +291,7 @@ const MintNFTCard = () => {
                 of
                 <span className="text-white">
                   {" "}
-                  {isContractLoading
-                    ? "..."
-                    : contractsRes?.[0].result?.toString()}{" "}
+                  {isContractLoading ? "..." : batchSize.toString()}{" "}
                 </span>
                 Left in current batch
               </p>

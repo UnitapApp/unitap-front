@@ -2,6 +2,7 @@ import { Address } from "viem";
 import { Chain, PK, Permission } from ".";
 
 export type Token = {
+  constraintParams: string;
   id: PK;
   name: string;
   distributor: string;
