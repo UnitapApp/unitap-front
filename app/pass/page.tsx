@@ -359,7 +359,7 @@ const NftPass = () => {
               <div className="mt-3 text-center text-sm font-bold">
                 You can earn free{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
-                  Boosts
+                  Boost
                 </span>{" "}
                 next round if you <span className="text-[#df86e2]">Mint</span>.
               </div>
