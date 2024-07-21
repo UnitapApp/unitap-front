@@ -6,8 +6,8 @@ import { Permission, Token } from "@/types";
 import { useUserProfileContext } from "@/context/userProfile";
 import Tooltip from "@/components/ui/Tooltip";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
-import Markdown from "./Markdown";
 import { replacePlaceholders } from "@/utils";
+import ReactMarkdown from "react-markdown";
 
 const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
   token,
@@ -85,14 +85,14 @@ const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
                 data-testid={`token-verification-modal-${token.id}-${permission.name}`}
                 key={key}
                 text={
-                  <Markdown
-                    content={replacePlaceholders(
+                  <ReactMarkdown className="markdown">
+                    {replacePlaceholders(
                       (permission.isReversed
                         ? permission.negativeDescription
                         : permission.description)!,
                       params[permission.name],
                     )}
-                  ></Markdown>
+                  </ReactMarkdown>
                 }
               >
                 <div className="flex items-center gap-1">
