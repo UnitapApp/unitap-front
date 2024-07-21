@@ -385,7 +385,7 @@ const MintNFTCard = () => {
                 </button>
               ) : isRightChain ? (
                 remainingCount ? (
-                  !sufficientAmount ? (
+                  sufficientAmount ? (
                     <ClaimButton
                       height="48px"
                       $width="100% !important"
