@@ -15,3 +15,5 @@ export const RPC_URLS_WEBSOCKET: { [key: string]: string } = {
     "wss://goerli.infura.io/ws/v3/9aa3d95b3bc440fa88ea12eaa4456161", // WebSocket URL for Goerli
   [SupportedChainId.GNOSIS]: "wss://rpc.gnosischain.com", // WebSocket URL for Gnosis chain
 };
+
+// build trigger
