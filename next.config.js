@@ -28,6 +28,11 @@ const nextConfig = {
         destination: "/prizetap",
         permanent: true,
       },
+      {
+        source: "/contribution-hub",
+        destination: "/incentive-center",
+        permanent: true,
+      },
     ];
   },
 };
