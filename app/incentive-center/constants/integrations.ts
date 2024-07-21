@@ -25,7 +25,7 @@ export const appInfos: {
     label: "Arbitrum Bridge",
   },
   twitter: {
-    logo: "/assets/images/footer/twitter.svg",
+    logo: "/assets/images/gas-tap/twitter-share.svg",
     label: "Twitter",
   },
 };
