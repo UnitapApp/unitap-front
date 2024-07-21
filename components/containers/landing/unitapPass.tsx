@@ -2,6 +2,7 @@
 
 import { ClaimButton } from "@/components/ui/Button/button";
 import Icon from "@/components/ui/Icon";
+import { getSupportedChainId } from "@/constants";
 import {
   useReadUnitapPassBatchSaleBatchSoldCount,
   useReadUnitapPassBatchSaleBatchSize,
@@ -13,11 +14,11 @@ const deadline = new Date("January 12, 2023 16:00:00 UTC");
 
 const UnitapPass = () => {
   const maxBatches = useReadUnitapPassBatchSaleBatchSize({
-    chainId: 1,
+    chainId: getSupportedChainId(),
   });
 
   const batchSold = useReadUnitapPassBatchSaleBatchSoldCount({
-    chainId: 1,
+    chainId: getSupportedChainId(),
   });
 
   const maxBatchAmount = maxBatches.data;

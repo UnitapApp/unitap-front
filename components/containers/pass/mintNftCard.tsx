@@ -140,6 +140,10 @@ const MintNFTCard = () => {
 
   useEffect(() => {
     if (supportedChainId === SupportedChainId.BASE) {
+      console.log(
+        accountBalance?.value,
+        unitCost(1, base.nativeCurrency.decimals) * BigInt(count),
+      );
       setSufficientAmount(
         unitCost(1, base.nativeCurrency.decimals) * BigInt(count) >
           (accountBalance?.value ?? BigInt(0)),
