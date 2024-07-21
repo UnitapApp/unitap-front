@@ -21,7 +21,10 @@ const UnitapPass = () => {
     chainId: getSupportedChainId(),
   });
 
-  const maxBatchAmount = maxBatches.data;
+  // const maxBatchAmount = maxBatches.data;
+  const maxBatchAmount = 500;
+
+  const beforeMinted = 312;
 
   const batchSoldAmount = batchSold.data;
 
@@ -52,7 +55,10 @@ const UnitapPass = () => {
             {deadline < new Date() && (
               <>
                 <span className={"text-white"}>
-                  {(maxBatchAmount! - batchSoldAmount!).toString()}
+                  {(
+                    maxBatchAmount! -
+                    (batchSoldAmount! + beforeMinted)
+                  ).toString()}
                 </span>{" "}
                 of <span className={"text-white"}>{maxBatchAmount}</span> Passes
                 are left in the current batch.
