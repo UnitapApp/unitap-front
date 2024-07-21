@@ -81,7 +81,7 @@ const Modal = ({
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } styled-scroll max-h-[70vh] !rounded-none`}
+              } styled-scroll max-h-[70vh] overflow-auto !rounded-none`}
               size={size}
             >
               {children}
