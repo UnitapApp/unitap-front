@@ -23,6 +23,7 @@ import { CurrencyAmount } from "@uniswap/sdk-core";
 import { nativeOnChain } from "@/constants/tokens";
 import { useGlobalContext } from "@/context/globalProvider";
 import Image from "next/image";
+import { useUserProfileContext } from "@/context/userProfile";
 
 export const unitCost = (unitCount: number | bigint, decimals: number) =>
   BigInt(unitCount) * BigInt(10) ** BigInt(decimals);
@@ -78,6 +79,7 @@ const MintNFTCard = () => {
     useNetworkSwitcher();
 
   const { isConnected, address } = useWalletAccount();
+  const { userProfile } = useUserProfileContext();
 
   const { data: accountBalance } = useAccountBalance(address, supportedChainId);
 
@@ -235,7 +237,7 @@ const MintNFTCard = () => {
             </p>
           ) : (
             <p className="mx-auto mb-3 text-sm font-medium text-rose-800">
-              {error?.message.slice(0, 300)}!
+              Error has been occurred!
             </p>
           )}
           {isSuccess || isError ? (
@@ -357,7 +359,14 @@ const MintNFTCard = () => {
                   </div>
                 </div>
               )}
-              {!isConnected ? (
+              {!userProfile ? (
+                <button
+                  className="btn btn--sm btn--primary h-11 w-full rounded-xl !py-0 align-baseline font-bold text-gray10"
+                  onClick={setIsWalletPromptOpen.bind(null, true)}
+                >
+                  <p>Connect Wallet</p>
+                </button>
+              ) : !isConnected ? (
                 <button
                   className="btn btn--sm btn--primary h-11 w-full rounded-xl !py-0 align-baseline font-bold text-gray10"
                   onClick={setIsWalletPromptOpen.bind(null, true)}

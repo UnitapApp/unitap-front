@@ -90,7 +90,7 @@ const Footer = () => {
       >
         <div>
           <h2 className={"card-text text-white"}>Incentive Center</h2>
-          <p className="mt-3 text-white">Build your own inventive program</p>
+          <p className="mt-3 text-white">Build your own incentive program</p>
         </div>
       </Link>
       <div
@@ -119,7 +119,7 @@ const Footer = () => {
             " flex flex-grow items-center justify-center rounded-bl-none rounded-tl-none py-6 text-white sm:py-0"
           }
         >
-          <h2 className={"card-text"}>What is Unitap ?</h2>
+          <h2 className={"card-text"}>What is Unitap?</h2>
         </Link>
       </div>
     </section>

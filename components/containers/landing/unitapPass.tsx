@@ -29,22 +29,22 @@ const UnitapPass = () => {
       href={RoutePath.NFT}
       id="home-nft"
       className={
-        "items-center px-12 text-center sm:text-left md:flex-row flex-col gap-4 md:gap-0 uni-card py-3 " +
-        "after:inset-auto after:left-0 after:-top-10 after:w-36 after:h-32 flex justify-between " +
-        "after:rounded-2xl after:bg-nft-texture text-white hover:bg-gray00 cursor-pointer hover:after:top-2"
+        "uni-card flex-col items-center gap-4 px-12 py-3 text-center sm:text-left md:flex-row md:gap-0 " +
+        "flex justify-between after:inset-auto after:-top-10 after:left-0 after:h-32 after:w-36 " +
+        "cursor-pointer text-white after:rounded-2xl after:bg-nft-texture hover:bg-gray00 hover:after:top-2"
       }
     >
       <div
-        className={"flex gap-4 flex-col items-start card-text justify-center"}
+        className={"card-text flex flex-col items-start justify-center gap-4"}
       >
         <div className="flex items-center">
-          <h3 className={"font-bold text-2xl text-white"}>
-            Mint Unitap Pass NFT
+          <h3 className={"text-xl font-bold text-white"}>
+            Mint Unitap Pass to unlock exclusive features and
+            <span className="mx-1 bg-g-primary bg-clip-text text-transparent">
+              future rewards
+            </span>
+            😉
           </h3>
-          <Icon
-            iconSrc="/assets/images/landing/unitap-pass.svg"
-            className="ml-4"
-          />
         </div>
         {maxBatches.isSuccess ? (
           <p className={"text-gray100"}>
@@ -54,7 +54,7 @@ const UnitapPass = () => {
                   {(maxBatchAmount! - batchSoldAmount!).toString()}
                 </span>{" "}
                 of <span className={"text-white"}>{maxBatchAmount}</span> Passes
-                are left in the current batch. Mint your Passes now
+                are left in the current batch.
               </>
             )}
           </p>
@@ -63,8 +63,8 @@ const UnitapPass = () => {
         )}
       </div>
       <div>
-        <ClaimButton className="before:!inset-[1px]">
-          <p>Go to Mint Page</p>
+        <ClaimButton className="!w-32 before:!inset-[1px]">
+          <p>Mint</p>
           <Icon
             className="ml-5"
             iconSrc="/assets/images/landing/arrow-right.svg"

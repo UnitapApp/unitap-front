@@ -6,7 +6,7 @@ import "./styles.scss";
 
 export const metadata: Metadata = {
   title: "Unitap | Incentive Center 🖥️",
-  description: "If you have account log in to have access to Contribution Hub",
+  description: "If you have account log in to have access to Incentive Center",
 };
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {

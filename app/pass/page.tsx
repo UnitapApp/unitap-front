@@ -20,6 +20,7 @@ const NftPass = () => {
   const [isPreLaunch, setIsPreLaunch] = useState(false);
   const { isConnected, address } = useWalletAccount();
   const [countClicked, setCountClicked] = useState(0);
+  const { userProfile } = useUserProfileContext();
 
   const deadline = useMemo(() => new Date("January 12, 2023 16:00:00 UTC"), []);
   const { setIsWalletPromptOpen } = useGlobalContext();
@@ -58,7 +59,6 @@ const NftPass = () => {
       imgUrl: "assets/images/pass/verification.svg",
     },
   ];
-  const { userProfile } = useUserProfileContext();
 
   const borderPosition =
     displayIndex == 0

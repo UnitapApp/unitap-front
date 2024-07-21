@@ -14,7 +14,7 @@ const Header = () => {
           src="/assets/images/provider-dashboard/blibk neon_.svg"
         />
         <p className="z-10 max-w-[365px] text-xs text-gray100">
-          Build your own inventive program using Unitap{"'"}s production-ready
+          Build your own incentive program using Unitap{"'"}s production-ready
           tools
         </p>
       </div>
