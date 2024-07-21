@@ -8,7 +8,7 @@ import ProvideGasCard from "./components/Cards/ProvideGasCard/provideGasCard";
 
 export const metadata: Metadata = {
   title: "Unitap | Gas Tap ⛽",
-  description: "Enjoy surfing Web3 without the worry of gas fees",
+  description: "Obtain gas token for free and enjoy exploring ecosystems",
 };
 
 const GasTap = () => {

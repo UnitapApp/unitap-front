@@ -6,7 +6,7 @@ export function toBN(num: BigNumber.Value): BigNumber {
 
 export const toSignificant = (
   value: bigint,
-  significantDigits: number
+  significantDigits: number,
 ): string => {
   const stringValue = value.toString(); // Convert bigint to string
   const indexOfDecimal = stringValue.length - significantDigits;
@@ -19,7 +19,7 @@ export const toSignificant = (
     // Insert decimal point at the appropriate position
     return `${stringValue.slice(0, indexOfDecimal)}.${stringValue.slice(
       indexOfDecimal,
-      indexOfDecimal + significantDigits
+      indexOfDecimal + significantDigits,
     )}`;
   }
 };
@@ -63,4 +63,16 @@ export const formatChainBalance = (amount: number, chainSymbol: string) => {
 
 export const numberWithCommas = (x: number | bigint): string => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const formatNumber = (num: number) => {
+  let fixedNumber = num.toFixed(5);
+
+  let floatNumber = parseFloat(fixedNumber);
+
+  if (floatNumber !== num) {
+    return fixedNumber;
+  } else {
+    return num.toString();
+  }
 };

@@ -646,8 +646,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenDecimals: "18",
         tokenSymbol: "ETH",
         tokenName: "ETH",
-        logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+        logoUrl: "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=032",
       },
       {
         tokenAddress: "0x4F604735c1cF31399C6E711D5962b2B3E0225AD3",
@@ -1562,6 +1561,20 @@ export const tokensInformation: TokenInformation[] = [
         tokenDecimals: "18",
         logoUrl:
           "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x3506424F91fD33084466F402d5D97f05F8e3b4AF/logo.png",
+      },
+    ],
+  },
+  {
+    chainId: "97",
+    chainName: "bsc test net",
+    tokenList: [
+      {
+        tokenAddress: "0x0000000000000000000000000000000000000000",
+        tokenDecimals: "18",
+        tokenName: "bnb",
+        tokenSymbol: "BNB",
+        logoUrl:
+          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
     ],
   },

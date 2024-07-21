@@ -69,8 +69,8 @@ const SelectMethodInput = ({
       ["MINIMUM"]: isNft
         ? e.replace(/[^0-9]/g, "")
         : e
-        ? new Big(toWei(e, decimals)).toFixed()
-        : "",
+          ? new Big(toWei(e, decimals)).toFixed()
+          : "",
     });
   };
 
@@ -89,8 +89,8 @@ const SelectMethodInput = ({
         : new Big(
             fromWei(
               requirement.params.MINIMUM,
-              requirement.decimals ? requirement.decimals : 18
-            )
+              requirement.decimals ? requirement.decimals : 18,
+            ),
           ).toFixed(),
     });
   }, []);
@@ -104,7 +104,7 @@ const SelectMethodInput = ({
     <div ref={ref} className="relative ">
       <div
         onClick={() => handleShowItems()}
-        className="flex w-full items-center justify-between bored border-gray50 bg-gray40 rounded-xl px-3 h-[43px] cursor-pointer"
+        className="bored flex h-[43px] w-full cursor-pointer items-center justify-between rounded-xl border-gray50 bg-gray40 px-3"
       >
         <div
           className={`${
@@ -121,10 +121,10 @@ const SelectMethodInput = ({
       </div>
 
       {showItems && (
-        <div className="absolute w-full top-12 bg-gray40 rounded-xl border border-gray50 overflow-y-scroll">
+        <div className="absolute top-12 w-full overflow-y-scroll rounded-xl border border-gray50 bg-gray40">
           <div
             onClick={handleSelectMethod}
-            className="flex pl-3 cursor-pointer items-center hover:bg-gray70 text-white rounded-lg h-[45px]"
+            className="flex h-[45px] cursor-pointer items-center rounded-lg pl-3 text-white hover:bg-gray70"
           >
             Minimum
           </div>
@@ -132,9 +132,9 @@ const SelectMethodInput = ({
       )}
 
       {selectedMethod && (
-        <div className="flex items-center bg-gray40 border border-gray50 px-3 h-[43px] w-full mt-3 rounded-lg overflow-hidden">
+        <div className="mt-3 flex h-[43px] w-full items-center overflow-hidden rounded-lg border border-gray50 bg-gray40 px-3">
           <input
-            className="bg-inherit h-full px-2 w-full "
+            className="h-full w-full bg-inherit px-2 "
             name={SelectMethod.Minimum}
             type="number"
             min={0}
@@ -160,3 +160,146 @@ const SelectMethodInput = ({
 };
 
 export default SelectMethodInput;
+
+export const MinimumWeb3AmountRequirementField = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+  decimals,
+}: Prop) => {
+  const [minValue, setValue] = useState<string>("");
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    if (!requirement) return;
+    setValue(
+      isNft
+        ? requirement.params.MINIMUM
+        : new Big(
+            fromWei(
+              requirement.params.MINIMUM,
+              requirement.decimals ? requirement.decimals : 18,
+            ),
+          ).toFixed(),
+    );
+  }, []);
+
+  const handleChange = (e: string) => {
+    setValue(isNft ? e.replace(/[^0-9]/g, "") : e);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["MINIMUM"]: isNft
+        ? e.replace(/[^0-9]/g, "")
+        : e
+          ? new Big(toWei(e, decimals)).toFixed()
+          : "",
+    });
+  };
+
+  useEffect(() => {
+    if (!requirement || decimals === requirement.decimals || isNft) return;
+    handleChange(
+      new Big(
+        fromWei(
+          requirement.params.MINIMUM,
+          requirement.decimals ? requirement.decimals : 18,
+        ),
+      ).toFixed(),
+    );
+  }, [decimals]);
+
+  const handleChangeValue = (e: string) => {
+    const finaleValue =
+      e === "increase"
+        ? Number(minValue) + 1
+        : Math.max(0, Number(minValue) - 1);
+    handleChange(finaleValue.toString());
+  };
+
+  return (
+    <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+      <input
+        className="h-full w-full bg-inherit"
+        placeholder="Minimum Amount"
+        name="Minimum"
+        type="number"
+        min={0}
+        onChange={(e) => handleChange(e.target.value)}
+        value={minValue}
+      />
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+        <Icon
+          onClick={() => handleChangeValue("increase")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+        />
+        <Icon
+          onClick={() => handleChangeValue("decrease")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+        />
+      </div>
+    </div>
+  );
+};
+
+export const MinimumNumberRequirementField = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+  decimals,
+}: Prop) => {
+  const [minValue, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (!requirement) return;
+    setValue(requirement.params.MINIMUM);
+  }, []);
+
+  const handleChange = (e: string) => {
+    setValue(isNft ? e.replace(/[^0-9]/g, "") : e);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["MINIMUM"]: e.replace(/[^0-9]/g, ""),
+    });
+  };
+
+  const handleChangeValue = (e: string) => {
+    const finaleValue =
+      e === "increase"
+        ? Number(minValue) + 1
+        : Math.max(0, Number(minValue) - 1);
+    handleChange(finaleValue.toString());
+  };
+
+  return (
+    <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+      <input
+        className="h-full w-full bg-inherit"
+        placeholder="Minimum Amount"
+        name="Minimum"
+        type="number"
+        min={0}
+        onChange={(e) => handleChange(e.target.value)}
+        value={minValue}
+      />
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+        <Icon
+          onClick={() => handleChangeValue("increase")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+        />
+        <Icon
+          onClick={() => handleChangeValue("decrease")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+        />
+      </div>
+    </div>
+  );
+};

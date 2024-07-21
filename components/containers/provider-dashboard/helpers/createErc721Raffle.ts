@@ -69,7 +69,7 @@ export const createErc721RaffleCallback = async (
       currencyAddress,
       nftIds.map((item) => BigInt(item)),
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       BigInt(nftIds.length),
@@ -184,6 +184,7 @@ export const createErc721Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
+  formData.append("max_multiplier", "3");
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,

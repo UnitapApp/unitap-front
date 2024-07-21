@@ -3,21 +3,21 @@ import UButton from "@/components/ui/Button/UButton";
 const learnTap = {
   name: "Learn Tap",
   icon: "learntap-icon.png",
-  description: "Where users can learn to use web3 technologies",
+  description: "Explore communities, learn about them and earn rewards.",
   class: "bg-learntap-texture",
   iconSize: "w-6",
 };
 
 const LearnTapLanding = () => {
   return (
-    <section className="p-[1px] rounded-2xl" id="learntap">
-      <div className="flex relative z-20 flex-col justify-between uni-card bg-learntap-texture bg-cover h-40">
-        <section className="sm:flex items-center justify-center flex-col p-4 h-full">
-          <header className={`flex gap-4 items-center justify-between h-10`}>
+    <section className="rounded-2xl p-[1px]" id="learntap">
+      <div className="uni-card relative z-20 flex h-40 flex-col justify-between bg-learntap-texture bg-cover">
+        <section className="h-full flex-col items-center justify-center p-4 sm:flex">
+          <header className={`flex h-10 items-center justify-between gap-4`}>
             <div
-              className={`flex gap-3 sm:justify-center items-center flex-auto`}
+              className={`flex flex-auto items-center gap-3 sm:justify-center`}
             >
-              <p className={"text-white text-xl font-semibold"}>
+              <p className={"text-xl font-semibold text-white"}>
                 {learnTap.name}
               </p>
               <img
@@ -29,7 +29,7 @@ const LearnTapLanding = () => {
             <div>
               <UButton
                 unClickable
-                className={`secondary-button sm:absolute sm:top-4 sm:right-4 !bg-gray30 text-gradient-primary text-white`}
+                className={`secondary-button text-gradient-primary !bg-gray30 text-white sm:absolute sm:right-4 sm:top-4`}
                 size={"btn-small"}
               >
                 Soon...
@@ -38,7 +38,7 @@ const LearnTapLanding = () => {
           </header>
           <p
             className={
-              "text-secondary-text text-center text-xs leading-loose font-normal py-4"
+              "py-4 text-center text-xs font-normal leading-loose text-secondary-text"
             }
           >
             {learnTap.description}

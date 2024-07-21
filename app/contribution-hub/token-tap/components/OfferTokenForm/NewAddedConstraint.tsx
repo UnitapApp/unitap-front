@@ -20,7 +20,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
   const constraint = constraintsListApi
     ? Object.values(constraintsListApi)
         .flatMap((category) =>
-          category.find((element) => element.pk === requirement.pk)
+          category.find((element) => element.pk === requirement.pk),
         )
         .at(0)
     : undefined;
@@ -39,7 +39,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
 
   return (
     <div className="m-0 p-0">
-      <div className="bg-gray50 h-[44px] rounded-xl flex justify-between  items-center px-4 border-2 border-gray60">
+      <div className="flex h-[44px] items-center justify-between rounded-xl  border-2 border-gray60 bg-gray50 px-4">
         <div className="flex items-center gap-2">
           {constraint?.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
           <p className={!isNotSatisfy ? "text-dark-space-green" : "text-error"}>
@@ -50,7 +50,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
         <div className="flex items-center gap-3">
           <div
             onClick={handleClick}
-            className="cursor-pointer flex items-center justify-center p-[2px] text-gray90 text-2xs w-[60px]  font-semibold bg-gray70 border border-gray80 rounded-lg"
+            className="flex w-[60px] cursor-pointer items-center justify-center rounded-lg border border-gray80  bg-gray70 p-[2px] text-2xs font-semibold text-gray90"
           >
             Edit
           </div>
@@ -64,7 +64,9 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           />
         </div>
       </div>
-      <p className="flex w-full items-center justify-center m-0 p-0">and</p>
+      <p className="m-0 mb-2 mt-2 flex w-full items-center justify-center p-0">
+        and
+      </p>
     </div>
   );
 };

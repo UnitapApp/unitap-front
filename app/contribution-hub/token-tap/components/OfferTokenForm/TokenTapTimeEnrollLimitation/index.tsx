@@ -63,7 +63,7 @@ const TokenTapTimeEnrollLimitation = ({
         className={`mb-[84px] flex min-h-[340px] w-full max-w-[452px] flex-col items-center gap-5`}
       >
         <div className="flex w-full items-center justify-between text-center">
-          <div
+          {/* <div
             onClick={() => {
               if (isShowingDetails) return;
               handleSetClaimPeriodic(false);
@@ -86,7 +86,7 @@ const TokenTapTimeEnrollLimitation = ({
             >
               ( Users can only claim once)
             </p>
-          </div>
+          </div> */}
           {/* <div
             onClick={() => {
               if (isShowingDetails) return;

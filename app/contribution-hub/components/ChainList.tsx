@@ -18,8 +18,6 @@ const ChainList = ({
   selectedChain,
   setSelectedChain,
 }: Props) => {
-  // const [selectedChain, setSelectedChain] = useState<Chain | undefined>();
-
   const handleSelectChain = (chian: Chain) => {
     setSelectedChain(chian);
     setRequirementParamsList({
@@ -33,7 +31,7 @@ const ChainList = ({
   const [chainName, setChainName] = useState<string | undefined>();
 
   const [filterChainName, setFilterChainName] = useState<Chain[] | undefined>(
-    allChainList
+    allChainList,
   );
 
   const [showItems, setShowItems] = useState<boolean>(false);
@@ -44,7 +42,7 @@ const ChainList = ({
     if (!requirementParamsList || !allChainList) return;
     if (!requirementParamsList.CHAIN) return;
     const chain = allChainList!.find(
-      (item) => item.pk === requirementParamsList.CHAIN
+      (item) => item.pk === requirementParamsList.CHAIN,
     );
     setSelectedChain(chain!);
     setChainName(chain!.chainName);
@@ -62,8 +60,8 @@ const ChainList = ({
       allChainList?.filter(
         (chain) =>
           chain.chainName.toLocaleLowerCase().includes(e) ||
-          chain.chainId.includes(e)
-      )
+          chain.chainId.includes(e),
+      ),
     );
   };
 
@@ -71,7 +69,7 @@ const ChainList = ({
     <div className="relative" ref={ref}>
       <div
         onClick={() => setShowItems(!showItems)}
-        className="flex items-center gap-2 justify-between cursor-pointer h-[43px] bg-gray40 border-gray50 rounded-xl px-3"
+        className="flex h-[43px] cursor-pointer items-center justify-between gap-2 rounded-xl border-gray50 bg-gray40 px-3"
       >
         {selectedChain && (
           <Icon iconSrc={selectedChain.logoUrl} height="24px" width="24px" />
@@ -90,12 +88,12 @@ const ChainList = ({
         />
       </div>
       {showItems && (
-        <div className="absolute bg-gray40 z-10 w-full border border-gray50 overflow-x-hidden overflow-y-scroll max-h-[200px] rounded-lg ">
+        <div className="absolute z-10 max-h-[200px] w-full overflow-x-hidden overflow-y-scroll rounded-lg border-2 border-gray60 bg-gray40 ">
           {filterChainName?.map((chain) => (
             <div
               onClick={() => handleSelectChain(chain)}
               key={chain.chainPk}
-              className="p-2 cursor-pointer hover:bg-gray70 rounded-lg"
+              className="cursor-pointer rounded-lg p-2 hover:bg-gray70"
             >
               <div className="flex items-center gap-2 text-white">
                 <Icon iconSrc={chain.logoUrl} height="24px" width="24px" />

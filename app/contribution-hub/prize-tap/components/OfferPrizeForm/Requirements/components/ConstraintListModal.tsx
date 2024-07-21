@@ -23,7 +23,7 @@ const ModalBody = () => {
   } = usePrizeOfferFormContext();
 
   return (
-    <div className="claim-modal-wrapper flex max-h-[550px] flex-col overflow-auto pt-5 p-2">
+    <div className="claim-modal-wrapper flex max-h-[550px] flex-col overflow-auto p-2 pt-5">
       {selectedConstrains ? (
         <ConstraintDetailsModal
           constraint={selectedConstrains}
@@ -167,10 +167,11 @@ const ConstraintListModal = () => {
   return (
     <>
       <Modal
-        title={`${selectedConstraintTitle
-          ? "Add " + selectedConstraintTitle + " requirement"
-          : "Add requirement"
-          }`}
+        title={`${
+          selectedConstraintTitle
+            ? "Add " + selectedConstraintTitle + " requirement"
+            : "Add requirement"
+        }`}
         size="small"
         closeModalHandler={closeRequirementModal}
         isOpen={isOpen}

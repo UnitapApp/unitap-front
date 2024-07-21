@@ -152,6 +152,20 @@ export const connectGitCoinPassport = async (address: string) => {
   return response.data;
 };
 
+export const connectDynamicConnection = async (
+  connectionName: string,
+  address: string,
+) => {
+  const response = await axiosInstance.post(
+    "api/auth/user/connect/" + connectionName + "/",
+    {
+      userWalletAddress: address,
+    },
+  );
+
+  return response.data;
+};
+
 export const getTwitterOAuthUrlApi = async () => {
   const res = await axiosInstance.get("/api/auth/twitter/");
 

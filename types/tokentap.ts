@@ -17,6 +17,7 @@ export type Token = {
   deadline: string;
   maxNumberOfClaims: number;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   notes: string;
   isExpired: boolean;
   isMaxedOut: boolean;
@@ -26,6 +27,9 @@ export type Token = {
   status: "VERIFIED" | "PENDING" | "REJECTED";
   chain: Chain;
   constraints: Permission[];
+  remainingClaimForUnitapPassUser: number | null;
+  maxClaimNumberForUnitapPassUser: number | null;
+  claimDeadlineForUnitapPassUser: string;
 };
 
 export type ClaimedToken = {

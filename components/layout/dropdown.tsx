@@ -68,6 +68,15 @@ const navItems = [
     iconHeight: "auto",
     route: RoutePath.PRIZE,
   },
+
+  {
+    name: "Incentive Center",
+    link: RoutePath.PROVIDERDASHBOARD,
+    icon: "/assets/images/landing/prizetap-icon.png",
+    iconWidth: "33px",
+    iconHeight: "auto",
+    route: RoutePath.PROVIDERDASHBOARD,
+  },
 ];
 
 const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {

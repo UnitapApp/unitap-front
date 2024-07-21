@@ -76,8 +76,15 @@ const config: Config = {
       backgroundImage: {
         "dark-primary":
           "linear-gradient(to right, #22222f, #21232e, #242130, #231f2f)",
+        "dark-primary-2": "url('/assets/images/token-tap/bg-primary-dark.svg')",
+        // "dark-primary-2":
+        //   "radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2A3837 0%, #3F2B44 42.19%, #322837 100%)",
         primaryGradient:
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)",
+        primaryGradient2:
+          "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 43.07%, #DD40CD 100.44%)",
+        "primaryGradient-2":
+          "linear-gradient(91.35deg, #4BF2A2 -150.66%, #A89FE7 39.49%, #E1C3F4 150.07%)",
         "home-header-texture":
           "url('/assets/images/landing/main-bg-profile.svg')",
         "what-is-unitap-header":
