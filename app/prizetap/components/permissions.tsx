@@ -12,6 +12,7 @@ import { chanceAnimationOption } from "@/constants/lottieCode";
 import { arrowAnimationOption } from "@/constants/lottieCode";
 import Lottie from "react-lottie";
 import { useWalletAccount } from "@/utils/wallet";
+import Markdown from "@/components/containers/token-tap/Markdown";
 // const tokenImgLink = (tokenUri: string) =>
 //   tokenUri
 //     ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
@@ -242,12 +243,16 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 }
                 data-testid={`token-verification-modal-${raffle.pk}-${permission.name}`}
                 key={key}
-                text={replacePlaceholders(
-                  (permission.isReversed
-                    ? permission.negativeDescription
-                    : permission.description)!,
-                  params[permission.name],
-                )}
+                text={
+                  <Markdown
+                    content={replacePlaceholders(
+                      (permission.isReversed
+                        ? permission.negativeDescription
+                        : permission.description)!,
+                      params[permission.name],
+                    )}
+                  ></Markdown>
+                }
               >
                 <div className="flex items-center gap-1">
                   <img
