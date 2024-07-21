@@ -24,6 +24,7 @@ import { nativeOnChain } from "@/constants/tokens";
 import { useGlobalContext } from "@/context/globalProvider";
 import Image from "next/image";
 import { useUserProfileContext } from "@/context/userProfile";
+import { toWei } from "@/utils";
 
 export const unitCost = (unitCount: number | bigint, decimals: number) =>
   BigInt(unitCount) * BigInt(10) ** BigInt(decimals);
@@ -141,8 +142,7 @@ const MintNFTCard = () => {
   useEffect(() => {
     if (supportedChainId === SupportedChainId.BASE) {
       setSufficientAmount(
-        unitCost(1, base.nativeCurrency.decimals) * BigInt(count) >
-          (accountBalance?.value ?? BigInt(0)),
+        BigInt(toWei(0.1) * count) > (accountBalance?.value ?? BigInt(0)),
       );
     }
   }, [count, accountBalance, supportedChainId]);

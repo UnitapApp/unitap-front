@@ -596,6 +596,41 @@ export const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
+  // if (constraint.name === "core.IsFollowinTwitterUser") {
+  //   const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
+  //   return (
+  //     <Input
+  //       value={requirementParamsList?.[featuredName] ?? ""}
+  //       onChange={(e) =>
+  //         setRequirementParamsList({
+  //           ...requirementParamsList,
+  //           [featuredName]: e.target.value,
+  //         })
+  //       }
+  //       placeholder={"Twitter Username"}
+  //       className="bg-gray40 text-lg font-normal placeholder:text-gray80"
+  //     />
+  //   );
+  // }
+  if (
+    constraint.name === "core.IsFollowinTwitterUser" ||
+    constraint.name === "core.BeFollowedByTwitterUser"
+  ) {
+    const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
+    return (
+      <Input
+        value={requirementParamsList?.[featuredName] ?? ""}
+        onChange={(e) =>
+          setRequirementParamsList({
+            ...requirementParamsList,
+            [featuredName]: e.target.value,
+          })
+        }
+        placeholder={"Twitter Username"}
+        className="bg-gray40 text-lg font-normal placeholder:text-gray80"
+      />
+    );
+  }
   if (
     constraint.name == "core.HasMinimumLensPost" ||
     constraint.name === "core.HasMinimumLensFollower" ||

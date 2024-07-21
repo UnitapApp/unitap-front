@@ -42,7 +42,7 @@ const NftPass = () => {
       id: 2,
       title: "More winning chances in Prize Tap",
       description:
-        "By holding the Unitap Pass, you get some more Prize Tap tickets that can increase your winning chance.",
+        "By holding the Unitap Pass, you get some more Prize Tap Boosts that can increase your winning chance.",
       imgUrl: "assets/images/pass/chance.svg",
     },
     {
@@ -307,7 +307,10 @@ const NftPass = () => {
               <div className="flex items-center gap-1">
                 <img src="/assets/images/pass/ticket.svg" />
                 <p className="ml-1">
-                  {userProfile.prizetapWinningChanceNumber} TICKETS
+                  {userProfile.prizetapWinningChanceNumber}
+                  {userProfile.prizetapWinningChanceNumber === 1
+                    ? " Boost"
+                    : " Boosts"}
                 </p>
               </div>
             </div>
@@ -322,7 +325,7 @@ const NftPass = () => {
               <div className="mt-3 text-sm font-bold">
                 You will earn{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
-                  {userProfile.upBalance} more tickets
+                  {userProfile.upBalance} more Boosts
                 </span>{" "}
                 next round!{" "}
               </div>
@@ -356,7 +359,7 @@ const NftPass = () => {
               <div className="mt-3 text-center text-sm font-bold">
                 You can earn free{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
-                  tickets
+                  Boosts
                 </span>{" "}
                 next round if you <span className="text-[#df86e2]">Mint</span>.
               </div>
