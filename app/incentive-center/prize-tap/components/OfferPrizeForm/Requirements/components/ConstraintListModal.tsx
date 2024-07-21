@@ -22,6 +22,8 @@ const ModalBody = () => {
     setSelectedApp,
   } = usePrizeOfferFormContext();
 
+  console.log(requirementList);
+
   return (
     <div className="claim-modal-wrapper flex max-h-[550px] flex-col overflow-auto p-2 pt-5">
       {selectedConstrains ? (
