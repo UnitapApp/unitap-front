@@ -307,9 +307,10 @@ const NftPass = () => {
               <div className="flex items-center gap-1">
                 <img src="/assets/images/pass/ticket.svg" />
                 <p className="ml-1">
+                  {userProfile.prizetapWinningChanceNumber}
                   {userProfile.prizetapWinningChanceNumber === 1
-                    ? "Boost"
-                    : "Boosts"}
+                    ? " Boost"
+                    : " Boosts"}
                 </p>
               </div>
             </div>
