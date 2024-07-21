@@ -267,8 +267,8 @@ const MintNFTCard = () => {
                   <Image
                     width={10}
                     height={16}
-                    className={"ml-2 h-auto w-2.5"}
-                    src={"/assets/images/nft/eth-icon.svg"}
+                    className={"ml-2 h-auto w-4"}
+                    src={"/assets/images/pass/base-network.svg"}
                     alt={"ethereum"}
                   />
                 </span>
