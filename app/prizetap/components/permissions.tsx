@@ -139,8 +139,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
             className={`flex h-8 items-center justify-center border-b border-gray70 bg-gray50 pl-2 text-xs font-medium ${selectedTicketCount >= maxChance ? "text-space-green" : "text-gray100"}`}
           >
             {selectedTicketCount >= maxChance
-              ? "You have reached the limit of using tickets :)"
-              : "Drag & Drop more tickets to increase your chance to win!"}
+              ? "You have reached the limit of using Boosts :)"
+              : "Drag & Drop more Boosts to increase your chance to win!"}
           </div>
           <div className="relative  flex h-[62px] items-center justify-between">
             <div
@@ -200,10 +200,12 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                   {userProfile.prizetapWinningChanceNumber -
                     selectedTicketCount}
                 </span>{" "}
-                tickets
+                {userProfile.prizetapWinningChanceNumber === 1
+                  ? "Boost"
+                  : "Boosts"}
               </div>
             ) : (
-              <p>You have no ticket</p>
+              <p>You have no Boost</p>
             )}
             <div>{selectedTicketCount + 1}x chance</div>
           </div>
