@@ -164,7 +164,7 @@ const MintNFTCard = () => {
 
     setLoading(true);
 
-    console.log(count);
+    // console.log(count);
 
     try {
       await writeContractAsync({
@@ -207,7 +207,7 @@ const MintNFTCard = () => {
 
   return (
     <div className={`mint-nft-card flex h-full flex-col justify-between`}>
-      {!isIdle ? (
+      {!isIdle && !isError ? (
         <div className="mint-nft-card__success flex h-full flex-col justify-between p-4">
           <p className="text-gradient-primary mx-auto text-sm font-bold">
             UNITAP PASS
@@ -237,7 +237,7 @@ const MintNFTCard = () => {
               >
                 See on{" "}
                 {supportedChainId === SupportedChainId.BASE
-                  ? "basescan"
+                  ? "base scan"
                   : "Goerli Etherscan"}
               </p>
             </>
