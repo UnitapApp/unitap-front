@@ -72,7 +72,7 @@ const navItems = [
   {
     name: "Incentive Center",
     link: RoutePath.PROVIDERDASHBOARD,
-    icon: "/assets/images/landing/prizetap-icon.png",
+    icon: "/assets/images/landing/contributionHub.svg",
     iconWidth: "33px",
     iconHeight: "auto",
     route: RoutePath.PROVIDERDASHBOARD,

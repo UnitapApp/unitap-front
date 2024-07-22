@@ -40,7 +40,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   const [selectedTicketCount, setSelectedTicketCount] = useState(0);
 
   useEffect(() => {
-    if (userProfile) {
+    if (userProfile && userTickets.length == 0) {
       const items = Array.from(
         { length: userProfile.prizetapWinningChanceNumber },
         (_, index) => index + 1,
