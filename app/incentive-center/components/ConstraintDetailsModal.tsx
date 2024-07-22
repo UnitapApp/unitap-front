@@ -631,6 +631,24 @@ export const CreateParams: FC<CreateModalParam> = ({
       />
     );
   }
+
+  if (constraint.name === "core.DidRetweetTweet") {
+    const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
+    return (
+      <Input
+        value={requirementParamsList?.[featuredName] ?? ""}
+        onChange={(e) =>
+          setRequirementParamsList({
+            ...requirementParamsList,
+            [featuredName]: e.target.value,
+          })
+        }
+        placeholder={"Enter the tweet id"}
+        className="bg-gray40 text-lg font-normal placeholder:text-gray80"
+      />
+    );
+  }
+
   if (
     constraint.name == "core.HasMinimumLensPost" ||
     constraint.name === "core.HasMinimumLensFollower" ||

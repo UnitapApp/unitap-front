@@ -1,53 +1,121 @@
-import { Metadata } from "next"
-import "./styles.scss"
+import { Metadata } from "next";
+import "./styles.scss";
 
-import Icon from "@/components/ui/Icon"
+import Icon from "@/components/ui/Icon";
+import { FC } from "react";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Unitap | About us",
   description:
     "Unitap is an onboarding tool for networks and communities and a gateway to web3",
-}
+};
 
 const About = () => {
   return (
-    <div className={"m-auto flex flex-col justify-center items-center w-full"}>
+    <div className={"m-auto flex w-full flex-col items-center justify-center"}>
       <section
         className={
-          "uni-card w-full flex flex-col gap-4 after:rounded-2xl after:bg-what-is-unitap-header h-44 text-white justify-center text-center sm:text-left sm:px-12 overflow-hidden"
+          "uni-card flex h-44 w-full flex-col items-center justify-center gap-4 overflow-hidden text-center text-white after:rounded-2xl after:bg-what-is-unitap-header sm:px-12 sm:text-left"
         }
       >
         <img
           src={"/assets/images/about/header-unitap-logo.svg"}
-          className={"w-48 mx-auto sm:mx-0"}
+          className={"mx-auto w-48"}
           alt={"logo"}
         />
-        <h4 className={"text-gradient-primary"}>
-          Unitap is an onboarding tool for networks and communities and a
-          gateway to web3
-        </h4>
+        <h4 className={"text-gradient-primary"}>Incentive layer for web3</h4>
       </section>
       {/* to do: after merge should fix the .card class styles */}
 
-      <div className="about-content uni-card mt-8 pl-4 pr-8 md:px-8 lg:px-12 pt-12 pb-8">
-        <p className="text-gradient-primary text-center font-semibold mb-6">
-          ONBOARDING USERS TO WEB3 HAS ALWAYS BEEN A CHALLENGE
+      <div className="about-content uni-card mt-8 pb-8 pl-4 pr-8 pt-12 md:px-8 lg:px-12">
+        <p className="text-gradient-primary mb-6 text-center font-semibold">
+          Why is everyone reinventing the wheel over and over again?
         </p>
         <p className="about-section__text">
-          When a user wants to begin using a network, they may find it hard to
-          obtain gas tokens to get started. Faucets are abused because there has
-          never been an appropriate sybil resistance tool.
+          <span className="text-gradient-primary">Incentivizing tools</span> are
+          essential for onboarding and building community in web3.
         </p>
         <p className="about-section__text">
-          With BrightID, we can solve this problem. BrightID is a social
-          identity network that allows users to prove that they are only using
-          one account.
+          There are no shortcuts [yet!], so everyone is thinking, designing, and
+          building these tools from scratch, consuming valuable time and
+          resources and leading to trial-and-error mistakes.
         </p>
-        <p className="text-gradient-primary text-center font-semibold mb-6">
-          Unitap is designed to include a number of Taps
+        <p className="text-gradient-primary mb-6 text-center font-semibold">
+          Production-Ready Campaigns Using Unitap
         </p>
 
-        <div className="about-section">
+        <p className="about-section__text">
+          Unitap is an incentive layer that enables projects to launch their
+          campaign in a few minutes.
+        </p>
+
+        <p className="text-gradient-primary my-6 text-center font-semibold">
+          Partners and supporters:
+        </p>
+
+        <div className="mb-6 flex flex-wrap items-center gap-6">
+          <SponsorItem
+            image="/assets/images/provider-dashboard/op.svg"
+            title="Optimism RPGF3"
+          />
+          <SponsorItem
+            image="/assets/images/prize-tap/linea.svg"
+            title="Linea"
+          />
+          <SponsorItem
+            image="/assets/images/provider-dashboard/ic_polygon.svg"
+            title="Polygon"
+          />
+          <SponsorItem
+            image="/assets/images/arbitrum-arb-logo.svg"
+            title="Arbitrum"
+          />
+          <SponsorItem
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+          <SponsorItem
+            title="Gitcoin"
+            image="/assets/images/up-profile/gitcoin-passport.svg"
+          />
+          <SponsorItem
+            title="WhalerDAO"
+            image="/assets/images/up-profile/whalerDAO.png"
+          />
+        </div>
+
+        <p className="text-gradient-primary mb-6 mt-20 text-center font-semibold">
+          Team members:
+        </p>
+
+        <div className="mt-20 flex items-center justify-center gap-10">
+          <TeamMembers
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+          <TeamMembers
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+        </div>
+
+        <div className="my-10 flex items-center justify-center gap-10">
+          <TeamMembers
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+          <TeamMembers
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+          <TeamMembers
+            image="/assets/images/provider-dashboard/requirements/ens.svg"
+            title="ENS"
+          />
+        </div>
+
+        {/* <div className="about-section">
           <div className="about-section__heading">
             <Icon
               className="about-section__heading__icon"
@@ -63,8 +131,8 @@ const About = () => {
             Gas Tap already supports loads of EVM networks and will soon be
             adding support for Bitcoin Lightning, Solana, and others.
           </p>
-        </div>
-
+        </div> */}
+        {/*
         <div className="about-section">
           <div className="about-section__heading">
             <Icon
@@ -189,10 +257,50 @@ const About = () => {
             we will send the fees to the Gas Tap contracts to help ensure that
             the gas taps stay full.{" "}
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default About
+const TeamMembers: FC<{
+  image: string;
+  title: string;
+}> = ({ image, title }) => {
+  return (
+    <div className="mx-2">
+      <div className="h-28 w-28 overflow-hidden rounded-full bg-g-primary p-1">
+        <div className="grid h-full w-full place-items-center rounded-full bg-gray40">
+          <Image
+            className="mx-auto h-20 w-20"
+            width={80}
+            height={80}
+            src={image}
+            alt={title}
+          />
+        </div>
+      </div>
+      <p className="mx-auto mt-3 text-center text-gray100">{title}</p>
+    </div>
+  );
+};
+
+const SponsorItem: FC<{
+  image: string;
+  title: string;
+}> = ({ image, title }) => {
+  return (
+    <div className="p-3">
+      <Image
+        className="mx-auto h-20 w-20"
+        width={80}
+        height={80}
+        src={image}
+        alt={title}
+      />
+      <p className="sponsor-item__title mx-auto mt-3 text-center">{title}</p>
+    </div>
+  );
+};
+
+export default About;
