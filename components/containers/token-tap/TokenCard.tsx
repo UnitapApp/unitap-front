@@ -232,7 +232,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       onClick={() => openClaimModal(token)}
                       className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
-                      <p className="!bg-g-dark-primary-gradient bg-clip-text">{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+                      <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
                   ) : token.isMaxedOut ? (
                     <NoCurrencyButton disabled $fontSize="13px">
