@@ -951,9 +951,10 @@ export const tokensInformation: TokenInformation[] = [
       {
         tokenAddress: "0x0000000000000000000000000000000000000000",
         tokenDecimals: "18",
-        tokenSymbol: "Base",
-        tokenName: "Base",
-        logoUrl: "",
+        tokenSymbol: "ETH",
+        tokenName: "ETH",
+        logoUrl:
+          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
       {
         tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
