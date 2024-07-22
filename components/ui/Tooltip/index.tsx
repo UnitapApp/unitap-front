@@ -47,7 +47,7 @@ const Tooltip: FC<
             : "pointer-events-none"
         }`}
       >
-        <div className="absolute left-1/2 top-full -mt-[0.3rem] h-3 w-3 -translate-x-1/2 -rotate-45 transform rounded-bl border-b border-l border-gray70 bg-gray10" />
+        <div className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -rotate-45 transform rounded-bl border-b border-l border-gray70 bg-gray10" />
         <div>
           {withoutImage || (
             <Image
