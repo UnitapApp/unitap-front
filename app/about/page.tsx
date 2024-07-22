@@ -84,13 +84,13 @@ const About = () => {
             twitterId="adamstallard"
           />
           <TeamMembers
-            image="/assets/images/member2.jpg"
+            image="/assets/images/member3.png"
             title="Ali Lari"
             position="CEO"
             twitterId="alariarch"
           />
           <TeamMembers
-            image="/assets/images/member3.png"
+            image="/assets/images/member2.jpg"
             title="Philip Silva"
             position="CPO"
             twitterId="UBIpromoter"
