@@ -144,7 +144,10 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const userClaimEntry = useMemo(
-    () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
+    () =>
+      winnersEntry?.find((item) =>
+        item.userProfile ? item.userProfile.pk === userProfile?.pk : undefined,
+      ),
     [userProfile, winnersEntry],
   );
 
