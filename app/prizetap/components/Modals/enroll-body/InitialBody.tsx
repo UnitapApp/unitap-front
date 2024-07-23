@@ -34,6 +34,10 @@ const InitialBody: FC<{
     handleClaimPrize,
   } = usePrizeTapContext();
 
+  if (method === "Pre-Verify") {
+    return;
+  }
+
   if (method === "Verify") {
     return <RafflePermissions raffle={raffle} />;
   }

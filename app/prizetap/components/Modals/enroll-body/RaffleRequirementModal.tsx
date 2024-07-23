@@ -1,91 +1,40 @@
 import { appInfos } from "@/app/incentive-center/constants/integrations";
+import {
+  checkConnections,
+  renderLinkValue,
+  requirementsConnections,
+} from "@/components/containers/token-tap/Modals/TokenRequirementModal";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
-import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { Permission, Token, UserConnection } from "@/types";
+import { Permission, Prize, UserConnection } from "@/types";
 import { replacePlaceholders } from "@/utils";
-import { getTokenConstraintsVerifications } from "@/utils/api";
+import {
+  getRaffleConstraintsVerifications,
+  getTokenConstraintsVerifications,
+} from "@/utils/api";
 import { getAllConnections } from "@/utils/serverApis";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-export const requirementsConnections: { [key: string]: string | null } = {
-  IsFollowinTwitterUser: "Twitter",
-  DidQuoteTweet: "Twitter",
-  DidRetweetTweet: "Twitter",
-  BridgeEthToArb: null, // 25
-  IsFollowingFarcasterChannel: "Farcaster", // 24
-  HasFarcasterProfile: "Farcaster", // 23
-  IsFollowingFarcasterUser: "Farcaster", // 22
-  DidLikedFarcasterCast: "Farcaster", // 21
-  HasMinimumFarcasterFollower: "Farcaster", // 20
-  HasTokenTransferVerification: null, // 19
-  DidRecastFarcasterCast: "Farcaster", // 18
-  BeFollowedByFarcasterUser: "Farcaster", // 17
-  HasMinimumLensFollower: "Lens", // 16
-  DidMirrorOnLensPublication: "Lens", // 15
-  DidCollectLensPublication: "Lens", // 14
-  HasMinimumLensPost: "Lens", // 13
-  BeFollowedByLensUser: "Lens", // 12
-  IsFollowingLensUser: "Lens", // 11
-  HasLensProfile: "Lens", // 10
-  HasENSVerification: "ENS", // 9
-  HasTokenVerification: null, // 8
-  AllowListVerification: null, // 7
-  HasNFTVerification: null, // 6
-  OptimismClaimingGasConstraint: null, // 5
-  OptimismDonationConstraint: null, // 4
-  HaveUnitapPass: null, // 3
-  BrightIDAuraVerification: "BrightID", // 2
-  BrightIDMeetVerification: "BrightID", // 1
-};
-
-export const renderLinkValue = (
-  appName: string,
-  params: { [key: string]: any },
-) => {
-  if (appName?.toLowerCase() === "twitter") {
-    if (params["TWEET_ID"]) {
-      return `https://twitter.com/i/status/${params["TWEET_ID"]}`;
-    }
-
-    if (params["TWITTER_USERNAME"]) {
-      return `https://x.com/${params["TWITTER_USERNAME"]})`;
-    }
-  }
-
-  return "#";
-};
-
-export function checkConnections(
-  userConnections: UserConnection,
-  requirementName: string,
-) {
-  const requiredConnection =
-    requirementsConnections[requirementName.split(".").splice(1).join(".")];
-  if (!requiredConnection) {
-    return true;
-  }
-
-  return userConnections[requiredConnection]?.isConnected;
-}
-
 const Sidebar: FC<{
-  token: Token;
+  prize: Prize;
   permissions: (Permission & { isVerified: boolean })[];
-}> = ({ token, permissions }) => {
-  const { currentRequirementIndex, setCurrentRequirementIndex, setMethod } =
-    useTokenTapContext();
-
-  const constraintsCount = token.constraints.filter(
-    (item) => item.type === "VER",
-  ).length;
+  currentRequirementIndex: number;
+  setCurrentRequirementIndex: (value: number) => void;
+}> = ({
+  prize,
+  permissions,
+  currentRequirementIndex,
+  setCurrentRequirementIndex,
+}) => {
+  const { setMethod } = usePrizeTapContext();
 
   useEffect(() => {
     setCurrentRequirementIndex(
-      token.constraints.findIndex((item) => item.type === "VER"),
+      prize.constraints.findIndex((item) => item.type === "VER"),
     );
   }, []);
 
@@ -95,21 +44,24 @@ const Sidebar: FC<{
         className="rounded-xl border border-gray70 bg-gray20 bg-cover bg-no-repeat p-3"
         style={{ backgroundImage: "url('/assets/images/prize-bg.png')" }}
       >
-        <div className="font-bold">{token.name}</div>
+        <div className="font-bold">{prize.name}</div>
+        <p className="text-xs text-gray100">
+          {prize.creatorName || prize.creatorProfile?.username}
+        </p>
         <div className="mt-3 text-xs text-gray70">Requirements</div>
       </div>
 
       <div className="mt-3">
         <div className="mb-2 rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
           {
-            (!!permissions.length ? permissions : token.constraints).filter(
+            (!!permissions.length ? permissions : prize.constraints).filter(
               (item: any) => item.isVerified,
             ).length
           }
-          /{(!!permissions.length ? permissions : token.constraints).length}{" "}
+          /{(!!permissions.length ? permissions : prize.constraints).length}{" "}
           Done
         </div>
-        {(!!permissions.length ? permissions : token.constraints).map(
+        {(!!permissions.length ? permissions : prize.constraints).map(
           (constraint: any, index) => (
             <Fragment key={index}>
               <button
@@ -118,7 +70,7 @@ const Sidebar: FC<{
               >
                 {constraint.title}
               </button>
-              {index === token.constraints.length - 1 || (
+              {index === prize.constraints.length - 1 || (
                 <div className="mx-auto h-3 w-[2px] bg-gray80"></div>
               )}
             </Fragment>
@@ -127,8 +79,8 @@ const Sidebar: FC<{
 
         <button
           disabled={
-            (!!permissions.length ? permissions : token.constraints).length !==
-            (!!permissions.length ? permissions : token.constraints).filter(
+            (!!permissions.length ? permissions : prize.constraints).length !==
+            (!!permissions.length ? permissions : prize.constraints).filter(
               (item: any) => item.isVerified,
             ).length
           }
@@ -136,7 +88,7 @@ const Sidebar: FC<{
           style={{
             background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
-          onClick={() => setMethod("claim")}
+          onClick={() => setMethod("Verify")}
         >
           Enroll
         </button>
@@ -145,16 +97,20 @@ const Sidebar: FC<{
   );
 };
 
-const TokenRequirementBody: FC<{
+const PrizeRequirementBody: FC<{
   permissions: (Permission & { isVerified: boolean })[];
   refreshPermissions: () => void;
+  currentRequirementIndex: number;
+  setCurrentRequirementIndex: (value: number) => void;
   loading: boolean;
-}> = ({ permissions, refreshPermissions, loading }) => {
-  const {
-    selectedTokenForClaim,
-    currentRequirementIndex,
-    setCurrentRequirementIndex,
-  } = useTokenTapContext();
+}> = ({
+  permissions,
+  refreshPermissions,
+  loading,
+  currentRequirementIndex,
+  setCurrentRequirementIndex,
+}) => {
+  const { selectedRaffleForEnroll } = usePrizeTapContext();
 
   const { userToken } = useUserProfileContext();
 
@@ -162,22 +118,22 @@ const TokenRequirementBody: FC<{
 
   const constraint =
     currentRequirementIndex !== undefined
-      ? selectedTokenForClaim?.constraints[currentRequirementIndex]
+      ? selectedRaffleForEnroll?.constraints[currentRequirementIndex]
       : null;
 
   const params = useMemo(
     () =>
-      selectedTokenForClaim
-        ? JSON.parse(selectedTokenForClaim.constraintParams || "{}")
+      selectedRaffleForEnroll
+        ? JSON.parse(selectedRaffleForEnroll.constraintParams || "{}")
         : {},
-    [selectedTokenForClaim],
+    [selectedRaffleForEnroll],
   );
 
   useEffect(() => {
-    if (!constraint || !userToken || !selectedTokenForClaim) return;
+    if (!constraint || !userToken || !selectedRaffleForEnroll) return;
 
     getAllConnections(userToken).then(setConnections);
-  }, [constraint, selectedTokenForClaim, userToken]);
+  }, [constraint, selectedRaffleForEnroll, userToken]);
 
   if (!constraint)
     return (
@@ -259,11 +215,12 @@ const TokenRequirementBody: FC<{
   );
 };
 
-const TokenRequirementModal: FC<{
-  token: Token;
-}> = ({ token }) => {
+const PrizeRequirementModal: FC<{
+  prize: Prize;
+}> = ({ prize }) => {
   const { userToken } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
+  const [currentRequirementIndex, setCurrentRequirementIndex] = useState(0);
 
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
@@ -272,13 +229,13 @@ const TokenRequirementModal: FC<{
   const refreshPermissions = () => {
     if (!userToken) return;
     setLoading(true);
-    getTokenConstraintsVerifications(token.id, userToken)
+    getTokenConstraintsVerifications(prize.id, userToken)
       .then((res) => {
         SetPermissions(res.constraints);
       })
       .catch(() => {
         SetPermissions(
-          token.constraints.map((constraint) => ({
+          prize.constraints.map((constraint) => ({
             ...constraint,
             isVerified: false,
           })),
@@ -292,13 +249,13 @@ const TokenRequirementModal: FC<{
   useEffect(() => {
     if (!userToken) return;
     setLoading(true);
-    getTokenConstraintsVerifications(token.id, userToken)
+    getRaffleConstraintsVerifications(prize.id, userToken)
       .then((res) => {
         SetPermissions(res.constraints);
       })
       .catch(() => {
         SetPermissions(
-          token.constraints.map((constraint) => ({
+          prize.constraints.map((constraint) => ({
             ...constraint,
             isVerified: false,
           })),
@@ -311,14 +268,21 @@ const TokenRequirementModal: FC<{
 
   return (
     <div className="-mt-3 flex h-72 w-full items-center justify-start gap-2 overflow-y-auto">
-      <Sidebar permissions={permissions} token={token} />
-      <TokenRequirementBody
+      <Sidebar
+        currentRequirementIndex={currentRequirementIndex}
+        setCurrentRequirementIndex={setCurrentRequirementIndex}
+        permissions={permissions}
+        prize={prize}
+      />
+      <PrizeRequirementBody
         loading={loading}
         permissions={permissions}
         refreshPermissions={refreshPermissions}
+        currentRequirementIndex={currentRequirementIndex}
+        setCurrentRequirementIndex={setCurrentRequirementIndex}
       />
     </div>
   );
 };
 
-export default TokenRequirementModal;
+export default PrizeRequirementModal;

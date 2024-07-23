@@ -131,7 +131,11 @@ const ClaimTokenModal = () => {
 
   return (
     <Modal
-      title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
+      title={
+        method === "requirements"
+          ? "Double-check the Requirements"
+          : `Claim ${tokenAmount} ${selectedTokenForClaim.token}`
+      }
       size={method === "requirements" ? 650 : "small"}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
