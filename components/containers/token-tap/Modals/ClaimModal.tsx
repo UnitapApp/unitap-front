@@ -129,7 +129,7 @@ const ClaimTokenModal = () => {
   return (
     <Modal
       title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
-      size="small"
+      size={650}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
     >
