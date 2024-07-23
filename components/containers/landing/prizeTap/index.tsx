@@ -86,7 +86,7 @@ const PrizeTapLanding: FC = async () => {
                             {raffle.name}
                           </p>
                           {raffle.winnersCount > 1 && (
-                            <small className="ml-5 rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
+                            <small className="ml-5 whitespace-nowrap rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
                               {raffle.winnersCount}x Winners
                             </small>
                           )}
