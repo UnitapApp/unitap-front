@@ -60,7 +60,7 @@ const RafflesList = () => {
   }, [rafflesList, searchPhrase, highlightedPrize]);
 
   useEffect(() => {
-    const highlightedPrize = params.get("icebox");
+    const highlightedPrize = params.get("hp");
 
     setHighlightedPrize(highlightedPrize || "");
   }, [params, setHighlightedPrize]);
