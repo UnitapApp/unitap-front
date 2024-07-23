@@ -4,7 +4,7 @@ import styled from "styled-components/";
 import { DV } from "@/components/ui/designVariables";
 
 interface props {
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | number;
 }
 
 export const ModalWrapper = styled.div<props>`
@@ -27,15 +27,15 @@ export const ModalContent = styled.div<props>`
     size === "small"
       ? `width: min(420px, 90%);`
       : size === "large"
-      ? `width: min(800px, 80%);`
-      : `width: min(500px, 80%);`}
+        ? `width: min(800px, 80%);`
+        : typeof size === "number"
+          ? `width: min(${size}px, 80%);`
+          : `width: min(500px, 80%);`}
   margin: 0 5%;
   position: relative;
   padding: ${DV.sizes.basePadding * 2}px;
   overflow: hidden;
   z-index: -2;
-
-}
 `;
 
 export const ModalChildrenWrapper = styled.div<props>`

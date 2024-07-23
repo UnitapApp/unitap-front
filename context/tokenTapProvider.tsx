@@ -1,7 +1,7 @@
 "use client";
 
 import { ClaimedToken, PK, Token, TokenClaimPayload } from "@/types";
-import { EmptyCallback } from "@/utils";
+import { EmptyCallback, NullCallback } from "@/utils";
 import {
   FC,
   PropsWithChildren,
@@ -49,6 +49,10 @@ export const TokenTapContext = createContext<{
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   tokenListSearchResult: Token[];
   claimingTokenPk: PK | null;
+  currentRequirementIndex: number;
+  setCurrentRequirementIndex: (value: number) => void;
+  method: string | null;
+  setMethod: (method: string | null) => void;
 }>({
   claimError: undefined,
   tokensList: [],
@@ -67,6 +71,10 @@ export const TokenTapContext = createContext<{
   changeSearchPhrase: null,
   tokenListSearchResult: [],
   claimingTokenPk: null,
+  setCurrentRequirementIndex: NullCallback,
+  currentRequirementIndex: 0,
+  method: null,
+  setMethod: NullCallback,
 });
 
 export const useTokenTapContext = () => useContext(TokenTapContext);
@@ -83,6 +91,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>(
     [],
   );
+  const [method, setMethod] = useState<string | null>(null);
+
   const [selectedTokenForClaim, setSelectedTokenForClaim] =
     useState<Token | null>(null);
   const [claimingTokenPk, setClaimingTokenPk] = useState<PK | null>(null);
@@ -97,6 +107,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const { address, isConnected, chainId } = useWalletAccount();
 
   const { setIsWalletPromptOpen } = useGlobalContext();
+  const [currentRequirementIndex, setCurrentRequirementIndex] =
+    useState<number>(0);
 
   const [loading, setLoading] = useState(false);
   const provider = useWalletProvider();
@@ -282,7 +294,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         setIsWalletPromptOpen(true);
         return;
       }
-
+      setMethod("requirements");
       setClaimTokenResponse(null);
       setSelectedTokenForClaim(token);
     },
@@ -321,6 +333,10 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         changeSearchPhrase: setSearchPhrase,
         claimingTokenPk,
         tokensListLoading: false,
+        setCurrentRequirementIndex,
+        currentRequirementIndex: currentRequirementIndex,
+        method,
+        setMethod,
       }}
     >
       {children}

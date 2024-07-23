@@ -8,7 +8,7 @@ import { FC } from "react";
 import { Token } from "@/types";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { DropIconWrapper } from "../../modals/claimModal.style";
-import WalletAddress from "../../../../app/prizetap/components/Modals/wallet-address";
+import WalletAddress from "@/app/prizetap/components/Modals/wallet-address";
 
 const InitialBody: FC<{
   token: Token;

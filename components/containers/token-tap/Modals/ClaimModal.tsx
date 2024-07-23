@@ -18,6 +18,7 @@ import NotRemainingClaimsBody from "./NoRemainingClaimsBody";
 import InitialBody from "./InitialBody";
 import TokenReservedBody from "./TokenReservedBody";
 import { formatDate } from "../TokenCard";
+import TokenRequirementModal from "./TokenRequirementModal";
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const { chain: activatedChain } = useWalletNetwork();
@@ -31,6 +32,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     claimedTokensList,
     claimTokenLoading,
     claimTokenResponse,
+    method,
   } = useTokenTapContext();
 
   const { userProfile, tokentapRoundClaimLimit } = useUserProfileContext();
@@ -80,6 +82,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   if (selectedTokenForClaim.isExpired)
     return <MaxedOutBody token={selectedTokenForClaim} />;
 
+  if (method === "requirements") {
+    return <TokenRequirementModal token={selectedTokenForClaim} />;
+  }
+
   if (
     claimTokenResponse?.state === "Pending" ||
     collectedToken?.status === "Pending"
@@ -102,7 +108,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 };
 
 const ClaimTokenModal = () => {
-  const { selectedTokenForClaim, setSelectedTokenForClaim } =
+  const { selectedTokenForClaim, setSelectedTokenForClaim, method } =
     useTokenTapContext();
 
   const closeClaimTokenModal = useCallback(() => {
@@ -125,8 +131,12 @@ const ClaimTokenModal = () => {
 
   return (
     <Modal
-      title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
-      size="small"
+      title={
+        method === "requirements"
+          ? "Double-check the Requirements"
+          : `Claim ${tokenAmount} ${selectedTokenForClaim.token}`
+      }
+      size={method === "requirements" ? 650 : "small"}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
     >
