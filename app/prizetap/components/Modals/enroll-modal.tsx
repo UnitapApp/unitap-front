@@ -69,7 +69,11 @@ const EnrollModal = () => {
   return (
     <Modal
       title={`${
-        method === "Verify" ? "Requirements" : selectedRaffleForEnroll.name
+        method === "Verify"
+          ? "Requirements"
+          : method === "Pre-Verify"
+            ? "Double-check the Requirements"
+            : selectedRaffleForEnroll.name
       }`}
       size="small"
       closeModalHandler={closeClaimTokenModal}
