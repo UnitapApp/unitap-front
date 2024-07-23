@@ -1,7 +1,7 @@
 "use client";
 
 import { ClaimedToken, PK, Token, TokenClaimPayload } from "@/types";
-import { EmptyCallback } from "@/utils";
+import { EmptyCallback, NullCallback } from "@/utils";
 import {
   FC,
   PropsWithChildren,
@@ -49,6 +49,8 @@ export const TokenTapContext = createContext<{
   changeSearchPhrase: ((newSearchPhrase: string) => void) | null;
   tokenListSearchResult: Token[];
   claimingTokenPk: PK | null;
+  currentRequirementIndex?: number;
+  setCurrentRequirementIndex: (value: number | undefined) => void;
 }>({
   claimError: undefined,
   tokensList: [],
@@ -67,6 +69,7 @@ export const TokenTapContext = createContext<{
   changeSearchPhrase: null,
   tokenListSearchResult: [],
   claimingTokenPk: null,
+  setCurrentRequirementIndex: NullCallback,
 });
 
 export const useTokenTapContext = () => useContext(TokenTapContext);
@@ -97,6 +100,9 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const { address, isConnected, chainId } = useWalletAccount();
 
   const { setIsWalletPromptOpen } = useGlobalContext();
+  const [currentRequirementInex, setCurrentRequirementIndex] = useState<
+    number | undefined
+  >(undefined);
 
   const [loading, setLoading] = useState(false);
   const provider = useWalletProvider();
@@ -321,6 +327,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         changeSearchPhrase: setSearchPhrase,
         claimingTokenPk,
         tokensListLoading: false,
+        setCurrentRequirementIndex,
+        currentRequirementIndex: currentRequirementInex,
       }}
     >
       {children}

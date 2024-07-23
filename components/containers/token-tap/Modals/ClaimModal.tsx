@@ -18,6 +18,7 @@ import NotRemainingClaimsBody from "./NoRemainingClaimsBody";
 import InitialBody from "./InitialBody";
 import TokenReservedBody from "./TokenReservedBody";
 import { formatDate } from "../TokenCard";
+import TokenRequirementModal from "./TokenRequirementModal";
 
 const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const { chain: activatedChain } = useWalletNetwork();
@@ -40,6 +41,8 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   );
 
   if (!selectedTokenForClaim) return null;
+
+  return <TokenRequirementModal token={selectedTokenForClaim} />;
 
   if (!userProfile)
     return (
