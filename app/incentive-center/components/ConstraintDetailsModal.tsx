@@ -632,7 +632,10 @@ export const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
-  if (constraint.name === "core.DidRetweetTweet") {
+  if (
+    constraint.name === "core.DidRetweetTweet" ||
+    constraint.name === "core.DidQuoteTweet"
+  ) {
     const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
     return (
       <Input

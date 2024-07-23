@@ -15,7 +15,7 @@ const GasTapLandingWidget: FC<{
 
   const sortedChainList = useMemo(
     () => sortChainListByTotalClaimWeekly(chainList),
-    [chainList]
+    [chainList],
   );
 
   return (
@@ -30,7 +30,7 @@ const GasTapLandingWidget: FC<{
           id="gastap"
           iconSize={"w-7"}
           className={
-            "after:bg-gastap-texture hover:bg-gray00 relative z-20 cursor-pointer h-full"
+            "relative z-20 h-full cursor-pointer after:bg-gastap-texture hover:bg-gray00"
           }
           title={"Gas Tap"}
           buttonTitle={"Go to Tap"}
@@ -39,29 +39,31 @@ const GasTapLandingWidget: FC<{
           }
         >
           <div className="relative h-full">
-            <div className={isGasTapAvailable ? "" : "blur-md"}>
+            <div
+              className={`${isGasTapAvailable ? "" : "blur-md"} flex h-full flex-col`}
+            >
               {sortedChainList.length > 0 && (
                 <>
-                  <p className={"font-semibold text-sm text-white mb-2.5 mt-6"}>
+                  <p className={"mb-2.5 mt-6 text-sm font-semibold text-white"}>
                     Weekly Ranking
                   </p>
-                  <ul className={"text-white"}>
+                  <ul className={"mt-auto text-white"}>
                     {sortedChainList.slice(0, 3).map((token, index) => (
                       <li
                         key={token.chainId}
                         className={
-                          "flex text-xs bg-gray30 rounded-xl py-3 px-3 items-center justify-between mb-2"
+                          "mb-2 flex items-center justify-between rounded-xl bg-gray30 px-3 py-3 text-xs"
                         }
                       >
-                        <div className={"flex gap-2 items-center"}>
+                        <div className={"flex items-center gap-2"}>
                           <p>#{index + 1}</p>
-                          <span className="token-logo-container w-6 h-6 flex items-center justify-center">
+                          <span className="token-logo-container flex h-6 w-6 items-center justify-center">
                             <img
                               src={token.logoUrl}
                               width={24}
                               height={24}
                               alt={token.chainName}
-                              className="token-logo w-auto h-[100%]"
+                              className="token-logo h-[100%] w-auto"
                             />
                           </span>
                           <p>{token.chainName}</p>
@@ -86,7 +88,7 @@ const GasTapLandingWidget: FC<{
 const NotAvailableTap: FC = () => {
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center">
-      <h5 className="text-white p-3 text-center text-lg">
+      <h5 className="p-3 text-center text-lg text-white">
         Gas Tap is not available right now
       </h5>
     </div>
