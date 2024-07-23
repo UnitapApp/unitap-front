@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 400 400">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: SourceSansRoman-Semibold, 'Source Sans Variable';
+        font-size: 68.11px;
+        font-variation-settings: 'wght'600;
+        font-weight: 600;
+      }
+
+      .cls-1,
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+
+      .cls-3,
+      .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-3" x="103.71" y="34.08" width="291.95" height="316.28" />
+    </clipPath>
+  </defs>
+  <g class="cls-4">
+    <g>
+      <path class="cls-2" d="m338.59,342.57H103.71V88.47h53.74v204.85h181.14v49.24Z" />
+      <path class="cls-2"
+        d="m338.59,137.69c26.47,0,47.94-22.04,47.94-49.22s-21.46-49.22-47.94-49.22-47.94,22.04-47.94,49.22,21.46,49.22,47.94,49.22Z" />
+    </g>
+  </g>
+</svg>

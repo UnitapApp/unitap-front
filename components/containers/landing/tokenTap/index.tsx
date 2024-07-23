@@ -27,30 +27,33 @@ const TokenTapLanding = async () => {
             "gradient-outline-button before:inset-[2px] text-gray100"
           }
         >
-          <div className="mt-8">
-            {tokensList.length > 0 &&
-              tokensList.slice(0, 3).map((token, key) => (
-                <div
-                  key={key}
-                  className={
-                    "mb-2 flex items-center rounded-xl bg-gray30 px-3 py-3 text-xs text-white"
-                  }
-                >
-                  <span className="token-logo-container h-6 w-6">
-                    <img
-                      width={24}
-                      height={24}
-                      src={token.imageUrl}
-                      alt={token.name}
-                      className="token-logo h-[100%] w-auto"
-                    />
-                  </span>
-                  <p className="ml-4 text-xs">{token.name}</p>
-                  <p className="ml-auto">
-                    {numberWithCommas(token.numberOfClaims)} <span>claims</span>
-                  </p>
-                </div>
-              ))}
+          <div className="flex h-full flex-col justify-end">
+            <div className="mt-8">
+              {tokensList.length > 0 &&
+                tokensList.slice(0, 3).map((token, key) => (
+                  <div
+                    key={key}
+                    className={
+                      "mb-2 flex items-center rounded-xl bg-gray30 px-3 py-3 text-xs text-white"
+                    }
+                  >
+                    <span className="token-logo-container h-6 w-6">
+                      <img
+                        width={24}
+                        height={24}
+                        src={token.imageUrl}
+                        alt={token.name}
+                        className="token-logo h-[100%] w-auto"
+                      />
+                    </span>
+                    <p className="ml-4 text-xs">{token.name}</p>
+                    <p className="ml-auto">
+                      {numberWithCommas(token.numberOfClaims)}{" "}
+                      <span>claims</span>
+                    </p>
+                  </div>
+                ))}
+            </div>
           </div>
         </Widget>
       </Link>

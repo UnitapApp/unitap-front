@@ -19,6 +19,8 @@ import Markdown from "./Markdown";
 import Image from "next/image";
 import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 import { watchAsset } from "viem/actions";
+import { replacePlaceholders } from "@/utils";
+import ReactMarkdown from "react-markdown";
 
 // TODO: migrate me
 export function formatDate(targetDate: Date): string | number {
@@ -66,6 +68,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
   };
+
+  const params = useMemo(
+    () => JSON.parse(token.constraintParams || "{}"),
+    [token.constraintParams],
+  );
 
   const addToken = async () => {
     if (!isConnected || !provider) return;
@@ -232,7 +239,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       onClick={() => openClaimModal(token)}
                       className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
-                      <p className="!bg-g-dark-primary-gradient bg-clip-text">{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+                      <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
                   ) : token.isMaxedOut ? (
                     <NoCurrencyButton disabled $fontSize="13px">
@@ -304,7 +311,16 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 }
                 data-testid={`token-verification-${token.id}-${permission.name}`}
                 key={key}
-                text={permission.description}
+                text={
+                  <ReactMarkdown className="markdown">
+                    {replacePlaceholders(
+                      (permission.isReversed
+                        ? permission.negativeDescription
+                        : permission.description)!,
+                      params[permission.name],
+                    )}
+                  </ReactMarkdown>
+                }
               >
                 <div
                   className={`flex items-center gap-3 ${isExpired ? "text-opacity-40" : ""}`}

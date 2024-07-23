@@ -23,6 +23,7 @@ import { getAssetUrl, replacePlaceholders, shortenAddress } from "@/utils";
 import { zeroAddress } from "viem";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
 
 export const Action = styled.div`
   display: flex;
@@ -309,12 +310,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                         }
                         data-testid={`token-verification-${raffle.id}-${permission.name}`}
                         key={key}
-                        text={replacePlaceholders(
-                          (permission.isReversed
-                            ? permission.negativeDescription
-                            : permission.description)!,
-                          params[permission.name],
-                        )}
+                        text={
+                          <Markdown className="markdown">
+                            {replacePlaceholders(
+                              (permission.isReversed
+                                ? permission.negativeDescription
+                                : permission.description)!,
+                              params[permission.name],
+                            )}
+                          </Markdown>
+                        }
                       >
                         <div className="flex items-center gap-3">
                           {permission.isReversed && "Not "}

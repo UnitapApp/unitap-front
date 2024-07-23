@@ -24,94 +24,81 @@ const About = () => {
           className={"mx-auto w-48"}
           alt={"logo"}
         />
-        <h4 className={"text-gradient-primary"}>Incentive layer for web3</h4>
+        <h4 className={"text-gradient-primary text-xl"}>
+          Incentive layer for web3
+        </h4>
       </section>
       {/* to do: after merge should fix the .card class styles */}
 
       <div className="about-content uni-card mt-8 pb-8 pl-4 pr-8 pt-12 md:px-8 lg:px-12">
-        <p className="text-gradient-primary mb-6 text-center font-semibold">
+        <p className="text-gradient-primary mb-6 text-center text-2xl font-semibold">
           Why is everyone reinventing the wheel over and over again?
         </p>
         <p className="about-section__text">
           <span className="text-gradient-primary">Incentivizing tools</span> are
           essential for onboarding and building community in web3.
         </p>
-        <p className="about-section__text">
-          There are no shortcuts [yet!], so everyone is thinking, designing, and
-          building these tools from scratch, consuming valuable time and
-          resources and leading to trial-and-error mistakes.
+        <p className="about-section__text text-lg">
+          <span className="text-gradient-primary">
+            There are no shortcuts [yet!]
+          </span>{" "}
+          , so everyone is thinking, designing, and building these tools from
+          scratch, consuming valuable time and resources and leading to
+          trial-and-error mistakes.
         </p>
-        <p className="text-gradient-primary mb-6 text-center font-semibold">
+        <p className="text-gradient-primary mb-6 mt-16 text-center text-2xl  font-semibold">
           Production-Ready Campaigns Using Unitap
         </p>
 
-        <p className="about-section__text">
+        <p className="about-section__text text-lg">
           Unitap is an incentive layer that enables projects to launch their
           campaign in a few minutes.
         </p>
 
-        <p className="text-gradient-primary my-6 text-center font-semibold">
+        <p className="text-gradient-primary my-6 mt-16 text-center text-2xl font-semibold">
           Partners and supporters:
         </p>
 
-        <div className="mb-6 flex flex-wrap items-center gap-6">
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-6">
           <SponsorItem
             image="/assets/images/provider-dashboard/op.svg"
-            title="Optimism RPGF3"
+            title="Optimism"
           />
-          <SponsorItem
-            image="/assets/images/prize-tap/linea.svg"
-            title="Linea"
-          />
-          <SponsorItem
-            image="/assets/images/provider-dashboard/ic_polygon.svg"
-            title="Polygon"
-          />
-          <SponsorItem
-            image="/assets/images/arbitrum-arb-logo.svg"
-            title="Arbitrum"
-          />
-          <SponsorItem
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
-          />
-          <SponsorItem
-            title="Gitcoin"
-            image="/assets/images/up-profile/gitcoin-passport.svg"
-          />
-          <SponsorItem
-            title="WhalerDAO"
-            image="/assets/images/up-profile/whalerDAO.png"
-          />
+          <SponsorItem image="/assets/images/linea.svg" title="Linea" />
+          <SponsorItem image="/assets/images/polygon.svg" title="Polygon" />
+          <SponsorItem image="/assets/images/arb.svg" title="Arbitrum" />
+          <SponsorItem image="/assets/images/ens.svg" title="ENS" />
+          <SponsorItem title="Gitcoin" image="/assets/images/gitcoin.svg" />
+          <SponsorItem title="WhalerDAO" image="/assets/images/whalerDAO.svg" />
         </div>
 
-        <p className="text-gradient-primary mb-6 mt-20 text-center font-semibold">
+        <p className="text-gradient-primary mb-6 mt-20 text-center text-2xl font-semibold">
           Team members:
         </p>
 
         <div className="mt-20 flex items-center justify-center gap-10">
           <TeamMembers
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
+            image="/assets/images/member1.jpg"
+            title="Adam Stallard"
+            position="CTO"
+            twitterId="adamstallard"
           />
           <TeamMembers
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
-          />
-        </div>
-
-        <div className="my-10 flex items-center justify-center gap-10">
-          <TeamMembers
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
+            image="/assets/images/member3.png"
+            title="Ali Lari"
+            position="CEO"
+            twitterId="alariarch"
           />
           <TeamMembers
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
+            image="/assets/images/member2.jpg"
+            title="Philip Silva"
+            position="CPO"
+            twitterId="UBIpromoter"
           />
           <TeamMembers
-            image="/assets/images/provider-dashboard/requirements/ens.svg"
-            title="ENS"
+            image="/assets/images/member4.png"
+            title="Cotabe"
+            position="CMO"
           />
         </div>
 
@@ -266,21 +253,32 @@ const About = () => {
 const TeamMembers: FC<{
   image: string;
   title: string;
-}> = ({ image, title }) => {
+  position?: string;
+  twitterId?: string;
+}> = ({ image, title, position, twitterId }) => {
   return (
     <div className="mx-2">
       <div className="h-28 w-28 overflow-hidden rounded-full bg-g-primary p-1">
-        <div className="grid h-full w-full place-items-center rounded-full bg-gray40">
-          <Image
-            className="mx-auto h-20 w-20"
-            width={80}
-            height={80}
+        <div
+          className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-gray40 bg-cover"
+          style={{ backgroundImage: `url('${image}')` }}
+        >
+          {/* <Image
+            className="mx-auto h-24 w-24"
+            width={100}
+            height={100}
             src={image}
             alt={title}
-          />
+          /> */}
         </div>
       </div>
       <p className="mx-auto mt-3 text-center text-gray100">{title}</p>
+
+      <p className="mx-auto mt-1 text-center text-xs text-gray90">{position}</p>
+
+      <p className="mx-auto mt-1 text-center text-xs text-gray90">
+        @{twitterId}
+      </p>
     </div>
   );
 };
