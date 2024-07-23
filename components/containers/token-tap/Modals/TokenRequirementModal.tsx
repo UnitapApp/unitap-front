@@ -47,8 +47,11 @@ const renderLinkValue = (appName: string, params: { [key: string]: any }) => {
       return `https://twitter.com/i/status/${params["TWEET_ID"]}`;
     }
 
-    // if (params[''])
+    if (params["TWITTER_USERNAME"]) {
+      return `https://x.com/${params["TWITTER_USERNAME"]})`;
+    }
   }
+
   return "#";
 };
 
@@ -67,8 +70,9 @@ function checkConnections(
 
 const Sidebar: FC<{
   token: Token;
-}> = ({ token }) => {
-  const { currentRequirementIndex, setCurrentRequirementIndex } =
+  permissions: (Permission & { isVerified: boolean })[];
+}> = ({ token, permissions }) => {
+  const { currentRequirementIndex, setCurrentRequirementIndex, setMethod } =
     useTokenTapContext();
 
   const constraintsCount = token.constraints.filter(
@@ -94,17 +98,20 @@ const Sidebar: FC<{
 
       <div className="mt-3">
         <div className="mb-2 rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
-          {Math.min(currentRequirementIndex + 1, constraintsCount)}/
-          {constraintsCount} Done
+          {
+            (!!permissions.length ? permissions : token.constraints).filter(
+              (item: any) => item.isVerified,
+            ).length
+          }
+          /{(!!permissions.length ? permissions : token.constraints).length}{" "}
+          Done
         </div>
-        {token.constraints.map((constraint, index) =>
-          constraint.type !== "VER" ? (
-            <Fragment key={index}></Fragment>
-          ) : (
+        {(!!permissions.length ? permissions : token.constraints).map(
+          (constraint: any, index) => (
             <Fragment key={index}>
               <button
                 onClick={() => setCurrentRequirementIndex(index)}
-                className={` block w-full rounded-xl border-2 border-gray50 p-2 text-center text-gray100 ${index === currentRequirementIndex ? "!border-gray100 bg-gray70 text-white" : ""}`}
+                className={`block w-full rounded-xl border-2 border-gray50 p-2 text-center text-gray100 ${index === currentRequirementIndex ? "!border-gray100 bg-gray70 text-white" : constraint.isVerified ? "!border-dark-space-green" : ""}`}
               >
                 {constraint.title}
               </button>
@@ -116,10 +123,17 @@ const Sidebar: FC<{
         )}
 
         <button
-          className={`mt-3 block w-full rounded-xl border-2 border-gray50 p-2 text-center`}
+          disabled={
+            (!!permissions.length ? permissions : token.constraints).length !==
+            (!!permissions.length ? permissions : token.constraints).filter(
+              (item: any) => item.isVerified,
+            ).length
+          }
+          className={`mt-3 block w-full rounded-xl border-2 border-gray50 p-2 text-center disabled:opacity-60`}
           style={{
             background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
+          onClick={() => setMethod("claim")}
         >
           Enroll
         </button>
@@ -128,16 +142,20 @@ const Sidebar: FC<{
   );
 };
 
-const TokenRequirementBody: FC<{}> = ({}) => {
-  const { selectedTokenForClaim, currentRequirementIndex } =
-    useTokenTapContext();
+const TokenRequirementBody: FC<{
+  permissions: (Permission & { isVerified: boolean })[];
+  refreshPermissions: () => void;
+  loading: boolean;
+}> = ({ permissions, refreshPermissions, loading }) => {
+  const {
+    selectedTokenForClaim,
+    currentRequirementIndex,
+    setCurrentRequirementIndex,
+  } = useTokenTapContext();
 
   const { userToken } = useUserProfileContext();
 
   const [connections, setConnections] = useState<UserConnection>({});
-  const [permissions, SetPermissions] = useState<
-    (Permission & { isVerified: boolean })[]
-  >([]);
 
   const constraint =
     currentRequirementIndex !== undefined
@@ -156,19 +174,6 @@ const TokenRequirementBody: FC<{}> = ({}) => {
     if (!constraint || !userToken || !selectedTokenForClaim) return;
 
     getAllConnections(userToken).then(setConnections);
-
-    getTokenConstraintsVerifications(selectedTokenForClaim.id, userToken)
-      .then((res) => {
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          selectedTokenForClaim.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      });
   }, [constraint, selectedTokenForClaim, userToken]);
 
   if (!constraint)
@@ -179,6 +184,8 @@ const TokenRequirementBody: FC<{}> = ({}) => {
   const appName = constraint.name.split(".").splice(1).join(".");
 
   const app = appInfos[requirementsConnections[appName]!];
+
+  const link = renderLinkValue(appName, params);
 
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
@@ -207,27 +214,37 @@ const TokenRequirementBody: FC<{}> = ({}) => {
           permissions.find((item) => item.name === constraint.name)
             ?.isVerified ? (
             <button
-              className="w-full rounded-lg bg-dark-space-green px-5 py-2 text-sm font-semibold text-space-green"
-              disabled
+              className="w-full rounded-lg bg-dark-space-green/75 px-5 py-2 text-sm font-semibold text-space-green"
+              onClick={() =>
+                setCurrentRequirementIndex(currentRequirementIndex + 1)
+              }
+              disabled={loading}
             >
               Verified
             </button>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link href={renderLinkValue(appName, params)}>
-                <ClaimAndEnrollButton className="w-full flex-1">
-                  Let{"'"}s Do it
-                </ClaimAndEnrollButton>
-              </Link>
-              <button className="rounded-xl border-gray100 bg-gray70 px-5 py-2">
-                Verify
+            <div className="flex w-full items-center justify-end gap-3">
+              {link === "#" || (
+                <Link href={link}>
+                  <ClaimAndEnrollButton className="!w-full flex-1">
+                    <p>Let{"'"}s Do it</p>
+                  </ClaimAndEnrollButton>
+                </Link>
+              )}
+
+              <button
+                onClick={refreshPermissions}
+                disabled={loading}
+                className="ml-auto rounded-xl border-gray100 bg-gray70 px-5 py-2 disabled:opacity-50"
+              >
+                {loading ? "Loading" : "Verify"}
               </button>
             </div>
           )
         ) : (
-          <Link href="/profile">
-            <ClaimAndEnrollButton className="w-full">
-              Connect {app?.logo}
+          <Link href="/profile" className="w-full">
+            <ClaimAndEnrollButton className="!w-full">
+              <p>Connect {app?.label}</p>
             </ClaimAndEnrollButton>
           </Link>
         )}
@@ -239,10 +256,61 @@ const TokenRequirementBody: FC<{}> = ({}) => {
 const TokenRequirementModal: FC<{
   token: Token;
 }> = ({ token }) => {
+  const { userToken } = useUserProfileContext();
+  const [loading, setLoading] = useState(false);
+
+  const [permissions, SetPermissions] = useState<
+    (Permission & { isVerified: boolean })[]
+  >([]);
+
+  const refreshPermissions = () => {
+    if (!userToken) return;
+    setLoading(true);
+    getTokenConstraintsVerifications(token.id, userToken)
+      .then((res) => {
+        SetPermissions(res.constraints);
+      })
+      .catch(() => {
+        SetPermissions(
+          token.constraints.map((constraint) => ({
+            ...constraint,
+            isVerified: false,
+          })),
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (!userToken) return;
+    setLoading(true);
+    getTokenConstraintsVerifications(token.id, userToken)
+      .then((res) => {
+        SetPermissions(res.constraints);
+      })
+      .catch(() => {
+        SetPermissions(
+          token.constraints.map((constraint) => ({
+            ...constraint,
+            isVerified: false,
+          })),
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [userToken]);
+
   return (
     <div className="-mt-3 flex h-72 w-full items-center justify-start gap-2 overflow-y-auto">
-      <Sidebar token={token} />
-      <TokenRequirementBody />
+      <Sidebar permissions={permissions} token={token} />
+      <TokenRequirementBody
+        loading={loading}
+        permissions={permissions}
+        refreshPermissions={refreshPermissions}
+      />
     </div>
   );
 };

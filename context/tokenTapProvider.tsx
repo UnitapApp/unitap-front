@@ -51,6 +51,8 @@ export const TokenTapContext = createContext<{
   claimingTokenPk: PK | null;
   currentRequirementIndex: number;
   setCurrentRequirementIndex: (value: number) => void;
+  method: string | null;
+  setMethod: (method: string | null) => void;
 }>({
   claimError: undefined,
   tokensList: [],
@@ -71,6 +73,8 @@ export const TokenTapContext = createContext<{
   claimingTokenPk: null,
   setCurrentRequirementIndex: NullCallback,
   currentRequirementIndex: 0,
+  method: null,
+  setMethod: NullCallback,
 });
 
 export const useTokenTapContext = () => useContext(TokenTapContext);
@@ -87,6 +91,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
   const [claimedTokensList, setClaimedTokensList] = useState<ClaimedToken[]>(
     [],
   );
+  const [method, setMethod] = useState<string | null>(null);
+
   const [selectedTokenForClaim, setSelectedTokenForClaim] =
     useState<Token | null>(null);
   const [claimingTokenPk, setClaimingTokenPk] = useState<PK | null>(null);
@@ -288,7 +294,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         setIsWalletPromptOpen(true);
         return;
       }
-
+      setMethod("requirements");
       setClaimTokenResponse(null);
       setSelectedTokenForClaim(token);
     },
@@ -329,6 +335,8 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
         tokensListLoading: false,
         setCurrentRequirementIndex,
         currentRequirementIndex: currentRequirementIndex,
+        method,
+        setMethod,
       }}
     >
       {children}

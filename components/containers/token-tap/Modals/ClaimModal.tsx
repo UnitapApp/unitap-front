@@ -32,6 +32,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
     claimedTokensList,
     claimTokenLoading,
     claimTokenResponse,
+    method,
   } = useTokenTapContext();
 
   const { userProfile, tokentapRoundClaimLimit } = useUserProfileContext();
@@ -41,8 +42,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   );
 
   if (!selectedTokenForClaim) return null;
-
-  return <TokenRequirementModal token={selectedTokenForClaim} />;
 
   if (!userProfile)
     return (
@@ -82,6 +81,10 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 
   if (selectedTokenForClaim.isExpired)
     return <MaxedOutBody token={selectedTokenForClaim} />;
+
+  if (method === "requirements") {
+    return <TokenRequirementModal token={selectedTokenForClaim} />;
+  }
 
   if (
     claimTokenResponse?.state === "Pending" ||
