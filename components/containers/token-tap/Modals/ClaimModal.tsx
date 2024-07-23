@@ -108,7 +108,7 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
 };
 
 const ClaimTokenModal = () => {
-  const { selectedTokenForClaim, setSelectedTokenForClaim } =
+  const { selectedTokenForClaim, setSelectedTokenForClaim, method } =
     useTokenTapContext();
 
   const closeClaimTokenModal = useCallback(() => {
@@ -132,7 +132,7 @@ const ClaimTokenModal = () => {
   return (
     <Modal
       title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
-      size={650}
+      size={method === "requirements" ? 650 : "small"}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
     >

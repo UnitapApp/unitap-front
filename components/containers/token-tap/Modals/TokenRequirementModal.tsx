@@ -12,8 +12,9 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 const requirementsConnections: { [key: string]: string | null } = {
-  DidRetweetTweet: null, // 27
-  IsFollowinTwitterUser: "Twitter", // 26
+  IsFollowinTwitterUser: "Twitter",
+  DidQuoteTweet: "Twitter",
+  DidRetweetTweet: "Twitter",
   BridgeEthToArb: null, // 25
   IsFollowingFarcasterChannel: "Farcaster", // 24
   HasFarcasterProfile: "Farcaster", // 23
@@ -42,7 +43,7 @@ const requirementsConnections: { [key: string]: string | null } = {
 };
 
 const renderLinkValue = (appName: string, params: { [key: string]: any }) => {
-  if (appName === "Twitter") {
+  if (appName?.toLowerCase() === "twitter") {
     if (params["TWEET_ID"]) {
       return `https://twitter.com/i/status/${params["TWEET_ID"]}`;
     }
@@ -185,7 +186,10 @@ const TokenRequirementBody: FC<{
 
   const app = appInfos[requirementsConnections[appName]!];
 
-  const link = renderLinkValue(appName, params);
+  const link = renderLinkValue(
+    requirementsConnections[appName]!,
+    params[constraint.name],
+  );
 
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
@@ -225,7 +229,7 @@ const TokenRequirementBody: FC<{
           ) : (
             <div className="flex w-full items-center justify-end gap-3">
               {link === "#" || (
-                <Link href={link}>
+                <Link href={link} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
                   </ClaimAndEnrollButton>
