@@ -337,7 +337,11 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           .slice(0, 6)
                     ).map((permission, key) => (
                       <div
-                        onClick={openEnrollModal.bind(null, raffle, "Verify")}
+                        onClick={openEnrollModal.bind(
+                          null,
+                          raffle,
+                          "Pre-Verify",
+                        )}
                         className={
                           "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                         }
@@ -542,7 +546,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       $fontSize="14px"
                       disabled={!start}
                       className="!w-full min-w-[552px] md:!w-[352px]"
-                      onClick={() => openEnrollModal(raffle, "Verify")}
+                      onClick={() => openEnrollModal(raffle, "Pre-Verify")}
                     >
                       {" "}
                       <div className="relative w-full">
