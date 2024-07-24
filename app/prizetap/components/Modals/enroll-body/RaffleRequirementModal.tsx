@@ -4,6 +4,7 @@ import {
   loadingAnimationRequirementsOption,
   renderLinkValue,
   requirementsConnections,
+  requirementWithoutApps,
 } from "@/components/containers/token-tap/Modals/TokenRequirementModal";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
@@ -42,17 +43,6 @@ const Sidebar: FC<{
 
   return (
     <aside className="h-full w-44 overflow-auto rounded-lg bg-gray20 p-2 text-sm">
-      <div
-        className="rounded-xl border border-gray70 bg-gray20 bg-cover bg-no-repeat p-3"
-        style={{ backgroundImage: "url('/assets/images/prize-bg.png')" }}
-      >
-        <div className="font-bold">{prize.name}</div>
-        <p className="text-xs text-gray100">
-          {prize.creatorName || prize.creatorProfile?.username}
-        </p>
-        <div className="mt-3 text-xs text-gray70">Requirements</div>
-      </div>
-
       <div className="mt-3">
         <div className="mb-2 rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
           {
@@ -68,7 +58,7 @@ const Sidebar: FC<{
             <Fragment key={index}>
               <button
                 onClick={() => setCurrentRequirementIndex(index)}
-                className={`block w-full rounded-xl border-2 border-gray50 p-2 text-center text-gray100 ${index === currentRequirementIndex ? "!border-gray100 bg-gray70 text-white" : constraint.isVerified ? "!border-dark-space-green" : ""}`}
+                className={`block w-full rounded-xl border-2 border-gray50 p-2 text-center text-gray100 ${index === currentRequirementIndex ? "!border-gray100 bg-gray70 text-white" : ""} ${constraint.isVerified ? "!border-dark-space-green" : ""}`}
               >
                 {constraint.title}
               </button>
@@ -86,11 +76,11 @@ const Sidebar: FC<{
               (item: any) => item.isVerified,
             ).length
           }
-          className={`mt-3 block w-full rounded-xl border-2 border-gray50 p-2 text-center disabled:opacity-60`}
+          className={`mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
           style={{
             background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
-          onClick={() => setMethod("Verify")}
+          onClick={() => setMethod("Enroll")}
         >
           Enroll
         </button>
@@ -151,6 +141,8 @@ const PrizeRequirementBody: FC<{
     params[constraint.name],
   );
 
+  const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
+
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
       {app && (
@@ -189,13 +181,19 @@ const PrizeRequirementBody: FC<{
           ) : (
             <div className="flex w-full items-center justify-end gap-3">
               {link === "#" || (
-                <Link href={link} className="w-full">
+                <Link target="_blank" href={link} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
                   </ClaimAndEnrollButton>
                 </Link>
               )}
-
+              {!!linkWithoutApp && (
+                <Link target="_blank" href={linkWithoutApp} className="w-full">
+                  <ClaimAndEnrollButton className="!w-full flex-1">
+                    <p>Let{"'"}s Do it</p>
+                  </ClaimAndEnrollButton>
+                </Link>
+              )}
               <button
                 onClick={refreshPermissions}
                 disabled={loading}

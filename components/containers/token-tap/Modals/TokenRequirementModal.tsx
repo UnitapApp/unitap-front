@@ -55,6 +55,14 @@ export const requirementsConnections: { [key: string]: string | null } = {
   BrightIDMeetVerification: "BrightID", // 1
 };
 
+export const requirementWithoutApps: {
+  [key: string]: (params: any, name: string) => string;
+} = {
+  BridgeEthToArb: (params, name) => {
+    return "https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=ethereum";
+  },
+};
+
 export const renderLinkValue = (
   appName: string,
   params: { [key: string]: any },
@@ -100,14 +108,6 @@ const Sidebar: FC<{
 
   return (
     <aside className="h-full w-44 overflow-auto rounded-lg bg-gray20 p-2 text-sm">
-      <div
-        className="rounded-xl border border-gray70 bg-gray20 bg-cover bg-no-repeat p-3"
-        style={{ backgroundImage: "url('/assets/images/prize-bg.png')" }}
-      >
-        <div className="font-bold">{token.name}</div>
-        <div className="mt-3 text-xs text-gray70">Requirements</div>
-      </div>
-
       <div className="mt-3">
         <div className="mb-2 rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
           {
@@ -141,13 +141,13 @@ const Sidebar: FC<{
               (item: any) => item.isVerified,
             ).length
           }
-          className={`mt-3 block w-full rounded-xl border-2 border-gray50 p-2 text-center disabled:opacity-60`}
+          className={`mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
           style={{
             background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
           onClick={() => setMethod("claim")}
         >
-          Enroll
+          Claim
         </button>
       </div>
     </aside>
@@ -163,6 +163,7 @@ const TokenRequirementBody: FC<{
     selectedTokenForClaim,
     currentRequirementIndex,
     setCurrentRequirementIndex,
+    setMethod,
   } = useTokenTapContext();
 
   const { userToken } = useUserProfileContext();
@@ -202,6 +203,8 @@ const TokenRequirementBody: FC<{
     params[constraint.name],
   );
 
+  const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
+
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
       {app && (
@@ -228,19 +231,49 @@ const TokenRequirementBody: FC<{
         {checkConnections(connections, constraint.name) ? (
           permissions.find((item) => item.name === constraint.name)
             ?.isVerified ? (
-            <button
-              className="w-full rounded-lg border border-dark-space-green bg-dark-space-green/10 px-5 py-2 text-sm font-semibold text-space-green"
-              onClick={() =>
-                setCurrentRequirementIndex(currentRequirementIndex + 1)
-              }
-              disabled={loading}
-            >
-              Verified
-            </button>
+            currentRequirementIndex === permissions.length - 1 ? (
+              <button
+                disabled={
+                  (!!permissions.length
+                    ? permissions
+                    : selectedTokenForClaim!.constraints
+                  ).length !==
+                  (!!permissions.length
+                    ? permissions
+                    : selectedTokenForClaim!.constraints
+                  ).filter((item: any) => item.isVerified).length
+                }
+                className={`mx-auto mt-3 block w-52 rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
+                style={{
+                  background: "url('/assets/images/prize-tap/enroll.svg')",
+                }}
+                onClick={() => setMethod("claim")}
+              >
+                Claim
+              </button>
+            ) : (
+              <button
+                className="w-full rounded-lg border border-dark-space-green bg-dark-space-green/10 px-5 py-2 text-sm font-semibold text-space-green"
+                onClick={() =>
+                  setCurrentRequirementIndex(currentRequirementIndex + 1)
+                }
+                disabled={loading}
+              >
+                Verified
+              </button>
+            )
           ) : (
             <div className="flex w-full items-center justify-end gap-3">
               {link === "#" || (
-                <Link href={link} className="w-full">
+                <Link target="_blank" href={link} className="w-full">
+                  <ClaimAndEnrollButton className="!w-full flex-1">
+                    <p>Let{"'"}s Do it</p>
+                  </ClaimAndEnrollButton>
+                </Link>
+              )}
+
+              {!!linkWithoutApp && (
+                <Link target="_blank" href={linkWithoutApp} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
                   </ClaimAndEnrollButton>
