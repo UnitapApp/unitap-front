@@ -68,6 +68,8 @@ export const renderLinkValue = (
   appName: string,
   params: { [key: string]: any },
 ) => {
+  if (!params) return "#";
+
   if (appName?.toLowerCase() === "twitter") {
     if (params["TWEET_ID"]) {
       return `https://twitter.com/i/status/${params["TWEET_ID"]}`;
