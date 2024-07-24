@@ -235,6 +235,8 @@ const TokenRequirementBody: FC<{
     appName,
   });
 
+  // console.log()
+
   const { userToken } = useUserProfileContext();
 
   const [connections, setConnections] = useState<UserConnection>({});
