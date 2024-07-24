@@ -31,10 +31,10 @@ const ModalBody = ({
           ? "No items fount"
           : enrolledWalletListApi.entries.map((item: any) => (
               <div
-                className="flex items-center rounded bg-gray60 py-4 pl-3 text-sm font-normal leading-[14px] text-space-green"
+                className="flex items-center rounded bg-gray60 py-4 pl-3 text-sm font-normal leading-[14px] text-gray100"
                 key={item.pk}
               >
-                {item.userWalletAddress}
+                {shortenAddress(item.userWalletAddress)}
               </div>
             ))}
       </div>
