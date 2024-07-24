@@ -8,6 +8,7 @@ import { FC } from "react";
 
 import "./styles.scss";
 import SearchInput from "./components/searchInput";
+import EnrolledPreEnrollmentWallets from "./components/Modals/enrolled-wallets-modal";
 
 const PrizeTapPage: FC = () => {
   return (
@@ -18,6 +19,7 @@ const PrizeTapPage: FC = () => {
       <LineaCheckWalletsModal />
       <LineaWinnersModal />
       <EnrollModal />
+      <EnrolledPreEnrollmentWallets />
       {/* <BrightConnectionModal /> */}
     </>
   );

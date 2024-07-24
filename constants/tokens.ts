@@ -957,32 +957,212 @@ export const tokensInformation: TokenInformation[] = [
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
       {
+        tokenAddress: "0x4200000000000000000000000000000000000006",
+        tokenDecimals: "18",
+        tokenSymbol: "WETH",
+        tokenName: "Wrapped Ether",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+      },
+      {
         tokenAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         tokenDecimals: "6",
         tokenSymbol: "USDC",
         tokenName: "USD Coin",
-        logoUrl: "https://basescan.org/token/images/centre-usdc_28.png",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      },
+      {
+        tokenAddress: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+        tokenDecimals: "6",
+        tokenSymbol: "USDbC",
+        tokenName: "USD Base Coin",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/31164/large/baseusdc.jpg?1696529993",
+      },
+      {
+        tokenAddress: "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+        tokenDecimals: "18",
+        tokenSymbol: "cbETH",
+        tokenName: "Coinbase Wrapped Staked ETH",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/27008/large/cbeth.png?1709186989",
+      },
+      {
+        tokenAddress: "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+        tokenDecimals: "18",
+        tokenSymbol: "AERO",
+        tokenName: "Aerodrome",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/31745/large/token.png?1696530564",
       },
       {
         tokenAddress: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
         tokenDecimals: "18",
         tokenSymbol: "DAI",
         tokenName: "Dai Stablecoin",
-        logoUrl: "https://basescan.org/token/images/daistablecoin_32.png",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
       },
       {
-        tokenAddress: "0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c",
+        tokenAddress: "0x6985884C4392D348587B19cb9eAAf157F13271cd",
         tokenDecimals: "18",
-        tokenSymbol: "rETH",
-        tokenName: "Rocket Pool ETH",
-        logoUrl: "https://basescan.org/token/images/rocketpooleth_32.png",
+        tokenSymbol: "ZRO",
+        tokenName: "LayerZero",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/28206/large/ftxG9_TJ_400x400.jpeg?1696527208",
       },
       {
-        tokenAddress: "0xB0fFa8000886e57F86dd5264b9582b2Ad87b2b91",
+        tokenAddress: "0xfA980cEd6895AC314E7dE34Ef1bFAE90a5AdD21b",
         tokenDecimals: "18",
-        tokenSymbol: "W",
-        tokenName: "Wormhole Token",
-        logoUrl: "https://basescan.org/token/images/w_32.png",
+        tokenSymbol: "PRIME",
+        tokenName: "Prime",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/29053/large/prime-logo-small-border_%282%29.png?1696528020",
+      },
+      {
+        tokenAddress: "0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b",
+        tokenDecimals: "18",
+        tokenSymbol: "tBTC",
+        tokenName: "Base tBTC v2",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x18084fbA666a33d37592fA2633fD49a74DD93a88/logo.png",
+      },
+      {
+        tokenAddress: "0x489fe42C267fe0366B16b0c39e7AEEf977E841eF",
+        tokenDecimals: "18",
+        tokenSymbol: "WAMPL",
+        tokenName: "Wrapped Ampleforth",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/20825/large/photo_2021-11-25_02-05-11.jpg?1696520218",
+      },
+      {
+        tokenAddress: "0x97c806e7665d3AFd84A8Fe1837921403D59F3Dcc",
+        tokenDecimals: "18",
+        tokenSymbol: "ALI",
+        tokenName: "Artificial Liquid Intelligence Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x6B0b3a982b4634aC68dD83a4DBF02311cE324181/logo.png",
+      },
+      {
+        tokenAddress: "0x18dD5B087bCA9920562aFf7A0199b96B9230438b",
+        tokenDecimals: "8",
+        tokenSymbol: "PRO",
+        tokenName: "Propy",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x226bb599a12C826476e3A771454697EA52E9E220/logo.png",
+      },
+      {
+        tokenAddress: "0x9e81F6495BA29a6B4D48bDdD042C0598fA8abc9F",
+        tokenDecimals: "18",
+        tokenSymbol: "MATH",
+        tokenName: "MATH Token",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/11335/large/2020-05-19-token-200.png?1696511257",
+      },
+      {
+        tokenAddress: "0x9e1028F5F1D5eDE59748FFceE5532509976840E0",
+        tokenDecimals: "18",
+        tokenSymbol: "COMP",
+        tokenName: "Compound",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xc00e94Cb662C3520282E6f5717214004A7f26888/logo.png",
+      },
+      {
+        tokenAddress: "0xcD2F22236DD9Dfe2356D7C543161D4d260FD9BcB",
+        tokenDecimals: "18",
+        tokenSymbol: "GHST",
+        tokenName: "Aavegotchi GHST Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x3F382DbD960E3a9bbCeaE22651E88158d2791550/logo.png",
+      },
+      {
+        tokenAddress: "0xBCBAf311ceC8a4EAC0430193A528d9FF27ae38C1",
+        tokenDecimals: "18",
+        tokenSymbol: "IOTX",
+        tokenName: "IoTeX",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x6fB3e0A217407EFFf7Ca062D46c26E5d60a14d69/logo.png",
+      },
+      {
+        tokenAddress: "0xc3De830EA07524a0761646a6a4e4be0e114a3C83",
+        tokenDecimals: "18",
+        tokenSymbol: "UNI",
+        tokenName: "Uniswap",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png",
+      },
+      {
+        tokenAddress: "0xE3B53AF74a4BF62Ae5511055290838050bf764Df",
+        tokenDecimals: "18",
+        tokenSymbol: "STG",
+        tokenName: "Stargate Finance",
+        logoUrl:
+          "https://coin-images.coingecko.com/coins/images/24413/large/STG_LOGO.png?1696523595",
+      },
+      {
+        tokenAddress: "0xc5fecC3a29Fb57B5024eEc8a2239d4621e111CBE",
+        tokenDecimals: "18",
+        tokenSymbol: "1INCH",
+        tokenName: "1INCH Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x111111111117dC0aa78b770fA6A738034120C302/logo.png",
+      },
+      {
+        tokenAddress: "0xD08a2917653d4E460893203471f0000826fb4034",
+        tokenDecimals: "18",
+        tokenSymbol: "FARM",
+        tokenName: "FARM Reward Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xa0246c9032bC3A600820415aE600c6388619A14D/logo.png",
+      },
+      {
+        tokenAddress: "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+        tokenDecimals: "18",
+        tokenSymbol: "SNX",
+        tokenName: "Synthetix Network Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F/logo.png",
+      },
+      {
+        tokenAddress: "0x4158734D47Fc9692176B5085E0F52ee0Da5d47F1",
+        tokenDecimals: "18",
+        tokenSymbol: "BAL",
+        tokenName: "Balancer",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xba100000625a3754423978a60c9317c58a424e3D/logo.png",
+      },
+      {
+        tokenAddress: "0x3bB4445D30AC020a84c1b5A8A2C6248ebC9779D0",
+        tokenDecimals: "18",
+        tokenSymbol: "ZRX",
+        tokenName: "0x Protocol Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xE41d2489571d322189246DaFA5ebDe1F4699F498/logo.png",
+      },
+      {
+        tokenAddress: "0x7D49a065D17d6d4a55dc13649901fdBB98B2AFBA",
+        tokenDecimals: "18",
+        tokenSymbol: "SUSHI",
+        tokenName: "Sushi",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo.png",
+      },
+      {
+        tokenAddress: "0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415",
+        tokenDecimals: "18",
+        tokenSymbol: "CRV",
+        tokenName: "Curve DAO Token",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xD533a949740bb3306d119CC777fa900bA034cd52/logo.png",
+      },
+      {
+        tokenAddress: "0xA7d68d155d17cB30e311367c2Ef1E82aB6022b67",
+        tokenDecimals: "18",
+        tokenSymbol: "BTRST",
+        tokenName: "BTRST",
+        logoUrl:
+          "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x799ebfABE77a6E34311eeEe9825190B9ECe32824/logo.png",
       },
     ],
   },

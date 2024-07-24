@@ -251,7 +251,7 @@ export const TokenTapContext = createContext<{
   endDateState: null,
   setEndDateState: NullCallback,
   userDistribution: {} as any,
-  claimPeriodic: false,
+  claimPeriodic: true,
   handleSetClaimPeriodic: NullCallback,
   allChainList: [] as any,
   isErc20Approved: false,
@@ -356,7 +356,7 @@ const TokenTapProvider: FC<
 
   const [numberOfNfts, setNumberOfNfts] = useState<string>("");
 
-  const [claimPeriodic, setClaimPeriodic] = useState(false);
+  const [claimPeriodic, setClaimPeriodic] = useState(true);
 
   const [data, setData] =
     useState<ProviderDashboardFormDataProp>(formInitialData);

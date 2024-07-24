@@ -113,3 +113,19 @@ export async function getLineaRaffleEntries() {
 
   return response.data;
 }
+
+export async function getEnrolledWalletInRaffle(pk: number) {
+  const response = await axiosInstance.get(
+    `/api/prizetap/raffle-entries/${pk}`,
+  );
+
+  try {
+    const count = response.data.count;
+    const next = response.data.next;
+    const prev = response.data.previous;
+    const entries = response.data.results;
+    return { success: true, count, next, prev, entries };
+  } catch {
+    return { success: false, count: null, next: null, prev: null, entries: [] };
+  }
+}
