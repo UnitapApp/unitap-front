@@ -290,7 +290,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             </div>
           </div>
           <Markdown
-            className={`${isExpired ? "text-opacity-40" : ""}`}
+            className={`${isExpired ? "text-opacity-40" : ""} text-[15px]`}
             isHighlighted={isHighlighted}
             content={token.notes}
           />
@@ -357,7 +357,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
             <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
               claim on
-              {" " + token.chain.chainName + " chain"}
+              {" " + token.chain.chainName}
             </p>
             <Icon
               iconSrc={getChainIcon(token.chain)}
