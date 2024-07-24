@@ -438,33 +438,56 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       />
                     </div>
                   </div>
-                  <ClaimAndEnrollButton
-                    disabled={true}
-                    className="!w-full min-w-[552px] md:!w-[352px]"
-                    height="48px"
-                    $fontSize="14px"
-                  >
-                    {" "}
-                    <div className="relative w-full">
-                      {maxNumberOfEntries === numberOfOnchainEntries ? (
-                        <p> Full</p>
-                      ) : numberOfOnchainEntries == 0 ? (
-                        <p> Unavailable</p>
-                      ) : new Date(deadline) < new Date() ? (
-                        <p className="mr-[2em] bg-g-primary bg-clip-text text-sm text-transparent">
-                          Raffle is being processed
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      <Icon
-                        className="absolute right-0 top-1/2 -translate-y-1/2"
-                        iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-                        width="27px"
-                        height="24px"
-                      />
-                    </div>
-                  </ClaimAndEnrollButton>
+                  {!isPreEnrollment ? (
+                    <ClaimAndEnrollButton
+                      disabled={true}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      height="48px"
+                      $fontSize="14px"
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        {maxNumberOfEntries === numberOfOnchainEntries ? (
+                          <p> Full</p>
+                        ) : numberOfOnchainEntries == 0 ? (
+                          <p> Unavailable</p>
+                        ) : new Date(deadline) < new Date() ? (
+                          <p className="mr-[2em] bg-g-primary bg-clip-text text-sm text-transparent">
+                            Raffle is being processed
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  ) : (
+                    <ClaimAndEnrollButton
+                      height="48px"
+                      $fontSize="14px"
+                      disabled={!start}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      onClick={() => openPreEnrollmentWalletsModal(raffle.pk)}
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        <p className="bg-g-primary bg-clip-text text-xs text-transparent">
+                          Check Enrolled Wallets
+                        </p>{" "}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  )}
                 </span>
               ) : !winnersEntry.length && !userEntry?.txHash ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
