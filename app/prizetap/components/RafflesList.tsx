@@ -477,7 +477,9 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       {" "}
                       <div className="relative w-full">
                         <p className="bg-g-primary bg-clip-text text-xs text-transparent">
-                          Check Enrolled Wallets
+                          {new Date(deadline) < new Date()
+                            ? "Raffle is being processed"
+                            : "Check Enrolled Wallets"}
                         </p>{" "}
                         <Icon
                           className="absolute right-0 top-1/2 -translate-y-1/2"
