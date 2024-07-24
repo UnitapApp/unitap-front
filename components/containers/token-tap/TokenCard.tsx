@@ -305,29 +305,29 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   .filter((permission) => permission.type === "VER")
                   .slice(0, 6)
             ).map((permission, key) => (
-              <Tooltip
+              <div
                 className={
                   "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                 }
                 data-testid={`token-verification-${token.id}-${permission.name}`}
                 key={key}
-                text={
-                  <ReactMarkdown className="markdown">
-                    {replacePlaceholders(
-                      (permission.isReversed
-                        ? permission.negativeDescription
-                        : permission.description)!,
-                      params[permission.name],
-                    )}
-                  </ReactMarkdown>
-                }
+                // text={
+                //   <ReactMarkdown className="markdown">
+                //     {replacePlaceholders(
+                //       (permission.isReversed
+                //         ? permission.negativeDescription
+                //         : permission.description)!,
+                //       params[permission.name],
+                //     )}
+                //   </ReactMarkdown>
+                // }
               >
                 <div
                   className={`flex items-center gap-3 ${isExpired ? "text-opacity-40" : ""}`}
                 >
                   {permission.title}
                 </div>
-              </Tooltip>
+              </div>
             ))}
 
             {token.constraints.length > 6 && (
