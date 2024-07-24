@@ -256,7 +256,7 @@ const PrizeRequirementModal: FC<{
   useEffect(() => {
     if (!userToken) return;
     setLoading(true);
-    getRaffleConstraintsVerifications(prize.id, userToken)
+    getRaffleConstraintsVerifications(prize.pk, userToken)
       .then((res) => {
         SetPermissions(res.constraints);
       })
@@ -271,7 +271,7 @@ const PrizeRequirementModal: FC<{
       .finally(() => {
         setLoading(false);
       });
-  }, [userToken]);
+  }, [prize.constraints, prize.id, userToken]);
 
   return (
     <div className="-mt-3 flex h-72 w-full items-center justify-start gap-2 overflow-y-auto">
