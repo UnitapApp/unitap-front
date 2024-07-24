@@ -173,7 +173,7 @@ const PrizeRequirementBody: FC<{
               onClick={() =>
                 setCurrentRequirementIndex(currentRequirementIndex + 1)
               }
-              disabled={loading}
+              disabled
             >
               Verified
             </button>

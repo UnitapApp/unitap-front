@@ -299,10 +299,10 @@ const TokenRequirementBody: FC<{
             ) : (
               <button
                 className="w-full rounded-lg border border-dark-space-green bg-dark-space-green/10 px-5 py-2 text-sm font-semibold text-space-green"
-                onClick={() =>
-                  setCurrentRequirementIndex(currentRequirementIndex + 1)
-                }
-                disabled={loading}
+                // onClick={() =>
+                //   setCurrentRequirementIndex(currentRequirementIndex + 1)
+                // }
+                disabled
               >
                 Verified
               </button>
