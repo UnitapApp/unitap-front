@@ -40,6 +40,14 @@ export const fetchFarcasterProfiles = async (username: string) => {
   return res.data.result.users as FarcasterProfile[];
 };
 
+export const fetchFarcasterProfileById = async (fid: any) => {
+  const res = await axios.get(
+    `https://api.neynar.com/v2/farcaster/user/bulk?fids=${fid}&api_key=NEYNAR_API_DOCS`,
+  );
+
+  return res.data.result.users[0] as FarcasterProfile;
+};
+
 export const fetchFarcasterChannels = async (search: string) => {
   const res = await axios.get(
     `https://api.neynar.com/v2/farcaster/channel/search?api_key=NEYNAR_API_DOCS&q=${search}`,

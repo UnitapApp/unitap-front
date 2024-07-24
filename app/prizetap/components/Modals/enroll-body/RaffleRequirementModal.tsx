@@ -5,6 +5,7 @@ import {
   renderLinkValue,
   requirementsConnections,
   requirementWithoutApps,
+  useRequirementLinkGenerator,
 } from "@/components/containers/token-tap/Modals/TokenRequirementModal";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
@@ -112,6 +113,9 @@ const PrizeRequirementBody: FC<{
     currentRequirementIndex !== undefined
       ? selectedRaffleForEnroll?.constraints[currentRequirementIndex]
       : null;
+  const appName = constraint?.name.split(".").splice(1).join(".");
+
+  const app = appName ? appInfos[requirementsConnections[appName]!] : undefined;
 
   const params = useMemo(
     () =>
@@ -127,21 +131,16 @@ const PrizeRequirementBody: FC<{
     getAllConnections(userToken).then(setConnections);
   }, [constraint, selectedRaffleForEnroll, userToken]);
 
+  const link = useRequirementLinkGenerator({
+    params,
+    constraint,
+    appName,
+  });
+
   if (!constraint)
     return (
       <main className="h-full flex-1 rounded-lg bg-gray20 p-2 text-sm"></main>
     );
-
-  const appName = constraint.name.split(".").splice(1).join(".");
-
-  const app = appInfos[requirementsConnections[appName]!];
-
-  const link = renderLinkValue(
-    requirementsConnections[appName]!,
-    params[constraint.name],
-  );
-
-  const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
 
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
@@ -187,13 +186,13 @@ const PrizeRequirementBody: FC<{
                   </ClaimAndEnrollButton>
                 </Link>
               )}
-              {!!linkWithoutApp && (
+              {/* {!!linkWithoutApp && (
                 <Link target="_blank" href={linkWithoutApp} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
                   </ClaimAndEnrollButton>
                 </Link>
-              )}
+              )} */}
               <button
                 onClick={refreshPermissions}
                 disabled={loading}

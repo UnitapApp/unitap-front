@@ -4,7 +4,7 @@ import { appInfos } from "@/app/incentive-center/constants/integrations";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { Permission, Token, UserConnection } from "@/types";
+import { ConstraintProps, Permission, Token, UserConnection } from "@/types";
 import { replacePlaceholders } from "@/utils";
 import { getTokenConstraintsVerifications } from "@/utils/api";
 import { getAllConnections } from "@/utils/serverApis";
@@ -14,6 +14,7 @@ import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Lottie from "react-lottie";
 import loadingAnimation from "@/lotties/loadingDot.json";
+import { fetchFarcasterProfileById } from "@/utils/api/lens";
 
 export const loadingAnimationRequirementsOption = {
   loop: true,
@@ -75,6 +76,12 @@ export const renderLinkValue = (
     if (params["TWITTER_USERNAME"]) {
       return `https://x.com/${params["TWITTER_USERNAME"]})`;
     }
+  }
+
+  if (params["FARCASTER_FID"]) {
+    return fetchFarcasterProfileById(Number(params["FARCASTER_FID"])).then(
+      (res) => res.username,
+    );
   }
 
   return "#";
@@ -154,6 +161,39 @@ const Sidebar: FC<{
   );
 };
 
+export const useRequirementLinkGenerator = ({
+  constraint,
+  params,
+  appName,
+}: {
+  constraint: any;
+  params: any;
+  appName: any;
+}) => {
+  const [link, setLink] = useState("");
+
+  const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
+
+  useEffect(() => {
+    if (!params || !appName) {
+      return;
+    }
+
+    const link = renderLinkValue(
+      requirementsConnections[appName]!,
+      params[constraint.name],
+    );
+
+    if (typeof link === "string") {
+      setLink(link);
+    } else {
+      (link as any).then(setLink);
+    }
+  }, [appName, constraint.name, linkWithoutApp, params]);
+
+  return link || linkWithoutApp || "#";
+};
+
 const TokenRequirementBody: FC<{
   permissions: (Permission & { isVerified: boolean })[];
   refreshPermissions: () => void;
@@ -166,14 +206,14 @@ const TokenRequirementBody: FC<{
     setMethod,
   } = useTokenTapContext();
 
-  const { userToken } = useUserProfileContext();
-
-  const [connections, setConnections] = useState<UserConnection>({});
-
   const constraint =
     currentRequirementIndex !== undefined
       ? selectedTokenForClaim?.constraints[currentRequirementIndex]
       : null;
+
+  const appName = constraint?.name.split(".").splice(1).join(".");
+
+  const app = appName ? appInfos[requirementsConnections[appName]!] : undefined;
 
   const params = useMemo(
     () =>
@@ -183,27 +223,30 @@ const TokenRequirementBody: FC<{
     [selectedTokenForClaim],
   );
 
+  const link = useRequirementLinkGenerator({
+    params,
+    constraint,
+    appName,
+  });
+
+  const { userToken } = useUserProfileContext();
+
+  const [connections, setConnections] = useState<UserConnection>({});
+
   useEffect(() => {
     if (!constraint || !userToken || !selectedTokenForClaim) return;
 
     getAllConnections(userToken).then(setConnections);
   }, [constraint, selectedTokenForClaim, userToken]);
 
+  // useEffect(() => {
+  //   if (!constraint) return;
+  // }, [constraint, params]);
+
   if (!constraint)
     return (
       <main className="h-full flex-1 rounded-lg bg-gray20 p-2 text-sm"></main>
     );
-
-  const appName = constraint.name.split(".").splice(1).join(".");
-
-  const app = appInfos[requirementsConnections[appName]!];
-
-  const link = renderLinkValue(
-    requirementsConnections[appName]!,
-    params[constraint.name],
-  );
-
-  const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
 
   return (
     <main className="flex h-full flex-1 flex-col rounded-lg bg-gray20 p-2 text-center text-sm text-white">
@@ -264,7 +307,7 @@ const TokenRequirementBody: FC<{
             )
           ) : (
             <div className="flex w-full items-center justify-end gap-3">
-              {link === "#" || (
+              {!!link || link === "#" || (
                 <Link target="_blank" href={link} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
@@ -272,13 +315,13 @@ const TokenRequirementBody: FC<{
                 </Link>
               )}
 
-              {!!linkWithoutApp && (
+              {/* {!!linkWithoutApp && (
                 <Link target="_blank" href={linkWithoutApp} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
                   </ClaimAndEnrollButton>
                 </Link>
-              )}
+              )} */}
 
               <button
                 onClick={refreshPermissions}
