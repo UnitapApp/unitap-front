@@ -21,7 +21,11 @@ import {
 } from "react";
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL, contractAddresses } from "@/constants";
+import {
+  FAST_INTERVAL,
+  BASE_REFRESH_INTERVAL,
+  contractAddresses,
+} from "@/constants";
 import {
   useClient,
   useWaitForTransactionReceipt,
@@ -341,7 +345,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     claimOrEnroll();
   }, [selectedRaffleForEnroll, claimOrEnrollLoading, claimOrEnroll]);
 
-  useRefreshWithInitial(getRafflesList, FAST_INTERVAL, [
+  useRefreshWithInitial(getRafflesList, BASE_REFRESH_INTERVAL, [
     userToken,
     getRafflesList,
   ]);

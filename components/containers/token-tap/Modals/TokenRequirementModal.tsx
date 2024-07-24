@@ -175,9 +175,11 @@ export const useRequirementLinkGenerator = ({
   const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
 
   useEffect(() => {
-    if (!params || !appName) {
+    if (!params || !appName || !constraint) {
       return;
     }
+
+    if (!params[constraint.name]) return;
 
     const link = renderLinkValue(
       requirementsConnections[appName]!,
@@ -187,9 +189,9 @@ export const useRequirementLinkGenerator = ({
     if (typeof link === "string") {
       setLink(link);
     } else {
-      (link as any).then(setLink);
+      link.then((res) => setLink(res.toString()));
     }
-  }, [appName, constraint.name, linkWithoutApp, params]);
+  }, [appName, constraint?.name, linkWithoutApp, params]);
 
   return link || linkWithoutApp || "#";
 };

@@ -26,6 +26,7 @@ import { unitapEvmTokenTapAbi } from "@/types/abis/contracts";
 import { useGlobalContext } from "./globalProvider";
 import {
   FAST_INTERVAL,
+  BASE_REFRESH_INTERVAL,
   contractAddresses,
   tokenTapContractAddressList,
 } from "@/constants";
@@ -306,7 +307,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     setSelectedTokenForClaim(null);
   }, []);
 
-  useRefreshWithInitial(getClaimedTokensList, FAST_INTERVAL, [
+  useRefreshWithInitial(getClaimedTokensList, BASE_REFRESH_INTERVAL, [
     userToken,
     getClaimedTokensList,
   ]);
