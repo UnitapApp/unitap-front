@@ -312,7 +312,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
     getClaimedTokensList,
   ]);
 
-  useFastRefresh(getTokensList, [getTokensList]);
+  useRefreshWithInitial(getTokensList, BASE_REFRESH_INTERVAL, [getTokensList]);
 
   return (
     <TokenTapContext.Provider
