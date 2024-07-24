@@ -315,7 +315,7 @@ const TokenRequirementBody: FC<{
             )
           ) : (
             <div className="flex w-full items-center justify-end gap-3">
-              {(!!link || link === "#") && (
+              {!link || link === "#" || (
                 <Link target="_blank" href={link} className="w-full">
                   <ClaimAndEnrollButton className="!w-full flex-1">
                     <p>Let{"'"}s Do it</p>
