@@ -232,11 +232,17 @@ export const UserContextProvider: FC<
     )
       return;
 
-    disconnect?.();
-    localStorage.removeItem("userToken");
-    document.cookie = "userToken=;path=/;";
-    setUserProfile(null);
-    setToken("");
+    const timeout = setTimeout(() => {
+      disconnect?.();
+      localStorage.removeItem("userToken");
+      document.cookie = "userToken=;path=/;";
+      setUserProfile(null);
+      setToken("");
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [
     userToken,
     setToken,

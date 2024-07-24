@@ -28,4 +28,9 @@ export const appInfos: {
     logo: "/assets/images/gas-tap/twitter-share.svg",
     label: "Twitter",
   },
+
+  Twitter: {
+    logo: "/assets/images/gas-tap/twitter-share.svg",
+    label: "Twitter",
+  },
 };

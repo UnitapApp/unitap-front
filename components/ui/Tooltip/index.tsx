@@ -41,13 +41,13 @@ const Tooltip: FC<
       <span>{children}</span>
 
       <div
-        className={`absolute bottom-full left-1/2 z-20 mb-3 w-full -translate-x-1/2 rounded-md border border-gray70 bg-gray10 p-2 text-center text-xs text-gray100 opacity-0 transition-opacity ${toolTipClassName} ${
+        className={`absolute bottom-full left-1/2 z-20 mb-1 w-full -translate-x-1/2 rounded-md border border-gray70 bg-gray10 p-2 text-center text-xs text-gray100 opacity-0 transition-opacity ${toolTipClassName} ${
           showTooltip
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none"
         }`}
       >
-        <div className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -rotate-45 transform rounded-bl border-b border-l border-gray70 bg-gray10" />
+        <div className="absolute left-1/2 top-full -mt-1 h-2 w-2 -translate-x-1/2 -rotate-45 transform rounded-bl border-b border-l border-gray70 bg-gray10" />
         <div>
           {withoutImage || (
             <Image

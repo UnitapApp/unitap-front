@@ -27,7 +27,6 @@ const PrizeTapLanding: FC = async () => {
   //   (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime(),
   // );
 
-
   const availableRaffles = rafflesList.filter(
     (raffle) =>
       new Date(raffle.deadline).getTime() > new Date().getTime() &&
@@ -40,11 +39,13 @@ const PrizeTapLanding: FC = async () => {
         <Widget
           id="prizetap"
           description={
-            availableRaffles.length === 0
-              ? "No raffles are live on Prize Tap"
-              : availableRaffles.length === 1
-                ? "1 raffle is live on Prize Tap"
-                : availableRaffles.length + " Raffles are live on PrizeTap..."
+            // availableRaffles.length === 0
+            //   ? "No raffles are live on Prize Tap"
+            //   : availableRaffles.length === 1
+            //     ? "1 raffle is live on Prize Tap"
+            //     : availableRaffles.length + " Raffles are live on PrizeTap..."
+
+            "Enroll raffles and try your chance to win a large prize"
           }
           className={
             "relative z-20 h-full after:-top-8 after:w-full hover:bg-gray00"
@@ -85,7 +86,7 @@ const PrizeTapLanding: FC = async () => {
                             {raffle.name}
                           </p>
                           {raffle.winnersCount > 1 && (
-                            <small className="ml-5 rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
+                            <small className="ml-5 whitespace-nowrap rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
                               {raffle.winnersCount}x Winners
                             </small>
                           )}
