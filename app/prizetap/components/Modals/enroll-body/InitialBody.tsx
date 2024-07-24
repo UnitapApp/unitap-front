@@ -12,6 +12,7 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { Text } from "@/components/ui/text.style";
 import { useWalletAccount } from "@/utils/wallet";
 import { DropIconWrapper } from "@/components/containers/modals/claimModal.style";
+import PrizeRequirementModal from "./RaffleRequirementModal";
 
 const InitialBody: FC<{
   raffle: Prize;
@@ -35,7 +36,7 @@ const InitialBody: FC<{
   } = usePrizeTapContext();
 
   if (method === "Pre-Verify") {
-    return;
+    return <PrizeRequirementModal prize={raffle} />;
   }
 
   if (method === "Verify") {

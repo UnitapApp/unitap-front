@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Chain } from "@/types";
 import ClaimLightningContent from "./ClaimLightningContent";
 
@@ -13,14 +13,23 @@ import MaxedOutBody from "./MaxedOutBody";
 import BrightNotConnectedBody from "./BrightNotConnectedBody";
 import SuccessBody from "./SuccessBody";
 import WrongNetworkBody from "./WrongNetworkBody";
-import PendingBody from "./PendingBody";
-import NotRemainingClaimsBody from "./NoRemainingClaimsBody";
 import InitialBody from "./InitialBody";
 import TokenReservedBody from "./TokenReservedBody";
 import { formatDate } from "../TokenCard";
 import TokenRequirementModal from "./TokenRequirementModal";
 
-const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
+export type ModalSize = number | "small" | "large" | "medium";
+
+const ClaimTokenModalBody = ({
+  chain,
+  setSize,
+  size,
+}: {
+  chain: Chain;
+
+  size: ModalSize;
+  setSize: (value: ModalSize) => void;
+}) => {
   const { chain: activatedChain } = useWalletNetwork();
 
   const chainId = activatedChain?.id;
@@ -40,6 +49,27 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   const collectedToken = claimedTokensList.find(
     (item) => item.tokenDistribution.id === selectedTokenForClaim!.id,
   );
+
+  useEffect(() => {
+    if (
+      !selectedTokenForClaim ||
+      !userProfile ||
+      (userProfile.upBalance == 0 &&
+        formattedDateValue !== -1 &&
+        selectedTokenForClaim.remainingClaimForUnitapPassUser &&
+        selectedTokenForClaim.maxNumberOfClaims -
+          selectedTokenForClaim.numberOfClaims <
+          selectedTokenForClaim.remainingClaimForUnitapPassUser) ||
+      claimTokenResponse?.state === "Done" ||
+      collectedToken?.status === "Verified" ||
+      selectedTokenForClaim.isExpired ||
+      method !== "requirements"
+    ) {
+      setSize("small");
+    } else {
+      setSize(650);
+    }
+  }, [userProfile, selectedTokenForClaim, chainId, collectedToken]);
 
   if (!selectedTokenForClaim) return null;
 
@@ -65,14 +95,6 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   )
     return <TokenReservedBody token={selectedTokenForClaim!} />;
 
-  if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
-    return (
-      <WrongNetworkBody
-        chain={selectedTokenForClaim.chain}
-        imageUrl={selectedTokenForClaim.imageUrl}
-      />
-    );
-
   if (
     claimTokenResponse?.state === "Done" ||
     collectedToken?.status === "Verified"
@@ -85,6 +107,14 @@ const ClaimTokenModalBody = ({ chain }: { chain: Chain }) => {
   if (method === "requirements") {
     return <TokenRequirementModal token={selectedTokenForClaim} />;
   }
+
+  if (chainId?.toString() !== selectedTokenForClaim?.chain.chainId)
+    return (
+      <WrongNetworkBody
+        chain={selectedTokenForClaim.chain}
+        imageUrl={selectedTokenForClaim.imageUrl}
+      />
+    );
 
   if (
     claimTokenResponse?.state === "Pending" ||
@@ -111,6 +141,8 @@ const ClaimTokenModal = () => {
   const { selectedTokenForClaim, setSelectedTokenForClaim, method } =
     useTokenTapContext();
 
+  const [size, setSize] = useState<ModalSize>("small");
+
   const closeClaimTokenModal = useCallback(() => {
     setSelectedTokenForClaim(null);
   }, [setSelectedTokenForClaim]);
@@ -131,12 +163,8 @@ const ClaimTokenModal = () => {
 
   return (
     <Modal
-      title={
-        method === "requirements"
-          ? "Double-check the Requirements"
-          : `Claim ${tokenAmount} ${selectedTokenForClaim.token}`
-      }
-      size={method === "requirements" ? 650 : "small"}
+      title={`Claim ${tokenAmount} ${selectedTokenForClaim.token}`}
+      size={size}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
     >
@@ -144,7 +172,11 @@ const ClaimTokenModal = () => {
         {selectedTokenForClaim.chain.chainName === "Lightning" ? (
           <ClaimLightningContent chain={selectedTokenForClaim.chain} />
         ) : (
-          <ClaimTokenModalBody chain={selectedTokenForClaim.chain} />
+          <ClaimTokenModalBody
+            size={size}
+            setSize={setSize}
+            chain={selectedTokenForClaim.chain}
+          />
         )}
       </div>
     </Modal>
