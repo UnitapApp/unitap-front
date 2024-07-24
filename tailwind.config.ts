@@ -120,7 +120,10 @@ const config: Config = {
           "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
           "linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)",
+        "br-pre-enrollment":
+          "linear-gradient(274.27deg, #383857 9.67%, rgba(167, 159, 229, 0.5) 96.26%);",
       },
+
       dropShadow: {
         "primary-xl": "0px 8px 18px rgba(81, 88, 246, 0.15)",
       },

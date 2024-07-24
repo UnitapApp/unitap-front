@@ -1,7 +1,7 @@
 "use client";
 
 import { Prize } from "@/types";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Text } from "@/components/ui/text.style";
 import { getTxUrl } from "@/utils";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
@@ -14,7 +14,8 @@ const SuccessBody: FC<{
 }> = ({ raffle, method }) => {
   const calculateClaimAmount = raffle.prizeAmount / 10 ** raffle.decimals;
 
-  const { claimOrEnrollWalletResponse } = usePrizeTapContext();
+  const { claimOrEnrollWalletResponse, selectedRaffleForEnroll } =
+    usePrizeTapContext();
 
   const handleShareClaimTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -160,7 +161,12 @@ const SuccessBody: FC<{
             $textAlign="center"
             onClick={() =>
               window.open(
-                getTxUrl(raffle.chain, claimOrEnrollWalletResponse!.txHash!),
+                getTxUrl(
+                  raffle.chain,
+                  claimOrEnrollWalletResponse
+                    ? claimOrEnrollWalletResponse!.txHash!
+                    : selectedRaffleForEnroll?.userEntry.txHash,
+                ),
                 "_blank",
               )
             }

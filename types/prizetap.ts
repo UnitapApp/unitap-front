@@ -52,6 +52,7 @@ export type Prize = {
   prizeAsset?: string;
   status: "PENDING" | "REJECTED" | string;
   winnersCount: number;
+  isPreEnrollment: boolean;
 };
 
 export type WinnerEntry = {
