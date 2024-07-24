@@ -46,6 +46,7 @@ const Footer: FC = () => {
           iconSrc="/assets/images/footer/discord.svg"
           width="34px"
           height="auto"
+          className="mr-4"
           hoverable
         ></Icon>
       </Link>
