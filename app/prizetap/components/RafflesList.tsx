@@ -468,44 +468,48 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 </span>
               ) : !winnersEntry.length && !userEntry?.txHash ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
-                  <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
-                    {!isPreEnrollment ? (
-                      <div className="flex flex-col gap-1">
-                        <p className="text-2xs text-white">
-                          {start ? "Winners Announced in:" : "Starts in:"}
-                        </p>
-                        <p className="text-2xs text-gray100">
-                          {maxNumberOfEntries >= 1_000_000_000
-                            ? `${numberWithCommas(
-                                numberOfOnchainEntries,
-                              )} people enrolled`
-                            : !isRemainingPercentLessThanTen
-                              ? `
+                  <div
+                    className={`flex w-full flex-col justify-between gap-4 rounded-xl ${isPreEnrollment ? "bg-br-pre-enrollment p-[1px]" : " bg-gray40"}  sm:flex-row md:items-center`}
+                  >
+                    <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
+                      {!isPreEnrollment ? (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {start ? "Winners Announced in:" : "Starts in:"}
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            {maxNumberOfEntries >= 1_000_000_000
+                              ? `${numberWithCommas(
+                                  numberOfOnchainEntries,
+                                )} people enrolled`
+                              : !isRemainingPercentLessThanTen
+                                ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
                             maxNumberOfEntries,
                           )} people enrolled`
-                              : remainingPeople > 0
-                                ? `${remainingPeople} people remains`
-                                : `${numberWithCommas(
-                                    maxNumberOfEntries,
-                                  )} people enrolled`}
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-1">
-                        <p className="text-2xs text-white">
-                          {numberOfOnchainEntries}{" "}
-                          <span className="text-gray100">people</span>
-                        </p>
-                        <p className="text-2xs text-gray100">
-                          have been given enrollment
-                        </p>
-                      </div>
-                    )}
-                    <RaffleCardTimer
-                      startTime={startAt}
-                      FinishTime={deadline}
-                    />
+                                : remainingPeople > 0
+                                  ? `${remainingPeople} people remains`
+                                  : `${numberWithCommas(
+                                      maxNumberOfEntries,
+                                    )} people enrolled`}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {numberOfOnchainEntries}{" "}
+                            <span className="text-gray100">people</span>
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            have been given enrollment
+                          </p>
+                        </div>
+                      )}
+                      <RaffleCardTimer
+                        startTime={startAt}
+                        FinishTime={deadline}
+                      />
+                    </div>
                   </div>
                   {!isPreEnrollment ? (
                     <ClaimAndEnrollButton
