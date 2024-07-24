@@ -229,7 +229,7 @@ const TokenRequirementBody: FC<{
           permissions.find((item) => item.name === constraint.name)
             ?.isVerified ? (
             <button
-              className="w-full rounded-lg bg-dark-space-green/75 px-5 py-2 text-sm font-semibold text-space-green"
+              className="w-full rounded-lg border border-dark-space-green bg-dark-space-green/10 px-5 py-2 text-sm font-semibold text-space-green"
               onClick={() =>
                 setCurrentRequirementIndex(currentRequirementIndex + 1)
               }
