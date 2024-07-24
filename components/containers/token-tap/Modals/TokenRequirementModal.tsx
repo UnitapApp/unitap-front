@@ -76,7 +76,7 @@ export const renderLinkValue = (
     }
 
     if (params["TWITTER_USERNAME"]) {
-      return `https://x.com/${params["TWITTER_USERNAME"]})`;
+      return `https://x.com/${params["TWITTER_USERNAME"]}`;
     }
   }
 
