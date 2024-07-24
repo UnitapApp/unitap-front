@@ -271,7 +271,7 @@ const PrizeRequirementModal: FC<{
       .finally(() => {
         setLoading(false);
       });
-  }, [prize.constraints, prize.id, userToken]);
+  }, [prize.constraints, prize.pk, userToken]);
 
   return (
     <div className="-mt-3 flex h-72 w-full items-center justify-start gap-2 overflow-y-auto">
