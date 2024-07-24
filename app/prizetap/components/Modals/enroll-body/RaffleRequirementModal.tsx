@@ -1,6 +1,7 @@
 import { appInfos } from "@/app/incentive-center/constants/integrations";
 import {
   checkConnections,
+  loadingAnimationRequirementsOption,
   renderLinkValue,
   requirementsConnections,
 } from "@/components/containers/token-tap/Modals/TokenRequirementModal";
@@ -17,6 +18,7 @@ import { getAllConnections } from "@/utils/serverApis";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
+import Lottie from "react-lottie";
 import ReactMarkdown from "react-markdown";
 
 const Sidebar: FC<{
@@ -197,9 +199,17 @@ const PrizeRequirementBody: FC<{
               <button
                 onClick={refreshPermissions}
                 disabled={loading}
-                className="ml-auto rounded-xl border-gray100 bg-gray70 px-5 py-2 disabled:opacity-50"
+                className="ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50"
               >
-                {loading ? "Loading" : "Verify"}
+                {loading ? (
+                  <Lottie
+                    width={40}
+                    height={20}
+                    options={loadingAnimationRequirementsOption}
+                  ></Lottie>
+                ) : (
+                  "Verify"
+                )}
               </button>
             </div>
           )

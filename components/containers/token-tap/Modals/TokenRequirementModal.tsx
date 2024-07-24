@@ -1,3 +1,5 @@
+"use client";
+
 import { appInfos } from "@/app/incentive-center/constants/integrations";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
@@ -10,6 +12,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import Lottie from "react-lottie";
+import loadingAnimation from "@/lotties/loadingDot.json";
+
+export const loadingAnimationRequirementsOption = {
+  loop: true,
+  autoplay: true,
+  animationData: loadingAnimation,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 
 export const requirementsConnections: { [key: string]: string | null } = {
   IsFollowinTwitterUser: "Twitter",
@@ -78,10 +91,6 @@ const Sidebar: FC<{
 }> = ({ token, permissions }) => {
   const { currentRequirementIndex, setCurrentRequirementIndex, setMethod } =
     useTokenTapContext();
-
-  const constraintsCount = token.constraints.filter(
-    (item) => item.type === "VER",
-  ).length;
 
   useEffect(() => {
     setCurrentRequirementIndex(
@@ -241,9 +250,17 @@ const TokenRequirementBody: FC<{
               <button
                 onClick={refreshPermissions}
                 disabled={loading}
-                className="ml-auto rounded-xl border-gray100 bg-gray70 px-5 py-2 disabled:opacity-50"
+                className="ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50"
               >
-                {loading ? "Loading" : "Verify"}
+                {loading ? (
+                  <Lottie
+                    width={40}
+                    height={20}
+                    options={loadingAnimationRequirementsOption}
+                  ></Lottie>
+                ) : (
+                  "Verify"
+                )}
               </button>
             </div>
           )
