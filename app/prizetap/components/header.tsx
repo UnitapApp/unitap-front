@@ -30,7 +30,6 @@ const Header = () => {
   return (
     <div
       className={`${Styles["token-tap-header"]} relative mb-5 flex h-[202px] w-full flex-col overflow-hidden rounded-2xl border-4 border-gray20 bg-right p-4 md:flex-row md:justify-between lg:items-end`}
-
     >
       <div className="header__left h-auto items-center">
         <span className="header__left__type-logo mb-3 flex items-center gap-3">
@@ -47,7 +46,7 @@ const Header = () => {
           {/* <img className="h-12 w-auto" src="assets/images/prize-tap/header-logo.svg" /> */}
         </span>
         <p className="text-xs text-gray100">
-          Enjoy surfing Web3 without the worry of gas fees
+          Enroll the raffles and try your chance to win a large prize
         </p>
       </div>
     </div>
