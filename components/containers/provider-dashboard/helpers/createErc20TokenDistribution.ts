@@ -50,15 +50,15 @@ const txCallBack = async (
   // });
   // if (selectedChain.chainId === "42161") {
 
-  console.log("Attempting to call the contract with values: ", [
-    tokenContractAddress as any,
-    maxNumClaim,
-    isNativeToken
-      ? parseEther(new Big(tokenAmount).toFixed())
-      : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-    startTime,
-    endTime,
-  ]);
+  // console.log("Attempting to call the contract with values: ", [
+  //   tokenContractAddress as any,
+  //   maxNumClaim,
+  //   isNativeToken
+  //     ? parseEther(new Big(tokenAmount).toFixed())
+  //     : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //   startTime,
+  //   endTime,
+  // ]);
 
   return signer?.writeContract({
     abi: tokenTapAbi,
