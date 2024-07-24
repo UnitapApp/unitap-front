@@ -33,9 +33,8 @@ const NftPass = () => {
   const advantagesItem = [
     {
       id: 1,
-      title: "Early Adaptor NFT",
-      description:
-        "Unitap Pass holders are the Unitap early adaptors and they'll govern Unitap.",
+      title: "Future Reward 😉",
+      description: "Unitap Pass holders will be a part of Unitap governance.",
       imgUrl: "assets/images/pass/adaptor.svg",
     },
     {
@@ -48,14 +47,14 @@ const NftPass = () => {
     {
       id: 3,
       title: "Exclusive spot in Token Taps",
-      description: `Unitap secures %10 of each Token Tap for the Unitap Pass holders for the first 30% of the Tap's duration.
+      description: `Unitap secures %30 of each Token Tap for the Unitap Pass holders for the first 30% of the Tap's duration.
       Example: $1 for 1000 participants to be live for 9 days. We secure 100 spots for Unitap Pass holders in the first 3 days.`,
       imgUrl: "assets/images/pass/spot.svg",
     },
     {
       id: 4,
-      title: "Unitap pass presents",
-      description: `Unitap Pass holders can pass the Uniqueness verification requirements in Unitap. BrightID, Gitcoin Passport, PolygonID, Idena, ENS, etc.`,
+      title: "Pass Uniqueness Verification",
+      description: `Unitap Pass holders can pass the Uniqueness verification requirements in Unitap. BrightID, Gitcoin Passport, PolygonID, ENS, etc.`,
       imgUrl: "assets/images/pass/verification.svg",
     },
   ];
