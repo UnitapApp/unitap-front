@@ -4,7 +4,7 @@ import { appInfos } from "@/app/incentive-center/constants/integrations";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { ConstraintProps, Permission, Token, UserConnection } from "@/types";
+import { Permission, Token, UserConnection } from "@/types";
 import { replacePlaceholders } from "@/utils";
 import { getTokenConstraintsVerifications } from "@/utils/api";
 import { getAllConnections } from "@/utils/serverApis";
