@@ -81,9 +81,9 @@ export const renderLinkValue = (
   }
 
   if (params["FARCASTER_FID"]) {
-    return fetchFarcasterProfileById(Number(params["FARCASTER_FID"])).then(
-      (res) => res.username,
-    );
+    return `https://warpcast.com/${fetchFarcasterProfileById(
+      Number(params["FARCASTER_FID"]),
+    ).then((res) => res.username)}`;
   }
 
   return "#";
@@ -193,7 +193,7 @@ export const useRequirementLinkGenerator = ({
     if (typeof link === "string") {
       setLink(link);
     } else {
-      link.then((res) => setLink(res.toString()));
+      (link as any).then((res: any) => setLink(res.toString()));
     }
   }, [appName, constraint?.name, linkWithoutApp, params]);
 
