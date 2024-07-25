@@ -243,7 +243,7 @@ const PrizeRequirementModal: FC<{
     if (!userToken) return;
     setIsExhusted(false);
     setLoading(true);
-    getTokenConstraintsVerifications(prize.id, userToken)
+    getRaffleConstraintsVerifications(prize.pk, userToken)
       .then((res) => {
         SetPermissions(res.constraints);
       })
