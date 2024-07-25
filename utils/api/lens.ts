@@ -45,7 +45,7 @@ export const fetchFarcasterProfileById = async (fid: any) => {
     `https://api.neynar.com/v2/farcaster/user/bulk?fids=${fid}&api_key=NEYNAR_API_DOCS`,
   );
 
-  return res.data.result.users[0] as FarcasterProfile;
+  return res.data.users[0] as FarcasterProfile;
 };
 
 export const fetchFarcasterChannels = async (search: string) => {
