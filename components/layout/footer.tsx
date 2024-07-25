@@ -50,7 +50,10 @@ const Footer: FC = () => {
           hoverable
         ></Icon>
       </Link>
-      <Link href="https://youtube.com/@unitapapp" target="_blank">
+      <Link
+        href="https://www.youtube.com/@UnitapApp?sub_confirmation=1"
+        target="_blank"
+      >
         <Icon
           iconSrc="/assets/images/footer/youtube.svg"
           width="34px"
