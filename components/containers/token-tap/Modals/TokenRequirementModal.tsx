@@ -204,7 +204,8 @@ const TokenRequirementBody: FC<{
   permissions: (Permission & { isVerified: boolean })[];
   refreshPermissions: () => void;
   loading: boolean;
-}> = ({ permissions, refreshPermissions, loading }) => {
+  isExhusted: boolean;
+}> = ({ permissions, refreshPermissions, loading, isExhusted }) => {
   const {
     selectedTokenForClaim,
     currentRequirementIndex,
@@ -334,7 +335,7 @@ const TokenRequirementBody: FC<{
               <button
                 onClick={refreshPermissions}
                 disabled={loading}
-                className="ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50"
+                className={`ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50 ${isExhusted ? "!border-warn !text-warn" : ""}`}
               >
                 {loading ? (
                   <Lottie
@@ -342,6 +343,8 @@ const TokenRequirementBody: FC<{
                     height={20}
                     options={loadingAnimationRequirementsOption}
                   ></Lottie>
+                ) : isExhusted ? (
+                  "Try Again"
                 ) : (
                   "Verify"
                 )}
@@ -365,6 +368,7 @@ const TokenRequirementModal: FC<{
 }> = ({ token }) => {
   const { userToken } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
+  const [isExhusted, setIsExhusted] = useState(false);
 
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
@@ -373,6 +377,7 @@ const TokenRequirementModal: FC<{
   const refreshPermissions = () => {
     if (!userToken) return;
     setLoading(true);
+    setIsExhusted(false);
     getTokenConstraintsVerifications(token.id, userToken)
       .then((res) => {
         SetPermissions(res.constraints);
@@ -386,6 +391,7 @@ const TokenRequirementModal: FC<{
         );
       })
       .finally(() => {
+        setIsExhusted(true);
         setLoading(false);
       });
   };
@@ -414,6 +420,7 @@ const TokenRequirementModal: FC<{
     <div className="-mt-3 flex h-72 w-full items-center justify-start gap-2 overflow-y-auto">
       <Sidebar permissions={permissions} token={token} />
       <TokenRequirementBody
+        isExhusted={isExhusted}
         loading={loading}
         permissions={permissions}
         refreshPermissions={refreshPermissions}

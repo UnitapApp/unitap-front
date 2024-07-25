@@ -96,12 +96,14 @@ const PrizeRequirementBody: FC<{
   currentRequirementIndex: number;
   setCurrentRequirementIndex: (value: number) => void;
   loading: boolean;
+  isExhusted: boolean;
 }> = ({
   permissions,
   refreshPermissions,
   loading,
   currentRequirementIndex,
   setCurrentRequirementIndex,
+  isExhusted,
 }) => {
   const { selectedRaffleForEnroll } = usePrizeTapContext();
 
@@ -113,6 +115,7 @@ const PrizeRequirementBody: FC<{
     currentRequirementIndex !== undefined
       ? selectedRaffleForEnroll?.constraints[currentRequirementIndex]
       : null;
+
   const appName = constraint?.name.split(".").splice(1).join(".");
 
   const app = appName ? appInfos[requirementsConnections[appName]!] : undefined;
@@ -196,7 +199,7 @@ const PrizeRequirementBody: FC<{
               <button
                 onClick={refreshPermissions}
                 disabled={loading}
-                className="ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50"
+                className={`ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50 ${isExhusted ? "!border-warn !text-warn" : ""}`}
               >
                 {loading ? (
                   <Lottie
@@ -204,6 +207,8 @@ const PrizeRequirementBody: FC<{
                     height={20}
                     options={loadingAnimationRequirementsOption}
                   ></Lottie>
+                ) : isExhusted ? (
+                  "Try Again"
                 ) : (
                   "Verify"
                 )}
@@ -228,6 +233,7 @@ const PrizeRequirementModal: FC<{
   const { userToken } = useUserProfileContext();
   const [loading, setLoading] = useState(false);
   const [currentRequirementIndex, setCurrentRequirementIndex] = useState(0);
+  const [isExhusted, setIsExhusted] = useState(false);
 
   const [permissions, SetPermissions] = useState<
     (Permission & { isVerified: boolean })[]
@@ -235,6 +241,7 @@ const PrizeRequirementModal: FC<{
 
   const refreshPermissions = () => {
     if (!userToken) return;
+    setIsExhusted(false);
     setLoading(true);
     getTokenConstraintsVerifications(prize.id, userToken)
       .then((res) => {
@@ -249,6 +256,7 @@ const PrizeRequirementModal: FC<{
         );
       })
       .finally(() => {
+        setIsExhusted(true);
         setLoading(false);
       });
   };
@@ -282,6 +290,7 @@ const PrizeRequirementModal: FC<{
         prize={prize}
       />
       <PrizeRequirementBody
+        isExhusted={isExhusted}
         loading={loading}
         permissions={permissions}
         refreshPermissions={refreshPermissions}
