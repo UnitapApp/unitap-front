@@ -69,7 +69,7 @@ const ClaimTokenModalBody = ({
     } else {
       setSize(650);
     }
-  }, [userProfile, selectedTokenForClaim, chainId, collectedToken]);
+  }, [userProfile, selectedTokenForClaim, method, chainId, collectedToken]);
 
   if (!selectedTokenForClaim) return null;
 
