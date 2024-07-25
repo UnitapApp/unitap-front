@@ -4,7 +4,6 @@ import Header from "./components/header";
 import { Metadata } from "next";
 import GasTapMainContent from "./components";
 import FundContextProvider from "./components/Modals/FundGasModal";
-import ProvideGasCard from "./components/Cards/ProvideGasCard/provideGasCard";
 
 export const metadata: Metadata = {
   title: "Unitap | Gas Tap ⛽",
@@ -16,8 +15,6 @@ const GasTap = () => {
     <FundContextProvider>
       <Header />
       <GasTapMainContent />
-
-      {process.env.NODE_ENV === "development" ? null : <ProvideGasCard />}
 
       <ClaimModal />
       <ClaimNonEVMModal />
