@@ -221,6 +221,7 @@ export interface UserTokenDistribution {
   necessaryInformation: string | null;
   notes: string;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   rejectionReason: string | null;
   startAt: string;
   status: string;
@@ -267,4 +268,22 @@ export interface filterProps {
   statusFilter: StatusFilters;
   mainnetFilter: MainnetFilters;
   evmFilter: EvmFilters;
+}
+
+export type TokenOnChain = {
+  tokenAddress: string;
+  tokenDecimals: string;
+  tokenName: string;
+  tokenSymbol: string;
+  logoUrl: string;
+  balance?: string;
+};
+
+export type TokenBalance = {
+  [tokenAddress: string]: string;
+};
+export interface TokenInformation {
+  chainId: string;
+  chainName: string;
+  tokenList: TokenOnChain[];
 }

@@ -67,3 +67,15 @@ export const numberWithCommas = (x: number | bigint): string => {
 
 const lerp = (a: number, b: number, amount: number) =>
   (1 - amount) * a + amount * b;
+
+export const formatNumber = (num: number) => {
+  let fixedNumber = num.toFixed(5);
+
+  let floatNumber = parseFloat(fixedNumber);
+
+  if (floatNumber !== num) {
+    return fixedNumber;
+  } else {
+    return num.toString();
+  }
+};

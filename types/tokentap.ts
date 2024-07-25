@@ -2,9 +2,11 @@ import { Address } from "viem";
 import { Chain, PK, Permission } from ".";
 
 export type Token = {
+  constraintParams: string;
   id: PK;
   name: string;
   distributor: string;
+  decimals?: number;
   distributorUrl: string;
   discordUrl: string;
   twitterUrl: string;
@@ -16,6 +18,7 @@ export type Token = {
   deadline: string;
   maxNumberOfClaims: number;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   notes: string;
   isExpired: boolean;
   isMaxedOut: boolean;
@@ -25,6 +28,9 @@ export type Token = {
   status: "VERIFIED" | "PENDING" | "REJECTED";
   chain: Chain;
   constraints: Permission[];
+  remainingClaimForUnitapPassUser: number | null;
+  maxClaimNumberForUnitapPassUser: number | null;
+  claimDeadlineForUnitapPassUser: string;
 };
 
 export type ClaimedToken = {

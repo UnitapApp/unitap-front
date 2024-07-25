@@ -8,11 +8,11 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "../../../app/contribution-hub/components/Buttons";
+import { BackToHomeButton } from "../../../app/incentive-center/components/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
-  const { openBrightIdModal } = useGlobalContext();
+  const { openBrightIdModal, setIsWalletPromptOpen } = useGlobalContext();
 
   return (
     <>
@@ -36,18 +36,17 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
             Sign up first!
           </p>
           <p className="text-gray100">
-            If you have account log in to have access to Contribution Hub!
+            If you have account log in to have access to Incentive Center!
           </p>
 
-          <Link href="/">
-            <BackToHomeButton
-              height="32px"
-              className="mt-10 !w-full max-w-[120px] text-xs"
-              $fontSize="10px"
-            >
-              <p>Back to Home</p>
-            </BackToHomeButton>
-          </Link>
+          <BackToHomeButton
+            height="32px"
+            className="mt-10 !w-full max-w-[120px] text-xs"
+            $fontSize="10px"
+            onClick={() => setIsWalletPromptOpen(true)}
+          >
+            <p>Connect Wallet</p>
+          </BackToHomeButton>
         </div>
       )}
     </>

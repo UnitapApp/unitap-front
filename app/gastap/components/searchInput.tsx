@@ -10,6 +10,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useGasTapContext } from "@/context/gasTapProvider";
+import Icon from "@/components/ui/Icon";
 
 type SearchInputProps = {
   className?: string;
@@ -24,9 +25,10 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
   const router = useRouter();
 
   const previousTimeout = useRef<any>(null);
+  const ref = useRef<HTMLInputElement>(null);
 
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (previousTimeout.current) clearTimeout(previousTimeout.current);
     const phrase: string = event.target.value;
@@ -58,11 +60,26 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
     changeSearchPhrase?.(queryParam);
   }, [params]);
 
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      if (e.key == "/" && ref.current) {
+        ref.current.focus();
+      }
+    };
+
+    document.addEventListener("keyup", onKeyPress);
+
+    return () => {
+      document.removeEventListener("keyup", onKeyPress);
+    };
+  }, []);
+
   return (
     <div
-      className={`search-input relative h-12 border-gray30 border-2 bg-gray40 rounded-xl ${className}`}
+      className={`search-input relative h-12 rounded-xl border-2 border-gray30 bg-gray40 ${className}`}
     >
       <Input
+        ref={ref}
         data-testid="search-box"
         $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
@@ -77,6 +94,11 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         className="mb-0"
         $backgroundColor="black1"
       ></Input>
+      <Icon
+        iconSrc="/assets/images/claim/slash-icon.svg"
+        hoverable
+        className="icon-right absolute right-4 top-[10px] z-10"
+      ></Icon>
     </div>
   );
 };

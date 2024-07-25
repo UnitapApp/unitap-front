@@ -13,6 +13,7 @@ import {
   ProviderDashboardFormDataProp,
   UploadedFileProps,
   UserRafflesProps,
+  TokenOnChain,
 } from "@/types";
 import { fromWei, toWei } from "@/utils/numbersBigNumber";
 import {
@@ -54,6 +55,8 @@ import {
   errorMessages,
   formInitialData,
 } from "@/constants/contributionHub";
+import { getBalance } from "wagmi/actions";
+import { config } from "@/utils/wallet/wagmi";
 
 export const ProviderDashboardContext = createContext<{
   page: number;
@@ -156,6 +159,11 @@ export const ProviderDashboardContext = createContext<{
   setEndDateState: (date: any) => void;
   userRaffle: UserRafflesProps | undefined;
   allChainList: Chain[] | undefined;
+  setData: (item: any) => void;
+  selectedToken: TokenOnChain | null;
+  setSelectedToken: (token: TokenOnChain | null) => void;
+  tokenName: string | null;
+  setTokenName: (name: string) => void;
 }>({
   page: 0,
   setPage: NullCallback,
@@ -250,6 +258,11 @@ export const ProviderDashboardContext = createContext<{
   userRaffle: {} as any,
   allChainList: [] as any,
   setSelectedApp: NullCallback,
+  setData: NullCallback,
+  selectedToken: null,
+  setSelectedToken: NullCallback,
+  tokenName: null,
+  setTokenName: NullCallback,
 });
 
 const ProviderDashboard: FC<
@@ -360,6 +373,11 @@ const ProviderDashboard: FC<
     enrollmentDurationsInit,
   );
 
+  const [selectedToken, setSelectedToken] = useState<null | TokenOnChain>(null);
+  const [tokenName, setTokenName] = useState<string | null>(null);
+
+  const [userBalance, setUserBalance] = useState<string | null>(null);
+
   const handleSetEnrollDuration = (id: number) => {
     setEnrollmentDurations(
       enrollmentDurations.map((item) =>
@@ -378,12 +396,16 @@ const ProviderDashboard: FC<
   const signer = useWalletSigner();
   const provider = useWalletProvider();
   const { address } = useWalletAccount();
-  const { chain } = useWalletNetwork();
 
-  const { data: userBalance } = useWalletBalance({
-    address,
-    chainId: chain?.id,
-  });
+  const getBalanceBySelectedChainId = async () => {
+    const chainId: number = Number(data.selectedChain.chainId);
+    const balance = await getBalance(config, {
+      address: address!,
+      chainId: chainId,
+    });
+
+    setUserBalance(balance.formatted);
+  };
 
   const filterChainList = useMemo(() => {
     return chainList.filter((chain) =>
@@ -408,9 +430,10 @@ const ProviderDashboard: FC<
         address,
         provider,
         setData,
-        setIsErc20Approved,
         setTokenContractStatus,
+        setIsErc20Approved,
         setApproveAllowance,
+        contractAddresses.prizeTap[data.selectedChain.chainId].erc20,
       );
     }
 
@@ -433,7 +456,7 @@ const ProviderDashboard: FC<
       const step1Check = isAddress(contractAddress);
       const step2Check = await isValidContractAddress(
         contractAddress,
-        provider,
+        Number(data.selectedChain.chainId),
       );
       const isValid = !!(step1Check && step2Check);
       if (isValid) {
@@ -441,19 +464,35 @@ const ProviderDashboard: FC<
       } else {
         data.isNft
           ? setNftContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }))
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }))
           : setTokenContractStatus((prev) => ({
-            ...prev,
-            isValid: ContractValidationStatus.NotValid,
-            checking: false,
-          }));
+              ...prev,
+              isValid: ContractValidationStatus.NotValid,
+              checking: false,
+            }));
       }
     },
     [checkContractInfo, data.isNft, provider, isValidContractAddress],
   );
+
+  useEffect(() => {
+    if (data.selectedChain) {
+      setSelectedToken(null);
+      setTokenName(null);
+      setData((prevData: any) => ({
+        ...prevData,
+        tokenName: "",
+        tokenSymbol: "",
+        tokenDecimals: "",
+        userTokenBalance: "",
+        tokenContractAddress: "",
+      }));
+      getBalanceBySelectedChainId();
+    }
+  }, [data.selectedChain]);
 
   const handleSetDate = (timeStamp: number, label: string) => {
     label == "startTime"
@@ -464,7 +503,6 @@ const ProviderDashboard: FC<
   const canGoStepTwo = () => {
     if (isShowingDetails) return true;
     const {
-      provider,
       description,
       selectedChain,
       nftContractAddress,
@@ -495,13 +533,7 @@ const ProviderDashboard: FC<
       return !!isValid;
     };
 
-    return !!(
-      provider &&
-      description &&
-      selectedChain &&
-      checkNft() &&
-      checkToken()
-    );
+    return !!(selectedChain && checkNft() && checkToken());
   };
 
   const canGoStepThree = () => {
@@ -523,18 +555,7 @@ const ProviderDashboard: FC<
       errorObject.startDateStatus = false;
       errorObject.statDateStatusMessage = errorMessages.required;
     }
-    if (startTimeStamp && startTimeStamp < Math.floor(Date.now() / 1000)) {
-      errorObject.startDateStatus = false;
-      errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
-    }
-    // const sevenDaysLaterAfterNow: Date = new Date(
-    //   Date.now() + 7 * 24 * 60 * 59 * 1000,
-    // );
-    // const sevenDaysLaterAfterNowTimeStamp = Math.round(
-    //   sevenDaysLaterAfterNow.getTime() / 1000,
-    // );
-
-    // if (startTimeStamp && startTimeStamp < sevenDaysLaterAfterNowTimeStamp) {
+    // if (startTimeStamp && startTimeStamp + 60 < Math.floor(Date.now() / 1000)) {
     //   errorObject.startDateStatus = false;
     //   errorObject.statDateStatusMessage = errorMessages.startTimeDuration;
     // }
@@ -544,15 +565,15 @@ const ProviderDashboard: FC<
       errorObject.endDateStatusMessage = errorMessages.required;
     }
 
-    if (
-      endTimeStamp &&
-      startTimeStamp &&
-      (endTimeStamp <= startTimeStamp ||
-        endTimeStamp - startTimeStamp < 60 * 60)
-    ) {
-      errorObject.endDateStatus = false;
-      errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
-    }
+    // if (
+    //   endTimeStamp &&
+    //   startTimeStamp &&
+    //   (endTimeStamp <= startTimeStamp ||
+    //     endTimeStamp - startTimeStamp < 60 * 60)
+    // ) {
+    //   errorObject.endDateStatus = false;
+    //   errorObject.endDateStatusMessage = errorMessages.endLessThanStart;
+    // }
 
     if (data.maxNumberOfEntries && Number(data.maxNumberOfEntries) <= 0) {
       errorObject.maximumLimitationStatus = false;
@@ -602,7 +623,15 @@ const ProviderDashboard: FC<
 
   const canGoStepFive = () => {
     if (isShowingDetails) return true;
-    const { email, twitter, creatorUrl, discord, telegram } = data;
+    const {
+      email,
+      twitter,
+      creatorUrl,
+      discord,
+      telegram,
+      provider,
+      description,
+    } = data;
     if (!email) {
       return false;
     }
@@ -627,6 +656,8 @@ const ProviderDashboard: FC<
       telegram: isTelegramVerified,
     });
     return !!(
+      provider &&
+      description &&
       isUrlVerified &&
       isTwitterVerified &&
       isDiscordVerified &&
@@ -664,8 +695,7 @@ const ProviderDashboard: FC<
 
   //check token contract address
   useEffect(() => {
-    if (isShowingDetails || data.isNft) return;
-    if (!data.tokenContractAddress) {
+    if (!isShowingDetails && !data.tokenContractAddress) {
       setIsErc20Approved(false);
       setTokenContractStatus((prev) => ({
         ...prev,
@@ -675,6 +705,12 @@ const ProviderDashboard: FC<
       setInsufficientBalance(false);
       return;
     }
+    if (
+      isShowingDetails ||
+      data.isNft ||
+      data.tokenContractAddress.length != 42
+    )
+      return;
     if (data.tokenContractAddress == zeroAddress) {
       setIsErc20Approved(true);
       setTokenContractStatus((prev) => ({
@@ -707,8 +743,9 @@ const ProviderDashboard: FC<
     ) {
       setInsufficientBalance(
         data.isNativeToken
-          ? Number(data.totalAmount) >= Number(userBalance?.formatted)
-          : Number(data.totalAmount) >= Number(data.userTokenBalance!),
+          ? Number(data.totalAmount) >= Number(userBalance)
+          : Number(data.totalAmount) >
+              Number(fromWei(data.userTokenBalance!, data.tokenDecimals)),
       );
     }
   }, [
@@ -762,7 +799,7 @@ const ProviderDashboard: FC<
     try {
       const newChainList = await getProviderDashboardValidChain();
       setChainList(newChainList);
-    } catch (e) { }
+    } catch (e) {}
   }, []);
 
   const handleSearchChain = (e: {
@@ -793,6 +830,7 @@ const ProviderDashboard: FC<
         telegram: true,
       });
     }
+
     let value = type == "checkbox" ? e.target.checked : e.target.value;
     if (name === "provider" && value.length > 30) return;
     if (name === "description" && value.length > 100) return;
@@ -862,10 +900,11 @@ const ProviderDashboard: FC<
       provider,
       signer,
       address,
-      contractAddresses.prizeTapErc20,
+      contractAddresses.prizeTap[selectedChain.chainId].erc20,
       setApproveLoading,
       setIsErc20Approved,
       setApproveAllowance,
+      selectedChain,
     );
   };
 
@@ -878,6 +917,7 @@ const ProviderDashboard: FC<
       address,
       setApproveLoading,
       setIsApprovedAll,
+      selectedChain,
     );
   };
 
@@ -1013,7 +1053,9 @@ const ProviderDashboard: FC<
           : { ...constraint, isNotSatisfy: false },
       ),
     );
+    setTokenName(raffle.prizeSymbol);
     handleSetEnrollDuration(-1);
+    setSelectedChain(raffle.chain);
   };
 
   const handleCheckOwnerOfNfts = async (nftIds: string[]) => {
@@ -1153,7 +1195,7 @@ const ProviderDashboard: FC<
         selectedRaffleForCheckReason,
         socialMediaValidation,
         insufficientBalance,
-        userBalance: userBalance?.formatted.toString() ?? null,
+        userBalance: null,
         tokenContractStatus,
         nftContractStatus,
         setNftStatus,
@@ -1169,6 +1211,11 @@ const ProviderDashboard: FC<
         setEndDateState,
         userRaffle,
         allChainList,
+        setData,
+        selectedToken,
+        setSelectedToken,
+        tokenName,
+        setTokenName,
         setSelectedApp: (arg) => {
           if (!arg) {
             setSelectedConstraintTitle(null);

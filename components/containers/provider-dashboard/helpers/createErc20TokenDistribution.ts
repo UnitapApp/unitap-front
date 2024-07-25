@@ -2,7 +2,13 @@ import {
   ProviderDashboardFormDataProp,
   RequirementProps,
 } from "@/types/provider-dashboard";
-import { Address, parseEther, PublicClient, zeroAddress } from "viem";
+import {
+  Address,
+  getAddress,
+  parseEther,
+  PublicClient,
+  zeroAddress,
+} from "viem";
 import { GetWalletClientReturnType } from "wagmi/actions";
 import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { toWei } from "@/utils";
@@ -10,6 +16,7 @@ import { createTokenDistribution } from "@/utils/api";
 import { tokenTapAbi } from "@/types/abis/contracts";
 import Big from "big.js";
 import { contractAddresses } from "@/constants";
+import { Chain } from "@/types";
 
 const txCallBack = async (
   address: string,
@@ -23,30 +30,42 @@ const txCallBack = async (
   startTime: bigint,
   endTime: bigint,
   isNativeToken: boolean,
+  selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: tokenTapAbi,
-    account: address as any,
-    address: contractAddresses.tokenTap as any,
-    functionName: "distributeToken",
-    args: [
-      tokenContractAddress as any,
-      maxNumClaim,
-      isNativeToken
-        ? parseEther(new Big(tokenAmount).toFixed())
-        : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
-      startTime,
-      endTime,
-    ],
-    value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
+  // if (selectedChain.chainId === "42161") {
+
+  // console.log("Attempting to call the contract with values: ", [
+  //   tokenContractAddress as any,
+  //   maxNumClaim,
+  //   isNativeToken
+  //     ? parseEther(new Big(tokenAmount).toFixed())
+  //     : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //   startTime,
+  //   endTime,
+  // ]);
 
   return signer?.writeContract({
     abi: tokenTapAbi,
     account: address as any,
-    address: contractAddresses.tokenTap as any,
+    address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
     functionName: "distributeToken",
-    gasPrice: gasEstimate,
+    // gasPrice: gasEstimate,
     args: [
       tokenContractAddress as any,
       maxNumClaim,
@@ -58,6 +77,24 @@ const txCallBack = async (
     ],
     value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
   });
+  // }
+  // return signer?.writeContract({
+  //   abi: tokenTapAbi,
+  //   account: address as any,
+  //   address: contractAddresses.tokenTap[selectedChain.chainId].erc20,
+  //   functionName: "distributeToken",
+  //   gasPrice: gasEstimate,
+  //   args: [
+  //     tokenContractAddress as any,
+  //     maxNumClaim,
+  //     isNativeToken
+  //       ? parseEther(new Big(tokenAmount).toFixed())
+  //       : BigInt(toWei(Number(new Big(tokenAmount).toFixed()), decimals)),
+  //     startTime,
+  //     endTime,
+  //   ],
+  //   value: tokenContractAddress == zeroAddress ? parseEther(totalAmount) : 0n,
+  // });
 };
 
 export const createErc20TokenDistribution = async (
@@ -97,7 +134,12 @@ export const createErc20TokenDistribution = async (
   const telegram = data.telegram
     ? "https://t.me/" + data.telegram.replace("@", "")
     : null;
-  const creatorUrl = data.creatorUrl ? "https://" + data.creatorUrl : null;
+
+  const creatorUrl = data.creatorUrl
+    ? data.creatorUrl.includes("https://")
+      ? data.creatorUrl
+      : "https://" + data.creatorUrl
+    : null;
 
   const constraints = requirementList.map((item) => item.pk.toString());
   const reversed_constraints = requirementList
@@ -153,10 +195,13 @@ export const createErc20TokenDistribution = async (
   formData.append("email_url", data.email!);
   formData.append("telegram_url", telegram! ?? "");
   formData.append("token", prizeName);
-  formData.append("token_address", data.tokenContractAddress);
+  formData.append("token_address", getAddress(data.tokenContractAddress));
   formData.append("amount", prizeAmount.toString());
   formData.append("chain", data.selectedChain.pk);
-  formData.append("contract", contractAddresses.tokenTap as any);
+  formData.append(
+    "contract",
+    contractAddresses.tokenTap[data.selectedChain.chainId].erc20,
+  );
   formData.append("start_at", startAt(startTime));
   formData.append("deadline", endTime);
   formData.append("max_number_of_claims", maxNumClaim);
@@ -179,6 +224,7 @@ export const createErc20TokenDistribution = async (
       BigInt(startTime),
       data.endTimeStamp,
       data.isNativeToken,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");

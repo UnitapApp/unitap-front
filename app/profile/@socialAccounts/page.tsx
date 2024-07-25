@@ -12,7 +12,6 @@ const SocialAccountsLayout: FC<PropsWithChildren> = async () => {
 
   try {
     connections = await getAllConnections(cookiesStore.get("userToken")?.value);
-    console.log(cookiesStore.get("userToken"));
   } catch (e) {
     redirect("/");
   }

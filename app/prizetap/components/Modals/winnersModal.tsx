@@ -12,6 +12,8 @@ import { Address, isAddressEqual } from "viem";
 import { useGlobalContext } from "@/context/globalProvider";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useReadContracts } from "wagmi";
+import { contractAddresses } from "@/constants";
+import { config } from "@/utils/wallet/wagmi";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -49,11 +51,17 @@ const WinnersModal = () => {
     const contracts = [];
 
     for (let i = 0; i <= entriesNumber / 100; i++) {
+      const address = selectedRaffleForEnroll.isPrizeNft
+        ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
+            ?.erc721
+        : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
+            ?.erc20 || selectedRaffleForEnroll.contract;
+
+      if (!address) continue;
+
       contracts.push({
         abi: isNft ? prizeTap721Abi : prizeTapAbi,
-        address: (selectedRaffleForEnroll.isPrizeNft
-          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994") as Address,
+        address,
         functionName: "getParticipants",
         args: [BigInt(raffleId), BigInt(i * 100), BigInt(i * 100 + 100)],
         chainId: Number(selectedRaffleForEnroll.chain.chainId ?? 1),
@@ -68,6 +76,7 @@ const WinnersModal = () => {
 
   const { data } = useReadContracts({
     contracts: fetchEnrollmentWallets(),
+    config: config,
   }) as any;
 
   const enrollmentWallets = useMemo(() => {

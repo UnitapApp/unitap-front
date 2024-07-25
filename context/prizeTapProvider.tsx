@@ -3,6 +3,7 @@
 import { LineaRaffleEntry, Prize, UserEntryInRaffle } from "@/types";
 import { NullCallback } from "@/utils";
 import {
+  getEnrolledWalletInRaffle,
   getEnrollmentApi,
   getMuonApi,
   getRafflesListAPI,
@@ -15,11 +16,16 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { useUserProfileContext } from "./userProfile";
 import { useRefreshWithInitial } from "@/utils/hooks/refresh";
-import { FAST_INTERVAL } from "@/constants";
+import {
+  FAST_INTERVAL,
+  BASE_REFRESH_INTERVAL,
+  contractAddresses,
+} from "@/constants";
 import {
   useClient,
   useWaitForTransactionReceipt,
@@ -40,6 +46,7 @@ export const PrizeTapContext = createContext<{
   setSelectedRaffleForEnroll: (raffle: Prize | null) => void;
   claimOrEnrollLoading: boolean;
   openEnrollModal: (raffle: Prize, method: string | null) => void;
+  openPreEnrollmentWalletsModal: (id: number) => void;
   closeEnrollModal: () => void;
   claimError: string | null;
   claimOrEnrollWalletResponse: any | null;
@@ -51,6 +58,12 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: (arg: LineaRaffleEntry[]) => void;
   isLineaCheckEnrolledModalOpen: boolean;
   setIsLineaCheckEnrolledModalOpen: (arg: boolean) => void;
+  searchPhrase: string;
+  changeSearchPhrase: (value: string) => void;
+  handleUserTicketChance: (func: string) => void;
+  enrolledWalletListApi: any;
+  isOpenEnrolledModal: boolean;
+  setIsOpenEnrolledModal: (value: boolean) => void;
 }>({
   claimError: null,
   rafflesList: [],
@@ -61,6 +74,7 @@ export const PrizeTapContext = createContext<{
   setSelectedRaffleForEnroll: NullCallback,
   claimOrEnrollLoading: false,
   openEnrollModal: NullCallback,
+  openPreEnrollmentWalletsModal: NullCallback,
   closeEnrollModal: NullCallback,
   claimOrEnrollWalletResponse: null,
   method: null,
@@ -71,6 +85,12 @@ export const PrizeTapContext = createContext<{
   setLineaEnrolledUsers: NullCallback,
   isLineaCheckEnrolledModalOpen: false,
   setIsLineaCheckEnrolledModalOpen: NullCallback,
+  searchPhrase: "",
+  changeSearchPhrase: NullCallback,
+  handleUserTicketChance: NullCallback,
+  enrolledWalletListApi: null,
+  isOpenEnrolledModal: false,
+  setIsOpenEnrolledModal: NullCallback,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -97,20 +117,28 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     useState<any | null>(null);
   const [method, setMethod] = useState<string | null>(null);
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
+  const [searchPhrase, changeSearchPhrase] = useState("");
+
+  const [userTicketChance, setUserTicketChance] = useState(0);
+
+  const [enrolledWalletListApi, setEnrolledWalletListApi] = useState<any>(null);
+
+  const [isOpenEnrolledModal, setIsOpenEnrolledModal] = useState(false);
+
+  const handleUserTicketChance = (func: string) => {
+    if (func == "reset") {
+      setUserTicketChance(0);
+      return;
+    }
+    func === "increase"
+      ? setUserTicketChance((prev) => prev + 1)
+      : setUserTicketChance((prev) => prev - 1);
+  };
 
   const { userToken } = useUserProfileContext();
   const { setIsWalletPromptOpen } = useGlobalContext();
 
   const { isConnected, address, chainId } = useWalletAccount();
-
-  // const { isLoading } = useWaitForTransactionReceipt({
-  //   confirmations: 1,
-  //   hash,
-  //   chainId,
-  //   onReplaced: async (res) => {
-
-  //   },
-  // });
 
   const { writeContractAsync } = useWriteContract({});
 
@@ -129,7 +157,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const getSignature = useCallback(async () => {
     if (
       !selectedRaffleForEnroll ||
-      selectedRaffleForEnroll.isExpired ||
+      (selectedRaffleForEnroll.isExpired && method !== "Claim") ||
       !userToken ||
       !address
     )
@@ -144,6 +172,9 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           shieldSignature: "1",
         },
         multiplier: undefined,
+        userEntry: {
+          pk: selectedRaffleForEnroll.pk,
+        },
       };
     }
 
@@ -155,8 +186,11 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       const enrollInApi = await getEnrollmentApi(
         userToken,
         selectedRaffleForEnroll.pk,
-        address
+        address,
+        userTicketChance,
       );
+
+      console.log(enrollInApi);
       setSelectedRaffleForEnroll({
         ...selectedRaffleForEnroll,
         userEntry: enrollInApi.signature,
@@ -178,6 +212,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setClaimOrEnrollSignatureLoading(false);
     }
 
+    console.log(userEntry);
     return {
       result: response?.result,
       multiplier: userEntry?.multiplier,
@@ -198,7 +233,9 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const enrollOrClaimPayload = await getSignature();
 
-    const id = enrollOrClaimPayload?.userEntry?.pk;
+    console.log(enrollOrClaimPayload);
+
+    const id = enrollOrClaimPayload?.userEntry.pk;
 
     setClaimOrEnrollLoading(true);
 
@@ -211,9 +248,15 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
           owner: enrollOrClaimPayload?.result?.signatures[0].owner,
           nonce: enrollOrClaimPayload?.result?.data.init.nonceAddress,
         },
-        enrollOrClaimPayload?.result?.shieldSignature
+        enrollOrClaimPayload?.result?.shieldSignature,
       );
     }
+
+    const contractAddress = selectedRaffleForEnroll?.isPrizeNft
+      ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc721
+      : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc20;
+
+    if (!contractAddress) throw new Error("Address is not supported");
 
     try {
       const response = await writeContractAsync({
@@ -222,9 +265,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
-        address: selectedRaffleForEnroll?.isPrizeNft
-          ? "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0"
-          : "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+        address: contractAddress,
       });
 
       if (response) {
@@ -270,12 +311,24 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         setIsWalletPromptOpen(true);
         return;
       }
+      if (!address && method !== "Winners") {
+        setIsWalletPromptOpen(true);
+        return;
+      }
       setClaimOrEnrollWalletResponse(null);
       setMethod(method);
       setSelectedRaffleForEnroll(raffle);
     },
-    [isConnected, setIsWalletPromptOpen]
+    [isConnected, setIsWalletPromptOpen, address],
   );
+
+  const openPreEnrollmentWalletsModal = useCallback(async (pk: number) => {
+    const res = await getEnrolledWalletInRaffle(pk);
+    if (res.success) {
+      setEnrolledWalletListApi(res);
+      setIsOpenEnrolledModal(true);
+    }
+  }, []);
 
   const closeEnrollModal = useCallback(() => {
     setClaimOrEnrollWalletResponse(null);
@@ -292,7 +345,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     claimOrEnroll();
   }, [selectedRaffleForEnroll, claimOrEnrollLoading, claimOrEnroll]);
 
-  useRefreshWithInitial(getRafflesList, FAST_INTERVAL, [
+  useRefreshWithInitial(getRafflesList, BASE_REFRESH_INTERVAL, [
     userToken,
     getRafflesList,
   ]);
@@ -302,6 +355,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       value={{
         rafflesList,
         openEnrollModal,
+        openPreEnrollmentWalletsModal,
         closeEnrollModal,
         claimError,
         handleClaimPrize,
@@ -319,6 +373,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isLineaWinnersOpen,
         lineaEnrolledUsers,
         isLineaCheckEnrolledModalOpen,
+        searchPhrase,
+        changeSearchPhrase,
+        handleUserTicketChance,
+        enrolledWalletListApi,
+        isOpenEnrolledModal,
+        setIsOpenEnrolledModal,
       }}
     >
       {children}

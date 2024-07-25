@@ -127,7 +127,14 @@ export const supportedChains: Chain[] = [
   },
   gnosis,
   IDChain,
-  optimism,
+  {
+    ...optimism,
+    rpcUrls: {
+      ...optimism.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/optimism"] },
+      public: { http: ["https://optimism.llamarpc.com"] },
+    },
+  },
   meter,
   {
     ...zetachainAthensTestnet,
@@ -144,7 +151,14 @@ export const supportedChains: Chain[] = [
   },
   scroll,
   xdc,
-  arbitrum,
+  {
+    ...arbitrum,
+    rpcUrls: {
+      ...arbitrum.rpcUrls,
+      default: { http: ["https://rpc.ankr.com/arbitrum"] },
+      public: { http: ["https://arbitrum.llamarpc.com"] },
+    },
+  },
   telos,
   { ...harmonyOne, name: "Harmony Mainnet Shard 0" },
   celo,
@@ -165,6 +179,7 @@ export enum SupportedChainId {
   MAINNET = 1,
   GOERLI = 5,
   GNOSIS = 100,
+  BASE = 8453,
 }
 
 export const unitapPassSupportedNetworks = [

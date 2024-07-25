@@ -15,6 +15,8 @@ export type UserProfile = {
   pk: PK;
   wallets: UserWallet[];
   username: string;
+  prizetapWinningChanceNumber: number;
+  upBalance: number;
 };
 
 export type Settings = {
@@ -37,6 +39,7 @@ export type UserConnection = {
     id: number;
     userProfile: UserProfile;
     createdAt: string;
+    isConnected: boolean;
   };
 };
 

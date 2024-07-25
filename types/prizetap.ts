@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { Chain, PK, Permission, UserProfile } from ".";
+import { Chain, PK, Permission, UserProfile, UserRafflesProps } from ".";
 
 export type LineaRaffleEntry = {
   id: number;
@@ -8,6 +8,7 @@ export type LineaRaffleEntry = {
   claimTx: string;
   raffle: number;
   claimingPrizeTx: Address | null;
+  selectedRaffleCh?: UserRafflesProps | null;
 };
 
 export type Prize = {
@@ -51,6 +52,7 @@ export type Prize = {
   prizeAsset?: string;
   status: "PENDING" | "REJECTED" | string;
   winnersCount: number;
+  isPreEnrollment: boolean;
 };
 
 export type WinnerEntry = {

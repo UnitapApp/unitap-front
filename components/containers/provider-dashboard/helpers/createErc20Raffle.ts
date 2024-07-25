@@ -1,10 +1,16 @@
 import { ZERO_ADDRESS, contractAddresses } from "@/constants";
-import { ProviderDashboardFormDataProp, RequirementProps } from "@/types";
+import {
+  Chain,
+  ProviderDashboardFormDataProp,
+  RequirementProps,
+} from "@/types";
 import { prizeTapAbi } from "@/types/abis/contracts";
 import { toWei } from "@/utils/numbersBigNumber";
 import {
+  Address,
   GetContractReturnType,
   PublicClient,
+  getAddress,
   getContract,
   parseEther,
 } from "viem";
@@ -20,13 +26,14 @@ const createErc20RaffleCallback = async (
   provider: PublicClient,
   payableAmount: string,
   tokenDecimals: number,
-  currencyAddress: `0x${string}`,
+  currencyAddress: Address,
   maxParticipants: bigint,
   startTime: bigint,
   endTime: bigint,
   isNativeToken: boolean,
   winnersCount: bigint,
   totalAmount: string,
+  selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
   const gasEstimate = await provider.estimateContractGas({
@@ -42,7 +49,7 @@ const createErc20RaffleCallback = async (
           ),
       currencyAddress,
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       winnersCount,
@@ -50,6 +57,31 @@ const createErc20RaffleCallback = async (
     ],
     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
   });
+
+  if (selectedChain.chainId === "42161" || selectedChain.chainId === "10") {
+    return signer?.writeContract({
+      abi: prizeTapAbi,
+      account: account as any,
+      address: raffleContract.address,
+      functionName: "createRaffle",
+      // gasPrice: gasEstimate,
+      args: [
+        isNativeToken
+          ? parseEther(new Big(payableAmount).toFixed())
+          : BigInt(
+              toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+            ),
+        currencyAddress,
+        maxParticipants,
+        3n,
+        startTime,
+        endTime,
+        winnersCount,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      ],
+      value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+    });
+  }
 
   return signer?.writeContract({
     abi: prizeTapAbi,
@@ -65,7 +97,7 @@ const createErc20RaffleCallback = async (
           ),
       currencyAddress,
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       winnersCount,
@@ -85,7 +117,8 @@ export const createErc20Raffle = async (
   setCreateRaffleLoading: any,
   setCreteRaffleResponse: any,
 ) => {
-  const raffleContractAddress = contractAddresses.prizeTapErc20;
+  const raffleContractAddress =
+    contractAddresses.prizeTap[data.selectedChain.chainId].erc20;
   const maxNumberOfEntries = data.maxNumberOfEntries
     ? data.maxNumberOfEntries
     : "1000000000";
@@ -158,7 +191,7 @@ export const createErc20Raffle = async (
   formData.append("creator_name", data.provider!);
   formData.append("creator_address", address);
   formData.append("prize_amount", prizeAmount.toString());
-  formData.append("prize_asset", data.tokenContractAddress);
+  formData.append("prize_asset", getAddress(data.tokenContractAddress));
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
   formData.append("constraint_params", btoa(JSON.stringify(constraint_params)));
@@ -174,6 +207,8 @@ export const createErc20Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
+  formData.append("decimals", decimals);
+  formData.append("max_multiplier", "3");
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,
@@ -198,6 +233,7 @@ export const createErc20Raffle = async (
       data.isNativeToken,
       BigInt(data.winnersCount),
       data.totalAmount,
+      data.selectedChain,
     );
 
     if (!response) throw new Error("Contract hash not found");

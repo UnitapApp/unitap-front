@@ -23,6 +23,7 @@ import { getAssetUrl, replacePlaceholders, shortenAddress } from "@/utils";
 import { zeroAddress } from "viem";
 import { useFastRefresh, useRefreshWithInitial } from "@/utils/hooks/refresh";
 import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
 
 export const Action = styled.div`
   display: flex;
@@ -34,24 +35,32 @@ export const Action = styled.div`
 
 const RafflesList = () => {
   const params = useSearchParams();
-  const { rafflesList } = usePrizeTapContext();
+  const { rafflesList, searchPhrase } = usePrizeTapContext();
   const [highlightedPrize, setHighlightedPrize] = useState("");
 
-  const prizesSortListMemo = useMemo(
-    () =>
-      rafflesList.sort((a, b) => {
-        const lowerHighlightChainName = highlightedPrize.toLowerCase();
+  const prizesSortListMemo = useMemo(() => {
+    const raffleList = rafflesList.sort((a, b) => {
+      const lowerHighlightChainName = highlightedPrize.toLowerCase();
 
-        if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
-        if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
+      if (a.name.toLowerCase() === lowerHighlightChainName) return -1;
+      if (b.name.toLowerCase() === lowerHighlightChainName) return 1;
 
-        return 0;
-      }),
-    [rafflesList, highlightedPrize],
-  );
+      return 0;
+    });
+    const searchPhraseLowerCase = searchPhrase.toLowerCase();
+
+    return raffleList.filter(
+      (raffle) =>
+        raffle.name.toLowerCase().includes(searchPhraseLowerCase) ||
+        raffle.creatorProfile?.username
+          .toLowerCase()
+          .includes(searchPhraseLowerCase) ||
+        raffle.creatorName?.toLowerCase().includes(searchPhraseLowerCase),
+    );
+  }, [rafflesList, searchPhrase, highlightedPrize]);
 
   useEffect(() => {
-    const highlightedPrize = params.get("icebox");
+    const highlightedPrize = params.get("hp");
 
     setHighlightedPrize(highlightedPrize || "");
   }, [params, setHighlightedPrize]);
@@ -115,19 +124,21 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     prizeAmount,
     creatorProfile,
     winnerEntries: winnersEntry,
-
+    isPreEnrollment,
     winnersCount,
     status,
   } = raffle;
 
   const params = useMemo(
-    () => JSON.parse(raffle.constraintParams),
+    () => JSON.parse(raffle.constraintParams || "{}"),
     [raffle.constraintParams],
   );
 
   const creator = creatorName || creatorProfile?.username;
+  const [showTooltip, setShowTooltip] = useState(false);
 
-  const { openEnrollModal } = usePrizeTapContext();
+  const { openEnrollModal, openPreEnrollmentWalletsModal } =
+    usePrizeTapContext();
   const { userProfile } = useUserProfileContext();
   const remainingPeople = maxNumberOfEntries - numberOfOnchainEntries;
   const isRemainingPercentLessThanTen =
@@ -136,10 +147,16 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
   const userClaimEntry = useMemo(
-    () => winnersEntry?.find((item) => item.userProfile.pk === userProfile?.pk),
+    () =>
+      winnersEntry?.find((item) =>
+        item.userProfile ? item.userProfile.pk === userProfile?.pk : undefined,
+      ),
     [userProfile, winnersEntry],
   );
-
+  const currentDate = new Date();
+  const oneMonthAfterDeadline = new Date(deadline);
+  oneMonthAfterDeadline.setMonth(oneMonthAfterDeadline.getMonth() + 1);
+  const isAfter = currentDate > oneMonthAfterDeadline;
   // let tokenImgLink: string | undefined = tokenUri
   //   ? `https://ipfs.io/ipfs/QmYmSSQMHaKBByB3PcZeTWesBbp3QYJswMFZYdXs1H3rgA/${
   //       Number(tokenUri.split("/")[3]) + 1
@@ -157,7 +174,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
     <div
       className={`${isPrizeNft ? "prize-card-bg-1" : "prize-card-bg-2"} ${
         isHighlighted ? "mb-20" : "mb-4"
-      }`}
+      } ${isExpired && status != "WS" && isAfter ? "opacity-[.6]" : ""}`}
     >
       <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-gray30 p-5 lg:flex-row lg:bg-inherit lg:p-0">
         <div className="prize-card__image relative mb-3 lg:mb-0">
@@ -191,7 +208,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
 							)} */}
             </div>
           </div>
-          <div className="absolute bottom-[-10px] left-[40px] flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
+          <div className="absolute bottom-[-10px] left-[40px] z-10 flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
             <p className="p-1 text-2xs text-gray100"> on {chain.chainName} </p>
             <Icon iconSrc={chain.logoUrl} width="20px" height="16px" />
           </div>
@@ -221,6 +238,44 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 <small className="ml-5 rounded-xl bg-gray10 p-1 px-2 text-xs font-semibold text-gray100">
                   {winnersCount}x Winners
                 </small>
+              )}
+              {isPreEnrollment && (
+                <div
+                  className="relative"
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
+                >
+                  <div
+                    className=" ml-3 flex h-[23px] w-[116px] items-center justify-center overflow-hidden
+              rounded-lg bg-br-pre-enrollment p-[1px] text-2xs text-[#A79FE5]"
+                  >
+                    <div className="flex h-full w-full cursor-pointer items-center justify-between rounded-[7px] bg-gray20 px-2 font-semibold">
+                      Pre-enrollment
+                      <img
+                        src="/assets/images/provider-dashboard/exclamation.svg"
+                        width={14}
+                        height={14}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${showTooltip ? "flex" : "hidden"} relative `}
+                  >
+                    <div className="z-100! absolute -left-10 -top-[85px] z-30 w-[240px] rounded border border-gray70 bg-gray20 p-1 text-2xs">
+                      In pre-enrollment raffles, the distributor gives Unitap a
+                      list of participants and Unitap only picks the winner in a
+                      transparent raffle.
+                    </div>
+                    <div className="z-0! absolute -top-8 left-16 h-[5px] w-[5px] rotate-45  bg-green-100"></div>
+                  </div>
+                </div>
+              )}
+              {isExpired && status != "WS" && isAfter ? (
+                <div className="ml-3 flex h-[22px] w-[92px] items-center justify-center rounded-xl border border-gray50 bg-gray20 text-2xs  font-semibold text-gray90">
+                  From Archive
+                </div>
+              ) : (
+                ""
               )}
               <div className="ml-auto flex gap-4">
                 {twitterUrl && (
@@ -263,9 +318,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
               </p>
             </span>
             <ReactMarkdown
-              className={`prize-card__description mb-2 shrink-0 grow basis-auto text-xs leading-5 text-gray100 ${
-                isHighlighted ? "bg-g-primary-low" : "!bg-gray30"
-              } text-justify`}
+              className={`prize-card__description text-gray100bg-transparent mb-2 shrink-0 grow basis-auto text-justify text-xs leading-5`}
             >
               {description}
             </ReactMarkdown>
@@ -283,25 +336,33 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           .filter((permission) => permission.type === "VER")
                           .slice(0, 6)
                     ).map((permission, key) => (
-                      <Tooltip
-                        onClick={openEnrollModal.bind(null, raffle, "Verify")}
+                      <div
+                        onClick={openEnrollModal.bind(
+                          null,
+                          raffle,
+                          "Pre-Verify",
+                        )}
                         className={
                           "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                         }
                         data-testid={`token-verification-${raffle.id}-${permission.name}`}
                         key={key}
-                        text={replacePlaceholders(
-                          (permission.isReversed
-                            ? permission.negativeDescription
-                            : permission.description)!,
-                          params[permission.name],
-                        )}
+                        // text={
+                        //   <Markdown className="markdown">
+                        //     {replacePlaceholders(
+                        //       (permission.isReversed
+                        //         ? permission.negativeDescription
+                        //         : permission.description)!,
+                        //       params[permission.name],
+                        //     )}
+                        //   </Markdown>
+                        // }
                       >
                         <div className="flex items-center gap-3">
                           {permission.isReversed && "Not "}
                           {permission.title}
                         </div>
-                      </Tooltip>
+                      </div>
                     ))}
 
                     {raffle.constraints.length > 6 && (
@@ -336,104 +397,192 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                 !userEntry?.txHash &&
                 maxNumberOfEntries === numberOfOnchainEntries) ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
-                  <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
-                    <div className="flex flex-col gap-1">
-                      <p className="text-2xs text-white">
-                        {start ? "Winners Announced in:" : "Starts in:"}
-                      </p>
-                      <p className="text-2xs text-gray100">
-                        {maxNumberOfEntries >= 1_000_000_000
-                          ? `${numberWithCommas(
-                              numberOfOnchainEntries,
-                            )} people enrolled`
-                          : !isRemainingPercentLessThanTen
-                            ? `
+                  <div
+                    className={`flex w-full rounded-xl ${isPreEnrollment ? "bg-br-pre-enrollment p-[1px]" : " bg-gray40"}`}
+                  >
+                    <div
+                      className={`flex w-full flex-col justify-between  gap-4 rounded-[11px] bg-gray40 px-5 py-1 sm:flex-row md:items-center`}
+                    >
+                      {!isPreEnrollment ? (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {start ? "Winners Announced in:" : "Starts in:"}
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            {maxNumberOfEntries >= 1_000_000_000
+                              ? `${numberWithCommas(
+                                  numberOfOnchainEntries,
+                                )} people enrolled`
+                              : !isRemainingPercentLessThanTen
+                                ? `
 											${numberOfOnchainEntries} / ${numberWithCommas(
                         maxNumberOfEntries,
                       )} people enrolled`
-                            : remainingPeople > 0
-                              ? `${remainingPeople} people remains`
-                              : `${numberWithCommas(
-                                  maxNumberOfEntries,
-                                )} people enrolled`}
-                      </p>
-                    </div>
-                    <RaffleCardTimer
-                      startTime={startAt}
-                      FinishTime={deadline}
-                    />
-                  </div>
-                  <ClaimAndEnrollButton
-                    disabled={true}
-                    className="!w-full min-w-[552px] md:!w-[352px]"
-                    height="48px"
-                    $fontSize="14px"
-                  >
-                    {" "}
-                    <div className="relative w-full">
-                      {maxNumberOfEntries === numberOfOnchainEntries ? (
-                        <p> Full</p>
+                                : remainingPeople > 0
+                                  ? `${remainingPeople} people remains`
+                                  : `${numberWithCommas(
+                                      maxNumberOfEntries,
+                                    )} people enrolled`}
+                          </p>
+                        </div>
                       ) : (
-                        <p> Unavailable</p>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {numberOfOnchainEntries}{" "}
+                            <span className="text-gray100">people</span>
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            have been given enrollment
+                          </p>
+                        </div>
                       )}
-                      <Icon
-                        className="absolute right-0 top-[-2px]"
-                        iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-                        width="27px"
-                        height="24px"
+                      <RaffleCardTimer
+                        startTime={startAt}
+                        FinishTime={deadline}
                       />
                     </div>
-                  </ClaimAndEnrollButton>
+                  </div>
+                  {!isPreEnrollment ? (
+                    <ClaimAndEnrollButton
+                      disabled={true}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      height="48px"
+                      $fontSize="14px"
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        {maxNumberOfEntries === numberOfOnchainEntries ? (
+                          <p> Full</p>
+                        ) : numberOfOnchainEntries == 0 ? (
+                          <p> Unavailable</p>
+                        ) : new Date(deadline) < new Date() ? (
+                          <p className="mr-[2em] bg-g-primary bg-clip-text text-sm text-transparent">
+                            Raffle is being processed
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  ) : (
+                    <ClaimAndEnrollButton
+                      height="48px"
+                      $fontSize="14px"
+                      disabled={!start}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      onClick={() => openPreEnrollmentWalletsModal(raffle.pk)}
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        <p className="bg-g-primary bg-clip-text text-xs text-transparent">
+                          {new Date(deadline) < new Date()
+                            ? "Raffle is being processed"
+                            : "Check Enrolled Wallets"}
+                        </p>{" "}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  )}
                 </span>
               ) : !winnersEntry.length && !userEntry?.txHash ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
-                  <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
-                    <div className="flex flex-col gap-1">
-                      <p className="text-2xs text-white">
-                        {start ? "Winners Announced in:" : "Starts in:"}
-                      </p>
-                      <p className="text-2xs text-gray100">
-                        {maxNumberOfEntries >= 1_000_000_000
-                          ? `${numberWithCommas(
-                              numberOfOnchainEntries,
-                            )} people enrolled`
-                          : !isRemainingPercentLessThanTen
-                            ? `
+                  <div
+                    className={`flex w-full flex-col justify-between gap-4 rounded-xl ${isPreEnrollment ? "bg-br-pre-enrollment p-[1px]" : " bg-gray40"}  sm:flex-row md:items-center`}
+                  >
+                    <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
+                      {!isPreEnrollment ? (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {start ? "Winners Announced in:" : "Starts in:"}
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            {maxNumberOfEntries >= 1_000_000_000
+                              ? `${numberWithCommas(
+                                  numberOfOnchainEntries,
+                                )} people enrolled`
+                              : !isRemainingPercentLessThanTen
+                                ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
                             maxNumberOfEntries,
                           )} people enrolled`
-                            : remainingPeople > 0
-                              ? `${remainingPeople} people remains`
-                              : `${numberWithCommas(
-                                  maxNumberOfEntries,
-                                )} people enrolled`}
-                      </p>
-                    </div>
-                    <RaffleCardTimer
-                      startTime={startAt}
-                      FinishTime={deadline}
-                    />
-                  </div>
-                  <ClaimAndEnrollButton
-                    height="48px"
-                    $fontSize="14px"
-                    disabled={!start}
-                    className="!w-full min-w-[552px] md:!w-[352px]"
-                    onClick={() => openEnrollModal(raffle, "Verify")}
-                  >
-                    {" "}
-                    <div className="relative w-full">
-                      <p className="bg-g-primary bg-clip-text text-transparent">
-                        Enroll
-                      </p>{" "}
-                      <Icon
-                        className="absolute right-0 top-[-2px]"
-                        iconSrc="assets/images/prize-tap/header-prize-logo.svg"
-                        width="27px"
-                        height="24px"
+                                : remainingPeople > 0
+                                  ? `${remainingPeople} people remains`
+                                  : `${numberWithCommas(
+                                      maxNumberOfEntries,
+                                    )} people enrolled`}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xs text-white">
+                            {numberOfOnchainEntries}{" "}
+                            <span className="text-gray100">people</span>
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            have been given enrollment
+                          </p>
+                        </div>
+                      )}
+                      <RaffleCardTimer
+                        startTime={startAt}
+                        FinishTime={deadline}
                       />
                     </div>
-                  </ClaimAndEnrollButton>
+                  </div>
+                  {!isPreEnrollment ? (
+                    <ClaimAndEnrollButton
+                      height="48px"
+                      $fontSize="14px"
+                      disabled={!start}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      onClick={() => openEnrollModal(raffle, "Pre-Verify")}
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        <p className="bg-g-primary bg-clip-text text-transparent">
+                          Enroll
+                        </p>{" "}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  ) : (
+                    <ClaimAndEnrollButton
+                      height="48px"
+                      $fontSize="14px"
+                      disabled={!start}
+                      className="!w-full min-w-[552px] md:!w-[352px]"
+                      onClick={() => openPreEnrollmentWalletsModal(raffle.pk)}
+                    >
+                      {" "}
+                      <div className="relative w-full">
+                        <p className="bg-g-primary bg-clip-text text-xs text-transparent">
+                          Check Enrolled Wallets
+                        </p>{" "}
+                        <Icon
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                          iconSrc="assets/images/prize-tap/header-prize-logo.svg"
+                          width="27px"
+                          height="24px"
+                        />
+                      </div>
+                    </ClaimAndEnrollButton>
+                  )}
                 </span>
               ) : !winnersEntry.length && userEntry?.txHash ? (
                 <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
@@ -465,7 +614,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     />
                   </div>
                   <EnrolledButton
-                    disabled={true}
+                    onClick={() => openEnrollModal(raffle, "Enroll")}
                     className="!w-full  min-w-[552px] md:!w-[352px]"
                     height="48px"
                     $fontSize="14px"
@@ -477,14 +626,14 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           new Date(deadline) < new Date()
                             ? "text-sm"
                             : ""
-                        } bg-g-primary bg-clip-text text-transparent`}
+                        } mr-[2em] bg-g-primary bg-clip-text text-sm text-transparent`}
                       >
                         {!winnersEntry.length && new Date(deadline) < new Date()
                           ? "Raffle is being processed"
                           : "Enrolled"}
                       </span>
                       <Icon
-                        className="absolute right-0 top-[-2px]"
+                        className="absolute right-0 top-1/2 -translate-y-1/2"
                         iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
                         width="27px"
                         height="24px"
@@ -493,42 +642,58 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                   </EnrolledButton>
                 </span>
               ) : winnersEntry && !userClaimEntry ? (
-                <div className="flex w-full flex-1 items-center gap-4">
-                  <span className="align-center flex h-[70px] w-full items-center justify-between overflow-hidden rounded-xl bg-gray10 py-1 font-medium leading-[15px] md:h-[48px] md:leading-[normal]">
-                    <p className="ml-4 text-2xs text-gray100">
-                      {maxNumberOfEntries >= 1_000_000_000
-                        ? `${numberWithCommas(
-                            numberOfOnchainEntries,
-                          )} people enrolled`
-                        : !isRemainingPercentLessThanTen
-                          ? `
+                <div className="flex h-[43px] w-full flex-1 items-center gap-4">
+                  <div className="flex h-full w-full flex-col items-center justify-between gap-4 md:flex-row">
+                    {!isPreEnrollment ? (
+                      <span className="align-center flex h-[70px] w-full items-center justify-between overflow-hidden rounded-xl bg-gray10 py-1 font-medium leading-[15px] md:h-[48px] md:leading-[normal]">
+                        <p className="ml-4 text-2xs text-gray100">
+                          {maxNumberOfEntries >= 1_000_000_000
+                            ? `${numberWithCommas(
+                                numberOfOnchainEntries,
+                              )} people enrolled`
+                            : !isRemainingPercentLessThanTen
+                              ? `
 													${numberOfOnchainEntries} / ${numberWithCommas(
                             maxNumberOfEntries,
                           )} people enrolled`
-                          : `${numberWithCommas(
-                              maxNumberOfEntries,
-                            )} people enrolled`}
-                    </p>
-                    <Icon
-                      className="mt-[-25px] opacity-[.3]  md:mt-[-10px] "
-                      iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
-                      width="215px"
-                      height="215px"
-                    />
-                  </span>
-
-                  <ClaimAndEnrollButton
-                    height="48px"
-                    $fontSize="14px"
-                    className="!w-full  min-w-[552px] md:!w-[352px]"
-                    onClick={() => openEnrollModal(raffle, "Winners")}
-                  >
-                    <div className="relative w-full">
-                      <span className="bg-g-primary bg-clip-text text-transparent">
-                        Check Winners
+                              : `${numberWithCommas(
+                                  maxNumberOfEntries,
+                                )} people enrolled`}
+                        </p>
+                        <Icon
+                          className="mt-[-25px] opacity-[.3]  md:mt-[-10px] "
+                          iconSrc="assets/images/prize-tap/winner_bg_diamond.svg"
+                          width="215px"
+                          height="215px"
+                        />
                       </span>
-                    </div>
-                  </ClaimAndEnrollButton>
+                    ) : (
+                      <div className="flex h-[49px] w-full justify-center gap-1 overflow-hidden rounded-lg bg-br-pre-enrollment p-[1px]">
+                        <div className="flex h-full w-full flex-col justify-center rounded-[7px] bg-gray40 pl-4">
+                          <p className="text-2xs text-white">
+                            {numberOfOnchainEntries}{" "}
+                            <span className="text-gray100">people</span>
+                          </p>
+                          <p className="text-2xs text-gray100">
+                            have been given enrollment
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    <ClaimAndEnrollButton
+                      height="48px"
+                      $fontSize="14px"
+                      className="!w-full  min-w-[552px] md:!w-[352px]"
+                      onClick={() => openEnrollModal(raffle, "Winners")}
+                    >
+                      <div className="relative w-full">
+                        <span className="bg-g-primary bg-clip-text text-transparent">
+                          Check Winners
+                        </span>
+                      </div>
+                    </ClaimAndEnrollButton>
+                  </div>
                 </div>
               ) : !!winnersEntry.length &&
                 !!userClaimEntry &&
@@ -581,7 +746,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     <div className="relative">
                       <p className="!font-semibold">Claimed</p>
                       <Icon
-                        className="absolute right-0 top-[-2px]"
+                        className="absolute right-0 top-1/2 -translate-y-1/2"
                         iconSrc="assets/images/prize-tap/header-prize-logo.svg"
                         width="27px"
                         height="24px"

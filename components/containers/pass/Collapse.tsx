@@ -1,12 +1,12 @@
-import Icon from "@/components/ui/Icon"
-import React, { useState } from "react"
+import Icon from "@/components/ui/Icon";
+import React, { useState } from "react";
 
 interface CollapseProps {
-  title: string
-  icon: string
-  className?: string
-  children?: React.ReactNode
-  initState?: boolean
+  title: string;
+  icon: string;
+  className?: string;
+  children?: React.ReactNode;
+  initState?: boolean;
 }
 
 const Collapse = ({
@@ -16,17 +16,15 @@ const Collapse = ({
   children,
   initState,
 }: CollapseProps) => {
-  const [isCollapseOpen, setIsCollapseOpen] = useState(initState || false)
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
   return (
-    <div
-      className={`collapse overflow-y-hidden collapse-card w-full ${className}`}
-    >
+    <div className="mt-3">
       <div
         onClick={() => {
-          setIsCollapseOpen(!isCollapseOpen)
+          setIsCollapseOpen(!isCollapseOpen);
         }}
-        className="collapse-content flex items-center cursor-pointer"
+        className="collapse-content flex h-[60px] cursor-pointer items-center rounded-xl bg-gray20 px-4"
       >
         <Icon
           className="mr-7 md:ml-3"
@@ -45,14 +43,12 @@ const Collapse = ({
         />
       </div>
       <div
-        className={`overflow-y-hidden collapse__data ml-1 text-justify md:text-left md:ml-16 md:mr-6 ${
-          isCollapseOpen ? "open-collapse" : "close-collapse"
-        }`}
+        className={`grid grid-rows-[0fr] transition-all duration-300 ${isCollapseOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"} `}
       >
-        {children}
+        <div className="mt-3 overflow-hidden">{children}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Collapse
+export default Collapse;

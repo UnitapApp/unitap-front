@@ -18,9 +18,10 @@ type props = {
   isOpen: boolean;
   spaceman?: Spaceman;
   children: React.ReactNode;
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | number;
   closeModalHandler: () => void;
   errorSource?: APIErrorsSource;
+  bodyClassName?: string;
 };
 
 const Modal = ({
@@ -32,16 +33,9 @@ const Modal = ({
   className,
   size,
   errorSource,
+  bodyClassName,
 }: props) => {
   const { getError } = React.useContext(ErrorsContext);
-
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-  }, [isOpen]);
 
   return (
     <>
@@ -89,7 +83,7 @@ const Modal = ({
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } styled-scroll max-h-[70vh] !rounded-none`}
+              } styled-scroll max-h-[70vh] overflow-auto !rounded-none ${bodyClassName}`}
               size={size}
             >
               {children}

@@ -70,7 +70,7 @@ const Select: FC<SelectProps> = ({
 
       <div ref={ref} className="relative w-full cursor-pointer">
         <div
-          onClick={() => setShowItems(true)}
+          onClick={() => setShowItems(!showItems)}
           className="flex w-full items-center rounded-xl border border-gray50 bg-gray40 p-2"
         >
           {selectedItem?.icon ? (

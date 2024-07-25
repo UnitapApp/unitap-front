@@ -16,9 +16,9 @@ const ClaimSuccessBody: FC<{
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       `I've just claimed ${formatWeiBalance(chain.maxClaimAmount)} ${
         chain.symbol
-      } on ${chain.chainName} from @Unitap_app 🔥\nClaim yours:`
+      } on ${chain.chainName} from @Unitap_app 🔥\nClaim yours:`,
     )}&url=${encodeURIComponent(
-      "unitap.app/gastap?hc=" + encodeURIComponent(chain.chainName)
+      "unitap.app/gastap?hc=" + encodeURIComponent(chain.chainName),
     )}`;
     window.open(twitterUrl, "_blank");
   };
@@ -27,14 +27,14 @@ const ClaimSuccessBody: FC<{
     <>
       <DropIconWrapper data-testid={`chain-claim-success-${chain.pk}`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
           iconSrc={getChainClaimIcon(chain)}
           alt=""
         />
       </DropIconWrapper>
-      <span className="flex justify-center items-center font-medium mb-3">
+      <span className="mb-3 flex items-center justify-center font-medium">
         <Text
           className="!mb-0"
           width="100%"
@@ -66,7 +66,7 @@ const ClaimSuccessBody: FC<{
         width="100%"
         fontSize="14"
         color="second_gray_light"
-        className="underline cursor-pointer"
+        className="cursor-pointer underline"
         mb={3}
         $textAlign="center"
         onClick={() =>
@@ -79,13 +79,13 @@ const ClaimSuccessBody: FC<{
       <div className="relative w-full">
         <button
           onClick={handleClick}
-          className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+          className={`gradient-outline-twitter-button flex w-full items-center justify-center rounded-xl border-gray00 bg-gray00 px-3 py-4 transition-all duration-75 hover:bg-gray20`}
         >
           <p className="text-sm font-semibold text-twitter">Share on Twitter</p>
         </button>
         <Icon
           iconSrc="/assets/images/gas-tap/twitter-share.svg"
-          className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+          className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
           width="auto"
           height="26px"
         />

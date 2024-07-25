@@ -21,12 +21,14 @@ export default defineConfig({
     {
       name: "UnitapPass",
       abi: UnitapPass as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "UnitapPassMain",
       abi: UnitapPassMain as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "UnitapEVMTokenTap",
@@ -40,22 +42,23 @@ export default defineConfig({
     {
       name: "UnitapPassBatchSale",
       abi: UnitapPassBatchSaleMain as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "PrizeTap",
       abi: PrizeTap as any,
-      address: "0x57b2BA844fD37F20E9358ABaa6995caA4fCC9994",
+      address: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
     },
     {
       name: "PrizeTap721",
       abi: PrizeTap721 as any,
-      address: "0xDB7bA3A3cbEa269b993250776aB5B275a5F004a0",
+      address: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     },
     {
       name: "TokenTap",
       abi: TokenTap as any,
-      address: "0xd78Bc9369ef4617F5E3965d47838a0FCc4B9145F",
+      address: "0x785996054151487B296005aAeC8CAE7C209D1385",
     },
   ],
   plugins: [
