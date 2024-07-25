@@ -42,18 +42,18 @@ export const Wallet: FC<{
   };
 
   return (
-    <div className="p-4 flex bg-gray40 border-2 items-center border-gray50 rounded-xl">
+    <div className="flex items-center rounded-xl border-2 border-gray50 bg-gray40 p-4">
       <span
-        className={`w-2 h-2 rounded-full ${
+        className={`h-2 w-2 rounded-full ${
           isActive ? "bg-space-green" : "bg-error"
         }`}
       ></span>
       <p className={`ml-5 text-sm font-normal ${NotoSansMono.className}`}>
         {shortenAddress(address)}
       </p>
-      <div className="ml-4 relative">
+      <div className="relative ml-4">
         {copyMessage && (
-          <div className="absolute top-1/2 translate-y-1/2 mb-3 w-16 left-1/2 -translate-x-1/2 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 bg-gray10 py-2 text-center text-xs text-gray100">
             {copyMessage}
           </div>
         )}
@@ -73,7 +73,7 @@ export const Wallet: FC<{
           width={16}
           height={18}
           src="/assets/images/up-profile/trashcan.svg"
-          className="ml-auto opacity-70 cursor-pointer hover:opacity-100"
+          className="ml-auto cursor-pointer opacity-70 hover:opacity-100"
           alt="delete"
         />
       )}
@@ -123,7 +123,7 @@ const EditPage = () => {
         .catch((err) => {
           if (err instanceof AxiosError) {
             setError(
-              err.response?.data.message || err.response?.data.username?.[0]
+              err.response?.data.message || err.response?.data.username?.[0],
             );
             return;
           }
@@ -139,14 +139,14 @@ const EditPage = () => {
 
   return (
     <div>
-      <div className="bg-gray20 mt-10 rounded-xl p-5 flex items-center">
-        <Link href="/profile" className="mr-auto">
+      <div className="mt-10 flex items-center rounded-xl bg-gray20 p-5">
+        <Link href="/" className="mr-auto">
           <Icon iconSrc="/assets/images/up-profile/back.svg" />
         </Link>
         <h4 className="mr-auto">Edit Profile</h4>
       </div>
 
-      <div className="mt-5 p-5 flex bg-cover rounded-xl items-center bg-[url('/assets/images/up-profile/profile-landing.svg')] gap-10">
+      <div className="mt-5 flex items-center gap-10 rounded-xl bg-[url('/assets/images/up-profile/profile-landing.svg')] bg-cover p-5">
         <Image
           src="/assets/images/landing/profile-img.svg"
           alt="profile-unitap"
@@ -161,7 +161,7 @@ const EditPage = () => {
               placeholder="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className={`border border-solid w-72 px-4 py-3 rounded-xl bg-gray50 ${
+              className={`w-72 rounded-xl border border-solid bg-gray50 px-4 py-3 ${
                 error ? "border-error" : "border-gray70"
               } disabled:opacity-60`}
               disabled={!isUserEditEnabled}
@@ -178,7 +178,7 @@ const EditPage = () => {
               onClick={
                 isUserEditEnabled ? onSubmit : () => setIsUserEditEnabled(true)
               }
-              className="absolute right-3 disabled:opacity-60 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] rounded-lg px-3 py-1"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg bg-gradient-to-r from-[#4bf2a229] via-[#e1c3f44f] to-[#dd40cd4f] px-3 py-1 disabled:opacity-60"
             >
               {loading ? (
                 <LoadingSpinner />
@@ -190,12 +190,12 @@ const EditPage = () => {
             </button>
           </div>
           {!!error && (
-            <p className="text-xs pl-2 w-[250px] text-error">{error}</p>
+            <p className="w-[250px] pl-2 text-xs text-error">{error}</p>
           )}
         </div>
       </div>
 
-      <div className="mt-5 bg-gray20 rounded-xl p-5">
+      <div className="mt-5 rounded-xl bg-gray20 p-5">
         <p>
           Wallets{" "}
           <small className="text-gray90">
@@ -214,7 +214,7 @@ const EditPage = () => {
                     !!address &&
                     isAddressEqual(
                       address as Address,
-                      wallet.address as Address
+                      wallet.address as Address,
                     )
                   }
                   isDeleteAllowed={
@@ -223,7 +223,7 @@ const EditPage = () => {
                       !!address &&
                       isAddressEqual(
                         address as Address,
-                        wallet.address as Address
+                        wallet.address as Address,
                       )
                     )
                   }
@@ -235,7 +235,7 @@ const EditPage = () => {
                 setIsAddModalOpen(true);
                 setDuplicateWalletRaiseError(true);
               }}
-              className="px-5 py-5 flex items-center rounded-xl border-2 border-gray70"
+              className="flex items-center rounded-xl border-2 border-gray70 px-5 py-5"
               type="button"
             >
               <span className="ml-auto text-sm font-semibold">
@@ -247,7 +247,7 @@ const EditPage = () => {
                   height={16}
                   src="/assets/images/up-profile/plus.svg"
                   alt="plus"
-                  className="w-[16px] h-[16px]"
+                  className="h-[16px] w-[16px]"
                 />
               </span>
             </button>
