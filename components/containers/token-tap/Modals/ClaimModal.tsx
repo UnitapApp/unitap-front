@@ -81,17 +81,20 @@ const ClaimTokenModalBody = ({
       />
     );
 
-  const formattedDateValue = formatDate(
-    new Date(selectedTokenForClaim.claimDeadlineForUnitapPassUser),
+  const dateValue = new Date(
+    selectedTokenForClaim.claimDeadlineForUnitapPassUser,
   );
+
+  const formattedDateValue = formatDate(dateValue);
 
   if (
     userProfile.upBalance == 0 &&
     formattedDateValue !== -1 &&
     selectedTokenForClaim.remainingClaimForUnitapPassUser &&
     selectedTokenForClaim.maxNumberOfClaims -
-      selectedTokenForClaim.numberOfClaims <
-      selectedTokenForClaim.remainingClaimForUnitapPassUser
+      selectedTokenForClaim.numberOfClaims <=
+      selectedTokenForClaim.remainingClaimForUnitapPassUser &&
+    dateValue > new Date()
   )
     return <TokenReservedBody token={selectedTokenForClaim!} />;
 
