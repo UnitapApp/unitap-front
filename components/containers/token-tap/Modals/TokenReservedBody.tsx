@@ -43,7 +43,7 @@ const TokenReservedBody: FC<{
         </Text>
       </span>
       <div className="my-4 text-center text-xs leading-loose text-gray100">
-        Unitap secures %10 of each Token Tap for the Unitap Pass holders for the
+        Unitap secures %30 of each Token Tap for the Unitap Pass holders for the
         first 30% of the Tap{"'"}s duration. Example: $1 for 1000 participants
         to be live for 9 days. We secure 100 spots for Unitap Pass holders in
         the first 3 days.
