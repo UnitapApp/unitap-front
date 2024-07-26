@@ -887,6 +887,14 @@ export const tokensInformation: TokenInformation[] = [
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/95e9b536-b0d5-432e-6736-a11c16070e00/public",
       },
       {
+        tokenAddress: "0xaCb54d07cA167934F57F829BeE2cC665e1A5ebEF",
+        tokenName: "Croakey",
+        tokenSymbol: "CROAK",
+        tokenDecimals: "18",
+        logoUrl:
+          "https://assets.coingecko.com/coins/images/37503/standard/croak.jpg?1714578830",
+      },
+      {
         tokenAddress: "0xa219439258ca9da29e9cc4ce5596924745e12b93",
         tokenDecimals: "6",
         tokenSymbol: "USDT",
