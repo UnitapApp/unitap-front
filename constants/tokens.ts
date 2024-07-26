@@ -892,7 +892,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenSymbol: "CROAK",
         tokenDecimals: "18",
         logoUrl:
-          "https://assets.coingecko.com/coins/images/37503/standard/croak.jpg?1714578830",
+          "https://assets.coingecko.com/coins/images/37503/standard/croak.jpg",
       },
       {
         tokenAddress: "0xa219439258ca9da29e9cc4ce5596924745e12b93",
