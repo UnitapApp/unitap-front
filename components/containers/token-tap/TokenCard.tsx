@@ -188,8 +188,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       <div className="transition-all duration-300 group-hover:-mt-6 group-hover:-translate-y-full">
                         <span className={``}>
                           {numberWithCommas(
-                            token.maxNumberOfClaims -
-                              token.numberOfOnchainClaims,
+                            token.maxNumberOfClaims - token.numberOfClaims,
                           )}{" "}
                         </span>
                         /
