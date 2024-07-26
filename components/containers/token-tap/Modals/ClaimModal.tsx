@@ -58,7 +58,7 @@ const ClaimTokenModalBody = ({
         formattedDateValue !== -1 &&
         selectedTokenForClaim.remainingClaimForUnitapPassUser &&
         selectedTokenForClaim.maxNumberOfClaims -
-          selectedTokenForClaim.numberOfClaims <
+          selectedTokenForClaim.numberOfClaims <=
           selectedTokenForClaim.remainingClaimForUnitapPassUser) ||
       claimTokenResponse?.state === "Done" ||
       collectedToken?.status === "Verified" ||
