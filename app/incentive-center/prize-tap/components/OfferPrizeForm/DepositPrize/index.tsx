@@ -139,7 +139,9 @@ const DepositPrize = ({
               <div className="flex items-center gap-2">
                 <img src={selectedToken?.logoUrl} width={"24px"} />
                 <div className="text-sm font-normal text-white">
-                  {selectedToken?.tokenName}
+                  {selectedToken?.tokenName
+                    ? selectedToken?.tokenName
+                    : data.tokenSymbol}
                 </div>
               </div>
             </div>
