@@ -546,7 +546,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       $fontSize="14px"
                       disabled={!start}
                       className="!w-full min-w-[552px] md:!w-[352px]"
-                      onClick={() => openEnrollModal(raffle, "Pre-Verify")}
+                      onClick={() => openEnrollModal(raffle, "Verify")}
                     >
                       {" "}
                       <div className="relative w-full">
