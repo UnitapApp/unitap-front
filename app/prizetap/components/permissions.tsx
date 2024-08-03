@@ -271,12 +271,17 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           </div>
 
           {permissions.some((item) => !item.isVerified) ? (
-            <button
-              disabled
-              className="mt-5 w-full rounded-xl border-2 border-solid border-warn bg-[#392821] py-3 text-center text-warn"
+            <ClaimAndEnrollButton
+              height="48px"
+              $fontSize="14px"
+              disabled={new Date(raffle.startAt) > new Date()}
+              className="mt-5 !w-full"
+              onClick={() => openEnrollModal(raffle, "Pre-Verify")}
             >
-              Complete requirements first!
-            </button>
+              <div className="relative w-full">
+                <p>Meet Requirement</p>
+              </div>
+            </ClaimAndEnrollButton>
           ) : (
             <ClaimAndEnrollButton
               height="48px"

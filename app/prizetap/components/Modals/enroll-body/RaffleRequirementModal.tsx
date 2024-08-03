@@ -81,7 +81,7 @@ const Sidebar: FC<{
           style={{
             background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
-          onClick={() => setMethod("Enroll")}
+          onClick={() => setMethod("Verify")}
         >
           Enroll
         </button>
