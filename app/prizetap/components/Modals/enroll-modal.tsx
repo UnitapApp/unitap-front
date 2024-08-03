@@ -43,7 +43,7 @@ const EnrollModalBody = ({
     ) {
       setSize("small");
     } else {
-      setSize("large");
+      setSize(680);
     }
   }, [method, selectedRaffleForEnroll, claimOrEnrollWalletResponse, chainId]);
 

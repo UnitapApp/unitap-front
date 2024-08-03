@@ -22,6 +22,9 @@ type props = {
   closeModalHandler: () => void;
   errorSource?: APIErrorsSource;
   bodyClassName?: string;
+  classNames?: {
+    content?: string;
+  };
 };
 
 const Modal = ({
@@ -34,6 +37,7 @@ const Modal = ({
   size,
   errorSource,
   bodyClassName,
+  classNames,
 }: props) => {
   const { getError } = React.useContext(ErrorsContext);
 
@@ -52,7 +56,7 @@ const Modal = ({
                 : "bg-gray30"
             } rounded-2xl border-2 border-gray80 ${
               errorSource && getError(errorSource) ? "!border-error " : ""
-            }`}
+            } ${classNames?.content ?? ""}`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
             size={size}
