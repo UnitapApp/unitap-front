@@ -2,21 +2,30 @@
 import React, { useState } from "react";
 import AddConditionModal from "./AddConditionModal";
 import { ConditionDataProps } from "../page";
+import AddedCondition from "./AddedCondition";
 
 interface Props {
   conditionData: ConditionDataProps;
   handleSetConditionData: (e: any) => void;
   setConditionData: React.Dispatch<React.SetStateAction<ConditionDataProps>>;
+  handleAddCondition: () => void;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  conditionList: ConditionDataProps[];
+  handleRemoveCondition: (index: number) => void;
 }
 
 const AddCondition = ({
   conditionData,
   handleSetConditionData,
   setConditionData,
+  handleAddCondition,
+  isOpen,
+  setIsOpen,
+  conditionList,
+  handleRemoveCondition,
 }: Props) => {
   const [isDisplayInput, setIsDisplayInput] = useState<boolean>(false);
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleCloseModal = () => {
     setIsOpen(!isOpen);
@@ -24,6 +33,13 @@ const AddCondition = ({
 
   const handleDisplayInput = () => {
     setIsDisplayInput(!isDisplayInput);
+  };
+
+  const openAddConditionModal = () => {
+    if (!conditionData.nameOfPoint) {
+      return;
+    }
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -58,10 +74,14 @@ const AddCondition = ({
       <div
         className={`mt-5 grid grid-rows-[0fr] overflow-hidden rounded-xl transition-all duration-300 ${isDisplayInput ? "grid-rows-[1fr]" : "grid-rows-[0fr] border-none"} `}
       >
-        <div className="flex overflow-hidden ">
+        <div className="flex flex-col overflow-hidden ">
+          <AddedCondition
+            conditionList={conditionList}
+            handleRemoveCondition={handleRemoveCondition}
+          />
           <div
-            onClick={() => setIsOpen(!isOpen)}
-            className=".addConditionBtn addConditionBtn flex h-[43px] w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray70"
+            onClick={openAddConditionModal}
+            className={`.addConditionBtn ${!conditionData.nameOfPoint ? "opacity-50" : "cursor-pointer"} addConditionBtn flex h-[43px] w-full items-center justify-center gap-3 rounded-xl border border-gray70`}
           >
             <svg
               width="16"
@@ -102,6 +122,7 @@ const AddCondition = ({
         conditionData={conditionData}
         handleSetConditionData={handleSetConditionData}
         setConditionData={setConditionData}
+        handleAddCondition={handleAddCondition}
       />
     </div>
   );

@@ -1,28 +1,16 @@
-// import { config } from "@/utils/wallet/wagmi";
-// import { getBytecode } from "@wagmi/core";
-// import { ethers } from 'ethers';
+import axios from "axios";
+import { Address } from "viem";
 
-// export const contractMethods = async (
-//   contractAddress: string,
-//   chainId: number,
-// ) => {
+export const getContractAbiApi = async (contractAddress: Address) => {
+  const apiKey = "7B98SETZW4TD6GC756ZC7K7TADTCTFJSE5";
+  const res = await axios.get(
+    `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${apiKey}`,
+    {
+      params: {
+        chainId: 42161,
+      },
+    },
+  );
 
-//     const createProvider = () => {
-//         const config = chainConfig[chain];
-//         if (config) {
-//           return new ethers.providers.JsonRpcProvider(config.rpcUrl);
-//         } else {
-//           throw new Error('Unsupported chain');
-//         }
-//       };
-//   try {
-//     const res = await getBytecode(config, {
-//       address: contractAddress as any,
-//       chainId: chainId,
-//     });
-//     return res != "0x";
-//   } catch (e) {
-//     console.log(e);
-//     return false;
-//   }
-// };
+  console.log(res);
+};

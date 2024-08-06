@@ -4,13 +4,10 @@ import { Rubik_Mono_One } from "next/font/google";
 import PointNameInput from "./components/PointNameInput";
 import AddCondition from "./components/AddCondition";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chain } from "@/types";
-
-// export const metadata: Metadata = {
-//   title: "Unitap | HackaThon",
-//   description: "",
-// };
+import AddedCondition from "./components/AddedCondition";
+import { isAddress } from "viem";
 
 const RubikMonoOne = Rubik_Mono_One({
   weight: ["400"],
@@ -25,24 +22,57 @@ export interface ConditionDataProps {
   chain: Chain | null;
   contractAddress: string | null;
   numberOfPoints: number | null;
+  selectedMethod: string | null;
 }
 
+const initialConditionData = {
+  nameOfPoint: null,
+  conditionName: null,
+  chain: null,
+  contractAddress: null,
+  numberOfPoints: null,
+  selectedMethod: null,
+};
+
 const HackaThon = () => {
-  const [conditionData, setConditionData] = useState<ConditionDataProps>({
-    nameOfPoint: null,
-    conditionName: null,
-    chain: null,
-    contractAddress: null,
-    numberOfPoints: null,
-  });
+  const [conditionData, setConditionData] =
+    useState<ConditionDataProps>(initialConditionData);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [conditionList, setConditionList] = useState<ConditionDataProps[]>([]);
 
   const handleSetConditionData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name);
     setConditionData((prev) => ({
       ...prev,
       [name]: name == "numberOfPoints" ? value.replace(/[^0-9]/g, "") : value,
     }));
+  };
+
+  const isCompleteConditionFiled =
+    conditionData.chain &&
+    conditionData.conditionName &&
+    conditionData.contractAddress &&
+    conditionData.nameOfPoint &&
+    conditionData.numberOfPoints &&
+    conditionData.selectedMethod &&
+    isAddress(conditionData.contractAddress!);
+
+  const handleAddCondition = () => {
+    if (!isCompleteConditionFiled) return;
+    setIsOpen(false);
+    setConditionList([...conditionList, conditionData]);
+    setConditionData(initialConditionData);
+  };
+
+  const handleRemoveCondition = (index: number) => {
+    setConditionList((prev) => prev.filter((item, i) => i !== index));
+  };
+
+  const handleSubmit = () => {
+    if (conditionList.length == 0) return;
+    console.log(conditionList);
   };
 
   return (
@@ -66,13 +96,24 @@ const HackaThon = () => {
             conditionData={conditionData}
             handleSetConditionData={handleSetConditionData}
           />
+
           <AddCondition
             conditionData={conditionData}
             handleSetConditionData={handleSetConditionData}
             setConditionData={setConditionData}
+            handleAddCondition={handleAddCondition}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            conditionList={conditionList}
+            handleRemoveCondition={(index: number) =>
+              handleRemoveCondition(index)
+            }
           />
         </div>
-        <div className="mb-5 flex h-[43px] w-full max-w-[452px] select-none items-center justify-center rounded-xl border-2 border-gray70 bg-gray50 text-center text-sm font-bold leading-5 text-gray80">
+        <div
+          className={`${conditionList.length > 0 && "cursor-pointer border border-space-green bg-dark-space-green text-space-green"} mb-5 flex h-[43px] w-full max-w-[452px] select-none items-center justify-center rounded-xl border-2 border-gray70 bg-gray50 text-center text-sm font-bold leading-5 text-gray80`}
+          onClick={handleSubmit}
+        >
           Submit
         </div>
       </div>
