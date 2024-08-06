@@ -8,13 +8,13 @@
 @tailwind utilities;
 
 @mixin btn {
-  @apply ease-out duration-300;
+  @apply duration-300 ease-out;
 }
 
 @layer base {
   // TYPOGRAPHY
   h1 {
-    @apply text-3xl font-semibold items-center;
+    @apply items-center text-3xl font-semibold;
   }
 
   h2 {
@@ -74,4 +74,40 @@ input::-webkit-inner-spin-button {
 input {
   /* Firefox */
   -moz-appearance: textfield;
+}
+
+.gradient-text-hackaThon {
+  background: linear-gradient(
+    327.64deg,
+    #4ce6a1 -21.12%,
+    rgba(76, 230, 161, 0.2) 159.83%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hackaThonBgGradient {
+  background: radial-gradient(
+    184.51% 2569.02% at 6.42% 50%,
+    #212130 34.26%,
+    #8f8fec 100%
+  );
+}
+
+.hackaThonBgGradient:hover {
+  background: radial-gradient(
+    184.51% 2569.02% at 6.42% 50%,
+    #21213080 34.26%,
+    #8f8fec7a 100%
+  );
+}
+
+.addConditionBtn {
+  background: radial-gradient(
+    89.52% 88.03% at 11.27% 34.41%,
+    rgba(204, 204, 215, 0.2) 0%,
+    rgba(117, 117, 155, 0.2) 48.5%,
+    rgba(68, 68, 110, 0.2) 100%
+  );
 }

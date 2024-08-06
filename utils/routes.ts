@@ -19,6 +19,7 @@ enum RoutePath {
   PROVIDER_PRIZETAP_CREATE = "/incentive-center/prize-tap/create",
   PROVIDER_PRIZETAP_DETAILS = "/incentive-center/prize-tap/details",
   PROVIDER_PRIZETAP_VERIFICATION = "/incentive-center/prize-tap/verification",
+  HACKA_THON = "/hacha-thon",
 }
 
 export default RoutePath;
