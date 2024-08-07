@@ -303,3 +303,92 @@ export const MinimumNumberRequirementField = ({
     </div>
   );
 };
+
+export const AddressDelegationFields = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+  decimals,
+}: Prop) => {
+  const [minValue, setValue] = useState<string>("");
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    if (!requirement || isNft) return;
+    handleChange(
+      new Big(
+        fromWei(
+          requirement.params.MINIMUM,
+          requirement.decimals ? requirement.decimals : 18,
+        ),
+      ).toFixed(),
+    );
+
+    setAddress(requirement.params.ADDRESS);
+  }, [requirement, decimals, isNft]);
+
+  const handleChange = (e: string) => {
+    setValue(isNft ? e.replace(/[^0-9]/g, "") : e);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["MINIMUM"]: e.replace(/[^0-9]/g, ""),
+    });
+  };
+
+  const handleAddressChange = (e: string) => {
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["ADDRESS"]: e,
+    });
+    setAddress(e);
+  };
+
+  const handleChangeValue = (e: string) => {
+    const finaleValue =
+      e === "increase"
+        ? Number(minValue) + 1
+        : Math.max(0, Number(minValue) - 1);
+    handleChange(finaleValue.toString());
+  };
+
+  return (
+    <>
+      <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+        <input
+          className="h-full w-full bg-inherit"
+          placeholder="Minimum Amount"
+          name="Minimum"
+          type="number"
+          min={0}
+          onChange={(e) => handleChange(e.target.value)}
+          value={minValue}
+        />
+        <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+          <Icon
+            onClick={() => handleChangeValue("increase")}
+            className="cursor-pointer"
+            iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+          />
+          <Icon
+            onClick={() => handleChangeValue("decrease")}
+            className="cursor-pointer"
+            iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          />
+        </div>
+      </div>
+
+      <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+        <input
+          className="h-full w-full bg-inherit"
+          placeholder="Address"
+          name="address"
+          type="text"
+          onChange={(e) => handleAddressChange(e.target.value)}
+          value={address}
+        />
+      </div>
+    </>
+  );
+};

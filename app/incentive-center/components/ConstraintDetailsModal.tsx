@@ -14,6 +14,7 @@ import useAddRequirement from "@/components/containers/provider-dashboard/hooks/
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/incentive-center/components/ChainList";
 import SelectMethodInput, {
+  AddressDelegationFields,
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
 } from "@/app/incentive-center/components/SelectMethodInput";
@@ -401,7 +402,25 @@ export const CreateParams: FC<CreateModalParam> = ({
     });
   };
 
+  console.log(constraint);
+
   if (constraint.params.length === 0) return null;
+
+  if (
+    constraint.params.includes("ADDRESS") &&
+    constraint.params.includes("MINIMUM")
+  ) {
+    return (
+      <AddressDelegationFields
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
 
   if (
     constraint.name === "core.HasNFTVerification" ||
