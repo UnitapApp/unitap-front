@@ -1,10 +1,12 @@
 import type { Config } from "tailwindcss";
+import { nextui } from "@nextui-org/react";
 
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
   theme: {
@@ -20,6 +22,9 @@ const config: Config = {
         88: "22rem",
         100: "25rem",
         104: "26rem",
+      },
+      borderRadius: {
+        "4xl": "40px",
       },
       fontSize: {
         "2xs": "0.625rem",
@@ -46,6 +51,7 @@ const config: Config = {
         gray100: "#B5B5C6",
         orange: "#F5841F",
         error: "#EA5365",
+        "error-light": "#ff9eaa",
         code: "#292938",
         cyan: "#165369",
         purple: "#362469",
@@ -182,5 +188,6 @@ const config: Config = {
       },
     },
   },
+  plugins: [nextui()],
 };
 export default config;

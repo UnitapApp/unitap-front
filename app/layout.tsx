@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { config } from "@/utils/wallet/wagmi";
 import { Noto_Sans } from "next/font/google";
 import UnitapProvider from "@/context";
-import Header from "@/components/layout/header";
 import Progressbar from "@/components/progress";
-import Footer from "@/components/layout/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   ConnectBrightIdModal,
@@ -47,14 +45,7 @@ export default async function RootLayout({
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
-              <div id="app">
-                <Header />
-                <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
-                  {children}
-                </main>
-
-                <Footer />
-              </div>
+              {children}
 
               <ConnectBrightIdModal />
               <BrightConnectionModal />

@@ -1,6 +1,6 @@
 "use client";
 
-import { appInfos } from "@/app/incentive-center/constants/integrations";
+import { appInfos } from "@/app/(base)/incentive-center/constants/integrations";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";

@@ -1,0 +1,113 @@
+
+
+
+
+.background-dashboard {
+  background: radial-gradient(41.18% 123.32% at 31.24% 50.09%, #1A1A2A 0%, #10101B 100%);
+}
+
+
+.button-primary {
+  background: linear-gradient(327.64deg, #4CE6A1 -21.12%, rgba(76, 230, 161, 0.2) 159.83%);
+}
+
+.rangeInput {
+  -webkit-appearance: none;
+  background-color: transparent;
+  width: 100%;
+  padding-top: 10px;
+  overflow: hidden;
+}
+
+.rangeInput:focus {
+  outline: none;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 30px;
+  @apply bg-space-green;
+  z-index: 2;
+}
+
+.rangeInput:before {
+  content: "";
+  position: absolute;
+  background: rgb(190, 190, 190);
+  box-shadow: 0 1px 0 rgb(235, 235, 235);
+  width: 283px;
+  left: 0;
+  height: 1px;
+  top: 0px;
+  z-index: 1;
+}
+
+.rangeInput:after {
+  content: "";
+  position: absolute;
+  background: rgb(190, 190, 190);
+  width: 7px;
+  left: 3px;
+  border-radius: 50%;
+  height: 6px;
+  top: 0;
+  z-index: 1;
+  box-shadow: 30px 0 0 rgb(190, 190, 190),
+    60px 0 0 rgb(190, 190, 190),
+    90px 0 0 rgb(190, 190, 190),
+    120px 0 0 rgb(190, 190, 190),
+    150px 0 0 rgb(190, 190, 190),
+    180px 0 0 rgb(190, 190, 190),
+    210px 0 0 rgb(190, 190, 190),
+    240px 0 0 rgb(190, 190, 190),
+    270px 0 0 rgb(190, 190, 190),
+    60px 1px 0 rgb(235, 235, 235),
+    90px 1px 0 rgb(235, 235, 235),
+    120px 1px 0 rgb(255, 255, 255),
+    150px 1px 0 rgb(235, 235, 235),
+    180px 1px 0 rgb(235, 235, 235),
+    210px 1px 0 rgb(235, 235, 235),
+    240px 1px 0 rgb(235, 235, 235),
+    270px 1px 0 rgb(235, 235, 235);
+}
+
+
+.tradingview-widget-container {
+
+}
+
+
+.theme-dark:root {
+  --tv-color-platform-background: #5900ff;
+  --tv-color-pane-background: rgb(251, 223, 244);
+  --tv-color-toolbar-button-background-hover: rgb(244, 143, 177);
+  --tv-color-toolbar-button-background-expanded: rgb(244, 143, 177);
+  --tv-color-toolbar-button-background-active: rgb(249, 185, 233);
+  --tv-color-toolbar-button-background-active-hover: rgb(244, 143, 177);
+  --tv-color-toolbar-button-text: rgb(136, 24, 79);
+  --tv-color-toolbar-button-text-hover: rgb(74, 20, 140);
+  --tv-color-toolbar-button-text-active: red;
+  --tv-color-toolbar-button-text-active-hover: red;
+  --tv-color-item-active-text: rgb(6, 255, 6);
+  --tv-color-toolbar-toggle-button-background-active: red;
+  --tv-color-toolbar-toggle-button-background-active-hover: magenta;
+  --tv-color-toolbar-divider-background: rgb(251, 223, 244);
+  --tv-color-toolbar-save-layout-loader: rgb(134, 137, 147);
+
+  --tv-color-popup-background: rgb(241, 188, 225);
+  --tv-color-popup-element-text: rgb(136, 24, 79);
+  --tv-color-popup-element-text-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-background-hover: rgb(244, 143, 177);
+  --tv-color-popup-element-divider-background: rgb(251, 223, 244);
+  --tv-color-popup-element-secondary-text: rgb(74, 20, 140);
+  --tv-color-popup-element-hint-text: rgb(74, 20, 140);
+  --tv-color-popup-element-text-active: rgb(6, 6, 255);
+  --tv-color-popup-element-background-active: red;
+  --tv-color-popup-element-toolbox-text: rgb(136, 24, 79);
+  --tv-color-popup-element-toolbox-text-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-toolbox-text-active-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-toolbox-background-hover: rgb(222, 89, 132);
+  --tv-color-popup-element-toolbox-background-active-hover: magenta;
+}

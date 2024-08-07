@@ -17,7 +17,7 @@ import { useWalletAccount, useWalletSigner } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
-import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
+import { AddMetamaskButton } from "@/app/(base)/gastap/components/Cards/Chainlist/ChainCard";
 import { watchAsset } from "viem/actions";
 import { replacePlaceholders } from "@/utils";
 import ReactMarkdown from "react-markdown";
