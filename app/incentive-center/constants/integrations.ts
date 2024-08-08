@@ -33,4 +33,12 @@ export const appInfos: {
     logo: "/assets/images/gas-tap/twitter-share.svg",
     label: "Twitter",
   },
+  arbitrum: {
+    logo: "/assets/images/arbitrum-arb-logo.svg",
+    label: "Arbitrum",
+  },
+  optimism: {
+    logo: "/assets/images/provider-dashboard/op.svg",
+    label: "Optimism",
+  },
 };

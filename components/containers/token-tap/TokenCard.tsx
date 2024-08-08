@@ -59,11 +59,19 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
 
   const [showAllPermissions, setShowAllPermissions] = useState(false);
 
+  const currentDate = new Date();
+  const oneMonthAfterDeadline = new Date(token.deadline);
+  oneMonthAfterDeadline.setMonth(oneMonthAfterDeadline.getMonth() + 1);
+
+  const isAfter = currentDate > oneMonthAfterDeadline;
+
   const isExpired =
     token.isExpired ||
     (token.isMaxedOut &&
       claimTokenResponse?.state !== "Pending" &&
       collectedToken?.status !== "Pending");
+
+  const isArchive = isExpired && isAfter;
 
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
@@ -109,7 +117,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   return (
     <div>
       <div
-        className={`token-card ${isExpired ? "opacity-60" : ""} flex ${
+        className={`token-card ${isArchive ? "opacity-60" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
@@ -122,7 +130,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             } flex w-full flex-col items-center justify-between gap-2 rounded-t-xl md:flex-row md:gap-0`}
           >
             <button
-              disabled={isExpired}
+              disabled={isArchive}
               onClick={onTokenClicked}
               className="mb-6 flex items-center sm:mb-0"
             >
@@ -140,7 +148,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </span>
               <span className="w-max">
                 <p
-                  className={`mb-2 flex text-center text-white  md:text-left ${isExpired ? "text-opacity-40" : ""}`}
+                  className={`mb-2 flex text-center text-white  md:text-left ${isArchive ? "text-opacity-40" : ""}`}
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
@@ -153,7 +161,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   />
                 </p>
                 <p
-                  className={`text-xs font-medium text-white  ${isExpired ? "text-opacity-40" : ""}`}
+                  className={`text-xs font-medium text-white  ${isArchive ? "text-opacity-40" : ""}`}
                 >
                   {token.distributor}
                 </p>
@@ -168,7 +176,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               <div className="w-full items-center sm:w-auto sm:items-end">
                 {token.chain.chainName === "Lightning" || (
                   <AddMetamaskButton
-                    disabled={isExpired}
+                    disabled={isArchive}
                     onClick={addToken}
                     className="mx-auto !w-[220px] text-sm font-medium sm:mr-4 sm:!w-auto"
                   >
@@ -314,7 +322,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             </div>
           </div>
           <Markdown
-            className={`${isExpired ? "text-opacity-40" : ""} text-[15px]`}
+            className={`${isArchive ? "text-opacity-40" : ""} text-[15px]`}
             isHighlighted={isHighlighted}
             content={token.notes}
           />
@@ -347,7 +355,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 // }
               >
                 <div
-                  className={`flex items-center gap-3 ${isExpired ? "text-opacity-40" : ""}`}
+                  className={`flex items-center gap-3 ${isArchive ? "text-opacity-40" : ""}`}
                 >
                   {permission.title}
                 </div>
@@ -379,7 +387,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           } relative flex w-full flex-col items-center justify-between gap-4 rounded-b-xl px-4 py-2.5 pr-6 md:flex-row md:gap-0`}
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
-            <p className={`text-gray100 ${isExpired ? "text-opacity-40" : ""}`}>
+            <p className={`text-gray100 ${isArchive ? "text-opacity-40" : ""}`}>
               claim on
               {" " + token.chain.chainName}
             </p>
@@ -390,7 +398,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             />
           </div>
 
-          {isExpired ? (
+          {isArchive ? (
             <div className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2">
               <div className="flex items-center justify-center">
                 From Archive

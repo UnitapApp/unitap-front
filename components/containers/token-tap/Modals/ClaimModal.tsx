@@ -67,7 +67,7 @@ const ClaimTokenModalBody = ({
     ) {
       setSize("small");
     } else {
-      setSize(650);
+      setSize(680);
     }
   }, [userProfile, selectedTokenForClaim, method, chainId, collectedToken]);
 
@@ -170,6 +170,9 @@ const ClaimTokenModal = () => {
       size={size}
       closeModalHandler={closeClaimTokenModal}
       isOpen={isOpen}
+      classNames={{
+        content: method === "requirements" ? "bg-gray30 !p-2" : "",
+      }}
     >
       <div className="claim-modal-wrapper flex flex-col items-center justify-center pt-5">
         {selectedTokenForClaim.chain.chainName === "Lightning" ? (

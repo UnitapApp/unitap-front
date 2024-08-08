@@ -14,6 +14,7 @@ import useAddRequirement from "@/components/containers/provider-dashboard/hooks/
 import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/incentive-center/components/ChainList";
 import SelectMethodInput, {
+  AddressDelegationFields,
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
 } from "@/app/incentive-center/components/SelectMethodInput";
@@ -404,6 +405,22 @@ export const CreateParams: FC<CreateModalParam> = ({
   if (constraint.params.length === 0) return null;
 
   if (
+    constraint.params.includes("ADDRESS") &&
+    constraint.params.includes("MINIMUM")
+  ) {
+    return (
+      <AddressDelegationFields
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
+
+  if (
     constraint.name === "core.HasNFTVerification" ||
     constraint.name === "core.HasTokenVerification"
   ) {
@@ -696,6 +713,20 @@ export const CreateParams: FC<CreateModalParam> = ({
       />
     );
   }
+
+  if (constraint.params.includes("MINIMUM") && constraint.params.length === 1) {
+    return (
+      <MinimumWeb3AmountRequirementField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
+
   if (constraint.params.includes("FARCASTER_CAST_HASH")) {
     const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
 

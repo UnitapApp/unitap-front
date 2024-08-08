@@ -115,10 +115,22 @@ const Sidebar: FC<{
     );
   }, []);
 
+  useEffect(() => {
+    if (
+      (!!permissions.length ? permissions : token.constraints).length !==
+      (!!permissions.length ? permissions : token.constraints).filter(
+        (item: any) => item.isVerified,
+      ).length
+    )
+      return;
+
+    setMethod("claim");
+  }, [permissions, token, setMethod]);
+
   return (
     <aside className="h-full w-44 overflow-auto rounded-lg bg-gray20 p-2 text-sm">
       <div className="mt-3">
-        <div className="mb-2 rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
+        <div className="rounded-xl border-2 border-dark-space-green bg-dark-space-green/30 p-2 text-center font-semibold">
           {
             (!!permissions.length ? permissions : token.constraints).filter(
               (item: any) => item.isVerified,
@@ -127,6 +139,7 @@ const Sidebar: FC<{
           /{(!!permissions.length ? permissions : token.constraints).length}{" "}
           Done
         </div>
+        <div className="mx-auto h-3 w-[2px] bg-gray80"></div>
         {(!!permissions.length ? permissions : token.constraints).map(
           (constraint: any, index) => (
             <Fragment key={index}>
