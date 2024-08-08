@@ -402,8 +402,6 @@ export const CreateParams: FC<CreateModalParam> = ({
     });
   };
 
-  console.log(constraint);
-
   if (constraint.params.length === 0) return null;
 
   if (
@@ -715,6 +713,20 @@ export const CreateParams: FC<CreateModalParam> = ({
       />
     );
   }
+
+  if (constraint.params.includes("MINIMUM") && constraint.params.length === 1) {
+    return (
+      <MinimumWeb3AmountRequirementField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
+
   if (constraint.params.includes("FARCASTER_CAST_HASH")) {
     const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
 
