@@ -54,6 +54,8 @@ export const requirementsConnections: { [key: string]: string | null } = {
   HaveUnitapPass: null, // 3
   BrightIDAuraVerification: "BrightID", // 2
   BrightIDMeetVerification: "BrightID", // 1
+  IsFollowingTwitterBatch: "Twitter",
+  IsFollowingFarcasterBatch: "Farcaster",
 };
 
 export const requirementWithoutApps: {
@@ -87,6 +89,15 @@ export const renderLinkValue = (
   }
 
   return "#";
+};
+
+export const renderHardCodedLink = (param: string, appName: string) => {
+  if (appName?.toLowerCase() === "twitter") {
+    return `https://x.com/${param}`;
+  }
+  if (appName?.toLowerCase() === "farcaster") {
+    return `https://warpcast.com/${param}`;
+  }
 };
 
 export function checkConnections(
@@ -188,8 +199,6 @@ export const useRequirementLinkGenerator = ({
   const [link, setLink] = useState("");
 
   const linkWithoutApp = requirementWithoutApps[appName]?.(params, appName);
-
-  // console.log(linkWithoutApp);
 
   useEffect(() => {
     if (!params || !appName || !constraint) {

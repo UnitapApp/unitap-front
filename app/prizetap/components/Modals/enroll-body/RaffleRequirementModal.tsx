@@ -158,7 +158,6 @@ const PrizeRequirementBody: FC<{
     [selectedRaffleForEnroll],
   );
 
-  console.log(params);
   useEffect(() => {
     if (!constraint || !userToken || !selectedRaffleForEnroll) return;
 
@@ -262,7 +261,7 @@ const PrizeRequirementBody: FC<{
                       ) : (
                         <div className="follow-btn-wrapper overflow-hidden rounded-lg p-[1px]">
                           <Link
-                            href={`https://x.com/${FarcasterObject[id].name}`}
+                            href={`https://warpcast.com/${FarcasterObject[id].name}`}
                             target="_blank"
                           >
                             <div className="rounded-lg bg-gray30">
