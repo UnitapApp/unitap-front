@@ -181,7 +181,7 @@ const PrizeRequirementBody: FC<{
     const res = permissions.find(
       (item) => item.name === "core.IsFollowingTwitterBatch",
     );
-    if (res) {
+    if (res && res.info) {
       setFollowedCount(
         Object.values(res.info).filter((value) => value === true).length,
       );
