@@ -43,6 +43,10 @@ export type UserConnection = {
   };
 };
 
+export interface PermissionInfoProp {
+  [key: number]: boolean;
+}
+
 export type Permission = {
   isReversed: boolean;
   id: PK;
@@ -53,6 +57,7 @@ export type Permission = {
   type: "TIME" | "VER";
   title?: string;
   negativeDescription: string | null;
+  info: PermissionInfoProp;
 };
 
 export enum PermissionType {

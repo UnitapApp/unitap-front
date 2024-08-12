@@ -20,12 +20,14 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
 
   const { userToken } = useUserProfileContext();
 
-  console.log(connections);
+  console.log(connections, userToken);
 
   useFastRefresh(() => {
+    console.log(userToken);
     if (!userToken) return;
 
     getAllConnections(userToken).then((res) => {
+      console.log(res);
       setConnections(res);
     });
   }, [userToken]);

@@ -168,7 +168,7 @@ export const connectDynamicConnection = async (
 
 export const getTwitterOAuthUrlApi = async () => {
   const res = await axiosInstance.get("/api/auth/twitter/");
-
+  console.log(res);
   return res.data.url as string;
 };
 
