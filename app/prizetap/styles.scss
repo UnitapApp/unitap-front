@@ -473,8 +473,8 @@
   position: absolute;
   width: 240px;
   height: 60px;
-  background: #67677b;
-  border: 1px solid #b5b5c6;
+  background: #10101b;
+  border: 1px solid #303043;
   top: -72px;
   left: -200px;
   font-size: 12px;
@@ -482,6 +482,7 @@
   padding-left: 10px;
   border-radius: 12px;
   font-weight: bold;
+  color: #b5b5c6;
 }
 
 .verify-button-toolTip:hover::before {
@@ -489,8 +490,8 @@
   position: absolute;
   width: 12px;
   height: 12px;
-  background: #67677b;
-  border: 1px solid #b5b5c6;
+  background: #10101b;
+  border: 1px solid #303043;
   top: -18px;
   left: 10px;
   font-size: 12px;

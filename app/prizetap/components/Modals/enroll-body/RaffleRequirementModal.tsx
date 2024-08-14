@@ -470,7 +470,7 @@ const PrizeRequirementBody: FC<{
                   <button
                     onClick={refreshPermissions}
                     disabled={loading || (isExhusted && seconds > 0)}
-                    className={`ml-auto h-full w-[121px] border-r border-gray90 text-[12px] font-bold disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
+                    className={`ml-auto h-full w-[121px] border-r border-gray90 text-[12px] text-sm font-bold disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
                   >
                     {loading ? (
                       <Lottie
