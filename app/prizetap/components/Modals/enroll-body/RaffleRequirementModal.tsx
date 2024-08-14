@@ -165,10 +165,17 @@ const PrizeRequirementBody: FC<{
     [selectedRaffleForEnroll],
   );
 
+  const [isConnectionReady, setIsConnectionReady] = useState(false);
+
+  const handleGetConnection = async () => {
+    setIsConnectionReady(false);
+    await getAllConnections(userToken!).then(setConnections);
+    setIsConnectionReady(true);
+  };
+
   useEffect(() => {
     if (!constraint || !userToken || !selectedRaffleForEnroll) return;
-
-    getAllConnections(userToken).then(setConnections);
+    handleGetConnection();
   }, [constraint, selectedRaffleForEnroll, userToken]);
 
   const link = useRequirementLinkGenerator({
@@ -206,7 +213,7 @@ const PrizeRequirementBody: FC<{
   return (
     <div className="flex h-[420px] flex-1 flex-col gap-2">
       <main className="flex h-full max-h-[380px] flex-1 flex-col overflow-y-scroll rounded-lg bg-gray20 p-2 text-center text-sm text-white">
-        {app && (
+        {app && constraint.name !== "core.IsFollowingTwitterBatch" && (
           <Image
             className="mx-auto"
             src={app.logo}
@@ -219,16 +226,16 @@ const PrizeRequirementBody: FC<{
           constraint.name !== "core.IsFollowingFarcasterBatch" && (
             <h3 className="mt-4 text-base text-white">{constraint.title}</h3>
           )}
-        <div className="mt-4 text-left">
-          {!!constraint.expirationTime && (
-            <p>
-              Cached Until{" "}
-              {/* {new Date(constraint.expirationTime * 1000).toLocaleDateString()}{" "}
+        {/* <div className="mt-4 text-left"> */}
+        {/* {!!constraint.expirationTime && ( */}
+        {/* <p> */}
+        {/* Cached Until{" "} */}
+        {/* {new Date(constraint.expirationTime * 1000).toLocaleDateString()}{" "}
               :{" "} */}
-              {new Date(constraint.expirationTime * 1000).toLocaleTimeString()}
-            </p>
-          )}
-        </div>
+        {/* {new Date(constraint.expirationTime * 1000).toLocaleTimeString()} */}
+        {/* </p> */}
+        {/* )} */}
+        {/* </div> */}
         {params["core.IsFollowingFarcasterBatch"] &&
           constraint.name === "core.IsFollowingFarcasterBatch" && (
             <div className=" flex flex-col gap-4 px-2">
@@ -249,7 +256,7 @@ const PrizeRequirementBody: FC<{
                     <div className="">
                       {twitterBatchPermissions &&
                       twitterBatchPermissions[id] ? (
-                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-space-green bg-gray30 text-space-green opacity-50">
+                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-dark-space-green bg-gray30 text-space-green opacity-50">
                           <svg
                             width="16"
                             height="17"
@@ -315,7 +322,7 @@ const PrizeRequirementBody: FC<{
                     <div className="">
                       {twitterBatchPermissions &&
                       twitterBatchPermissions[id] ? (
-                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-space-green bg-gray30 text-space-green opacity-20">
+                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-dark-space-green bg-gray30 text-space-green opacity-20">
                           <svg
                             width="16"
                             height="17"
@@ -399,7 +406,7 @@ const PrizeRequirementBody: FC<{
                   </Link>
                 )}
               {constraint.name === "core.IsFollowingTwitterBatch" && (
-                <div className="flex items-center justify-center gap-5">
+                <div className="flex h-[45px] items-center justify-center gap-5">
                   <svg
                     width="32"
                     height="32"
@@ -426,24 +433,86 @@ const PrizeRequirementBody: FC<{
                   </div>
                 </div>
               )}
+
+              {constraint.name === "core.IsFollowingFarcasterBatch" && (
+                <div className="flex h-[45px] items-center justify-center gap-5">
+                  <svg
+                    width="32"
+                    height="30"
+                    viewBox="0 0 32 30"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M5.49108 0H26.1301V4.25802H32L30.7692 8.5161H29.7278V25.742C30.2507 25.742 30.6746 26.1752 30.6746 26.7097V27.871H30.8639C31.3868 27.871 31.8107 28.3043 31.8107 28.8387V30L26.1301 30H23.1005L21.2071 30V28.8387C21.2071 28.3043 21.631 27.871 22.1538 27.871H22.3432V26.7097C22.3432 26.2415 22.6684 25.851 23.1005 25.7613V16.2581H23.0709C22.736 12.4601 19.6133 9.48385 15.8106 9.48385C12.0079 9.48385 8.88522 12.4601 8.55036 16.2581H8.52067V25.742H8.71005C9.23292 25.742 9.65682 26.1752 9.65682 26.7097V27.871H9.84615C10.369 27.871 10.7929 28.3043 10.7929 28.8387V30L8.52067 30H5.49108L0.18933 30V28.8387C0.18933 28.3043 0.613236 27.871 1.13611 27.871H1.32544V26.7097C1.32544 26.1752 1.7493 25.742 2.27218 25.742V8.5161H1.23077L0 4.25802H5.49108V0Z"
+                      fill="#815AC7"
+                    />
+                  </svg>
+
+                  <div>
+                    <div className="text-xs font-medium text-gray90">
+                      Follow {twitterCountList} projects on X
+                    </div>
+                    <div>
+                      <span className="text-space-green">
+                        {twitterCountList - followedCount}
+                      </span>{" "}
+                      left to follow
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {constraint.name === "core.IsFollowingTwitterBatch" ? (
-                <button
-                  onClick={refreshPermissions}
-                  disabled={loading || (isExhusted && seconds > 0)}
-                  className={`text-[12px]font-bold ml-auto w-[136px] rounded-xl border border-gray90 bg-gray30 px-2 py-2 disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
-                >
-                  {loading ? (
-                    <Lottie
-                      width={40}
-                      height={20}
-                      options={loadingAnimationRequirementsOption}
-                    ></Lottie>
-                  ) : isExhusted && seconds > 0 ? (
-                    "Try Again" + " " + seconds
-                  ) : (
-                    "Verify All"
-                  )}
-                </button>
+                <div className="flex h-[43px] items-center justify-between rounded-xl border border-gray90 bg-gray30">
+                  <button
+                    onClick={refreshPermissions}
+                    disabled={loading || (isExhusted && seconds > 0)}
+                    className={`ml-auto h-full w-[121px] border-r border-gray90 text-[12px] font-bold disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
+                  >
+                    {loading ? (
+                      <Lottie
+                        width={40}
+                        height={20}
+                        options={loadingAnimationRequirementsOption}
+                      ></Lottie>
+                    ) : isExhusted && seconds > 0 ? (
+                      "Try Again" + " " + seconds
+                    ) : (
+                      "Verify All"
+                    )}
+                  </button>
+                  <div className="verify-button-toolTip relative flex h-full w-[40px] cursor-pointer items-center justify-center">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M10.0003 17.0837C13.8933 17.0837 17.0837 13.8933 17.0837 10.0003C17.0837 6.10735 13.8933 2.91699 10.0003 2.91699C6.10735 2.91699 2.91699 6.10735 2.91699 10.0003C2.91699 13.8933 6.10735 17.0837 10.0003 17.0837ZM18.3337 10.0003C18.3337 14.5837 14.5837 18.3337 10.0003 18.3337C5.41699 18.3337 1.66699 14.5837 1.66699 10.0003C1.66699 5.41699 5.41699 1.66699 10.0003 1.66699C14.5837 1.66699 18.3337 5.41699 18.3337 10.0003Z"
+                        fill="#B5B5C6"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M10.25 8.95801C10.4571 8.95801 10.625 9.1259 10.625 9.33301V13.9997C10.625 14.2068 10.4571 14.3747 10.25 14.3747H9.75C9.54289 14.3747 9.375 14.2068 9.375 13.9997V9.33301C9.375 9.1259 9.54289 8.95801 9.75 8.95801H10.25Z"
+                        fill="#B5B5C6"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M9.37012 6.41699C9.37012 6.20989 9.53801 6.04199 9.74512 6.04199H10.2526C10.4597 6.04199 10.6276 6.20989 10.6276 6.41699V6.91699C10.6276 7.1241 10.4597 7.29199 10.2526 7.29199H9.74512C9.53801 7.29199 9.37012 7.1241 9.37012 6.91699V6.41699Z"
+                        fill="#B5B5C6"
+                      />
+                    </svg>
+                  </div>
+                </div>
               ) : (
                 <button
                   onClick={refreshPermissions}
@@ -465,12 +534,14 @@ const PrizeRequirementBody: FC<{
               )}
             </div>
           )
-        ) : (
+        ) : isConnectionReady ? (
           <Link href="/profile" className="w-full">
             <ClaimAndEnrollButton className="!w-full">
               <p>Connect {app?.label}</p>
             </ClaimAndEnrollButton>
           </Link>
+        ) : (
+          <div className="h-[45px]"></div>
         )}
       </div>
     </div>

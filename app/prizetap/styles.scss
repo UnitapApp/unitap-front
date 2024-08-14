@@ -467,3 +467,32 @@
     #dd40cd 111.44%
   );
 }
+
+.verify-button-toolTip:hover::after {
+  content: "It may take up to 10 minutes to verify the information due to Twitter's limitations.";
+  position: absolute;
+  width: 240px;
+  height: 60px;
+  background: #67677b;
+  border: 1px solid #b5b5c6;
+  top: -72px;
+  left: -200px;
+  font-size: 12px;
+  padding: 4px;
+  padding-left: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.verify-button-toolTip:hover::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #67677b;
+  border: 1px solid #b5b5c6;
+  top: -18px;
+  left: 10px;
+  font-size: 12px;
+  transform: rotate(45deg);
+}
