@@ -143,8 +143,15 @@ const PrizeRequirementBody: FC<{
 
   const constraint =
     currentRequirementIndex !== undefined
-      ? selectedRaffleForEnroll?.constraints[currentRequirementIndex]
+      ? permissions[currentRequirementIndex] ??
+        selectedRaffleForEnroll?.constraints[currentRequirementIndex]
       : null;
+
+  const { seconds, reset } = useTimer({ seconds: 60, minutes: 0, hours: 0 });
+
+  useEffect(() => {
+    if (isExhusted) reset();
+  }, [isExhusted]);
 
   const appName = constraint?.name.split(".").splice(1).join(".");
 
@@ -212,7 +219,16 @@ const PrizeRequirementBody: FC<{
           constraint.name !== "core.IsFollowingFarcasterBatch" && (
             <h3 className="mt-4 text-base text-white">{constraint.title}</h3>
           )}
-
+        <div className="mt-4 text-left">
+          {!!constraint.expirationTime && (
+            <p>
+              Cached Until{" "}
+              {/* {new Date(constraint.expirationTime * 1000).toLocaleDateString()}{" "}
+              :{" "} */}
+              {new Date(constraint.expirationTime * 1000).toLocaleTimeString()}
+            </p>
+          )}
+        </div>
         {params["core.IsFollowingFarcasterBatch"] &&
           constraint.name === "core.IsFollowingFarcasterBatch" && (
             <div className=" flex flex-col gap-4 px-2">
@@ -413,8 +429,8 @@ const PrizeRequirementBody: FC<{
               {constraint.name === "core.IsFollowingTwitterBatch" ? (
                 <button
                   onClick={refreshPermissions}
-                  disabled={loading}
-                  className={`text-[12px]font-bold ml-auto w-[136px] rounded-xl border border-gray90 bg-gray30 px-2 py-2 disabled:opacity-50 ${isExhusted ? "!border-warn !text-warn" : ""}`}
+                  disabled={loading || (isExhusted && seconds > 0)}
+                  className={`text-[12px]font-bold ml-auto w-[136px] rounded-xl border border-gray90 bg-gray30 px-2 py-2 disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
                 >
                   {loading ? (
                     <Lottie
@@ -422,8 +438,8 @@ const PrizeRequirementBody: FC<{
                       height={20}
                       options={loadingAnimationRequirementsOption}
                     ></Lottie>
-                  ) : isExhusted ? (
-                    "Try Again"
+                  ) : isExhusted && seconds > 0 ? (
+                    "Try Again" + " " + seconds
                   ) : (
                     "Verify All"
                   )}
@@ -431,8 +447,8 @@ const PrizeRequirementBody: FC<{
               ) : (
                 <button
                   onClick={refreshPermissions}
-                  disabled={loading}
-                  className={`ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50 ${isExhusted ? "!border-warn !text-warn" : ""}`}
+                  disabled={loading || (isExhusted && seconds > 0)}
+                  className={`ml-auto w-20 rounded-xl border-gray100 bg-gray70 px-2 py-2 disabled:opacity-50 ${isExhusted && seconds > 0 ? "!border-warn !text-warn" : ""}`}
                 >
                   {loading ? (
                     <Lottie
@@ -440,8 +456,8 @@ const PrizeRequirementBody: FC<{
                       height={20}
                       options={loadingAnimationRequirementsOption}
                     ></Lottie>
-                  ) : isExhusted ? (
-                    "Try Again"
+                  ) : isExhusted && seconds > 0 ? (
+                    "Try Again" + " " + seconds
                   ) : (
                     "Verify"
                   )}
@@ -536,3 +552,48 @@ const PrizeRequirementModal: FC<{
 };
 
 export default PrizeRequirementModal;
+
+const fillTime = ({
+  hours,
+  minutes,
+  seconds,
+}: {
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+}) => {
+  return (hours ?? 0) * 3600 + (minutes ?? 0) * 60 + (seconds ?? 0);
+};
+
+function useTimer({
+  hours,
+  minutes,
+  seconds,
+}: {
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+}) {
+  const [timer, setTimer] = useState(fillTime({ hours, minutes, seconds }));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const reset = () => {
+    setTimer(fillTime({ hours, minutes, seconds }));
+  };
+
+  return {
+    reset,
+    seconds: timer % 60,
+    minutes: timer % 3600,
+    hours: timer / 3600,
+  };
+}

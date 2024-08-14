@@ -56,6 +56,7 @@ export type Permission = {
   resourcetype: string;
   type: "TIME" | "VER";
   title?: string;
+  expirationTime?: number;
   negativeDescription: string | null;
   info: PermissionInfoProp;
 };
