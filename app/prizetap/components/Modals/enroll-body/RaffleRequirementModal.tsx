@@ -233,7 +233,7 @@ const PrizeRequirementBody: FC<{
                     <div className="">
                       {twitterBatchPermissions &&
                       twitterBatchPermissions[id] ? (
-                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border border-space-green bg-gray30 text-space-green opacity-50">
+                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-space-green bg-gray30 text-space-green opacity-50">
                           <svg
                             width="16"
                             height="17"
