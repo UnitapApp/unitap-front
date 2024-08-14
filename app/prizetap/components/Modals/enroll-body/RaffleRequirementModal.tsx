@@ -233,7 +233,7 @@ const PrizeRequirementBody: FC<{
                     <div className="">
                       {twitterBatchPermissions &&
                       twitterBatchPermissions[id] ? (
-                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border border-space-green bg-gray30 text-space-green">
+                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border border-space-green bg-gray30 text-space-green opacity-50">
                           <svg
                             width="16"
                             height="17"
@@ -259,13 +259,13 @@ const PrizeRequirementBody: FC<{
                           Followed
                         </div>
                       ) : (
-                        <div className="follow-btn-wrapper overflow-hidden rounded-lg p-[1px]">
+                        <div className="follow-btn-wrapper overflow-hidden rounded-lg p-[2px]">
                           <Link
                             href={`https://warpcast.com/${FarcasterObject[id].name}`}
                             target="_blank"
                           >
-                            <div className="rounded-lg bg-gray30">
-                              <div className="gradient-text-follow flex h-[33px] w-[109px] cursor-pointer items-center justify-center rounded-[7px] font-semibold">
+                            <div className="rounded-[6px] bg-gray30">
+                              <div className="gradient-text-follow flex h-[30px] w-[109px] cursor-pointer items-center justify-center rounded-[5px] font-semibold">
                                 Follow
                               </div>
                             </div>
@@ -299,7 +299,7 @@ const PrizeRequirementBody: FC<{
                     <div className="">
                       {twitterBatchPermissions &&
                       twitterBatchPermissions[id] ? (
-                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border border-space-green bg-gray30 text-space-green">
+                        <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-space-green bg-gray30 text-space-green opacity-20">
                           <svg
                             width="16"
                             height="17"
@@ -325,13 +325,13 @@ const PrizeRequirementBody: FC<{
                           Followed
                         </div>
                       ) : (
-                        <div className="follow-btn-wrapper overflow-hidden rounded-lg p-[1px]">
+                        <div className="follow-btn-wrapper flex h-[33px] items-center justify-center overflow-hidden rounded-lg p-[2px]">
                           <Link
                             href={`https://x.com/${TwitterObject[id].name}`}
                             target="_blank"
                           >
-                            <div className="rounded-lg bg-gray30">
-                              <div className="gradient-text-follow flex h-[33px] w-[109px] cursor-pointer items-center justify-center rounded-[7px] font-semibold">
+                            <div className="overflow-hidden rounded-[6px] bg-gray30">
+                              <div className="gradient-text-follow flex h-[29px] w-[109px] cursor-pointer items-center justify-center rounded-[5px] font-semibold">
                                 Follow
                               </div>
                             </div>
