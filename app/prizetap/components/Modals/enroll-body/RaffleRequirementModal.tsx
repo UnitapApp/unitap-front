@@ -187,14 +187,35 @@ const PrizeRequirementBody: FC<{
   const [twitterBatchPermissions, setTwitterBatchPermissions] =
     useState<null | PermissionInfoProp>(null);
 
+  const [farCasterBatchPermissions, setFarCasterBatchPermissions] =
+    useState<null | PermissionInfoProp>(null);
+
   const [followedCount, setFollowedCount] = useState<number>(0);
+  const [farcasterFollowedCount, setFarcasterFollowedCount] =
+    useState<number>(0);
 
   const [twitterCountList, setTwitterCountList] = useState<number>(0);
+  const [farcasterCountList, setFarcasterCountList] = useState<number>(0);
 
   useEffect(() => {
     const res = permissions.find(
       (item) => item.name === "core.IsFollowingTwitterBatch",
     );
+    const farcasterRes = permissions.find(
+      (item) => item.name === "core.IsFollowingFarcasterBatch",
+    );
+
+    if (farcasterRes && farcasterRes.info) {
+      console.log(farcasterRes.info);
+      setFarcasterFollowedCount(
+        Object.values(farcasterRes.info).filter((value) => value === true)
+          .length,
+      );
+      setFarcasterCountList(Object.keys(farcasterRes.info).length);
+
+      setFarCasterBatchPermissions(farcasterRes.info);
+    }
+
     if (res && res.info) {
       setFollowedCount(
         Object.values(res.info).filter((value) => value === true).length,
@@ -226,16 +247,6 @@ const PrizeRequirementBody: FC<{
           constraint.name !== "core.IsFollowingFarcasterBatch" && (
             <h3 className="mt-4 text-base text-white">{constraint.title}</h3>
           )}
-        {/* <div className="mt-4 text-left"> */}
-        {/* {!!constraint.expirationTime && ( */}
-        {/* <p> */}
-        {/* Cached Until{" "} */}
-        {/* {new Date(constraint.expirationTime * 1000).toLocaleDateString()}{" "}
-              :{" "} */}
-        {/* {new Date(constraint.expirationTime * 1000).toLocaleTimeString()} */}
-        {/* </p> */}
-        {/* )} */}
-        {/* </div> */}
         {params["core.IsFollowingFarcasterBatch"] &&
           constraint.name === "core.IsFollowingFarcasterBatch" && (
             <div className=" flex flex-col gap-4 px-2">
@@ -254,8 +265,8 @@ const PrizeRequirementBody: FC<{
                       <div>{FarcasterObject[id].name}</div>
                     </div>
                     <div className="">
-                      {twitterBatchPermissions &&
-                      twitterBatchPermissions[id] ? (
+                      {farCasterBatchPermissions &&
+                      farCasterBatchPermissions[id] ? (
                         <div className="flex h-[33px] w-[109px] items-center justify-center gap-2 rounded-lg border-2 border-dark-space-green bg-gray30 text-space-green opacity-50">
                           <svg
                             width="16"
@@ -453,11 +464,11 @@ const PrizeRequirementBody: FC<{
 
                   <div>
                     <div className="text-xs font-medium text-gray90">
-                      Follow {twitterCountList} projects on X
+                      Follow {farcasterCountList} projects on X
                     </div>
                     <div>
                       <span className="text-space-green">
-                        {twitterCountList - followedCount}
+                        {farcasterCountList - farcasterFollowedCount}
                       </span>{" "}
                       left to follow
                     </div>
