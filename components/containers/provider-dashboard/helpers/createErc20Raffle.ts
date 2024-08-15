@@ -190,7 +190,7 @@ export const createErc20Raffle = async (
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
   formData.append("creator_address", address);
-  formData.append("prize_amount", prizeAmount.toString());
+  formData.append("prize_amount", BigInt(prizeAmount).toString());
   formData.append("prize_asset", getAddress(data.tokenContractAddress));
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
