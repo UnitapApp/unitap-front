@@ -137,9 +137,9 @@ export const contractAddresses: {
     //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
     //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
     // },
-    // "137": {
-    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    // },
+    "137": {
+      erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
+      erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
+    },
   },
 };
