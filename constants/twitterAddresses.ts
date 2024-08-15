@@ -119,4 +119,8 @@ export const TwitterObject: Record<string, TwitterUser> = {
     name: "ThrivePolygon",
     logo: "./assets/images/twitter/polygon.png",
   },
+  "1381921058694049797": {
+    name: "xionglobal",
+    logo: "./assets/images/twitter/",
+  },
 };
