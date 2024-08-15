@@ -85,7 +85,7 @@ const RenderConnectBrightID = () => {
   return (
     <div className="claim-stat__not-claimed rounded-lg border-2 border-gray50 bg-gray30">
       <p className="claim-stat__not-claimed__text px-4 py-3.5 text-xs font-bold text-gray80">
-        Connect BrightID to See Your Claims
+        Connect Wallet to See Your Claims
       </p>
     </div>
   );

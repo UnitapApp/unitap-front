@@ -439,5 +439,61 @@
 }
 
 .prize-card__description a {
-    @apply text-blue-500;
+  @apply text-blue-500;
+}
+
+.gradient-text-follow {
+  @apply bg-clip-text;
+  background: linear-gradient(
+    91.35deg,
+    #4bf2a2 25%,
+    #a89fe7 56.06%,
+    #e1c4f4 5.07%,
+    #dd40cd 75.44%,
+    #dd40cd 75.44%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.follow-btn-wrapper {
+  background: linear-gradient(
+    91.35deg,
+    #4bf2a2 -4.66%,
+    #a89fe7 56.06%,
+    #e1c4f4 73.07%,
+    #dd40cd 111.44%,
+    #dd40cd 111.44%
+  );
+}
+
+.verify-button-toolTip:hover::after {
+  content: "It may take up to 10 minutes to verify the information due to Twitter's limitations.";
+  position: absolute;
+  width: 240px;
+  height: 60px;
+  background: #10101b;
+  border: 1px solid #303043;
+  top: -72px;
+  left: -200px;
+  font-size: 12px;
+  padding: 4px;
+  padding-left: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  color: #b5b5c6;
+}
+
+.verify-button-toolTip:hover::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #10101b;
+  border: 1px solid #303043;
+  top: -18px;
+  left: 10px;
+  font-size: 12px;
+  transform: rotate(45deg);
 }

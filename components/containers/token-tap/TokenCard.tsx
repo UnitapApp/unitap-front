@@ -266,7 +266,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
-                      // disabled={isExpired}
+                      disabled={isExpired}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
                       className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
