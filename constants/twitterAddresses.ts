@@ -117,10 +117,10 @@ export const TwitterObject: Record<string, TwitterUser> = {
   },
   "1676050567842635776": {
     name: "ThrivePolygon",
-    logo: "./assets/images/twitter/polygon.png",
+    logo: "./assets/images/twitter/Thrive_Polygon.png",
   },
   "1381921058694049797": {
     name: "xionglobal",
-    logo: "./assets/images/twitter/",
+    logo: "./assets/images/twitter/Xion_Global.png",
   },
 };
