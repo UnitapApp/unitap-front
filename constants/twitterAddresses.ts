@@ -115,4 +115,8 @@ export const TwitterObject: Record<string, TwitterUser> = {
     name: "0xPolygonEco",
     logo: "./assets/images/twitter/polygon.png",
   },
+  "1676050567842635776": {
+    name: "ThrivePolygon",
+    logo: "./assets/images/twitter/polygon.png",
+  },
 };
