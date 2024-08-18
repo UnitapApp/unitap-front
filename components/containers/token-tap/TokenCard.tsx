@@ -263,6 +263,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     >
                       <p>{`Pending...`}</p>
                     </ClaimButton>
+                  ) : isExpired || token.isMaxedOut ? (
+                    <ClaimButton
+                      className="pointer-events-none !bg-g-dark-primary-gradient"
+                      $mlAuto
+                      disabled
+                      $fontSize="13px"
+                    >
+                      Finished
+                    </ClaimButton>
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
@@ -273,10 +282,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     >
                       <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
-                  ) : token.isMaxedOut ? (
-                    <NoCurrencyButton disabled $fontSize="13px">
-                      Empty
-                    </NoCurrencyButton>
                   ) : (
                     <ClaimedButton
                       data-testid={`chain-claimed-${token.id}`}
@@ -292,6 +297,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       </p>
                     </ClaimedButton>
                   )
+                ) : isExpired || token.isMaxedOut ? (
+                  <ClaimButton
+                    className="pointer-events-none !bg-g-dark-primary-gradient"
+                    $mlAuto
+                    disabled
+                    $fontSize="13px"
+                  >
+                    Finished
+                  </ClaimButton>
                 ) : token.amount !== 0 ? (
                   <ClaimButton
                     data-testid={`chain-show-claim-${token.id}`}
