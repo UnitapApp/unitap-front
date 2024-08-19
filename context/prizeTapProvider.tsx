@@ -119,7 +119,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
   const [searchPhrase, changeSearchPhrase] = useState("");
 
-  const [userTicketChance, setUserTicketChance] = useState(0);
+  const [userTicketChance, setUserTicketChance] = useState<number>(0);
 
   const [enrolledWalletListApi, setEnrolledWalletListApi] = useState<any>(null);
 
@@ -130,9 +130,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setUserTicketChance(0);
       return;
     }
-    func === "increase"
-      ? setUserTicketChance((prev) => prev + 1)
-      : setUserTicketChance((prev) => prev - 1);
+    if (func === "increase") {
+      setUserTicketChance(userTicketChance + 1);
+    }
+    if (func === "decrease") {
+      setUserTicketChance(userTicketChance - 1);
+    }
   };
 
   const { userToken } = useUserProfileContext();
@@ -190,7 +193,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         userTicketChance,
       );
 
-      console.log(enrollInApi);
+      // console.log(enrollInApi);
       setSelectedRaffleForEnroll({
         ...selectedRaffleForEnroll,
         userEntry: enrollInApi.signature,
@@ -203,7 +206,6 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     }
 
     let response;
-
     try {
       response = await getMuonApi(raffleEntryId);
     } catch (e: any) {
@@ -218,7 +220,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       multiplier: userEntry?.multiplier,
       userEntry,
     };
-  }, [method, selectedRaffleForEnroll, userToken]);
+  }, [method, selectedRaffleForEnroll, userToken, userTicketChance]);
 
   const claimOrEnroll = useCallback(async () => {
     if (!userToken || !selectedRaffleForEnroll) return;
@@ -233,7 +235,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     const enrollOrClaimPayload = await getSignature();
 
-    console.log(enrollOrClaimPayload);
+    // console.log(enrollOrClaimPayload);
 
     const id = enrollOrClaimPayload?.userEntry.pk;
 
@@ -257,6 +259,8 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc20;
 
     if (!contractAddress) throw new Error("Address is not supported");
+
+    console.log(args);
 
     try {
       const response = await writeContractAsync({
@@ -287,7 +291,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
         if (!userToken) return;
 
-        await (method === "Enroll"
+        await (method === "Enroll" || method === "Verify"
           ? updateEnrolledFinished(userToken, id, res.transactionHash)
           : updateClaimPrizeFinished(userToken, id, res.transactionHash));
       }

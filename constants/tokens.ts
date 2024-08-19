@@ -1765,6 +1765,15 @@ export const tokensInformation: TokenInformation[] = [
         logoUrl:
           "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
       },
+
+      {
+        tokenAddress: "0x9CD3E07145f2e044a4e91C0247589BB44fad668F",
+        tokenDecimals: "18",
+        tokenName: "MTK",
+        tokenSymbol: "MTK",
+        logoUrl:
+          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+      },
     ],
   },
 ];

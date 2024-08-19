@@ -108,9 +108,9 @@ const Sidebar: FC<{
             ).length
           }
           className={` mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
-          style={{
-            background: "url('/assets/images/prize-tap/enroll.svg')",
-          }}
+          // style={{
+          //   background: "url('/assets/images/prize-tap/enroll.svg')",
+          // }}
           onClick={() => setMethod("Verify")}
         >
           Enroll
