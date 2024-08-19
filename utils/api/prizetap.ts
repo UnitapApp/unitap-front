@@ -64,7 +64,6 @@ export async function getEnrollmentApi(
   address: string,
   userTicketChance: number,
 ) {
-  console.log(userTicketChance);
   const response = await axiosInstance.post<EnrollmentRaffleApi>(
     `/api/prizetap/raffle-enrollment/${raffleID}/`,
     {

@@ -65,7 +65,9 @@ const EnrollModalBody = ({
     return <SuccessBody method={method!} raffle={selectedRaffleForEnroll} />;
 
   if (!chainId || chainId.toString() !== selectedRaffleForEnroll?.chain.chainId)
-    return <WrongNetworkBody raffle={selectedRaffleForEnroll} />;
+    return (
+      <WrongNetworkBody raffle={selectedRaffleForEnroll} method={method!} />
+    );
 
   if (
     selectedRaffleForEnroll.userEntry?.txHash &&
@@ -92,12 +94,18 @@ const EnrollModal = () => {
 
   if (!selectedRaffleForEnroll) return null;
 
+  // console.log(method);
+
   return (
     <Modal
       title={`${
-        method === "Verify" || "Pre-Verify"
-          ? "Requirements"
-          : selectedRaffleForEnroll.name
+        method === "Claim"
+          ? "Claim prize"
+          : method === "Winners"
+            ? "Winners"
+            : method === "Pre-Verify"
+              ? "Requirements"
+              : "Enroll"
       }`}
       size={size}
       closeModalHandler={closeClaimTokenModal}

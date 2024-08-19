@@ -83,6 +83,8 @@ const config: Config = {
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)",
         primaryGradient2:
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 43.07%, #DD40CD 100.44%)",
+        primaryGradient3:
+          "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 89.49%, #E1C3F4 156.07%, #DD40CD 100.44%)",
         "primaryGradient-2":
           "linear-gradient(91.35deg, #4BF2A2 -150.66%, #A89FE7 39.49%, #E1C3F4 150.07%)",
         "home-header-texture":
@@ -162,6 +164,10 @@ const config: Config = {
           "50%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        changeColor: {
+          "0%": { backgroundColor: "red" },
+          "50%": { backgroundColor: "yellow" },
+        },
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
@@ -171,6 +177,7 @@ const config: Config = {
         blinking: "blinking 2s step-start 0s infinite",
         fadeInOut: "fadeInOut 2s ease-in-out infinite",
         fadeToggle: "fadeToggle 5s ease-in-out infinite",
+        changeColor: "changeColor 1s ease-in",
       },
       transitionProperty: {
         height: "height",
