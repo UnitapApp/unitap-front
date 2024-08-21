@@ -171,8 +171,6 @@ export const MinimumWeb3AmountRequirementField = ({
 }: Prop) => {
   const [minValue, setValue] = useState<string>("");
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     if (!requirement) return;
     setValue(

@@ -41,4 +41,8 @@ export const appInfos: {
     logo: "/assets/images/provider-dashboard/op.svg",
     label: "Optimism",
   },
+  glmStaking: {
+    logo: "/assets/images/provider-dashboard/op.svg",
+    label: "glmStaking",
+  },
 };

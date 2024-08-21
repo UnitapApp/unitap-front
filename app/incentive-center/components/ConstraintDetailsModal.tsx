@@ -150,6 +150,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   const handleAddRequirement = () => {
+    console.log(constraint.params);
     if (
       constraint.name === "core.HasNFTVerification" ||
       constraint.name === "core.HasTokenVerification" ||
@@ -313,7 +314,7 @@ export const CreateParams: FC<CreateModalParam> = ({
   };
 
   useEffect(() => {
-    if (selectedChain) {
+    if (selectedChain && constraint.name !== "core.GLMStakingVerification") {
       handleGetTokenList();
     }
   }, [selectedChain]);
@@ -417,6 +418,29 @@ export const CreateParams: FC<CreateModalParam> = ({
         isDisabled={!collectionAddress}
         decimals={decimals}
       />
+    );
+  }
+
+  if (constraint.name === "core.GLMStakingVerification") {
+    return (
+      <div className="flex flex-col gap-3">
+        <ChainList
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          allChainList={allChainList}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
+        />
+
+        <MinimumWeb3AmountRequirementField
+          setRequirementParamsList={setRequirementParamsList}
+          requirementParamsList={requirementParamsList}
+          isNft={false}
+          requirement={requirement}
+          isDisabled={!collectionAddress}
+          decimals={18}
+        />
+      </div>
     );
   }
 
