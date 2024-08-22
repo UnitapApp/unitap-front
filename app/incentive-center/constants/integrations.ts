@@ -41,7 +41,7 @@ export const appInfos: {
     logo: "/assets/images/provider-dashboard/op.svg",
     label: "Optimism",
   },
-  glmStaking: {
+  octant: {
     logo: "/assets/images/golem.png",
     label: "glmStaking",
   },
