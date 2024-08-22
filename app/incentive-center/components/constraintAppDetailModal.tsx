@@ -116,6 +116,15 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
 
   const handleAddRequirement = () => {
     if (!constraint) return;
+    if (requirementParamsList) {
+      const checkValues = Object.values(requirementParamsList).every(
+        (value) => value !== null && value !== undefined && value !== "",
+      );
+
+      if (!checkValues) {
+        return;
+      }
+    }
 
     if (
       constraint.name === "core.HasNFTVerification" ||

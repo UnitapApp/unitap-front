@@ -124,20 +124,8 @@ export const contractAddresses: {
       erc20: "0x183390bE36EA575D93b5651c36cFe73DF642eD1b",
       erc721: "0x0000000000000000000000000000000000000000",
     },
-    // "30": {
-    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    // },
-
-    // "204": {
-    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    // },
-    // "42220": {
-    //   erc20: "0xC74089ff29CC6F46DE9318F4a6b482cEadbf814C",
-    //   erc721: "0xAB98C8DAD87C2fEB1fb723994c97845f26bc1dce",
-    // },
     "137": {
+      // Polygon
       erc20: "0xeb1Ad34EA13aF7Ec73Bb872F3Ab2B9250d62b7FD",
       erc721: "0xAaBD83213d545180eeC498877Aa7891E232FCE59",
     },
