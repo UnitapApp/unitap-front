@@ -35,7 +35,14 @@ import { prizeTapAbi } from "@/types/abis/contracts";
 import { useWalletAccount, useWalletProvider } from "@/utils/wallet";
 import { useGlobalContext } from "./globalProvider";
 import { Address } from "viem";
-import { waitForTransactionReceipt } from "viem/actions";
+// import { waitForTransactionReceipt } from "viem/actions";
+
+import {
+  writeContract,
+  getGasPrice,
+  waitForTransactionReceipt,
+} from "@wagmi/core";
+import { config } from "@/utils/wallet/wagmi";
 
 export const PrizeTapContext = createContext<{
   rafflesList: Prize[];
@@ -214,7 +221,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       setClaimOrEnrollSignatureLoading(false);
     }
 
-    console.log(userEntry);
+    // console.log(userEntry);
     return {
       result: response?.result,
       multiplier: userEntry?.multiplier,
@@ -222,23 +229,14 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     };
   }, [method, selectedRaffleForEnroll, userToken, userTicketChance]);
 
-  const claimOrEnroll = useCallback(async () => {
+  const claimOrEnroll = async () => {
     if (!userToken || !selectedRaffleForEnroll) return;
 
     const args: any = [BigInt(selectedRaffleForEnroll!.raffleId)];
-
     const claimMethod = method;
-
-    const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
-
     setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
-
     const enrollOrClaimPayload = await getSignature();
-
-    // console.log(enrollOrClaimPayload);
-
     const id = enrollOrClaimPayload?.userEntry.pk;
-
     setClaimOrEnrollLoading(true);
 
     if (claimMethod !== "Claim") {
@@ -260,54 +258,148 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
 
     if (!contractAddress) throw new Error("Address is not supported");
 
-    console.log(args);
-
     try {
-      const response = await writeContractAsync({
+      const gasPrice = await getGasPrice(config);
+      const response = await writeContract(config, {
         args,
         account: address,
-        functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
+        functionName: method === "Claim" ? "claimPrize" : "participateInRaffle",
         chainId: Number(selectedRaffleForEnroll?.chain.chainId),
         abi: prizeTapAbi,
         address: contractAddress,
+        gasPrice,
       });
 
-      if (response) {
-        const res = await client?.waitForTransactionReceipt({
+      let receipt;
+      const pollingInterval = 5000; // 5 seconds
+      const maxAttempts = 10; // Max number of polling attempts
+
+      let attempts = 0;
+      while (attempts < maxAttempts) {
+        receipt = await waitForTransactionReceipt(config, {
           hash: response,
-          confirmations: 1,
         });
-        if (!res) return;
+        console.log(receipt);
+        if (receipt) break;
 
-        setClaimOrEnrollWalletResponse({
-          success: true,
-          state: "Done",
-          txHash: res.transactionHash,
-          message:
-            method === "Claim"
-              ? "Claimed successfully."
-              : "Enrolled successfully",
-        });
-
-        if (!userToken) return;
-
-        await (method === "Enroll" || method === "Verify"
-          ? updateEnrolledFinished(userToken, id, res.transactionHash)
-          : updateClaimPrizeFinished(userToken, id, res.transactionHash));
+        attempts++;
+        // Waiting a few seconds before retrying
+        await new Promise((resolve) => setTimeout(resolve, pollingInterval));
       }
+
+      if (!receipt)
+        throw new Error("Transaction receipt not found or confirmation failed");
+
+      setClaimOrEnrollWalletResponse({
+        success: true,
+        state: "Done",
+        txHash: receipt.transactionHash,
+        message:
+          method === "Claim"
+            ? "Claimed successfully."
+            : "Enrolled successfully",
+      });
+
+      await (method === "Enroll" || method === "Verify"
+        ? updateEnrolledFinished(userToken, id, receipt.transactionHash)
+        : updateClaimPrizeFinished(userToken, id, receipt.transactionHash));
+    } catch (e) {
+      console.log(e);
+      setClaimOrEnrollWalletResponse({
+        success: false,
+        state: "Failed",
+        message: "Transaction failed. Please try again.",
+      });
     } finally {
       setClaimOrEnrollLoading(false);
-      console.log("-");
     }
-  }, [
-    address,
-    client,
-    getSignature,
-    method,
-    selectedRaffleForEnroll,
-    userToken,
-    writeContractAsync,
-  ]);
+  };
+  // const claimOrEnroll = useCallback(async () => {
+  //   if (!userToken || !selectedRaffleForEnroll) return;
+
+  //   const args: any = [BigInt(selectedRaffleForEnroll!.raffleId)];
+
+  //   const claimMethod = method;
+
+  //   const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
+
+  //   setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
+
+  //   const enrollOrClaimPayload = await getSignature();
+
+  //   // console.log(enrollOrClaimPayload);
+
+  //   const id = enrollOrClaimPayload?.userEntry.pk;
+
+  //   setClaimOrEnrollLoading(true);
+
+  //   if (claimMethod !== "Claim") {
+  //     args.push(
+  //       enrollOrClaimPayload?.multiplier,
+  //       enrollOrClaimPayload?.result?.reqId,
+  //       {
+  //         signature: enrollOrClaimPayload?.result?.signatures[0].signature,
+  //         owner: enrollOrClaimPayload?.result?.signatures[0].owner,
+  //         nonce: enrollOrClaimPayload?.result?.data.init.nonceAddress,
+  //       },
+  //       enrollOrClaimPayload?.result?.shieldSignature,
+  //     );
+  //   }
+
+  //   const contractAddress = selectedRaffleForEnroll?.isPrizeNft
+  //     ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc721
+  //     : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId].erc20;
+
+  //   if (!contractAddress) throw new Error("Address is not supported");
+
+  //   console.log(args);
+
+  //   try {
+  //     const response = await writeContractAsync({
+  //       args,
+  //       account: address,
+  //       functionName: method == "Claim" ? "claimPrize" : "participateInRaffle",
+  //       chainId: Number(selectedRaffleForEnroll?.chain.chainId),
+  //       abi: prizeTapAbi,
+  //       address: contractAddress,
+  //     });
+
+  //     if (response) {
+  //       const res = await client?.waitForTransactionReceipt({
+  //         hash: response,
+  //         confirmations: 1,
+  //       });
+  //       if (!res) return;
+
+  //       setClaimOrEnrollWalletResponse({
+  //         success: true,
+  //         state: "Done",
+  //         txHash: res.transactionHash,
+  //         message:
+  //           method === "Claim"
+  //             ? "Claimed successfully."
+  //             : "Enrolled successfully",
+  //       });
+
+  //       if (!userToken) return;
+
+  //       await (method === "Enroll" || method === "Verify"
+  //         ? updateEnrolledFinished(userToken, id, res.transactionHash)
+  //         : updateClaimPrizeFinished(userToken, id, res.transactionHash));
+  //     }
+  //   } finally {
+  //     setClaimOrEnrollLoading(false);
+  //     console.log("-");
+  //   }
+  // }, [
+  //   address,
+  //   client,
+  //   getSignature,
+  //   method,
+  //   selectedRaffleForEnroll,
+  //   userToken,
+  //   writeContractAsync,
+  // ]);
 
   const openEnrollModal = useCallback(
     (raffle: Prize, method: string | null) => {

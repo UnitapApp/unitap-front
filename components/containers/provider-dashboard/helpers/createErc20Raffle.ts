@@ -14,10 +14,11 @@ import {
   getContract,
   parseEther,
 } from "viem";
-import { GetWalletClientReturnType } from "wagmi/actions";
+import { getGasPrice, GetWalletClientReturnType } from "wagmi/actions";
 import { checkStartTimeStamp, deadline, startAt } from "./deadlineAndStartAt";
 import { createRaffleApi, updateCreateRaffleTx } from "@/utils/api";
 import Big from "big.js";
+import { config } from "@/utils/wallet/wagmi";
 
 const createErc20RaffleCallback = async (
   account: string,
@@ -36,59 +37,62 @@ const createErc20RaffleCallback = async (
   selectedChain: Chain,
 ) => {
   if (!provider || !signer) return;
-  const gasEstimate = await provider.estimateContractGas({
-    abi: prizeTapAbi,
-    account: account as any,
-    address: raffleContract.address,
-    functionName: "createRaffle",
-    args: [
-      isNativeToken
-        ? parseEther(new Big(payableAmount).toFixed())
-        : BigInt(
-            toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
-          ),
-      currencyAddress,
-      maxParticipants,
-      3n,
-      startTime,
-      endTime,
-      winnersCount,
-      "0x0000000000000000000000000000000000000000000000000000000000000000",
-    ],
-    value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: prizeTapAbi,
+  //   account: account as any,
+  //   address: raffleContract.address,
+  //   functionName: "createRaffle",
+  //   args: [
+  //     isNativeToken
+  //       ? parseEther(new Big(payableAmount).toFixed())
+  //       : BigInt(
+  //           toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+  //         ),
+  //     currencyAddress,
+  //     maxParticipants,
+  //     3n,
+  //     startTime,
+  //     endTime,
+  //     winnersCount,
+  //     "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //   ],
+  //   value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+  // });
 
-  if (selectedChain.chainId === "42161" || selectedChain.chainId === "10") {
-    return signer?.writeContract({
-      abi: prizeTapAbi,
-      account: account as any,
-      address: raffleContract.address,
-      functionName: "createRaffle",
-      // gasPrice: gasEstimate,
-      args: [
-        isNativeToken
-          ? parseEther(new Big(payableAmount).toFixed())
-          : BigInt(
-              toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
-            ),
-        currencyAddress,
-        maxParticipants,
-        3n,
-        startTime,
-        endTime,
-        winnersCount,
-        "0x0000000000000000000000000000000000000000000000000000000000000000",
-      ],
-      value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
-    });
-  }
+  // if (selectedChain.chainId === "42161" || selectedChain.chainId === "10") {
+  //   return signer?.writeContract({
+  //     abi: prizeTapAbi,
+  //     account: account as any,
+  //     address: raffleContract.address,
+  //     functionName: "createRaffle",
+  //     // gasPrice: gasEstimate,
+  //     args: [
+  //       isNativeToken
+  //         ? parseEther(new Big(payableAmount).toFixed())
+  //         : BigInt(
+  //             toWei(Number(new Big(payableAmount).toFixed()), tokenDecimals),
+  //           ),
+  //       currencyAddress,
+  //       maxParticipants,
+  //       3n,
+  //       startTime,
+  //       endTime,
+  //       winnersCount,
+  //       "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //     ],
+  //     value: currencyAddress == ZERO_ADDRESS ? parseEther(totalAmount) : 0n,
+  //   });
+  // }
+
+  const gasPrice = await getGasPrice(config);
+  const higherGasPrice = (gasPrice * BigInt(15)) / BigInt(10);
 
   return signer?.writeContract({
     abi: prizeTapAbi,
     account: account as any,
     address: raffleContract.address,
     functionName: "createRaffle",
-    gasPrice: gasEstimate,
+    gasPrice: higherGasPrice,
     args: [
       isNativeToken
         ? parseEther(new Big(payableAmount).toFixed())
@@ -246,10 +250,13 @@ export const createErc20Raffle = async (
     const raffle = await createRaffleApi(userToken, formData);
 
     if (!raffle.success) {
+      console.log("create raffle failed");
       return false;
     }
 
     const rafflePk = raffle.data.id;
+
+    console.log(rafflePk);
 
     setCreteRaffleResponse({
       success: true,
