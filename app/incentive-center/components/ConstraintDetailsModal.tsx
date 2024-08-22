@@ -313,11 +313,11 @@ export const CreateParams: FC<CreateModalParam> = ({
     }
   };
 
-  useEffect(() => {
-    if (selectedChain && constraint.name !== "core.GLMStakingVerification") {
-      handleGetTokenList();
-    }
-  }, [selectedChain]);
+  // useEffect(() => {
+  //   if (selectedChain && constraint.name !== "core.GLMStakingVerification") {
+  //     handleGetTokenList();
+  //   }
+  // }, [selectedChain]);
 
   useEffect(() => {
     if (!collectionAddress) return;
@@ -424,13 +424,13 @@ export const CreateParams: FC<CreateModalParam> = ({
   if (constraint.name === "core.GLMStakingVerification") {
     return (
       <div className="flex flex-col gap-3">
-        <ChainList
+        {/* <ChainList
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           allChainList={allChainList}
           selectedChain={selectedChain}
           setSelectedChain={setSelectedChain}
-        />
+        /> */}
 
         <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
