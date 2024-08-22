@@ -278,6 +278,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
       while (attempts < maxAttempts) {
         receipt = await waitForTransactionReceipt(config, {
           hash: response,
+          confirmations: 2,
         });
         console.log(receipt);
         if (receipt) break;
