@@ -15,8 +15,10 @@ import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/incentive-center/components/ChainList";
 import SelectMethodInput, {
   AddressDelegationFields,
+  CountRequirementField,
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
+  RoundRequirementField,
 } from "@/app/incentive-center/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
@@ -150,7 +152,6 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   const handleAddRequirement = () => {
-    console.log(constraint.params);
     if (
       constraint.name === "core.HasNFTVerification" ||
       constraint.name === "core.HasTokenVerification" ||
@@ -258,6 +259,7 @@ export const CreateParams: FC<CreateModalParam> = ({
 
   useEffect(() => {
     if (requirement) {
+      console.log(requirement);
       if (!requirement.params) return;
       setCollectionAddress(requirement.params.ADDRESS);
       if (requirement.params.ADDRESS === zeroAddress) {
@@ -444,6 +446,45 @@ export const CreateParams: FC<CreateModalParam> = ({
     );
   }
 
+  if (constraint.name === "core.HasDonatedOnGitcoin") {
+    return (
+      <div>
+        <div>
+          <p>Minimum donated amount:</p>
+          <MinimumNumberRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
+        <div className="mt-3">
+          <p>The number of projects that you should donate to</p>
+          <CountRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
+        <div className="mt-3">
+          <p>The round that you should donate in</p>
+          <RoundRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
+      </div>
+    );
+  }
   if (
     constraint.name === "core.HasNFTVerification" ||
     constraint.name === "core.HasTokenVerification"
