@@ -46,7 +46,7 @@ export const appInfos: {
     label: "GlmStaking",
   },
   gitcoinPassport: {
-    logo: "/assets/images",
+    logo: "/assets/images/passport.png",
     label: "GitcoinPassport",
   },
 };
