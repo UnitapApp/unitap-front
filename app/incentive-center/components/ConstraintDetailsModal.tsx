@@ -152,6 +152,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
   };
 
   const handleAddRequirement = () => {
+    console.log(constraint.params);
     if (
       constraint.name === "core.HasNFTVerification" ||
       constraint.name === "core.HasTokenVerification" ||
@@ -485,6 +486,7 @@ export const CreateParams: FC<CreateModalParam> = ({
       </div>
     );
   }
+
   if (
     constraint.name === "core.HasNFTVerification" ||
     constraint.name === "core.HasTokenVerification"
