@@ -41,8 +41,12 @@ export const appInfos: {
     logo: "/assets/images/provider-dashboard/op.svg",
     label: "Optimism",
   },
-  glmStaking: {
-    logo: "/assets/images/provider-dashboard/op.svg",
-    label: "glmStaking",
+  octant: {
+    logo: "/assets/images/golem.png",
+    label: "GlmStaking",
+  },
+  gitcoinPassport: {
+    logo: "/assets/images/passport.png",
+    label: "GitcoinPassport",
   },
 };
