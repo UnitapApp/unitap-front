@@ -245,7 +245,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                             x1="-0.594405"
                             y1="4.5"
                             x2="11.2811"
-                            y2="4.81107"<<<<<<< dev
+                            y2="4.81107"
                             gradientUnits="userSpaceOnUse"
                           >
                             <stop stopColor="#4BF2A2" />
