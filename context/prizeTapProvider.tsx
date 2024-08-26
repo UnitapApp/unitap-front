@@ -135,6 +135,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   >([]);
   const [raffleRequirementsLoading, setRaffleRequirementsLoading] =
     useState(false);
+  const [refreshToggle, setRefreshToggle] = useState(false);
 
   const [userTicketChance, setUserTicketChance] = useState<number>(0);
 
@@ -409,6 +410,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     selectedRaffleForEnroll?.constraints,
     selectedRaffleForEnroll?.pk,
     userToken,
+    refreshToggle,
   ]);
 
   return (
@@ -441,10 +443,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         isOpenEnrolledModal,
         setIsOpenEnrolledModal,
         raffleRequirements,
-        updateRaffleRequirements: () =>
-          setSelectedRaffleForEnroll(
-            selectedRaffleForEnroll ? { ...selectedRaffleForEnroll } : null,
-          ),
+        updateRaffleRequirements: () => setRefreshToggle(!refreshToggle),
         raffleRequirementsLoading,
       }}
     >
