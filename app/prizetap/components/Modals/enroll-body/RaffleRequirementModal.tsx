@@ -640,68 +640,35 @@ const PrizeRequirementModal: FC<{
   prize: Prize;
 }> = ({ prize }) => {
   const { userToken } = useUserProfileContext();
-  const [loading, setLoading] = useState(false);
   const [currentRequirementIndex, setCurrentRequirementIndex] = useState(0);
   const [isExhusted, setIsExhusted] = useState(false);
 
-  const [permissions, SetPermissions] = useState<
-    (Permission & { isVerified: boolean })[]
-  >([]);
+  const {
+    updateRaffleRequirements,
+    raffleRequirements,
+    raffleRequirementsLoading,
+  } = usePrizeTapContext();
 
   const refreshPermissions = () => {
     if (!userToken) return;
     setIsExhusted(false);
-    setLoading(true);
-    getRaffleConstraintsVerifications(prize.pk, userToken)
-      .then((res) => {
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          prize.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      })
-      .finally(() => {
-        setIsExhusted(true);
-        setLoading(false);
-      });
-  };
+    updateRaffleRequirements();
 
-  useEffect(() => {
-    if (!userToken) return;
-    setLoading(true);
-    getRaffleConstraintsVerifications(prize.pk, userToken)
-      .then((res) => {
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          prize.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [prize.constraints, prize.pk, userToken]);
+    setIsExhusted(true);
+  };
 
   return (
     <div className="-mt-3 flex h-[420px] w-full items-center justify-start gap-2 overflow-y-auto">
       <Sidebar
         currentRequirementIndex={currentRequirementIndex}
         setCurrentRequirementIndex={setCurrentRequirementIndex}
-        permissions={permissions}
+        permissions={raffleRequirements}
         prize={prize}
       />
       <PrizeRequirementBody
         isExhusted={isExhusted}
-        loading={loading}
-        permissions={permissions}
+        loading={raffleRequirementsLoading}
+        permissions={raffleRequirements}
         refreshPermissions={refreshPermissions}
         currentRequirementIndex={currentRequirementIndex}
         setCurrentRequirementIndex={setCurrentRequirementIndex}
