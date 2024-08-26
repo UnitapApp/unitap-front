@@ -232,6 +232,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
     setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
+    const enrollOrClaimingPk = selectedRaffleForEnroll.pk;
 
     const enrollOrClaimPayload = await getSignature();
 
@@ -292,7 +293,21 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         if (!userToken) return;
 
         await (method === "Enroll" || method === "Verify"
-          ? updateEnrolledFinished(userToken, id, res.transactionHash)
+          ? updateEnrolledFinished(userToken, id, res.transactionHash).then(
+              (res) => {
+                setRafflesList((prev) => {
+                  const raffle = prev.find(
+                    (item) => item.pk === enrollOrClaimingPk,
+                  );
+
+                  if (!raffle) return prev;
+
+                  raffle.userEntry = res.entry;
+
+                  return [...prev];
+                });
+              },
+            )
           : updateClaimPrizeFinished(userToken, id, res.transactionHash));
       }
     } finally {
