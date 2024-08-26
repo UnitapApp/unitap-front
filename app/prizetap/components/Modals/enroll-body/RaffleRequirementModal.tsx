@@ -259,7 +259,7 @@ const PrizeRequirementBody: FC<{
         "#captcha-cloudflare-container",
       );
 
-      if (!captchaElement) return;
+      if (!captchaElement) {
 
       captchaElement.innerHTML = "";
 
