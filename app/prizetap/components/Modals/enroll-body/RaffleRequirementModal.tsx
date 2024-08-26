@@ -230,9 +230,15 @@ const PrizeRequirementBody: FC<{
     let isMounted = false;
 
     const windowObj: any = window;
+    if (!permissions.length) return;
+
+    const isCloudflareCaptcha =
+      constraint?.name === "core.HasVerifiedCloudflareCaptcha";
 
     windowObj.onloadTurnstileCallback = function () {
       isMounted = true;
+      if (!isCloudflareCaptcha || constraint?.isVerified) return;
+
       windowObj.turnstile.render("#captcha-cloudflare-container", {
         sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
         callback: function (token: string) {
@@ -240,11 +246,6 @@ const PrizeRequirementBody: FC<{
         },
       });
     };
-
-    if (!permissions.length) return;
-
-    const isCloudflareCaptcha =
-      constraint?.name === "core.HasVerifiedCloudflareCaptcha";
 
     const handleLoadTurnstile = () => {
       if (!isCloudflareCaptcha) return;
@@ -254,6 +255,14 @@ const PrizeRequirementBody: FC<{
         return;
       }
 
+      const captchaElement = document.querySelector(
+        "#captcha-cloudflare-container",
+      );
+
+      if (!captchaElement) return;
+
+      captchaElement.innerHTML = "";
+
       windowObj.turnstile.render("#captcha-cloudflare-container", {
         sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
         callback: function (token: string) {
@@ -262,7 +271,7 @@ const PrizeRequirementBody: FC<{
       });
     };
 
-    handleLoadTurnstile();
+    if (isCloudflareCaptcha && !constraint.isVerified) handleLoadTurnstile();
 
     // @ts-ignore
     window.captchaCallback = (token: string) => {
