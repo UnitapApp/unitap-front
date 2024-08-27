@@ -302,6 +302,108 @@ export const MinimumNumberRequirementField = ({
   );
 };
 
+export const CountRequirementField = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+}: Prop) => {
+  const [minValue, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (!requirement) return;
+    setValue(requirement.params.COUNT);
+  }, []);
+
+  const handleChange = (e: string) => {
+    setValue(isNft ? e.replace(/[^0-9]/g, "") : e);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["COUNT"]: e.replace(/[^0-9]/g, ""),
+    });
+  };
+
+  const handleChangeValue = (e: string) => {
+    const finaleValue =
+      e === "increase"
+        ? Number(minValue) + 1
+        : Math.max(0, Number(minValue) - 1);
+    handleChange(finaleValue.toString());
+  };
+
+  return (
+    <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+      <input
+        className="h-full w-full bg-inherit"
+        placeholder="COUNT"
+        name="count"
+        type="number"
+        min={0}
+        onChange={(e) => handleChange(e.target.value)}
+        value={minValue}
+      />
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+        <Icon
+          onClick={() => handleChangeValue("increase")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+        />
+        <Icon
+          onClick={() => handleChangeValue("decrease")}
+          className="cursor-pointer"
+          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+        />
+      </div>
+    </div>
+  );
+};
+
+export const RoundRequirementField = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+}: Prop) => {
+  const [minValue, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (!requirement) return;
+    setValue(requirement.params.ROUND);
+  }, []);
+
+  const handleChange = (e: string) => {
+    setValue(isNft ? e.replace(/[^0-9]/g, "") : e);
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["ROUND"]: e.replace(/[^0-9]/g, ""),
+    });
+  };
+
+  const handleChangeValue = (e: string) => {
+    const finaleValue =
+      e === "increase"
+        ? Number(minValue) + 1
+        : Math.max(0, Number(minValue) - 1);
+    handleChange(finaleValue.toString());
+  };
+
+  return (
+    <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+      <input
+        className="h-full w-full bg-inherit"
+        placeholder="ROUND"
+        name="round"
+        type="number"
+        min={0}
+        onChange={(e) => handleChange(e.target.value)}
+        value={minValue}
+      />
+    </div>
+  );
+};
+
 export const AddressDelegationFields = ({
   setRequirementParamsList,
   requirementParamsList,

@@ -20,6 +20,7 @@ import {
 import { getAllConnections } from "@/utils/serverApis";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import Lottie from "react-lottie";
 import ReactMarkdown from "react-markdown";
@@ -206,7 +207,6 @@ const PrizeRequirementBody: FC<{
     );
 
     if (farcasterRes && farcasterRes.info) {
-      console.log(farcasterRes.info);
       setFarcasterFollowedCount(
         Object.values(farcasterRes.info).filter((value) => value === true)
           .length,
@@ -225,6 +225,65 @@ const PrizeRequirementBody: FC<{
       setTwitterBatchPermissions(res.info);
     }
   }, [permissions]);
+
+  useEffect(() => {
+    let isMounted = false;
+
+    const windowObj: any = window;
+    if (!permissions.length) return;
+
+    const isCloudflareCaptcha =
+      constraint?.name === "core.HasVerifiedCloudflareCaptcha";
+
+    windowObj.onloadTurnstileCallback = function () {
+      isMounted = true;
+      if (!isCloudflareCaptcha || constraint?.isVerified) return;
+
+      windowObj.turnstile.render("#captcha-cloudflare-container", {
+        sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
+        callback: function (token: string) {
+          localStorage.setItem("captcha-token", token);
+        },
+      });
+    };
+
+    const handleLoadTurnstile = () => {
+      if (!isCloudflareCaptcha) return;
+
+      if (!windowObj.turnstile) {
+        setTimeout(handleLoadTurnstile, 300);
+        return;
+      }
+
+      const captchaElement = document.querySelector(
+        "#captcha-cloudflare-container",
+      );
+
+      if (!captchaElement) return;
+
+      captchaElement.innerHTML = "";
+
+      windowObj.turnstile.render("#captcha-cloudflare-container", {
+        sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
+        callback: function (token: string) {
+          localStorage.setItem("captcha-token", token);
+        },
+      });
+    };
+
+    if (isCloudflareCaptcha && !constraint.isVerified) handleLoadTurnstile();
+
+    // @ts-ignore
+    window.captchaCallback = (token: string) => {
+      localStorage.setItem("captcha-token", token);
+    };
+
+    return () => {
+      isMounted = false;
+      // @ts-ignore
+      window.captchaCallback = undefined;
+    };
+  }, [permissions, constraint]);
 
   if (!constraint)
     return (
@@ -392,6 +451,23 @@ const PrizeRequirementBody: FC<{
               </ReactMarkdown>
             </p>
           )}
+
+        {constraint.name === "core.HasVerifiedCloudflareCaptcha" && (
+          <div className="mt-10">
+            <Script
+              src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+              async
+              defer
+            ></Script>
+
+            <div
+              id="captcha-cloudflare-container"
+              data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY}
+              // data-sitekey="1x00000000000000000000AA"
+              data-callback="captchaCallback"
+            ></div>
+          </div>
+        )}
       </main>
       <div className="mt-auto flex w-full items-center rounded-lg bg-gray20 p-2">
         {checkConnections(connections, constraint.name) ? (
@@ -416,6 +492,7 @@ const PrizeRequirementBody: FC<{
                     </ClaimAndEnrollButton>
                   </Link>
                 )}
+
               {constraint.name === "core.IsFollowingTwitterBatch" && (
                 <div className="flex h-[45px] items-center justify-center gap-5">
                   <svg
@@ -563,68 +640,35 @@ const PrizeRequirementModal: FC<{
   prize: Prize;
 }> = ({ prize }) => {
   const { userToken } = useUserProfileContext();
-  const [loading, setLoading] = useState(false);
   const [currentRequirementIndex, setCurrentRequirementIndex] = useState(0);
   const [isExhusted, setIsExhusted] = useState(false);
 
-  const [permissions, SetPermissions] = useState<
-    (Permission & { isVerified: boolean })[]
-  >([]);
+  const {
+    updateRaffleRequirements,
+    raffleRequirements,
+    raffleRequirementsLoading,
+  } = usePrizeTapContext();
 
   const refreshPermissions = () => {
     if (!userToken) return;
     setIsExhusted(false);
-    setLoading(true);
-    getRaffleConstraintsVerifications(prize.pk, userToken)
-      .then((res) => {
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          prize.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      })
-      .finally(() => {
-        setIsExhusted(true);
-        setLoading(false);
-      });
-  };
+    updateRaffleRequirements();
 
-  useEffect(() => {
-    if (!userToken) return;
-    setLoading(true);
-    getRaffleConstraintsVerifications(prize.pk, userToken)
-      .then((res) => {
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          prize.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [prize.constraints, prize.pk, userToken]);
+    setIsExhusted(true);
+  };
 
   return (
     <div className="-mt-3 flex h-[420px] w-full items-center justify-start gap-2 overflow-y-auto">
       <Sidebar
         currentRequirementIndex={currentRequirementIndex}
         setCurrentRequirementIndex={setCurrentRequirementIndex}
-        permissions={permissions}
+        permissions={raffleRequirements}
         prize={prize}
       />
       <PrizeRequirementBody
         isExhusted={isExhusted}
-        loading={loading}
-        permissions={permissions}
+        loading={raffleRequirementsLoading}
+        permissions={raffleRequirements}
         refreshPermissions={refreshPermissions}
         currentRequirementIndex={currentRequirementIndex}
         setCurrentRequirementIndex={setCurrentRequirementIndex}

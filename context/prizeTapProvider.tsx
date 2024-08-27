@@ -1,11 +1,17 @@
 "use client";
 
-import { LineaRaffleEntry, Prize, UserEntryInRaffle } from "@/types";
+import {
+  LineaRaffleEntry,
+  Permission,
+  Prize,
+  UserEntryInRaffle,
+} from "@/types";
 import { NullCallback } from "@/utils";
 import {
   getEnrolledWalletInRaffle,
   getEnrollmentApi,
   getMuonApi,
+  getRaffleConstraintsVerifications,
   getRafflesListAPI,
   updateClaimPrizeFinished,
   updateEnrolledFinished,
@@ -64,6 +70,9 @@ export const PrizeTapContext = createContext<{
   enrolledWalletListApi: any;
   isOpenEnrolledModal: boolean;
   setIsOpenEnrolledModal: (value: boolean) => void;
+  raffleRequirements: (Permission & { isVerified: boolean })[];
+  updateRaffleRequirements: () => void;
+  raffleRequirementsLoading: boolean;
 }>({
   claimError: null,
   rafflesList: [],
@@ -91,6 +100,9 @@ export const PrizeTapContext = createContext<{
   enrolledWalletListApi: null,
   isOpenEnrolledModal: false,
   setIsOpenEnrolledModal: NullCallback,
+  raffleRequirements: [],
+  updateRaffleRequirements: NullCallback,
+  raffleRequirementsLoading: false,
 });
 
 export const usePrizeTapContext = () => useContext(PrizeTapContext);
@@ -118,6 +130,12 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
   const [method, setMethod] = useState<string | null>(null);
   const [chainPkConfirmingHash, setChainPkConfirmingHash] = useState(-1);
   const [searchPhrase, changeSearchPhrase] = useState("");
+  const [raffleRequirements, setRaffleRequirements] = useState<
+    (Permission & { isVerified: boolean })[]
+  >([]);
+  const [raffleRequirementsLoading, setRaffleRequirementsLoading] =
+    useState(false);
+  const [refreshToggle, setRefreshToggle] = useState(false);
 
   const [userTicketChance, setUserTicketChance] = useState<number>(0);
 
@@ -232,6 +250,7 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     const chainId = Number(selectedRaffleForEnroll?.chain.chainId);
 
     setChainPkConfirmingHash(selectedRaffleForEnroll?.pk);
+    const enrollOrClaimingPk = selectedRaffleForEnroll.pk;
 
     const enrollOrClaimPayload = await getSignature();
 
@@ -292,7 +311,21 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         if (!userToken) return;
 
         await (method === "Enroll" || method === "Verify"
-          ? updateEnrolledFinished(userToken, id, res.transactionHash)
+          ? updateEnrolledFinished(userToken, id, res.transactionHash).then(
+              (res) => {
+                setRafflesList((prev) => {
+                  const raffle = prev.find(
+                    (item) => item.pk === enrollOrClaimingPk,
+                  );
+
+                  if (!raffle) return prev;
+
+                  raffle.userEntry = res.entry;
+
+                  return [...prev];
+                });
+              },
+            )
           : updateClaimPrizeFinished(userToken, id, res.transactionHash));
       }
     } finally {
@@ -354,6 +387,32 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
     getRafflesList,
   ]);
 
+  useEffect(() => {
+    if (!userToken || !selectedRaffleForEnroll) return;
+    setRaffleRequirementsLoading(true);
+
+    getRaffleConstraintsVerifications(selectedRaffleForEnroll.pk, userToken)
+      .then((res) => {
+        setRaffleRequirements(res.constraints);
+      })
+      .catch(() => {
+        setRaffleRequirements(
+          selectedRaffleForEnroll.constraints.map((constraint) => ({
+            ...constraint,
+            isVerified: false,
+          })),
+        );
+      })
+      .finally(() => {
+        setRaffleRequirementsLoading(false);
+      });
+  }, [
+    selectedRaffleForEnroll?.constraints,
+    selectedRaffleForEnroll?.pk,
+    userToken,
+    refreshToggle,
+  ]);
+
   return (
     <PrizeTapContext.Provider
       value={{
@@ -383,6 +442,9 @@ const PrizeTapProvider: FC<PropsWithChildren & { raffles: Prize[] }> = ({
         enrolledWalletListApi,
         isOpenEnrolledModal,
         setIsOpenEnrolledModal,
+        raffleRequirements,
+        updateRaffleRequirements: () => setRefreshToggle(!refreshToggle),
+        raffleRequirementsLoading,
       }}
     >
       {children}

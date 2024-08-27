@@ -43,6 +43,10 @@ export const appInfos: {
   },
   octant: {
     logo: "/assets/images/golem.png",
-    label: "glmStaking",
+    label: "GlmStaking",
+  },
+  gitcoinPassport: {
+    logo: "/assets/images/passport.png",
+    label: "GitcoinPassport",
   },
 };
