@@ -15,6 +15,7 @@ import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/incentive-center/components/ChainList";
 import SelectMethodInput, {
   AddressDelegationFields,
+  AddressField,
   CountRequirementField,
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
@@ -407,6 +408,19 @@ export const CreateParams: FC<CreateModalParam> = ({
   };
 
   if (constraint.params.length === 0) return null;
+
+  if (constraint.params.includes("ADDRESS") && constraint.params.length === 1) {
+    return (
+      <AddressField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
 
   if (
     constraint.params.includes("ADDRESS") &&
