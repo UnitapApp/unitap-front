@@ -49,4 +49,8 @@ export const appInfos: {
     logo: "/assets/images/passport.png",
     label: "GitcoinPassport",
   },
+  zora: {
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtKOCQv4bB_pnLUCgz8j-up7Ypg-BSCqn36CmobTOYtvnGyJ15JzAGinSBV-deBldPXqQ&usqp=CAU",
+    label: "Zora",
+  },
 };

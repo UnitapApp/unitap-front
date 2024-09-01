@@ -1,15 +1,12 @@
 import { UserConnection } from "@/types";
+import { serverFetch } from "../api";
 
 export const getUserHistory = async (token?: string) => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/auth/user/history-count/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
+  const res = await serverFetch("/api/auth/user/history-count/", {
+    headers: {
+      Authorization: `token ${token}`,
     },
-  );
+  });
 
   const data = await res.json();
 
@@ -17,15 +14,11 @@ export const getUserHistory = async (token?: string) => {
 };
 
 export const getAllConnections = async (token?: string) => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/auth/user/all-connections/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
+  const res = await serverFetch("/api/auth/user/all-connections/", {
+    headers: {
+      Authorization: `token ${token}`,
     },
-  );
+  });
 
   const data = (await res.json()) as UserConnection[];
 

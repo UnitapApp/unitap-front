@@ -19,7 +19,7 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
 
   try {
     if (cookieStorage.has("userToken"))
-      authProfile = await fetch(
+      authProfile = await serverFetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/info/`,
         {
           headers: {

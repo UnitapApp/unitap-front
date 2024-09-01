@@ -492,3 +492,41 @@ export const AddressDelegationFields = ({
     </>
   );
 };
+
+export const AddressField = ({
+  setRequirementParamsList,
+  requirementParamsList,
+  requirement,
+  isNft,
+  isDisabled,
+  decimals,
+}: Prop) => {
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    if (!requirement || isNft) return;
+
+    setAddress(requirement.params.ADDRESS);
+  }, [requirement, decimals, isNft]);
+
+  const handleAddressChange = (e: string) => {
+    setRequirementParamsList({
+      ...requirementParamsList,
+      ["ADDRESS"]: e,
+    });
+    setAddress(e);
+  };
+
+  return (
+    <div className="flex h-[44px] rounded-lg bg-gray50 px-4">
+      <input
+        className="h-full w-full bg-inherit"
+        placeholder="Address"
+        name="address"
+        type="text"
+        onChange={(e) => handleAddressChange(e.target.value)}
+        value={address}
+      />
+    </div>
+  );
+};
