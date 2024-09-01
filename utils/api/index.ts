@@ -10,6 +10,8 @@ export const serverFetch = async (url: string, init?: RequestInit) => {
   if (init?.headers) {
     // @ts-ignore
     init.headers.backend_service_key = process.env.BACKEND_SERVICE_KEY;
+    // @ts-ignore
+    init.headers.Cookie = `backend_service_key=${process.env.BACKEND_SERVICE_KEY};`;
   }
 
   const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {

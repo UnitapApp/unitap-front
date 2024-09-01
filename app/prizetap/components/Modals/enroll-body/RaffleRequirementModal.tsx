@@ -2,9 +2,7 @@ import { appInfos } from "@/app/incentive-center/constants/integrations";
 import {
   checkConnections,
   loadingAnimationRequirementsOption,
-  renderLinkValue,
   requirementsConnections,
-  requirementWithoutApps,
   useRequirementLinkGenerator,
 } from "@/components/containers/token-tap/Modals/TokenRequirementModal";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
@@ -13,10 +11,6 @@ import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { Permission, PermissionInfoProp, Prize, UserConnection } from "@/types";
 import { replacePlaceholders } from "@/utils";
-import {
-  getRaffleConstraintsVerifications,
-  getTokenConstraintsVerifications,
-} from "@/utils/api";
 import { getAllConnections } from "@/utils/serverApis";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,6 +18,7 @@ import Script from "next/script";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import Lottie from "react-lottie";
 import ReactMarkdown from "react-markdown";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 const Sidebar: FC<{
   prize: Prize;
@@ -235,48 +230,49 @@ const PrizeRequirementBody: FC<{
     const isCloudflareCaptcha =
       constraint?.name === "core.HasVerifiedCloudflareCaptcha";
 
-    windowObj.onloadTurnstileCallback = function () {
-      isMounted = true;
-      if (!isCloudflareCaptcha || constraint?.isVerified) return;
+    if (isCloudflareCaptcha) {
+      windowObj.onloadTurnstileCallback = function () {
+        isMounted = true;
+        if (!isCloudflareCaptcha || constraint?.isVerified) return;
 
-      windowObj.turnstile.render("#captcha-cloudflare-container", {
-        sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
-        callback: function (token: string) {
-          localStorage.setItem("captcha-token", token);
-        },
-      });
-    };
+        windowObj.turnstile.render("#captcha-cloudflare-container", {
+          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
+          callback: function (token: string) {
+            localStorage.setItem("captcha-token", token);
+          },
+        });
+      };
 
-    const handleLoadTurnstile = () => {
-      if (!isCloudflareCaptcha) return;
+      const handleLoadTurnstile = () => {
+        if (!isCloudflareCaptcha) return;
 
-      if (!windowObj.turnstile) {
-        setTimeout(handleLoadTurnstile, 300);
-        return;
-      }
+        if (!windowObj.turnstile) {
+          setTimeout(handleLoadTurnstile, 300);
+          return;
+        }
 
-      const captchaElement = document.querySelector(
-        "#captcha-cloudflare-container",
-      );
+        const captchaElement = document.querySelector(
+          "#captcha-cloudflare-container",
+        );
 
-      if (!captchaElement) return;
+        if (!captchaElement) return;
 
-      captchaElement.innerHTML = "";
+        captchaElement.innerHTML = "";
 
-      windowObj.turnstile.render("#captcha-cloudflare-container", {
-        sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
-        callback: function (token: string) {
-          localStorage.setItem("captcha-token", token);
-        },
-      });
-    };
+        windowObj.turnstile.render("#captcha-cloudflare-container", {
+          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSITE_SITEKEY,
+          callback: function (token: string) {
+            localStorage.setItem("captcha-token", token);
+          },
+        });
+      };
 
-    if (isCloudflareCaptcha && !constraint.isVerified) handleLoadTurnstile();
-
-    // @ts-ignore
-    window.captchaCallback = (token: string) => {
-      localStorage.setItem("captcha-token", token);
-    };
+      if (isCloudflareCaptcha && !constraint.isVerified) handleLoadTurnstile();
+      // @ts-ignore
+      window.captchaCallback = (token: string) => {
+        localStorage.setItem("captcha-token", token);
+      };
+    }
 
     return () => {
       isMounted = false;
@@ -467,6 +463,14 @@ const PrizeRequirementBody: FC<{
               data-callback="captchaCallback"
             ></div>
           </div>
+        )}
+        {constraint.name === "core.HasVerifiedHCaptcha" && (
+          <HCaptcha
+            sitekey="your-sitekey"
+            onVerify={(token, ekey) =>
+              localStorage.setItem("captcha-token", token)
+            }
+          />
         )}
       </main>
       <div className="mt-auto flex w-full items-center rounded-lg bg-gray20 p-2">
