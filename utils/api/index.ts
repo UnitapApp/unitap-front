@@ -14,7 +14,12 @@ export const serverFetch = async (url: string, init?: RequestInit) => {
 
   const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {
     cache: "no-store",
-    ...(init ?? { backend_service_key: process.env.BACKEND_SERVICE_KEY }),
+    ...(init ?? {
+      headers: {
+        backend_service_key: process.env.BACKEND_SERVICE_KEY!,
+        Cookie: `backend_service_key=${process.env.BACKEND_SERVICE_KEY};`,
+      },
+    }),
   });
 
   // console.log(await res.clone().text());
