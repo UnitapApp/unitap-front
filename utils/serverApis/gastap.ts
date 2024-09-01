@@ -2,9 +2,7 @@ import { ClaimReceipt, Faucet, FuelChampion } from "@/types";
 import { convertFaucetToChain, serverFetch } from "../api";
 
 export const getFaucetListServer = async () => {
-  const chainsApi = await serverFetch("/api/gastap/faucet/list/");
-
-  const data = await chainsApi.json();
+  const data = await serverFetch("/api/gastap/faucet/list/");
 
   return data.map((item: Faucet) => convertFaucetToChain(item));
 };
@@ -16,7 +14,7 @@ export const getClaimedReceiptsServer = async (token?: string) => {
     headers: {
       Authorization: `token ${token}`,
     },
-  }).then((res) => res.json());
+  });
 
   if (!Array.isArray(res)) return [];
 
@@ -33,7 +31,7 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
     headers: {
       Authorization: `token ${token}`,
     },
-  }).then((res) => res.json());
+  });
 
   if (!Array.isArray(res)) return [];
 
@@ -44,9 +42,7 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
 };
 
 export async function getFuelChampionListServerSide() {
-  const response = await serverFetch("/api/gastap/fuel-champion").then((res) =>
-    res.json(),
-  );
+  const response = await serverFetch("/api/gastap/fuel-champion");
 
   return response as FuelChampion[];
 }

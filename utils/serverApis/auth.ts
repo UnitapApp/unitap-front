@@ -14,13 +14,11 @@ export const getUserHistory = async (token?: string) => {
 };
 
 export const getAllConnections = async (token?: string) => {
-  const res = await serverFetch("/api/auth/user/all-connections/", {
+  const data = (await serverFetch("/api/auth/user/all-connections/", {
     headers: {
       Authorization: `token ${token}`,
     },
-  });
-
-  const data = (await res.json()) as UserConnection[];
+  })) as UserConnection[];
 
   const transformedData = data.reduce((prev, curr) => {
     const name = Object.keys(curr)[0];

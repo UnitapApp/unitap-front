@@ -14,7 +14,7 @@ export const getUserRaffleListServerSide = async (token?: string) => {
         Authorization: `token ${token}`,
       },
     },
-  ).then((res) => res.json());
+  );
 
   if (!Array.isArray(res)) return [];
 
@@ -27,7 +27,7 @@ export const getUserDistributionListServerSide = async (token?: string) => {
     headers: {
       Authorization: `token ${token}`,
     },
-  }).then((res) => res.json());
+  });
 
   if (!Array.isArray(res)) return [];
 
@@ -35,9 +35,7 @@ export const getUserDistributionListServerSide = async (token?: string) => {
 };
 
 export const getConstraintListServer = async () => {
-  const res = await serverFetch("/api/prizetap/get-constraints/").then((res) =>
-    res.json(),
-  );
+  const res = await serverFetch("/api/prizetap/get-constraints/");
 
   if (typeof res !== "object") return {};
 
@@ -45,9 +43,7 @@ export const getConstraintListServer = async () => {
 };
 
 export const getTokenTapConstraintListServer = async () => {
-  const res = await serverFetch("/api/tokentap/get-constraints/").then((res) =>
-    res.json(),
-  );
+  const res = await serverFetch("/api/tokentap/get-constraints/");
 
   if (typeof res !== "object") return {};
 
@@ -62,6 +58,7 @@ export const getUserDonationsServer = async (token?: string) => {
         Authorization: `token ${token}`,
       },
     },
-  ).then((res) => res.json());
+  );
+
   return res;
 };
