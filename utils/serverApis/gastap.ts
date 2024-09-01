@@ -1,13 +1,8 @@
 import { ClaimReceipt, Faucet, FuelChampion } from "@/types";
-import { convertFaucetToChain } from "../api";
+import { convertFaucetToChain, serverFetch } from "../api";
 
 export const getFaucetListServer = async () => {
-  const chainsApi = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/faucet/list/",
-    {
-      cache: "no-store",
-    }
-  );
+  const chainsApi = await serverFetch("/api/gastap/faucet/list/");
 
   const data = await chainsApi.json();
 
@@ -17,15 +12,11 @@ export const getFaucetListServer = async () => {
 export const getClaimedReceiptsServer = async (token?: string) => {
   if (!token) return [];
 
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/user/claims/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/gastap/user/claims/", {
+    headers: {
+      Authorization: `token ${token}`,
+    },
+  }).then((res) => res.json());
 
   if (!Array.isArray(res)) return [];
 
@@ -38,15 +29,11 @@ export const getClaimedReceiptsServer = async (token?: string) => {
 export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
   if (!token) return [];
 
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/user/one-time-claims/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/gastap/user/one-time-claims/", {
+    headers: {
+      Authorization: `token ${token}`,
+    },
+  }).then((res) => res.json());
 
   if (!Array.isArray(res)) return [];
 
@@ -57,12 +44,9 @@ export const getOneTimeClaimedReceiptsServer = async (token?: string) => {
 };
 
 export async function getFuelChampionListServerSide() {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/fuel-champion",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+  const response = await serverFetch("/api/gastap/fuel-champion").then((res) =>
+    res.json(),
+  );
 
   return response as FuelChampion[];
 }
