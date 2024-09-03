@@ -7,14 +7,11 @@ import { serverFetch } from "../api";
 
 export const getUserRaffleListServerSide = async (token?: string) => {
   if (!token) return [];
-  const res = await serverFetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/prizetap/get-user-raffles/",
-    {
-      headers: {
-        Authorization: `token ${token}`,
-      },
+  const res = await serverFetch("/api/prizetap/get-user-raffles/", {
+    headers: {
+      Authorization: `token ${token}`,
     },
-  );
+  });
 
   if (!Array.isArray(res)) return [];
 

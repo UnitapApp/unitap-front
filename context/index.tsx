@@ -19,15 +19,12 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
 
   try {
     if (cookieStorage.has("userToken"))
-      authProfile = await serverFetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/info/`,
-        {
-          headers: {
-            Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
-          },
-          cache: "no-store",
+      authProfile = await serverFetch(`/api/auth/user/info/`, {
+        headers: {
+          Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
         },
-      );
+        cache: "no-store",
+      });
   } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {
