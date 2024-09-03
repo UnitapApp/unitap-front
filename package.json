@@ -17,7 +17,7 @@
     "@hcaptcha/react-hcaptcha": "^1.11.0",
     "@metamask/logo": "^3.1.2",
     "@sentry/nextjs": "7.105.0",
-    "@solana/web3.js": "^1.89.1",
+    "@solana/web3.js": "^1.89.2",
     "@tanstack/react-query": "^5.17.12",
     "@uniswap/sdk-core": "^4.0.9",
     "axios": "^1.7.4",
