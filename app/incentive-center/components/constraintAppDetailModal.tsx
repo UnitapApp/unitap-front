@@ -55,6 +55,8 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
 
   const [constraint, setConstraint] = useState<ConstraintProps | null>(null);
 
+  console.log(requirementList);
+
   const createRequirementParamsList = useCallback(() => {
     if (!constraint) return;
 

@@ -15,8 +15,11 @@ import Icon from "@/components/ui/Icon";
 import ChainList from "@/app/incentive-center/components/ChainList";
 import SelectMethodInput, {
   AddressDelegationFields,
+  AddressField,
+  CountRequirementField,
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
+  RoundRequirementField,
 } from "@/app/incentive-center/components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
@@ -258,6 +261,7 @@ export const CreateParams: FC<CreateModalParam> = ({
 
   useEffect(() => {
     if (requirement) {
+      console.log(requirement);
       if (!requirement.params) return;
       setCollectionAddress(requirement.params.ADDRESS);
       if (requirement.params.ADDRESS === zeroAddress) {
@@ -313,11 +317,11 @@ export const CreateParams: FC<CreateModalParam> = ({
     }
   };
 
-  useEffect(() => {
-    if (selectedChain && constraint.name !== "core.GLMStakingVerification") {
-      handleGetTokenList();
-    }
-  }, [selectedChain]);
+  // useEffect(() => {
+  //   if (selectedChain && constraint.name !== "core.GLMStakingVerification") {
+  //     handleGetTokenList();
+  //   }
+  // }, [selectedChain]);
 
   useEffect(() => {
     if (!collectionAddress) return;
@@ -405,6 +409,19 @@ export const CreateParams: FC<CreateModalParam> = ({
 
   if (constraint.params.length === 0) return null;
 
+  if (constraint.params.includes("ADDRESS") && constraint.params.length === 1) {
+    return (
+      <AddressField
+        setRequirementParamsList={setRequirementParamsList}
+        requirementParamsList={requirementParamsList}
+        isNft={false}
+        requirement={requirement}
+        isDisabled={!collectionAddress}
+        decimals={decimals}
+      />
+    );
+  }
+
   if (
     constraint.params.includes("ADDRESS") &&
     constraint.params.includes("MINIMUM")
@@ -424,13 +441,13 @@ export const CreateParams: FC<CreateModalParam> = ({
   if (constraint.name === "core.GLMStakingVerification") {
     return (
       <div className="flex flex-col gap-3">
-        <ChainList
+        {/* <ChainList
           setRequirementParamsList={setRequirementParamsList}
           requirementParamsList={requirementParamsList}
           allChainList={allChainList}
           selectedChain={selectedChain}
           setSelectedChain={setSelectedChain}
-        />
+        /> */}
 
         <MinimumWeb3AmountRequirementField
           setRequirementParamsList={setRequirementParamsList}
@@ -440,6 +457,46 @@ export const CreateParams: FC<CreateModalParam> = ({
           isDisabled={!collectionAddress}
           decimals={18}
         />
+      </div>
+    );
+  }
+
+  if (constraint.name === "core.HasDonatedOnGitcoin") {
+    return (
+      <div>
+        <div>
+          <p>Minimum donated amount:</p>
+          <MinimumNumberRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
+        <div className="mt-3">
+          <p>The number of projects that you should donate to</p>
+          <CountRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
+        <div className="mt-3">
+          <p>The round that you should donate in</p>
+          <RoundRequirementField
+            setRequirementParamsList={setRequirementParamsList}
+            requirementParamsList={requirementParamsList}
+            isNft={false}
+            requirement={requirement}
+            isDisabled={false}
+            decimals={decimals}
+          />
+        </div>
       </div>
     );
   }

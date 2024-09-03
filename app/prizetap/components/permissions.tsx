@@ -24,7 +24,6 @@ import Link from "next/link";
 
 const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
   const { userToken, userProfile } = useUserProfileContext();
-  const [loading, setLoading] = useState(false);
   const {
     openEnrollModal,
     selectedRaffleForEnroll,
@@ -34,6 +33,9 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
     claimOrEnrollLoading,
     claimOrEnrollWalletResponse,
     claimOrEnrollSignatureLoading,
+    raffleRequirementsLoading,
+    raffleRequirements,
+    updateRaffleRequirements,
   } = usePrizeTapContext();
   const { address } = useWalletAccount();
   const [userTickets, setUserTickets] = useState<number[]>([]);
@@ -42,9 +44,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
 
   const maxChance = 2;
 
-  const [permissions, SetPermissions] = useState<
-    (Permission & { isVerified: boolean })[]
-  >([]);
+  const permissions = raffleRequirements;
+  const loading = raffleRequirementsLoading;
 
   const [selectedTicketCount, setSelectedTicketCount] = useState(0);
 
@@ -81,29 +82,6 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
     () => JSON.parse(raffle.constraintParams),
     [raffle.constraintParams],
   );
-
-  useEffect(() => {
-    setLoading(true);
-    if (!userToken) {
-      setLoading(false);
-      return;
-    }
-
-    getRaffleConstraintsVerifications(raffle.pk, userToken)
-      .then((res) => {
-        // console.log(res.constraints);
-        SetPermissions(res.constraints);
-      })
-      .catch(() => {
-        SetPermissions(
-          raffle.constraints.map((constraint) => ({
-            ...constraint,
-            isVerified: false,
-          })),
-        );
-      })
-      .finally(() => setLoading(false));
-  }, [userToken, raffle.constraints, raffle.pk, SetPermissions]);
 
   const handleDrop = () => {
     if (selectedTicketCount >= maxChance) {
@@ -285,7 +263,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                     Get ticket by holding
                     <div className="relative bg-primaryGradient2 bg-clip-text font-bold text-transparent">
                       Unitap Pass NFT
-                      <div className=" bg-primaryGradient3 absolute -mt-[4px] h-[1px] w-[95px]"></div>
+                      <div className=" absolute -mt-[4px] h-[1px] w-[95px] bg-primaryGradient3"></div>
                     </div>
                   </div>
                 </div>

@@ -126,13 +126,13 @@ export const ConstraintInitialBody = () => {
                 onClick={() =>
                   setSelectedApp({
                     constraints: constraintsListApi![constraintKey],
-                    label: appInfos[constraintKey].label,
+                    label: appInfos[constraintKey]?.label,
                   })
                 }
               >
                 <Icon
-                  iconSrc={appInfos[constraintKey].logo}
-                  alt={appInfos[constraintKey].label}
+                  iconSrc={appInfos[constraintKey]?.logo}
+                  alt={appInfos[constraintKey]?.label}
                   width="28px"
                   height="28px"
                 />

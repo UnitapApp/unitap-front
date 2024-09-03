@@ -245,7 +245,6 @@ export const UserContextProvider: FC<
     };
   }, [
     userToken,
-    setToken,
     isConnected,
     holdUserLogout,
     userProfile,

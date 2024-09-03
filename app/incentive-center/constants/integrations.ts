@@ -41,8 +41,16 @@ export const appInfos: {
     logo: "/assets/images/provider-dashboard/op.svg",
     label: "Optimism",
   },
-  glmStaking: {
-    logo: "/assets/images/provider-dashboard/op.svg",
-    label: "glmStaking",
+  octant: {
+    logo: "/assets/images/golem.png",
+    label: "GlmStaking",
+  },
+  gitcoinPassport: {
+    logo: "/assets/images/passport.png",
+    label: "GitcoinPassport",
+  },
+  zora: {
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtKOCQv4bB_pnLUCgz8j-up7Ypg-BSCqn36CmobTOYtvnGyJ15JzAGinSBV-deBldPXqQ&usqp=CAU",
+    label: "Zora",
   },
 };

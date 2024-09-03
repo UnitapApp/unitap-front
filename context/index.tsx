@@ -19,21 +19,12 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
 
   try {
     if (cookieStorage.has("userToken"))
-      authProfile = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/info/`,
-        {
-          headers: {
-            Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
-          },
-          cache: "no-store",
+      authProfile = await serverFetch(`/api/auth/user/info/`, {
+        headers: {
+          Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
         },
-      )
-        .then((res) => {
-          if (!res.ok) throw new Error("Unauthorized");
-
-          return res;
-        })
-        .then((res) => res.json());
+        cache: "no-store",
+      });
   } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {

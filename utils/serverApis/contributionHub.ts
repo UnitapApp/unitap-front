@@ -3,18 +3,15 @@ import {
   ConstraintProps,
   UserTokenDistribution,
 } from "@/types";
+import { serverFetch } from "../api";
 
 export const getUserRaffleListServerSide = async (token?: string) => {
   if (!token) return [];
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/prizetap/get-user-raffles/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/prizetap/get-user-raffles/", {
+    headers: {
+      Authorization: `token ${token}`,
+    },
+  });
 
   if (!Array.isArray(res)) return [];
 
@@ -23,16 +20,11 @@ export const getUserRaffleListServerSide = async (token?: string) => {
 
 export const getUserDistributionListServerSide = async (token?: string) => {
   if (!token) return [];
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! +
-      "/api/tokentap/user-token-distributions/",
-    {
-      cache: "no-store",
-      headers: {
-        Authorization: `token ${token}`,
-      },
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/tokentap/user-token-distributions/", {
+    headers: {
+      Authorization: `token ${token}`,
+    },
+  });
 
   if (!Array.isArray(res)) return [];
 
@@ -40,12 +32,7 @@ export const getUserDistributionListServerSide = async (token?: string) => {
 };
 
 export const getConstraintListServer = async () => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/prizetap/get-constraints/",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/prizetap/get-constraints/");
 
   if (typeof res !== "object") return {};
 
@@ -53,12 +40,7 @@ export const getConstraintListServer = async () => {
 };
 
 export const getTokenTapConstraintListServer = async () => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/tokentap/get-constraints/",
-    {
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+  const res = await serverFetch("/api/tokentap/get-constraints/");
 
   if (typeof res !== "object") return {};
 
@@ -66,15 +48,14 @@ export const getTokenTapConstraintListServer = async () => {
 };
 
 export const getUserDonationsServer = async (token?: string) => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! +
-      "/api/gastap/user/donation/?page=1&page_size=2",
+  const res = await serverFetch(
+    "/api/gastap/user/donation/?page=1&page_size=2",
     {
-      cache: "no-store",
       headers: {
         Authorization: `token ${token}`,
       },
-    }
-  ).then((res) => res.json());
+    },
+  );
+
   return res;
 };
