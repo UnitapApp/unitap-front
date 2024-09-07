@@ -470,7 +470,7 @@ const PrizeRequirementBody: FC<{
               theme="dark"
               sitekey={process.env.NEXT_PUBLIC_H_CAPTCHA_SITEKEY!}
               onVerify={(token, ekey) =>
-                localStorage.setItem("captcha-token", token)
+                localStorage.setItem("h-captcha-token", token)
               }
             />
           )}
