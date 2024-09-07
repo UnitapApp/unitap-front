@@ -466,7 +466,7 @@ const PrizeRequirementBody: FC<{
         )}
         {constraint.name === "core.HasVerifiedHCaptcha" && (
           <HCaptcha
-            sitekey="your-sitekey"
+            sitekey={process.env.NEXT_PUBLIC_H_CAPTCHA_SITEKEY!}
             onVerify={(token, ekey) =>
               localStorage.setItem("captcha-token", token)
             }
