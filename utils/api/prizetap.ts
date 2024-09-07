@@ -72,16 +72,16 @@ export async function getEnrollmentApi(
     {
       userWalletAddress: address,
       prizetap_winning_chance_number: userTicketChance.toString(),
-      "cf-turnstile-response": cloudFlareaptchaToken,
-      "hc-turnstile-response": hCaptchaToken,
     },
     {
       headers: {
+        "cf-turnstile-response": cloudFlareaptchaToken,
+        "hc-turnstile-response": hCaptchaToken,
         Authorization: `Token ${token}`,
       },
-      params: {
-        "cf-turnstile-response": cloudFlareaptchaToken,
-      },
+      // params: {
+      //   "cf-turnstile-response": cloudFlareaptchaToken,
+      // },
     },
   );
   return response.data;
@@ -109,12 +109,10 @@ export async function getRaffleConstraintsVerifications(
   const response = await axiosInstance.get(
     "/api/prizetap/get-raffle-constraints/" + rafflePk + "/",
     {
-      params: {
-        "cf-turnstile-response": cloudflareCaptchaToken,
-        "hc-turnstile-response": hCaptchaToken,
-      },
       headers: {
         Authorization: `Token ${token}`,
+        "cf-turnstile-response": cloudflareCaptchaToken,
+        "hc-turnstile-response": hCaptchaToken,
       },
     },
   );
