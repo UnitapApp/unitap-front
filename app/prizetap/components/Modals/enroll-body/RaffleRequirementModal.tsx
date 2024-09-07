@@ -464,14 +464,17 @@ const PrizeRequirementBody: FC<{
             ></div>
           </div>
         )}
-        {constraint.name === "core.HasVerifiedHCaptcha" && (
-          <HCaptcha
-            sitekey={process.env.NEXT_PUBLIC_H_CAPTCHA_SITEKEY!}
-            onVerify={(token, ekey) =>
-              localStorage.setItem("captcha-token", token)
-            }
-          />
-        )}
+        <div className="mx-auto mt-5">
+          {constraint.name === "core.HasVerifiedHCaptcha" && (
+            <HCaptcha
+              theme="dark"
+              sitekey={process.env.NEXT_PUBLIC_H_CAPTCHA_SITEKEY!}
+              onVerify={(token, ekey) =>
+                localStorage.setItem("captcha-token", token)
+              }
+            />
+          )}
+        </div>
       </main>
       <div className="mt-auto flex w-full items-center rounded-lg bg-gray20 p-2">
         {checkConnections(connections, constraint.name) ? (
