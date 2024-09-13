@@ -10,7 +10,7 @@ export type Token = {
   distributorUrl: string;
   discordUrl: string;
   twitterUrl: string;
-  imageUrl: string;
+  image: string;
   token: string;
   tokenAddress: string;
   amount: number;

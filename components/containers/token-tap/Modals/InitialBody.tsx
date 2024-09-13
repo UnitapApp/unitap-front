@@ -33,7 +33,7 @@ const InitialBody: FC<{
           className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
-          iconSrc={token.imageUrl}
+          iconSrc={token.image}
           alt=""
         />
       </DropIconWrapper>

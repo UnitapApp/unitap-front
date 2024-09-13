@@ -77,7 +77,7 @@ const ClaimTokenModalBody = ({
     return (
       <BrightNotConnectedBody
         chainPk={selectedTokenForClaim.chain.pk}
-        imageUrl={selectedTokenForClaim.imageUrl}
+        imageUrl={selectedTokenForClaim.image}
       />
     );
 
@@ -115,7 +115,7 @@ const ClaimTokenModalBody = ({
     return (
       <WrongNetworkBody
         chain={selectedTokenForClaim.chain}
-        imageUrl={selectedTokenForClaim.imageUrl}
+        imageUrl={selectedTokenForClaim.image}
       />
     );
 

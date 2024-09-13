@@ -108,7 +108,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
           } mx-auto h-32 w-64 rounded-lg bg-cover`}
         />
         <img
-          src={raffle.imageUrl}
+          src={raffle.image}
           className="absolute left-1/2 top-3 max-w-[120px] -translate-x-1/2"
           alt={raffle.name}
           width={100}

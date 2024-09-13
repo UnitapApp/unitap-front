@@ -134,7 +134,7 @@ const InitialBody: FC<{
           className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
-          iconSrc={raffle.imageUrl}
+          iconSrc={raffle.image}
           alt=""
         />
       </DropIconWrapper>

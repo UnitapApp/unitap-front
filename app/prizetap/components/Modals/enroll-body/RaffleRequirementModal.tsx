@@ -54,7 +54,7 @@ const Sidebar: FC<{
     <aside className="relative h-full w-[230px] rounded-lg bg-gray20 p-2 text-sm">
       <div className=" relative mb-8 flex h-[112px] items-center justify-center rounded-2xl border border-gray60">
         <img
-          src={prize.imageUrl}
+          src={prize.image}
           width="80px"
           height="140px"
           className="opacity-30"

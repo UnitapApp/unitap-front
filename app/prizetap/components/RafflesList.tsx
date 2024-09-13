@@ -102,7 +102,7 @@ const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
   isHighlighted,
 }) => {
   const {
-    imageUrl,
+    image: imageUrl,
     tokenUri,
     creatorUrl,
     twitterUrl,

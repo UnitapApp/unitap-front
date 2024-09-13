@@ -17,10 +17,10 @@ const MaxedOutBody: FC<{
     <>
       <DropIconWrapper data-testid={`token-claim-maxed-out-${token.id}`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
-          iconSrc={token.imageUrl}
+          iconSrc={token.image}
           alt={token.name}
         />
       </DropIconWrapper>

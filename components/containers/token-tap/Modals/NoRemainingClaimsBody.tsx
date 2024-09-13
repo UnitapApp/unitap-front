@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { ClaimReceiptState } from "@/types"
+import Icon from "@/components/ui/Icon";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { ClaimReceiptState } from "@/types";
 
 const NotRemainingClaimsBody = () => {
-  const { claimedTokensList, closeClaimModal } = useTokenTapContext()
+  const { claimedTokensList, closeClaimModal } = useTokenTapContext();
 
   return (
-    <div className="flex text-white flex-col items-center justify-center w-full pt-2">
-      <div className="mt-20 claim-stat__claimed rounded-lg border-2 border-gray80 bg-primaryGradient py-[2px] px-3 flex gap-x-3">
+    <div className="flex w-full flex-col items-center justify-center pt-2 text-white">
+      <div className="claim-stat__claimed mt-20 flex gap-x-3 rounded-lg border-2 border-gray80 bg-primaryGradient px-3 py-[2px]">
         {claimedTokensList
           .filter((claim) => claim.status !== ClaimReceiptState.REJECTED)
           .map((claim, key) => {
             return (
               <Icon
                 key={key}
-                iconSrc={claim.tokenDistribution.imageUrl}
+                iconSrc={claim.tokenDistribution.image}
                 className={`rounded-full ${
                   claim.status === ClaimReceiptState.PENDING && "animated-dabe"
                 }`}
                 width="36px"
                 height="40px"
               />
-            )
+            );
           })}
       </div>
       <div className="mt-10 text-center text-gray100">
@@ -32,12 +32,12 @@ const NotRemainingClaimsBody = () => {
 
       <button
         onClick={closeClaimModal}
-        className="w-full mt-10 py-3 border-2 text-gray100 font-normal bg-gray10 border-gray50 rounded-xl"
+        className="mt-10 w-full rounded-xl border-2 border-gray50 bg-gray10 py-3 font-normal text-gray100"
       >
         Close
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default NotRemainingClaimsBody
+export default NotRemainingClaimsBody;

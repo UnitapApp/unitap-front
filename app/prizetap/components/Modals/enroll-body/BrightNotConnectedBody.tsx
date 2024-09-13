@@ -24,15 +24,15 @@ const BrightNotConnectedBody: FC<{
     <>
       <DropIconWrapper data-testid={`chain-claim-brightid-not-connected`}>
         <Icon
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           width="auto"
           height="110px"
-          iconSrc={raffle.imageUrl}
+          iconSrc={raffle.image}
           alt=""
         />
       </DropIconWrapper>
 
-      <p className="text-white text-sm mb-5 mt-11">
+      <p className="mb-5 mt-11 text-sm text-white">
         {method === "Enroll"
           ? "You need to connect your BrightID to enroll in raffle"
           : " You need to connect your BrightID to claim your prize"}

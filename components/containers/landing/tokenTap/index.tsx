@@ -41,7 +41,7 @@ const TokenTapLanding = async () => {
                       <img
                         width={24}
                         height={24}
-                        src={token.imageUrl}
+                        src={token.image}
                         alt={token.name}
                         className="token-logo h-[100%] w-auto"
                       />

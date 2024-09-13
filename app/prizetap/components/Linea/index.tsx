@@ -31,7 +31,7 @@ export const LineaRaffleCard: FC<{
   isHighlighted?: boolean;
 }> = ({ raffle, isHighlighted }) => {
   const {
-    imageUrl,
+    image: imageUrl,
     tokenUri,
     creatorUrl,
     twitterUrl,

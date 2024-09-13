@@ -51,7 +51,7 @@ const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
       <div className="relative mb-20 text-center">
         <div className="mx-auto h-40 w-64" />
         <img
-          src={token.imageUrl}
+          src={token.image}
           className="absolute left-1/2 top-5 -translate-x-1/2"
           alt={token.name}
           width={168}
