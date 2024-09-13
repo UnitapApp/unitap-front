@@ -75,7 +75,7 @@ const PrizeTapLanding: FC = async () => {
                             className="object-contain"
                             width="62px"
                             height="63px"
-                            src={raffle.imageUrl}
+                            src={raffle.image}
                             alt={raffle.name}
                           />
                         </span>

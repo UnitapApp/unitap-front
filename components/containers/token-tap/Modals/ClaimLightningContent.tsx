@@ -42,7 +42,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
     return (
       <BrightNotConnectedBody
         chainPk={selectedTokenForClaim.chain.pk}
-        imageUrl={selectedTokenForClaim.imageUrl}
+        imageUrl={selectedTokenForClaim.image}
       />
     );
 
@@ -69,7 +69,7 @@ const ClaimLightningContent: FC<{ chain: Chain }> = ({ chain }) => {
       <Icon
         data-testid="chain-logo"
         className="chain-logo z-10 mb-10 mt-14"
-        iconSrc={selectedTokenForClaim!.imageUrl}
+        iconSrc={selectedTokenForClaim!.image}
         width="auto"
         height="110px"
       />

@@ -16,7 +16,7 @@ export type Prize = {
   pk: PK;
   constraintParams: string;
   constraints: Permission[];
-  imageUrl: string;
+  image: string;
   tokenUri: string;
   background: string;
   creator: string;

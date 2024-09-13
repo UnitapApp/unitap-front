@@ -64,22 +64,24 @@ export async function getEnrollmentApi(
   address: string,
   userTicketChance: number,
 ) {
-  const captchaToken = localStorage.getItem("captcha-token");
+  const cloudFlareaptchaToken = localStorage.getItem("captcha-token");
+  const hCaptchaToken = localStorage.getItem("h-captcha-token");
 
   const response = await axiosInstance.post<EnrollmentRaffleApi>(
     `/api/prizetap/raffle-enrollment/${raffleID}/`,
     {
       userWalletAddress: address,
       prizetap_winning_chance_number: userTicketChance.toString(),
-      "cf-turnstile-response": captchaToken,
     },
     {
       headers: {
+        "cf-turnstile-response": cloudFlareaptchaToken,
+        "hc-turnstile-response": hCaptchaToken,
         Authorization: `Token ${token}`,
       },
-      params: {
-        "cf-turnstile-response": captchaToken,
-      },
+      // params: {
+      //   "cf-turnstile-response": cloudFlareaptchaToken,
+      // },
     },
   );
   return response.data;
@@ -101,16 +103,16 @@ export async function getRaffleConstraintsVerifications(
   rafflePk: number,
   token: string,
 ) {
-  const captchaToken = localStorage.getItem("captcha-token");
+  const cloudflareCaptchaToken = localStorage.getItem("captcha-token");
+  const hCaptchaToken = localStorage.getItem("h-captcha-token");
 
   const response = await axiosInstance.get(
     "/api/prizetap/get-raffle-constraints/" + rafflePk + "/",
     {
-      params: {
-        "cf-turnstile-response": captchaToken,
-      },
       headers: {
         Authorization: `Token ${token}`,
+        "cf-turnstile-response": cloudflareCaptchaToken,
+        "hc-turnstile-response": hCaptchaToken,
       },
     },
   );

@@ -90,7 +90,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         options: {
           decimals: token.decimals ?? token.chain.decimals,
           symbol: token.token,
-          image: token.imageUrl,
+          image: token.image,
           address: token.tokenAddress,
         },
         type: "ERC20",
@@ -140,7 +140,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   height={44}
                   className="chain-logo h-full w-auto"
                   src={
-                    token.imageUrl ?? "/assets/images/prizetap/bright-token.svg"
+                    token.image ?? "/assets/images/prizetap/bright-token.svg"
                   }
                   unoptimized={true}
                   alt={token.name}

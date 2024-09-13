@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import Icon from "@/components/ui/Icon"
-import { useTokenTapContext } from "@/context/tokenTapProvider"
-import { Token } from "@/types"
-import { FC } from "react"
-import { Text } from "@/components/ui/text.style"
-import { ClaimButton } from "@/components/ui/Button/button"
-import { useUserProfileContext } from "@/context/userProfile"
+import Icon from "@/components/ui/Icon";
+import { useTokenTapContext } from "@/context/tokenTapProvider";
+import { Token } from "@/types";
+import { FC } from "react";
+import { Text } from "@/components/ui/text.style";
+import { ClaimButton } from "@/components/ui/Button/button";
+import { useUserProfileContext } from "@/context/userProfile";
 
 const ClaimFailedBody: FC<{
-  token: Token
+  token: Token;
 }> = ({ token }) => {
   const { nonEVMWalletAddress, setNonEVMWalletAddress } =
-    useUserProfileContext()
-  const { claimError, claimTokenLoading, claimToken } = useTokenTapContext()
+    useUserProfileContext();
+  const { claimError, claimTokenLoading, claimToken } = useTokenTapContext();
 
   return (
     <>
       <Icon
         data-testid="chain-logo"
-        className="chain-logo z-10 mt-14 mb-10"
-        iconSrc={token.imageUrl}
+        className="chain-logo z-10 mb-10 mt-14"
+        iconSrc={token.image}
         width="auto"
         height="110px"
       />
-      <span className="flex justify-center items-center font-medium mb-3">
+      <span className="mb-3 flex items-center justify-center font-medium">
         <Text
           className="!mb-0"
           width="100%"
@@ -51,12 +51,12 @@ const ClaimFailedBody: FC<{
         An error occurred while processing your request
       </Text>
 
-      <p className="text-white text-sm my-4 text-center px-3 mb-6">
+      <p className="my-4 mb-6 px-3 text-center text-sm text-white">
         {claimError}
       </p>
-      <div className="address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center">
+      <div className="address-input my-6 flex w-full items-center rounded-xl bg-gray30 p-2.5">
         <input
-          className="address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white"
+          className="address-input__input mx-1.5 w-full bg-transparent text-sm text-white placeholder:text-gray80"
           type="text"
           placeholder="Paste your lightning invoice "
           value={nonEVMWalletAddress}
@@ -87,7 +87,7 @@ const ClaimFailedBody: FC<{
         {claimTokenLoading ? <p> Claiming... </p> : <p>Try Again</p>}
       </ClaimButton>
     </>
-  )
-}
+  );
+};
 
-export default ClaimFailedBody
+export default ClaimFailedBody;

@@ -54,7 +54,7 @@ const Sidebar: FC<{
     <aside className="relative h-full w-[230px] rounded-lg bg-gray20 p-2 text-sm">
       <div className=" relative mb-8 flex h-[112px] items-center justify-center rounded-2xl border border-gray60">
         <img
-          src={prize.imageUrl}
+          src={prize.image}
           width="80px"
           height="140px"
           className="opacity-30"
@@ -464,14 +464,17 @@ const PrizeRequirementBody: FC<{
             ></div>
           </div>
         )}
-        {constraint.name === "core.HasVerifiedHCaptcha" && (
-          <HCaptcha
-            sitekey="your-sitekey"
-            onVerify={(token, ekey) =>
-              localStorage.setItem("captcha-token", token)
-            }
-          />
-        )}
+        <div className="mx-auto mt-5">
+          {constraint.name === "core.HasVerifiedHCaptcha" && (
+            <HCaptcha
+              theme="dark"
+              sitekey={process.env.NEXT_PUBLIC_H_CAPTCHA_SITEKEY!}
+              onVerify={(token, ekey) =>
+                localStorage.setItem("h-captcha-token", token)
+              }
+            />
+          )}
+        </div>
       </main>
       <div className="mt-auto flex w-full items-center rounded-lg bg-gray20 p-2">
         {checkConnections(connections, constraint.name) ? (
