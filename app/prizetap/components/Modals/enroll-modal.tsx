@@ -37,8 +37,6 @@ const EnrollModalBody = ({
       method === "Winners" ||
       !selectedRaffleForEnroll ||
       claimOrEnrollWalletResponse?.state === "Done" ||
-      !chainId ||
-      chainId.toString() !== selectedRaffleForEnroll?.chain.chainId ||
       (selectedRaffleForEnroll.userEntry?.txHash &&
         !selectedRaffleForEnroll.winnerEntries.length) ||
       method !== "Pre-Verify"
