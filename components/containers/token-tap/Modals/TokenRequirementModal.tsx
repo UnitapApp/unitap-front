@@ -26,7 +26,7 @@ export const loadingAnimationRequirementsOption = {
 };
 
 export const requirementsConnections: { [key: string]: string | null } = {
-  IsFollowinTwitterUser: "twitter",
+  IsFollowingTwitterUser: "twitter",
   DidQuoteTweet: "twitter",
   DidRetweetTweet: "twitter",
   BridgeEthToArb: null, // 25

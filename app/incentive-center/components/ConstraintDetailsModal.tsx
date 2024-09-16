@@ -711,7 +711,7 @@ export const CreateParams: FC<CreateModalParam> = ({
   //   );
   // }
   if (
-    constraint.name === "core.IsFollowinTwitterUser" ||
+    constraint.name === "core.IsFollowingTwitterUser" ||
     constraint.name === "core.BeFollowedByTwitterUser"
   ) {
     const featuredName = Object.keys(requirementParamsList ?? [])[0] as string;
