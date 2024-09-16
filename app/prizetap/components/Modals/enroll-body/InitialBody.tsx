@@ -37,14 +37,6 @@ const InitialBody: FC<{
     handleClaimPrize,
   } = usePrizeTapContext();
 
-  if (method === "Pre-Verify") {
-    return <PrizeRequirementModal prize={raffle} />;
-  }
-
-  if (method === "Verify") {
-    return <RafflePermissions raffle={raffle} />;
-  }
-
   if (claimOrEnrollWalletResponse?.state === "Done")
     return <SuccessBody method={method!} raffle={selectedRaffleForEnroll!} />;
 
