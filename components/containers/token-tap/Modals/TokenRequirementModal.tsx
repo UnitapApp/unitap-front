@@ -26,18 +26,18 @@ export const loadingAnimationRequirementsOption = {
 };
 
 export const requirementsConnections: { [key: string]: string | null } = {
-  IsFollowinTwitterUser: "Twitter",
-  DidQuoteTweet: "Twitter",
-  DidRetweetTweet: "Twitter",
+  IsFollowinTwitterUser: "twitter",
+  DidQuoteTweet: "twitter",
+  DidRetweetTweet: "twitter",
   BridgeEthToArb: null, // 25
-  IsFollowingFarcasterChannel: "Farcaster", // 24
-  HasFarcasterProfile: "Farcaster", // 23
-  IsFollowingFarcasterUser: "Farcaster", // 22
-  DidLikedFarcasterCast: "Farcaster", // 21
-  HasMinimumFarcasterFollower: "Farcaster", // 20
+  IsFollowingFarcasterChannel: "farcaster", // 24
+  HasFarcasterProfile: "farcaster", // 23
+  IsFollowingFarcasterUser: "farcaster", // 22
+  DidLikedFarcasterCast: "farcaster", // 21
+  HasMinimumFarcasterFollower: "farcaster", // 20
   HasTokenTransferVerification: null, // 19
-  DidRecastFarcasterCast: "Farcaster", // 18
-  BeFollowedByFarcasterUser: "Farcaster", // 17
+  DidRecastFarcasterCast: "farcaster", // 18
+  BeFollowedByFarcasterUser: "farcaster", // 17
   HasMinimumLensFollower: "Lens", // 16
   DidMirrorOnLensPublication: "Lens", // 15
   DidCollectLensPublication: "Lens", // 14
@@ -54,8 +54,8 @@ export const requirementsConnections: { [key: string]: string | null } = {
   HaveUnitapPass: null, // 3
   BrightIDAuraVerification: "BrightID", // 2
   BrightIDMeetVerification: "BrightID", // 1
-  IsFollowingTwitterBatch: "Twitter",
-  IsFollowingFarcasterBatch: "Farcaster",
+  IsFollowingTwitterBatch: "twitter",
+  IsFollowingFarcasterBatch: "farcaster",
 };
 
 export const requirementWithoutApps: {
