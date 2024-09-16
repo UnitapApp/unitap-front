@@ -10,6 +10,8 @@ import SuccessBody from "./enroll-body/SuccessBody";
 import WrongNetworkBody from "./enroll-body/WrongNetworkBody";
 import WinnersModal from "./winnersModal";
 import { ModalSize } from "@/components/containers/token-tap/Modals/ClaimModal";
+import PrizeRequirementModal from "./enroll-body/RaffleRequirementModal";
+import RafflePermissions from "../permissions";
 
 const EnrollModalBody = ({
   chain,
@@ -63,6 +65,14 @@ const EnrollModalBody = ({
 
   if (claimOrEnrollWalletResponse?.state === "Done")
     return <SuccessBody method={method!} raffle={selectedRaffleForEnroll} />;
+
+  if (method === "Pre-Verify") {
+    return <PrizeRequirementModal prize={selectedRaffleForEnroll} />;
+  }
+
+  if (method === "Verify") {
+    return <RafflePermissions raffle={selectedRaffleForEnroll} />;
+  }
 
   if (!chainId || chainId.toString() !== selectedRaffleForEnroll?.chain.chainId)
     return (
