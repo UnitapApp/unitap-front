@@ -110,7 +110,12 @@ export function checkConnections(
     return true;
   }
 
-  return userConnections[requiredConnection]?.isConnected;
+  return (
+    userConnections[requiredConnection]?.isConnected ||
+    userConnections[
+      requiredConnection.at(0)?.toUpperCase() + requiredConnection.slice(1)
+    ]?.isConnected
+  );
 }
 
 const Sidebar: FC<{
