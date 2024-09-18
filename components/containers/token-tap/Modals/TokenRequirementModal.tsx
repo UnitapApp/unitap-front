@@ -64,6 +64,8 @@ export const requirementWithoutApps: {
   BridgeEthToArb: (params, name) => {
     return "https://bridge.arbitrum.io/?destinationChain=arbitrum-one&sourceChain=ethereum";
   },
+  DelegateArb: (params, name) => "https://www.tally.xyz/gov/arbitrum",
+  DelegateOP: (params, name) => "https://vote.optimism.io/delegates",
 };
 
 export const renderLinkValue = (
