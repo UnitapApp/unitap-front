@@ -226,7 +226,7 @@ export const useRequirementLinkGenerator = ({
     }
   }, [appName, constraint?.name, linkWithoutApp, params]);
 
-  return link || linkWithoutApp || "#";
+  return linkWithoutApp || link || "#";
 };
 
 const TokenRequirementBody: FC<{
