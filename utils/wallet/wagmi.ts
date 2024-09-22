@@ -3,19 +3,18 @@ import { supportedChains } from "@/constants/chains";
 import { injected, mock, safe, walletConnect } from "wagmi/connectors";
 
 import { HttpTransport } from "viem";
-import { TEST_PRIVATE_KEY } from "@/cypress/utils/data";
 
 const getConnectorProviders = () => {
-  if (process.env.NEXT_PUBLIC_IS_TESTING === "1") {
-    // const account = privateKeyToAccount(TEST_PRIVATE_KEY);
-    const connectors = [
-      mock({
-        accounts: [TEST_PRIVATE_KEY],
-      }),
-    ];
+  // if (process.env.NEXT_PUBLIC_IS_TESTING === "1") {
+  //   // const account = privateKeyToAccount(TEST_PRIVATE_KEY);
+  //   const connectors = [
+  //     mock({
+  //       accounts: [TEST_PRIVATE_KEY],
+  //     }),
+  //   ];
 
-    return connectors;
-  }
+  //   return connectors;
+  // }
 
   return [
     injected({
