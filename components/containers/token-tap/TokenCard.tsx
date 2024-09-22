@@ -301,7 +301,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   <ClaimButton
                     className="pointer-events-none !bg-g-dark-primary-gradient"
                     $mlAuto
-                    disabled
+                    onClick={() => openClaimModal(token)}
                     $fontSize="13px"
                   >
                     Finished
