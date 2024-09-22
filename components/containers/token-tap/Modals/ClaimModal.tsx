@@ -107,6 +107,16 @@ const ClaimTokenModalBody = ({
   if (selectedTokenForClaim.isExpired)
     return <MaxedOutBody token={selectedTokenForClaim} />;
 
+  if (
+    claimTokenResponse?.state === "Pending" ||
+    collectedToken?.status === "Pending"
+  ) {
+    return <InitialBody token={selectedTokenForClaim} />;
+  }
+
+  if (selectedTokenForClaim.isMaxedOut)
+    return <MaxedOutBody token={selectedTokenForClaim} />;
+
   if (method === "requirements") {
     return <TokenRequirementModal token={selectedTokenForClaim} />;
   }
@@ -118,16 +128,6 @@ const ClaimTokenModalBody = ({
         imageUrl={selectedTokenForClaim.image}
       />
     );
-
-  if (
-    claimTokenResponse?.state === "Pending" ||
-    collectedToken?.status === "Pending"
-  ) {
-    return <InitialBody token={selectedTokenForClaim} />;
-  }
-
-  if (selectedTokenForClaim.isMaxedOut)
-    return <MaxedOutBody token={selectedTokenForClaim} />;
 
   if (!isPermissionsVerified)
     return (

@@ -275,7 +275,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     </ClaimButton>
                   ) : isExpired || token.isMaxedOut ? (
                     <ClaimButton
-                      className="pointer-events-none !bg-g-dark-primary-gradient"
+                      className="!bg-g-dark-primary-gradient before:!bg-g-dark-primary-gradient"
                       $mlAuto
                       onClick={() => openClaimModal(token)}
                       $fontSize="13px"
@@ -299,7 +299,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   )
                 ) : isExpired || token.isMaxedOut ? (
                   <ClaimButton
-                    className="pointer-events-none !bg-g-dark-primary-gradient"
+                    className="!bg-g-dark-primary-gradient before:!bg-g-dark-primary-gradient"
                     $mlAuto
                     onClick={() => openClaimModal(token)}
                     $fontSize="13px"
