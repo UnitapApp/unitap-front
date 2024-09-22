@@ -263,15 +263,6 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     >
                       <p>{`Pending...`}</p>
                     </ClaimButton>
-                  ) : isExpired || token.isMaxedOut ? (
-                    <ClaimButton
-                      className="pointer-events-none !bg-g-dark-primary-gradient"
-                      $mlAuto
-                      disabled
-                      $fontSize="13px"
-                    >
-                      Finished
-                    </ClaimButton>
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
@@ -281,6 +272,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
                       <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
+                    </ClaimButton>
+                  ) : isExpired || token.isMaxedOut ? (
+                    <ClaimButton
+                      className="pointer-events-none !bg-g-dark-primary-gradient"
+                      $mlAuto
+                      onClick={() => openClaimModal(token)}
+                      $fontSize="13px"
+                    >
+                      Finished
                     </ClaimButton>
                   ) : (
                     <ClaimedButton
