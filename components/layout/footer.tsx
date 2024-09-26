@@ -41,7 +41,7 @@ const Footer: FC = () => {
           hoverable
         ></Icon>
       </Link>
-      <Link href="https://discord.gg/unitap" target="_blank">
+      {/* <Link href="https://discord.gg/unitap" target="_blank">
         <Icon
           iconSrc="/assets/images/footer/discord.svg"
           width="34px"
@@ -49,7 +49,7 @@ const Footer: FC = () => {
           className="mr-4"
           hoverable
         ></Icon>
-      </Link>
+      </Link> */}
       <Link
         href="https://www.youtube.com/@UnitapApp?sub_confirmation=1"
         target="_blank"

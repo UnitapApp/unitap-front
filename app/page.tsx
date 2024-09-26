@@ -71,11 +71,11 @@ const socialLinks = [
     localClass: "hover:bg-blue-200",
     link: "https://github.com/UnitapApp",
   },
-  {
-    img: "discord-icon.svg",
-    localClass: "hover:bg-blue-200",
-    link: "https://discord.gg/unitap",
-  },
+  // {
+  //   img: "discord-icon.svg",
+  //   localClass: "hover:bg-blue-200",
+  //   link: "https://discord.gg/unitap",
+  // },
 ];
 
 const Footer = () => {
