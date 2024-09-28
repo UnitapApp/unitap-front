@@ -14,14 +14,14 @@ import Image from "next/image";
 
 export const getUserEntry = (
   entryWallets: LineaRaffleEntry[],
-  userWallet?: string
+  userWallet?: string,
 ) => {
   return (
     !!userWallet &&
     entryWallets.find(
       (entry) =>
         entry.walletAddress.toLocaleLowerCase() ===
-        userWallet.toLocaleLowerCase()
+        userWallet.toLocaleLowerCase(),
     )
   );
 };
@@ -31,7 +31,7 @@ export const LineaRaffleCard: FC<{
   isHighlighted?: boolean;
 }> = ({ raffle, isHighlighted }) => {
   const {
-    imageUrl,
+    image: imageUrl,
     tokenUri,
     creatorUrl,
     twitterUrl,
@@ -69,7 +69,7 @@ export const LineaRaffleCard: FC<{
 
   const firstWinner = useMemo(
     () => lineaEnrolledUsers.find((entry) => entry.isWinner),
-    [lineaEnrolledUsers]
+    [lineaEnrolledUsers],
   );
 
   useEffect(() => {
@@ -101,33 +101,33 @@ export const LineaRaffleCard: FC<{
   return (
     <>
       <div className={`prize-card-linea ${isHighlighted ? "mb-20" : "mb-4"}`}>
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 p-5 lg:p-0 rounded-xl bg-gray30 lg:bg-inherit">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-xl bg-gray30 p-5 lg:flex-row lg:bg-inherit lg:p-0">
           <div className="prize-card__image relative mb-3 lg:mb-0">
             <div
               className={
                 isHighlighted
-                  ? "before:!inset-[2px] p-[2px] gradient-outline-card"
+                  ? "gradient-outline-card p-[2px] before:!inset-[2px]"
                   : ""
               }
             >
               <div
-                className={`prize-card__container h-[212px] w-[212px] flex flex-col ${
+                className={`prize-card__container flex h-[212px] w-[212px] flex-col ${
                   isHighlighted
                     ? "bg-g-primary-low "
-                    : "bg-gray30 border-2 border-gray40"
-                } justify-center items-center p-5 rounded-xl`}
+                    : "border-2 border-gray40 bg-gray30"
+                } items-center justify-center rounded-xl p-5`}
               >
                 <img
                   onClick={onPrizeClick}
                   src={"assets/images/prize-tap/linea-raffle-image.svg"}
                   alt={name}
                   width={!isPrizeNft ? "168px" : ""}
-                  className={`${!isPrizeNft ? "ml-1" : ""} cursor-pointer mb-2`}
+                  className={`${!isPrizeNft ? "ml-1" : ""} mb-2 cursor-pointer`}
                 />
               </div>
             </div>
-            <div className="absolute bottom-[-10px] left-[40px] rounded-md flex items-center bg-gray50 border-2 border-gray70 min-w-[130px] justify-center">
-              <p className="text-gray100 text-2xs p-1">on</p>
+            <div className="absolute bottom-[-10px] left-[40px] flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
+              <p className="p-1 text-2xs text-gray100">on</p>
               <img
                 src="/assets/images/prize-tap/linea.svg"
                 className="ml-2"
@@ -138,41 +138,41 @@ export const LineaRaffleCard: FC<{
           <div
             className={
               isHighlighted
-                ? "before:!inset-[3px] p-[2px] relative gradient-outline-card w-full"
-                : "w-full relative"
+                ? "gradient-outline-card relative w-full p-[2px] before:!inset-[3px]"
+                : "relative w-full"
             }
           >
             <img
               src="/assets/images/prize-tap/linia-prize-bg.svg"
               alt="prize-tap"
-              className="top-0 right-0 z-20 absolute"
+              className="absolute right-0 top-0 z-20"
             />
 
             <div
               className={`card prize-card__content relative h-full md:max-h-[225px] md:min-h-[212px] ${
                 isHighlighted
                   ? "bg-g-primary-low"
-                  : "bg-gray30 border-2 border-gray40"
-              } rounded-xl p-4 pt-3 flex flex-col w-full h-full`}
+                  : "border-2 border-gray40 bg-gray30"
+              } flex h-full w-full flex-col rounded-xl p-4 pt-3`}
             >
               <img
                 src="/assets/images/prize-tap/linea-texture.svg"
                 alt="prize-tap"
-                className="top-0 left-0 z-10 absolute"
+                className="absolute left-0 top-0 z-10"
               />
-              <span className="flex relative z-20 justify-between w-full mb-1">
+              <span className="relative z-20 mb-1 flex w-full justify-between">
                 <div className="flex items-center gap-x-2">
                   <p
-                    className="prize-card__title cursor-pointer text-[#61DFFF] text-sm"
+                    className="prize-card__title cursor-pointer text-sm text-[#61DFFF]"
                     onClick={onPrizeClick}
                   >
                     {name}
                   </p>
-                  <small className="rounded-lg font-bold text-xs p-1 bg-[#0E1217] text-[#1D788F]">
+                  <small className="rounded-lg bg-[#0E1217] p-1 text-xs font-bold text-[#1D788F]">
                     x{maxMultiplier} Winners
                   </small>
                 </div>
-                <div className="prize-card__links text-secondary-text flex gap-4">
+                <div className="prize-card__links flex gap-4 text-secondary-text">
                   {twitterUrl && (
                     <Icon
                       iconSrc="/assets/images/prize-tap/linea-twitter-logo.svg"
@@ -200,7 +200,7 @@ export const LineaRaffleCard: FC<{
                   />
                 </div>
               </span>
-              <span className="flex relative z-20 justify-between w-full mb-4">
+              <span className="relative z-20 mb-4 flex w-full justify-between">
                 <p className="prize-card__source text-xs text-[#61DFFF]">
                   {!isPrizeNft ? (
                     <span
@@ -219,20 +219,20 @@ export const LineaRaffleCard: FC<{
                   )}
                 </p>
               </span>
-              <p className="prize-card__description text-[#1D677C] text-xs leading-5 mb-2 grow shrink-0 basis-auto text-justify">
+              <p className="prize-card__description mb-2 shrink-0 grow basis-auto text-justify text-xs leading-5 text-[#1D677C]">
                 {description}
               </p>
 
-              <p className="text-[#1D677C] flex items-center gap-2 bg-gray30 text-xs leading-5 mb-2 grow shrink-0 basis-auto">
+              <p className="mb-2 flex shrink-0 grow basis-auto items-center gap-2 bg-gray30 text-xs leading-5 text-[#1D677C]">
                 {numberWithCommas(maxNumberOfEntries)} Whitelisted Wallets
                 automatically enrolled to this raffle by Linea{" "}
                 <Image alt="check-circle" src={CheckCircleImage} />
               </p>
 
               {!winnerEntry && !userEntry?.txHash && !raffle.isExpired && (
-                <span className="text-xs mb-3">
+                <span className="mb-3 text-xs">
                   <div
-                    className={`flex items-center flex-wrap text-xs gap-2 text-white`}
+                    className={`flex flex-wrap items-center gap-2 text-xs text-white`}
                   >
                     {(showAllPermissions
                       ? raffle.constraints
@@ -243,7 +243,7 @@ export const LineaRaffleCard: FC<{
                       <Tooltip
                         onClick={openEnrollModal.bind(null, raffle, "Verify")}
                         className={
-                          "border-gray70 bg-gray50 hover:bg-gray10 transition-colors border px-3 py-2 rounded-lg "
+                          "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                         }
                         data-testid={`token-verification-${raffle.id}-${permission.name}`}
                         key={key}
@@ -259,9 +259,9 @@ export const LineaRaffleCard: FC<{
                       <button
                         onClick={setShowAllPermissions.bind(
                           null,
-                          !showAllPermissions
+                          !showAllPermissions,
                         )}
-                        className="border-gray70 flex items-center z-10 bg-gray60 transition-colors border px-3 py-2 rounded-lg"
+                        className="z-10 flex items-center rounded-lg border border-gray70 bg-gray60 px-3 py-2 transition-colors"
                       >
                         <span>
                           {showAllPermissions ? "Show less" : "Show more"}
@@ -279,12 +279,12 @@ export const LineaRaffleCard: FC<{
                 </span>
               )}
 
-              <Action className={"w-full sm:w-auto items-center sm:items-end"}>
+              <Action className={"w-full items-center sm:w-auto sm:items-end"}>
                 {(isExpired && !firstWinner) ||
                 (!firstWinner &&
                   maxNumberOfEntries === numberOfOnchainEntries) ? (
-                  <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-                    <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
+                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
+                    <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
                       <div className="flex flex-col gap-1">
                         <p className="text-2xs text-white">
                           {start ? "Winners in:" : "Starts in:"}
@@ -297,7 +297,7 @@ export const LineaRaffleCard: FC<{
                     </div>
                     <ClaimAndEnrollButton
                       disabled={true}
-                      className="min-w-[552px] md:!w-[352px] !w-full"
+                      className="!w-full min-w-[552px] md:!w-[352px]"
                       height="48px"
                       $fontSize="14px"
                     >
@@ -309,7 +309,7 @@ export const LineaRaffleCard: FC<{
                           <p> Unavailable</p>
                         )}
                         <Icon
-                          className="absolute right-0 top-[-2px]"
+                          className="absolute right-0 top-1/2 -translate-y-1/2"
                           iconSrc="assets/images/prize-tap/header-prize-logo.svg"
                           width="27px"
                           height="24px"
@@ -318,8 +318,8 @@ export const LineaRaffleCard: FC<{
                     </ClaimAndEnrollButton>
                   </span>
                 ) : !isEnded ? (
-                  <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4">
-                    <div className="flex flex-col sm:flex-row gap-4 justify-between w-full md:items-center bg-gray40 px-5 py-1 rounded-xl">
+                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+                    <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
                       <div className="flex flex-col gap-1">
                         <p className="text-2xs text-white">
                           {start ? "Winners in:" : "Starts in:"}
@@ -333,7 +333,7 @@ export const LineaRaffleCard: FC<{
 
                     <Button
                       onClick={() => setIsLineaCheckEnrolledModalOpen(true)}
-                      className="min-w-[552px] px-5 border-2 flex justify-center border-[#61DFFF] rounded-xl transition-colors active:bg-[#1C222B] text-[#61DFFF] text-center bg-[#191921] py-3 md:!w-[352px] !w-full"
+                      className="flex !w-full min-w-[552px] justify-center rounded-xl border-2 border-[#61DFFF] bg-[#191921] px-5 py-3 text-center text-[#61DFFF] transition-colors active:bg-[#1C222B] md:!w-[352px]"
                       height="48px"
                       $fontSize="14px"
                     >
@@ -341,8 +341,8 @@ export const LineaRaffleCard: FC<{
                     </Button>
                   </span>
                 ) : (
-                  <span className="flex flex-col md:flex-row items-center justify-between w-full gap-4 ">
-                    <div className="flex gap-4 overflow-hidden px-5 h-[48px] justify-between w-full items-center winner-box-bg  py-1 rounded-xl">
+                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
+                    <div className="winner-box-bg flex h-[48px] w-full items-center justify-between gap-4 overflow-hidden rounded-xl  px-5 py-1">
                       <p className="text-2xs text-white">
                         Raffle is done, check the winners:{" "}
                       </p>
@@ -355,7 +355,7 @@ export const LineaRaffleCard: FC<{
                     </div>
                     <Button
                       disabled={!start}
-                      className="min-w-[552px] px-5 border-2 flex justify-center border-[#61DFFF] rounded-xl text-[#61DFFF] text-center bg-[#191921] py-3 md:!w-[352px] !w-full"
+                      className="flex !w-full min-w-[552px] justify-center rounded-xl border-2 border-[#61DFFF] bg-[#191921] px-5 py-3 text-center text-[#61DFFF] md:!w-[352px]"
                       onClick={() => setIsLineaWinnersOpen(true)}
                     >
                       <div className="relative w-full">

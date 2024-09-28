@@ -16,7 +16,7 @@ export type Prize = {
   pk: PK;
   constraintParams: string;
   constraints: Permission[];
-  imageUrl: string;
+  image: string;
   tokenUri: string;
   background: string;
   creator: string;
@@ -52,6 +52,7 @@ export type Prize = {
   prizeAsset?: string;
   status: "PENDING" | "REJECTED" | string;
   winnersCount: number;
+  isPreEnrollment: boolean;
 };
 
 export type WinnerEntry = {

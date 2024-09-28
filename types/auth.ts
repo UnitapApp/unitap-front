@@ -15,6 +15,8 @@ export type UserProfile = {
   pk: PK;
   wallets: UserWallet[];
   username: string;
+  prizetapWinningChanceNumber: number;
+  upBalance: number;
 };
 
 export type Settings = {
@@ -41,6 +43,10 @@ export type UserConnection = {
   };
 };
 
+export interface PermissionInfoProp {
+  [key: number]: boolean;
+}
+
 export type Permission = {
   isReversed: boolean;
   id: PK;
@@ -50,7 +56,9 @@ export type Permission = {
   resourcetype: string;
   type: "TIME" | "VER";
   title?: string;
+  expirationTime?: number;
   negativeDescription: string | null;
+  info: PermissionInfoProp;
 };
 
 export enum PermissionType {

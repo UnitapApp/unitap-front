@@ -13,41 +13,84 @@ import {
   ClaimButton,
   ClaimedButton,
 } from "@/components/ui/Button/button";
-import { useWalletAccount } from "@/utils/wallet";
+import { useWalletAccount, useWalletSigner } from "@/utils/wallet";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import Markdown from "./Markdown";
 import Image from "next/image";
 import { AddMetamaskButton } from "@/app/gastap/components/Cards/Chainlist/ChainCard";
 import { watchAsset } from "viem/actions";
+import { replacePlaceholders } from "@/utils";
+import ReactMarkdown from "react-markdown";
+
+// TODO: migrate me
+export function formatDate(targetDate: Date): string | number {
+  const currentDate = new Date();
+  const diffInMs = targetDate.getTime() - currentDate.getTime();
+
+  if (diffInMs < 0) return -1;
+
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInHours = Math.floor(
+    (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  );
+
+  return `claims Reserved for ${diffInDays}d : ${diffInHours}h for `;
+}
 
 const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   token,
   isHighlighted,
 }) => {
-  const { openClaimModal, claimedTokensList, claimingTokenPk } =
-    useTokenTapContext();
+  const {
+    openClaimModal,
+    claimedTokensList,
+    claimingTokenPk,
+    claimTokenResponse,
+  } = useTokenTapContext();
+
+  const collectedToken = useMemo(
+    () =>
+      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
+    [claimedTokensList, token],
+  );
 
   const { isConnected, connector } = useWalletAccount();
+  const provider = useWalletSigner();
 
   const [showAllPermissions, setShowAllPermissions] = useState(false);
+
+  const currentDate = new Date();
+  const oneMonthAfterDeadline = new Date(token.deadline);
+  oneMonthAfterDeadline.setMonth(oneMonthAfterDeadline.getMonth() + 1);
+
+  const isAfter = currentDate > oneMonthAfterDeadline;
+
+  const isExpired =
+    token.isExpired ||
+    (token.isMaxedOut &&
+      claimTokenResponse?.state !== "Pending" &&
+      collectedToken?.status !== "Pending");
+
+  const isArchive = isExpired && isAfter;
 
   const onTokenClicked = () => {
     window.open(token.distributorUrl);
   };
 
+  const params = useMemo(
+    () => JSON.parse(token.constraintParams || "{}"),
+    [token.constraintParams],
+  );
+
   const addToken = async () => {
-    if (!isConnected) return;
-
-    const provider = await connector?.getClient?.();
-
-    if (!provider) return;
+    if (!isConnected || !provider) return;
 
     try {
       watchAsset(provider, {
         options: {
-          decimals: token.chain.decimals,
+          decimals: token.decimals ?? token.chain.decimals,
           symbol: token.token,
-          image: token.imageUrl,
+          image: token.image,
           address: token.tokenAddress,
         },
         type: "ERC20",
@@ -57,16 +100,14 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
     }
   };
 
-  const collectedToken = useMemo(
-    () =>
-      claimedTokensList.find((item) => item.tokenDistribution.id === token.id),
-    [claimedTokensList, token],
-  );
-
   const calculateClaimAmount =
     token.chain.chainName === "Lightning"
       ? token.amount
       : token.amount / 10 ** (token.decimals ?? token.chain.decimals);
+
+  const formattedDateValue = formatDate(
+    new Date(token.claimDeadlineForUnitapPassUser),
+  );
 
   const timePermissionVerification = useMemo(
     () => token.constraints.find((permission) => permission.type === "TIME"),
@@ -76,7 +117,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
   return (
     <div>
       <div
-        className={`token-card flex ${
+        className={`token-card ${isArchive ? "opacity-60" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
             : "mb-4"
@@ -88,9 +129,10 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
             } flex w-full flex-col items-center justify-between gap-2 rounded-t-xl md:flex-row md:gap-0`}
           >
-            <div
+            <button
+              disabled={isArchive}
               onClick={onTokenClicked}
-              className="mb-6 flex items-center hover:cursor-pointer sm:mb-0"
+              className="mb-6 flex items-center sm:mb-0"
             >
               <span className="chain-logo-container mr-3 flex h-11 w-11 justify-center">
                 <Image
@@ -98,7 +140,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   height={44}
                   className="chain-logo h-full w-auto"
                   src={
-                    token.imageUrl ?? "/assets/images/prizetap/bright-token.svg"
+                    token.image ?? "/assets/images/prizetap/bright-token.svg"
                   }
                   unoptimized={true}
                   alt={token.name}
@@ -106,7 +148,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </span>
               <span className="w-max">
                 <p
-                  className="mb-2 flex text-center text-white md:text-left"
+                  className={`mb-2 flex text-center text-white  md:text-left ${isArchive ? "text-opacity-40" : ""}`}
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
@@ -118,11 +160,13 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     alt="arrow"
                   />
                 </p>
-                <p className="text-xs font-medium text-white">
+                <p
+                  className={`text-xs font-medium text-white  ${isArchive ? "text-opacity-40" : ""}`}
+                >
                   {token.distributor}
                 </p>
               </span>
-            </div>
+            </button>
 
             <div
               className={
@@ -132,8 +176,9 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               <div className="w-full items-center sm:w-auto sm:items-end">
                 {token.chain.chainName === "Lightning" || (
                   <AddMetamaskButton
+                    disabled={isArchive}
                     onClick={addToken}
-                    className="mx-auto !w-[220px] text-sm font-medium hover:cursor-pointer sm:mr-4 sm:!w-auto"
+                    className="mx-auto !w-[220px] text-sm font-medium sm:mr-4 sm:!w-auto"
                   >
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png"
@@ -143,6 +188,68 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   </AddMetamaskButton>
                 )}
               </div>
+              {isExpired ||
+                (!token.maxClaimNumberForUnitapPassUser ||
+                formattedDateValue === -1 ? (
+                  <div className="h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300">
+                    <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
+                      <div className="transition-all duration-300">
+                        <span className={``}>
+                          {numberWithCommas(
+                            token.maxNumberOfClaims - token.numberOfClaims,
+                          )}{" "}
+                        </span>
+                        /
+                        <span>
+                          {" "}
+                          {numberWithCommas(token.maxNumberOfClaims)}{" "}
+                        </span>
+                        {" are left to claim"}
+                      </div>
+                      <Image
+                        src="/assets/images/landing/unitap-pass.svg"
+                        alt="unitap-pass"
+                        width={20}
+                        className="ml-auto mr-2 transition-all duration-300 group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-30"
+                        height={20}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="group h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300 hover:bg-dark-primary-2">
+                    <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
+                      <div className="transition-all duration-300 group-hover:-mt-6 group-hover:-translate-y-full">
+                        <span className={``}>
+                          {numberWithCommas(
+                            token.maxNumberOfClaims - token.numberOfClaims,
+                          )}{" "}
+                        </span>
+                        /
+                        <span>
+                          {" "}
+                          {numberWithCommas(token.maxNumberOfClaims)}{" "}
+                        </span>
+                        {" are left to claim"}
+                      </div>
+                      <Image
+                        src="/assets/images/landing/unitap-pass.svg"
+                        alt="unitap-pass"
+                        width={20}
+                        className="ml-auto mr-2 transition-all duration-300 group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-30"
+                        height={20}
+                      />
+                    </div>
+                    <div className="mt-10 px-4 text-white transition-all duration-300 group-hover:-mt-4 group-hover:-translate-y-full ">
+                      <span className="text-space-green">
+                        {token.remainingClaimForUnitapPassUser}
+                      </span>{" "}
+                      {formattedDateValue}
+                      <span className="bg-g-primary bg-clip-text font-semibold text-transparent">
+                        UP Holders
+                      </span>
+                    </div>
+                  </div>
+                ))}
               <Action className={"w-full items-center sm:w-auto sm:items-end"}>
                 {collectedToken ? (
                   claimingTokenPk === token.id ||
@@ -159,16 +266,22 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   ) : collectedToken!.status === "Pending" ? (
                     <ClaimButton
                       data-testid={`chain-show-claim-${token.id}`}
+                      disabled={isExpired}
                       $mlAuto
                       onClick={() => openClaimModal(token)}
-                      className="m-auto text-sm"
+                      className={`m-auto text-sm ${isExpired ? "pointer-events-none !bg-g-dark-primary-gradient" : ""}`}
                     >
                       <p>{`Claim ${calculateClaimAmount} ${token.token}`}</p>
                     </ClaimButton>
-                  ) : token.isMaxedOut ? (
-                    <NoCurrencyButton disabled $fontSize="13px">
-                      Empty
-                    </NoCurrencyButton>
+                  ) : isExpired || token.isMaxedOut ? (
+                    <ClaimButton
+                      className="!bg-g-dark-primary-gradient before:!bg-g-dark-primary-gradient"
+                      $mlAuto
+                      onClick={() => openClaimModal(token)}
+                      $fontSize="13px"
+                    >
+                      Finished
+                    </ClaimButton>
                   ) : (
                     <ClaimedButton
                       data-testid={`chain-claimed-${token.id}`}
@@ -184,6 +297,15 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                       </p>
                     </ClaimedButton>
                   )
+                ) : isExpired || token.isMaxedOut ? (
+                  <ClaimButton
+                    className="!bg-g-dark-primary-gradient before:!bg-g-dark-primary-gradient"
+                    $mlAuto
+                    onClick={() => openClaimModal(token)}
+                    $fontSize="13px"
+                  >
+                    Finished
+                  </ClaimButton>
                 ) : token.amount !== 0 ? (
                   <ClaimButton
                     data-testid={`chain-show-claim-${token.id}`}
@@ -213,7 +335,11 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </Action>
             </div>
           </div>
-          <Markdown isHighlighted={isHighlighted} content={token.notes} />
+          <Markdown
+            className={`${isArchive ? "text-opacity-40" : ""} text-[15px]`}
+            isHighlighted={isHighlighted}
+            content={token.notes}
+          />
           <div
             className={`${
               isHighlighted ? "bg-g-primary-low" : "bg-gray40"
@@ -225,18 +351,29 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   .filter((permission) => permission.type === "VER")
                   .slice(0, 6)
             ).map((permission, key) => (
-              <Tooltip
+              <div
                 className={
                   "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
                 }
                 data-testid={`token-verification-${token.id}-${permission.name}`}
                 key={key}
-                text={permission.description}
+                // text={
+                //   <ReactMarkdown className="markdown">
+                //     {replacePlaceholders(
+                //       (permission.isReversed
+                //         ? permission.negativeDescription
+                //         : permission.description)!,
+                //       params[permission.name],
+                //     )}
+                //   </ReactMarkdown>
+                // }
               >
-                <div className="flex items-center gap-3">
+                <div
+                  className={`flex items-center gap-3 ${isArchive ? "text-opacity-40" : ""}`}
+                >
                   {permission.title}
                 </div>
-              </Tooltip>
+              </div>
             ))}
 
             {token.constraints.length > 6 && (
@@ -264,18 +401,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
           } relative flex w-full flex-col items-center justify-between gap-4 rounded-b-xl px-4 py-2.5 pr-6 md:flex-row md:gap-0`}
         >
           <div className="flex items-center gap-x-2 text-xs sm:text-sm">
-            <p className="text-gray100">
-              <span className="text-white">
-                {numberWithCommas(
-                  token.maxNumberOfClaims - token.numberOfClaims,
-                )}{" "}
-              </span>{" "}
-              of{" "}
-              <span className="text-white">
-                {" "}
-                {numberWithCommas(token.maxNumberOfClaims)}{" "}
-              </span>{" "}
-              are left to claim on
+            <p className={`text-gray100 ${isArchive ? "text-opacity-40" : ""}`}>
+              claim on
               {" " + token.chain.chainName}
             </p>
             <Icon
@@ -285,28 +412,36 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             />
           </div>
 
-          {!!timePermissionVerification && (
-            <Tooltip
-              className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
-              withoutImage
-              text={timePermissionVerification.description}
-            >
-              <div
-                data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
-                className="flex items-center justify-center"
-              >
-                {timePermissionVerification.title}
-                <Icon
-                  iconSrc={`/assets/images/token-tap/${
-                    timePermissionVerification.name ===
-                    "tokenTap.OnceInALifeTimeVerification"
-                      ? "non-repeat.svg"
-                      : "repeat.svg"
-                  }`}
-                  className="ml-3"
-                />
+          {isArchive ? (
+            <div className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2">
+              <div className="flex items-center justify-center">
+                From Archive
               </div>
-            </Tooltip>
+            </div>
+          ) : (
+            !!timePermissionVerification && (
+              <Tooltip
+                className="static bottom-0 left-1/2 top-0 flex items-center justify-center rounded bg-gray20 px-5 py-2 text-xs text-gray80 md:absolute md:-translate-x-1/2"
+                withoutImage
+                text={timePermissionVerification.description}
+              >
+                <div
+                  data-testid={`token-verification-${token.id}-${timePermissionVerification.name}`}
+                  className="flex items-center justify-center"
+                >
+                  {timePermissionVerification.title}
+                  <Icon
+                    iconSrc={`/assets/images/token-tap/${
+                      timePermissionVerification.name ===
+                      "tokenTap.OnceInALifeTimeVerification"
+                        ? "non-repeat.svg"
+                        : "repeat.svg"
+                    }`}
+                    className="ml-3"
+                  />
+                </div>
+              </Tooltip>
+            )
           )}
 
           <div className="flex items-center gap-x-6">

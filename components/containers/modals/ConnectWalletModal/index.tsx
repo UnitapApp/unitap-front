@@ -78,7 +78,7 @@ export const RenderWalletBody: FC<{
   useEffect(() => {
     if (cookies["tutorial"] === "false" || !isNewUser) return;
 
-    document.cookie = "tutorial=true;";
+    document.cookie = "tutorial=true;path=/;";
   }, [cookies, isNewUser]);
 
   useEffect(() => {

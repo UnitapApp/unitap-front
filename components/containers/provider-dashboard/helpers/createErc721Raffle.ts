@@ -25,41 +25,41 @@ export const createErc721RaffleCallback = async (
 ) => {
   if (!provider || !signer) return;
 
-  const gasEstimate = await provider.estimateContractGas({
-    abi: prizeTap721Abi,
-    account: account as any,
-    address: raffleContract.address,
-    functionName: "createRaffle",
-    args: [
-      currencyAddress,
-      nftIds.map((item) => BigInt(item)),
-      maxParticipants,
-      1n,
-      startTime,
-      endTime,
-      BigInt(nftIds.length),
-      "0x0000000000000000000000000000000000000000000000000000000000000000",
-    ],
-  });
-  if (selectedChain.chainId === "42161") {
-    return signer?.writeContract({
-      abi: prizeTap721Abi,
-      account: account as any,
-      address: raffleContract.address,
-      functionName: "createRaffle",
-      args: [
-        currencyAddress,
-        nftIds.map((item) => BigInt(item)),
-        maxParticipants,
-        1n,
-        startTime,
-        endTime,
-        BigInt(nftIds.length),
-        "0x0000000000000000000000000000000000000000000000000000000000000000",
-      ],
-      // gasPrice: gasEstimate,
-    });
-  }
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: prizeTap721Abi,
+  //   account: account as any,
+  //   address: raffleContract.address,
+  //   functionName: "createRaffle",
+  //   args: [
+  //     currencyAddress,
+  //     nftIds.map((item) => BigInt(item)),
+  //     maxParticipants,
+  //     1n,
+  //     startTime,
+  //     endTime,
+  //     BigInt(nftIds.length),
+  //     "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //   ],
+  // });
+  // if (selectedChain.chainId === "42161") {
+  //   return signer?.writeContract({
+  //     abi: prizeTap721Abi,
+  //     account: account as any,
+  //     address: raffleContract.address,
+  //     functionName: "createRaffle",
+  //     args: [
+  //       currencyAddress,
+  //       nftIds.map((item) => BigInt(item)),
+  //       maxParticipants,
+  //       1n,
+  //       startTime,
+  //       endTime,
+  //       BigInt(nftIds.length),
+  //       "0x0000000000000000000000000000000000000000000000000000000000000000",
+  //     ],
+  //     // gasPrice: gasEstimate,
+  //   });
+  // }
   return signer?.writeContract({
     abi: prizeTap721Abi,
     account: account as any,
@@ -69,13 +69,13 @@ export const createErc721RaffleCallback = async (
       currencyAddress,
       nftIds.map((item) => BigInt(item)),
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       BigInt(nftIds.length),
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
-    gasPrice: gasEstimate,
+    // gasPrice: gasEstimate,
   });
 };
 
@@ -184,6 +184,7 @@ export const createErc721Raffle = async (
   formData.append("telegram_url", telegram! ?? "");
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
+  formData.append("max_multiplier", "3");
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,

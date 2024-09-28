@@ -18,9 +18,13 @@ type props = {
   isOpen: boolean;
   spaceman?: Spaceman;
   children: React.ReactNode;
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | number;
   closeModalHandler: () => void;
   errorSource?: APIErrorsSource;
+  bodyClassName?: string;
+  classNames?: {
+    content?: string;
+  };
 };
 
 const Modal = ({
@@ -32,6 +36,8 @@ const Modal = ({
   className,
   size,
   errorSource,
+  bodyClassName,
+  classNames,
 }: props) => {
   const { getError } = React.useContext(ErrorsContext);
 
@@ -50,7 +56,7 @@ const Modal = ({
                 : "bg-gray30"
             } rounded-2xl border-2 border-gray80 ${
               errorSource && getError(errorSource) ? "!border-error " : ""
-            }`}
+            } ${classNames?.content ?? ""}`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
             size={size}
@@ -81,7 +87,7 @@ const Modal = ({
                 className === "provider-dashboard__modal"
                   ? "bg-gray20"
                   : "bg-gray30"
-              } styled-scroll max-h-[70vh] !rounded-none`}
+              } styled-scroll max-h-[70vh] overflow-auto !rounded-none ${bodyClassName}`}
               size={size}
             >
               {children}

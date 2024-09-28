@@ -18,13 +18,13 @@ export const approveErc721TokenCallback = async (
   signer: GetWalletClientReturnType,
   selectedChain: Chain,
 ) => {
-  const gasEstimate = await provider.estimateContractGas({
-    abi: erc721Abi,
-    address: erc721Contract.address,
-    functionName: "setApprovalForAll",
-    account: address,
-    args: [spenderAddress, true],
-  });
+  // const gasEstimate = await provider.estimateContractGas({
+  //   abi: erc721Abi,
+  //   address: erc721Contract.address,
+  //   functionName: "setApprovalForAll",
+  //   account: address,
+  //   args: [spenderAddress, true],
+  // });
 
   const response = await signer?.writeContract({
     abi: erc721Abi,
@@ -32,7 +32,7 @@ export const approveErc721TokenCallback = async (
     account: address,
     functionName: "setApprovalForAll",
     args: [spenderAddress, true],
-    gasPrice: selectedChain.chainId === "42161" ? undefined : gasEstimate,
+    // gasPrice: selectedChain.chainId === "42161" ? undefined : gasEstimate,
   });
 
   if (!response) return;

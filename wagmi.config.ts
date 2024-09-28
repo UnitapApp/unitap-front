@@ -21,12 +21,14 @@ export default defineConfig({
     {
       name: "UnitapPass",
       abi: UnitapPass as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "UnitapPassMain",
       abi: UnitapPassMain as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "UnitapEVMTokenTap",
@@ -40,7 +42,8 @@ export default defineConfig({
     {
       name: "UnitapPassBatchSale",
       abi: UnitapPassBatchSaleMain as any,
-      address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      // address: "0x4649b7d433ee4ba472fd76073b07f082d8b18e9b",
+      address: "0xCcEa5FB3Da0B89d073f1ac12A35a8f24caF0d76C",
     },
     {
       name: "PrizeTap",

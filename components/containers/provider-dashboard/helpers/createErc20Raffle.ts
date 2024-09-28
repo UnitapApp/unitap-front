@@ -49,7 +49,7 @@ const createErc20RaffleCallback = async (
           ),
       currencyAddress,
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       winnersCount,
@@ -73,7 +73,7 @@ const createErc20RaffleCallback = async (
             ),
         currencyAddress,
         maxParticipants,
-        1n,
+        3n,
         startTime,
         endTime,
         winnersCount,
@@ -97,7 +97,7 @@ const createErc20RaffleCallback = async (
           ),
       currencyAddress,
       maxParticipants,
-      1n,
+      3n,
       startTime,
       endTime,
       winnersCount,
@@ -190,7 +190,7 @@ export const createErc20Raffle = async (
   formData.append("contract", raffleContractAddress);
   formData.append("creator_name", data.provider!);
   formData.append("creator_address", address);
-  formData.append("prize_amount", prizeAmount.toString());
+  formData.append("prize_amount", BigInt(prizeAmount).toString());
   formData.append("prize_asset", getAddress(data.tokenContractAddress));
   formData.append("prize_name", prizeName);
   formData.append("chain", data.selectedChain.pk);
@@ -208,6 +208,7 @@ export const createErc20Raffle = async (
   formData.append("email_url", data.email!);
   formData.append("necessary_information", data.necessaryInfo!);
   formData.append("decimals", decimals);
+  formData.append("max_multiplier", "3");
 
   const raffleContract: any = getContract({
     address: raffleContractAddress as any,

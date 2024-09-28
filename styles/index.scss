@@ -285,3 +285,11 @@ textarea::-webkit-scrollbar-thumb {
 .nftIdTextarea::placeholder {
   @apply text-gray80;
 }
+
+.markdown {
+     a {
+       @apply text-blue-500;
+
+    }
+
+}

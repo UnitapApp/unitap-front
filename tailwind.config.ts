@@ -76,8 +76,17 @@ const config: Config = {
       backgroundImage: {
         "dark-primary":
           "linear-gradient(to right, #22222f, #21232e, #242130, #231f2f)",
+        "dark-primary-2": "url('/assets/images/token-tap/bg-primary-dark.svg')",
+        // "dark-primary-2":
+        //   "radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2A3837 0%, #3F2B44 42.19%, #322837 100%)",
         primaryGradient:
           "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 73.07%, #DD40CD 111.44%)",
+        primaryGradient2:
+          "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 39.49%, #E1C3F4 43.07%, #DD40CD 100.44%)",
+        primaryGradient3:
+          "linear-gradient(91.35deg, #4BF2A2 -4.66%, #A89FE7 89.49%, #E1C3F4 156.07%, #DD40CD 100.44%)",
+        "primaryGradient-2":
+          "linear-gradient(91.35deg, #4BF2A2 -150.66%, #A89FE7 39.49%, #E1C3F4 150.07%)",
         "home-header-texture":
           "url('/assets/images/landing/main-bg-profile.svg')",
         "what-is-unitap-header":
@@ -113,7 +122,10 @@ const config: Config = {
           "linear-gradient(91.35deg,#4BF2A2 35.66%,#A89FE7 50.06%,#E1C4F4 7.07%,#DD40CD 70.44%)",
         "g-primary-low":
           "linear-gradient(91.35deg, rgba(75, 242, 162, 0.16) -4.66%, rgba(168, 159, 231, 0.35) 39.49%, rgba(225, 196, 244, 0.31) 73.07%, rgba(221, 64, 205, 0.31) 111.44%)",
+        "br-pre-enrollment":
+          "linear-gradient(274.27deg, #383857 9.67%, rgba(167, 159, 229, 0.5) 96.26%);",
       },
+
       dropShadow: {
         "primary-xl": "0px 8px 18px rgba(81, 88, 246, 0.15)",
       },
@@ -152,6 +164,10 @@ const config: Config = {
           "50%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        changeColor: {
+          "0%": { backgroundColor: "red" },
+          "50%": { backgroundColor: "yellow" },
+        },
       },
       animation: {
         wiggle: "wiggle 1s ease-in-out, wiggle 1s ease-in-out",
@@ -161,6 +177,7 @@ const config: Config = {
         blinking: "blinking 2s step-start 0s infinite",
         fadeInOut: "fadeInOut 2s ease-in-out infinite",
         fadeToggle: "fadeToggle 5s ease-in-out infinite",
+        changeColor: "changeColor 1s ease-in",
       },
       transitionProperty: {
         height: "height",

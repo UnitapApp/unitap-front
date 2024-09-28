@@ -221,6 +221,7 @@ export interface UserTokenDistribution {
   necessaryInformation: string | null;
   notes: string;
   numberOfClaims: number;
+  numberOfOnchainClaims: number;
   rejectionReason: string | null;
   startAt: string;
   status: string;
@@ -275,8 +276,12 @@ export type TokenOnChain = {
   tokenName: string;
   tokenSymbol: string;
   logoUrl: string;
+  balance?: string;
 };
 
+export type TokenBalance = {
+  [tokenAddress: string]: string;
+};
 export interface TokenInformation {
   chainId: string;
   chainName: string;

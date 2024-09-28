@@ -25,8 +25,7 @@ const Header = () => {
           </div> */}
         </span>
         <p className="text-xs text-gray100">
-          Where everyone can claim any kind of tokens such as community tokens,
-          NFTs, UBI token.
+          Get the tasks done and claim your rewards.
         </p>
       </div>
       <div className="header-right  mt-2 flex justify-center md:justify-start">
