@@ -1,17 +1,17 @@
-import { axiosInstance } from "./base";
+import { serverFetch } from ".";
 
 export async function countUsersAPI() {
-  const response = await axiosInstance.get<{ count: number }>(
-    "/api/auth/user/count/"
-  );
+  const response = (await serverFetch("/api/auth/user/count/")) as {
+    count: number;
+  };
 
-  return response.data.count;
+  return response.count;
 }
 
 export async function countGasClaimedAPI() {
-  const response = await axiosInstance.get<{ count: number }>(
-    "/api/gastap/claims/count/"
-  );
+  const response = (await serverFetch("/api/gastap/claims/count/")) as {
+    count: number;
+  };
 
-  return response.data.count;
+  return response.count;
 }

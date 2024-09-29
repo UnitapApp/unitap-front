@@ -35,6 +35,14 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*", // Matches any API route
+        destination: "http://70.34.214.214:5678/api/:path*/",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

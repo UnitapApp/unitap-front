@@ -14,7 +14,7 @@ export const serverFetch = async (url: string, init?: RequestInit) => {
     // init.headers.Cookie = `backend_service_key=${process.env.BACKEND_SERVICE_KEY};`;
   }
 
-  const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + url, {
+  const res = await fetch(process.env.NEXT_PUBLIC_API_HOST! + url, {
     cache: "no-store",
     ...(init ??
       {

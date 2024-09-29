@@ -8,10 +8,9 @@ import { parseFieldSetting, serverFetch, snakeToCamel } from "@/utils/api";
 import { cookies } from "next/headers";
 
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
-  const settingsRes: { index: string; value: string }[] = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/settings/",
-    { next: { revalidate: 10 } },
-  ).then((res) => res.json());
+  const settingsRes: { index: string; value: string }[] = await serverFetch(
+    "/api/gastap/settings/",
+  );
 
   let authProfile: UserProfile | null = null;
 
