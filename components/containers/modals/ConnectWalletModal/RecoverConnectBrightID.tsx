@@ -55,12 +55,16 @@ const RecoverConnectBrightIDBody: FC<{
     );
   };
 
-  useFastRefresh(() => {
-    if (!keys) return;
-    checkRecoveryStateApi(keys.address, keys.privateKey).then((res) => {
-      console.log(res);
-    });
-  }, []);
+  useFastRefresh(
+    () => {
+      if (!keys) return;
+      checkRecoveryStateApi(keys.address, keys.privateKey).then((res) => {
+        console.log(res);
+      });
+    },
+    [],
+    5000,
+  );
 
   return (
     <div
