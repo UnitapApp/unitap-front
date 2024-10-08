@@ -164,7 +164,7 @@ export const checkRecoveryStateApi = async (
     },
   );
 
-  return response.data.isVerified as boolean;
+  return response.data as { isVerified: boolean; userProfile?: UserProfile };
 };
 export const connectDynamicConnection = async (
   connectionName: string,

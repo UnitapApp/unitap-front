@@ -28,8 +28,8 @@ const RecoverConnectBrightIDBody: FC<{
   const [loading, setLoading] = useState(false);
   const [signedPrivateKey, setSignedPrivateKey] = useState<string | null>(null);
 
-  const [brightIdConnectionError, setBrightIdConnectionError] =
-    useState<APIError | null>(null);
+  const [brightIdConnectedUser, setBrightIdConenctedUser] =
+    useState<UserProfile | null>(null);
 
   const { addConnection } = useSocialACcountContext();
 
@@ -57,12 +57,14 @@ const RecoverConnectBrightIDBody: FC<{
 
   useFastRefresh(
     () => {
-      if (!keys) return;
-      checkRecoveryStateApi(keys.address, keys.privateKey).then((res) => {
-        console.log(res);
+      if (!keys || !signedPrivateKey) return;
+      checkRecoveryStateApi(keys.address, signedPrivateKey).then((res) => {
+        if (res.isVerified) {
+          setBrightIdConenctedUser(res.userProfile);
+        }
       });
     },
-    [],
+    [signedPrivateKey],
     5000,
   );
 
@@ -133,7 +135,7 @@ const RecoverConnectBrightIDBody: FC<{
             cy="12"
             r="10"
             stroke="currentColor"
-            stroke-width="4"
+            strokeWidth="4"
           ></circle>
           <path
             className="opacity-75"
