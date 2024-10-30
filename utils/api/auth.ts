@@ -152,6 +152,17 @@ export const connectGitCoinPassport = async (address: string) => {
   return response.data;
 };
 
+export const connectTelegramAccount = async (
+  data: any
+) => {
+   const response = await axiosInstance.post(
+    "api/telegram/login/callback/",
+    data,
+  );
+
+  return response.data;
+}
+
 export const connectDynamicConnection = async (
   connectionName: string,
   address: string,
