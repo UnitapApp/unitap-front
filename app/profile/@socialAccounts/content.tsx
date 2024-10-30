@@ -69,7 +69,7 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
           icon={"/assets/images/provider-dashboard/requirements/farcaster.svg"}
           isConnected={!!connections["Farcaster"]}
         />
-        <FarcasterAccount
+        <TelegramAccount
           title={"Telegram"}
           icon={"/assets/images/footer/telegram.svg"}
           isConnected={!!connections["Telegram"]}
