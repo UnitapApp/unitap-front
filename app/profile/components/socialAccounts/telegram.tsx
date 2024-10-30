@@ -4,6 +4,7 @@ import Icon from "@/components/ui/Icon";
 import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { connectTelegramAccount } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
+import Script from "next/script";
 import { FC, useEffect, useState } from "react";
 
 export const TelegramAccount: FC<{
@@ -60,14 +61,14 @@ export const TelegramAccount: FC<{
               </button>
             ) : (
               <>
-                <script
+                <Script
                   async
                   src="https://telegram.org/js/telegram-widget.js?22"
                   data-telegram-login="unitapappbot"
                   data-size="medium"
                   data-onauth="onTelegramAuth(user)"
                   data-request-access="write"
-                ></script>
+                ></Script>
                 <script type="text/javascript">
                   {`
                     function onTelegramAuth(user)
