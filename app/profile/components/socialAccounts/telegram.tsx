@@ -6,6 +6,7 @@ import { connectTelegramAccount } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
 import Script from "next/script";
 import { FC, useEffect, useState } from "react";
+import { telegramScriptContent } from "./telegram-script-content";
 
 export const TelegramAccount: FC<{
   title: string;
@@ -61,20 +62,15 @@ export const TelegramAccount: FC<{
               </button>
             ) : (
               <>
-                <Script
-                  async
-                  src="https://telegram.org/js/telegram-widget.js?22"
+                <script
                   data-telegram-login="unitapappbot"
                   data-size="medium"
-                  data-onauth="onTelegramAuth(user)"
+                  data-onauth="onTelegramLogin({...user, userId: user.id})"
                   data-request-access="write"
-                ></Script>
-                <script type="text/javascript">
-                  {`
-                    function onTelegramAuth(user)
-                  {window.onTelegramLogin?.({ ...user, userId: user.id })}
-                  `}
-                </script>
+                  dangerouslySetInnerHTML={{
+                    __html: telegramScriptContent,
+                  }}
+                ></script>
               </>
             )}
           </div>
