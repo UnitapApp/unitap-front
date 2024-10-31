@@ -19,6 +19,7 @@
     "@sentry/nextjs": "7.105.0",
     "@solana/web3.js": "^1.89.2",
     "@tanstack/react-query": "^5.17.12",
+    "@telegram-auth/react": "^1.0.4",
     "@uniswap/sdk-core": "^4.0.9",
     "axios": "^1.7.4",
     "big.js": "^6.2.1",

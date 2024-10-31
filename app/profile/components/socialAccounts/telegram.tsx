@@ -4,9 +4,9 @@ import Icon from "@/components/ui/Icon";
 import { useSocialACcountContext } from "@/context/socialAccountContext";
 import { connectTelegramAccount } from "@/utils/api";
 import { useWalletAccount } from "@/utils/wallet";
+import { LoginButton } from "@telegram-auth/react";
 import Script from "next/script";
 import { FC, useEffect, useState } from "react";
-import { telegramScriptContent } from "./telegram-script-content";
 
 export const TelegramAccount: FC<{
   title: string;
@@ -30,18 +30,6 @@ export const TelegramAccount: FC<{
     });
   };
 
-  useEffect(() => {
-    // @ts-ignore
-    window.onTelegramLogin = (data: any) => {
-      onConnect(data);
-    };
-
-    return () => {
-      // @ts-ignore
-      window.onTelegramLogin = null;
-    };
-  }, []);
-
   return (
     <>
       <div className="rounded-xl border-2 border-gray50 bg-gray40 p-3">
@@ -62,15 +50,15 @@ export const TelegramAccount: FC<{
               </button>
             ) : (
               <>
-                <script
-                  data-telegram-login="unitapappbot"
-                  data-size="medium"
-                  data-onauth="onTelegramLogin({...user, userId: user.id})"
-                  data-request-access="write"
-                  dangerouslySetInnerHTML={{
-                    __html: telegramScriptContent,
+                <LoginButton
+                  botUsername={"unitapappbot"}
+                  onAuthCallback={(data: any) => {
+                    onConnect(data);
                   }}
-                ></script>
+                  showAvatar={true} // true | false
+                  lang="en"
+                  buttonSize="medium"
+                />
               </>
             )}
           </div>
