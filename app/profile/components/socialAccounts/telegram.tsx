@@ -53,7 +53,7 @@ export const TelegramAccount: FC<{
                 <LoginButton
                   botUsername={"unitapappbot"}
                   onAuthCallback={(data: any) => {
-                    onConnect(data);
+                    onConnect({ ...data, userId: data.id });
                   }}
                   showAvatar={true} // true | false
                   lang="en"
