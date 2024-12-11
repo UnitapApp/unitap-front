@@ -63,7 +63,8 @@ const ClaimTokenModalBody = ({
       claimTokenResponse?.state === "Done" ||
       collectedToken?.status === "Verified" ||
       selectedTokenForClaim.isExpired ||
-      method !== "requirements"
+      method !== "requirements" ||
+      collectedToken?.status === "Pending"
     ) {
       setSize("small");
     } else {
