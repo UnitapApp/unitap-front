@@ -210,13 +210,13 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
           shieldRes.result.shieldSignature,
         ] as const;
 
-        const contractGas = await provider.estimateContractGas({
-          abi: unitapEvmTokenTapAbi,
-          account: address,
-          address: contractAddress,
-          functionName: "claimToken",
-          args: contractArgs,
-        });
+        // const contractGas = await provider.estimateContractGas({
+        //   abi: unitapEvmTokenTapAbi,
+        //   account: address,
+        //   address: contractAddress,
+        //   functionName: "claimToken",
+        //   args: contractArgs,
+        // });
 
         const simulateRes = await provider.simulateContract({
           args: contractArgs,
@@ -226,7 +226,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
             contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
               .erc20,
           functionName: "claimToken",
-          gas: contractGas,
+          // gas: contractGas,
         });
 
         const claimRes = await writeContractAsync?.({
@@ -237,7 +237,7 @@ const TokenTapProvider: FC<{ tokens: Token[] } & PropsWithChildren> = ({
             contractAddresses.tokenTap[selectedTokenForClaim.chain.chainId]
               .erc20,
           functionName: "claimToken",
-          gas: contractGas,
+          // gas: contractGas,
         });
 
         if (claimRes) {
