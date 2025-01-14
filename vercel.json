@@ -9,15 +9,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/home/:path*",
-      "destination": "https://dashboard.unitap.app/:path*"
-    },
-    {
-      "source": "/home/:path*",
-      "destination": "https://www.dashboard.unitap.app/:path*"
-    }
   ]
 }
