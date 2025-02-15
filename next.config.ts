@@ -37,7 +37,7 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
 
 // Injected content via Sentry wizard below
 
@@ -53,6 +53,10 @@ module.exports = nextConfig;
 //     silent: true,
 //     org: "unitap",
 //     project: "unitap-front",
+//     // Add the missing VAR_ORIGINAL_PATHNAME variable
+//     env: {
+//       VAR_ORIGINAL_PATHNAME: process.env.VAR_ORIGINAL_PATHNAME || '', // Ensure this is set in your environment
+//     },
 //   },
 //   {
 //     // For all available options, see:

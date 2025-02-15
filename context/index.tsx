@@ -5,7 +5,7 @@ import { UserContextProvider } from "./userProfile";
 import { Settings, UserProfile } from "@/types";
 import WalletProvider from "./walletProvider";
 import { parseFieldSetting, serverFetch, snakeToCamel } from "@/utils/api";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   const settingsRes: { index: string; value: string }[] = await fetch(
@@ -15,17 +15,17 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
 
   let authProfile: UserProfile | null = null;
 
-  const cookieStorage = cookies();
+  // const cookieStorage = cookies();
 
-  try {
-    if (cookieStorage.has("userToken"))
-      authProfile = await serverFetch(`/api/auth/user/info/`, {
-        headers: {
-          Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
-        },
-        cache: "no-store",
-      });
-  } catch {}
+  // try {
+  //   if (cookieStorage.has("userToken"))
+  //     authProfile = await serverFetch(`/api/auth/user/info/`, {
+  //       headers: {
+  //         Authorization: `Token ${cookieStorage.get("userToken")?.value}`,
+  //       },
+  //       cache: "no-store",
+  //     });
+  // } catch {}
 
   const settings: Settings = settingsRes.reduce((prev, curr) => {
     (prev as any)[snakeToCamel(curr.index)] = parseFieldSetting(curr.value);

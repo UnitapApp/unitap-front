@@ -40,7 +40,7 @@ export function formatChainId(chainId: string) {
 }
 
 export * from "./time";
-export * from "./errorHandler"
+export * from "./errorHandler";
 export * from "./numbers";
 
 export const uppercaseFirstLetter = (str: string): string => {
@@ -58,4 +58,8 @@ export const replacePlaceholders = (
   return input.replace(/\${(.*?)}/g, (match, key) => {
     return values[key.trim()] || match;
   });
+};
+
+export const cn = (...classes: (string | undefined | null)[]) => {
+  return classes.filter(Boolean).join(" ");
 };

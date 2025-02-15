@@ -25,6 +25,8 @@ const config: Config = {
         "2xs": "0.625rem",
       },
       colors: {
+        "landing-primary": "#FCB2FF",
+        "landing-secondary": "#FDFFC4",
         primary: "#EF476F",
         secondary: "#F59569",
         input: "#EFF3F8",
@@ -69,7 +71,10 @@ const config: Config = {
         warn: "#F16E35",
         warning2: "#877A74",
       },
-
+      boxShadow: {
+        "primary-button":
+          "4px 6px 0px 0px #000000, 0px 4px 0px 0px #FFFFFF inset",
+      },
       borderWidth: {
         3: "3px",
       },

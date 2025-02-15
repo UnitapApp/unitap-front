@@ -39,17 +39,22 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
+  const initialState = cookieToInitialState(config, (await headers()).get("cookie"));
 
   return (
-    <html lang="en" dir="ltr" className="dark">
-      <body className={`dark:bg-gray10 dark:text-white ${notoSansFont}`}>
+    <html lang="en" dir="ltr" className="">
+      <body
+        className={`bg-white dark:bg-gray10 dark:text-white ${notoSansFont}`}
+      >
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
-              <div id="app">
+              <div
+                id="app"
+                className="m-auto min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl"
+              >
                 <Header />
-                <main className="m-auto flex min-h-[calc(100vh_-_130px)] w-full max-w-screen-2xl flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
+                <main className="flex flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
                   {children}
                 </main>
 
