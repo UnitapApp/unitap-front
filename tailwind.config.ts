@@ -27,6 +27,8 @@ const config: Config = {
       colors: {
         "landing-primary": "#FCB2FF",
         "landing-secondary": "#FDFFC4",
+        "raffle-card": "#F7FFEF",
+        "black-0": "#000",
         primary: "#EF476F",
         secondary: "#F59569",
         input: "#EFF3F8",
