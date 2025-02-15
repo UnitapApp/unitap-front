@@ -32,30 +32,23 @@ export const UserAuthStatus = () => {
   const { userProfile } = useUserProfileContext();
 
   return (
-    <div ref={divRef} className="ml-5 md:relative">
+    <div ref={divRef} className="ml-1 md:relative">
       <div className={`ml-5 mr-3 rounded-lg p-[1px]`} id="profile-dropdown">
-        <LandingButton className="bg-landing-primary flex h-9 cursor-pointer items-center justify-between rounded-lg">
-          <div
+        <div className="flex h-9 cursor-pointer items-center justify-between rounded-lg">
+          <LandingButton
             onClick={() => {
               if (!userProfile) return;
               setDropDownActive(!dropDownActive);
             }}
-            className="relative z-20 flex h-9 cursor-pointer items-center justify-between rounded-lg bg-gray40 pl-2 pr-0.5"
+            className="bg-landing-primary relative z-20 flex cursor-pointer items-center justify-between px-5 py-3 text-base"
           >
-            <span className="ml-2 hidden text-sm md:block">
-              @ {userProfile?.username}
-            </span>
-
-            <span className="ml-8 mr-5 hidden text-gray90 md:block">
-              level: ?{" "}
-            </span>
             <RenderNavbarWalletAddress />
-          </div>
+          </LandingButton>
 
           {dropDownActive && (
             <ProfileDropdown setDropDownActive={setDropDownActive} />
           )}
-        </LandingButton>
+        </div>
       </div>
     </div>
   );
@@ -206,16 +199,7 @@ export const RenderNavbarWalletAddress = () => {
     ? connection.address
     : EVMWallet?.address;
 
-  if (!userProfile || !address)
-    return (
-      <button
-        data-testid="wallet-connect"
-        className="btn btn--sm btn--primary h-[28px] !w-36 !py-0 align-baseline"
-        onClick={() => setIsWalletPromptOpen(true)}
-      >
-        Connect Wallet
-      </button>
-    );
+  if (!userProfile || !address) return <p>Connect Wallet</p>;
 
   return (
     <>

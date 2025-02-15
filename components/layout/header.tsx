@@ -2,11 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
+// import { Kodchasan } from "next/font/google";
 
-import RenderNavbarDropdown from "./dropdown";
 import dynamic from "next/dynamic";
+import LandingButton from "../containers/landing/button";
 
 const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
+
+// const nunitoFont = Kodchasan({
+//   weight: ["600"],
+//   display: "swap",
+//   adjustFontFallback: false,
+//   subsets: ["latin"],
+// });
 
 const Header = () => {
   return (
@@ -22,10 +30,10 @@ const Header = () => {
 
       <div className="hidden flex-1 md:flex"></div>
 
+      <LandingButton className="bg-landing-secondary relative z-20 flex px-5 py-3 text-base">
+        Incentive center
+      </LandingButton>
       <UserAuthStatus />
-      <div className="hidden md:flex">
-        <RenderNavbarDropdown />
-      </div>
     </header>
   );
 };

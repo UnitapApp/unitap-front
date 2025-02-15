@@ -21,7 +21,11 @@ export default function LandingButton({
   return (
     <button
       // before:absolute before:inset-0 before:rounded-[36px]
-      className={cn("shadow-primary-button ", nunitoFont.className, className)}
+      className={cn(
+        "shadow-primary-button rounded-3xl border font-semibold uppercase",
+        nunitoFont.className,
+        className,
+      )}
       {...props}
     >
       {children}

@@ -1,4 +1,5 @@
 import { Chain } from "@/types";
+import { twMerge } from "tailwind-merge";
 
 export const EmptyCallback = () => {};
 export const NullCallback = () => null;
@@ -61,5 +62,5 @@ export const replacePlaceholders = (
 };
 
 export const cn = (...classes: (string | undefined | null)[]) => {
-  return classes.filter(Boolean).join(" ");
+  return twMerge(classes.filter(Boolean));
 };

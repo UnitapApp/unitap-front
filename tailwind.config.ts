@@ -73,7 +73,7 @@ const config: Config = {
       },
       boxShadow: {
         "primary-button":
-          "4px 6px 0px 0px #000000, 0px 4px 0px 0px #FFFFFF inset",
+          "4px 6px 0px 0px #000000, 0px 2px 0px 0px #FFFFFF inset",
       },
       borderWidth: {
         3: "3px",
