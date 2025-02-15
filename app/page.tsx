@@ -3,13 +3,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { CiSearch } from "react-icons/ci";
+import { Token } from "@/types";
+import { serverFetch } from "@/utils/api";
+import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
+import { TaskProvider } from "@/context/TaskProvider";
+import TasksList from "@/components/containers/tasks/tasks-list";
 
 export default async function Home() {
+  const tokens: Token[] = await serverFetch(
+    "/api/tokentap/token-distribution-list/",
+  );
+  const raffles = await getRafflesServerSideListAPI();
+
   return (
-    <div>
+    <TaskProvider raffles={raffles} tokens={tokens}>
       <HeroSection />
       <Searchbar />
-    </div>
+
+      <TasksList />
+    </TaskProvider>
   );
 }
 
