@@ -3,6 +3,7 @@ import LearnTapLanding from "@/components/containers/landing/learnTap";
 import PrizeTapLanding from "@/components/containers/landing/prizeTap";
 import LandingStats from "@/components/containers/landing/stats";
 import TokenTapLanding from "@/components/containers/landing/tokenTap";
+import UnitapPassWrapper from "@/components/containers/landing/unitapPassWrapper";
 import OnBoardProcess from "@/components/containers/onBoardProcess";
 
 import RoutePath from "@/utils/routes";
@@ -10,11 +11,6 @@ import { getFaucetListServer } from "@/utils/serverApis";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-
-const UnitapPass = dynamic(
-  () => import("@/components/containers/landing/unitapPass"),
-  { ssr: false },
-);
 
 export default async function Home() {
   const chains = await getFaucetListServer();
@@ -37,7 +33,7 @@ export default async function Home() {
         <h4 className={"text-gradient-primary"}>The web3 incentive layer</h4>
       </section>
 
-      <UnitapPass />
+      <UnitapPassWrapper />
 
       <section
         id="home-taps"
