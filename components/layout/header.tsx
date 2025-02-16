@@ -30,7 +30,7 @@ const Header = () => {
 
       <div className="hidden flex-1 md:flex"></div>
 
-      <LandingButton className="bg-landing-secondary relative z-20 flex px-5 py-3 text-base">
+      <LandingButton className="relative z-20 flex bg-landing-secondary px-5 py-3 text-base uppercase">
         Incentive center
       </LandingButton>
       <UserAuthStatus />

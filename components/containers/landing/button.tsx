@@ -22,7 +22,7 @@ export default function LandingButton({
     <button
       // before:absolute before:inset-0 before:rounded-[36px]
       className={cn(
-        "shadow-primary-button rounded-3xl border font-semibold uppercase",
+        "rounded-3xl border font-semibold shadow-primary-button transition-opacity hover:opacity-80",
         nunitoFont.className,
         className,
       )}

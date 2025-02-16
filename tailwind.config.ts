@@ -27,6 +27,10 @@ const config: Config = {
       colors: {
         "landing-primary": "#FCB2FF",
         "landing-secondary": "#FDFFC4",
+        "landing-tertiary": "#EBEAFF",
+        "landing-raffle": "#FFC4C4",
+        "landing-token": "#CCFFC4",
+        "gray-full": "#F8F8F8",
         "raffle-card": "#F7FFEF",
         "black-0": "#000",
         primary: "#EF476F",
@@ -76,6 +80,8 @@ const config: Config = {
       boxShadow: {
         "primary-button":
           "4px 6px 0px 0px #000000, 0px 2px 0px 0px #FFFFFF inset",
+        "primary-button-sm": "2px 3px 0px 0px #000000",
+        "card-image": "4px 6px 0px 0px #000000",
       },
       borderWidth: {
         3: "3px",

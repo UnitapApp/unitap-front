@@ -1,8 +1,8 @@
 "use client";
 
 import { useTasks } from "@/context/TaskProvider";
-import TokenCard from "../token-tap/TokenCard";
 import PrizeCard from "@/app/prizetap/components/PrizeCard";
+import TokenCardNew from "../token-tap/TokenCardNew";
 
 export default function TasksList() {
   const { tasks } = useTasks();
@@ -14,7 +14,7 @@ export default function TasksList() {
           return <PrizeCard key={key} prize={task} />;
         }
 
-        return <TokenCard key={key} token={task} />;
+        return <TokenCardNew key={key} token={task} />;
       })}
     </div>
   );

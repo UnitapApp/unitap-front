@@ -40,7 +40,7 @@ export const UserAuthStatus = () => {
               if (!userProfile) return;
               setDropDownActive(!dropDownActive);
             }}
-            className="bg-landing-primary relative z-20 flex cursor-pointer items-center justify-between px-5 py-3 text-base"
+            className="relative z-20 flex cursor-pointer items-center justify-between bg-landing-primary px-5 py-3 text-base uppercase"
           >
             <RenderNavbarWalletAddress />
           </LandingButton>
@@ -119,7 +119,7 @@ export const ProfileDropdown: FC<{
 
   return (
     <div className="absolute left-5 top-full z-20 mt-2 cursor-default rounded-xl bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% bg-cover p-[2px] text-white">
-      <div className="h-[260px] w-full max-w-full rounded-xl  bg-gray30 md:w-[385px]">
+      <div className="h-[260px] w-full max-w-full rounded-xl bg-gray30 md:w-[385px]">
         <div
           className={`rounded-t-xl p-3 ${Styles.dropdownHeader} flex items-center justify-between text-sm font-normal`}
         >

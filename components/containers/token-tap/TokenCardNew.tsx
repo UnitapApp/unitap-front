@@ -1,13 +1,13 @@
 import LandingButton from "@/components/containers/landing/button";
-import { Permission, Prize } from "@/types";
+import { Permission, Prize, Token } from "@/types";
 import { FC, PropsWithChildren } from "react";
 import { Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { fromWei } from "@/utils";
 import Markdown from "react-markdown";
 import { IoShareSocialOutline } from "react-icons/io5";
 
-export type PrizeCardProps = {
-  prize: Prize;
+export type TokenCardProps = {
+  token: Token;
 };
 
 const nunitoSans = Nunito_Sans({
@@ -22,20 +22,20 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
-export default function PrizeCard({ prize }: PrizeCardProps) {
+export default function TokenCardNew({ token }: TokenCardProps) {
   return (
     <article
-      className={`${nunitoSans.className} bg-raffle-card overflow-hidden rounded-3xl border shadow-primary-button`}
+      className={`${nunitoSans.className} overflow-hidden rounded-3xl border bg-white shadow-primary-button`}
     >
       <div className="bg-circle-dots flex flex-wrap items-stretch gap-y-2 p-[2px]">
-        <PrizeContent prize={prize} />
-        <PrizeDetails prize={prize} />
+        <TokenContent token={token} />
+        <TokenDetails token={token} />
       </div>
     </article>
   );
 }
 
-export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
+export const TokenContent: FC<{ token: Token }> = ({ token }) => {
   return (
     <div
       className={`flex flex-1 flex-wrap items-start gap-3 px-4 py-3 sm:flex-nowrap ${nunitoSans.className}`}
@@ -48,7 +48,7 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
               // prize.image ??
               "/assets/images/prize-tap/default-prize.png"
             }
-            alt={prize.name}
+            alt={token.name}
             onError={(e) => {
               e.currentTarget.src =
                 "/assets/images/prize-tap/default-prize.png";
@@ -63,12 +63,12 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
       <div className="ml-5 mt-3">
         <div className="flex items-center gap-3">
           <h1 className={`${plusJakartaSans.className} font-bold`}>
-            {prize.name}
+            {token.name}
           </h1>
           <LandingButton
             className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal`}
           >
-            <small className="!font-thin">By</small> {prize.creatorName}
+            <small className="!font-thin">By</small> {token.distributor}
           </LandingButton>
           <LandingButton
             className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
@@ -78,15 +78,15 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
           </LandingButton>
         </div>
         <div className="mt-5">
-          <Markdown className="">{prize.description}</Markdown>
+          <Markdown className="">{token.notes}</Markdown>
         </div>
-        <PrizeTasks constraints={prize.constraints} />
+        <TokenTasks constraints={token.constraints} />
       </div>
     </div>
   );
 };
 
-const PrizeTasks: FC<{ constraints: Permission[] }> = ({ constraints }) => {
+const TokenTasks: FC<{ constraints: Permission[] }> = ({ constraints }) => {
   if (!constraints.length) return null;
 
   return (
@@ -107,7 +107,7 @@ const PrizeTasks: FC<{ constraints: Permission[] }> = ({ constraints }) => {
   );
 };
 
-const PrizeLabelValue: FC<PropsWithChildren & { label: string }> = ({
+const TokenLabelValue: FC<PropsWithChildren & { label: string }> = ({
   label,
   children,
 }) => {
@@ -119,24 +119,23 @@ const PrizeLabelValue: FC<PropsWithChildren & { label: string }> = ({
   );
 };
 
-export const PrizeDetails: FC<{ prize: Prize }> = ({ prize }) => {
+export const TokenDetails: FC<{ token: Token }> = ({ token }) => {
   return (
-    <div className="relative flex w-72 flex-col gap-4 overflow-hidden rounded-3xl bg-[#000] p-5 text-white">
-      <div className="bg-landing-raffle text-black-0 absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] py-1 text-center font-bold">
-        Raffle
+    <div className="bg-gray-full text-black-0 relative flex w-72 flex-col gap-4 overflow-hidden rounded-3xl p-5">
+      <div className="bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] py-1 text-center font-bold">
+        FCFS
       </div>
-      <PrizeLabelValue label="Total Reward">
-        <strong>{fromWei(prize.prizeAmount, prize.decimals)}</strong> $
-        {prize.prizeSymbol}
-      </PrizeLabelValue>
-      <PrizeLabelValue label="Number Of Winners">
-        <strong>{prize.winnersCount}</strong> Winners
-      </PrizeLabelValue>
-      <PrizeLabelValue label="Number Of Enrollment">
-        <strong>{prize.numberOfEntries}</strong> Enrolled
-      </PrizeLabelValue>
+      <TokenLabelValue label="Reward Per User">
+        <strong>
+          {fromWei(token.amount, token.decimals ?? token.chain.decimals)}
+        </strong>{" "}
+        ${token.token}
+      </TokenLabelValue>
+      <TokenLabelValue label="Rewarded Users">
+        <strong>{token.maxNumberOfClaims}</strong> Winners
+      </TokenLabelValue>
 
-      <LandingButton className="text-black-0 mt-2 bg-landing-primary px-5 py-3">
+      <LandingButton className="text-black-0 mt-auto bg-landing-primary px-5 py-3">
         CHECK WINNERS
       </LandingButton>
     </div>
