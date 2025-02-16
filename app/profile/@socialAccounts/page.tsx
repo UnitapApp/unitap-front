@@ -6,7 +6,7 @@ import { FC, PropsWithChildren } from "react";
 import SocialAccountContent from "./content";
 
 const SocialAccountsLayout: FC<PropsWithChildren> = async () => {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
 
   let connections: UserConnection;
 

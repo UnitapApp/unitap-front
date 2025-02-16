@@ -6,8 +6,14 @@ import { FC, PropsWithChildren } from "react";
 
 const ProviderDashboardDetailsLayout: FC<
   PropsWithChildren & { params: { id: string } }
-> = async ({ children, params }) => {
-  const cookieStore = cookies();
+> = async props => {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
+  const cookieStore = await cookies();
 
   const distributions = await getUserDistributionListServerSide(
     cookieStore.get("userToken")!.value,
