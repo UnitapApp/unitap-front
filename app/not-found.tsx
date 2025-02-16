@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -15,12 +16,12 @@ export default function NotFound() {
         The page you are looking for cannot be found.
       </p>
       <div className="mt-5">
-        <a href="/">
+        <Link href="/">
           <button className="btn btn--sm btn--primary-light font-semibold tracking-wide">
             Back to Home
           </button>
-        </a>
+        </Link>
       </div>
     </div>
   );
-};
+}
