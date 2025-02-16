@@ -13,7 +13,7 @@ const UnknownWalletBody: FC<{
 }> = ({ setWalletState }) => {
   const { address } = useWalletAccount();
 
-  const previousAddressRef = useRef<Address | null>();
+  const previousAddressRef = useRef<Address | null>(null);
 
   useEffect(() => {
     if (!address) return;
@@ -30,8 +30,8 @@ const UnknownWalletBody: FC<{
         alt="unitap space"
       />
 
-      <p className="font-semibold mt-3">Are you a new user?</p>
-      <p className="mt-5 text-gray100 text-sm leading-6">
+      <p className="mt-3 font-semibold">Are you a new user?</p>
+      <p className="mt-5 text-sm leading-6 text-gray100">
         If you already have a <span className="text-blue-200">Unitap </span>
         account, you can add this wallet{" "}
         <span className="underline">({shortenAddress(address)})</span> to your
@@ -40,13 +40,13 @@ const UnknownWalletBody: FC<{
 
       <ClaimButton
         onClick={() => setWalletState(WalletState.SignMessage)}
-        className="!w-full mb-5 mt-5 before:!inset-[1px]"
+        className="mb-5 mt-5 !w-full before:!inset-[1px]"
       >
-        <p className="font-bold text-base">Register as New User</p>
+        <p className="text-base font-bold">Register as New User</p>
       </ClaimButton>
 
       <p
-        className="underline mb-2 cursor-pointer"
+        className="mb-2 cursor-pointer underline"
         onClick={() => setWalletState(WalletState.AddNewWallet)}
       >
         Add Wallet to an Existing Account
