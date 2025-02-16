@@ -5,13 +5,11 @@ import { redirect } from "next/navigation";
 import { FC, PropsWithChildren } from "react";
 
 const ProviderDashboardDetailsLayout: FC<
-  PropsWithChildren & { params: { id: string } }
-> = async props => {
+  PropsWithChildren & { params: Promise<{ id: string }> }
+> = async (props) => {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   const cookieStore = await cookies();
 
