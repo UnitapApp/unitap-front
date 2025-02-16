@@ -54,7 +54,7 @@ const Footer: FC = () => {
           <Link href="/github">Github</Link>
         </div>
         <div className="flex flex-col gap-y-6">
-          <Link href="/faq">FAQ's</Link>
+          <Link href="/faq">FAQ{"'"}s</Link>
           <Link href="/about">Privacy & Policy</Link>
           <Link href="/about">Terms Of Service</Link>
         </div>
