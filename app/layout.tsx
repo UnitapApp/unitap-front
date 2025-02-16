@@ -61,9 +61,8 @@ export default async function RootLayout({
                 <main className="flex flex-col px-4 py-14 sm:px-6 lg:px-8 xl:px-40 xl1440:px-60">
                   {children}
                 </main>
-
-                <Footer />
               </div>
+              <Footer />
 
               <ConnectBrightIdModal />
               <BrightConnectionModal />

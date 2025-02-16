@@ -41,7 +41,7 @@ const HeroSection = () => {
         height={62}
       />
       <div
-        className={`${plusJakartaSans.className} mt-10 flex flex-col gap-5 text-[58px] font-[200]`}
+        className={`${plusJakartaSans.className} mt-10 flex flex-col gap-y-5 text-xl font-[200] md:gap-y-16 md:text-[58px]`}
       >
         <p>
           Complete <strong className="font-extrabold">Tasks,</strong>

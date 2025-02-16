@@ -121,8 +121,8 @@ const TokenLabelValue: FC<PropsWithChildren & { label: string }> = ({
 
 export const TokenDetails: FC<{ token: Token }> = ({ token }) => {
   return (
-    <div className="bg-gray-full text-black-0 relative flex w-72 flex-col gap-4 overflow-hidden rounded-3xl p-5">
-      <div className="bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] py-1 text-center font-bold">
+    <div className="bg-gray-full text-black-0 relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl p-5 md:w-72">
+      <div className="bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] border-b-2 border-t-2 py-1 text-center font-bold">
         FCFS
       </div>
       <TokenLabelValue label="Reward Per User">
