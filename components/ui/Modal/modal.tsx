@@ -52,10 +52,10 @@ const Modal = ({
           <ModalContent
             className={`${
               className === "provider-dashboard__modal"
-                ? "bg-gray20"
-                : "bg-gray30"
-            } rounded-2xl border-2 border-gray80 ${
-              errorSource && getError(errorSource) ? "!border-error " : ""
+                ? "bg-stone-300"
+                : "bg-stone-200"
+            } rounded-2xl border-2 border-stone-400 ${
+              errorSource && getError(errorSource) ? "!border-error" : ""
             } ${classNames?.content ?? ""}`}
             onClick={(e) => e.stopPropagation()}
             data-testid="modal-content"
@@ -63,13 +63,13 @@ const Modal = ({
           >
             <div className="flex items-center">
               {titleLeft && (
-                <p className="relative z-10 text-left text-xl text-white">
+                <p className="relative z-10 text-left text-xl text-black-0">
                   {" "}
                   {titleLeft}{" "}
                 </p>
               )}
               {title && (
-                <p className="modal-title relative z-10 ml-auto text-center text-sm font-bold text-white">
+                <p className="modal-title relative z-10 ml-auto text-center text-sm font-bold text-black-0">
                   {" "}
                   {title}{" "}
                 </p>
@@ -85,8 +85,8 @@ const Modal = ({
             <ModalChildrenWrapper
               className={`${
                 className === "provider-dashboard__modal"
-                  ? "bg-gray20"
-                  : "bg-gray30"
+                  ? "bg-stone-300"
+                  : "bg-stone-200"
               } styled-scroll max-h-[70vh] overflow-auto !rounded-none ${bodyClassName}`}
               size={size}
             >

@@ -199,7 +199,8 @@ export const RenderNavbarWalletAddress = () => {
     ? connection.address
     : EVMWallet?.address;
 
-  if (!userProfile || !address) return <p>Connect Wallet</p>;
+  if (!userProfile || !address)
+    return <p onClick={() => setIsWalletPromptOpen(true)}>Connect Wallet</p>;
 
   return (
     <>
