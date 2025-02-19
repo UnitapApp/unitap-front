@@ -3,7 +3,7 @@
 import { FC, useRef, useState } from "react";
 import { useOutsideClick } from "@/utils/hooks/dom";
 import { useUserProfileContext } from "@/context/userProfile";
-import { useUserWalletProvider, useWalletConnection } from "@/utils/wallet";
+import { useUserWalletProvider } from "@/utils/wallet";
 import { shortenAddress } from "@/utils";
 import Image from "next/image";
 import { useGlobalContext } from "@/context/globalProvider";
@@ -76,13 +76,13 @@ const WalletItem = ({
   return (
     <div
       className={
-        "my-2 flex items-center text-sm hover:text-white " +
-        (isActive ? "text-white" : "text-gray90")
+        "my-2 flex items-center text-sm hover:text-stone-900 dark:hover:text-white " +
+        (isActive ? "text-stone-900 dark:text-white" : "text-stone-500 dark:text-gray90")
       }
     >
       <span
         className={
-          (isActive ? "bg-white" : "bg-gray90") + " h-2 w-2 rounded-full"
+          (isActive ? "bg-stone-900 dark:bg-white" : "bg-stone-500 dark:bg-gray90") + " h-2 w-2 rounded-full"
         }
       />
       <span className={`ml-3 font-normal ${NotoSansMono.className}`}>
@@ -90,7 +90,7 @@ const WalletItem = ({
       </span>
       <div className="relative">
         {copyMessage && (
-          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 bg-gray10 py-2 text-center text-xs text-gray100">
+          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 dark:bg-gray10 py-2 text-center text-xs text-gray100">
             {copyMessage}
           </div>
         )}
@@ -118,8 +118,8 @@ export const ProfileDropdown: FC<{
     useWalletManagementContext();
 
   return (
-    <div className="absolute left-5 top-full z-20 mt-2 cursor-default rounded-xl bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% bg-cover p-[2px] text-white">
-      <div className="h-[260px] w-full max-w-full rounded-xl bg-gray30 md:w-[385px]">
+    <div className="absolute right-5 top-full z-20 mt-4 cursor-default rounded-xl bg-gradient-to-l from-[#de68d8] via-[#8c91c7] to-[#243a3c] to-70% bg-cover p-[2px] text-white">
+      <div className="h-[260px] w-full max-w-full rounded-xl bg-stone-100 dark:bg-gray30 md:w-[385px]">
         <div
           className={`rounded-t-xl p-3 ${Styles.dropdownHeader} flex items-center justify-between text-sm font-normal`}
         >
@@ -204,13 +204,12 @@ export const RenderNavbarWalletAddress = () => {
 
   return (
     <>
-      <button
+      <span className="mr-5">
+        {userProfile.username}
+      </span>
+      <span
         data-testid="wallet-address"
-        className={`btn ${
-          NotoSansMono.className
-        } btn--sm btn--address font-normal tracking-wider ${
-          connection.isConnected && "btn--address--active"
-        } ml-0 h-[28px] !w-36 !py-0 align-baseline md:ml-3`}
+        className="text-sm"
         onClick={(e) => {
           if (connection.isConnected) return;
           e.stopPropagation();
@@ -218,7 +217,7 @@ export const RenderNavbarWalletAddress = () => {
         }}
       >
         {shortenAddress(address)}
-      </button>
+      </span>
     </>
   );
 };

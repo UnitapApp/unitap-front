@@ -22,7 +22,7 @@ export const FooterItem: FC<PropsWithChildren & { href: string }> = ({
   return (
     <Link
       target="_blank"
-      className="grid h-11 w-11 place-items-center rounded-full bg-stone-700 p-1"
+      className="grid h-11 w-11 place-items-center rounded-full bg-gray-secondary p-1"
       href={href}
     >
       {children}
@@ -62,18 +62,18 @@ const Footer: FC = () => {
       <div className="col-span-3">
         <hr className="my-10 border border-stone-900" />
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-4">
           <FooterItem href="https://t.me/unitap_app">
-            <BsTelegram size={25} />
+            <BsTelegram size={23} />
           </FooterItem>
           <FooterItem href="https://twitter.com/unitap_app">
-            <BsTwitterX size={25} />
+            <BsTwitterX size={20} />
           </FooterItem>
           <FooterItem href="https://github.com/UnitapApp">
-            <DiGithubAlt size={25} />
+            <DiGithubAlt size={23} />
           </FooterItem>
           <FooterItem href="https://www.youtube.com/@UnitapApp?sub_confirmation=1">
-            <BsYoutube size={25} />
+            <BsYoutube size={23} />
           </FooterItem>
           <p className="ml-auto text-sm">
             Copyright {new Date().getFullYear()}. All rights reserved.

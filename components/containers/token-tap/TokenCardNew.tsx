@@ -5,6 +5,7 @@ import { Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { fromWei } from "@/utils";
 import Markdown from "react-markdown";
 import { IoShareSocialOutline } from "react-icons/io5";
+import Link from "next/link";
 
 export type TokenCardProps = {
   token: Token;
@@ -34,6 +35,29 @@ export default function TokenCardNew({ token }: TokenCardProps) {
     </article>
   );
 }
+
+
+export const ShareButton: FC<{ token: Token }> = ({ token }) => {
+  const onShare = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        `I've just claimed ${fromWei(token.amount, token.decimals ?? token.chain.decimals)} ${token?.token} from @Unitap_app 🔥\nClaim yours:`,
+      )}&url=${encodeURIComponent(
+        "dashboard.unitap.app/?hc=" + encodeURIComponent(token.token),
+      )}`,
+    );
+  };
+
+  return (
+    <LandingButton
+      onClick={onShare}
+      className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
+    >
+      <IoShareSocialOutline size={20} />
+      Share
+    </LandingButton>
+  );
+};
 
 export const TokenContent: FC<{ token: Token }> = ({ token }) => {
   return (
@@ -65,17 +89,14 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
           <h1 className={`${plusJakartaSans.className} font-bold`}>
             {token.name}
           </h1>
-          <LandingButton
-            className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal`}
-          >
-            <small className="!font-thin">By</small> {token.distributor}
-          </LandingButton>
-          <LandingButton
-            className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
-          >
-            <IoShareSocialOutline size={20} />
-            Share
-          </LandingButton>
+          <Link href={token.distributorUrl ?? "#"} target="_blank">
+            <LandingButton
+              className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal whitespace-nowrap`}
+            >
+              <small className="!font-thin">By</small> {token.distributor}
+            </LandingButton>
+          </Link>
+          <ShareButton token={token} />
         </div>
         <div className="mt-5">
           <Markdown className="">{token.notes}</Markdown>

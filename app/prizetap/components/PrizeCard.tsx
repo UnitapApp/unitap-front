@@ -5,6 +5,7 @@ import { Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { fromWei } from "@/utils";
 import Markdown from "react-markdown";
 import { IoShareSocialOutline } from "react-icons/io5";
+import Link from "next/link";
 
 export type PrizeCardProps = {
   prize: Prize;
@@ -27,13 +28,36 @@ export default function PrizeCard({ prize }: PrizeCardProps) {
     <article
       className={`${nunitoSans.className} bg-raffle-card overflow-hidden rounded-3xl border shadow-primary-button`}
     >
-      <div className="bg-circle-dots flex flex-wrap items-stretch gap-y-2 p-[2px]">
+      <div className="bg-circle-dots flex md:flex-nowrap flex-wrap items-stretch gap-y-2 p-[2px]">
         <PrizeContent prize={prize} />
         <PrizeDetails prize={prize} />
       </div>
     </article>
   );
 }
+
+export const ShareButton: FC<{ prize: Prize }> = ({ prize }) => {
+  const onShare = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        `I've just claimed ${fromWei(prize.prizeAmount, prize.decimals)} ${prize?.prizeSymbol} from @Unitap_app 🔥\nClaim yours:`,
+      )}&url=${encodeURIComponent(
+        "dashboard.unitap.app/?hc=" + encodeURIComponent(prize.name),
+      )}`,
+    );
+  };
+
+  return (
+    <LandingButton
+      onClick={onShare}
+      className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
+    >
+      <IoShareSocialOutline size={20} />
+      Share
+    </LandingButton>
+  );
+};
+
 
 export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
   return (
@@ -61,24 +85,21 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
       </div>
 
       <div className="ml-5 mt-3">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className={`${plusJakartaSans.className} font-bold`}>
             {prize.name}
           </h1>
-          <LandingButton
-            className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal`}
-          >
-            <small className="!font-thin">By</small> {prize.creatorName}
-          </LandingButton>
-          <LandingButton
-            className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
-          >
-            <IoShareSocialOutline size={20} />
-            Share
-          </LandingButton>
+          <Link href={prize.creatorUrl ?? "#"} target="_blank">
+            <LandingButton
+              className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal whitespace-nowrap`}
+            >
+              <small className="!font-thin">By</small> {prize.creatorName}
+            </LandingButton>
+          </Link>
+          <ShareButton prize={prize} />
         </div>
         <div className="mt-5">
-          <Markdown className="">{prize.description}</Markdown>
+          <Markdown className="markdown">{prize.description}</Markdown>
         </div>
         <PrizeTasks constraints={prize.constraints} />
       </div>

@@ -6,8 +6,9 @@ import { CiSearch } from "react-icons/ci";
 import { Token } from "@/types";
 import { serverFetch } from "@/utils/api";
 import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
-import { TaskProvider } from "@/context/TaskProvider";
+import { TaskProvider, useTasks } from "@/context/TaskProvider";
 import TasksList from "@/components/containers/tasks/tasks-list";
+import { Searchbar } from "./_components/searchbar";
 
 export default async function Home() {
   const tokens: Token[] = await serverFetch(
@@ -54,25 +55,6 @@ const HeroSection = () => {
         </p>
       </div>
     </section>
-  );
-};
-
-const Searchbar = () => {
-  return (
-    <div className="mt-28 flex h-20 items-center gap-2 rounded-full border px-5 py-3 shadow-primary-button">
-      <CiSearch size={30} className="text-gray80" />
-      <input
-        type="text"
-        className="h-full w-full border-none bg-transparent outline-none ring-0 placeholder:text-stone-500"
-        placeholder="You Can Search..."
-      />
-      <div className="flex items-center gap-4 text-[#000]">
-        <button className="rounded-full px-4 py-1 font-semibold">All</button>
-        <button className="rounded-full px-4 py-1 font-semibold">Raffle</button>
-        <button className="rounded-full px-4 py-1 font-semibold">FCFS</button>
-      </div>
-      <hr className="h-6 border border-stone-300" />
-    </div>
   );
 };
 

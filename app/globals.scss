@@ -114,3 +114,12 @@ body::after {
   background-size: 10px 10px;
   background-repeat: repeat;
 }
+
+.styled-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f0f0f0;
+}
+
+.styled-scroll::-webkit-scrollbar {
+  width: 8px;
+}

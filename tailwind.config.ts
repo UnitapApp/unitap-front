@@ -33,6 +33,7 @@ const config: Config = {
         "gray-full": "#F8F8F8",
         "raffle-card": "#F7FFEF",
         "black-0": "#000",
+        "gray-secondary": "#D9D9D926",
         primary: "#EF476F",
         secondary: "#F59569",
         input: "#EFF3F8",
