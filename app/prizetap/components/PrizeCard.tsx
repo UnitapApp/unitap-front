@@ -6,6 +6,7 @@ import { fromWei } from "@/utils";
 import Markdown from "react-markdown";
 import { IoShareSocialOutline } from "react-icons/io5";
 import Link from "next/link";
+import { usePrizeTapContext } from "@/context/prizeTapProvider";
 
 export type PrizeCardProps = {
   prize: Prize;
@@ -141,6 +142,7 @@ const PrizeLabelValue: FC<PropsWithChildren & { label: string }> = ({
 };
 
 export const PrizeDetails: FC<{ prize: Prize }> = ({ prize }) => {
+  const { openEnrollModal } = usePrizeTapContext()
   return (
     <div className="relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl bg-[#000] p-5 text-white md:w-72">
       <div className="bg-landing-raffle text-black-0 absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] py-1 text-center font-bold">
@@ -157,7 +159,7 @@ export const PrizeDetails: FC<{ prize: Prize }> = ({ prize }) => {
         <strong>{prize.numberOfEntries}</strong> Enrolled
       </PrizeLabelValue>
 
-      <LandingButton className="text-black-0 mt-2 bg-landing-primary px-5 py-3">
+      <LandingButton onClick={() => openEnrollModal(prize, "Winners")} className="text-black-0 mt-2 bg-landing-primary px-5 py-3">
         CHECK WINNERS
       </LandingButton>
     </div>

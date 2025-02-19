@@ -9,6 +9,10 @@ import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
 import { TaskProvider, useTasks } from "@/context/TaskProvider";
 import TasksList from "@/components/containers/tasks/tasks-list";
 import { Searchbar } from "./_components/searchbar";
+import EnrollModal from "./prizetap/components/Modals/enroll-modal";
+import LineaWinnersModal from "./prizetap/components/Linea/LineaWinnersModal";
+import LineaCheckWalletsModal from "./prizetap/components/Linea/LineaCheckWalletsModal";
+import EnrolledPreEnrollmentWallets from "./prizetap/components/Modals/enrolled-wallets-modal";
 
 export default async function Home() {
   const tokens: Token[] = await serverFetch(
@@ -20,6 +24,10 @@ export default async function Home() {
     <TaskProvider raffles={raffles} tokens={tokens}>
       <HeroSection />
       <Searchbar />
+      <LineaCheckWalletsModal />
+      <LineaWinnersModal />
+      <EnrollModal />
+      <EnrolledPreEnrollmentWallets />
 
       <TasksList />
     </TaskProvider>
