@@ -1,4 +1,5 @@
 import { Chain } from "@/types";
+import { twMerge } from "tailwind-merge";
 
 export const EmptyCallback = () => {};
 export const NullCallback = () => null;
@@ -40,7 +41,7 @@ export function formatChainId(chainId: string) {
 }
 
 export * from "./time";
-export * from "./errorHandler"
+export * from "./errorHandler";
 export * from "./numbers";
 
 export const uppercaseFirstLetter = (str: string): string => {
@@ -58,4 +59,8 @@ export const replacePlaceholders = (
   return input.replace(/\${(.*?)}/g, (match, key) => {
     return values[key.trim()] || match;
   });
+};
+
+export const cn = (...classes: (string | undefined | null)[]) => {
+  return twMerge(classes.filter(Boolean));
 };

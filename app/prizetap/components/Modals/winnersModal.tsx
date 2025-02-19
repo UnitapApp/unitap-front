@@ -14,6 +14,8 @@ import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { useReadContracts } from "wagmi";
 import { contractAddresses } from "@/constants";
 import { config } from "@/utils/wallet/wagmi";
+import { FaSearch } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
 
 export const getRaffleEntry = (
   entryWallets: WinnerEntry[],
@@ -53,9 +55,9 @@ const WinnersModal = () => {
     for (let i = 0; i <= entriesNumber / 100; i++) {
       const address = selectedRaffleForEnroll.isPrizeNft
         ? contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
-            ?.erc721
+          ?.erc721
         : contractAddresses.prizeTap[selectedRaffleForEnroll.chain.chainId]
-            ?.erc20 || selectedRaffleForEnroll.contract;
+          ?.erc20 || selectedRaffleForEnroll.contract;
 
       if (!address) continue;
 
@@ -100,10 +102,10 @@ const WinnersModal = () => {
     const items = !searchPhraseInput
       ? selectedRaffleForEnroll?.winnerEntries
       : selectedRaffleForEnroll?.winnerEntries.filter((item) =>
-          item.userWalletAddress
-            .toLocaleLowerCase()
-            .includes(searchPhraseInput.toLocaleLowerCase()),
-        );
+        item.userWalletAddress
+          .toLocaleLowerCase()
+          .includes(searchPhraseInput.toLocaleLowerCase()),
+      );
 
     return items ?? [];
   }, [searchPhraseInput, selectedRaffleForEnroll?.winnerEntries]);
@@ -117,15 +119,10 @@ const WinnersModal = () => {
   return (
     <>
       <p className="w-full px-4 text-xs text-gray90">Winners</p>
-      <div className="mt-1 flex w-full items-center rounded-xl border-2 !border-gray30 bg-gray50 p-4 py-3.5">
-        <Icon
-          className="mr-5"
-          iconSrc="/assets/images/modal/search-icon.svg"
-          width="20px"
-          height="20px"
-        />
+      <div className="mt-1 flex w-full items-center rounded-xl border-2 dark:border-gray30 dark:bg-gray50 bg-stone-100 border-stone-300 p-4 py-3.5">
+        <CiSearch size={20} className="mr-2 text-gray90" />
         <input
-          className="z-1 w-full bg-transparent text-white placeholder:text-gray90"
+          className="z-1 w-full bg-transparent placeholder:text-gray90"
           value={searchPhraseInput}
           onChange={(e) => setSearchPhraseInput(e.target.value)}
           placeholder="Search Wallet"
@@ -146,7 +143,7 @@ const WinnersModal = () => {
         ))}
 
         {searchPhraseInput && !userEnrollments.length && (
-          <p className="text-white">No users found</p>
+          <p className="">No users found</p>
         )}
       </div>
       <div className="w-full">

@@ -11,6 +11,7 @@ export type SelectProps = {
   onChange: (value: any) => void;
   placeholder?: string;
   options: { icon?: string; label: string; value: any }[];
+  className?: string;
 };
 
 const Select: FC<SelectProps> = ({
@@ -20,6 +21,7 @@ const Select: FC<SelectProps> = ({
   value,
   label,
   placeholder,
+  className = "",
 }) => {
   const [search, setSearch] = useState("");
 
@@ -65,19 +67,19 @@ const Select: FC<SelectProps> = ({
   }, [options, search, value]);
 
   return (
-    <div className="relative w-full font-normal">
-      {!!label && <p className="mb-2 text-xs text-gray100">{label}</p>}
+    <div className="relative font-normal">
+      {!!label && <p className="text-xs text-gray100">{label}</p>}
 
       <div ref={ref} className="relative w-full cursor-pointer">
         <div
           onClick={() => setShowItems(!showItems)}
-          className="flex w-full items-center rounded-xl border border-gray50 bg-gray40 p-2"
+          className={`flex items-center rounded-xl dark:border border-gray50 dark:bg-gray40 p-2 bg-stone-50 dark:border-stone-300 ${className}`}
         >
           {selectedItem?.icon ? (
             <Icon iconSrc={selectedItem.icon} width="24px" />
           ) : null}
           <input
-            className="w-full bg-transparent px-2 text-sm text-white"
+            className="bg-transparent placeholder:text-stone-500 px-2 text-sm dark:text-white text-black"
             type="text"
             value={search ?? ""}
             placeholder={placeholder}
@@ -94,7 +96,7 @@ const Select: FC<SelectProps> = ({
           ></Icon>
         </div>
         {showItems && (
-          <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 border-gray60 bg-gray40 p-1">
+          <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 dark:border-gray60 border-stone-300 dark:bg-gray40 bg-stone-50">
             {filteredItems.map((item, index) => (
               <div
                 key={index}
@@ -102,7 +104,7 @@ const Select: FC<SelectProps> = ({
                   setShowItems(false);
                   handleValueChanged(item);
                 }}
-                className={`flex p-2 ${item.value === value ? "bg-gray60" : ""} w-full items-center gap-2 rounded-xl px-2 text-sm text-white hover:bg-gray70`}
+                className={`flex p-2 ${item.value === value ? "bg-stone-300 dark:bg-gray60" : ""} w-full items-center gap-2 px-2 text-sm dark:text-white hover:bg-stone-300 dark:hover:bg-gray70`}
               >
                 {!!item.icon && <Icon iconSrc={item.icon} width="24px" />}
                 <p>{item.label}</p>

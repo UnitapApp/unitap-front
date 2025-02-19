@@ -3,7 +3,7 @@ import { RefObject, useEffect } from "react";
 type EventListener = (event: MouseEvent) => void;
 
 export const useOutsideClick = (
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   callback: EventListener,
 ): void => {
   useEffect(() => {

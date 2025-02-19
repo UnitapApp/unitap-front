@@ -1,20 +1,25 @@
-@import "../styles/buttons.scss";
-@import "../styles/cards.scss";
-@import "../styles/index.scss";
-@import "../styles/animations.scss";
+@use "../styles/buttons.scss";
+@use "../styles/cards.scss";
+@use "../styles/index.scss";
+@use "../styles/animations.scss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @mixin btn {
-  @apply ease-out duration-300;
+  @apply duration-300 ease-out;
+}
+
+.text-gradient-primary {
+  @apply bg-g-primary bg-clip-text;
+  -webkit-text-fill-color: transparent;
 }
 
 @layer base {
   // TYPOGRAPHY
   h1 {
-    @apply text-3xl font-semibold items-center;
+    @apply items-center text-3xl font-semibold;
   }
 
   h2 {
@@ -31,11 +36,6 @@
 
   input {
     @apply focus:outline-none;
-  }
-
-  .text-gradient-primary {
-    @apply bg-g-primary bg-clip-text;
-    -webkit-text-fill-color: transparent;
   }
 
   // FLEX SIZES
@@ -74,4 +74,52 @@ input::-webkit-inner-spin-button {
 input {
   /* Firefox */
   -moz-appearance: textfield;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  background:
+    linear-gradient(90deg, rgba(172, 255, 255, 0.26) 1px, transparent 1px),
+    linear-gradient(rgba(172, 255, 255, 0.26) 1px, transparent 1px);
+
+  background-size: 103px 103px;
+  background-repeat: repeat;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.9) 100% /* Fade to white */
+  );
+}
+
+.bg-circle-dots {
+  background: radial-gradient(circle, #cccccc 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat;
+}
+
+.styled-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f0f0f0;
+}
+
+.styled-scroll::-webkit-scrollbar {
+  width: 8px;
 }

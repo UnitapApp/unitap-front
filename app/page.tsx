@@ -1,64 +1,70 @@
-import GasTapLanding from "@/components/containers/landing/gasTap";
-import LearnTapLanding from "@/components/containers/landing/learnTap";
-import PrizeTapLanding from "@/components/containers/landing/prizeTap";
-import LandingStats from "@/components/containers/landing/stats";
-import TokenTapLanding from "@/components/containers/landing/tokenTap";
-import OnBoardProcess from "@/components/containers/onBoardProcess";
-
 import RoutePath from "@/utils/routes";
-import { getFaucetListServer } from "@/utils/serverApis";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-
-const UnitapPass = dynamic(
-  () => import("@/components/containers/landing/unitapPass"),
-  { ssr: false },
-);
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { CiSearch } from "react-icons/ci";
+import { Token } from "@/types";
+import { serverFetch } from "@/utils/api";
+import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
+import { TaskProvider, useTasks } from "@/context/TaskProvider";
+import TasksList from "@/components/containers/tasks/tasks-list";
+import { Searchbar } from "./_components/searchbar";
+import EnrollModal from "./prizetap/components/Modals/enroll-modal";
+import LineaWinnersModal from "./prizetap/components/Linea/LineaWinnersModal";
+import LineaCheckWalletsModal from "./prizetap/components/Linea/LineaCheckWalletsModal";
+import EnrolledPreEnrollmentWallets from "./prizetap/components/Modals/enrolled-wallets-modal";
 
 export default async function Home() {
-  const chains = await getFaucetListServer();
+  const tokens: Token[] = await serverFetch(
+    "/api/tokentap/token-distribution-list/",
+  );
+  const raffles = await getRafflesServerSideListAPI();
 
   return (
-    <div className="flex flex-col gap-6">
-      <section
-        id="home-header"
-        className={
-          "uni-card flex h-40 flex-col items-center justify-center gap-4 overflow-hidden text-center text-white after:rounded-2xl after:bg-home-header-texture sm:px-12 sm:text-left"
-        }
-      >
-        <Image
-          src={"/assets/images/landing/uni-logo.svg"}
-          className={"mx-auto w-40 sm:mx-0"}
-          width={157}
-          height={32}
-          alt={"logo"}
-        />
-        <h4 className={"text-gradient-primary"}>The web3 incentive layer</h4>
-      </section>
+    <TaskProvider raffles={raffles} tokens={tokens}>
+      <HeroSection />
+      <Searchbar />
+      <LineaCheckWalletsModal />
+      <LineaWinnersModal />
+      <EnrollModal />
+      <EnrolledPreEnrollmentWallets />
 
-      <UnitapPass />
-
-      <section
-        id="home-taps"
-        className={
-          "flex min-h-[360px] flex-grow flex-col justify-between gap-4 lg:flex-row"
-        }
-      >
-        <GasTapLanding chains={chains} />
-        <TokenTapLanding />
-        <PrizeTapLanding />
-      </section>
-      <LearnTapLanding />
-
-      <LandingStats chains={chains} />
-
-      <Footer />
-
-      <OnBoardProcess />
-    </div>
+      <TasksList />
+    </TaskProvider>
   );
 }
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+});
+
+const HeroSection = () => {
+  return (
+    <section className="text-center">
+      <Image
+        className="mx-auto"
+        src="/assets/images/landing/tasks.png"
+        alt="unitap-tasks"
+        width={147}
+        height={62}
+      />
+      <div
+        className={`${plusJakartaSans.className} mt-10 flex flex-col gap-y-5 text-xl font-[200] md:gap-y-16 md:text-[58px]`}
+      >
+        <p>
+          Complete <strong className="font-extrabold">Tasks,</strong>
+        </p>
+        <p>
+          Earn <strong className="font-extrabold">Rewards</strong> And
+        </p>
+        <p>
+          Engage With <strong className="font-extrabold">Communities</strong>
+        </p>
+      </div>
+    </section>
+  );
+};
 
 const socialLinks = [
   {

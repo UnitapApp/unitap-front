@@ -22,11 +22,10 @@ import {
   getWeeklyChainClaimLimitAPI,
 } from "@/utils/api";
 import {
-  useFastRefresh,
   useMediumRefresh,
   useRefreshWithInitial,
 } from "@/utils/hooks/refresh";
-import { IntervalType } from "@/constants";
+import { FAST_INTERVAL, IntervalType } from "@/constants";
 import { useWalletAccount } from "@/utils/wallet";
 import { NullCallback } from "@/utils";
 import { Address, isAddressEqual } from "viem";
@@ -82,7 +81,7 @@ export const UserContextProvider: FC<
   const [userProfile, setUserProfile] = useState<UserProfile | null>(initial);
   const [loading, setLoading] = useState(false);
   const [userToken, setToken] = useLocalStorageState("userToken");
-  const [holdUserLogout, setHoldUserLogout] = useState(false);
+  const [holdUserLogout, setHoldUserLogout] = useState(true);
 
   const { address, isConnected } = useWalletAccount();
   const { disconnect } = useDisconnect();
@@ -146,7 +145,7 @@ export const UserContextProvider: FC<
     setUserProfile({ ...userProfile });
   };
 
-  useFastRefresh(() => {
+  useRefreshWithInitial(() => {
     const getUserProfileWithToken = async () => {
       setUserProfileLoading(true);
       try {
@@ -162,10 +161,10 @@ export const UserContextProvider: FC<
 
     document.cookie = "userToken=" + userToken + ";path=/;";
 
-    if (userToken) {
+    if (userToken && !userProfile) {
       getUserProfileWithToken();
     }
-  }, [userToken, userProfile, setUserProfile]);
+  }, FAST_INTERVAL, [userToken, userProfile, setUserProfile]);
 
   const getWeeklyChainClaimLimit = async () => {
     const res = await getWeeklyChainClaimLimitAPI();
@@ -218,9 +217,6 @@ export const UserContextProvider: FC<
 
   useEffect(() => {
     if (holdUserLogout || !userToken || !userProfile) {
-      // if (isConnected && !userToken) {
-      //   disconnect?.();
-      // }
       return;
     }
 

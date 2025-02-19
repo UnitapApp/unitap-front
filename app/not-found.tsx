@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const NotFound = () => {
+export default function NotFound() {
   return (
     <div className="mt-40 text-center">
       <Image
@@ -16,14 +16,12 @@ const NotFound = () => {
         The page you are looking for cannot be found.
       </p>
       <div className="mt-5">
-        <a href="/">
+        <Link href="/">
           <button className="btn btn--sm btn--primary-light font-semibold tracking-wide">
             Back to Home
           </button>
-        </a>
+        </Link>
       </div>
     </div>
   );
-};
-
-export default NotFound;
+}

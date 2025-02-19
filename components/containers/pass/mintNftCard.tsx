@@ -79,7 +79,7 @@ const MintNFTCard = () => {
   const remainingCount = useMemo(
     () =>
       contractsRes
-        ? batchSize - ((contractsRes[0].result as number) + beforeMinted ?? 0)
+        ? batchSize - ((contractsRes[0].result as number) + (beforeMinted ?? 0))
         : undefined,
     [contractsRes],
   );
@@ -262,11 +262,11 @@ const MintNFTCard = () => {
         </div>
       ) : (
         <>
-          <div className="mint-nft-card__nft relative  flex h-full flex-col justify-between p-2">
-            <div className="  absolute z-10 h-full w-full">
+          <div className="mint-nft-card__nft relative flex h-full flex-col justify-between p-2">
+            <div className="absolute z-10 h-full w-full">
               <div className="animate-unitap-pass-1 absolute h-32 w-32 rounded-full bg-[#4BF2A2] blur-[70px]"></div>
               <div className="animate-unitap-pass-2 absolute right-0 h-32 w-32 rounded-full bg-[#DD40CD] blur-[70px]"></div>
-              <div className="animate-unitap-pass-3 absolute bottom-0 right-0 h-32 w-32 rounded-full bg-[#A89FE7] blur-[70px] "></div>
+              <div className="animate-unitap-pass-3 absolute bottom-0 right-0 h-32 w-32 rounded-full bg-[#A89FE7] blur-[70px]"></div>
             </div>
             <div className="mint-nft-card__nft__info z-20 flex w-full items-center justify-between text-xs font-medium">
               <p className="flex gap-1 rounded-lg bg-gray10 px-2 py-2 text-xs text-gray100">
@@ -283,7 +283,7 @@ const MintNFTCard = () => {
                   />
                 </span>
               </p>
-              <p className=" text-gray100">
+              <p className="text-gray100">
                 <span className="text-white">
                   {" "}
                   {remainingCount === undefined ? "..." : remainingCount}{" "}
@@ -345,7 +345,7 @@ const MintNFTCard = () => {
                     )}
                   </div>
                   <div
-                    className={`flex h-12 min-w-[48px]  flex-1 cursor-default items-center justify-center border-y-2 border-gray60 py-3 font-bold text-white`}
+                    className={`flex h-12 min-w-[48px] flex-1 cursor-default items-center justify-center border-y-2 border-gray60 py-3 font-bold text-white`}
                   >
                     {count}
                   </div>

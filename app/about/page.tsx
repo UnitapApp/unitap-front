@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import "./styles.scss";
 
-import Icon from "@/components/ui/Icon";
 import { FC } from "react";
 import Image from "next/image";
 
@@ -46,7 +45,7 @@ const About = () => {
           scratch, consuming valuable time and resources and leading to
           trial-and-error mistakes.
         </p>
-        <p className="text-gradient-primary mb-6 mt-16 text-center text-2xl  font-semibold">
+        <p className="text-gradient-primary mb-6 mt-16 text-center text-2xl font-semibold">
           Production-Ready Campaigns Using Unitap
         </p>
 

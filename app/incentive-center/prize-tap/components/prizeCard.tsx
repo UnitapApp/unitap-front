@@ -80,9 +80,9 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
               {prize.prizeName}
             </div>
             {new Date(prize.startAt) < new Date() &&
-            (prize.status === RaffleStatus.VERIFIED ||
-              prize.status === RaffleStatus.WS) &&
-            diff > 0 ? (
+              (prize.status === RaffleStatus.VERIFIED ||
+                prize.status === RaffleStatus.WS) &&
+              diff > 0 ? (
               <ProviderDashboardButton className="animate-blinking">
                 <p>Ongoing...</p>
               </ProviderDashboardButton>
@@ -209,7 +209,7 @@ const PrizeCard = ({ prize }: PrizeCardProp) => {
             >
               <p>
                 {prize.numberOfOnchainEntries >= 1 &&
-                !prize.winnerEntries?.length
+                  !prize.winnerEntries?.length
                   ? "The raffle is processing..."
                   : "Check Winners"}
               </p>

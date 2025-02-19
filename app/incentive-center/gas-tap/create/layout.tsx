@@ -16,7 +16,7 @@ const ProviderDashboardGasTapLayout: FC<PropsWithChildren> = async ({
 
   const fuelChampionList = await getFuelChampionListServerSide();
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   const token = cookieStore.get("userToken");
 

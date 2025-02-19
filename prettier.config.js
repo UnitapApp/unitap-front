@@ -1,6 +1,8 @@
 /** @type {import("prettier").Config} */
-module.exports = {
+const prettierConfig = {
   plugins: ['prettier-plugin-tailwindcss'],
   tailwindConfig: "./tailwind.config.ts",
 };
 
+
+export default prettierConfig;

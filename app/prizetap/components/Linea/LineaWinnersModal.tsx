@@ -55,7 +55,7 @@ const LineaWinnersModal: FC<{}> = ({ }) => {
     >
       <div className="claim-modal-wrapper font-normal text-left flex flex-col items-center justify-center pt-5">
         <p className="text-xs w-full px-4 text-gray90">Winners</p>
-        <div className="flex bg-gray50 p-4 py-3.5 border-2 rounded-xl !border-gray30 items-center w-full mt-1">
+        <div className="flex !bg-stone-100 p-4 py-3.5 border-2 rounded-xl dark:bg-gray50 dark:border-gray30 items-center w-full mt-1">
           <Icon
             className="mr-5"
             iconSrc="/assets/images/modal/search-icon.svg"
@@ -63,7 +63,7 @@ const LineaWinnersModal: FC<{}> = ({ }) => {
             height="20px"
           />
           <input
-            className="bg-transparent placeholder:text-gray90 text-white w-full z-1"
+            className="bg-transparent placeholder:text-gray90 text-black w-full z-1"
             value={searchPhraseInput}
             onChange={(e) => setSearchPhraseInput(e.target.value)}
             placeholder="Search Wallet"
@@ -126,7 +126,7 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
   const { selectedRaffleForEnroll } = usePrizeTapContext();
   const raffle = selectedRaffleCh ? selectedRaffleCh : selectedRaffleForEnroll
   return (
-    <div className="flex px-5 py-2 rounded-xl my-3 bg-gray60 items-center text-gray100">
+    <div className="flex px-5 py-2 rounded-xl my-3 dark:bg-gray60 bg-stone-100 items-center dark:text-gray100 text-black">
       <a
         className="flex items-center"
         target="_blank"

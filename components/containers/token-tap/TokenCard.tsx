@@ -120,8 +120,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
         className={`token-card ${isArchive ? "opacity-60" : ""} flex ${
           isHighlighted
             ? "gradient-outline-card mb-20 p-0 before:!inset-[3px]"
-            : "mb-4"
-        } mb-4 w-full flex-col items-center justify-center`}
+            : ""
+        } w-full flex-col items-center justify-center`}
       >
         <span className="flex w-full flex-col">
           <div
@@ -148,7 +148,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               </span>
               <span className="w-max">
                 <p
-                  className={`mb-2 flex text-center text-white  md:text-left ${isArchive ? "text-opacity-40" : ""}`}
+                  className={`mb-2 flex text-center text-white md:text-left ${isArchive ? "text-opacity-40" : ""}`}
                   data-testid={`token-name-${token.id}`}
                 >
                   {token.name}
@@ -161,7 +161,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   />
                 </p>
                 <p
-                  className={`text-xs font-medium text-white  ${isArchive ? "text-opacity-40" : ""}`}
+                  className={`text-xs font-medium text-white ${isArchive ? "text-opacity-40" : ""}`}
                 >
                   {token.distributor}
                 </p>
@@ -191,7 +191,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
               {isExpired ||
                 (!token.maxClaimNumberForUnitapPassUser ||
                 formattedDateValue === -1 ? (
-                  <div className="h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300">
+                  <div className="h-12 overflow-y-hidden rounded-xl border-2 border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300">
                     <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
                       <div className="transition-all duration-300">
                         <span className={``}>
@@ -216,7 +216,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="group h-12 overflow-y-hidden rounded-xl border-2  border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300 hover:bg-dark-primary-2">
+                  <div className="group h-12 overflow-y-hidden rounded-xl border-2 border-gray70 bg-gray60 bg-cover bg-no-repeat text-sm text-gray100 transition-all duration-300 hover:bg-dark-primary-2">
                     <div className="flex h-12 w-full items-center gap-2 px-4 py-3">
                       <div className="transition-all duration-300 group-hover:-mt-6 group-hover:-translate-y-full">
                         <span className={``}>
@@ -239,7 +239,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                         height={20}
                       />
                     </div>
-                    <div className="mt-10 px-4 text-white transition-all duration-300 group-hover:-mt-4 group-hover:-translate-y-full ">
+                    <div className="mt-10 px-4 text-white transition-all duration-300 group-hover:-mt-4 group-hover:-translate-y-full">
                       <span className="text-space-green">
                         {token.remainingClaimForUnitapPassUser}
                       </span>{" "}
@@ -353,7 +353,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
             ).map((permission, key) => (
               <div
                 className={
-                  "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
+                  "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10"
                 }
                 data-testid={`token-verification-${token.id}-${permission.name}`}
                 key={key}

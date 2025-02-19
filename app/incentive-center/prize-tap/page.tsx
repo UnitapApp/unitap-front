@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import PrizeTapList from "./components/prizeList";
 
 const PrizeTapPage = async () => {
-  const cookieStorage = cookies();
+  const cookieStorage = await cookies();
 
   const raffles = await getUserRaffleListServerSide(
     cookieStorage.get("userToken")?.value,
