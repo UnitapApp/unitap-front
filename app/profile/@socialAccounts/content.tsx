@@ -12,6 +12,7 @@ import TwitterAccount from "../components/socialAccounts/twitter";
 import EnsAccount from "../components/socialAccounts/ensAccount";
 import LensAccount from "../components/socialAccounts/lensAccount";
 import FarcasterAccount from "../components/socialAccounts/farcasterAccount";
+import TelegramAccount from "../components/socialAccounts/telegram";
 
 const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
   initialConnections,
@@ -20,10 +21,7 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
 
   const { userToken } = useUserProfileContext();
 
-  console.log(connections, userToken);
-
   useFastRefresh(() => {
-    console.log(userToken);
     if (!userToken) return;
 
     getAllConnections(userToken).then((res) => {
@@ -70,6 +68,11 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
           title={"Farcaster"}
           icon={"/assets/images/provider-dashboard/requirements/farcaster.svg"}
           isConnected={!!connections["Farcaster"]}
+        />
+        <TelegramAccount
+          title={"Telegram"}
+          icon={"/assets/images/footer/telegram.svg"}
+          isConnected={!!connections["Telegram"]}
         />
       </div>
     </SocialAccountContext.Provider>

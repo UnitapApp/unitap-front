@@ -63,13 +63,22 @@ const ClaimTokenModalBody = ({
       claimTokenResponse?.state === "Done" ||
       collectedToken?.status === "Verified" ||
       selectedTokenForClaim.isExpired ||
-      method !== "requirements"
+      method !== "requirements" ||
+      collectedToken?.status === "Pending"
     ) {
       setSize("small");
     } else {
       setSize(680);
     }
-  }, [userProfile, selectedTokenForClaim, method, chainId, collectedToken]);
+  }, [
+    userProfile,
+    selectedTokenForClaim,
+    method,
+    chainId,
+    collectedToken,
+    claimTokenResponse?.state,
+    setSize,
+  ]);
 
   if (!selectedTokenForClaim) return null;
 
