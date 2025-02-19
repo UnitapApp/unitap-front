@@ -156,8 +156,8 @@ export const TokenDetails: FC<{ token: Token }> = ({ token }) => {
         <strong>{token.maxNumberOfClaims}</strong> Winners
       </TokenLabelValue>
 
-      <LandingButton className="text-black-0 mt-auto bg-landing-primary px-5 py-3">
-        CHECK WINNERS
+      <LandingButton disabled className="text-black-0 mt-auto bg-landing-primary px-5 py-3">
+        FINISHED
       </LandingButton>
     </div>
   );

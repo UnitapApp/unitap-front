@@ -6,17 +6,18 @@ import TokenCardNew from "../token-tap/TokenCardNew";
 import { useMemo } from "react";
 
 export default function TasksList() {
-  const { tasks, filter, selectedChain } = useTasks();
+  const { tasks, filter, selectedChain, search } = useTasks();
 
   const tasksList = useMemo(() => {
     return tasks.filter((task) => {
+      if (search && !task.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (selectedChain && task.chain.pk !== selectedChain) return false;
       if (filter === "all") return true;
       if (filter === "raffle" && "raffleId" in task) return true;
       if (filter === "fcfs" && !("raffleId" in task)) return true;
       return false;
     });
-  }, [tasks, filter, selectedChain]);
+  }, [tasks, filter, selectedChain, search]);
 
   return (
     <div className="mt-20 flex flex-col gap-y-4">
