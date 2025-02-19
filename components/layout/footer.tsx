@@ -50,13 +50,13 @@ const Footer: FC = () => {
         <div className="flex flex-col gap-y-6">
           <Link href="/about">Why Unitap?</Link>
           <Link href="/about">About Us</Link>
-          <Link href="/about">Contact Us</Link>
-          <Link href="/github">Github</Link>
+          <Link href="mailto:team@unitap.app">Contact Us</Link>
+          <Link href="https://github.com/UnitapApp">Github</Link>
         </div>
         <div className="flex flex-col gap-y-6">
-          <Link href="/faq">FAQ{"'"}s</Link>
-          <Link href="/about">Privacy & Policy</Link>
-          <Link href="/about">Terms Of Service</Link>
+          <Link href="#">FAQ{"'"}s</Link>
+          <Link href="#">Privacy & Policy</Link>
+          <Link href="#">Terms Of Service</Link>
         </div>
       </div>
       <div className="col-span-3">
