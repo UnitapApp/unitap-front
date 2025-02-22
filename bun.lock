@@ -10,6 +10,7 @@
         "@sentry/nextjs": "7.105.0",
         "@solana/web3.js": "^1.89.2",
         "@tanstack/react-query": "^5.17.12",
+        "@telegram-auth/react": "^1.0.4",
         "@uniswap/sdk-core": "^4.0.9",
         "axios": "^1.7.4",
         "big.js": "^6.2.1",
@@ -578,6 +579,8 @@
     "@tanstack/query-core": ["@tanstack/query-core@5.66.4", "", {}, "sha512-skM/gzNX4shPkqmdTCSoHtJAPMTtmIJNS0hE+xwTTUVYwezArCT34NMermABmBVUg5Ls5aiUXEDXfqwR1oVkcA=="],
 
     "@tanstack/react-query": ["@tanstack/react-query@5.66.7", "", { "dependencies": { "@tanstack/query-core": "5.66.4" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-qd3q/tUpF2K1xItfPZddk1k/8pSXnovg41XyCqJgPoyYEirMBtB0sVEVVQ/CsAOngzgWtBPXimVf4q4kM9uO6A=="],
+
+    "@telegram-auth/react": ["@telegram-auth/react@1.0.4", "", { "peerDependencies": { "react": ">=18" } }, "sha512-VPCIrA6h5+w69S1QvB/k2PphmAA9E8BSqEX4WMSE1P7KxexKl/VRdoTRKSsSx1/In94S+R7FufbjLrRMnEGEKg=="],
 
     "@types/big.js": ["@types/big.js@6.2.2", "", {}, "sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA=="],
 

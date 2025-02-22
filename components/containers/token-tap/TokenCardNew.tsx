@@ -9,6 +9,8 @@ import Link from "next/link";
 
 export type TokenCardProps = {
   token: Token;
+  isHighlighted?: boolean
+
 };
 
 const nunitoSans = Nunito_Sans({
@@ -23,14 +25,14 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["200", "300", "400", "500", "600", "700"],
 });
 
-export default function TokenCardNew({ token }: TokenCardProps) {
+export default function TokenCardNew({ token, isHighlighted }: TokenCardProps) {
   return (
     <article
-      className={`${nunitoSans.className} overflow-hidden rounded-3xl border bg-white shadow-primary-button`}
+      className={`${nunitoSans.className} overflow-hidden rounded-3xl border ${isHighlighted ? "bg-raffle-card" : "bg-white"} shadow-primary-button`}
     >
       <div className="bg-circle-dots flex flex-wrap items-stretch gap-y-2 p-[2px]">
         <TokenContent token={token} />
-        <TokenDetails token={token} />
+        <TokenDetails isHighlighted={isHighlighted} token={token} />
       </div>
     </article>
   );
@@ -41,12 +43,13 @@ export const ShareButton: FC<{ token: Token }> = ({ token }) => {
   const onShare = () => {
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-        `I've just claimed ${fromWei(token.amount, token.decimals ?? token.chain.decimals)} ${token?.token} from @Unitap_app 🔥\nClaim yours:`,
+        `Don't miss your chance to win ${fromWei(token.amount, token.decimals ?? token.chain.decimals)} ${token?.token} on @Unitap_app! 🎉\nEnter now:`,
       )}&url=${encodeURIComponent(
         "dashboard.unitap.app/?hc=" + encodeURIComponent(token.token),
       )}`,
     );
   };
+
 
   return (
     <LandingButton
@@ -62,9 +65,9 @@ export const ShareButton: FC<{ token: Token }> = ({ token }) => {
 export const TokenContent: FC<{ token: Token }> = ({ token }) => {
   return (
     <div
-      className={`flex flex-1 flex-wrap items-start gap-3 px-4 py-3 sm:flex-nowrap ${nunitoSans.className}`}
+      className={`flex flex-1 flex-wrap gap-3 px-4 py-3 sm:flex-nowrap ${nunitoSans.className}`}
     >
-      <div className="relative z-20 h-60 w-60 min-w-60">
+      <div className="relative self-center z-20 h-60 w-60 min-w-60">
         <div className="bg-black-0 absolute -inset-[2px] left-0 top-0 -z-10 rotate-[5deg] rounded-xl"></div>
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
@@ -81,10 +84,13 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
             height={231}
             className="h-[231px] w-[231px] rounded-xl object-cover"
           />
+          <div className="absolute overflow-hidden border bg-white shadow-primary-button-sm translate-x-1/2 -translate-y-1/2 top-1 right-0 rounded-full w-12 h-12 grid place-items-center">
+            <img width={47} height={47} src={token.chain.logoUrl} alt={token.chain.chainName} />
+          </div>
         </div>
       </div>
 
-      <div className="ml-5 mt-3">
+      <div className="ml-5 flex flex-col h-h-full mt-3">
         <div className="flex items-center gap-3">
           <h1 className={`${plusJakartaSans.className} font-bold`}>
             {token.name}
@@ -99,7 +105,7 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
           <ShareButton token={token} />
         </div>
         <div className="mt-5">
-          <Markdown className="">{token.notes}</Markdown>
+          <Markdown className="">{token.notes.slice(0, 300)}</Markdown>
         </div>
         <TokenTasks constraints={token.constraints} />
       </div>
@@ -112,8 +118,8 @@ const TokenTasks: FC<{ constraints: Permission[] }> = ({ constraints }) => {
 
   return (
     <>
-      <div className="mt-5 text-xl font-bold">Tasks</div>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-auto text-xl font-bold">Tasks</div>
+      <div className="mt-2 mb-2 flex flex-wrap gap-2">
         {constraints.map((constraint, index) => (
           <LandingButton
             key={index}
@@ -140,10 +146,10 @@ const TokenLabelValue: FC<PropsWithChildren & { label: string }> = ({
   );
 };
 
-export const TokenDetails: FC<{ token: Token }> = ({ token }) => {
+export const TokenDetails: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
   return (
-    <div className="bg-gray-full text-black-0 relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl p-5 md:w-72">
-      <div className="bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-full rotate-[40deg] border-b-2 border-t-2 py-1 text-center font-bold">
+    <div className={`${isHighlighted ? "bg-[#000] p-5 text-white" : "bg-gray-full text-black-0"} relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl p-5 md:w-72`}>
+      <div className={`bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-1/2 rotate-[40deg] border-b-2 border-t-2 py-1 text-center font-bold border-black-0 ${isHighlighted ? "text-black-0" : ""}`}>
         FCFS
       </div>
       <TokenLabelValue label="Reward Per User">

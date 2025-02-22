@@ -48,8 +48,8 @@ const Footer: FC = () => {
           </p>
         </div>
         <div className="flex flex-col gap-y-6">
-          <Link href="/about">Why Unitap?</Link>
-          <Link href="/about">About Us</Link>
+          {/* <Link href="/about">Why Unitap?</Link> */}
+          <Link href="https://unitap.app/about">About Us</Link>
           <Link href="mailto:team@unitap.app">Contact Us</Link>
           <Link href="https://github.com/UnitapApp">Github</Link>
         </div>

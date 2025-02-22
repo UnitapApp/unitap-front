@@ -4,12 +4,20 @@ import { useTasks } from "@/context/TaskProvider";
 import PrizeCard from "@/app/prizetap/components/PrizeCard";
 import TokenCardNew from "../token-tap/TokenCardNew";
 import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function TasksList() {
   const { tasks, filter, selectedChain, search } = useTasks();
+  const params = useSearchParams()
+
+  const highlightedName = params.get("hc")
 
   const tasksList = useMemo(() => {
-    return tasks.filter((task) => {
+
+    const tasksSorted = highlightedName ? tasks.sort((a, b) => a.name === highlightedName ? -1 : b.name === highlightedName ? 1 : 0) : tasks
+
+
+    return tasksSorted.filter((task) => {
       if (search && !task.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (selectedChain && task.chain.pk !== selectedChain) return false;
       if (filter === "all") return true;
@@ -23,10 +31,10 @@ export default function TasksList() {
     <div className="mt-20 flex flex-col gap-y-4">
       {tasksList.map((task, key) => {
         if ("raffleId" in task) {
-          return <PrizeCard key={key} prize={task} />;
+          return <PrizeCard isHighlighted={highlightedName === task.name} key={key} prize={task} />;
         }
 
-        return <TokenCardNew key={key} token={task} />;
+        return <TokenCardNew key={key} token={task} isHighlighted={highlightedName === task.name} />;
       })}
     </div>
   );
