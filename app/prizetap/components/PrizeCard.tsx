@@ -71,7 +71,7 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
             src={
-              // prize.image ??
+              prize.image ??
               "/assets/images/prize-tap/default-prize.png"
             }
             alt={prize.name}
