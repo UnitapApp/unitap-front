@@ -148,7 +148,7 @@ const WinnersModal = () => {
       </div>
       <div className="w-full">
         {!isConnected ? (
-          <div className="mt-5 flex items-center rounded-xl border-2 border-gray70 bg-gray20 px-5 py-3 text-white">
+          <div className="mt-5 flex items-center rounded-xl border-2 border-gray70 bg-stone-300 dark:bg-gray20 px-5 py-3 text-white">
             <p className="text-base text-gray80">0xYour...Wallet</p>
             <UButton
               onClick={() => setIsWalletPromptOpen(true)}

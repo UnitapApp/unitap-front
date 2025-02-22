@@ -155,7 +155,7 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
           />
         </a>
       ) : (
-        <span className="bg-gray50 border-2 border-gray70 rounded-lg px-4 py-2 text-xs ml-auto text-gray80">
+        <span className="dark:bg-gray50 bg-stone-200 border-2 border-gray70 rounded-lg px-4 py-2 text-xs ml-auto text-gray80">
           Not Claimed by the winner yet
         </span>
       )}
