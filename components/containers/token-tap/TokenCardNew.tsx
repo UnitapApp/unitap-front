@@ -72,7 +72,7 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
             src={
-              // prize.image ??
+              token.image ??
               "/assets/images/prize-tap/default-prize.png"
             }
             alt={token.name}
