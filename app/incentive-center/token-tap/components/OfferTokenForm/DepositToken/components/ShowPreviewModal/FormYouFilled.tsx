@@ -17,7 +17,7 @@ const FormYouFilled = ({ data }: Prop) => {
 
   return (
     <div
-      className={`styled-scroll  mt-5 min-w-[348px] select-none flex-row gap-4 overflow-hidden rounded-xl bg-gray40 `}
+      className={`styled-scroll mt-5 min-w-[348px] select-none flex-row gap-4 overflow-hidden rounded-xl bg-gray40`}
     >
       <div className="m-3 flex gap-3">
         <div>
@@ -34,7 +34,7 @@ const FormYouFilled = ({ data }: Prop) => {
               <div className="flex items-center gap-2">
                 <p className="text-xs">{prizeName}</p>
                 <Icon
-                  iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg"
+                  iconSrc="/quest/assets/images/provider-dashboard/ic_link_gray.svg"
                   className="cursor-pointer"
                 />
               </div>
@@ -42,7 +42,7 @@ const FormYouFilled = ({ data }: Prop) => {
             </div>
           </div>
           <div className="mt-3 text-2xs text-gray100">{data.description}</div>
-          <div className="mt-3 flex  gap-2">
+          <div className="mt-3 flex gap-2">
             {requirementList.length > 0
               ? requirementList.map((item, index) => {
                   return (
@@ -72,7 +72,7 @@ const FormYouFilled = ({ data }: Prop) => {
           {claimPeriodic ? "Periodic-Claim" : "Single-Claim"}
           <div className="opacity-50">
             <Icon
-              iconSrc="/assets/images/provider-dashboard/warn-loading.svg"
+              iconSrc="/quest/assets/images/provider-dashboard/warn-loading.svg"
               height="10px"
               width="10px"
             />

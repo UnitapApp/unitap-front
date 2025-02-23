@@ -26,7 +26,7 @@ const UnknownWalletBody: FC<{
   return (
     <div className="text-center">
       <Icon
-        iconSrc="/assets/images/modal/unitap-welcome.svg"
+        iconSrc="/quest/assets/images/modal/unitap-welcome.svg"
         alt="unitap space"
       />
 

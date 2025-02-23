@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text.style";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { FC, useEffect, useMemo } from "react";
 import lottie from "lottie-web";
-import animation from "@/assets/animations/GasFee-delivery2.json";
+import animation from "@/quest/assets/animations/GasFee-delivery2.json";
 
 const PendingBody: FC<{
   tokenId: number;
@@ -20,9 +20,9 @@ const PendingBody: FC<{
   const token = useMemo(
     () =>
       claimedTokensList.find(
-        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id
+        (token) => token.tokenDistribution.id === selectedTokenForClaim!.id,
       ),
-    [claimedTokensList, selectedTokenForClaim]
+    [claimedTokensList, selectedTokenForClaim],
   );
 
   useEffect(() => {

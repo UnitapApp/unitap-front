@@ -113,7 +113,7 @@ export const LineaRaffleCard: FC<{
               <div
                 className={`prize-card__container flex h-[212px] w-[212px] flex-col ${
                   isHighlighted
-                    ? "bg-g-primary-low "
+                    ? "bg-g-primary-low"
                     : "border-2 border-gray40 bg-gray30"
                 } items-center justify-center rounded-xl p-5`}
               >
@@ -129,7 +129,7 @@ export const LineaRaffleCard: FC<{
             <div className="absolute bottom-[-10px] left-[40px] flex min-w-[130px] items-center justify-center rounded-md border-2 border-gray70 bg-gray50">
               <p className="p-1 text-2xs text-gray100">on</p>
               <img
-                src="/assets/images/prize-tap/linea.svg"
+                src="/quest/assets/images/prize-tap/linea.svg"
                 className="ml-2"
                 alt=""
               />
@@ -143,7 +143,7 @@ export const LineaRaffleCard: FC<{
             }
           >
             <img
-              src="/assets/images/prize-tap/linia-prize-bg.svg"
+              src="/quest/assets/images/prize-tap/linia-prize-bg.svg"
               alt="prize-tap"
               className="absolute right-0 top-0 z-20"
             />
@@ -156,7 +156,7 @@ export const LineaRaffleCard: FC<{
               } flex h-full w-full flex-col rounded-xl p-4 pt-3`}
             >
               <img
-                src="/assets/images/prize-tap/linea-texture.svg"
+                src="/quest/assets/images/prize-tap/linea-texture.svg"
                 alt="prize-tap"
                 className="absolute left-0 top-0 z-10"
               />
@@ -175,7 +175,7 @@ export const LineaRaffleCard: FC<{
                 <div className="prize-card__links flex gap-4 text-secondary-text">
                   {twitterUrl && (
                     <Icon
-                      iconSrc="/assets/images/prize-tap/linea-twitter-logo.svg"
+                      iconSrc="/quest/assets/images/prize-tap/linea-twitter-logo.svg"
                       onClick={() => window.open(twitterUrl, "_blank")}
                       width="20px"
                       height="16px"
@@ -184,7 +184,7 @@ export const LineaRaffleCard: FC<{
                   )}
                   {discordUrl && (
                     <Icon
-                      iconSrc="/assets/images/prize-tap/discord-logo-linea.svg"
+                      iconSrc="/quest/assets/images/prize-tap/discord-logo-linea.svg"
                       onClick={() => window.open(discordUrl, "_blank")}
                       width="20px"
                       height="16px"
@@ -192,7 +192,7 @@ export const LineaRaffleCard: FC<{
                     />
                   )}
                   <Icon
-                    iconSrc="/assets/images/prize-tap/website.svg"
+                    iconSrc="/quest/assets/images/prize-tap/website.svg"
                     onClick={() => window.open("https://linea.build", "_blank")}
                     width="20px"
                     height="16px"
@@ -243,7 +243,7 @@ export const LineaRaffleCard: FC<{
                       <Tooltip
                         onClick={openEnrollModal.bind(null, raffle, "Verify")}
                         className={
-                          "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10 "
+                          "rounded-lg border border-gray70 bg-gray50 px-3 py-2 transition-colors hover:bg-gray10"
                         }
                         data-testid={`token-verification-${raffle.id}-${permission.name}`}
                         key={key}
@@ -268,7 +268,7 @@ export const LineaRaffleCard: FC<{
                         </span>
                         <img
                           alt="angle down"
-                          src="/assets/images/token-tap/angle-down.svg"
+                          src="/quest/assets/images/token-tap/angle-down.svg"
                           className={`ml-2 ${
                             showAllPermissions ? "rotate-180" : ""
                           } transition-transform`}
@@ -283,7 +283,7 @@ export const LineaRaffleCard: FC<{
                 {(isExpired && !firstWinner) ||
                 (!firstWinner &&
                   maxNumberOfEntries === numberOfOnchainEntries) ? (
-                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
+                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
                     <div className="flex w-full flex-col justify-between gap-4 rounded-xl bg-gray40 px-5 py-1 sm:flex-row md:items-center">
                       <div className="flex flex-col gap-1">
                         <p className="text-2xs text-white">
@@ -341,14 +341,14 @@ export const LineaRaffleCard: FC<{
                     </Button>
                   </span>
                 ) : (
-                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row ">
-                    <div className="winner-box-bg flex h-[48px] w-full items-center justify-between gap-4 overflow-hidden rounded-xl  px-5 py-1">
+                  <span className="flex w-full flex-col items-center justify-between gap-4 md:flex-row">
+                    <div className="winner-box-bg flex h-[48px] w-full items-center justify-between gap-4 overflow-hidden rounded-xl px-5 py-1">
                       <p className="text-2xs text-white">
                         Raffle is done, check the winners:{" "}
                       </p>
                       {/* <Icon
 												className="opacity-[.3] mt-[-10px] mr-[-20px]"
-												iconSrc="/assets/images/prize-tap/linia-winner-bg.svg"
+												iconSrc="/quest/assets/images/prize-tap/linia-winner-bg.svg"
 												width="215px"
 												height="215px"
 											/> */}

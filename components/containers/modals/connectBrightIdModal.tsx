@@ -45,11 +45,11 @@ const ConnectBrightIdModalContent = () => {
     >
       <Icon
         data-testid="brightid-logo"
-        className="bright-logo !w-4/12 z-10 mb-5"
-        iconSrc="/assets/images/modal/bright-id-logo.svg"
+        className="bright-logo z-10 mb-5 !w-4/12"
+        iconSrc="/quest/assets/images/modal/bright-id-logo.svg"
       />
-      <p className="text-sm font-bold text-white mb-2">Login with BrightID</p>
-      <p className="text-xs font-medium text-gray100 mb-5 text-center px-4 leading-6">
+      <p className="mb-2 text-sm font-bold text-white">Login with BrightID</p>
+      <p className="mb-5 px-4 text-center text-xs font-medium leading-6 text-gray100">
         BrightID is a social identity network that allows users to prove that
         they are only using one account.
       </p>
@@ -67,7 +67,7 @@ const ConnectBrightIdModalContent = () => {
           tried ? "-try-again" : ""
         }`}
         onClick={handleHaveBrightIdClicked}
-        className="!w-full mb-4"
+        className="mb-4 !w-full"
       >
         <p className="font-semibold">Create my BrightID</p>
       </ClaimButton>

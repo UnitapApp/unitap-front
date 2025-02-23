@@ -101,20 +101,18 @@ const SelectMethodInput = ({
   };
 
   return (
-    <div ref={ref} className="relative ">
+    <div ref={ref} className="relative">
       <div
         onClick={() => handleShowItems()}
         className="bored flex h-[43px] w-full cursor-pointer items-center justify-between rounded-xl border-gray50 bg-gray40 px-3"
       >
         <div
-          className={`${
-            selectedMethod ? "text-white" : "text-gray80"
-          }  text-sm`}
+          className={`${selectedMethod ? "text-white" : "text-gray80"} text-sm`}
         >
           {selectedMethod ? selectedMethod : "Select Method"}
         </div>
         <Icon
-          iconSrc="/assets/images/fund/arrow-down.png"
+          iconSrc="/quest/assets/images/fund/arrow-down.png"
           width="14px"
           height="8px"
         />
@@ -134,7 +132,7 @@ const SelectMethodInput = ({
       {selectedMethod && (
         <div className="mt-3 flex h-[43px] w-full items-center overflow-hidden rounded-lg border border-gray50 bg-gray40 px-3">
           <input
-            className="h-full w-full bg-inherit px-2 "
+            className="h-full w-full bg-inherit px-2"
             name={SelectMethod.Minimum}
             type="number"
             min={0}
@@ -145,12 +143,12 @@ const SelectMethodInput = ({
             <Icon
               onClick={() => handleChangeMethodValues("increase")}
               className="cursor-pointer"
-              iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+              iconSrc="/quest/assets/images/provider-dashboard/arrow-top-dark.svg"
             />
             <Icon
               onClick={() => handleChangeMethodValues("decrease")}
               className="cursor-pointer"
-              iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+              iconSrc="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
             />
           </div>
         </div>
@@ -228,16 +226,16 @@ export const MinimumWeb3AmountRequirementField = ({
         onChange={(e) => handleChange(e.target.value)}
         value={minValue}
       />
-      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs">
         <Icon
           onClick={() => handleChangeValue("increase")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-top-dark.svg"
         />
         <Icon
           onClick={() => handleChangeValue("decrease")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
         />
       </div>
     </div>
@@ -286,16 +284,16 @@ export const MinimumNumberRequirementField = ({
         onChange={(e) => handleChange(e.target.value)}
         value={minValue}
       />
-      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs">
         <Icon
           onClick={() => handleChangeValue("increase")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-top-dark.svg"
         />
         <Icon
           onClick={() => handleChangeValue("decrease")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
         />
       </div>
     </div>
@@ -343,16 +341,16 @@ export const CountRequirementField = ({
         onChange={(e) => handleChange(e.target.value)}
         value={minValue}
       />
-      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+      <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs">
         <Icon
           onClick={() => handleChangeValue("increase")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-top-dark.svg"
         />
         <Icon
           onClick={() => handleChangeValue("decrease")}
           className="cursor-pointer"
-          iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
         />
       </div>
     </div>
@@ -465,16 +463,16 @@ export const AddressDelegationFields = ({
           onChange={(e) => handleChange(e.target.value)}
           value={minValue}
         />
-        <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs ">
+        <div className="flex h-full flex-col items-center justify-center gap-2 text-2xs">
           <Icon
             onClick={() => handleChangeValue("increase")}
             className="cursor-pointer"
-            iconSrc="/assets/images/provider-dashboard/arrow-top-dark.svg"
+            iconSrc="/quest/assets/images/provider-dashboard/arrow-top-dark.svg"
           />
           <Icon
             onClick={() => handleChangeValue("decrease")}
             className="cursor-pointer"
-            iconSrc="/assets/images/provider-dashboard/arrow-down-dark.svg"
+            iconSrc="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
           />
         </div>
       </div>

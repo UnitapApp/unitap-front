@@ -27,7 +27,7 @@ const AddNewWalletBody: FC<{
 
     checkUserExists(address).then((exists) => {
       setWalletState(
-        exists ? WalletState.SignMessage : WalletState.AddWalletFailed
+        exists ? WalletState.SignMessage : WalletState.AddWalletFailed,
       );
     });
   }, [address, isSuccess, setWalletState]);
@@ -35,45 +35,45 @@ const AddNewWalletBody: FC<{
   return (
     <div className="text-center">
       <Image
-        src="/assets/images/provider-dashboard/arrow-left.svg"
+        src="/quest/assets/images/provider-dashboard/arrow-left.svg"
         alt="back"
-        className="absolute top-5 left-4 cursor-pointer"
+        className="absolute left-4 top-5 cursor-pointer"
         height={14}
         width={19}
         onClick={() => setWalletState(WalletState.UnknownWallet)}
       />
-      <Icon iconSrc="/assets/images/wallets.svg" alt="wallets" />
-      <p className="font-semibold mt-3">Login</p>
+      <Icon iconSrc="/quest/assets/images/wallets.svg" alt="wallets" />
+      <p className="mt-3 font-semibold">Login</p>
 
-      <p className="mt-5 text-gray100 text-sm">
+      <p className="mt-5 text-sm text-gray100">
         Here you have to connect to a wallet that is connected to an existing
         account.
       </p>
 
       <WalletProviderButton
-        className="from-[#F5841F33] mt-8"
+        className="mt-8 from-[#F5841F33]"
         label="MetaMask"
-        imageIcon="/assets/images/modal/metamask-icon.svg"
-        backgroundImage="/assets/images/modal/metamask-bg.svg"
+        imageIcon="/quest/assets/images/modal/metamask-icon.svg"
+        backgroundImage="/quest/assets/images/modal/metamask-bg.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Metamask);
           connect({
             connector: connectors.find(
-              (connector) => connector.id === "injected"
+              (connector) => connector.id === "injected",
             )!,
           });
         }}
       />
       <WalletProviderButton
-        className="from-[#16436f] mt-3"
+        className="mt-3 from-[#16436f]"
         label="WalletConnect"
-        backgroundImage="/assets/images/modal/walletconnect-bg.svg"
-        imageIcon="/assets/images/modal/walletconnect-icon.svg"
+        backgroundImage="/quest/assets/images/modal/walletconnect-bg.svg"
+        imageIcon="/quest/assets/images/modal/walletconnect-icon.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Walletconnect);
           connect({
             connector: connectors.find(
-              (connector) => connector.id === "walletConnect"
+              (connector) => connector.id === "walletConnect",
             )!,
           });
         }}

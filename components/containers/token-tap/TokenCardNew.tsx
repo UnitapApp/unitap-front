@@ -9,8 +9,7 @@ import Link from "next/link";
 
 export type TokenCardProps = {
   token: Token;
-  isHighlighted?: boolean
-
+  isHighlighted?: boolean;
 };
 
 const nunitoSans = Nunito_Sans({
@@ -38,7 +37,6 @@ export default function TokenCardNew({ token, isHighlighted }: TokenCardProps) {
   );
 }
 
-
 export const ShareButton: FC<{ token: Token }> = ({ token }) => {
   const onShare = () => {
     window.open(
@@ -50,11 +48,10 @@ export const ShareButton: FC<{ token: Token }> = ({ token }) => {
     );
   };
 
-
   return (
     <LandingButton
       onClick={onShare}
-      className={`shadow-primary-button-sm ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal`}
+      className={`ml-3 flex items-center gap-2 bg-landing-primary px-3 py-1 text-sm font-normal shadow-primary-button-sm`}
     >
       <IoShareSocialOutline size={20} />
       Share
@@ -67,37 +64,41 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
     <div
       className={`flex flex-1 flex-wrap gap-3 px-4 py-3 sm:flex-nowrap ${nunitoSans.className}`}
     >
-      <div className="relative self-center z-20 h-60 w-60 min-w-60">
-        <div className="bg-black-0 absolute -inset-[2px] left-0 top-0 -z-10 rotate-[5deg] rounded-xl"></div>
+      <div className="relative z-20 h-60 w-60 min-w-60 self-center">
+        <div className="absolute -inset-[2px] left-0 top-0 -z-10 rotate-[5deg] rounded-xl bg-black-0"></div>
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
             src={
-              token.image ??
-              "/assets/images/prize-tap/default-prize.png"
+              token.image ?? "/quest/assets/images/prize-tap/default-prize.png"
             }
             alt={token.name}
             onError={(e) => {
               e.currentTarget.src =
-                "/assets/images/prize-tap/default-prize.png";
+                "/quest/assets/images/prize-tap/default-prize.png";
             }}
             width={231}
             height={231}
             className="h-[231px] w-[231px] rounded-xl object-cover"
           />
-          <div className="absolute overflow-hidden border bg-white shadow-primary-button-sm translate-x-1/2 -translate-y-1/2 top-1 right-0 rounded-full w-12 h-12 grid place-items-center">
-            <img width={47} height={47} src={token.chain.logoUrl} alt={token.chain.chainName} />
+          <div className="absolute right-0 top-1 grid h-12 w-12 -translate-y-1/2 translate-x-1/2 place-items-center overflow-hidden rounded-full border bg-white shadow-primary-button-sm">
+            <img
+              width={47}
+              height={47}
+              src={token.chain.logoUrl}
+              alt={token.chain.chainName}
+            />
           </div>
         </div>
       </div>
 
-      <div className="ml-5 flex flex-col h-h-full mt-3">
+      <div className="h-h-full ml-5 mt-3 flex flex-col">
         <div className="flex items-center gap-3">
           <h1 className={`${plusJakartaSans.className} font-bold`}>
             {token.name}
           </h1>
           <Link href={token.distributorUrl ?? "#"} target="_blank">
             <LandingButton
-              className={`shadow-primary-button-sm ml-3 bg-landing-secondary px-3 py-1 text-sm font-normal whitespace-nowrap`}
+              className={`ml-3 whitespace-nowrap bg-landing-secondary px-3 py-1 text-sm font-normal shadow-primary-button-sm`}
             >
               <small className="!font-thin">By</small> {token.distributor}
             </LandingButton>
@@ -119,11 +120,11 @@ const TokenTasks: FC<{ constraints: Permission[] }> = ({ constraints }) => {
   return (
     <>
       <div className="mt-auto text-xl font-bold">Tasks</div>
-      <div className="mt-2 mb-2 flex flex-wrap gap-2">
+      <div className="mb-2 mt-2 flex flex-wrap gap-2">
         {constraints.map((constraint, index) => (
           <LandingButton
             key={index}
-            className={`bg-landing-tertiary shadow-primary-button-sm px-3 py-1 text-sm font-normal`}
+            className={`bg-landing-tertiary px-3 py-1 text-sm font-normal shadow-primary-button-sm`}
           >
             {constraint.isReversed && "Not "}
             {constraint.title}
@@ -146,10 +147,17 @@ const TokenLabelValue: FC<PropsWithChildren & { label: string }> = ({
   );
 };
 
-export const TokenDetails: FC<{ token: Token; isHighlighted?: boolean }> = ({ token, isHighlighted }) => {
+export const TokenDetails: FC<{ token: Token; isHighlighted?: boolean }> = ({
+  token,
+  isHighlighted,
+}) => {
   return (
-    <div className={`${isHighlighted ? "bg-[#000] p-5 text-white" : "bg-gray-full text-black-0"} relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl p-5 md:w-72`}>
-      <div className={`bg-landing-token absolute right-0 top-0 w-48 translate-x-1/4 translate-y-1/2 rotate-[40deg] border-b-2 border-t-2 py-1 text-center font-bold border-black-0 ${isHighlighted ? "text-black-0" : ""}`}>
+    <div
+      className={`${isHighlighted ? "bg-[#000] p-5 text-white" : "bg-gray-full text-black-0"} relative flex w-full flex-col gap-4 overflow-hidden rounded-3xl p-5 md:w-72`}
+    >
+      <div
+        className={`absolute right-0 top-0 w-48 translate-x-1/4 translate-y-1/2 rotate-[40deg] border-b-2 border-t-2 border-black-0 bg-landing-token py-1 text-center font-bold ${isHighlighted ? "text-black-0" : ""}`}
+      >
         FCFS
       </div>
       <TokenLabelValue label="Reward Per User">
@@ -162,7 +170,10 @@ export const TokenDetails: FC<{ token: Token; isHighlighted?: boolean }> = ({ to
         <strong>{token.maxNumberOfClaims}</strong> Winners
       </TokenLabelValue>
 
-      <LandingButton disabled className="text-black-0 mt-auto bg-landing-primary px-5 py-3">
+      <LandingButton
+        disabled
+        className="mt-auto bg-landing-primary px-5 py-3 text-black-0"
+      >
         FINISHED
       </LandingButton>
     </div>

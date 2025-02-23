@@ -28,13 +28,13 @@ const ChooseWalletBody: FC<{
   }, [setClaimWalletAddress, text]);
 
   return (
-    <div className="text-sm w-full">
+    <div className="w-full text-sm">
       <div
         onClick={() => setIsWalletChoosing(false)}
-        className="absolute cursor-pointer z-10 top-4 right-3 bg-gray30"
+        className="absolute right-3 top-4 z-10 cursor-pointer bg-gray30"
       >
         <Icon
-          iconSrc="/assets/images/token-tap/angle-down.svg"
+          iconSrc="/quest/assets/images/token-tap/angle-down.svg"
           className="-rotate-90"
           width="20px"
         />
@@ -44,7 +44,7 @@ const ChooseWalletBody: FC<{
           value={text}
           onChange={(e) => setText(e.target.value)}
           className={
-            "placeholder:!text-gray80 h-12 !bg-gray70 rounded-xl " +
+            "h-12 rounded-xl !bg-gray70 placeholder:!text-gray80 " +
             (error ? "border border-error" : "")
           }
           placeholder="Paste Wallet Address"
@@ -53,12 +53,12 @@ const ChooseWalletBody: FC<{
           onClick={() =>
             navigator.clipboard.readText().then((text) => setText(text))
           }
-          className="absolute z-10 top-1/2 right-3 -translate-y-1/2 btn btn--sm btn--primary-light font-semibold tracking-wide"
+          className="btn btn--sm btn--primary-light absolute right-3 top-1/2 z-10 -translate-y-1/2 font-semibold tracking-wide"
         >
           PASTE
         </button>
       </div>
-      {!!error && <p className="text-xs ml-2 -mt-4 text-error">{error}</p>}
+      {!!error && <p className="-mt-4 ml-2 text-xs text-error">{error}</p>}
 
       <div className="mt-4">
         {userProfile?.wallets.map((wallet, key) => (
@@ -68,7 +68,7 @@ const ChooseWalletBody: FC<{
               setIsWalletChoosing(false);
             }}
             key={key}
-            className="border cursor-pointer mt-3 font-semibold text-gray100 py-3 px-5 border-gray60 rounded-xl bg-gray40"
+            className="mt-3 cursor-pointer rounded-xl border border-gray60 bg-gray40 px-5 py-3 font-semibold text-gray100"
           >
             {shortenAddress(wallet.address)}
           </div>

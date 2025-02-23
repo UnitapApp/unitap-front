@@ -79,7 +79,7 @@ const Modal = ({
                 className="close ml-auto cursor-pointer"
                 data-testid="close-modal"
               >
-                <Icon iconSrc="/assets/images/modal/exit.svg" />
+                <Icon iconSrc="/quest/assets/images/modal/exit.svg" />
               </span>
             </div>
             <ModalChildrenWrapper

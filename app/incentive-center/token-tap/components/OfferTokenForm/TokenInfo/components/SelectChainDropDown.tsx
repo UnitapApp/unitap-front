@@ -65,8 +65,8 @@ const SelectChainDropDown = ({ showErrors }: Prop) => {
           <Icon
             iconSrc={
               !showItems
-                ? "/assets/images/fund/arrow-down.png"
-                : "/assets/images/provider-dashboard/arrow-top.svg"
+                ? "/quest/assets/images/fund/arrow-down.png"
+                : "/quest/assets/images/provider-dashboard/arrow-top.svg"
             }
             width="14px"
             height="auto"

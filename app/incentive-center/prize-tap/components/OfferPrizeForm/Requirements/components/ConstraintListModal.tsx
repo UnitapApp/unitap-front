@@ -57,7 +57,7 @@ export const SelectCoreIntegrations: FC<{
   handleSelectConstraint: (constraint: ConstraintProps) => void;
 }> = ({ constraintsListApi, handleSelectConstraint }) => {
   return (
-    <div className="flex flex-col gap-2 ">
+    <div className="flex flex-col gap-2">
       <p className="text-sm text-white">General</p>
       <div className="mt-3 grid w-full grid-cols-2 items-center justify-center gap-2.5 p-1 text-center">
         {constraintsListApi?.general.map((constraint, key) => (
@@ -106,7 +106,7 @@ export const ConstraintInitialBody = () => {
       <div className="mt-2 gap-2">
         <Input
           data-testid="search-box"
-          $icon="/assets/images/modal/search-icon.svg"
+          $icon="/quest/assets/images/modal/search-icon.svg"
           $width="100%"
           $fontSize="12px"
           $iconWidth="20px"
@@ -139,7 +139,7 @@ export const ConstraintInitialBody = () => {
                 <p>{appInfos[constraintKey].label}</p>
                 <Icon
                   className="ml-auto -rotate-90"
-                  iconSrc={"/assets/images/token-tap/angle-down.svg"}
+                  iconSrc={"/quest/assets/images/token-tap/angle-down.svg"}
                   alt={"angle-down"}
                   width="12px"
                 />

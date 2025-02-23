@@ -31,21 +31,21 @@ const DeleteWalletModal = () => {
     >
       <div className="w-full text-sm">
         <Image
-          className="mt-10 mx-auto"
-          src="/assets/images/modal/delete-wallet.svg"
+          className="mx-auto mt-10"
+          src="/quest/assets/images/modal/delete-wallet.svg"
           alt="delete wallet"
           width={142}
           height={116}
         />
         <div className="mt-7 text-center">
-          <p className="text-gray100 px-5">
+          <p className="px-5 text-gray100">
             Are You sure you want to remove this wallet address? You will not be
             able to add this wallet to another Unitap account.
           </p>
         </div>
         <div
           className={
-            "rounded-xl mt-6 border px-5 font-normal text-center py-4 border-gray70 " +
+            "mt-6 rounded-xl border border-gray70 px-5 py-4 text-center font-normal " +
             NotoSansMono.className
           }
         >
@@ -61,7 +61,7 @@ const DeleteWalletModal = () => {
               .then(() => setFocusedWalletDeleteAddress(null))
               .finally(() => setLoading(false));
           }}
-          className="mt-10 disabled:opacity-60 hover:bg-gray30 transition-colors text-base font-semibold text-error rounded-xl border-2 border-error bg-gray20 text-center w-full py-3"
+          className="mt-10 w-full rounded-xl border-2 border-error bg-gray20 py-3 text-center text-base font-semibold text-error transition-colors hover:bg-gray30 disabled:opacity-60"
         >
           <p>Remove</p>
         </button>

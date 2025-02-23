@@ -1,13 +1,13 @@
 .provider_dashboard__status {
-	& div {
-		@apply py-[10px] px-3 cursor-pointer min-w-[60px] text-center;
-	}
-	& div:not(:last-child) {
-		@apply border-r-2 border-r-gray30;
-	}
+  & div {
+    @apply min-w-[60px] cursor-pointer px-3 py-[10px] text-center;
+  }
+  & div:not(:last-child) {
+    @apply border-r-2 border-r-gray30;
+  }
 }
 
 .refill_token {
-	@apply bg-no-repeat bg-cover border border-2 rounded-[16px] border-gray40;
-	background-image: url('/assets/images/provider-dashboard/bg.png');
+  @apply rounded-[16px] border border-2 border-gray40 bg-cover bg-no-repeat;
+  background-image: url("/quest/assets/images/provider-dashboard/bg.png");
 }

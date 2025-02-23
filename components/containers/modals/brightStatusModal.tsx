@@ -10,7 +10,7 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
       <div className="bright-connection-modal flex flex-col items-center justify-center pt-2">
         {" "}
         <Icon
-          iconSrc="/assets/images/modal/bright-success-icon.svg"
+          iconSrc="/quest/assets/images/modal/bright-success-icon.svg"
           mb={2}
           ml={-1.5}
         ></Icon>
@@ -40,7 +40,7 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
           <Icon
             data-testid="brightid-logo"
             className="bright-logo z-10 mb-5 !w-4/12"
-            iconSrc="/assets/images/modal/bright-id-logo-checked.svg"
+            iconSrc="/quest/assets/images/modal/bright-id-logo-checked.svg"
           />
           <p className="mb-2 text-sm font-bold text-error">
             You are not verified on BrightID
@@ -60,11 +60,11 @@ const BrightStatusModal = ({ success }: { success: boolean }) => {
               Verify on BrightID{" "}
               <Icon
                 className="arrow-icon ml-1.5 mt-0.5 w-2 cursor-pointer"
-                iconSrc="/assets/images/arrow-icon.svg"
+                iconSrc="/quest/assets/images/arrow-icon.svg"
               />
             </LightOutlinedButtonNew>
             <Icon
-              iconSrc="/assets/images/modal/bright-id-check.svg"
+              iconSrc="/quest/assets/images/modal/bright-id-check.svg"
               className="absolute right-4 top-1/2 h-6 w-6 -translate-y-1/2"
             />
           </span>

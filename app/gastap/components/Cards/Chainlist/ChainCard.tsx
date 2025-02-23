@@ -105,7 +105,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
               />
             </span>
             <p
-              className=" ml-3 text-center text-white sm:text-left"
+              className="ml-3 text-center text-white sm:text-left"
               data-testid={`chain-name-${chain.pk}`}
             >
               {chain.chainName}
@@ -114,7 +114,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
               width={8}
               height={8}
               className="arrow-icon ml-1.5 mt-1 h-2 w-2"
-              src="/assets/images/arrow-icon.svg"
+              src="/quest/assets/images/arrow-icon.svg"
               alt="arrow"
             />
             <p className="ml-2 rounded bg-gray30 px-2 py-1 text-2xs text-gray">
@@ -141,7 +141,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
                 >
                   <div className="flex h-11 items-center gap-3 rounded-xl bg-gray50 p-2 text-secondary-text">
                     <Image
-                      src="/assets/images/gas-tap/refuel-logo.svg"
+                      src="/quest/assets/images/gas-tap/refuel-logo.svg"
                       width={17}
                       height={22}
                       alt="refuel"
@@ -177,7 +177,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
                   <Image
                     width={24}
                     height={20}
-                    src={`/assets/images/${
+                    src={`/quest/assets/images/${
                       isOneTimeCollected
                         ? "gas-tap/claimed-logo.svg"
                         : "claim/claimedIcon.svg"
@@ -276,7 +276,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
                 <p className="flex-1">Single-Claim Tap</p>
                 <Icon
                   className="mx-4 text-white"
-                  iconSrc="/assets/images/gas-tap/claimable-once.svg"
+                  iconSrc="/quest/assets/images/gas-tap/claimable-once.svg"
                 />
               </div>
             ) : (
@@ -284,7 +284,7 @@ const ChainCard = ({ chain, isHighlighted, isThisRound }: ChainCardProps) => {
                 <p className="flex-1">Periodic Tap</p>
                 <Icon
                   className="mx-auto text-white"
-                  iconSrc="/assets/images/gas-tap/periodic-tap.svg"
+                  iconSrc="/quest/assets/images/gas-tap/periodic-tap.svg"
                 />
               </div>
             )}

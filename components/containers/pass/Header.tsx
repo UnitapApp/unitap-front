@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import styled from "styled-components/"
+import styled from "styled-components/";
 
 const Spaceship = styled.img`
   position: absolute;
   right: 0;
   transform: translate(-5%, -34%);
-`
+`;
 
 const Header = () => {
   return (
-    <div className="header w-full h-[202px] bg-gray20 rounded-2xl bg-[url('../public/assets/images/pass/bg-header.svg')]  flex flex-col gap-5 justify-end items-start overflow-hidden relative pl-6 pb-5 mb-4">
+    <div className="header relative mb-4 flex h-[202px] w-full flex-col items-start justify-end gap-5 overflow-hidden rounded-2xl bg-gray20 bg-[url('/quest/assets/images/pass/bg-header.svg')] pb-5 pl-6">
       {/* <div className="header-top z-10 flex items-center h-auto">
         <img
           className="gas-tap h-[48px] w-auto sm:w-auto"
@@ -32,7 +32,7 @@ const Header = () => {
         src="assets/images/nft/nft-header-spaceship.svg"
       />
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

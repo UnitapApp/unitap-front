@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  basePath: "/quest",
+  assetPrefix: "/quest",
   trailingSlash: true,
   images: {
     remotePatterns: [

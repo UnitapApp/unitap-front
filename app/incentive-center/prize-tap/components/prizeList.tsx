@@ -133,13 +133,13 @@ const PrizeTapList: FC<{ initialRaffles: UserRafflesProps[] }> = ({
   return (
     <div className="min-h-[600px]">
       <div>
-        <div className="flex flex-col items-center  justify-between md:flex-row ">
+        <div className="flex flex-col items-center justify-between md:flex-row">
           <SearchInput
             className="w-full md:w-1/3"
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div
-            className={`${Styles.providerDashboardStatus} align-center mt-5 flex h-[40px] w-full select-none items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto`}
+            className={`${Styles.providerDashboardStatus} align-center mt-5 flex h-[40px] w-full select-none items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0 md:w-auto`}
           >
             <div
               className={`${
@@ -198,8 +198,8 @@ const PrizeTapList: FC<{ initialRaffles: UserRafflesProps[] }> = ({
                 </p>
               </div>
               <Icon
-                className="absolute left-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
-                iconSrc="/assets/images/provider-dashboard/prize-bg.png"
+                className="absolute left-0 top-[-17px] h-[150px] sm:right-[-45px] sm:h-[80px]"
+                iconSrc="/quest/assets/images/provider-dashboard/prize-bg.png"
               />
             </div>
             <Link

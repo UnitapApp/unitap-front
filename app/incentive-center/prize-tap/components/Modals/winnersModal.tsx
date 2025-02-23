@@ -64,11 +64,11 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
   const userEnrollments = useMemo(() => {
     const items = !searchPhraseInput
       ? winnersResultRaffle?.winnerEntries
-      : winnersResultRaffle?.winnerEntries?.filter((item) =>
+      : (winnersResultRaffle?.winnerEntries?.filter((item) =>
           item.userWalletAddress
             .toLocaleLowerCase()
             .includes(searchPhraseInput.toLocaleLowerCase()),
-        ) ?? [];
+        ) ?? []);
 
     return items ?? [];
   }, [searchPhraseInput, winnersResultRaffle?.winnerEntries]);
@@ -85,8 +85,8 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
 
   return (
     <div>
-      <div className="mb-2 mt-2 w-full items-center px-1 sm:flex  sm:flex-row sm:justify-between">
-        <p className="text-xs  text-gray90">Winners</p>
+      <div className="mb-2 mt-2 w-full items-center px-1 sm:flex sm:flex-row sm:justify-between">
+        <p className="text-xs text-gray90">Winners</p>
         {!!winnersResultRaffle.numberOfOnchainEntries && (
           <CSVLink
             className="m-0 w-full max-w-[204px] bg-none p-0 text-xs text-gray90 underline"
@@ -100,7 +100,7 @@ const WinnersModalBody = ({ winnersResultRaffle }: Props) => {
       <div className="mt-1 flex w-full items-center rounded-xl border-2 !border-gray30 bg-gray50 p-4 py-3.5">
         <Icon
           className="mr-5"
-          iconSrc="/assets/images/modal/search-icon.svg"
+          iconSrc="/quest/assets/images/modal/search-icon.svg"
           width="20px"
           height="20px"
         />

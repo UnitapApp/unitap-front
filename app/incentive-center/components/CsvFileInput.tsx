@@ -72,7 +72,7 @@ const CsvFileInput = ({
           <Icon
             width="16px"
             height="16px"
-            iconSrc="/assets/images/provider-dashboard/upload.svg"
+            iconSrc="/quest/assets/images/provider-dashboard/upload.svg"
             className="-mt-1"
           />
           <div className="relative mt-0 w-full">

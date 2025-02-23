@@ -233,17 +233,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
     <div className={data.selectedChain ? "w-full" : "w-full opacity-30"}>
       <section className="flex h-[43px] w-full max-w-[452px] items-center overflow-hidden rounded-xl border border-gray50 bg-gray30 text-xs text-gray80">
         <div
-          className={`
-          ${!data.isNft && "border-gray50 bg-gray40 font-medium text-white"}
-           flex h-full w-[50%] cursor-pointer items-center justify-center border-r border-r-gray50 `}
+          className={` ${!data.isNft && "border-gray50 bg-gray40 font-medium text-white"} flex h-full w-[50%] cursor-pointer items-center justify-center border-r border-r-gray50`}
           onClick={() => handleSelectTokenOrNft(false)}
         >
           Token
         </div>
         <div
-          className={`
-          ${data.isNft && "border-gray50 bg-gray40  font-medium text-white"}
-           flex h-full w-[50%] cursor-pointer items-center justify-center border-l border-l-gray50 font-semibold text-gray90`}
+          className={` ${data.isNft && "border-gray50 bg-gray40 font-medium text-white"} flex h-full w-[50%] cursor-pointer items-center justify-center border-l border-l-gray50 font-semibold text-gray90`}
           // onClick={() => handleSelectTokenOrNft(true)}
         >
           NFT
@@ -254,12 +250,10 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         <div className="mt-4 flex w-full flex-col gap-5">
           <div className="relative">
             <div
-              className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl 
-              border-[1.4px] bg-gray40 text-xs text-gray100 
-              ${tokenAddressError ? "border-error" : "border-gray50"}`}
+              className={`flex h-[43px] max-w-[452px] overflow-hidden rounded-xl border-[1.4px] bg-gray40 text-xs text-gray100 ${tokenAddressError ? "border-error" : "border-gray50"}`}
             >
               <div
-                className={`flex w-full cursor-pointer items-center  justify-between`}
+                className={`flex w-full cursor-pointer items-center justify-between`}
                 ref={ref}
                 onClick={() => {
                   !isShowingDetails && setShowItems(!showItems);
@@ -280,7 +274,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   placeholder="Search or paste token contract address"
                   value={tokenName ? tokenName : ""}
                   autoComplete="off"
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full"
                   type="text"
                   onChange={(e) => handleCheckTokenAddress(e.target.value)}
                 />
@@ -302,7 +296,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
                 <div className="flex h-full w-[55px] items-center justify-center">
                   <Icon
-                    iconSrc="/assets/images/provider-dashboard/arrow-top.svg"
+                    iconSrc="/quest/assets/images/provider-dashboard/arrow-top.svg"
                     className={`${showItems ? "" : "rotate-180"}`}
                     width="12px"
                     height="12px"
@@ -324,7 +318,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                             width="24px"
                             height="24px"
                           />
-                          <p className="flex h-10 w-full cursor-pointer  items-center text-sm ">
+                          <p className="flex h-10 w-full cursor-pointer items-center text-sm">
                             {item.tokenSymbol}
                           </p>
                           {Number(
@@ -365,19 +359,19 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
                 <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  <Icon iconSrc="/quest/assets/images/provider-dashboard/invalidAddress.svg" />
                 </div>
               )}
               {tokenContractStatus.isValid ===
                 ContractValidationStatus.Valid && (
                 <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
+                  <Icon iconSrc="/quest/assets/images/provider-dashboard/validAddress.svg" />
                 </div>
               )}
             </div>
             {tokenContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error">
                 Invalid Token Contract Address
               </p>
             )}
@@ -391,7 +385,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
 
           <div className="total_amount_box relative">
             <div
-              className={`relative rounded-2xl  border-2 p-5 ${
+              className={`relative rounded-2xl border-2 p-5 ${
                 totalAmountError ? "border-error" : "border-gray50"
               } `}
             >
@@ -416,7 +410,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
               <Icon
-                iconSrc="/assets/images/provider-dashboard/cross.png"
+                iconSrc="/quest/assets/images/provider-dashboard/cross.png"
                 height="16px"
                 width="16px"
                 className="py-2"
@@ -439,7 +433,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 />
               </div>
               <Icon
-                iconSrc="/assets/images/provider-dashboard/equal.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/equal.svg"
                 height="16px"
                 width="16px"
                 className="py-2"
@@ -479,12 +473,11 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
         <div className="mt-5 flex w-full flex-col gap-4">
           <div className="relative">
             <div
-              className={`
-							 flex border-[1.4px] bg-gray40 text-xs text-gray80 ${
-                 nftAddressError ? "border-error" : "border-gray50"
-               } ${
-                 data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
-               } h-[43px] max-w-[452px]  overflow-hidden rounded-xl`}
+              className={`flex border-[1.4px] bg-gray40 text-xs text-gray80 ${
+                nftAddressError ? "border-error" : "border-gray50"
+              } ${
+                data.nftTokenIds.length >= 1 ? "opacity-[0.5]" : "opacity-1"
+              } h-[43px] max-w-[452px] overflow-hidden rounded-xl`}
             >
               <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>NFT Contract address</p>
@@ -495,7 +488,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   name="nftContractAddress"
                   placeholder="paste here"
                   value={data.nftContractAddress ? data.nftContractAddress : ""}
-                  className="provider-dashboard-input w-full "
+                  className="provider-dashboard-input w-full"
                   type="text"
                   onChange={handleChange}
                 />
@@ -512,12 +505,12 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               {nftContractStatus.isValid ===
                 ContractValidationStatus.NotValid && (
                 <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/invalidAddress.svg" />
+                  <Icon iconSrc="/quest/assets/images/provider-dashboard/invalidAddress.svg" />
                 </div>
               )}
               {nftContractStatus.isValid === ContractValidationStatus.Valid && (
                 <div className="m-0 flex h-full w-[70px] items-center justify-center bg-gray30 p-0">
-                  <Icon iconSrc="/assets/images/provider-dashboard/validAddress.svg" />
+                  <Icon iconSrc="/quest/assets/images/provider-dashboard/validAddress.svg" />
                 </div>
               )}
             </div>
@@ -528,7 +521,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
             )}
             {nftContractStatus.isValid ===
               ContractValidationStatus.NotValid && (
-              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error ">
+              <p className="absolute m-0 mt-[2px] p-0 text-2xs text-error">
                 Invalid NFT Contract Address
               </p>
             )}
@@ -539,17 +532,16 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               <div className="absolute -right-6 -top-4 z-100 flex h-[20px] w-[100px] items-center justify-center rounded-sm bg-gray100 text-xs">
                 tooltip message
               </div>
-              <div className="absolute right-6 top-[1px] h-[5px] w-[5px] rotate-45  bg-green-100"></div>
+              <div className="absolute right-6 top-[1px] h-[5px] w-[5px] rotate-45 bg-green-100"></div>
             </div>
             <div
-              className={`
-							 flex border bg-gray40 text-xs text-gray80 ${
-                 Number(numberOfNfts) > 500 ||
-                 (data.nftTokenIds.length > 0 &&
-                   data.nftTokenIds.length != Number(numberOfNfts))
-                   ? "border-error"
-                   : "border-gray50"
-               } h-[43px] max-w-[452px]  items-center justify-between overflow-hidden rounded-xl pr-4`}
+              className={`flex border bg-gray40 text-xs text-gray80 ${
+                Number(numberOfNfts) > 500 ||
+                (data.nftTokenIds.length > 0 &&
+                  data.nftTokenIds.length != Number(numberOfNfts))
+                  ? "border-error"
+                  : "border-gray50"
+              } h-[43px] max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
             >
               <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-center">
                 <p>Number of Nfts</p>
@@ -571,7 +563,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
               </div>
               <div className="relative min-w-[20px]">
                 <Icon
-                  iconSrc="/assets/images/provider-dashboard/exclamation.svg"
+                  iconSrc="/quest/assets/images/provider-dashboard/exclamation.svg"
                   className="cursor-pointer"
                   onMouseEnter={() => setShowTooltip(true)}
                   onMouseLeave={() => setShowTooltip(false)}
@@ -611,7 +603,7 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                 </button>
                 <Icon
                   className="cursor-pointer"
-                  iconSrc="/assets/images/modal/exit.svg"
+                  iconSrc="/quest/assets/images/modal/exit.svg"
                   onClick={() => handleClearNfts()}
                 />
               </div>
@@ -634,13 +626,13 @@ const SelectTokenOrNft = ({ showErrors, isRightChain }: Prop) => {
                   data.nftTokenIds.length == 0 && showErrors
                     ? "border-error"
                     : "border-gray50"
-                } h-[44px] w-full  max-w-[452px] items-center overflow-hidden  rounded-xl border bg-gray40`}
+                } h-[44px] w-full max-w-[452px] items-center overflow-hidden rounded-xl border bg-gray40`}
               >
                 <div className="flex h-full w-full max-w-[148px] items-center gap-2 p-3">
                   <Icon
                     width="16px"
                     height="16px"
-                    iconSrc="/assets/images/provider-dashboard/add-requirement.svg"
+                    iconSrc="/quest/assets/images/provider-dashboard/add-requirement.svg"
                   />
                   <p>Add NFT ID</p>
                 </div>

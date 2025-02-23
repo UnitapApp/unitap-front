@@ -203,13 +203,13 @@ const GasTapContent = () => {
   return (
     <div className="min-h-[600px]">
       <div>
-        <div className="flex flex-col items-center  justify-between gap-2 lg:flex-row lg:gap-2">
+        <div className="flex flex-col items-center justify-between gap-2 lg:flex-row lg:gap-2">
           <SearchInput
-            className="st  w-full sm:max-w-[270px]"
+            className="st w-full sm:max-w-[270px]"
             handleSetSearchPhrase={handleSetSearchPhrase}
           />
           <div className="flex w-full select-none flex-col gap-2 sm:w-auto lg:flex-row lg:gap-1">
-            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
+            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0 md:w-auto">
               <div
                 className={`${
                   selectedFilter.statusFilter == StatusFilters.All &&
@@ -247,7 +247,7 @@ const GasTapContent = () => {
                 rejected
               </div>
             </div>
-            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
+            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0 md:w-auto">
               <div
                 className={`${
                   selectedFilter.mainnetFilter == MainnetFilters.All &&
@@ -276,7 +276,7 @@ const GasTapContent = () => {
                 Mainnet
               </div>
             </div>
-            <div className="provider-dashboard__status  align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto">
+            <div className="provider-dashboard__status align-center flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0 md:w-auto">
               <div
                 className={`${
                   selectedFilter.evmFilter == EvmFilters.All && "text-gray100"
@@ -316,8 +316,8 @@ const GasTapContent = () => {
                 </p>
               </div>
               <Icon
-                className="absolute right-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
-                iconSrc="/assets/images/provider-dashboard/gas-bg.png"
+                className="absolute right-0 top-[-17px] h-[150px] sm:right-[-45px] sm:h-[80px]"
+                iconSrc="/quest/assets/images/provider-dashboard/gas-bg.png"
               />
             </div>
             <Link

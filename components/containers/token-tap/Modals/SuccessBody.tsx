@@ -84,7 +84,7 @@ const SuccessBody: FC<{
           <p className="text-sm font-semibold text-twitter">Share on Twitter</p>
         </button>
         <Icon
-          iconSrc="/assets/images/gas-tap/twitter-share.svg"
+          iconSrc="/quest/assets/images/gas-tap/twitter-share.svg"
           className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
           width="auto"
           height="26px"

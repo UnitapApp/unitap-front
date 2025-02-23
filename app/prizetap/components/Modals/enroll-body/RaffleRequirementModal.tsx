@@ -52,7 +52,7 @@ const Sidebar: FC<{
 
   return (
     <aside className="relative h-full w-[230px] rounded-lg bg-gray20 p-2 text-sm">
-      <div className=" relative mb-8 flex h-[112px] items-center justify-center rounded-2xl border border-gray60">
+      <div className="relative mb-8 flex h-[112px] items-center justify-center rounded-2xl border border-gray60">
         <img
           src={prize.image}
           width="80px"
@@ -103,9 +103,9 @@ const Sidebar: FC<{
               (item: any) => item.isVerified,
             ).length
           }
-          className={` mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
+          className={`mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
           // style={{
-          //   background: "url('/assets/images/prize-tap/enroll.svg')",
+          //   background: "url('/quest/assets/images/prize-tap/enroll.svg')",
           // }}
           onClick={() => setMethod("Verify")}
         >
@@ -139,8 +139,8 @@ const PrizeRequirementBody: FC<{
 
   const constraint =
     currentRequirementIndex !== undefined
-      ? permissions[currentRequirementIndex] ??
-        selectedRaffleForEnroll?.constraints[currentRequirementIndex]
+      ? (permissions[currentRequirementIndex] ??
+        selectedRaffleForEnroll?.constraints[currentRequirementIndex])
       : null;
 
   const { seconds, reset } = useTimer({ seconds: 60, minutes: 0, hours: 0 });
@@ -304,7 +304,7 @@ const PrizeRequirementBody: FC<{
           )}
         {params["core.IsFollowingFarcasterBatch"] &&
           constraint.name === "core.IsFollowingFarcasterBatch" && (
-            <div className=" flex flex-col gap-4 px-2">
+            <div className="flex flex-col gap-4 px-2">
               {params["core.IsFollowingFarcasterBatch"]["FARCASTER_FIDS"].map(
                 (id: number, index: number) => (
                   <div
@@ -370,7 +370,7 @@ const PrizeRequirementBody: FC<{
 
         {params["core.IsFollowingTwitterBatch"] &&
           constraint.name === "core.IsFollowingTwitterBatch" && (
-            <div className=" flex flex-col gap-4 px-2">
+            <div className="flex flex-col gap-4 px-2">
               {params["core.IsFollowingTwitterBatch"]["TWITTER_IDS"].map(
                 (id: number, index: number) => (
                   <div

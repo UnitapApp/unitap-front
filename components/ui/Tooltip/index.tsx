@@ -55,7 +55,7 @@ const Tooltip: FC<
               width={12}
               height={12}
               className="inline-block h-3 w-3"
-              src={imageUrl ?? "/assets/images/tooltip.svg"}
+              src={imageUrl ?? "/quest/assets/images/tooltip.svg"}
             />
           )}
 

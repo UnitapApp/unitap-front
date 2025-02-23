@@ -9,9 +9,9 @@ import Icon from "@/components/ui/Icon";
 
 export const TimeEnrollLimitationDescription = {
   id: 1,
-  prevIcon: "/assets/images/provider-dashboard/step-1-green.svg",
-  activeIcon: "/assets/images/provider-dashboard/step-1-active.svg",
-  nextIcon: "/assets/images/provider-dashboard/step-1-off.svg",
+  prevIcon: "/quest/assets/images/provider-dashboard/step-1-green.svg",
+  activeIcon: "/quest/assets/images/provider-dashboard/step-1-active.svg",
+  nextIcon: "/quest/assets/images/provider-dashboard/step-1-off.svg",
   title: "Time/Enrollment Limitation",
   description: "Information of time and enrollment ",
 };
@@ -118,7 +118,7 @@ const TokenTapTimeEnrollLimitation = ({
               className="mt-[-1px]"
               width="18px"
               height="18px"
-              iconSrc="/assets/images/provider-dashboard/exclamationMark.svg"
+              iconSrc="/quest/assets/images/provider-dashboard/exclamationMark.svg"
             />
             <p>
               Validating requests usually takes around 1 week. if you need for

@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text.style";
 import { FC, useEffect } from "react";
 import { Chain, ClaimReceipt, ClaimReceiptState } from "@/types";
 import lottie from "lottie-web";
-import animation from "@/assets/animations/GasFee-delivery2.json";
+import animation from "@/quest/assets/animations/GasFee-delivery2.json";
 
 const ClaimPendingBody: FC<{
   chain: Chain;

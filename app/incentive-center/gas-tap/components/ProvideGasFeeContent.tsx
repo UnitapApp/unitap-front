@@ -224,10 +224,10 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
   }, [isRightChain, address, provider, balance]);
 
   return (
-    <div className="relative flex h-[10hv] select-none flex-col items-center overflow-hidden  rounded-xl bg-gray20 p-12 text-center text-white">
+    <div className="relative flex h-[10hv] select-none flex-col items-center overflow-hidden rounded-xl bg-gray20 p-12 text-center text-white">
       <div className="w-full max-w-[452px] animate-fadeIn">
         <div className="absolute left-[-24.5em] top-[-10.5em] z-0">
-          <Icon iconSrc="/assets/images/fund/provide-gas-fee-planet.svg" />
+          <Icon iconSrc="/quest/assets/images/fund/provide-gas-fee-planet.svg" />
         </div>
         <div className="absolute top-2 cursor-pointer">
           <Link href={RoutePath.PROVIDER_GASTAP}>
@@ -254,14 +254,14 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
           </Link>
         </div>
         <div className="z-10">
-          <Icon iconSrc="/assets/images/provider-dashboard/gasTap/battery.png" />
+          <Icon iconSrc="/quest/assets/images/provider-dashboard/gasTap/battery.png" />
         </div>
-        <div className="w-full max-w-[452px] ">
+        <div className="w-full max-w-[452px]">
           <div className="z-10 mt-5 flex flex-col items-center">
             <p className="mb-2 text-sm font-semibold">
               Onboard new users by providing gas
             </p>
-            <div className=" flex items-center">
+            <div className="flex items-center">
               <p className="max-w-[300px] text-xs text-gray100">
                 100% of contributions will fund distributions and transaction
                 costs of the gas tap.
@@ -289,13 +289,13 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
                 <span className="h-8 w-8 rounded-full bg-gray50"></span>
               )}
               <Icon
-                iconSrc="/assets/images/fund/arrow-down.png"
+                iconSrc="/quest/assets/images/fund/arrow-down.png"
                 width="14px"
                 height="auto"
               />
             </div>
-            <div className="select-box__info relative flex w-full flex-col rounded-xl bg-gray40 pl-4 ">
-              <div className="select-box__info__amount flex h-[43px] w-full items-center  justify-center">
+            <div className="select-box__info relative flex w-full flex-col rounded-xl bg-gray40 pl-4">
+              <div className="select-box__info__amount flex h-[43px] w-full items-center justify-center">
                 <input
                   className="fund-input w-full bg-transparent text-sm text-white"
                   type="number"
@@ -324,7 +324,7 @@ const ProvideGasFeeContent: FC<{ initialChainId?: number }> = ({
           </div>
 
           {!!fundAmount && !!helpAmount && (
-            <div className="mt-4 flex min-h-[31px] items-center justify-between rounded-lg border border-gray50 px-2 text-xs  text-gray90 ">
+            <div className="mt-4 flex min-h-[31px] items-center justify-between rounded-lg border border-gray50 px-2 text-xs text-gray90">
               <div>
                 You will help onboard approximately
                 <span className="mx-1 text-gray100">{helpAmount}</span> users to

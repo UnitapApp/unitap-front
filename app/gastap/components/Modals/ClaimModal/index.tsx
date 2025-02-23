@@ -112,7 +112,7 @@ const ClaimModalBody = ({ chain }: { chain: Chain }) => {
         Selected Wallet: {shortenAddress(claimWalletAddress || address)}
         <Image
           className="ml-auto"
-          src="/assets/images/provider-dashboard/arrow-down-dark.svg"
+          src="/quest/assets/images/provider-dashboard/arrow-down-dark.svg"
           alt="angle down"
           width={14}
           height={8}

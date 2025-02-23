@@ -39,22 +39,22 @@ const ChainItem = (props: ChainItemProps) => {
     const amount = JSBI.BigInt(fundManagerBalance.toString());
     return CurrencyAmount.fromRawAmount(
       nativeOnChain(Number(chain.chainId)),
-      amount
+      amount,
     );
   }, [fundManagerBalance]);
 
   return (
     <div
-      className="bg-gray30 rounded-xl border-2 transition-all duration-50 border-gray50 hover:bg-gray40 hover:border-gray80 flex px-4 py-3.5 pl-3 items-center mb-3 cursor-pointer last:mb-0"
+      className="duration-50 mb-3 flex cursor-pointer items-center rounded-xl border-2 border-gray50 bg-gray30 px-4 py-3.5 pl-3 transition-all last:mb-0 hover:border-gray80 hover:bg-gray40"
       onClick={onClick}
       data-testid={props["data-testid"]}
     >
       <Icon mr={2} width="32px" iconSrc={icon}></Icon>
-      <p className="token-symbol text-white font-semibold mr-auto">
+      <p className="token-symbol mr-auto font-semibold text-white">
         {chain.chainName}
       </p>
-      <p className="balance mr-2 text-gray90 text-xs">Contract Balance: </p>
-      <p className="balance-amount text-white text-xs">
+      <p className="balance mr-2 text-xs text-gray90">Contract Balance: </p>
+      <p className="balance-amount text-xs text-white">
         {fundManagerBalanceAmount
           ? fundManagerBalanceAmount.toSignificant(5)
           : "..."}
@@ -62,7 +62,7 @@ const ChainItem = (props: ChainItemProps) => {
       {selected && (
         <Icon
           className="ml-2"
-          iconSrc="/assets/images/modal/check.svg"
+          iconSrc="/quest/assets/images/modal/check.svg"
           width="13px"
           height="auto"
         />

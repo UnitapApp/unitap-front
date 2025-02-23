@@ -21,7 +21,7 @@ const SearchInput = ({
   const router = useRouter();
 
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
@@ -56,11 +56,11 @@ const SearchInput = ({
 
   return (
     <div
-      className={`search-input relative border-gray30 border-2 bg-gray40 rounded-xl ${className}`}
+      className={`search-input relative rounded-xl border-2 border-gray30 bg-gray40 ${className}`}
     >
       <Input
         data-testid="search-box"
-        $icon="/assets/images/modal/search-icon.svg"
+        $icon="/quest/assets/images/modal/search-icon.svg"
         $width="100%"
         height="40px"
         $fontSize="12px"

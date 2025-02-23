@@ -36,24 +36,24 @@ const Widget = (props: WidgetProps) => {
     id,
   } = props;
   return (
-    <div className="p-[1px] h-full w-full rounded-2xl" id={id}>
+    <div className="h-full w-full rounded-2xl p-[1px]" id={id}>
       <div
         className={`${
           className ? className : ""
-        } flex flex-col justify-between uni-card px-4 pt-4 pb-3`}
+        } uni-card flex flex-col justify-between px-4 pb-3 pt-4`}
       >
         <section>
-          <header className={`flex gap-4 items-center justify-between h-10`}>
+          <header className={`flex h-10 items-center justify-between gap-4`}>
             <div
               className={`${
                 titleClass ? titleClass : ""
-              } flex gap-3 items-center flex-auto`}
+              } flex flex-auto items-center gap-3`}
             >
-              <p className={"text-white text-xl font-semibold"}>{title}</p>
+              <p className={"text-xl font-semibold text-white"}>{title}</p>
               {icon && (
                 <img
                   className={`${iconSize ? iconSize : ""} widget-icon`}
-                  src={`/assets/images/landing/${icon}`}
+                  src={`/quest/assets/images/landing/${icon}`}
                   alt={"widget"}
                 />
               )}
@@ -77,14 +77,14 @@ const Widget = (props: WidgetProps) => {
           {description && (
             <p
               className={
-                "text-secondary-text text-xs leading-loose font-normal py-4"
+                "py-4 text-xs font-normal leading-loose text-secondary-text"
               }
             >
               {description}
             </p>
           )}
         </section>
-        <main className={"relative h-full z-10"}>{children}</main>
+        <main className={"relative z-10 h-full"}>{children}</main>
       </div>
     </div>
   );

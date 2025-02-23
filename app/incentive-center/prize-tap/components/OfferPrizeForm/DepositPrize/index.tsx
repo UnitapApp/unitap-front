@@ -23,13 +23,13 @@ const nftDescription = {
   description: `Please proceed with depositing the NFT for which you have completed the corresponding form. Please wait
 	momentarily as we validate your request. In the event of rejection, the token will promptly returned to
 	your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/deposit-nft.png",
+  icon: "/quest/assets/images/provider-dashboard/deposit-nft.png",
 };
 
 const tokenDescription = {
   title: "Deposit Selected Token",
   description: `Please proceed with depositing the Token for which you have completed the corresponding form. Please wait as we validate your request. In the event of rejection, the token will promptly be returned to your designated wallet.`,
-  icon: "/assets/images/provider-dashboard/deposit-token.png",
+  icon: "/quest/assets/images/provider-dashboard/deposit-token.png",
 };
 
 const DepositPrize = ({
@@ -108,7 +108,7 @@ const DepositPrize = ({
         {requirementList.length > 0 && (
           <div className="mt-4">
             <div className="mb-3 flex items-center justify-between gap-4">
-              <p className=" text-sm text-space-green">Requirement</p>
+              <p className="text-sm text-space-green">Requirement</p>
               <div className="h-[1px] w-full bg-space-green"></div>
             </div>
             {requirementList.map((requirement, key) => (
@@ -119,7 +119,7 @@ const DepositPrize = ({
 
         <div className="prize-information mt-6">
           <div className="mb-3 flex items-center justify-between gap-4">
-            <p className=" w-full max-w-[112px] text-sm text-space-green">
+            <p className="w-full max-w-[112px] text-sm text-space-green">
               Prize Information
             </p>
             <div className="h-[1px] w-full bg-space-green"></div>
@@ -184,7 +184,7 @@ const DepositPrize = ({
 
         <div className="time-limitation mt-6">
           <div className="mb-3 flex items-center justify-between gap-4">
-            <p className=" w-full max-w-[100px] text-sm text-space-green">
+            <p className="w-full max-w-[100px] text-sm text-space-green">
               Time Limitation
             </p>
             <div className="h-[1px] w-full bg-space-green"></div>
@@ -231,35 +231,35 @@ const DepositPrize = ({
 
           {data.creatorUrl && (
             <div className="mb-3 flex h-11 items-center gap-2 rounded-xl bg-gray30 pl-3">
-              <Icon iconSrc="/assets/images/provider-dashboard/creatorUrl.svg" />
+              <Icon iconSrc="/quest/assets/images/provider-dashboard/creatorUrl.svg" />
               <p className="text-xs">{data.creatorUrl}</p>
             </div>
           )}
 
           {data.twitter && (
             <div className="mb-3 flex h-11 items-center gap-2 rounded-xl bg-gray30 pl-3">
-              <Icon iconSrc="/assets/images/provider-dashboard/twitter.svg" />
+              <Icon iconSrc="/quest/assets/images/provider-dashboard/twitter.svg" />
               <p className="text-xs">{data.twitter}</p>
             </div>
           )}
 
           {data.discord && (
             <div className="mb-3 flex h-11 items-center gap-2 rounded-xl bg-gray30 pl-3">
-              <Icon iconSrc="/assets/images/provider-dashboard/discord.svg" />
+              <Icon iconSrc="/quest/assets/images/provider-dashboard/discord.svg" />
               <p className="text-xs">{data.discord}</p>
             </div>
           )}
 
           {data.email && (
             <div className="mb-3 flex h-11 items-center gap-2 rounded-xl bg-gray30 pl-3">
-              <Icon iconSrc="/assets/images/provider-dashboard/email.svg" />
+              <Icon iconSrc="/quest/assets/images/provider-dashboard/email.svg" />
               <p className="text-xs">{data.email}</p>
             </div>
           )}
 
           {data.telegram && (
             <div className="mb-3 flex h-11 items-center gap-2 rounded-xl bg-gray30 pl-3">
-              <Icon iconSrc="/assets/images/provider-dashboard/telegram.svg" />
+              <Icon iconSrc="/quest/assets/images/provider-dashboard/telegram.svg" />
               <p className="text-xs">{data.telegram}</p>
             </div>
           )}
@@ -283,7 +283,7 @@ const DepositPrize = ({
       ) : !address ? (
         <ProviderDashboardButtonSubmit
           onClick={handleCheckConnection}
-          className="!w-full  max-w-[452px] text-white "
+          className="!w-full max-w-[452px] text-white"
           $fontSize="14px"
           data-testid="fund-action"
         >

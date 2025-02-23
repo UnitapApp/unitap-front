@@ -73,13 +73,13 @@ const Select: FC<SelectProps> = ({
       <div ref={ref} className="relative w-full cursor-pointer">
         <div
           onClick={() => setShowItems(!showItems)}
-          className={`flex items-center rounded-xl dark:border border-gray50 dark:bg-gray40 p-2 bg-stone-50 dark:border-stone-300 ${className}`}
+          className={`flex items-center rounded-xl border-gray50 bg-stone-50 p-2 dark:border dark:border-stone-300 dark:bg-gray40 ${className}`}
         >
           {selectedItem?.icon ? (
             <Icon iconSrc={selectedItem.icon} width="24px" />
           ) : null}
           <input
-            className="bg-transparent placeholder:text-stone-500 px-2 text-sm dark:text-white text-black"
+            className="bg-transparent px-2 text-sm text-black placeholder:text-stone-500 dark:text-white"
             type="text"
             value={search ?? ""}
             placeholder={placeholder}
@@ -88,15 +88,15 @@ const Select: FC<SelectProps> = ({
           <Icon
             iconSrc={
               !showItems
-                ? "/assets/images/fund/arrow-down.png"
-                : "/assets/images/provider-dashboard/arrow-top.svg"
+                ? "/quest/assets/images/fund/arrow-down.png"
+                : "/quest/assets/images/provider-dashboard/arrow-top.svg"
             }
             width="14px"
             height="auto"
           ></Icon>
         </div>
         {showItems && (
-          <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 dark:border-gray60 border-stone-300 dark:bg-gray40 bg-stone-50">
+          <div className="styled-scroll absolute z-[2] mt-1 max-h-[205px] w-full cursor-pointer overflow-y-scroll rounded-xl border-2 border-stone-300 bg-stone-50 dark:border-gray60 dark:bg-gray40">
             {filteredItems.map((item, index) => (
               <div
                 key={index}
@@ -104,7 +104,7 @@ const Select: FC<SelectProps> = ({
                   setShowItems(false);
                   handleValueChanged(item);
                 }}
-                className={`flex p-2 ${item.value === value ? "bg-stone-300 dark:bg-gray60" : ""} w-full items-center gap-2 px-2 text-sm dark:text-white hover:bg-stone-300 dark:hover:bg-gray70`}
+                className={`flex p-2 ${item.value === value ? "bg-stone-300 dark:bg-gray60" : ""} w-full items-center gap-2 px-2 text-sm hover:bg-stone-300 dark:text-white dark:hover:bg-gray70`}
               >
                 {!!item.icon && <Icon iconSrc={item.icon} width="24px" />}
                 <p>{item.label}</p>

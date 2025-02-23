@@ -26,20 +26,23 @@ const AddNewWalletSuccess = () => {
 
   return (
     <>
-      <Icon iconSrc="/assets/images/modal/space-like.svg" alt="unitap like" />
+      <Icon
+        iconSrc="/quest/assets/images/modal/space-like.svg"
+        alt="unitap like"
+      />
 
-      <div className="flex items-center mt-4 text-space-green">
+      <div className="mt-4 flex items-center text-space-green">
         <p>Logged in Successfully!</p>
       </div>
 
-      <p className="mt-3 text-sm text-center text-gray100">
+      <p className="mt-3 text-center text-sm text-gray100">
         Welcome Back @{userProfile?.username}. Now you can go to your profile
         and add {shortenAddress(address)} to your account.
       </p>
 
       <ClaimButton
         // onClick={handleHaveBrightIdClicked}
-        className="!w-full mt-8"
+        className="mt-8 !w-full"
       >
         <p className="font-semibold">Go to Profile</p>
       </ClaimButton>

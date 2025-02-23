@@ -82,13 +82,13 @@ const ChainList = ({
         />
 
         <Icon
-          iconSrc="/assets/images/fund/arrow-down.png"
+          iconSrc="/quest/assets/images/fund/arrow-down.png"
           height="8px"
           width="14px"
         />
       </div>
       {showItems && (
-        <div className="absolute z-10 max-h-[200px] w-full overflow-x-hidden overflow-y-scroll rounded-lg border-2 border-gray60 bg-gray40 ">
+        <div className="absolute z-10 max-h-[200px] w-full overflow-x-hidden overflow-y-scroll rounded-lg border-2 border-gray60 bg-gray40">
           {filterChainName?.map((chain) => (
             <div
               onClick={() => handleSelectChain(chain)}

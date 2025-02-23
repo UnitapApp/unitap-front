@@ -139,7 +139,7 @@ const NftPass = () => {
       <div className="wrap flex w-full">
         <Header />
       </div>
-      <div className="wrap mb-4 flex w-full flex-col-reverse gap-4 overflow-hidden md:flex-row ">
+      <div className="wrap mb-4 flex w-full flex-col-reverse gap-4 overflow-hidden md:flex-row">
         <div className="card relative flex min-h-[490px] w-full flex-col overflow-hidden">
           <div className="flex h-[54px] items-center bg-gray30 pl-5 text-base font-medium text-gray100">
             Unitap Pass advantages
@@ -160,7 +160,7 @@ const NftPass = () => {
               <img className="" src={advantagesItem[displayIndex].imgUrl} />
             </div>
           </div>
-          <div className=" absolute bottom-0 z-10 flex w-full flex-col items-center justify-center text-sm font-normal text-[#8F9A97]">
+          <div className="absolute bottom-0 z-10 flex w-full flex-col items-center justify-center text-sm font-normal text-[#8F9A97]">
             <div className="relative">
               <div className="flex h-[54px] items-center justify-center gap-5 rounded-[16px_16px_0px_0px] bg-gray30 px-5">
                 <div className="cursor-pointer" onClick={() => handleChange(0)}>
@@ -234,18 +234,18 @@ const NftPass = () => {
                 className={`${borderPosition} absolute bottom-2 h-[2px] w-2 bg-gray100 transition-all duration-[0.6s]`}
               ></div>
             </div>
-            <div className="flex h-[54px] w-full  items-center justify-center gap-4 bg-gray30 px-5 py-2 sm:py-0 md:px-1">
+            <div className="flex h-[54px] w-full items-center justify-center gap-4 bg-gray30 px-5 py-2 sm:py-0 md:px-1">
               <img
                 width={"20px"}
                 height={"20px"}
-                src="/assets/images/pass/check.svg"
+                src="/quest/assets/images/pass/check.svg"
               />
               As Unitap grows there will be more and more features for Unitap
               Pass holders.
             </div>
           </div>
           <div className="absolute bottom-0">
-            <img src="/assets/images/pass/advBg.svg" />
+            <img src="/quest/assets/images/pass/advBg.svg" />
           </div>
         </div>
         {isPreLaunch ? (
@@ -256,11 +256,11 @@ const NftPass = () => {
             <NFTTimer deadline={deadline} className="mb-14" />
             <img
               className={"relative right-3 m-auto mt-28 w-52 animate-rocket"}
-              src={"/assets/images/nft/rocketship.png"}
+              src={"/quest/assets/images/nft/rocketship.png"}
             />
             <img
               className={"m-auto w-44"}
-              src={"/assets/images/nft/rocket-base.png"}
+              src={"/quest/assets/images/nft/rocket-base.png"}
             />
           </div>
         ) : (
@@ -275,7 +275,7 @@ const NftPass = () => {
       <div className="mb-2 flex w-full flex-wrap gap-4 overflow-hidden rounded-2xl bg-gray20 p-2 md:gap-2">
         {!isConnected || !userProfile ? (
           <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-gray40 p-4 md:w-[260px]">
-            <p className=" text-xs text-gray100">
+            <p className="text-xs text-gray100">
               Connect your wallet to see more details.
             </p>
             <div
@@ -290,7 +290,7 @@ const NftPass = () => {
             </div>
           </div>
         ) : (
-          <div className="box-1 h-full w-full overflow-hidden  rounded-xl bg-gray40 md:w-[260px]">
+          <div className="box-1 h-full w-full overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
             <div className="flex h-[40px] items-center gap-[7px] bg-gray60 pl-2 text-xs">
               <span>@ {userProfile?.username}</span>
               <span className="h-1 w-1 rounded-full bg-gray100"></span>
@@ -300,11 +300,11 @@ const NftPass = () => {
             </div>
             <div className="flex h-[58px] items-center justify-around bg-gray40 text-sm">
               <div className="flex items-center gap-1">
-                <img src="/assets/images/pass/up.svg" />
+                <img src="/quest/assets/images/pass/up.svg" />
                 <p className="ml-1">{userProfile.upBalance} UPs</p>
               </div>
               <div className="flex items-center gap-1">
-                <img src="/assets/images/pass/ticket.svg" />
+                <img src="/quest/assets/images/pass/ticket.svg" />
                 <p className="ml-1">
                   {userProfile.prizetapWinningChanceNumber}
                   {userProfile.prizetapWinningChanceNumber === 1
@@ -329,7 +329,7 @@ const NftPass = () => {
                 next round!{" "}
               </div>
               <div className="mt-2 text-xs font-normal text-gray100">
-                <span className="text-[#58e6ab] ">1</span> UP ={" "}
+                <span className="text-[#58e6ab]">1</span> UP ={" "}
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
@@ -342,19 +342,25 @@ const NftPass = () => {
                   <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
-                  iconSrc="/assets/images/pass/ic_link_white.svg"
+                  iconSrc="/quest/assets/images/pass/ic_link_white.svg"
                   className="mb-3 md:mb-0"
                 />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
-                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
-                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
+                <Icon
+                  iconSrc="/quest/assets/images/pass/left.svg"
+                  width="75px"
+                />
+                <Icon
+                  iconSrc="/quest/assets/images/pass/right.svg"
+                  width="75px"
+                />
               </div>
             </div>
           </div>
         ) : (
           <div className="box-2 w-full select-none overflow-hidden rounded-xl bg-primaryGradient p-[1px] md:w-[438px]">
-            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40 ">
+            <div className="relative flex h-full flex-col items-center overflow-hidden rounded-xl bg-gray40">
               <div className="mt-3 text-center text-sm font-bold">
                 You can earn free{" "}
                 <span className="bg-primaryGradient-2 bg-clip-text text-transparent">
@@ -363,7 +369,7 @@ const NftPass = () => {
                 next round if you <span className="text-[#df86e2]">Mint</span>.
               </div>
               <div className="mt-2 text-xs font-normal text-gray100">
-                <span className="text-[#58e6ab] ">1</span> UP ={" "}
+                <span className="text-[#58e6ab]">1</span> UP ={" "}
                 <span className="text-[#7bc5c5] opacity-70">1</span> ticket in
                 new round
               </div>
@@ -376,19 +382,25 @@ const NftPass = () => {
                   <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
-                  iconSrc="/assets/images/pass/ic_link_white.svg"
-                  className="mb-3 md:mb-0 "
+                  iconSrc="/quest/assets/images/pass/ic_link_white.svg"
+                  className="mb-3 md:mb-0"
                 />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
-                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
-                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
+                <Icon
+                  iconSrc="/quest/assets/images/pass/left.svg"
+                  width="75px"
+                />
+                <Icon
+                  iconSrc="/quest/assets/images/pass/right.svg"
+                  width="75px"
+                />
               </div>
             </div>
           </div>
         )}
-        <div className="box-3 flex w-full select-none  flex-col items-center overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
-          <div className="flex h-[40px] w-full items-center justify-center bg-gray60 text-xs text-gray100 ">
+        <div className="box-3 flex w-full select-none flex-col items-center overflow-hidden rounded-xl bg-gray40 md:w-[260px]">
+          <div className="flex h-[40px] w-full items-center justify-center bg-gray60 text-xs text-gray100">
             Next Round in:
           </div>
           <div className="flex h-[58px] items-center justify-center font-digital-numbers">

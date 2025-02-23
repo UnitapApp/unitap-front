@@ -7,13 +7,13 @@ interface Prop {
 
 const DisplaySelectedTokenOrNft = ({ data }: Prop) => {
   return (
-    <div className="flex w-full text-white text-sm mt-4 ">
+    <div className="mt-4 flex w-full text-sm text-white">
       {!data.isNft ? (
-        <div className=" gap-1 w-full flex bg-gray50 rounded-xl h-[43px] overflow-hidden">
-          <div className="flex gap-2 items-center bg-gray30 px-4 min-w-[123px]">
+        <div className="flex h-[43px] w-full gap-1 overflow-hidden rounded-xl bg-gray50">
+          <div className="flex min-w-[123px] items-center gap-2 bg-gray30 px-4">
             <p>{data.selectedChain ? data.selectedChain?.chainName : ""}</p>
           </div>
-          <div className="flex items-center px-5 justify-between w-full">
+          <div className="flex w-full items-center justify-between px-5">
             <div>
               {data.isNativeToken
                 ? data.selectedChain.symbol
@@ -23,17 +23,17 @@ const DisplaySelectedTokenOrNft = ({ data }: Prop) => {
           </div>
         </div>
       ) : (
-        <div className="gap-1 w-full flex bg-gray50 rounded-xl h-[71px] overflow-hidden">
-          <div className="flex gap-2 items-center bg-gray30  deposit-prize-nft-cover w-[70px] h-[70px]">
-            {/* <Icon iconSrc="../assets/images/prize-tap/nft-cover.svg" height="100%" width="100%" /> */}
+        <div className="flex h-[71px] w-full gap-1 overflow-hidden rounded-xl bg-gray50">
+          <div className="deposit-prize-nft-cover flex h-[70px] w-[70px] items-center gap-2 bg-gray30">
+            {/* <Icon iconSrc="../quest/assets/images/prize-tap/nft-cover.svg" height="100%" width="100%" /> */}
           </div>
-          <div className="flex items-center px-5 justify-between w-full">
+          <div className="flex w-full items-center justify-between px-5">
             <div>
               <div>
                 {data.nftTokenIds.length} {data.nftName}{" "}
                 {data.nftTokenIds.length > 1 ? "NFTs" : "NFT"}
               </div>
-              <div className="text-gray90 text-2xs">
+              <div className="text-2xs text-gray90">
                 {data.nftTokenIds.join(", ")}
               </div>
             </div>

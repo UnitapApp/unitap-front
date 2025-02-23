@@ -103,8 +103,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
         <div
           className={`${
             raffle.isPrizeNft
-              ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
-              : "bg-[url('/assets/images/prize-tap/cover.svg')]"
+              ? "bg-[url('/quest/assets/images/prize-tap/nft-cover.svg')]"
+              : "bg-[url('/quest/assets/images/prize-tap/cover.svg')]"
           } mx-auto h-32 w-64 rounded-lg bg-cover`}
         />
         <img
@@ -133,25 +133,25 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                   ? "You have reached the limit of using Boosts :)"
                   : "Drag & Drop more Boosts to increase your chance to win!"}
               </div>
-              <div className="relative  flex h-[62px] items-center justify-between">
+              <div className="relative flex h-[62px] items-center justify-between">
                 <div
                   className={`relative flex items-start gap-2 ${selectedTicketCount >= maxChance && "opacity-30"} `}
                 >
                   {userTicketList.slice(0, 5).map((item, index) => (
                     <div
-                      className={`z-100 ${index > 0 && "-ml-[53px]"}  flex items-center justify-center`}
+                      className={`z-100 ${index > 0 && "-ml-[53px]"} flex items-center justify-center`}
                       key={index}
                       onDragEnd={() => handleDrop()}
                     >
                       <img
-                        src="/assets/images/prize-tap/userTicket.svg"
+                        src="/quest/assets/images/prize-tap/userTicket.svg"
                         className={`${!(selectedTicketCount >= maxChance) && "cursor-pointer"}`}
                         draggable={!(selectedTicketCount >= maxChance)}
                       />
                     </div>
                   ))}
                   {userTicketList.length > 5 && (
-                    <div className="absolute -right-2 -top-2 z-100  flex h-5 w-5 items-center justify-center rounded-full border border-gray90 bg-gray70 p-2 text-2xs">
+                    <div className="absolute -right-2 -top-2 z-100 flex h-5 w-5 items-center justify-center rounded-full border border-gray90 bg-gray70 p-2 text-2xs">
                       +{userTicketList.length - 5}
                     </div>
                   )}
@@ -159,7 +159,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 {userTicketList.length === 0 && (
                   <img
                     className="-ml-16"
-                    src="/assets/images/prize-tap/emptyTicket.svg"
+                    src="/quest/assets/images/prize-tap/emptyTicket.svg"
                   />
                 )}
                 <div className="cursor-none select-none">
@@ -174,11 +174,11 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                       <Lottie options={chanceAnimationOption}></Lottie>
                     </div>
                   ) : (
-                    <div className="flex flex-row-reverse items-end ">
+                    <div className="flex flex-row-reverse items-end">
                       {selectedUserTickets.map((item, index) => (
                         <img
                           key={index}
-                          src="./assets/images/prize-tap/selectedTicket.svg"
+                          src="./quest/assets/images/prize-tap/selectedTicket.svg"
                           className={`${index > 0 && "-mr-[45px]"} z-100 cursor-pointer`}
                         />
                       ))}
@@ -206,21 +206,21 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
             </div>
           ) : (
             <Link href="./pass">
-              <div className=" relative h-full cursor-pointer transition duration-700 ease-in-out hover:bg-gray20 hover:duration-700">
+              <div className="relative h-full cursor-pointer transition duration-700 ease-in-out hover:bg-gray20 hover:duration-700">
                 <img
                   className="absolute -bottom-[10px] right-0"
-                  src="./assets/images/noBoost.svg"
+                  src="./quest/assets/images/noBoost.svg"
                 />
                 <img
                   className="absolute -bottom-[10px] right-28"
-                  src="./assets/images/noBoost1.svg"
+                  src="./quest/assets/images/noBoost1.svg"
                 />
                 <div className="px-4 py-3">
                   <div className="flex items-center justify-between text-sm font-medium">
                     <div className="">
                       You want more chance in this raffle?!
                     </div>
-                    <div className="flex items-center justify-center gap-1 ">
+                    <div className="flex items-center justify-center gap-1">
                       <div className="relative">
                         <div className="bg-primaryGradient2 bg-clip-text text-transparent">
                           Mint UP
@@ -258,12 +258,12 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                       </svg>
                     </div>
                   </div>
-                  <div className="max-w-[256px] pt-2 text-xs font-normal leading-6 text-gray100 ">
+                  <div className="max-w-[256px] pt-2 text-xs font-normal leading-6 text-gray100">
                     You can increase your chance up to 3X by spending tickets.
                     Get ticket by holding
                     <div className="relative bg-primaryGradient2 bg-clip-text font-bold text-transparent">
                       Unitap Pass NFT
-                      <div className=" absolute -mt-[4px] h-[1px] w-[95px] bg-primaryGradient3"></div>
+                      <div className="absolute -mt-[4px] h-[1px] w-[95px] bg-primaryGradient3"></div>
                     </div>
                   </div>
                 </div>
@@ -318,8 +318,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                   <img
                     src={
                       permission.isVerified
-                        ? "/assets/images/token-tap/check.svg"
-                        : "/assets/images/token-tap/not-verified.svg"
+                        ? "/quest/assets/images/token-tap/check.svg"
+                        : "/quest/assets/images/token-tap/not-verified.svg"
                     }
                   />
                   {permission.isReversed && "Not "}

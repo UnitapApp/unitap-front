@@ -57,7 +57,7 @@ export const BrightConnectionModalBody = () => {
     if (!keys?.address) return;
     window.open(
       `brightid://link-verification/http:%2f%2fnode.brightid.org/unitap/${keys?.address.toLowerCase()}/`,
-      "_blank"
+      "_blank",
     );
   };
 
@@ -70,7 +70,7 @@ export const BrightConnectionModalBody = () => {
       const profile = await ConnectBrightIdApi(
         keys.address,
         signedPrivateKey,
-        userToken
+        userToken,
       );
 
       updateProfile({ ...userProfile!, isMeetVerified: true });
@@ -100,12 +100,12 @@ export const BrightConnectionModalBody = () => {
 
   return (
     <div
-      className="bright-connection-modal w-full flex flex-col items-center justify-center pt-4"
+      className="bright-connection-modal flex w-full flex-col items-center justify-center pt-4"
       data-testid="brightid-modal"
     >
-      <p className="scan-qr-text text-sm text-white mb-3">Scan QR Code</p>
+      <p className="scan-qr-text mb-3 text-sm text-white">Scan QR Code</p>
       {keys?.address && (
-        <span className="qr-code z-10 mb-4 rounded-md overflow-hidden">
+        <span className="qr-code z-10 mb-4 overflow-hidden rounded-md">
           <QRCode
             value={`brightid://link-verification/http:%2f%2fnode.brightid.org/unitap/${keys?.address.toLowerCase()}/`}
             data-testid="brightid-qr"
@@ -117,34 +117,34 @@ export const BrightConnectionModalBody = () => {
           />
         </span>
       )}
-      <p className="text-xs text-white mb-4">or</p>
+      <p className="mb-4 text-xs text-white">or</p>
       <div
         onClick={() => openVerificationUrl()}
         data-testid="brightid-copy-link"
-        className="flex text-space-green mb-5 z-10"
+        className="z-10 mb-5 flex text-space-green"
       >
         {/* <Icon
-          iconSrc={process.env.PUBLIC_URL + '/assets/images/copy-link.png'}
+          iconSrc={process.env.PUBLIC_URL + '/quest/assets/images/copy-link.png'}
           width="16px"
           height="19px"
           className="mr-3"
         /> */}
-        <p className="text-space-green font-medium cursor-pointer hover:underline">
+        <p className="cursor-pointer font-medium text-space-green hover:underline">
           Visit Link
         </p>
       </div>
 
       {error && (
-        <span className="notice flex mb-3">
-          <p className="text-xs text-error font-light text-center"> {error} </p>
+        <span className="notice mb-3 flex">
+          <p className="text-center text-xs font-light text-error"> {error} </p>
         </span>
       )}
-      <span className="flex mb-3">
+      <span className="mb-3 flex">
         <Icon
-          className="mr-2 mb-4"
-          iconSrc="/assets/images/modal/gray-danger.svg"
+          className="mb-4 mr-2"
+          iconSrc="/quest/assets/images/modal/gray-danger.svg"
         />
-        <p className="text-xs text-center text-gray90 font-light">
+        <p className="text-center text-xs font-light text-gray90">
           Submit Verification after verifing with brighID app.
           <br />
           This might take up to 5 minutes.
@@ -156,7 +156,7 @@ export const BrightConnectionModalBody = () => {
             tried ? "-try-again" : ""
           }`}
           onClick={refreshConnectionButtonAction}
-          className="!w-full mb-4"
+          className="mb-4 !w-full"
         >
           {brightIdConnectionError ? (
             <p className="font-semibold">Scan or Use Link and Try Again</p>
@@ -167,16 +167,16 @@ export const BrightConnectionModalBody = () => {
           )}
         </ClaimButton>
       )}
-      <span className="dont-have-bright-id md:flex flex-col md:flex-row items-center md:justify-between w-full">
-        <p className="text-xs text-gray100 text-center mb-2 md:mb-0">
+      <span className="dont-have-bright-id w-full flex-col items-center md:flex md:flex-row md:justify-between">
+        <p className="mb-2 text-center text-xs text-gray100 md:mb-0">
           Don’t have a verified BrightID?
         </p>
         <p
-          className="text-xs font-semibold cursor-pointer underline text-white text-center"
+          className="cursor-pointer text-center text-xs font-semibold text-white underline"
           onClick={() => {
             window.open(
               "https://brightid.gitbook.io/brightid/getting-verified",
-              "_blank"
+              "_blank",
             );
           }}
         >

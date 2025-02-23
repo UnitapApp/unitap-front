@@ -167,7 +167,7 @@ const ConstraintAppDetailModal: FC<DetailsModal> = ({
         onClick={() => setSelectedApp()}
       >
         <Icon
-          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer"
         />
       </div>

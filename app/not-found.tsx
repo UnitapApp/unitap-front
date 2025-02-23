@@ -6,7 +6,7 @@ export default function NotFound() {
     <div className="mt-40 text-center">
       <Image
         className="mx-auto"
-        src="/assets/images/404.svg"
+        src="/quest/assets/images/404.svg"
         alt="not found"
         width={500}
         height={255}

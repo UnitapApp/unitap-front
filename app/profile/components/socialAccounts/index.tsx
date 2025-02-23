@@ -13,25 +13,25 @@ export const SocialAccount: FC<{
 
   return (
     <>
-      <div className="p-3 flex bg-gray40 border-2 items-center border-gray50 rounded-xl">
+      <div className="flex items-center rounded-xl border-2 border-gray50 bg-gray40 p-3">
         <Icon width="30px" iconSrc={icon} />
         <p className={`ml-5 text-sm`}>{title}</p>
         <div className="ml-auto">
           {isConnected ? (
             <button
               disabled
-              className="border-space-green items-center bg-[#212a32] text-space-green border rounded-lg px-4 py-2 text-sm flex"
+              className="flex items-center rounded-lg border border-space-green bg-[#212a32] px-4 py-2 text-sm text-space-green"
             >
               Connected{" "}
               <Icon
                 className="ml-3"
-                iconSrc="/assets/images/modal/check-green.svg"
+                iconSrc="/quest/assets/images/modal/check-green.svg"
               />
             </button>
           ) : (
             <button
               onClick={openBrightIdConnectionModal}
-              className="border-gray90 items-center bg-gray30 text-white border rounded-lg px-5 py-2 text-sm flex"
+              className="flex items-center rounded-lg border border-gray90 bg-gray30 px-5 py-2 text-sm text-white"
             >
               Connect
             </button>
