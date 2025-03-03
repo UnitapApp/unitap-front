@@ -10,35 +10,35 @@ const contactFields: ContactField[] = [
   {
     name: "creatorUrl",
     placeholder: "www.example.com (Optional)",
-    icon: "/assets/images/provider-dashboard/creatorUrl.svg",
+    icon: "/quest/assets/images/provider-dashboard/creatorUrl.svg",
     required: false,
     baseUrl: "",
   },
   {
     name: "twitter",
     placeholder: "@providerUsername (Optional)",
-    icon: "/assets/images/provider-dashboard/twitter.svg",
+    icon: "/quest/assets/images/provider-dashboard/twitter.svg",
     required: false,
     baseUrl: "https://twitter.com/",
   },
   {
     name: "discord",
     placeholder: "Discord link (Optional)",
-    icon: "/assets/images/provider-dashboard/discord.svg",
+    icon: "/quest/assets/images/provider-dashboard/discord.svg",
     required: false,
     baseUrl: "https://discord.com/",
   },
   {
     name: "email",
     placeholder: "example@email.com",
-    icon: "/assets/images/provider-dashboard/email.svg",
+    icon: "/quest/assets/images/provider-dashboard/email.svg",
     required: true,
     baseUrl: "",
   },
   {
     name: "telegram",
     placeholder: "@yourTelegramHandle (Optional)",
-    icon: "/assets/images/provider-dashboard/telegram.svg",
+    icon: "/quest/assets/images/provider-dashboard/telegram.svg",
     required: false,
     baseUrl: "https://t.me/",
   },
@@ -67,11 +67,11 @@ const ContactInformation = ({
 
   return (
     <div className="flex w-full animate-fadeIn flex-col items-center justify-center">
-      <div className=" w-full max-w-[452px]">
-        <section className="relative   ">
+      <div className="w-full max-w-[452px]">
+        <section className="relative">
           <div
             className={`flex gap-2 border bg-gray40 text-xs text-gray80 ${
-              showErrors && !data.provider ? "border-error" : "border-gray50 "
+              showErrors && !data.provider ? "border-error" : "border-gray50"
             } h-[43px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
             <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 text-gray100">
@@ -98,12 +98,10 @@ const ContactInformation = ({
         <section className="relative my-5 w-full">
           <div
             className={`flex gap-2 border bg-gray40 text-xs text-gray100 ${
-              showErrors && !data.description
-                ? "border-error"
-                : "border-gray50 "
+              showErrors && !data.description ? "border-error" : "border-gray50"
             } h-[63px] w-full max-w-[452px] items-center justify-between overflow-hidden rounded-xl pr-4`}
           >
-            <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30 ">
+            <div className="flex h-full w-full max-w-[148px] items-center justify-center bg-gray30">
               <p>Description</p>
             </div>
             <textarea
@@ -130,7 +128,7 @@ const ContactInformation = ({
           <Icon
             width="16px"
             height="16px"
-            iconSrc="/assets/images/provider-dashboard/exclamationMark-1.svg"
+            iconSrc="/quest/assets/images/provider-dashboard/exclamationMark-1.svg"
           />
         </div>
         <p className="text-xs text-gray100">

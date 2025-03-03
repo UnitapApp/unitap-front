@@ -86,7 +86,7 @@ const AddNftIdListModalModalBody = () => {
     const fileName = file.name;
     const fileSuffix = fileName.slice(
       fileName.lastIndexOf("."),
-      fileName.length
+      fileName.length,
     );
     if (fileSuffix != ".csv" && fileSuffix != ".txt") {
       setError("Invalid file format");
@@ -191,24 +191,24 @@ const AddNftIdListModalModalBody = () => {
   const getAddNftIdListModalModalBody = () => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="tabs flex border border-gray50 bg-gray30 overflow-hidden h-[43px] rounded-xl items-center justify-between text-xs">
+        <div className="tabs flex h-[43px] items-center justify-between overflow-hidden rounded-xl border border-gray50 bg-gray30 text-xs">
           {tabs.map((item: any, index) => (
             <div
               key={index}
               onClick={() => handleSelectTap(item.name)}
               className={`${
                 selectedTab === item.name ? "bg-gray40" : ""
-              } w-full text-center border-r border-gray50 h-full flex items-center justify-center cursor-pointer`}
+              } flex h-full w-full cursor-pointer items-center justify-center border-r border-gray50 text-center`}
             >
               {item.name}
             </div>
           ))}
         </div>
         {selectedTab === tabsName.CHOOSE_RANGE && (
-          <section className="choose_range  w-full min-h-[148px]">
-            <div className="relative flex gap-4 mt-1">
-              <div className="flex rounded-xl h-[43px] items-center bg-gray40 border border-gray40 overflow-hidden">
-                <div className="flex items-center bg-gray30 text-gray100 text-xs h-full w-[70px] justify-center">
+          <section className="choose_range min-h-[148px] w-full">
+            <div className="relative mt-1 flex gap-4">
+              <div className="flex h-[43px] items-center overflow-hidden rounded-xl border border-gray40 bg-gray40">
+                <div className="flex h-full w-[70px] items-center justify-center bg-gray30 text-xs text-gray100">
                   From
                 </div>
                 <input
@@ -216,14 +216,14 @@ const AddNftIdListModalModalBody = () => {
                   inputMode="numeric"
                   pattern="[0-9]"
                   step={1}
-                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray100"
+                  className="h-full w-full bg-[initial] px-2 text-xs text-gray100 placeholder-gray80"
                   onChange={(e) => handleChangeRange(e.target.value, "from")}
                   value={nftRange.from}
                   disabled={!!uploadedFile || !!textAreaData}
                 />
               </div>
-              <div className="flex rounded-xl h-[43px] items-center bg-gray40 border border-gray40 overflow-hidden">
-                <div className="flex items-center bg-gray30 text-gray100 text-xs h-full w-[70px] justify-center">
+              <div className="flex h-[43px] items-center overflow-hidden rounded-xl border border-gray40 bg-gray40">
+                <div className="flex h-full w-[70px] items-center justify-center bg-gray30 text-xs text-gray100">
                   To
                 </div>
                 <input
@@ -231,7 +231,7 @@ const AddNftIdListModalModalBody = () => {
                   inputMode="numeric"
                   pattern="[0-9]"
                   step={1}
-                  className="w-full bg-[initial] h-full px-2 placeholder-gray80 text-xs text-gray100"
+                  className="h-full w-full bg-[initial] px-2 text-xs text-gray100 placeholder-gray80"
                   onChange={(e) => handleChangeRange(e.target.value, "to")}
                   value={nftRange.to}
                   disabled={!!uploadedFile || !!textAreaData}
@@ -239,7 +239,7 @@ const AddNftIdListModalModalBody = () => {
               </div>
               {!!Number(nftRange.to) &&
                 Number(nftRange.from) >= Number(nftRange.to) && (
-                  <p className="absolute -bottom-4 left-0` text-2xs text-error">
+                  <p className="left-0` absolute -bottom-4 text-2xs text-error">
                     Invalid range
                   </p>
                 )}
@@ -247,7 +247,7 @@ const AddNftIdListModalModalBody = () => {
               !uploadedFile &&
               !invalidInput &&
               !(Number(nftRange.from) >= Number(nftRange.to)) ? (
-                <p className="absolute -bottom-4 left-0` text-2xs text-error">
+                <p className="left-0` absolute -bottom-4 text-2xs text-error">
                   {error}
                 </p>
               ) : null}
@@ -258,15 +258,15 @@ const AddNftIdListModalModalBody = () => {
         {selectedTab === tabsName.PASTE_IDS && (
           <div className="relative">
             <div
-              className={`flex text-gray80 text-xs mt-1  bg-gray40 border border-gray60 rounded-xl w-full  overflow-hidden ${
+              className={`mt-1 flex w-full overflow-hidden rounded-xl border border-gray60 bg-gray40 text-xs text-gray80 ${
                 uploadedFile ? "opacity-[0.5]" : ""
               }`}
             >
-              <div className="w-full ">
+              <div className="w-full">
                 <textarea
                   disabled={isTextAriaDisabled}
                   placeholder={`... or paste ID, each one in a new line \n 1 \n 2 \n 3 `}
-                  className={`w-[100%] flex bg-gray40 h-[142px] p-2 text-gray100 nftIdTextarea pl-3 border-none outline-none ${
+                  className={`nftIdTextarea flex h-[142px] w-[100%] border-none bg-gray40 p-2 pl-3 text-gray100 outline-none ${
                     isTextAriaDisabled ? "opacity-50" : "opacity-100"
                   }`}
                   onChange={(e) => handleChangeTextarea(e.target.value)}
@@ -290,7 +290,7 @@ const AddNftIdListModalModalBody = () => {
 
         {selectedTab == tabsName.UPLOAD_FILE && (
           <div className="h-[148px]">
-            <p className="text-xs text-gray80 -mb-2">
+            <p className="-mb-2 text-xs text-gray80">
               Upload from file, only .txt or .csv{" "}
               <a
                 href="/nftListSample/sample.csv"
@@ -302,25 +302,25 @@ const AddNftIdListModalModalBody = () => {
             </p>
             <div>
               <div
-                className={` flex relative text-gray80 text-xs bg-gray40 border border-gray60 rounded-xl h-[44px]  w-full max-w-[452px] mt-3 ${
+                className={`relative mt-3 flex h-[44px] w-full max-w-[452px] rounded-xl border border-gray60 bg-gray40 text-xs text-gray80 ${
                   textAreaData || nftRange.to || nftRange.from
                     ? "opacity-[.5]"
                     : ""
                 }`}
               >
                 {!uploadedFile ? (
-                  <div className="flex  w-full gap-1 items-center pl-3 ">
+                  <div className="flex w-full items-center gap-1 pl-3">
                     <Icon
                       width="16px"
                       height="16px"
-                      iconSrc="/assets/images/provider-dashboard/upload.svg"
+                      iconSrc="/quest/assets/images/provider-dashboard/upload.svg"
                       className="-mt-1"
                     />
-                    <div className="w-full relative mt-0">
+                    <div className="relative mt-0 w-full">
                       <input
                         disabled={isUploadedFileDisabled || !!textAreaData}
                         type="file"
-                        className="uploadFileInput w-[100%] flex cursor-pointer p-3 text-gray100"
+                        className="uploadFileInput flex w-[100%] cursor-pointer p-3 text-gray100"
                         onChange={(e) => handleChangeUploadedFile(e)}
                         accept=".csv, .txt"
                       />
@@ -338,13 +338,13 @@ const AddNftIdListModalModalBody = () => {
                     ) : null}
                   </div>
                 ) : (
-                  <div className="flex  w-full gap-1 items-center pl-3 justify-between pr-3">
+                  <div className="flex w-full items-center justify-between gap-1 pl-3 pr-3">
                     <p className="text-gray100">
                       file name: {uploadedFile.fileName}
                     </p>
                     <button
                       onClick={handleClearUploadedFile}
-                      className="text-white text-2xs border border-gray60 bg-gray20 p-2 rounded-xl"
+                      className="rounded-xl border border-gray60 bg-gray20 p-2 text-2xs text-white"
                     >
                       Reset Uploaded file
                     </button>
@@ -366,17 +366,17 @@ const AddNftIdListModalModalBody = () => {
               ></Lottie>
             </div>
           )}
-          <p className="absolute left-0 text-error text-xs">
+          <p className="absolute left-0 text-xs text-error">
             {nftStatus.length > 0 && "Invalid NFT IDs is entered"}
           </p>
 
           {error && !!uploadedFile && nftIds.length > 0 && (
-            <p className="absolute left-0 text-error text-xs">{error}</p>
+            <p className="absolute left-0 text-xs text-error">{error}</p>
           )}
 
           <button
             onClick={handleAddNft}
-            className={`flex w-full items-center justify-center mt-5 rounded-xl h-[43px] text-sm font bg-gray40 border-2 border-gray60 font-semibold overflow-hidden ${
+            className={`font mt-5 flex h-[43px] w-full items-center justify-center overflow-hidden rounded-xl border-2 border-gray60 bg-gray40 text-sm font-semibold ${
               nftContractStatus.isValid === ContractValidationStatus.NotValid ||
               (selectedTab == tabsName.CHOOSE_RANGE &&
                 (!nftRange.to || !nftRange.from)) ||
@@ -384,8 +384,8 @@ const AddNftIdListModalModalBody = () => {
                 Number(nftRange.to) <= Number(nftRange.from)) ||
               (selectedTab == tabsName.PASTE_IDS && !textAreaData) ||
               (selectedTab == tabsName.UPLOAD_FILE && !uploadedFile)
-                ? "opacity-[.8] text-gray80"
-                : "text-white cursor-pointer"
+                ? "text-gray80 opacity-[.8]"
+                : "cursor-pointer text-white"
             } `}
             disabled={
               nftContractStatus.isValid === ContractValidationStatus.NotValid ||
@@ -405,7 +405,7 @@ const AddNftIdListModalModalBody = () => {
   };
 
   return (
-    <div className="claim-modal-wrapper flex flex-col max-h-[550px] pt-5">
+    <div className="claim-modal-wrapper flex max-h-[550px] flex-col pt-5">
       {getAddNftIdListModalModalBody()}
     </div>
   );

@@ -40,7 +40,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
 
   return (
     <div className="m-0 p-0">
-      <div className="flex h-[44px] items-center justify-between rounded-xl  border-2 border-gray60 bg-gray50 px-4">
+      <div className="flex h-[44px] items-center justify-between rounded-xl border-2 border-gray60 bg-gray50 px-4">
         <div className="flex items-center gap-2">
           {constraint?.iconUrl && <Icon iconSrc={constraint.iconUrl} />}
           <p className={!isNotSatisfy ? "text-dark-space-green" : "text-error"}>
@@ -51,7 +51,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
         <div className="flex items-center gap-3">
           <div
             onClick={handleClick}
-            className="flex w-[60px] cursor-pointer items-center justify-center rounded-lg border border-gray80  bg-gray70 p-[2px] text-2xs font-semibold text-gray90"
+            className="flex w-[60px] cursor-pointer items-center justify-center rounded-lg border border-gray80 bg-gray70 p-[2px] text-2xs font-semibold text-gray90"
           >
             Edit
           </div>
@@ -59,7 +59,7 @@ const NewAddedConstraint = ({ requirement }: Props) => {
           <Icon
             onClick={() => handleDelete(requirement!.pk)}
             className="cursor-pointer"
-            iconSrc="/assets/images/modal/exit.svg"
+            iconSrc="/quest/assets/images/modal/exit.svg"
             height="14px"
             width="14px"
           />

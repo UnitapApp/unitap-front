@@ -69,12 +69,12 @@ const ClaimNonEVMModalContent = () => {
       <>
         <Icon
           data-testid="chain-logo"
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           iconSrc={getChainClaimIcon(activeChain!) || activeChain!.logoUrl}
           width="auto"
           height="110px"
         />
-        <p className="text-white text-sm mb-5 mt-11">
+        <p className="mb-5 mt-11 text-sm text-white">
           You need to connect your BrightID to claim your tokens
         </p>
 
@@ -100,18 +100,18 @@ const ClaimNonEVMModalContent = () => {
         >
           <Icon
             data-testid="brightid-logo"
-            className="bright-logo !w-4/12 z-10 mb-5"
+            className="bright-logo z-10 mb-5 !w-4/12"
             iconSrc="assets/images/modal/bright-id-logo-checked.svg"
           />
-          <p className="text-sm font-bold text-error mb-2">
+          <p className="mb-2 text-sm font-bold text-error">
             You are not verified on BrightID
           </p>
-          <p className="text-xs font-medium text-gray100 mb-12 text-center px-4 leading-6">
+          <p className="mb-12 px-4 text-center text-xs font-medium leading-6 text-gray100">
             BrightID is a social identity network that allows users to prove
             that they are only using one account.
           </p>
 
-          <span className="w-full relative">
+          <span className="relative w-full">
             <LightOutlinedButtonNew
               className="!w-full"
               onClick={() =>
@@ -120,18 +120,18 @@ const ClaimNonEVMModalContent = () => {
             >
               Verify on BrightID{" "}
               <Icon
-                className="cursor-pointer arrow-icon mt-0.5 ml-1.5 w-2"
+                className="arrow-icon ml-1.5 mt-0.5 w-2 cursor-pointer"
                 iconSrc="assets/images/arrow-icon.svg"
               />
             </LightOutlinedButtonNew>
             <Icon
               iconSrc="assets/images/modal/bright-id-check.svg"
-              className="w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2"
+              className="absolute right-4 top-1/2 h-6 w-6 -translate-y-1/2"
             />
           </span>
 
           <p
-            className="text-white mt-4 text-xs hover:underline cursor-pointer"
+            className="mt-4 cursor-pointer text-xs text-white hover:underline"
             onClick={() => location.reload()}
           >
             If you verified your BrightID click here.
@@ -146,15 +146,15 @@ const ClaimNonEVMModalContent = () => {
       <>
         <Icon
           data-testid="chain-logo"
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           iconSrc={getChainClaimIcon(activeChain!) || activeChain!.logoUrl}
           width="auto"
           height="110px"
         />
 
-        <div className="address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center">
+        <div className="address-input my-6 flex w-full items-center rounded-xl bg-gray30 p-2.5">
           <input
-            className="address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white"
+            className="address-input__input mx-1.5 w-full bg-transparent text-sm text-white placeholder:text-gray80"
             type="text"
             placeholder={
               activeChain?.chainId === lightingChainId
@@ -190,7 +190,7 @@ const ClaimNonEVMModalContent = () => {
               Claiming{" "}
               {formatChainBalance(
                 activeChain!.maxClaimAmount,
-                activeChain!.symbol
+                activeChain!.symbol,
               )}{" "}
               {activeChain!.symbol}{" "}
             </p>
@@ -200,7 +200,7 @@ const ClaimNonEVMModalContent = () => {
               Claim{" "}
               {formatChainBalance(
                 activeChain!.maxClaimAmount,
-                activeChain!.symbol
+                activeChain!.symbol,
               )}{" "}
               {activeChain!.symbol}{" "}
             </p>
@@ -253,10 +253,10 @@ const ClaimNonEVMModalContent = () => {
       const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         `I've just claimed ${formatChainBalance(
           activeChain!.maxClaimAmount,
-          activeChain!.symbol
-        )} ${activeChain!.chainName} from @Unitap_app 🔥\n Claim yours:`
+          activeChain!.symbol,
+        )} ${activeChain!.chainName} from @Unitap_app 🔥\n Claim yours:`,
       )}&url=${encodeURIComponent(
-        "unitap.app/gas-tap?hc=" + activeChain!.chainName
+        "unitap.app/gas-tap?hc=" + activeChain!.chainName,
       )}`;
 
       window.open(twitterUrl, "_blank");
@@ -266,7 +266,7 @@ const ClaimNonEVMModalContent = () => {
       <>
         <Icon
           data-testid="chain-logo"
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           iconSrc={getChainClaimIcon(activeChain!) || activeChain!.logoUrl}
           width="auto"
           height="110px"
@@ -295,13 +295,13 @@ const ClaimNonEVMModalContent = () => {
           width="100%"
           fontSize="14"
           color="second_gray_light"
-          className="underline cursor-pointer"
+          className="cursor-pointer underline"
           mb={3}
           $textAlign="center"
           onClick={() =>
             window.open(
               getTxUrl(activeChain!, activeClaimReceipt!.txHash!),
-              "_blank"
+              "_blank",
             )
           }
         >
@@ -311,15 +311,15 @@ const ClaimNonEVMModalContent = () => {
         <div className="relative w-full">
           <button
             onClick={handleClick}
-            className={`gradient-outline-twitter-button w-full flex items-center justify-center bg-gray00 transition-all duration-75 hover:bg-gray20 rounded-xl border-gray00 px-3 py-4`}
+            className={`gradient-outline-twitter-button flex w-full items-center justify-center rounded-xl border-gray00 bg-gray00 px-3 py-4 transition-all duration-75 hover:bg-gray20`}
           >
             <p className="text-sm font-semibold text-twitter">
               Share on Twitter
             </p>
           </button>
           <Icon
-            iconSrc="/assets/images/gas-tap/twitter-share.svg"
-            className="w-6 h-6 absolute right-4 top-1/2 z-10 pointer-events-none -translate-y-1/2"
+            iconSrc="/quest/assets/images/gas-tap/twitter-share.svg"
+            className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
             width="auto"
             height="26px"
           />
@@ -335,12 +335,12 @@ const ClaimNonEVMModalContent = () => {
       <>
         <Icon
           data-testid="chain-logo"
-          className="chain-logo z-10 mt-14 mb-10"
+          className="chain-logo z-10 mb-10 mt-14"
           iconSrc={getChainClaimIcon(activeChain!) || activeChain!.logoUrl}
           width="auto"
           height="110px"
         />
-        <span className="flex justify-center items-center font-medium mb-3">
+        <span className="mb-3 flex items-center justify-center font-medium">
           <Text
             className="!mb-0"
             width="100%"
@@ -366,9 +366,9 @@ const ClaimNonEVMModalContent = () => {
         >
           An error occurred while processing your request
         </Text>
-        <div className="address-input flex w-full bg-gray30 rounded-xl my-6 p-2.5 items-center">
+        <div className="address-input my-6 flex w-full items-center rounded-xl bg-gray30 p-2.5">
           <input
-            className="address-input__input w-full placeholder:text-gray80 text-sm mx-1.5 bg-transparent text-white"
+            className="address-input__input mx-1.5 w-full bg-transparent text-sm text-white placeholder:text-gray80"
             type="text"
             placeholder={
               activeChain?.chainId === lightingChainId
@@ -443,7 +443,7 @@ const ClaimNonEVMModal = () => {
     <Modal
       title={`Claim ${formatChainBalance(
         activeChain.maxClaimAmount,
-        activeChain.symbol
+        activeChain.symbol,
       )} ${activeChain.symbol}`}
       size="small"
       isOpen={true}

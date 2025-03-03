@@ -22,16 +22,16 @@ export enum ConnectionProvider {
 export const getWalletProviderInfo = (provider: ConnectionProvider) => {
   if (provider === ConnectionProvider.Metamask) {
     return {
-      imageUrl: "/assets/images/modal/metamask-icon.svg",
+      imageUrl: "/quest/assets/images/modal/metamask-icon.svg",
       label: "Metamask",
-      loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
+      loadingImage: "/quest/assets/images/modal/wallet-metamask-loading.svg",
     };
   }
 
   return {
-    imageUrl: "/assets/images/modal/walletconnect-icon.svg",
+    imageUrl: "/quest/assets/images/modal/walletconnect-icon.svg",
     label: "WalletConnect",
-    loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
+    loadingImage: "/quest/assets/images/modal/wallet-connect-loading.svg",
   };
 };
 
@@ -55,16 +55,16 @@ export const RenderWalletBody: FC<{
   const currentWallet = useMemo(() => {
     if (walletProvider === ConnectionProvider.Metamask) {
       return {
-        imageUrl: "/assets/images/modal/metamask-icon.svg",
+        imageUrl: "/quest/assets/images/modal/metamask-icon.svg",
         label: "Metamask",
-        loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
+        loadingImage: "/quest/assets/images/modal/wallet-metamask-loading.svg",
       };
     }
 
     return {
-      imageUrl: "/assets/images/modal/walletconnect-icon.svg",
+      imageUrl: "/quest/assets/images/modal/walletconnect-icon.svg",
       label: "WalletConnect",
-      loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
+      loadingImage: "/quest/assets/images/modal/wallet-connect-loading.svg",
     };
   }, [walletProvider]);
 

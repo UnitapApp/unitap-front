@@ -140,7 +140,8 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   height={44}
                   className="chain-logo h-full w-auto"
                   src={
-                    token.image ?? "/assets/images/prizetap/bright-token.svg"
+                    token.image ??
+                    "/quest/assets/images/prizetap/bright-token.svg"
                   }
                   unoptimized={true}
                   alt={token.name}
@@ -156,7 +157,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     width={8}
                     height={8}
                     className="arrow-icon ml-1 mt-1 w-2"
-                    src="/assets/images/arrow-icon.svg"
+                    src="/quest/assets/images/arrow-icon.svg"
                     alt="arrow"
                   />
                 </p>
@@ -207,7 +208,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                         {" are left to claim"}
                       </div>
                       <Image
-                        src="/assets/images/landing/unitap-pass.svg"
+                        src="/quest/assets/images/landing/unitap-pass.svg"
                         alt="unitap-pass"
                         width={20}
                         className="ml-auto mr-2 transition-all duration-300 group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-30"
@@ -232,7 +233,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                         {" are left to claim"}
                       </div>
                       <Image
-                        src="/assets/images/landing/unitap-pass.svg"
+                        src="/quest/assets/images/landing/unitap-pass.svg"
                         alt="unitap-pass"
                         width={20}
                         className="ml-auto mr-2 transition-all duration-300 group-hover:translate-y-1/2 group-hover:scale-[2] group-hover:opacity-30"
@@ -286,7 +287,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                     <ClaimedButton
                       data-testid={`chain-claimed-${token.id}`}
                       $mlAuto
-                      $icon="/assets/images/landing/tokentap-icon.png"
+                      $icon="/quest/assets/images/landing/tokentap-icon.png"
                       $iconWidth={24}
                       $iconHeight={24}
                       onClick={() => openClaimModal(token)}
@@ -321,7 +322,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   <ClaimedButton
                     data-testid={`chain-claimed-${token.id}`}
                     $mlAuto
-                    $icon="/assets/images/claim/claimedIcon.svg"
+                    $icon="/quest/assets/images/claim/claimedIcon.svg"
                     $iconWidth={24}
                     $iconHeight={20}
                     onClick={() => openClaimModal(token)}
@@ -386,7 +387,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                   alt="angle-down"
                   width={12}
                   height={7}
-                  src="/assets/images/token-tap/angle-down.svg"
+                  src="/quest/assets/images/token-tap/angle-down.svg"
                   className={`ml-2 ${
                     showAllPermissions ? "rotate-180" : ""
                   } transition-transform`}
@@ -431,7 +432,7 @@ const TokenCard: FC<{ token: Token; isHighlighted?: boolean }> = ({
                 >
                   {timePermissionVerification.title}
                   <Icon
-                    iconSrc={`/assets/images/token-tap/${
+                    iconSrc={`/quest/assets/images/token-tap/${
                       timePermissionVerification.name ===
                       "tokenTap.OnceInALifeTimeVerification"
                         ? "non-repeat.svg"

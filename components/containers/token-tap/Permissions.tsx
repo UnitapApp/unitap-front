@@ -100,8 +100,8 @@ const TokenPermissions: FC<{ token: Token; onClose: () => void }> = ({
                     alt={permission.name}
                     src={
                       permission.isVerified
-                        ? "/assets/images/token-tap/check.svg"
-                        : "/assets/images/token-tap/not-verified.svg"
+                        ? "/quest/assets/images/token-tap/check.svg"
+                        : "/quest/assets/images/token-tap/not-verified.svg"
                     }
                   />
                   {permission.title}

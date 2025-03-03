@@ -11,7 +11,7 @@ const Header = () => {
       <div className="h-auto items-center">
         <img
           className="w-375 mb-3 h-auto"
-          src="/assets/images/provider-dashboard/blibk neon_.svg"
+          src="/quest/assets/images/provider-dashboard/blibk neon_.svg"
         />
         <p className="z-10 max-w-[365px] text-xs text-gray100">
           Build your own incentive program using Unitap{"'"}s production-ready

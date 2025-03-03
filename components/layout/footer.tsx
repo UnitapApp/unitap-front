@@ -36,7 +36,7 @@ const Footer: FC = () => {
       <div className="grid grid-cols-1 gap-20 md:grid-cols-3">
         <div className="">
           <Image
-            src="/assets/images/landing/unitap-footer.png"
+            src="/quest/assets/images/landing/unitap-footer.png"
             alt="unitap team"
             width={228}
             height={67}

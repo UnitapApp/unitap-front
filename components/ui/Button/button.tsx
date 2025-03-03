@@ -39,7 +39,7 @@ interface props {
 export const Text = styled.p<props>`
   color: ${({ color }): string => {
     const xyz: string | undefined = Object.keys(DV.colors).find(
-      (x) => x === color
+      (x) => x === color,
     );
     if (xyz) {
       return `${DV.colors[xyz]}!important`;
@@ -110,14 +110,14 @@ export const ButtonNative = styled.button<props>`
       smMr
         ? `${smMr * DV.sizes.baseMargin}px`
         : mr
-        ? `${mr * DV.sizes.baseMargin}px`
-        : `0`};
+          ? `${mr * DV.sizes.baseMargin}px`
+          : `0`};
     margin-bottom: ${({ $smMb: smMb, $mb: mb }) =>
       smMb
         ? `${smMb * DV.sizes.baseMargin}px`
         : mb
-        ? `${mb * DV.sizes.baseMargin}px`
-        : `0`};
+          ? `${mb * DV.sizes.baseMargin}px`
+          : `0`};
 
     &::before {
       background-size: ${({
@@ -180,7 +180,7 @@ export const PrimaryOutlinedButtonNative = styled(Button)`
 `;
 
 export const PrimaryOutlinedButton = tw(
-  PrimaryOutlinedButtonNative
+  PrimaryOutlinedButtonNative,
 )`bg-g-primary before:rounded-xl before:bg-g-primary`;
 
 export const LightOutlinedButton = styled(Button)`
@@ -292,7 +292,7 @@ export const ClaimButtonNative = styled(PrimaryOutlinedButton)`
 `;
 
 export const ClaimButton = tw(
-  ClaimButtonNative
+  ClaimButtonNative,
 )`before:!bg-gray20 disabled:border-2 disabled:border-gray80 disabled:opacity-60`;
 
 export const NoCurrencyButton = styled(Button)`
@@ -379,7 +379,7 @@ export const PrizeTapCard = styled(PrimaryOutlinedButton)`
   font-weight: 500 !important;
 
   &::before {
-    background: url("/assets/images/prize-tap/raffle-win.svg");
+    background: url("/quest/assets/images/prize-tap/raffle-win.svg");
     background-size: cover;
   }
 
@@ -391,7 +391,7 @@ export const PrizeTapCard = styled(PrimaryOutlinedButton)`
 `;
 
 export const EnrolledButton = tw(
-  PrimaryOutlinedButton
+  PrimaryOutlinedButton,
 )`text-left !font-semibold text-clip bg-gray60 border-2 border-[#322837]`;
 
 // p {

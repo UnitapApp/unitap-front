@@ -79,13 +79,13 @@ const FormYouFilled = ({ data }: Prop) => {
                     "_blank",
                   )
                 }
-                iconSrc="/assets/images/provider-dashboard/twitter.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/twitter.svg"
               />
             ) : null}
             {data.discord ? (
               <Icon
                 onClick={() => window.open(data.discord!, "_blank")}
-                iconSrc="/assets/images/provider-dashboard/discord.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/discord.svg"
               />
             ) : null}
             {data.creatorUrl ? (
@@ -100,7 +100,7 @@ const FormYouFilled = ({ data }: Prop) => {
                     "_blank",
                   )
                 }
-                iconSrc="/assets/images/provider-dashboard/creatorUrl.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/creatorUrl.svg"
               />
             ) : null}
           </div>
@@ -111,7 +111,7 @@ const FormYouFilled = ({ data }: Prop) => {
         <div className="h-[40px] max-h-[40px] text-justify text-sm">
           {data.description}
         </div>
-        <div className="mb-2 flex gap-2 ">
+        <div className="mb-2 flex gap-2">
           {requirementList.length > 0
             ? requirementList.map((item, index) => {
                 return (
@@ -126,12 +126,12 @@ const FormYouFilled = ({ data }: Prop) => {
             : null}
         </div>
         <Action
-          className={`w-full items-center sm:w-auto sm:items-end  ${
+          className={`w-full items-center sm:w-auto sm:items-end ${
             requirementList.length == 0 ? "mt-10" : ""
           }`}
         >
-          <span className="flex w-full flex-row items-center justify-between gap-4 ">
-            <div className="flex h-full w-full flex-row items-center  justify-between gap-4 rounded-xl bg-gray40 px-5 py-1">
+          <span className="flex w-full flex-row items-center justify-between gap-4">
+            <div className="flex h-full w-full flex-row items-center justify-between gap-4 rounded-xl bg-gray40 px-5 py-1">
               <p className="text-xs text-gray100">0 people enrolled</p>
               <RaffleCardTimerSubmitContribution
                 startTime={new Date(data.startTimeStamp * 1000).toString()}
@@ -145,7 +145,7 @@ const FormYouFilled = ({ data }: Prop) => {
                   <Icon
                     width="20px"
                     height="20px"
-                    iconSrc="/assets/images/prize-tap/header-prize-logo.svg"
+                    iconSrc="/quest/assets/images/prize-tap/header-prize-logo.svg"
                   />
                 </div>
               </ProviderDashboardButtonSubmit>

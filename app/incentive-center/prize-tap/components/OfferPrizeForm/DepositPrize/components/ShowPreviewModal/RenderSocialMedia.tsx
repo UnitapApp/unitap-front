@@ -10,20 +10,20 @@ interface Prop {
 
 const RenderSocialMedia = ({ data }: Prop) => {
   return (
-    <div className="grid gap-5 text-gray100 text-xs grid-cols-[1fr] md:grid-cols-[1fr_1fr]">
+    <div className="grid grid-cols-[1fr] gap-5 text-xs text-gray100 md:grid-cols-[1fr_1fr]">
       {socialMedias.map(
         (item, index) =>
           data[item as keyof ProviderDashboardFormDataProp] && (
             <div
               key={index}
-              className=" overflow-hidden h-[44px] flex gap-2 items-center rounded-lg bg-gray40 border border-gray50"
+              className="flex h-[44px] items-center gap-2 overflow-hidden rounded-lg border border-gray50 bg-gray40"
             >
-              <div className="bg-gray30 h-[100%] w-[54px] flex items-center justify-center">
-                <Icon iconSrc="/assets/images/provider-dashboard/email.svg" />
+              <div className="flex h-[100%] w-[54px] items-center justify-center bg-gray30">
+                <Icon iconSrc="/quest/assets/images/provider-dashboard/email.svg" />
               </div>
               {data[item as keyof ProviderDashboardFormDataProp]}
             </div>
-          )
+          ),
       )}
     </div>
   );

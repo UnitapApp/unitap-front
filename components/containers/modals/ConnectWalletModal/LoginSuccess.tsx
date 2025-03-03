@@ -17,7 +17,7 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
   const walletInfo = getWalletProviderInfo(
     connector?.id === "injected"
       ? ConnectionProvider.Metamask
-      : ConnectionProvider.Walletconnect
+      : ConnectionProvider.Walletconnect,
   );
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
   }, [setIsWalletPromptOpen]);
 
   return (
-    <div className="text-sm text-center w-full">
-      <div className="h-32 w-32 mx-auto bg-[#4C4C5C] border-2 border-space-green rounded-full relative flex items-center justify-center">
+    <div className="w-full text-center text-sm">
+      <div className="relative mx-auto flex h-32 w-32 items-center justify-center rounded-full border-2 border-space-green bg-[#4C4C5C]">
         <Icon
           iconSrc={walletInfo.imageUrl}
           alt={walletInfo.label}
@@ -41,7 +41,7 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
         />
 
         <Icon
-          iconSrc="/assets/images/check-circle-space-green.svg"
+          iconSrc="/quest/assets/images/check-circle-space-green.svg"
           alt="check green"
           className="absolute -right-2 bottom-4"
           width="28px"
@@ -49,9 +49,9 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
         />
       </div>
 
-      <div className="mt-10 font-semibold justify-center text-space-green flex items-center">
+      <div className="mt-10 flex items-center justify-center font-semibold text-space-green">
         <Icon
-          iconSrc="/assets/images/check-circle-space-green.svg"
+          iconSrc="/quest/assets/images/check-circle-space-green.svg"
           alt="check green"
           className="mr-2"
           width="20px"
@@ -59,7 +59,7 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
         />
         Logged in Successfully!
       </div>
-      <p className="mt-2 mb-16 text-gray100">
+      <p className="mb-16 mt-2 text-gray100">
         Hii, {isNewUser ? "welcome" : "welcome back"} @
         {userProfile?.username ?? shortenAddress(address)} :{")"}
       </p>

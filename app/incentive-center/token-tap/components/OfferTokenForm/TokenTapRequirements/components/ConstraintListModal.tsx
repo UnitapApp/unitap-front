@@ -76,7 +76,7 @@ const InitialBody = () => {
       <div className="mt-2 gap-2">
         <Input
           data-testid="search-box"
-          $icon="/assets/images/modal/search-icon.svg"
+          $icon="/quest/assets/images/modal/search-icon.svg"
           $width="100%"
           $fontSize="12px"
           $iconWidth="20px"
@@ -109,7 +109,7 @@ const InitialBody = () => {
                 <p>{appInfos[constraintKey].label}</p>
                 <Icon
                   className="ml-auto -rotate-90"
-                  iconSrc={"/assets/images/token-tap/angle-down.svg"}
+                  iconSrc={"/quest/assets/images/token-tap/angle-down.svg"}
                   alt={"angle-down"}
                   width="12px"
                 />

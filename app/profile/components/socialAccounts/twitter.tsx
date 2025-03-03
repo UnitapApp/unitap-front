@@ -78,7 +78,7 @@ export const TwitterAccount: FC<{
                 Connected{" "}
                 <Icon
                   className="ml-3"
-                  iconSrc="/assets/images/modal/check-green.svg"
+                  iconSrc="/quest/assets/images/modal/check-green.svg"
                 />
               </button>
             ) : (

@@ -61,36 +61,36 @@ export const AddWalletPrompt = () => {
 
   return (
     <>
-      <Icon iconSrc="/assets/images/wallets.svg" alt="wallets" />
+      <Icon iconSrc="/quest/assets/images/wallets.svg" alt="wallets" />
 
-      <p className="mt-5 text-gray100 text-sm">
+      <p className="mt-5 text-sm text-gray100">
         Select what wallet you want to connect below:
       </p>
 
       <WalletProviderButton
-        className="from-[#F5841F33] mt-8"
+        className="mt-8 from-[#F5841F33]"
         label="MetaMask"
-        imageIcon="/assets/images/modal/metamask-icon.svg"
-        backgroundImage="/assets/images/modal/metamask-bg.svg"
+        imageIcon="/quest/assets/images/modal/metamask-icon.svg"
+        backgroundImage="/quest/assets/images/modal/metamask-bg.svg"
         onClick={() => {
           disconnect();
           connect({
             connector: connectors.find(
-              (connector) => connector.id === "injected"
+              (connector) => connector.id === "injected",
             )!,
           });
         }}
       />
       <WalletProviderButton
-        className="from-[#3396FF] mt-3"
+        className="mt-3 from-[#3396FF]"
         label="WalletConnect"
-        backgroundImage="/assets/images/modal/walletconnect-bg.svg"
-        imageIcon="/assets/images/modal/walletconnect-icon.svg"
+        backgroundImage="/quest/assets/images/modal/walletconnect-bg.svg"
+        imageIcon="/quest/assets/images/modal/walletconnect-icon.svg"
         onClick={() => {
           disconnect();
           connect({
             connector: connectors.find(
-              (connector) => connector.id === "walletConnect"
+              (connector) => connector.id === "walletConnect",
             )!,
           });
         }}
@@ -110,16 +110,16 @@ const WalletVerify: FC<{ setIsConnected: (arg: boolean) => void }> = ({
   const currentWallet = useMemo(() => {
     if (connector?.id === "injected") {
       return {
-        imageUrl: "/assets/images/modal/metamask-icon.svg",
+        imageUrl: "/quest/assets/images/modal/metamask-icon.svg",
         label: "Metamask",
-        loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
+        loadingImage: "/quest/assets/images/modal/wallet-metamask-loading.svg",
       };
     }
 
     return {
-      imageUrl: "/assets/images/modal/walletconnect-icon.svg",
+      imageUrl: "/quest/assets/images/modal/walletconnect-icon.svg",
       label: "WalletConnect",
-      loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
+      loadingImage: "/quest/assets/images/modal/wallet-connect-loading.svg",
     };
   }, [connector]);
 
@@ -143,23 +143,23 @@ const WalletAddSuccess = () => {
   const currentWallet = useMemo(() => {
     if (connector?.id === "injected") {
       return {
-        imageUrl: "/assets/images/modal/metamask-icon.svg",
+        imageUrl: "/quest/assets/images/modal/metamask-icon.svg",
         label: "Metamask",
-        loadingImage: "/assets/images/modal/wallet-metamask-loading.svg",
+        loadingImage: "/quest/assets/images/modal/wallet-metamask-loading.svg",
       };
     }
 
     return {
-      imageUrl: "/assets/images/modal/walletconnect-icon.svg",
+      imageUrl: "/quest/assets/images/modal/walletconnect-icon.svg",
       label: "WalletConnect",
-      loadingImage: "/assets/images/modal/wallet-connect-loading.svg",
+      loadingImage: "/quest/assets/images/modal/wallet-connect-loading.svg",
     };
   }, [connector]);
 
   return (
     <div className="w-full">
       <div className="text-center">
-        <div className="h-32 w-32 mx-auto bg-[#4C4C5C] border-2 border-space-green rounded-full relative flex items-center justify-center">
+        <div className="relative mx-auto flex h-32 w-32 items-center justify-center rounded-full border-2 border-space-green bg-[#4C4C5C]">
           <Icon
             iconSrc={currentWallet.imageUrl}
             alt={currentWallet.label}
@@ -168,7 +168,7 @@ const WalletAddSuccess = () => {
           />
 
           <Icon
-            iconSrc="/assets/images/check-circle-space-green.svg"
+            iconSrc="/quest/assets/images/check-circle-space-green.svg"
             alt="check green"
             className="absolute -right-2 bottom-4"
             width="28px"
@@ -176,9 +176,9 @@ const WalletAddSuccess = () => {
           />
         </div>
 
-        <p className="font-semibold justify-center text-space-green flex items-center mt-8">
+        <p className="mt-8 flex items-center justify-center font-semibold text-space-green">
           <Icon
-            iconSrc="/assets/images/check-circle-space-green.svg"
+            iconSrc="/quest/assets/images/check-circle-space-green.svg"
             alt="check green"
             className="mr-2"
             width="20px"
@@ -187,7 +187,7 @@ const WalletAddSuccess = () => {
           Connected!
         </p>
 
-        <p className="mt-2 text-gray100 text-sm mb-10">
+        <p className="mb-10 mt-2 text-sm text-gray100">
           Your wallet connected successfully!
         </p>
       </div>

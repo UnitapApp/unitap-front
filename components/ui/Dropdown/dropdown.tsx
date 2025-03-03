@@ -21,7 +21,7 @@ const Dropdown = (props: DropdownProps) => {
         {icon ? <Icon iconSrc={icon} width="32px" /> : null}
         <p className="dropdown-value">{value}</p>
         <Icon
-          iconSrc={"/assets/images/fund/arrow-down.png"}
+          iconSrc={"/quest/assets/images/fund/arrow-down.png"}
           width="14px"
           height="auto"
         ></Icon>

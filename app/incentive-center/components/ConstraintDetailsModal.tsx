@@ -191,7 +191,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
         onClick={handleBackToConstraintListModal}
       >
         <Icon
-          iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
+          iconSrc="/quest/assets/images/provider-dashboard/arrow-left.svg"
           className="cursor-pointer"
         />
       </div>
@@ -227,7 +227,7 @@ const ConstraintDetailsModal: FC<DetailsModal> = ({
       <div className="min-h-[15px] text-2xs text-error">{errorMessage}</div>
       <div
         onClick={handleAddRequirement}
-        className="mb-2 flex  h-[44px] cursor-pointer items-center justify-center rounded-xl border-2 border-gray70 bg-gray40 text-sm font-semibold text-white"
+        className="mb-2 flex h-[44px] cursor-pointer items-center justify-center rounded-xl border-2 border-gray70 bg-gray40 text-sm font-semibold text-white"
       >
         Add Requirement
       </div>
@@ -545,7 +545,7 @@ export const CreateParams: FC<CreateModalParam> = ({
 
             {!isNft && (
               <Icon
-                iconSrc="/assets/images/fund/arrow-down.png"
+                iconSrc="/quest/assets/images/fund/arrow-down.png"
                 height="8px"
                 width="14px"
                 className={`mr-3 transition-all duration-300 ${showItems && "rotate-180"}`}
@@ -561,7 +561,7 @@ export const CreateParams: FC<CreateModalParam> = ({
                     onClick={() => handleSelectToken(item)}
                   >
                     <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
-                    <p className="flex h-10 w-full cursor-pointer  items-center text-sm ">
+                    <p className="flex h-10 w-full cursor-pointer items-center text-sm">
                       {item.tokenSymbol}
                     </p>
                   </div>
@@ -618,7 +618,7 @@ export const CreateParams: FC<CreateModalParam> = ({
               onChange={(e) => handleChangeCollection(e.target.value)}
             />
             <Icon
-              iconSrc="/assets/images/fund/arrow-down.png"
+              iconSrc="/quest/assets/images/fund/arrow-down.png"
               height="8px"
               width="14px"
               className={`mr-3 transition-all duration-300 ${showItems && "rotate-180"}`}
@@ -633,7 +633,7 @@ export const CreateParams: FC<CreateModalParam> = ({
                     onClick={() => handleSelectToken(item)}
                   >
                     <Icon iconSrc={item.logoUrl} width="24px" height="24px" />
-                    <p className="flex h-10 w-full cursor-pointer  items-center text-sm ">
+                    <p className="flex h-10 w-full cursor-pointer items-center text-sm">
                       {item.tokenSymbol}
                     </p>
                   </div>
@@ -1149,7 +1149,7 @@ export const LensUserFinder: FC<UserParams> = ({
                         src={
                           user.metadata.picture
                             ? user.metadata.picture.optimized?.uri
-                            : "/assets/images/profile.png"
+                            : "/quest/assets/images/profile.png"
                         }
                         alt={user.metadata.displayName}
                         className="mr-4 h-10 w-10 rounded-full bg-gray100"

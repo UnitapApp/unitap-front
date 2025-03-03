@@ -77,7 +77,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
       <Input
         ref={ref}
         data-testid="search-box"
-        $icon="/assets/images/modal/search-icon.svg"
+        $icon="/quest/assets/images/modal/search-icon.svg"
         $width="100%"
         $fontSize="12px"
         $iconWidth="20px"

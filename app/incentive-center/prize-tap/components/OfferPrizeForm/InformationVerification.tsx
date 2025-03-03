@@ -11,7 +11,7 @@ const InformationVerification = () => {
   return (
     <div className="flex w-full max-w-[452px] animate-fadeIn flex-col gap-5 text-center text-xs font-medium text-gray100">
       <div className="flex min-h-[292px] flex-col gap-5">
-        <Icon iconSrc="/assets/images/provider-dashboard/diamond.png" />
+        <Icon iconSrc="/quest/assets/images/provider-dashboard/diamond.png" />
         <div className="flex items-center justify-center gap-2 text-sm font-semibold text-white">
           {!selectedRaffleForCheckReason ? (
             <div className="flex items-center gap-2">
@@ -19,7 +19,7 @@ const InformationVerification = () => {
               <p>Validating</p>{" "}
               <Icon
                 className="ml-[-3px]"
-                iconSrc="/assets/images/provider-dashboard/loading.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/loading.svg"
                 width="20px"
                 height="4px"
               />{" "}
@@ -29,7 +29,7 @@ const InformationVerification = () => {
               <p className="text-error">Rejected</p>{" "}
               <Icon
                 className="ml-[-3px]"
-                iconSrc="/assets/images/provider-dashboard/close-circle.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/close-circle.svg"
               />{" "}
             </div>
           )}
@@ -47,7 +47,7 @@ const InformationVerification = () => {
                 className="ml-[-5px] mr-[5px]"
                 width="12px"
                 height="12px"
-                iconSrc="/assets/images/provider-dashboard/exclamationMark.svg"
+                iconSrc="/quest/assets/images/provider-dashboard/exclamationMark.svg"
               />
               <p>
                 It usually takes around 1 week for us to validate your request.
@@ -65,7 +65,7 @@ const InformationVerification = () => {
                 className="flex items-center justify-center gap-1 text-white"
               >
                 Support@unitap.app
-                <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
+                <Icon iconSrc="/quest/assets/images/provider-dashboard/ic_link_gray.svg" />
               </a>
             </div>
           </div>
@@ -77,7 +77,7 @@ const InformationVerification = () => {
                   className="ml-[-5px] mr-[5px]"
                   width="12px"
                   height="12px"
-                  iconSrc="/assets/images/provider-dashboard/rejected.svg"
+                  iconSrc="/quest/assets/images/provider-dashboard/rejected.svg"
                 />
                 <p>{selectedRaffleForCheckReason.rejectionReason}</p>
               </div>
@@ -94,7 +94,7 @@ const InformationVerification = () => {
                   className="flex gap-1 text-white"
                 >
                   Support@unitap.app
-                  <Icon iconSrc="/assets/images/provider-dashboard/ic_link_gray.svg" />
+                  <Icon iconSrc="/quest/assets/images/provider-dashboard/ic_link_gray.svg" />
                 </a>
               </div>
             </div>

@@ -57,7 +57,7 @@ const WalletPrompt: FC<{
 
   return (
     <>
-      <Icon iconSrc="/assets/images/wallets.svg" alt="wallets" />
+      <Icon iconSrc="/quest/assets/images/wallets.svg" alt="wallets" />
 
       <p className="mt-5 text-sm text-gray60">
         Select what wallet you want to connect below:
@@ -66,8 +66,8 @@ const WalletPrompt: FC<{
       <WalletProviderButton
         className="mt-8 from-[#F5841F33]"
         label="MetaMask"
-        imageIcon="/assets/images/modal/metamask-icon.svg"
-        backgroundImage="/assets/images/modal/metamask-bg.svg"
+        imageIcon="/quest/assets/images/modal/metamask-icon.svg"
+        backgroundImage="/quest/assets/images/modal/metamask-bg.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Metamask);
           connect({
@@ -80,8 +80,8 @@ const WalletPrompt: FC<{
       <WalletProviderButton
         className="mt-3 from-[#16436f]"
         label="WalletConnect"
-        backgroundImage="/assets/images/modal/walletconnect-bg.svg"
-        imageIcon="/assets/images/modal/walletconnect-icon.svg"
+        backgroundImage="/quest/assets/images/modal/walletconnect-bg.svg"
+        imageIcon="/quest/assets/images/modal/walletconnect-icon.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Walletconnect);
           connect({

@@ -34,7 +34,7 @@ const UnitapPass = () => {
       id="home-nft"
       className={
         "uni-card flex-col items-center gap-4 px-12 py-3 text-center sm:text-left md:flex-row md:gap-0 " +
-        "flex justify-between after:inset-auto after:-top-10 after:left-0 after:h-32 after:w-36 " +
+        "flex justify-between after:inset-auto after:-top-10 after:left-0 after:h-32 after:w-36" +
         "cursor-pointer text-white after:rounded-2xl after:bg-nft-texture hover:bg-gray00 hover:after:top-2"
       }
     >
@@ -74,7 +74,7 @@ const UnitapPass = () => {
           <p>Mint</p>
           <Icon
             className="ml-5"
-            iconSrc="/assets/images/landing/arrow-right.svg"
+            iconSrc="/quest/assets/images/landing/arrow-right.svg"
           />
         </ClaimButton>
       </div>

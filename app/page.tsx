@@ -44,7 +44,7 @@ const HeroSection = () => {
     <section className="text-center">
       <Image
         className="mx-auto"
-        src="/assets/images/landing/tasks.png"
+        src="/quest/assets/images/landing/tasks.png"
         alt="unitap-tasks"
         width={147}
         height={62}
@@ -113,7 +113,7 @@ const Footer = () => {
           >
             <img
               className={social.localClass}
-              src={`/assets/images/landing/${social.img}`}
+              src={`/quest/assets/images/landing/${social.img}`}
             />
           </Link>
         ))}

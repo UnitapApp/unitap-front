@@ -61,10 +61,10 @@ const OfferPrizeForm = ({ detailRafflePk, verificationRafflePK }: FromProp) => {
           <Icon
             onClick={prevPage}
             className="absolute left-5 top-5 cursor-pointer select-none text-xl text-white"
-            iconSrc="/assets/images/provider-dashboard/arrow-left.svg"
+            iconSrc="/quest/assets/images/provider-dashboard/arrow-left.svg"
           />
         )}
-        <div className="flex min-h-[320px]  w-full justify-center">
+        <div className="flex min-h-[320px] w-full justify-center">
           {display}
         </div>
       </div>

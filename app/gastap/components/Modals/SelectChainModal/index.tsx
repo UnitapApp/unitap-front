@@ -24,7 +24,7 @@ const SelectChainModal = ({
   const { changeSearchPhrase, chainListSearchSimpleResult } =
     useGasTapContext();
   const searchPhraseChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const phrase: string = event.target.value;
     setSearchPhraseInput(phrase);
@@ -34,26 +34,26 @@ const SelectChainModal = ({
     return searchChainListSimple(
       searchPhraseInput,
       chainListSearchSimpleResult.filter(
-        (chain) => chain.chainType !== ChainType.SOLANA
-      )
+        (chain) => chain.chainType !== ChainType.SOLANA,
+      ),
     );
   }, [chainListSearchSimpleResult, searchPhraseInput]);
 
   return (
-    <SelectChainModalWrapper className="relative pt-4 h-auto">
+    <SelectChainModalWrapper className="relative h-auto pt-4">
       <input
-        className="bg-gray10 border-2 !border-gray30 rounded-lg p-4 py-3.5 pl-[52px] mb-2 w-full text-white z-1"
+        className="z-1 mb-2 w-full rounded-lg border-2 !border-gray30 bg-gray10 p-4 py-3.5 pl-[52px] text-white"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Search Network"
       />
       <Icon
         className="absolute left-4 top-8"
-        iconSrc="/assets/images/modal/search-icon.svg"
+        iconSrc="/quest/assets/images/modal/search-icon.svg"
         width="20px"
         height="20px"
       />
-      <div className="chainlist-container overflow-y-auto max-h-[50vh] styled-scroll pr-1">
+      <div className="chainlist-container styled-scroll max-h-[50vh] overflow-y-auto pr-1">
         {chainList
           .filter((item) => item.chainType === ChainType.EVM)
           .map((chain) => (

@@ -249,7 +249,7 @@ export const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                     <div className="flex h-full w-full cursor-pointer items-center justify-between rounded-[7px] bg-gray20 px-2 font-semibold">
                       Pre-enrollment
                       <img
-                        src="/assets/images/provider-dashboard/exclamation.svg"
+                        src="/quest/assets/images/provider-dashboard/exclamation.svg"
                         width={14}
                         height={14}
                       />
@@ -377,7 +377,7 @@ export const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                           width={12}
                           height={7}
                           alt="angle down"
-                          src="/assets/images/token-tap/angle-down.svg"
+                          src="/quest/assets/images/token-tap/angle-down.svg"
                           className={`ml-2 ${
                             showAllPermissions ? "rotate-180" : ""
                           } transition-transform`}
@@ -631,7 +631,7 @@ export const RaffleCard: FC<{ raffle: Prize; isHighlighted?: boolean }> = ({
                       </span>
                       <Icon
                         className="absolute right-0 top-1/2 -translate-y-1/2"
-                        iconSrc="/assets/images/prize-tap/enrolled-ticket.svg"
+                        iconSrc="/quest/assets/images/prize-tap/enrolled-ticket.svg"
                         width="27px"
                         height="24px"
                       />

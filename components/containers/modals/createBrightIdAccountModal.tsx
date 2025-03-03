@@ -14,24 +14,24 @@ const CreateBrightIdAccountModalContent = () => {
       <Icon
         data-testid="brightid-logo"
         className="bright-id-logo z-10 mb-5"
-        iconSrc="/assets/images/modal/bright-id-flat-logo.svg"
+        iconSrc="/quest/assets/images/modal/bright-id-flat-logo.svg"
       />
-      <p className="text-sm text-gray100 mb-6 mr-auto">
+      <p className="mb-6 mr-auto text-sm text-gray100">
         Create a BrightID account easily by following this steps:
       </p>
-      <p className="text-sm text-white mb-4 mr-auto">
+      <p className="mb-4 mr-auto text-sm text-white">
         1- Download BrightID App
       </p>
-      <div className="stores flex w-full justify-evenly mb-7">
+      <div className="stores mb-7 flex w-full justify-evenly">
         <Icon
           onClick={() =>
             window.open(
               "https://play.google.com/store/apps/details?id=org.brightid&hl=en&gl=US&pli=1",
-              "_blank"
+              "_blank",
             )
           }
           className="cursor-pointer"
-          iconSrc="/assets/images/modal/google-play.svg"
+          iconSrc="/quest/assets/images/modal/google-play.svg"
           height="48px"
           width="auto"
         />
@@ -39,21 +39,21 @@ const CreateBrightIdAccountModalContent = () => {
           onClick={() =>
             window.open(
               "https://apps.apple.com/us/app/brightid/id1428946820",
-              "_blank"
+              "_blank",
             )
           }
           className="cursor-pointer"
-          iconSrc="/assets/images/modal/app-store.svg"
+          iconSrc="/quest/assets/images/modal/app-store.svg"
           height="48px"
           width="auto"
         />
       </div>
 
-      <p className="text-sm text-white mr-auto mb-32">
+      <p className="mb-32 mr-auto text-sm text-white">
         2- Join a{" "}
         <span
           onClick={() => window.open("https://meet.brightid.org/#/", "_blank")}
-          className="text-space-green underline cursor-pointer"
+          className="cursor-pointer text-space-green underline"
         >
           Verification Meet
         </span>{" "}

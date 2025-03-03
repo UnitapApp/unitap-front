@@ -1,62 +1,62 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { unitapPassSupportedNetworks } from "@/constants/chains"
+import { useState } from "react";
+import { unitapPassSupportedNetworks } from "@/constants/chains";
 
 const UnitapPassPage = () => {
-  const [selectedNetworkIndex, setSelectedNetworkIndex] = useState(0)
-  const [copyMessage, setCopyMessage] = useState("")
+  const [selectedNetworkIndex, setSelectedNetworkIndex] = useState(0);
+  const [copyMessage, setCopyMessage] = useState("");
 
   const selectNetwork = (index: number) => {
-    setSelectedNetworkIndex(index)
-  }
+    setSelectedNetworkIndex(index);
+  };
 
   const copyToClipboard = (address: string) => {
-    navigator.clipboard.writeText(address)
+    navigator.clipboard.writeText(address);
 
-    setCopyMessage("Copied")
+    setCopyMessage("Copied");
 
     setTimeout(() => {
-      if (setCopyMessage) setCopyMessage("")
-    }, 3000)
-  }
-  const selectedNetwork = unitapPassSupportedNetworks[selectedNetworkIndex]
+      if (setCopyMessage) setCopyMessage("");
+    }, 3000);
+  };
+  const selectedNetwork = unitapPassSupportedNetworks[selectedNetworkIndex];
 
   return (
     <>
-      <div className={"flex justify-center items-center px-4 py-8"}>
+      <div className={"flex items-center justify-center px-4 py-8"}>
         <div
           className={
-            "uni-card mt-9 sm:mt-0 after:bg-donate-texture-p  after:w-60 after:top-0 after:h-56 px-4 py-6"
+            "uni-card mt-9 px-4 py-6 after:top-0 after:h-56 after:w-60 after:bg-donate-texture-p sm:mt-0"
           }
         >
-          <div className={"h-72 flex flex-col justify-end items-center mb-12"}>
+          <div className={"mb-12 flex h-72 flex-col items-center justify-end"}>
             {selectedNetwork.name && (
-              <p className={"text-white font-semibold text-lg z-10 relative"}>
+              <p className={"relative z-10 text-lg font-semibold text-white"}>
                 Unitap Wallet
               </p>
             )}
             <img
-              src={`/assets/images/donate/${
+              src={`/quest/assets/images/donate/${
                 selectedNetwork.qr ? selectedNetwork.qr : "donate-img.png"
               }`}
               className={`${
                 selectedNetwork.qr ? "w-52" : "w-36"
-              } relative  m-auto z-10`}
+              } relative z-10 m-auto`}
             />
             {selectedNetwork.name && (
               <div className={"flex gap-2"}>
-                <p className={"text-space-green text-[11px] sm:text-base"}>
+                <p className={"text-[11px] text-space-green sm:text-base"}>
                   {selectedNetwork.address}{" "}
                 </p>
                 <div className="relative">
                   <img
                     onClick={() => copyToClipboard(selectedNetwork.address)}
-                    src={"/assets/images/donate/copy-green.svg"}
-                    className={"cursor-pointer inline-block"}
+                    src={"/quest/assets/images/donate/copy-green.svg"}
+                    className={"inline-block cursor-pointer"}
                   />
                   {copyMessage && (
-                    <div className="absolute bottom-full mb-3 w-16 -left-10 py-2 bg-gray10 text-gray100 text-center border-gray70 border rounded-md text-xs">
+                    <div className="absolute -left-10 bottom-full mb-3 w-16 rounded-md border border-gray70 bg-gray10 py-2 text-center text-xs text-gray100">
                       {copyMessage}
                     </div>
                   )}
@@ -64,27 +64,27 @@ const UnitapPassPage = () => {
               </div>
             )}
           </div>
-          <h2 className={"text-white mb-4"}>Donate to Unitap</h2>
+          <h2 className={"mb-4 text-white"}>Donate to Unitap</h2>
 
-          <p className={"text-gray100 mb-8 text-xs"}>
+          <p className={"mb-8 text-xs text-gray100"}>
             Select a network to view Unitap wallet address and easily donate to
             Unitap.
           </p>
-          <label className={"text-gray90 text-xs mb-2 inline-block"}>
+          <label className={"mb-2 inline-block text-xs text-gray90"}>
             Select network
           </label>
-          <div className={"flex flex-col sm:flex-row justify-between gap-2 "}>
+          <div className={"flex flex-col justify-between gap-2 sm:flex-row"}>
             {unitapPassSupportedNetworks.map((network, index) => (
               <div
                 onClick={() => selectNetwork(index)}
                 key={network.name}
                 className={`${
                   selectedNetworkIndex === index
-                    ? "gradient-outline-button bg-gray00 before:rounded-[11px] before:inset-[0.1rem] "
-                    : "border-gray50 bg-gray30 border-2"
-                } sm:w-36 cursor-pointer  text-white rounded-xl transition-colors hover:bg-gray00 duration-200 flex gap-2 flex-col justify-center items-center px-2 py-3`}
+                    ? "gradient-outline-button bg-gray00 before:inset-[0.1rem] before:rounded-[11px]"
+                    : "border-2 border-gray50 bg-gray30"
+                } flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl px-2 py-3 text-white transition-colors duration-200 hover:bg-gray00 sm:w-36`}
               >
-                <img src={`/assets/images/donate/${network.icon}`} />
+                <img src={`/quest/assets/images/donate/${network.icon}`} />
 
                 <p className={"text-xs"}>{network.name}</p>
               </div>
@@ -93,7 +93,7 @@ const UnitapPassPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default UnitapPassPage
+export default UnitapPassPage;

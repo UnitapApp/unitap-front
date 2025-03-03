@@ -77,12 +77,16 @@ const WalletItem = ({
     <div
       className={
         "my-2 flex items-center text-sm hover:text-stone-900 dark:hover:text-white " +
-        (isActive ? "text-stone-900 dark:text-white" : "text-stone-500 dark:text-gray90")
+        (isActive
+          ? "text-stone-900 dark:text-white"
+          : "text-stone-500 dark:text-gray90")
       }
     >
       <span
         className={
-          (isActive ? "bg-stone-900 dark:bg-white" : "bg-stone-500 dark:bg-gray90") + " h-2 w-2 rounded-full"
+          (isActive
+            ? "bg-stone-900 dark:bg-white"
+            : "bg-stone-500 dark:bg-gray90") + " h-2 w-2 rounded-full"
         }
       />
       <span className={`ml-3 font-normal ${NotoSansMono.className}`}>
@@ -90,13 +94,13 @@ const WalletItem = ({
       </span>
       <div className="relative">
         {copyMessage && (
-          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 dark:bg-gray10 py-2 text-center text-xs text-gray100">
+          <div className="absolute left-1/2 top-1/2 mb-3 w-16 -translate-x-1/2 translate-y-1/2 rounded-md border border-gray70 py-2 text-center text-xs text-gray100 dark:bg-gray10">
             {copyMessage}
           </div>
         )}
         <Image
           onClick={() => copyToClipboard(wallet)}
-          src="/assets/images/navbar/copy.svg"
+          src="/quest/assets/images/navbar/copy.svg"
           width={12}
           height={14}
           className="ml-3 cursor-pointer"
@@ -133,7 +137,7 @@ export const ProfileDropdown: FC<{
             <button className="relative z-10 flex h-8 w-40 items-center px-2 text-left text-white">
               <Image
                 className="absolute inset-0 -z-10"
-                src="/assets/images/navbar/logout-button.svg"
+                src="/quest/assets/images/navbar/logout-button.svg"
                 alt="logout"
                 width={147}
                 height={28}
@@ -142,7 +146,7 @@ export const ProfileDropdown: FC<{
               <Image
                 width={12}
                 height={10}
-                src="/assets/images/navbar/arrow-right.svg"
+                src="/quest/assets/images/navbar/arrow-right.svg"
                 className="mb-1 ml-auto mr-6"
                 alt="arrow-right"
               />
@@ -204,9 +208,7 @@ export const RenderNavbarWalletAddress = () => {
 
   return (
     <>
-      <span className="mr-5">
-        {userProfile.username}
-      </span>
+      <span className="mr-5">{userProfile.username}</span>
       <span
         data-testid="wallet-address"
         className="text-sm"

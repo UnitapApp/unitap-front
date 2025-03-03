@@ -36,7 +36,7 @@
 
 .refillToken {
   @apply rounded-[16px] border border-2 border-gray40 bg-cover bg-no-repeat;
-  background-image: url("/assets/images/provider-dashboard/bg.png");
+  background-image: url("/quest/assets/images/provider-dashboard/bg.png");
 }
 
 .providePrize__amount {
@@ -77,7 +77,7 @@
 .offerPrizeSteps {
   border-radius: 12px;
   @apply bg-cover bg-no-repeat;
-  background: url("/assets/images/provider-dashboard/prize-offer-step-bg.png");
+  background: url("/quest/assets/images/provider-dashboard/prize-offer-step-bg.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -93,7 +93,7 @@
 }
 
 .prizeForm-current-step-icon {
-  @apply h-[26px] w-[26px] overflow-hidden rounded-full rounded-full bg-gray30;
+  @apply h-[26px] w-[26px] overflow-hidden rounded-full bg-gray30;
 }
 
 .requireModal {
@@ -108,24 +108,24 @@
   @apply h-[100%] w-full bg-transparent text-white placeholder-gray80;
 }
 .prize-card-bg-1 {
-  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/assets/images/prize-tap/nft-cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/quest/assets/images/prize-tap/nft-cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-card-linea {
-  @apply bg-no-repeat p-0 pl-0 lg:bg-[url('/assets/images/prize-tap/linia-raffle-bg.svg')] lg:p-4 lg:pl-6 lg:pr-0;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url('/quest/assets/images/prize-tap/linia-raffle-bg.svg')] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-card-bg-2 {
-  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/assets/images/prize-tap/cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
+  @apply bg-no-repeat p-0 pl-0 lg:bg-[url("/quest/assets/images/prize-tap/cover.svg")] lg:p-4 lg:pl-6 lg:pr-0;
 }
 
 .prize-tap-header-bg {
-  background-image: url("/assets/images/prize-tap/header-bg.svg");
+  background-image: url("/quest/assets/images/prize-tap/header-bg.svg");
   @apply bg-cover bg-center bg-no-repeat;
 }
 
 .deposit-prize-nft-cover {
-  background-image: url("/assets/images/prize-tap/nft-cover.svg");
+  background-image: url("/quest/assets/images/prize-tap/nft-cover.svg");
   @apply bg-cover bg-center bg-no-repeat;
   object-fit: contain;
 }
@@ -143,7 +143,7 @@
 
 .winner-box-bg {
   background-color: #10101b;
-  // background-image: url('../public/assets/images/prize-tap/winner_bg.svg');
+  // background-image: url('../public/quest/assets/images/prize-tap/winner_bg.svg');
   @apply bg-cover bg-center bg-no-repeat;
 }
 

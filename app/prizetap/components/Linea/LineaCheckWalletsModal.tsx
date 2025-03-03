@@ -52,7 +52,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
   const findUserWallet = (address: string) => {
     const userEnrollment = lineaEnrolledUsers.find(
       (item) =>
-        item.walletAddress.toLocaleLowerCase() === address.toLocaleLowerCase()
+        item.walletAddress.toLocaleLowerCase() === address.toLocaleLowerCase(),
     );
 
     if (userEnrollment) {
@@ -87,56 +87,56 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
       closeModalHandler={closeClaimTokenModal}
       isOpen={isLineaCheckEnrolledModalOpen}
     >
-      <div className="claim-modal-wrapper font-normal text-left flex flex-col items-center justify-center pt-5">
-        <div className="mb-5 text-center relative">
-          <div className="bg-[url('/assets/images/prize-tap/linea-modal-secondary-bg.svg')] bg-contain rounded-lg w-64 h-40 mx-auto" />
+      <div className="claim-modal-wrapper flex flex-col items-center justify-center pt-5 text-left font-normal">
+        <div className="relative mb-5 text-center">
+          <div className="mx-auto h-40 w-64 rounded-lg bg-[url('/quest/assets/images/prize-tap/linea-modal-secondary-bg.svg')] bg-contain" />
           <Image
-            src="/assets/images/prize-tap/linea-raffle-modal-cover.svg"
-            className="absolute left-1/2 -translate-x-1/2 top-7"
+            src="/quest/assets/images/prize-tap/linea-raffle-modal-cover.svg"
+            className="absolute left-1/2 top-7 -translate-x-1/2"
             alt={"linea"}
             width={168}
             height={168}
           />
         </div>
 
-        <div className="mt-10 text-white text-center">
+        <div className="mt-10 text-center text-white">
           <h5>LINEA NFT</h5>
           <p className="mt-3 text-xs text-gray100">by linea</p>
-          <div className="mt-10 text-xs text-left text-secondary-text">
+          <div className="mt-10 text-left text-xs text-secondary-text">
             {numberWithCommas(lineaRaffle!.maxNumberOfEntries)} Whitelisted
             Wallets automatically enrolled to this raffle by Linea{" "}
             <CheckCircleImage className="inline-block" />
           </div>
 
-          <div className="mt-10 font-semibold text-left text-xs text-gray90 px-2">
+          <div className="mt-10 px-2 text-left text-xs font-semibold text-gray90">
             Check Enrollment
           </div>
 
           <div className="mt-2">
-            <div className="flex bg-gray20 p-4 py-3.5 border-2 rounded-xl border-gray70 items-center w-full mt-1">
+            <div className="mt-1 flex w-full items-center rounded-xl border-2 border-gray70 bg-gray20 p-4 py-3.5">
               {isSearchFilled && (
                 <Image
                   onClick={() => setSearchPhraseInput("")}
-                  className="cursor-pointer mr-3"
-                  src="/assets/images/prize-tap/times.svg"
+                  className="mr-3 cursor-pointer"
+                  src="/quest/assets/images/prize-tap/times.svg"
                   height={12}
                   width={12}
                   alt="close"
                 />
               )}
               <input
-                className="bg-transparent pr-4 placeholder:text-gray90 text-white w-full z-1"
+                className="z-1 w-full bg-transparent pr-4 text-white placeholder:text-gray90"
                 value={searchPhraseInput}
                 onChange={(e) => setSearchPhraseInput(e.target.value)}
                 placeholder="Check Wallet"
               />
-              <div className="mr-auto text-xs flex-1 flex items-center gap-3">
+              <div className="mr-auto flex flex-1 items-center gap-3 text-xs">
                 {!result.blank ? (
                   result.found ? (
-                    <div className="rounded-lg flex items-center font-semibold bg-dark-space-green w-24 border border-space-green text-space-green text-center px-3 py-[6px]">
+                    <div className="flex w-24 items-center rounded-lg border border-space-green bg-dark-space-green px-3 py-[6px] text-center font-semibold text-space-green">
                       Enrolled
                       <Image
-                        src="/assets/images/prize-tap/ticket.svg"
+                        src="/quest/assets/images/prize-tap/ticket.svg"
                         alt="ticket"
                         className="ml-2"
                         width={20}
@@ -144,7 +144,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
                       />
                     </div>
                   ) : (
-                    <div className="rounded-lg w-28 font-semibold bg-[#2C2228] border border-error text-error text-center px-1 py-[6px]">
+                    <div className="w-28 rounded-lg border border-error bg-[#2C2228] px-1 py-[6px] text-center font-semibold text-error">
                       Not Whitelisted
                     </div>
                   )
@@ -158,16 +158,16 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
                               .readText()
                               .then((text) => setSearchPhraseInput(text))
                           }
-                          className="rounded-lg font-semibold bg-gray00 border border-gray100 text-gray100 text-center px-3 py-[6px]"
+                          className="rounded-lg border border-gray100 bg-gray00 px-3 py-[6px] text-center font-semibold text-gray100"
                         >
                           PASTE
                         </button>
                         <UButton
                           onClick={tryFetchWallet}
                           size="small"
-                          className="gradient-outline-button font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"
+                          className="gradient-outline-button bg-g-primary px-3 py-[6px] text-center font-semibold text-gray100 before:inset-[1px]"
                         >
-                          <p className="bg-clip-text bg-g-primary text-transparent">
+                          <p className="bg-g-primary bg-clip-text text-transparent">
                             WALLET
                           </p>
                         </UButton>
@@ -178,9 +178,9 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
                       onClick={() => findUserWallet(searchPhraseInput)}
                       disabled={!isSearchFilled}
                       size="small"
-                      className="gradient-outline-button font-semibold bg-g-primary before:inset-[1px] text-gray100 text-center px-3 py-[6px]"
+                      className="gradient-outline-button bg-g-primary px-3 py-[6px] text-center font-semibold text-gray100 before:inset-[1px]"
                     >
-                      <p className="bg-clip-text bg-g-primary text-transparent">
+                      <p className="bg-g-primary bg-clip-text text-transparent">
                         CHECK
                       </p>
                     </UButton>
@@ -191,13 +191,13 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
           </div>
           {result.blank ||
             (result.found ? (
-              <div className="mt-3 text-space-green text-xs text-center">
+              <div className="mt-3 text-center text-xs text-space-green">
                 This wallet is one of the{" "}
                 {numberWithCommas(lineaRaffle!.maxNumberOfEntries)} whitelisted
                 wallets by Linea.
               </div>
             ) : (
-              <div className="mt-3 text-error text-xs text-center">
+              <div className="mt-3 text-center text-xs text-error">
                 This wallet is not whitelisted by Linea.
               </div>
             ))}

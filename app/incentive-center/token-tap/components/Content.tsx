@@ -44,7 +44,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
   const status = distribution.status;
 
   return (
-    <div className="relative h-[264px] w-full select-none rounded-xl border-2 border-gray40 bg-gray30 p-4 ">
+    <div className="relative h-[264px] w-full select-none rounded-xl border-2 border-gray40 bg-gray30 p-4">
       <div className="provideToken-item-container">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
               {distribution.isOneTimeClaim ? "Single-Claim" : " Periodic-Claim"}
             </div>
             <Icon
-              iconSrc="/assets/images/provider-dashboard/reload.svg"
+              iconSrc="/quest/assets/images/provider-dashboard/reload.svg"
               width="16px"
               height="16px"
             />
@@ -112,7 +112,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         </div>
         <div className="pt-2">
           {isStart && !isFinished && status === Filters.Verified && (
-            <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50  text-sm font-medium text-white ">
+            <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50 text-sm font-medium text-white">
               {distribution.maxNumberOfClaims -
                 distribution.numberOfOnchainClaims}{" "}
               claims left
@@ -121,7 +121,7 @@ const DistributionCard = ({ distribution }: DistributionCardProp) => {
         </div>
         <div className="absolute bottom-2 left-4 right-4">
           {isStart && isFinished && status === Filters.Verified && (
-            <div className="flex h-[48px] items-center  justify-center rounded-xl bg-gray50 text-sm font-medium text-white ">
+            <div className="flex h-[48px] items-center justify-center rounded-xl bg-gray50 text-sm font-medium text-white">
               {distribution.numberOfClaims} claimed
             </div>
           )}
@@ -283,7 +283,7 @@ const TokenTapContent = () => {
           handleSetSearchPhrase={handleSetSearchPhrase}
         />
         <div
-          className={`${Styles.provider_dashboard__status} align-center mt-5 flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0  md:w-auto`}
+          className={`${Styles.provider_dashboard__status} align-center mt-5 flex h-[40px] w-full items-center justify-center rounded-xl border-2 border-gray30 bg-gray40 text-xs text-gray90 md:mt-0 md:w-auto`}
         >
           <div
             className={`${selectedFilter === Filters.All && "text-gray100"}`}
@@ -339,8 +339,8 @@ const TokenTapContent = () => {
               </p>
             </div>
             <Icon
-              className="absolute left-0 top-[-17px] h-[150px]  sm:right-[-45px] sm:h-[80px]"
-              iconSrc="/assets/images/provider-dashboard/token-bg.png"
+              className="absolute left-0 top-[-17px] h-[150px] sm:right-[-45px] sm:h-[80px]"
+              iconSrc="/quest/assets/images/provider-dashboard/token-bg.png"
             />
           </div>
           <Link
