@@ -7,10 +7,7 @@ import Markdown from "react-markdown";
 import { IoShareSocialOutline } from "react-icons/io5";
 import Link from "next/link";
 
-export type TokenCardProps = {
-  token: Token;
-  isHighlighted?: boolean;
-};
+export type TokenCardProps = { token: Token; isHighlighted?: boolean };
 
 const nunitoSans = Nunito_Sans({
   weight: ["200", "300", "400", "600", "700"],
@@ -72,10 +69,10 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
               token.image ?? "/quest/assets/images/prize-tap/default-prize.png"
             }
             alt={token.name}
-            onError={(e) => {
-              e.currentTarget.src =
-                "/quest/assets/images/prize-tap/default-prize.png";
-            }}
+            // onError={(e) => {
+            //   e.currentTarget.src =
+            //     "/quest/assets/images/prize-tap/default-prize.png";
+            // }}
             width={231}
             height={231}
             className="h-[231px] w-[231px] rounded-xl object-cover"

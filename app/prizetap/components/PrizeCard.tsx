@@ -8,10 +8,7 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import Link from "next/link";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 
-export type PrizeCardProps = {
-  prize: Prize;
-  isHighlighted?: boolean;
-};
+export type PrizeCardProps = { prize: Prize; isHighlighted?: boolean };
 
 const nunitoSans = Nunito_Sans({
   weight: ["200", "300", "400", "600", "700"],
@@ -69,9 +66,9 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
         <div className="absolute -inset-[2px] left-0 top-0 -z-10 rotate-[5deg] rounded-xl bg-black-0"></div>
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
-            src={
-              prize.image ?? "/quest/assets/images/prize-tap/default-prize.png"
-            }
+            // src={
+            //   prize.image ?? "/quest/assets/images/prize-tap/default-prize.png"
+            // }
             alt={prize.name}
             onError={(e) => {
               e.currentTarget.src =
