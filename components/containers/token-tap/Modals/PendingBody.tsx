@@ -5,11 +5,9 @@ import { Text } from "@/components/ui/text.style";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { FC, useEffect, useMemo } from "react";
 import lottie from "lottie-web";
-import animation from "@/quest/assets/animations/GasFee-delivery2.json";
+import animation from "@/assets/animations/GasFee-delivery2.json";
 
-const PendingBody: FC<{
-  tokenId: number;
-}> = ({ tokenId }) => {
+const PendingBody: FC<{ tokenId: number }> = ({ tokenId }) => {
   const {
     closeClaimModal,
     claimTokenLoading,

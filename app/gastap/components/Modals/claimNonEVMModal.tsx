@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/Button/button";
 import { getChainClaimIcon, getTxUrl } from "@/utils/chain";
 import lottie from "lottie-web";
-import animation from "@/quest/assets/animations/GasFee-delivery2.json";
+import animation from "@/assets/animations/GasFee-delivery2.json";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
