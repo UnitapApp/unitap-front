@@ -9,7 +9,6 @@ export const AboutSection = () => {
       fontWeight="400"
       flex="1"
       lineHeight={{ base: "28px ", md: "45px" }}
-      textJustify="inter-word"
       textAlign="justify"
     >
       <chakra.span columnGap="6px" display="flex" alignItems="center">

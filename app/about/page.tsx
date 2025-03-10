@@ -20,7 +20,7 @@ const Team = dynamic(() =>
   import("./_components/Team").then((modules) => modules.Team),
 );
 
-export const About = () => {
+const About = () => {
   return (
     <VStack
       backgroundRepeat="repeat"

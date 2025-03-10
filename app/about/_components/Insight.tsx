@@ -51,7 +51,9 @@ const InsightItem = ({
       </Box>
       <chakra.span fontSize="32px" fontWeight="800" fontFamily="nunito">
         <chakra.span>{prefix}</chakra.span>
-        <chakra.span ref={countUpRef}>{count}</chakra.span>
+        <chakra.span ref={countUpRef as RefObject<HTMLSpanElement>}>
+          {count}
+        </chakra.span>
         <chakra.span>{suffix}</chakra.span>
       </chakra.span>
       <Text fontSize="22px">{title}</Text>
