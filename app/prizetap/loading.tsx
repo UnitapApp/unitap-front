@@ -16,7 +16,7 @@ const PrizeTapLoading = () => {
               width={37}
               height={33}
               className="w-full"
-              src="/quest/assets/images/prize-tap/daimond-ticket.svg"
+              src="/assets/images/prize-tap/daimond-ticket.svg"
               alt="loading"
             />
             <div className="ml-16"></div>
@@ -42,13 +42,13 @@ const PrizeCardLoading = () => {
         <div className="absolute right-5 top-5 z-20 flex items-center gap-x-6">
           <Icon
             className="opacity-40"
-            iconSrc="/quest/assets/images/token-tap/twitter-icon.svg"
+            iconSrc="/assets/images/token-tap/twitter-icon.svg"
             width="auto"
             height="20px"
           />
           <Icon
             className="opacity-40"
-            iconSrc="/quest/assets/images/token-tap/discord-icon.svg"
+            iconSrc="/assets/images/token-tap/discord-icon.svg"
             width="auto"
             height="20px"
           />

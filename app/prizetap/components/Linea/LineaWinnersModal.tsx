@@ -58,7 +58,7 @@ const LineaWinnersModal: FC<{}> = ({}) => {
         <div className="mt-1 flex w-full items-center rounded-xl border-2 !bg-stone-100 p-4 py-3.5 dark:border-gray30 dark:bg-gray50">
           <Icon
             className="mr-5"
-            iconSrc="/quest/assets/images/modal/search-icon.svg"
+            iconSrc="/assets/images/modal/search-icon.svg"
             width="20px"
             height="20px"
           />
@@ -134,7 +134,7 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
       >
         {shortenAddress(walletAddress)}
 
-        <Icon iconSrc="/quest/assets/images/arrow-icon.svg" className="ml-3" />
+        <Icon iconSrc="/assets/images/arrow-icon.svg" className="ml-3" />
       </a>
 
       {claimingPrizeTx ? (
@@ -145,12 +145,12 @@ export const WalletWinner: FC<LineaRaffleEntry> = ({
         >
           Claimed
           <Icon
-            iconSrc="/quest/assets/images/prize-tap/ic_link_green.svg"
+            iconSrc="/assets/images/prize-tap/ic_link_green.svg"
             className="ml-1"
           />
           <Icon
             height="25px"
-            iconSrc="/quest/assets/images/prize-tap/diamond.svg"
+            iconSrc="/assets/images/prize-tap/diamond.svg"
             className="ml-2"
           />
         </a>
@@ -179,7 +179,7 @@ export const LineaWalletWinner: FC<LineaRaffleEntry> = ({
       >
         {shortenAddress(walletAddress)}
 
-        <Icon iconSrc="/quest/assets/images/arrow-icon.svg" className="ml-3" />
+        <Icon iconSrc="/assets/images/arrow-icon.svg" className="ml-3" />
       </a>
 
       {isWinner ? (
@@ -190,12 +190,12 @@ export const LineaWalletWinner: FC<LineaRaffleEntry> = ({
         >
           Claimed
           <Icon
-            iconSrc="/quest/assets/images/prize-tap/ic_link_green.svg"
+            iconSrc="/assets/images/prize-tap/ic_link_green.svg"
             className="ml-1"
           />
           <Icon
             height="25px"
-            iconSrc="/quest/assets/images/prize-tap/diamond.svg"
+            iconSrc="/assets/images/prize-tap/diamond.svg"
             className="ml-2"
           />
         </a>

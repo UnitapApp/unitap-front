@@ -17,7 +17,7 @@ const TokenTapLoading = () => {
             <Image
               width={156}
               height={48}
-              src="/quest/assets/images/token-tap/coins-loading.svg"
+              src="/assets/images/token-tap/coins-loading.svg"
               alt="loading"
             />
           </div>
@@ -76,13 +76,13 @@ const TokenCardLoading = () => {
           <div className="ml-auto flex items-center gap-x-6">
             <Icon
               className="cursor-pointer"
-              iconSrc="/quest/assets/images/token-tap/twitter-icon.svg"
+              iconSrc="/assets/images/token-tap/twitter-icon.svg"
               width="auto"
               height="20px"
             />
             <Icon
               className="cursor-pointer"
-              iconSrc="/quest/assets/images/token-tap/discord-icon.svg"
+              iconSrc="/assets/images/token-tap/discord-icon.svg"
               width="auto"
               height="20px"
             />

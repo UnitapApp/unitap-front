@@ -74,7 +74,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
       <Input
         ref={ref}
         data-testid="search-box"
-        $icon="/quest/assets/images/modal/search-icon.svg"
+        $icon="/assets/images/modal/search-icon.svg"
         $width="100%"
         $fontSize="14px"
         $iconWidth="20px"
@@ -88,7 +88,7 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
         $backgroundColor="black1"
       ></Input>
       <Icon
-        iconSrc="/quest/assets/images/claim/slash-icon.svg"
+        iconSrc="/assets/images/claim/slash-icon.svg"
         hoverable
         className="icon-right absolute right-4 top-[10px] z-10"
       ></Icon>

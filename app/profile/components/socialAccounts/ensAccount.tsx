@@ -50,7 +50,7 @@ export const EnsAccount: FC<{
                 Connected{" "}
                 <Icon
                   className="ml-3"
-                  iconSrc="/quest/assets/images/modal/check-green.svg"
+                  iconSrc="/assets/images/modal/check-green.svg"
                 />
               </button>
             ) : (

@@ -34,7 +34,7 @@ const ChooseWalletBody: FC<{
         className="absolute right-3 top-4 z-10 cursor-pointer bg-gray30"
       >
         <Icon
-          iconSrc="/quest/assets/images/token-tap/angle-down.svg"
+          iconSrc="/assets/images/token-tap/angle-down.svg"
           className="-rotate-90"
           width="20px"
         />

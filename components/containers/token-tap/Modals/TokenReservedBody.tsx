@@ -27,7 +27,7 @@ const TokenReservedBody: FC<{
           className="chain-logo z-10 mb-4 mt-3"
           width="auto"
           height="160px"
-          iconSrc={"/quest/assets/images/token-tap/money.svg"}
+          iconSrc={"/assets/images/token-tap/money.svg"}
           alt=""
         />
       </DropIconWrapper>
@@ -59,7 +59,7 @@ const TokenReservedBody: FC<{
               View Unitap Pass
             </p>
             <Icon
-              iconSrc="/quest/assets/images/landing/arrow-right.svg"
+              iconSrc="/assets/images/landing/arrow-right.svg"
               className="pointer-events-none ml-4"
               width="auto"
               height="14px"

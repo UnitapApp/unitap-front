@@ -53,7 +53,7 @@ const Widget = (props: WidgetProps) => {
               {icon && (
                 <img
                   className={`${iconSize ? iconSize : ""} widget-icon`}
-                  src={`/quest/assets/images/landing/${icon}`}
+                  src={`/assets/images/landing/${icon}`}
                   alt={"widget"}
                 />
               )}

@@ -37,7 +37,7 @@ const UnitapPassPage = () => {
               </p>
             )}
             <img
-              src={`/quest/assets/images/donate/${
+              src={`/assets/images/donate/${
                 selectedNetwork.qr ? selectedNetwork.qr : "donate-img.png"
               }`}
               className={`${
@@ -52,7 +52,7 @@ const UnitapPassPage = () => {
                 <div className="relative">
                   <img
                     onClick={() => copyToClipboard(selectedNetwork.address)}
-                    src={"/quest/assets/images/donate/copy-green.svg"}
+                    src={"/assets/images/donate/copy-green.svg"}
                     className={"inline-block cursor-pointer"}
                   />
                   {copyMessage && (
@@ -84,7 +84,7 @@ const UnitapPassPage = () => {
                     : "border-2 border-gray50 bg-gray30"
                 } flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl px-2 py-3 text-white transition-colors duration-200 hover:bg-gray00 sm:w-36`}
               >
-                <img src={`/quest/assets/images/donate/${network.icon}`} />
+                <img src={`/assets/images/donate/${network.icon}`} />
 
                 <p className={"text-xs"}>{network.name}</p>
               </div>

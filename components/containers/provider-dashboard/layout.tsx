@@ -8,7 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Link from "next/link";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "../../../app/incentive-center/components/Buttons";
+import { BackToHomeButton } from "@/app/dashboard/components/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
@@ -27,7 +27,7 @@ const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
       ) : (
         <div className="flex flex-col items-center justify-center rounded-xl bg-gray20 py-10">
           <div className="mb-10">
-            <Icon iconSrc="/quest/assets/images/provider-dashboard/dashboard-login.svg" />
+            <Icon iconSrc="/assets/images/provider-dashboard/dashboard-login.svg" />
           </div>
           <p
             className="cursor-pointer text-sm font-semibold text-white"
@@ -78,8 +78,7 @@ const ProviderTabs: FC = () => {
         href={RoutePath.PROVIDER_GASTAP}
         // href={"#"}
       >
-        Gas Tap{" "}
-        <Icon iconSrc="/quest/assets/images/provider-dashboard/gas-tap.svg" />
+        Gas Tap <Icon iconSrc="/assets/images/provider-dashboard/gas-tap.svg" />
       </Link>
       <Link
         className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
@@ -89,7 +88,7 @@ const ProviderTabs: FC = () => {
         // href={"#"}
       >
         Token Tap{" "}
-        <Icon iconSrc="/quest/assets/images/provider-dashboard/token-tap.svg" />
+        <Icon iconSrc="/assets/images/provider-dashboard/token-tap.svg" />
       </Link>
       <Link
         className={`delay-260 flex w-full cursor-pointer flex-col-reverse items-center justify-center gap-2 p-3 transition duration-[1s] ease-in-out sm:flex-row ${
@@ -100,7 +99,7 @@ const ProviderTabs: FC = () => {
         href={RoutePath.PROVIDER_PRIZETAP}
       >
         Prize Tap
-        <Icon iconSrc="/quest/assets/images/provider-dashboard/prize-tap.svg" />
+        <Icon iconSrc="/assets/images/provider-dashboard/prize-tap.svg" />
       </Link>
     </div>
   );

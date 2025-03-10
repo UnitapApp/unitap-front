@@ -278,7 +278,7 @@ const MintNFTCard = () => {
                     width={10}
                     height={16}
                     className={"ml-2 h-auto w-4"}
-                    src={"/quest/assets/images/pass/base-network.svg"}
+                    src={"/assets/images/pass/base-network.svg"}
                     alt={"ethereum"}
                   />
                 </span>
@@ -339,9 +339,9 @@ const MintNFTCard = () => {
                     onClick={() => (count !== 1 ? setCount(count - 1) : null)}
                   >
                     {count === 1 ? (
-                      <Icon iconSrc="/quest/assets/images/nft/nft-minus-gray.svg" />
+                      <Icon iconSrc="/assets/images/nft/nft-minus-gray.svg" />
                     ) : (
-                      <Icon iconSrc="/quest/assets/images/nft/nft-minus-white.svg" />
+                      <Icon iconSrc="/assets/images/nft/nft-minus-white.svg" />
                     )}
                   </div>
                   <div

@@ -70,7 +70,7 @@ export const tokenTestData = [
     distributorUrl: "https://songaday.world/",
     discordUrl: "https://discord.gg/RUygyPYQfN",
     twitterUrl: "https://twitter.com/songadaymann",
-    imageUrl: "https://songaday.world/quest/assets/logo.png",
+    imageUrl: "https://songaday.world/assets/logo.png",
     token: "SONG",
     tokenAddress: "0x6E05260F22E4736505b36cDAe3B0a783A97c7AA6",
     amount: 100000000000000,

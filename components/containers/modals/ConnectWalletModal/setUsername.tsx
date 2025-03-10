@@ -64,7 +64,7 @@ const SetUsernameBody: FC<{
     <div className="w-full text-center">
       <Image
         className="mx-auto"
-        src="/quest/assets/images/navbar/logo.svg"
+        src="/assets/images/navbar/logo.svg"
         alt="unitap"
         height={128}
         width={112}

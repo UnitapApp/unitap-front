@@ -1,6 +1,6 @@
 "use client";
 
-import { appInfos } from "@/app/incentive-center/constants/integrations";
+import { appInfos } from "@/app/dashboard/constants/integrations";
 import { ClaimAndEnrollButton } from "@/components/ui/Button/button";
 import { useTokenTapContext } from "@/context/tokenTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
@@ -183,7 +183,7 @@ const Sidebar: FC<{
           }
           className={`mt-3 block w-full rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
           style={{
-            background: "url('/quest/assets/images/prize-tap/enroll.svg')",
+            background: "url('/assets/images/prize-tap/enroll.svg')",
           }}
           onClick={() => setMethod("claim")}
         >
@@ -326,8 +326,7 @@ const TokenRequirementBody: FC<{
                 }
                 className={`mx-auto mt-3 block w-52 rounded-xl border-2 border-space-green p-2 text-center disabled:border-gray50 disabled:opacity-60`}
                 style={{
-                  background:
-                    "url('/quest/assets/images/prize-tap/enroll.svg')",
+                  background: "url('/assets/images/prize-tap/enroll.svg')",
                 }}
                 onClick={() => setMethod("claim")}
               >

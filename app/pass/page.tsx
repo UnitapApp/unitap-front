@@ -238,14 +238,14 @@ const NftPass = () => {
               <img
                 width={"20px"}
                 height={"20px"}
-                src="/quest/assets/images/pass/check.svg"
+                src="/assets/images/pass/check.svg"
               />
               As Unitap grows there will be more and more features for Unitap
               Pass holders.
             </div>
           </div>
           <div className="absolute bottom-0">
-            <img src="/quest/assets/images/pass/advBg.svg" />
+            <img src="/assets/images/pass/advBg.svg" />
           </div>
         </div>
         {isPreLaunch ? (
@@ -256,11 +256,11 @@ const NftPass = () => {
             <NFTTimer deadline={deadline} className="mb-14" />
             <img
               className={"relative right-3 m-auto mt-28 w-52 animate-rocket"}
-              src={"/quest/assets/images/nft/rocketship.png"}
+              src={"/assets/images/nft/rocketship.png"}
             />
             <img
               className={"m-auto w-44"}
-              src={"/quest/assets/images/nft/rocket-base.png"}
+              src={"/assets/images/nft/rocket-base.png"}
             />
           </div>
         ) : (
@@ -300,11 +300,11 @@ const NftPass = () => {
             </div>
             <div className="flex h-[58px] items-center justify-around bg-gray40 text-sm">
               <div className="flex items-center gap-1">
-                <img src="/quest/assets/images/pass/up.svg" />
+                <img src="/assets/images/pass/up.svg" />
                 <p className="ml-1">{userProfile.upBalance} UPs</p>
               </div>
               <div className="flex items-center gap-1">
-                <img src="/quest/assets/images/pass/ticket.svg" />
+                <img src="/assets/images/pass/ticket.svg" />
                 <p className="ml-1">
                   {userProfile.prizetapWinningChanceNumber}
                   {userProfile.prizetapWinningChanceNumber === 1
@@ -342,19 +342,13 @@ const NftPass = () => {
                   <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
-                  iconSrc="/quest/assets/images/pass/ic_link_white.svg"
+                  iconSrc="/assets/images/pass/ic_link_white.svg"
                   className="mb-3 md:mb-0"
                 />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
-                <Icon
-                  iconSrc="/quest/assets/images/pass/left.svg"
-                  width="75px"
-                />
-                <Icon
-                  iconSrc="/quest/assets/images/pass/right.svg"
-                  width="75px"
-                />
+                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
+                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
               </div>
             </div>
           </div>
@@ -382,19 +376,13 @@ const NftPass = () => {
                   <div className="absolute bottom-0 h-[1px] w-full bg-primaryGradient2"></div>
                 </div>
                 <Icon
-                  iconSrc="/quest/assets/images/pass/ic_link_white.svg"
+                  iconSrc="/assets/images/pass/ic_link_white.svg"
                   className="mb-3 md:mb-0"
                 />
               </div>
               <div className="absolute -bottom-8 z-10 flex h-full w-full justify-between px-8">
-                <Icon
-                  iconSrc="/quest/assets/images/pass/left.svg"
-                  width="75px"
-                />
-                <Icon
-                  iconSrc="/quest/assets/images/pass/right.svg"
-                  width="75px"
-                />
+                <Icon iconSrc="/assets/images/pass/left.svg" width="75px" />
+                <Icon iconSrc="/assets/images/pass/right.svg" width="75px" />
               </div>
             </div>
           </div>

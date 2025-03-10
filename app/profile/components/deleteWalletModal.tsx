@@ -32,7 +32,7 @@ const DeleteWalletModal = () => {
       <div className="w-full text-sm">
         <Image
           className="mx-auto mt-10"
-          src="/quest/assets/images/modal/delete-wallet.svg"
+          src="/assets/images/modal/delete-wallet.svg"
           alt="delete wallet"
           width={142}
           height={116}

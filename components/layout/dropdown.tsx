@@ -14,7 +14,7 @@ const RenderNavbarDropdown = () => {
   return (
     <span className="ml-auto cursor-pointer">
       <Image
-        src="/quest/assets/images/navbar/navbar-dropdown-icon.svg"
+        src="/assets/images/navbar/navbar-dropdown-icon.svg"
         width={31}
         height={31}
         alt="unitap menu"
@@ -39,7 +39,7 @@ const navItems = [
   {
     name: "Home",
     link: RoutePath.HOME,
-    icon: "/quest/assets/images/navbar/navbar-dropdown-home.svg",
+    icon: "/assets/images/navbar/navbar-dropdown-home.svg",
     iconWidth: "auto",
     iconHeight: "28px",
     route: RoutePath.HOME,
@@ -47,7 +47,7 @@ const navItems = [
   {
     name: "Gas Tap",
     link: RoutePath.FAUCET,
-    icon: "/quest/assets/images/navbar/navbar-dropdown-gas-tap.svg",
+    icon: "/assets/images/navbar/navbar-dropdown-gas-tap.svg",
     iconWidth: "auto",
     iconHeight: "28px",
     route: RoutePath.FAUCET,
@@ -55,7 +55,7 @@ const navItems = [
   {
     name: "Token Tap",
     link: RoutePath.TOKEN,
-    icon: "/quest/assets/images/navbar/navbar-dropdown-token-tap.svg",
+    icon: "/assets/images/navbar/navbar-dropdown-token-tap.svg",
     iconWidth: "auto",
     iconHeight: "28px",
     route: RoutePath.TOKEN,
@@ -63,7 +63,7 @@ const navItems = [
   {
     name: "Prize Tap",
     link: RoutePath.PRIZE,
-    icon: "/quest/assets/images/landing/prizetap-icon.png",
+    icon: "/assets/images/landing/prizetap-icon.png",
     iconWidth: "33px",
     iconHeight: "auto",
     route: RoutePath.PRIZE,
@@ -72,7 +72,7 @@ const navItems = [
   {
     name: "Incentive Center",
     link: RoutePath.PROVIDERDASHBOARD,
-    icon: "/quest/assets/images/landing/contributionHub.svg",
+    icon: "/assets/images/landing/contributionHub.svg",
     iconWidth: "33px",
     iconHeight: "auto",
     route: RoutePath.PROVIDERDASHBOARD,
@@ -128,7 +128,7 @@ const NavbarDropdown = ({ className, closeDropdown }: NavbarDropdownProps) => {
           Unitap Pass NFT
         </p>
         <img
-          src="/quest/assets/images/navbar/navbar-dropdown-mint.svg"
+          src="/assets/images/navbar/navbar-dropdown-mint.svg"
           width="auto"
           height="26px"
         />

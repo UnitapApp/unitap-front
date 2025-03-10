@@ -90,8 +90,7 @@ const config: Config = {
       backgroundImage: {
         "dark-primary":
           "linear-gradient(to right, #22222f, #21232e, #242130, #231f2f)",
-        "dark-primary-2":
-          "url('/quest/assets/images/token-tap/bg-primary-dark.svg')",
+        "dark-primary-2": "url('/assets/images/token-tap/bg-primary-dark.svg')",
         // "dark-primary-2":
         //   "radial-gradient(174.04% 3217.67% at 17.05% 37.02%, #2A3837 0%, #3F2B44 42.19%, #322837 100%)",
         primaryGradient:
@@ -103,34 +102,27 @@ const config: Config = {
         "primaryGradient-2":
           "linear-gradient(91.35deg, #4BF2A2 -150.66%, #A89FE7 39.49%, #E1C3F4 150.07%)",
         "home-header-texture":
-          "url('/quest/assets/images/landing/main-bg-profile.svg')",
+          "url('/assets/images/landing/main-bg-profile.svg')",
         "what-is-unitap-header":
-          "url('/quest/assets/images/about/what-is-unitap-header.png')",
-        "gastap-texture":
-          "url('/quest/assets/images/landing/gastap-texture.png')",
+          "url('/assets/images/about/what-is-unitap-header.png')",
+        "gastap-texture": "url('/assets/images/landing/gastap-texture.png')",
         "tokentap-texture":
-          "url('/quest/assets/images/landing/tokentap-texture.png')",
+          "url('/assets/images/landing/tokentap-texture.png')",
         "prizetap-texture":
-          "url('/quest/assets/images/landing/prizetap-texture.png')",
+          "url('/assets/images/landing/prizetap-texture.png')",
         "prizetap-raffle-texture":
-          "url('/quest/assets/images/prize-tap/raffle-win.svg')",
-        "learntap-texture":
-          "url('/quest/assets/images/landing/learn-tap-bg.svg')",
+          "url('/assets/images/prize-tap/raffle-win.svg')",
+        "learntap-texture": "url('/assets/images/landing/learn-tap-bg.svg')",
         "launchtap-texture":
-          "url('/quest/assets/images/landing/launchtap-texture.png')",
+          "url('/assets/images/landing/launchtap-texture.png')",
         "staketap-texture":
-          "url('/quest/assets/images/landing/staketap-texture.png')",
-        "what-is-unitap":
-          "url('/quest/assets/images/landing/what-is-unitap.png')",
-        "nft-texture": "url('/quest/assets/images/landing/genesis-nft.png')",
-        "donate-texture":
-          "url('/quest/assets/images/landing/donate-texture.png')",
-        "donate-texture-s":
-          "url('/quest/assets/images/donate/donate-texture.svg')",
-        "donate-texture-p":
-          "url('/quest/assets/images/donate/donate-texture.png')",
-        "stats-texture":
-          "url('/quest/assets/images/landing/stats-texture.png')",
+          "url('/assets/images/landing/staketap-texture.png')",
+        "what-is-unitap": "url('/assets/images/landing/what-is-unitap.png')",
+        "nft-texture": "url('/assets/images/landing/genesis-nft.png')",
+        "donate-texture": "url('/assets/images/landing/donate-texture.png')",
+        "donate-texture-s": "url('/assets/images/donate/donate-texture.svg')",
+        "donate-texture-p": "url('/assets/images/donate/donate-texture.png')",
+        "stats-texture": "url('/assets/images/landing/stats-texture.png')",
         "soft-primary":
           "linear-gradient(90deg, #1F3A3E 0%, rgba(28, 32, 44, 0.50) 33.85%, rgba(27, 27, 41, 0.50) 63.02%, rgba(77, 52, 81, 0.60) 100%)",
         "g-twitter":

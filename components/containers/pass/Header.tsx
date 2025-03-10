@@ -10,7 +10,7 @@ const Spaceship = styled.img`
 
 const Header = () => {
   return (
-    <div className="header relative mb-4 flex h-[202px] w-full flex-col items-start justify-end gap-5 overflow-hidden rounded-2xl bg-gray20 bg-[url('/quest/assets/images/pass/bg-header.svg')] pb-5 pl-6">
+    <div className="header relative mb-4 flex h-[202px] w-full flex-col items-start justify-end gap-5 overflow-hidden rounded-2xl bg-gray20 bg-[url('/assets/images/pass/bg-header.svg')] pb-5 pl-6">
       {/* <div className="header-top z-10 flex items-center h-auto">
         <img
           className="gas-tap h-[48px] w-auto sm:w-auto"

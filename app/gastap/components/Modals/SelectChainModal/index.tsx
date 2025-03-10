@@ -49,7 +49,7 @@ const SelectChainModal = ({
       />
       <Icon
         className="absolute left-4 top-8"
-        iconSrc="/quest/assets/images/modal/search-icon.svg"
+        iconSrc="/assets/images/modal/search-icon.svg"
         width="20px"
         height="20px"
       />

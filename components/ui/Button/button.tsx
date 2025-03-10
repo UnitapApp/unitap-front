@@ -379,7 +379,7 @@ export const PrizeTapCard = styled(PrimaryOutlinedButton)`
   font-weight: 500 !important;
 
   &::before {
-    background: url("/quest/assets/images/prize-tap/raffle-win.svg");
+    background: url("/assets/images/prize-tap/raffle-win.svg");
     background-size: cover;
   }
 

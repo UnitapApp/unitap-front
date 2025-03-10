@@ -9,7 +9,7 @@ const AddNewWalletFailed: FC<{
 }> = ({ setWalletState }) => {
   return (
     <>
-      <Icon iconSrc="/quest/assets/images/modal/unitap-error.svg" alt="error" />
+      <Icon iconSrc="/assets/images/modal/unitap-error.svg" alt="error" />
 
       <div className="mt-4 flex items-center text-error">
         <p>We didn’t recognize your wallet!</p>

@@ -35,14 +35,14 @@ const AddNewWalletBody: FC<{
   return (
     <div className="text-center">
       <Image
-        src="/quest/assets/images/provider-dashboard/arrow-left.svg"
+        src="/assets/images/provider-dashboard/arrow-left.svg"
         alt="back"
         className="absolute left-4 top-5 cursor-pointer"
         height={14}
         width={19}
         onClick={() => setWalletState(WalletState.UnknownWallet)}
       />
-      <Icon iconSrc="/quest/assets/images/wallets.svg" alt="wallets" />
+      <Icon iconSrc="/assets/images/wallets.svg" alt="wallets" />
       <p className="mt-3 font-semibold">Login</p>
 
       <p className="mt-5 text-sm text-gray100">
@@ -53,8 +53,8 @@ const AddNewWalletBody: FC<{
       <WalletProviderButton
         className="mt-8 from-[#F5841F33]"
         label="MetaMask"
-        imageIcon="/quest/assets/images/modal/metamask-icon.svg"
-        backgroundImage="/quest/assets/images/modal/metamask-bg.svg"
+        imageIcon="/assets/images/modal/metamask-icon.svg"
+        backgroundImage="/assets/images/modal/metamask-bg.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Metamask);
           connect({
@@ -67,8 +67,8 @@ const AddNewWalletBody: FC<{
       <WalletProviderButton
         className="mt-3 from-[#16436f]"
         label="WalletConnect"
-        backgroundImage="/quest/assets/images/modal/walletconnect-bg.svg"
-        imageIcon="/quest/assets/images/modal/walletconnect-icon.svg"
+        backgroundImage="/assets/images/modal/walletconnect-bg.svg"
+        imageIcon="/assets/images/modal/walletconnect-icon.svg"
         onClick={() => {
           setWalletProvider(ConnectionProvider.Walletconnect);
           connect({

@@ -36,7 +36,7 @@ const Footer: FC = () => {
       <div className="grid grid-cols-1 gap-20 md:grid-cols-3">
         <div className="">
           <Image
-            src="/quest/assets/images/landing/unitap-footer.png"
+            src="/assets/images/landing/unitap-footer.png"
             alt="unitap team"
             width={228}
             height={67}
@@ -49,7 +49,7 @@ const Footer: FC = () => {
         </div>
         <div className="flex flex-col gap-y-6">
           {/* <Link href="/about">Why Unitap?</Link> */}
-          <Link href="https://unitap.app/about">About Us</Link>
+          <Link href="/about">About Us</Link>
           <Link href="mailto:team@unitap.app">Contact Us</Link>
           <Link href="https://github.com/UnitapApp">Github</Link>
         </div>

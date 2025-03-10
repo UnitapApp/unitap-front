@@ -21,7 +21,7 @@ const Header = () => {
     <header className="top-0 z-20 flex w-full flex-wrap items-center justify-center gap-y-4 px-8 py-14 text-xs dark:bg-gray10">
       <Link href={"/"}>
         <Image
-          src="/quest/assets/images/landing/unitap-logo.svg"
+          src="/assets/images/landing/unitap-logo.svg"
           width={182}
           height={54}
           alt="unitap"
@@ -30,7 +30,7 @@ const Header = () => {
 
       <div className="hidden flex-1 md:flex"></div>
 
-      <Link href={"/incentive-center"}>
+      <Link href={"/dashboard"}>
         <LandingButton className="relative z-20 flex bg-landing-secondary px-5 py-3 text-base uppercase">
           Incentive center
         </LandingButton>

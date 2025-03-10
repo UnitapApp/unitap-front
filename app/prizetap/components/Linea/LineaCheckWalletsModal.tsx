@@ -89,9 +89,9 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
     >
       <div className="claim-modal-wrapper flex flex-col items-center justify-center pt-5 text-left font-normal">
         <div className="relative mb-5 text-center">
-          <div className="mx-auto h-40 w-64 rounded-lg bg-[url('/quest/assets/images/prize-tap/linea-modal-secondary-bg.svg')] bg-contain" />
+          <div className="mx-auto h-40 w-64 rounded-lg bg-[url('/assets/images/prize-tap/linea-modal-secondary-bg.svg')] bg-contain" />
           <Image
-            src="/quest/assets/images/prize-tap/linea-raffle-modal-cover.svg"
+            src="/assets/images/prize-tap/linea-raffle-modal-cover.svg"
             className="absolute left-1/2 top-7 -translate-x-1/2"
             alt={"linea"}
             width={168}
@@ -118,7 +118,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
                 <Image
                   onClick={() => setSearchPhraseInput("")}
                   className="mr-3 cursor-pointer"
-                  src="/quest/assets/images/prize-tap/times.svg"
+                  src="/assets/images/prize-tap/times.svg"
                   height={12}
                   width={12}
                   alt="close"
@@ -136,7 +136,7 @@ const LineaCheckWalletsModal: FC<{}> = ({}) => {
                     <div className="flex w-24 items-center rounded-lg border border-space-green bg-dark-space-green px-3 py-[6px] text-center font-semibold text-space-green">
                       Enrolled
                       <Image
-                        src="/quest/assets/images/prize-tap/ticket.svg"
+                        src="/assets/images/prize-tap/ticket.svg"
                         alt="ticket"
                         className="ml-2"
                         width={20}

@@ -103,8 +103,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
         <div
           className={`${
             raffle.isPrizeNft
-              ? "bg-[url('/quest/assets/images/prize-tap/nft-cover.svg')]"
-              : "bg-[url('/quest/assets/images/prize-tap/cover.svg')]"
+              ? "bg-[url('/assets/images/prize-tap/nft-cover.svg')]"
+              : "bg-[url('/assets/images/prize-tap/cover.svg')]"
           } mx-auto h-32 w-64 rounded-lg bg-cover`}
         />
         <img
@@ -144,7 +144,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                       onDragEnd={() => handleDrop()}
                     >
                       <img
-                        src="/quest/assets/images/prize-tap/userTicket.svg"
+                        src="/assets/images/prize-tap/userTicket.svg"
                         className={`${!(selectedTicketCount >= maxChance) && "cursor-pointer"}`}
                         draggable={!(selectedTicketCount >= maxChance)}
                       />
@@ -159,7 +159,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                 {userTicketList.length === 0 && (
                   <img
                     className="-ml-16"
-                    src="/quest/assets/images/prize-tap/emptyTicket.svg"
+                    src="/assets/images/prize-tap/emptyTicket.svg"
                   />
                 )}
                 <div className="cursor-none select-none">
@@ -178,7 +178,7 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                       {selectedUserTickets.map((item, index) => (
                         <img
                           key={index}
-                          src="./quest/assets/images/prize-tap/selectedTicket.svg"
+                          src="./assets/images/prize-tap/selectedTicket.svg"
                           className={`${index > 0 && "-mr-[45px]"} z-100 cursor-pointer`}
                         />
                       ))}
@@ -209,11 +209,11 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
               <div className="relative h-full cursor-pointer transition duration-700 ease-in-out hover:bg-gray20 hover:duration-700">
                 <img
                   className="absolute -bottom-[10px] right-0"
-                  src="./quest/assets/images/noBoost.svg"
+                  src="./assets/images/noBoost.svg"
                 />
                 <img
                   className="absolute -bottom-[10px] right-28"
-                  src="./quest/assets/images/noBoost1.svg"
+                  src="./assets/images/noBoost1.svg"
                 />
                 <div className="px-4 py-3">
                   <div className="flex items-center justify-between text-sm font-medium">
@@ -318,8 +318,8 @@ const RafflePermissions: FC<{ raffle: Prize }> = ({ raffle }) => {
                   <img
                     src={
                       permission.isVerified
-                        ? "/quest/assets/images/token-tap/check.svg"
-                        : "/quest/assets/images/token-tap/not-verified.svg"
+                        ? "/assets/images/token-tap/check.svg"
+                        : "/assets/images/token-tap/not-verified.svg"
                     }
                   />
                   {permission.isReversed && "Not "}

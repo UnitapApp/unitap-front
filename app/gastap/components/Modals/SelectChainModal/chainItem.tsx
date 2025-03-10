@@ -62,7 +62,7 @@ const ChainItem = (props: ChainItemProps) => {
       {selected && (
         <Icon
           className="ml-2"
-          iconSrc="/quest/assets/images/modal/check.svg"
+          iconSrc="/assets/images/modal/check.svg"
           width="13px"
           height="auto"
         />
