@@ -10,12 +10,12 @@ import { Footer as LandingFooter } from "./layout/LandingFooter";
 
 export const ProviderSelection = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
-  const hideMainHeaderRoutes = ["/about", "/new-landing"];
+  const hideMainHeaderRoutes = ["/about", "/"];
   return hideMainHeaderRoutes.includes(pathname) ? (
     <ChakraUIProviders>
       <HeaderSelection />
       {children}
-      <LandingFooter     />
+      <LandingFooter />
     </ChakraUIProviders>
   ) : (
     <div

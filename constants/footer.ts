@@ -6,7 +6,7 @@ export const footerLinks = [
   // },
   {
     id: 1,
-    href: "https://unitap.app/about",
+    href: "/about",
     title: "About",
   },
   {

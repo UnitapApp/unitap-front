@@ -74,7 +74,7 @@ const UnitapPass = () => {
           <p>Mint</p>
           <Icon
             className="ml-5"
-            iconSrc="/quest/assets/images/landing/arrow-right.svg"
+            iconSrc="/assets/images/landing/arrow-right.svg"
           />
         </ClaimButton>
       </div>

@@ -17,7 +17,7 @@ const GasTapLoading = () => {
               width={252}
               height={48}
               className="w-full"
-              src="/quest/assets/images/gas-tap/dabe-loading.svg"
+              src="/assets/images/gas-tap/dabe-loading.svg"
               alt="faucet loading"
             />
           </div>

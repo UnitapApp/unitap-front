@@ -46,7 +46,7 @@ const ConnectBrightIdModalContent = () => {
       <Icon
         data-testid="brightid-logo"
         className="bright-logo z-10 mb-5 !w-4/12"
-        iconSrc="/quest/assets/images/modal/bright-id-logo.svg"
+        iconSrc="/assets/images/modal/bright-id-logo.svg"
       />
       <p className="mb-2 text-sm font-bold text-white">Login with BrightID</p>
       <p className="mb-5 px-4 text-center text-xs font-medium leading-6 text-gray100">

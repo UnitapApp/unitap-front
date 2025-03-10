@@ -36,7 +36,7 @@ const FundTransactionModal = ({
       <div className="w-full">
         <Icon
           mb={3}
-          iconSrc="/quest/assets/images/fund/success-provide-spaceman.svg"
+          iconSrc="/assets/images/fund/success-provide-spaceman.svg"
         ></Icon>
         {selectedChain && (
           <>
@@ -77,7 +77,7 @@ const FundTransactionModal = ({
                 </p>
               </button>
               <Icon
-                iconSrc="/quest/assets/images/gas-tap/twitter-share.svg"
+                iconSrc="/assets/images/gas-tap/twitter-share.svg"
                 className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
                 width="auto"
                 height="26px"
@@ -94,7 +94,7 @@ const FundTransactionModal = ({
       <>
         <Icon
           mb={3}
-          iconSrc="/quest/assets/images/fund/failed-provide-spaceman.svg"
+          iconSrc="/assets/images/fund/failed-provide-spaceman.svg"
         ></Icon>
         <Text
           fontSize="14px"

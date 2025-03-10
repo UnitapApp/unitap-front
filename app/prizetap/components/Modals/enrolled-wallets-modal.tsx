@@ -18,7 +18,7 @@ const ModalBody = ({
   return (
     <div className="max-h-[300px] min-h-[250px] flex-col gap-3 bg-gray20 p-2 pt-5">
       <div className="mb-3 flex h-[44px] items-center rounded bg-gray50 pl-4">
-        <img src="/quest/assets/images/modal/search-icon.svg" />
+        <img src="/assets/images/modal/search-icon.svg" />
         <input
           className="ml-3 h-full w-full bg-inherit text-xs leading-[12px] text-gray90"
           placeholder="Search Wallet"

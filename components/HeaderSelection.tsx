@@ -10,7 +10,7 @@ const TopBar = dynamic(
 );
 export const HeaderSelection = () => {
   const pathname = usePathname();
-  const hideMainHeaderRoutes = ["/about", "/new-landing"];
+  const hideMainHeaderRoutes = ["/about", "/"];
 
   return hideMainHeaderRoutes.includes(pathname) ? <TopBar /> : <Header />;
 };

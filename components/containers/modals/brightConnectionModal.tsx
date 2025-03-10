@@ -124,7 +124,7 @@ export const BrightConnectionModalBody = () => {
         className="z-10 mb-5 flex text-space-green"
       >
         {/* <Icon
-          iconSrc={process.env.PUBLIC_URL + '/quest/assets/images/copy-link.png'}
+          iconSrc={process.env.PUBLIC_URL + '/assets/images/copy-link.png'}
           width="16px"
           height="19px"
           className="mr-3"
@@ -142,7 +142,7 @@ export const BrightConnectionModalBody = () => {
       <span className="mb-3 flex">
         <Icon
           className="mb-4 mr-2"
-          iconSrc="/quest/assets/images/modal/gray-danger.svg"
+          iconSrc="/assets/images/modal/gray-danger.svg"
         />
         <p className="text-center text-xs font-light text-gray90">
           Submit Verification after verifing with brighID app.

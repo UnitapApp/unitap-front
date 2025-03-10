@@ -125,7 +125,7 @@ const SuccessBody: FC<{
               </p>
             </button>
             <Icon
-              iconSrc="/quest/assets/images/gas-tap/twitter-share.svg"
+              iconSrc="/assets/images/gas-tap/twitter-share.svg"
               className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
               width="auto"
               height="26px"
@@ -184,7 +184,7 @@ const SuccessBody: FC<{
               </p>
             </button>
             <Icon
-              iconSrc="/quest/assets/images/gas-tap/twitter-share.svg"
+              iconSrc="/assets/images/gas-tap/twitter-share.svg"
               className="pointer-events-none absolute right-4 top-1/2 z-10 h-6 w-6 -translate-y-1/2"
               width="auto"
               height="26px"

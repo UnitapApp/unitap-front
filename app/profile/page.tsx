@@ -59,7 +59,7 @@ export const Wallet: FC<{
         )}
         <Image
           onClick={() => copyToClipboard(address)}
-          src="/quest/assets/images/navbar/copy.svg"
+          src="/assets/images/navbar/copy.svg"
           width={12}
           height={14}
           className="cursor-pointer"
@@ -72,7 +72,7 @@ export const Wallet: FC<{
           onClick={() => setFocusedWalletDeleteAddress(address as Address)}
           width={16}
           height={18}
-          src="/quest/assets/images/up-profile/trashcan.svg"
+          src="/assets/images/up-profile/trashcan.svg"
           className="ml-auto cursor-pointer opacity-70 hover:opacity-100"
           alt="delete"
         />
@@ -141,14 +141,14 @@ const EditPage = () => {
     <div>
       <div className="mt-10 flex items-center rounded-xl bg-gray20 p-5">
         <Link href="/" className="mr-auto">
-          <Icon iconSrc="/quest/assets/images/up-profile/back.svg" />
+          <Icon iconSrc="/assets/images/up-profile/back.svg" />
         </Link>
         <h4 className="mr-auto">Edit Profile</h4>
       </div>
 
-      <div className="mt-5 flex items-center gap-10 rounded-xl bg-[url('/quest/assets/images/up-profile/profile-landing.svg')] bg-cover p-5">
+      <div className="mt-5 flex items-center gap-10 rounded-xl bg-[url('/assets/images/up-profile/profile-landing.svg')] bg-cover p-5">
         <Image
-          src="/quest/assets/images/landing/profile-img.svg"
+          src="/assets/images/landing/profile-img.svg"
           alt="profile-unitap"
           width={64}
           height={79}
@@ -245,7 +245,7 @@ const EditPage = () => {
                 <Image
                   width={16}
                   height={16}
-                  src="/quest/assets/images/up-profile/plus.svg"
+                  src="/assets/images/up-profile/plus.svg"
                   alt="plus"
                   className="h-[16px] w-[16px]"
                 />

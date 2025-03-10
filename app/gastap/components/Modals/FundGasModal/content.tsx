@@ -249,13 +249,13 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
             width={661}
             height={665}
             alt="gas fee planet"
-            src="/quest/assets/images/fund/provide-gas-fee-planet.svg"
+            src="/assets/images/fund/provide-gas-fee-planet.svg"
             className="absolute -left-64 -top-16 -z-10 scale-150"
           />
           <span className="z-100 w-full">
             <Icon
               className="mb-2"
-              iconSrc="./quest/assets/images/fund/provide-gas-fee-battery.svg"
+              iconSrc="./assets/images/fund/provide-gas-fee-battery.svg"
               width="146px"
               height="auto"
               alt="gas fee battery"
@@ -290,7 +290,7 @@ const Content: FC<{ initialChainId?: number }> = ({ initialChainId }) => {
                   <span className="h-8 w-8 rounded-full bg-gray50"></span>
                 )}
                 <Icon
-                  iconSrc="/quest/assets/images/fund/arrow-down.png"
+                  iconSrc="/assets/images/fund/arrow-down.png"
                   width="14px"
                   height="auto"
                 />

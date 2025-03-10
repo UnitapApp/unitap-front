@@ -65,13 +65,11 @@ export const TokenContent: FC<{ token: Token }> = ({ token }) => {
         <div className="absolute -inset-[2px] left-0 top-0 -z-10 rotate-[5deg] rounded-xl bg-black-0"></div>
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
-            src={
-              token.image ?? "/quest/assets/images/prize-tap/default-prize.png"
-            }
+            src={token.image ?? "/assets/images/prize-tap/default-prize.png"}
             alt={token.name}
             // onError={(e) => {
             //   e.currentTarget.src =
-            //     "/quest/assets/images/prize-tap/default-prize.png";
+            //     "/assets/images/prize-tap/default-prize.png";
             // }}
             width={231}
             height={231}

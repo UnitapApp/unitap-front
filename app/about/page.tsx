@@ -19,7 +19,7 @@ const About = () => {
         }
       >
         <img
-          src={"/quest/assets/images/about/header-unitap-logo.svg"}
+          src={"/assets/images/about/header-unitap-logo.svg"}
           className={"mx-auto w-48"}
           alt={"logo"}
         />
@@ -60,24 +60,15 @@ const About = () => {
 
         <div className="mb-6 flex flex-wrap items-center justify-center gap-6">
           <SponsorItem
-            image="/quest/assets/images/provider-dashboard/op.svg"
+            image="/assets/images/provider-dashboard/op.svg"
             title="Optimism"
           />
-          <SponsorItem image="/quest/assets/images/linea.svg" title="Linea" />
-          <SponsorItem
-            image="/quest/assets/images/polygon.svg"
-            title="Polygon"
-          />
-          <SponsorItem image="/quest/assets/images/arb.svg" title="Arbitrum" />
-          <SponsorItem image="/quest/assets/images/ens.svg" title="ENS" />
-          <SponsorItem
-            title="Gitcoin"
-            image="/quest/assets/images/gitcoin.svg"
-          />
-          <SponsorItem
-            title="WhalerDAO"
-            image="/quest/assets/images/whalerDAO.svg"
-          />
+          <SponsorItem image="/assets/images/linea.svg" title="Linea" />
+          <SponsorItem image="/assets/images/polygon.svg" title="Polygon" />
+          <SponsorItem image="/assets/images/arb.svg" title="Arbitrum" />
+          <SponsorItem image="/assets/images/ens.svg" title="ENS" />
+          <SponsorItem title="Gitcoin" image="/assets/images/gitcoin.svg" />
+          <SponsorItem title="WhalerDAO" image="/assets/images/whalerDAO.svg" />
         </div>
 
         <p className="text-gradient-primary mb-6 mt-20 text-center text-2xl font-semibold">
@@ -86,25 +77,25 @@ const About = () => {
 
         <div className="mt-20 flex items-center justify-center gap-10">
           <TeamMembers
-            image="/quest/assets/images/member1.jpg"
+            image="/assets/images/member1.jpg"
             title="Adam Stallard"
             position="CTO"
             twitterId="adamstallard"
           />
           <TeamMembers
-            image="/quest/assets/images/member3.png"
+            image="/assets/images/member3.png"
             title="Ali Lari"
             position="CEO"
             twitterId="alariarch"
           />
           <TeamMembers
-            image="/quest/assets/images/member2.jpg"
+            image="/assets/images/member2.jpg"
             title="Philip Silva"
             position="CPO"
             twitterId="UBIpromoter"
           />
           <TeamMembers
-            image="/quest/assets/images/member4.png"
+            image="/assets/images/member4.png"
             title="Cotabe"
             position="CMO"
           />

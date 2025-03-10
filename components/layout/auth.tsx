@@ -100,7 +100,7 @@ const WalletItem = ({
         )}
         <Image
           onClick={() => copyToClipboard(wallet)}
-          src="/quest/assets/images/navbar/copy.svg"
+          src="/assets/images/navbar/copy.svg"
           width={12}
           height={14}
           className="ml-3 cursor-pointer"
@@ -137,7 +137,7 @@ export const ProfileDropdown: FC<{
             <button className="relative z-10 flex h-8 w-40 items-center px-2 text-left text-white">
               <Image
                 className="absolute inset-0 -z-10"
-                src="/quest/assets/images/navbar/logout-button.svg"
+                src="/assets/images/navbar/logout-button.svg"
                 alt="logout"
                 width={147}
                 height={28}
@@ -146,7 +146,7 @@ export const ProfileDropdown: FC<{
               <Image
                 width={12}
                 height={10}
-                src="/quest/assets/images/navbar/arrow-right.svg"
+                src="/assets/images/navbar/arrow-right.svg"
                 className="mb-1 ml-auto mr-6"
                 alt="arrow-right"
               />

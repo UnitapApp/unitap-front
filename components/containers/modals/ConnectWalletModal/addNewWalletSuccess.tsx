@@ -26,10 +26,7 @@ const AddNewWalletSuccess = () => {
 
   return (
     <>
-      <Icon
-        iconSrc="/quest/assets/images/modal/space-like.svg"
-        alt="unitap like"
-      />
+      <Icon iconSrc="/assets/images/modal/space-like.svg" alt="unitap like" />
 
       <div className="mt-4 flex items-center text-space-green">
         <p>Logged in Successfully!</p>

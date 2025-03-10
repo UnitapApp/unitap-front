@@ -67,12 +67,12 @@ export const PrizeContent: FC<{ prize: Prize }> = ({ prize }) => {
         <div className="rotate-3 rounded-xl border-2 bg-[#E5FFE2]">
           <img
             // src={
-            //   prize.image ?? "/quest/assets/images/prize-tap/default-prize.png"
+            //   prize.image ?? "/assets/images/prize-tap/default-prize.png"
             // }
             alt={prize.name}
             onError={(e) => {
               e.currentTarget.src =
-                "/quest/assets/images/prize-tap/default-prize.png";
+                "/assets/images/prize-tap/default-prize.png";
             }}
             width={231}
             height={231}

@@ -22,7 +22,7 @@ const LearnTapLanding = () => {
               </p>
               <img
                 className={`${learnTap.iconSize} widget-icon`}
-                src={`/quest/assets/images/landing/${learnTap.icon}`}
+                src={`/assets/images/landing/${learnTap.icon}`}
                 alt={"widget"}
               />
             </div>

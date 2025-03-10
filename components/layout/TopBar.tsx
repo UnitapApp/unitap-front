@@ -15,8 +15,8 @@ import { Container } from "../../app/new-landing/components/Container";
 const AppButton = () => {
   return (
     <Button
-      as="a"
-      href="https://dashboard.unitap.app/quest"
+      as={Link}
+      href="/quests"
       width={{ base: "130px", md: "184px" }}
       height={{ base: "40px", md: "64px" }}
       textTransform="uppercase"

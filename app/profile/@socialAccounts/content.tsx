@@ -41,41 +41,37 @@ const SocialAccountContent: FC<{ initialConnections: UserConnection }> = ({
       <div className="mt-10 grid grid-cols-2 gap-4">
         <SocialAccount
           title={"Bright ID"}
-          icon={
-            "/quest/assets/images/provider-dashboard/modalIcon/brightId.svg"
-          }
+          icon={"/assets/images/provider-dashboard/modalIcon/brightId.svg"}
           isConnected={!!connections["BrightID"]}
         />
         <GitCoinPassportAccount
           title={"Gitcoin Passport"}
-          icon={"/quest/assets/images/up-profile/gitcoin-passport.svg"}
+          icon={"/assets/images/up-profile/gitcoin-passport.svg"}
           isConnected={!!connections["GitcoinPassport"]}
         />
         <TwitterAccount
           title={"Twitter"}
-          icon={"/quest/assets/images/landing/twitter-icon.svg"}
+          icon={"/assets/images/landing/twitter-icon.svg"}
           isConnected={!!connections["Twitter"]}
         />
         <EnsAccount
           title={"ENS"}
-          icon={"/quest/assets/images/provider-dashboard/requirements/ens.svg"}
+          icon={"/assets/images/provider-dashboard/requirements/ens.svg"}
           isConnected={!!connections["ENS"]}
         />
         <LensAccount
           title={"Lens"}
-          icon={"/quest/assets/images/provider-dashboard/requirements/lens.svg"}
+          icon={"/assets/images/provider-dashboard/requirements/lens.svg"}
           isConnected={!!connections["Lens"]}
         />
         <FarcasterAccount
           title={"Farcaster"}
-          icon={
-            "/quest/assets/images/provider-dashboard/requirements/farcaster.svg"
-          }
+          icon={"/assets/images/provider-dashboard/requirements/farcaster.svg"}
           isConnected={!!connections["Farcaster"]}
         />
         <TelegramAccount
           title={"Telegram"}
-          icon={"/quest/assets/images/footer/telegram.svg"}
+          icon={"/assets/images/footer/telegram.svg"}
           isConnected={!!connections["Telegram"]}
         />
       </div>

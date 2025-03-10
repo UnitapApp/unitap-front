@@ -14,7 +14,7 @@ const CreateBrightIdAccountModalContent = () => {
       <Icon
         data-testid="brightid-logo"
         className="bright-id-logo z-10 mb-5"
-        iconSrc="/quest/assets/images/modal/bright-id-flat-logo.svg"
+        iconSrc="/assets/images/modal/bright-id-flat-logo.svg"
       />
       <p className="mb-6 mr-auto text-sm text-gray100">
         Create a BrightID account easily by following this steps:
@@ -31,7 +31,7 @@ const CreateBrightIdAccountModalContent = () => {
             )
           }
           className="cursor-pointer"
-          iconSrc="/quest/assets/images/modal/google-play.svg"
+          iconSrc="/assets/images/modal/google-play.svg"
           height="48px"
           width="auto"
         />
@@ -43,7 +43,7 @@ const CreateBrightIdAccountModalContent = () => {
             )
           }
           className="cursor-pointer"
-          iconSrc="/quest/assets/images/modal/app-store.svg"
+          iconSrc="/assets/images/modal/app-store.svg"
           height="48px"
           width="auto"
         />

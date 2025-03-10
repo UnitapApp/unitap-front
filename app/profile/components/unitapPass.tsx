@@ -9,7 +9,7 @@ export const UnitapPass = () => {
       </div>
 
       <div className="py-20 text-center">
-        <Icon iconSrc="/quest/assets/images/up-profile/locked.svg" />
+        <Icon iconSrc="/assets/images/up-profile/locked.svg" />
         <p className="mt-4 text-gray80">You have no Unitap Pass!</p>
       </div>
     </div>

@@ -41,7 +41,7 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
         />
 
         <Icon
-          iconSrc="/quest/assets/images/check-circle-space-green.svg"
+          iconSrc="/assets/images/check-circle-space-green.svg"
           alt="check green"
           className="absolute -right-2 bottom-4"
           width="28px"
@@ -51,7 +51,7 @@ const LoginSuccessBody: FC<{ isNewUser: boolean }> = ({ isNewUser }) => {
 
       <div className="mt-10 flex items-center justify-center font-semibold text-space-green">
         <Icon
-          iconSrc="/quest/assets/images/check-circle-space-green.svg"
+          iconSrc="/assets/images/check-circle-space-green.svg"
           alt="check green"
           className="mr-2"
           width="20px"

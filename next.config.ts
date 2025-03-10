@@ -2,8 +2,6 @@ import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   compiler: { styledComponents: true },
-  basePath: "/quest",
-  assetPrefix: "/quest",
   // trailingSlash: true,
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
   async rewrites() {
