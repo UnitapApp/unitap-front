@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { FC, PropsWithChildren } from "react";
 
 import "./styles.scss";
+import Providers from "./providers";
+import DashboardLayout from "./components/layout";
 
 export const metadata: Metadata = {
   title: "Unitap | Incentive Center 🖥️",
@@ -10,7 +12,13 @@ export const metadata: Metadata = {
 };
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
-  return <ProviderDashboardLayout>{children}</ProviderDashboardLayout>;
+  return (
+    <Providers>
+      <DashboardLayout>
+        <ProviderDashboardLayout>{children}</ProviderDashboardLayout>{" "}
+      </DashboardLayout>
+    </Providers>
+  );
 };
 
 export default Layout;

@@ -1,6 +1,6 @@
 "use client";
 
-import AddWalletModal from "@/app/profile/components/addWalletModal";
+import AddWalletModal from "@/app/(app)/profile/components/addWalletModal";
 import { NullCallback } from "@/utils";
 import {
   FC,

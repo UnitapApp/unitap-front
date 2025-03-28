@@ -1,0 +1,51 @@
+export const SocialMedias = {
+  discord: {
+    name: "Discord",
+    logo: "/assets/images/thirdparties/discord.svg",
+    website: "https://discord.com/",
+    width: 20,
+    height: 20,
+  },
+  x: {
+    name: "X (Twitter)",
+    logo: "/assets/images/thirdparties/x.svg",
+    website: "https://x.com/",
+    width: 20,
+    height: 20,
+  },
+  telegram: {
+    name: "Telegram",
+    logo: "/assets/images/thirdparties/telegram.svg",
+    website: "https://telegram.com/",
+    width: 20,
+    height: 20,
+  },
+  farcaster: {
+    name: "Farcaster",
+    logo: "/assets/images/thirdparties/farcaster.svg",
+    website: "https://www.farcaster.xyz/",
+    width: 20,
+    height: 20,
+  },
+  instagram: {
+    name: "Instagram",
+    logo: "/assets/images/thirdparties/instagram.svg",
+    website: "https://instagram.com/",
+    width: 20,
+    height: 20,
+  },
+  lens: {
+    name: "Lens",
+    logo: "/assets/images/thirdparties/lens.svg",
+    website: "https://lens.xyz/",
+    width: 20,
+    height: 20,
+  },
+  linkedin: {
+    name: "LinkedIn",
+    logo: "/assets/images/thirdparties/linkedin.svg",
+    website: "https://linkedin.com/",
+    width: 20,
+    height: 20,
+  },
+};

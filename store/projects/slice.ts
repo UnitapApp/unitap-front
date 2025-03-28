@@ -1,37 +1,39 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type Project = {
-  id: number
-  logo: string
-  name: string
-  description: string
-  website: string
-  socialMedias: Record<string, string>
-  createdAt: Date
-};
+import { Project } from "@/types/dashboard/project";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialProjecsState = {
-  projects: [] as Project[]
+  projects: [] as Project[],
+  selectedProject: null as Project | null,
 };
 
 export const projectsSlice = createSlice({
-  name: 'projects',
+  name: "projects",
   initialState: initialProjecsState,
   reducers: {
     addProject(state, action: PayloadAction<Project>) {
-      state.projects.push(action.payload)
+      state.projects.push(action.payload);
     },
     removeProject(state, action: PayloadAction<Project>) {
-      const index = state.projects.findIndex(project => project.id === action.payload.id)
-      if (index === -1) return
+      const index = state.projects.findIndex(
+        (project) => project.id === action.payload.id,
+      );
+      if (index === -1) return;
 
-      state.projects.splice(index, 1)
+      state.projects.splice(index, 1);
+    },
+    setSelectedProject(state, action: PayloadAction<Project | null>) {
+      state.selectedProject = action.payload;
     },
     editProject(state, action: PayloadAction<Project>) {
-      const index = state.projects.findIndex(project => project.id === action.payload.id)
-      if (index === -1) return
+      const index = state.projects.findIndex(
+        (project) => project.id === action.payload.id,
+      );
+      if (index === -1) return;
 
-      state.projects[index] = action.payload
-    }
+      state.projects[index] = action.payload;
+    },
   },
 });
+
+export const { addProject, editProject, removeProject, setSelectedProject } =
+  projectsSlice.actions;

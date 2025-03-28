@@ -1,3 +1,9 @@
-import GasTapContent from "./gas-tap/components/Content";
+import CreateProjectForm from "./components/create-project-form";
 
-export default GasTapContent;
+export default function Dashboard() {
+  return (
+    <div className="flex items-center justify-center">
+      <CreateProjectForm />
+    </div>
+  );
+}

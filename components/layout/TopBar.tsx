@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import Image from "next/image";
-import { Container } from "../../app/new-landing/components/Container";
+import { Container } from "../../app/(landing)/components/Container";
 
 const AppButton = () => {
   return (
