@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ConstraintDetailsModal from "@/app/dashboard/components/ConstraintDetailsModal";
+import ConstraintDetailsModal from "@/app/dashboard/_components/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
-import ConstraintAppDetailModal from "@/app/dashboard/components/constraintAppDetailModal";
+import ConstraintAppDetailModal from "@/app/dashboard/_components/constraintAppDetailModal";
 import { SelectCoreIntegrations } from "@/app/dashboard/prize-tap/components/OfferPrizeForm/Requirements/components/ConstraintListModal";
 import Input from "@/components/ui/input";
 import { appInfos } from "@/app/dashboard/constants/integrations";

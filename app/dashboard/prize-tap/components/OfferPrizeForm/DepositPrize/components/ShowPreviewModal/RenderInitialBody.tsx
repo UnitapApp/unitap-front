@@ -3,7 +3,7 @@
 import { ProviderDashboardFormDataProp } from "@/types";
 import FormYouFilled from "./FormYouFilled";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import { ProviderDashboardButtonSubmit } from "@/app/dashboard/components/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/dashboard/_components/Buttons";
 import {
   useNetworkSwitcher,
   useWalletAccount,

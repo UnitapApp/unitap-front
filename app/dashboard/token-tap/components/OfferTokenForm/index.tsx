@@ -1,6 +1,6 @@
 "use client";
 
-import DisplaySteps from "../../../components/DisplaySteps";
+import DisplaySteps from "../../../_components/DisplaySteps";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
 import { useEffect } from "react";

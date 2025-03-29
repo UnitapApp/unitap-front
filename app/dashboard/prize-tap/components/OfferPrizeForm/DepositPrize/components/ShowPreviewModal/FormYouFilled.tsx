@@ -5,7 +5,7 @@ import { ProviderDashboardFormDataProp } from "@/types";
 import { DV } from "@/components/ui/designVariables";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
-import { ProviderDashboardButtonSubmit } from "@/app/dashboard/components/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/dashboard/_components/Buttons";
 import RaffleCardTimerSubmitContribution from "./RaffleCardTimerSubmitContribution";
 
 const Action = styled.div`

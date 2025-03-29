@@ -8,5 +8,10 @@ export const selectProjects = createSelector(
 
 export const selectSelectedProject = createSelector(
   (state: RootState) => state.projects,
-  (projects) => projects.selectedProject,
+  (projects) => projects.selectedProject ?? projects.projects[0],
+);
+
+export const selectIsAddCampaginOpen = createSelector(
+  (state: RootState) => state.projects,
+  (projects) => projects.isAddCampaginOpen,
 );

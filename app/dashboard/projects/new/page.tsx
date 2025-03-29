@@ -1,4 +1,4 @@
-import CreateProjectForm from "../../components/create-project-form";
+import CreateProjectForm from "../../_components/create-project-form";
 
 export default function CreateNewProject() {
   return (

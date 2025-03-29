@@ -3,7 +3,7 @@ import { ErrorProps, ProviderFormPaginationProp } from "@/types";
 import StartDateComp from "./components/StartDateComp";
 import ManualDuration from "./components/ManualDuration";
 import PeopleLimitation from "./components/PeopleLimitation";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 

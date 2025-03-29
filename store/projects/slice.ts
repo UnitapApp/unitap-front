@@ -1,9 +1,11 @@
+import { Campaign } from "@/types/dashboard/campaign";
 import { Project } from "@/types/dashboard/project";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialProjecsState = {
   projects: [] as Project[],
   selectedProject: null as Project | null,
+  isAddCampaginOpen: false,
 };
 
 export const projectsSlice = createSlice({
@@ -12,6 +14,9 @@ export const projectsSlice = createSlice({
   reducers: {
     addProject(state, action: PayloadAction<Project>) {
       state.projects.push(action.payload);
+      if (!state.selectedProject) {
+        state.selectedProject = action.payload;
+      }
     },
     removeProject(state, action: PayloadAction<Project>) {
       const index = state.projects.findIndex(
@@ -24,6 +29,14 @@ export const projectsSlice = createSlice({
     setSelectedProject(state, action: PayloadAction<Project | null>) {
       state.selectedProject = action.payload;
     },
+    createCampagin(state, action: PayloadAction<Campaign>) {
+      const project = state.selectedProject;
+      if (!project) return;
+      project.campaigns.push(action.payload);
+    },
+    changeAddCampaginModal(state, action: PayloadAction<boolean>) {
+      state.isAddCampaginOpen = action.payload;
+    },
     editProject(state, action: PayloadAction<Project>) {
       const index = state.projects.findIndex(
         (project) => project.id === action.payload.id,
@@ -35,5 +48,11 @@ export const projectsSlice = createSlice({
   },
 });
 
-export const { addProject, editProject, removeProject, setSelectedProject } =
-  projectsSlice.actions;
+export const {
+  addProject,
+  editProject,
+  removeProject,
+  setSelectedProject,
+  createCampagin,
+  changeAddCampaginModal,
+} = projectsSlice.actions;

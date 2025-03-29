@@ -4,7 +4,7 @@ import { FC, PropsWithChildren } from "react";
 import Icon from "@/components/ui/Icon";
 import { useGlobalContext } from "@/context/globalProvider";
 import { useUserProfileContext } from "@/context/userProfile";
-import { BackToHomeButton } from "@/app/dashboard/components/Buttons";
+import { BackToHomeButton } from "@/app/dashboard/_components/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();

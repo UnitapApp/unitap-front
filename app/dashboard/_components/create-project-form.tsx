@@ -3,16 +3,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { FaChevronRight, FaDownload, FaImage } from "react-icons/fa";
-import TextField from "./text-field";
-import TextareaField from "./textarea-field";
+import TextField from "./ui/text-field";
+import TextareaField from "./ui/textarea-field";
 import Image from "next/image";
-import SocialMediaModal from "./social-media-modal";
+import SocialMediaModal from "./modals/social-media-modal";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { addProject } from "@/store/projects/slice";
 import { Campaign } from "@/types/dashboard/campaign";
 import { selectProjects } from "@/store/projects/selectors";
-import ImageUploader from "./image-uploader";
+import ImageUploader from "./ui/image-uploader";
 import { useRouter } from "next/navigation";
 
 const createProjectValidation = z.object({

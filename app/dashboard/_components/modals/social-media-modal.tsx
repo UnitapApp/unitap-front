@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import TextField from "./text-field";
+import TextField from "../ui/text-field";
 import { Control } from "react-hook-form";
 import { SocialMedias } from "@/constants/social-medias";
 import { Button } from "@/components/ui/button";

@@ -12,7 +12,7 @@ import {
 } from "@/types";
 import useAddRequirement from "@/components/containers/provider-dashboard/hooks/useAddRequirement";
 import Icon from "@/components/ui/Icon";
-import ChainList from "@/app/dashboard/components/ChainList";
+import ChainList from "@/app/dashboard/_components/ChainList";
 import SelectMethodInput, {
   AddressDelegationFields,
   AddressField,
@@ -20,7 +20,7 @@ import SelectMethodInput, {
   MinimumNumberRequirementField,
   MinimumWeb3AmountRequirementField,
   RoundRequirementField,
-} from "@/app/dashboard/components/SelectMethodInput";
+} from "@/app/dashboard/_components/SelectMethodInput";
 import { useWalletProvider } from "@/utils/wallet";
 import { isAddress, zeroAddress } from "viem";
 import {

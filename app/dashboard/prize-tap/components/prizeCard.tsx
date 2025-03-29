@@ -11,7 +11,7 @@ import {
   ProviderDashboardButtonRejected,
   ProviderDashboardButtonCheck,
   ProviderDashboardButtonShowDetails,
-} from "../../components/Buttons";
+} from "../../_components/Buttons";
 import { ProviderDashboardCardTimer } from "./CardTimer";
 import Styles from "./content.module.scss";
 import "./content.module.scss";

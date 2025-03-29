@@ -4,7 +4,7 @@ import { FC, PropsWithChildren } from "react";
 
 import "./styles.scss";
 import Providers from "./providers";
-import DashboardLayout from "./components/layout";
+import DashboardLayout from "./_components/layout";
 
 export const metadata: Metadata = {
   title: "Unitap | Incentive Center 🖥️",
