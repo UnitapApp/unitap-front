@@ -32,6 +32,9 @@ export const projectsSlice = createSlice({
     createCampagin(state, action: PayloadAction<Campaign>) {
       const project = state.selectedProject;
       if (!project) return;
+      state.projects
+        .find((item) => item.id === project.id)
+        ?.campaigns.push(action.payload);
       project.campaigns.push(action.payload);
     },
     changeAddCampaginModal(state, action: PayloadAction<boolean>) {
@@ -42,8 +45,22 @@ export const projectsSlice = createSlice({
         (project) => project.id === action.payload.id,
       );
       if (index === -1) return;
-
       state.projects[index] = action.payload;
+    },
+    removeCampaign(state, action: PayloadAction<{ campaign: Campaign }>) {
+      const project = state.selectedProject;
+      if (!project) return;
+      const index = project.campaigns.findIndex(
+        (campaign) => campaign.id === action.payload.campaign.id,
+      );
+
+      if (index === -1) return;
+
+      state.projects
+        .find((item) => item.id === project.id)
+        ?.campaigns.splice(index, 1);
+
+      project.campaigns.splice(index, 1);
     },
   },
 });
@@ -55,4 +72,5 @@ export const {
   setSelectedProject,
   createCampagin,
   changeAddCampaginModal,
+  removeCampaign,
 } = projectsSlice.actions;

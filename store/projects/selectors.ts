@@ -15,3 +15,8 @@ export const selectIsAddCampaginOpen = createSelector(
   (state: RootState) => state.projects,
   (projects) => projects.isAddCampaginOpen,
 );
+
+export const selectFocusedProjectCampaigns = createSelector(
+  (state: RootState) => state.projects,
+  (projects) => projects.selectedProject?.campaigns,
+);

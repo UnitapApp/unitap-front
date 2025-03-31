@@ -1,12 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { selectProjects } from "@/store/projects/selectors";
-import { setSelectedProject } from "@/store/projects/slice";
+import { removeProject, setSelectedProject } from "@/store/projects/slice";
 import { Project } from "@/types/dashboard/project";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronRight, FaTrashAlt } from "react-icons/fa";
 
 export default function SelectProject() {
   const projects = useAppSelector(selectProjects);
@@ -17,6 +18,10 @@ export default function SelectProject() {
   const onProjectSelect = (project: Project) => {
     dispatch(setSelectedProject(project));
     router.push("/dashboard");
+  };
+
+  const onProjectDelete = (project: Project) => {
+    dispatch(removeProject(project));
   };
 
   return (
@@ -43,7 +48,17 @@ export default function SelectProject() {
 
           <p className="text-xl">{item.name}</p>
 
-          <div className="ml-auto">
+          <div className="ml-auto flex gap-4">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onProjectDelete(item);
+              }}
+              className="disabled:opacity-45"
+              disabled={projects.length === 1}
+            >
+              <FaTrashAlt className="text-error" />
+            </button>
             <FaChevronRight className="text-stone-500" />
           </div>
         </button>
