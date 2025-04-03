@@ -6,6 +6,7 @@ import { selectProjects } from "@/store/projects/selectors";
 import { removeProject, setSelectedProject } from "@/store/projects/slice";
 import { Project } from "@/types/dashboard/project";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaChevronRight, FaTrashAlt } from "react-icons/fa";
 
@@ -26,7 +27,13 @@ export default function SelectProject() {
 
   return (
     <div className="container mx-auto mt-12 rounded-xl bg-white p-5">
-      <h3>Select Project: </h3>
+      <div className="flex items-center justify-between">
+        <h3>Select Project: </h3>
+
+        <Link href="/dashboard/projects/new">
+          <Button className="bg-blue-400">Add Project</Button>
+        </Link>
+      </div>
 
       {projects.map((item, key) => (
         <button

@@ -18,8 +18,7 @@ export default function DashboardHeader() {
       <div className="flex items-center gap-2">
         <Button
           onClick={() => dispatch(changeAddCampaginModal(true))}
-          size="lg"
-          className="bg-[#867FEE] hover:bg-blue-500"
+          className="!h-14 w-52 rounded-xl border border-black bg-[#867FEE] hover:bg-blue-500"
         >
           Add New Campagin
         </Button>

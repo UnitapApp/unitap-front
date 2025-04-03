@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import ProjectImage from "../../_components/ui/project-image";
+import AddRuleButton from "../../_components/add-rule-button";
 
 export default function CmapaignDetailsPage() {
   return (
@@ -23,9 +24,10 @@ export default function CmapaignDetailsPage() {
         <h4>Campaigns Details</h4>
       </div>
 
-      <div className="mt-5">
+      <div className="my-8">
         <CampaignDetailsCard />
       </div>
+      <AddRuleButton />
     </div>
   );
 }
@@ -45,14 +47,17 @@ const CampaignDetailsCard = () => {
   if (!campaign) return null;
 
   return (
-    <Card>
+    <Card className="p-4">
       <div className="flex flex-row items-center gap-2 p-4">
         <ProjectImage
           alt={campaign.name}
           src={campaign.image}
           className="h-20 w-20"
         />
-        <div className="font-semibold">{campaign.name}</div>
+        <div>
+          <div className="font-semibold">{campaign.name}</div>
+          <p className="mt-4">#{campaign.rules.length} Rules</p>
+        </div>
 
         <div className="ml-auto flex items-center justify-between rounded-xl bg-[#F1F5F9] p-1 px-4 text-sm">
           <span>
@@ -82,7 +87,7 @@ const CampaignDetailsCard = () => {
           </span>
         </div>
       </div>
-      <p>#{campaign.rules.length} Rules</p>
+      <div className="leading-loose">{campaign.description}</div>
     </Card>
   );
 };

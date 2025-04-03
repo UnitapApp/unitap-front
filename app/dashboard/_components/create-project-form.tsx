@@ -55,7 +55,7 @@ export default function CreateProjectForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[500px] overflow-hidden rounded-xl border bg-white"
+      className="w-[500px] overflow-hidden rounded-2xl border border-black bg-white"
     >
       <SocialMediaModal
         setValue={resetField}
@@ -63,7 +63,9 @@ export default function CreateProjectForm() {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
-      <header className="bg-slate-200 p-4">New Project</header>
+      <header className="border-b border-black bg-slate-200 p-4">
+        New Project
+      </header>
       <main className="flex flex-col gap-4 p-6">
         <ImageUploader control={control} name="logo" />
 
@@ -86,6 +88,7 @@ export default function CreateProjectForm() {
           label="Website"
         />
         <button
+          type="button"
           onClick={() => setIsModalOpen(true)}
           className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-100"
         >

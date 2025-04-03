@@ -32,14 +32,14 @@ export default function DashboardSidebar() {
       <div className="mt-auto">
         <Link
           href={"/dashboard/projects/select"}
-          className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-3 py-3 hover:bg-slate-100"
+          className="flex w-full items-center justify-between rounded-lg border border-black px-3 py-3 hover:bg-slate-100"
         >
           <ProjectImage
             className="mr-3"
-            src={project.logo}
-            alt={project.name}
+            src={project?.logo}
+            alt={project?.name}
           />
-          {project.name ?? "Project Name"}
+          {project?.name ?? "Project Name"}
           <div className="ml-auto">
             <FaChevronRight className="text-gray100" />
           </div>

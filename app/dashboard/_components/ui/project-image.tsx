@@ -13,12 +13,12 @@ export default function ProjectImage({
   return src ? (
     <Image
       width={20}
-      className={cn("rounded-full", className)}
+      className={cn("rounded-full object-cover", className)}
       src={src}
       alt={alt}
       height={20}
     />
   ) : (
-    <span className="h-5 w-5 rounded-full bg-stone-300"></span>
+    <span className={cn(className, "h-5 w-5 rounded-full bg-stone-300")}></span>
   );
 }
