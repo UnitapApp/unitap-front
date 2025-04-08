@@ -106,6 +106,7 @@ const config: Config = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         "brand-primary": "#72FFC6",
+        "primary-dashboard": "#867FEE",
         border: "hsl(var(--border))",
         ring: "hsl(var(--ring))",
         chart: {
