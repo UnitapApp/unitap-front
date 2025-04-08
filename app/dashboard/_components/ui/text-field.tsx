@@ -8,12 +8,14 @@ export default function TextField<T extends FieldValues = FieldValues>({
   name,
   className,
   placeholder,
+  type,
 }: {
   label?: string;
   control: Control<T>;
   name: Path<T>;
   className?: string;
   placeholder?: string;
+  type?: "text" | "number" | "password";
 }) {
   return (
     <label className="block w-full">
@@ -38,7 +40,7 @@ export default function TextField<T extends FieldValues = FieldValues>({
               onBlur={onBlur}
               ref={ref}
               disabled={disabled}
-              type="text"
+              type={type ?? "text"}
             />
             {!!error && (
               <p className="mt-1 text-sm text-error">{error.message}</p>

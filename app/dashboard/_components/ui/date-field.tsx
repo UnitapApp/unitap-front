@@ -46,7 +46,7 @@ export function DateField<T extends FieldValues = FieldValues>({
             type="button"
             variant={"outline"}
             className={cn(
-              "w-[240px] justify-start text-left font-normal",
+              "mt-1 w-full min-w-[240px] justify-start text-left font-normal",
               !date && "text-muted-foreground",
             )}
           >

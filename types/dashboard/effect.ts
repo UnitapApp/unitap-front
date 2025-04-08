@@ -1,17 +1,15 @@
-
-
 export enum EffectType {
-  Point,
-  Badge,
-  FCFS,
-  DiscordRole,
-  Raffle,
-  FortuneWheel,
-  PointMultiplier
+  Point = "point",
+  Badge = "badge",
+  FCFS = "fcsfs",
+  DiscordRole = "discordRule",
+  Raffle = "raffle",
+  FortuneWheel = "fortuneWheel",
+  PointMultiplier = "pointMultiplier",
 }
 
 export interface Effect {
-  type: EffectType
-  params: never
-  effectName: string
+  type: EffectType;
+  params: never;
+  effectName: string;
 }

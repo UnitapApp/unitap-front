@@ -1,19 +1,18 @@
-import { Condition } from "./condition"
-import { Effect } from "./effect"
-
+import { Condition } from "./condition";
+import { Effect } from "./effect";
 
 export enum RuleType {
-  OneTime,
-  Periodic
+  OneTime = "OneTime",
+  Periodic = "Periodic",
 }
 
 export interface Rule {
-  isEventRule: boolean
-  type: RuleType
-  startAt: Date
-  endAt: Date
-  limitOfUsage: number
-  conditions: Condition[]
-  effects: Effect[]
+  name: string;
+  isEventRule: boolean;
+  type: RuleType;
+  startAt: Date;
+  endAt: Date;
+  limitOfUsage: number;
+  conditions: Condition[];
+  effects: Effect[];
 }
-

@@ -20,7 +20,7 @@ export default function AddRuleButton() {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogTrigger className="w-full">
+        <DialogTrigger asChild className="w-full">
           <button className="flex w-full items-center justify-center gap-4 rounded-xl border-2 border-dashed border-[#867FEE] bg-[#867FEE1A] p-8 text-xl text-[#867FEE] transition-colors hover:bg-[#867FEE3A]">
             Add New Rule <FaPlusCircle />
           </button>
