@@ -28,7 +28,7 @@ import {
   checkTokenContractAddress,
 } from "@/components/containers/provider-dashboard/helpers/checkCollectionAddress";
 import CsvFileInput from "./CsvFileInput";
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   fetchFarcasterChannels,
   fetchFarcasterProfiles,

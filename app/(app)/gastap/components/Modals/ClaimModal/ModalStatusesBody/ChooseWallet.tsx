@@ -1,5 +1,5 @@
 import Icon from "@/components/ui/Icon";
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { useGasTapContext } from "@/context/gasTapProvider";
 import { useUserProfileContext } from "@/context/userProfile";
 import { shortenAddress } from "@/utils";

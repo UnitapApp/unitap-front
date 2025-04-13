@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -60,19 +60,10 @@ const SearchInput = ({
     >
       <Input
         data-testid="search-box"
-        $icon="/assets/images/modal/search-icon.svg"
-        $width="100%"
         height="40px"
-        $fontSize="12px"
-        $iconWidth="16px"
-        $iconHeight="16px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Search by title"
-        $pl={7}
-        $p={1.2}
-        $mb={0}
-        $backgroundColor="black1"
       ></Input>
     </div>
   );

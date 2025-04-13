@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePrizeTapContext } from "@/context/prizeTapProvider";
 import Icon from "@/components/ui/Icon";
@@ -77,18 +77,9 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
       <Input
         ref={ref}
         data-testid="search-box"
-        $icon="/assets/images/modal/search-icon.svg"
-        $width="100%"
-        $fontSize="12px"
-        $iconWidth="20px"
-        $iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Raffle name, creator"
-        $pl={7}
-        $p={1.5}
-        className="mb-0"
-        $backgroundColor="black1"
       ></Input>
 
       <Icon

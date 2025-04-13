@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   useParams,
   usePathname,
@@ -81,18 +81,10 @@ const SearchInput = ({ className = "" }: SearchInputProps) => {
       <Input
         ref={ref}
         data-testid="search-box"
-        $icon="/assets/images/modal/search-icon.svg"
-        $width="100%"
-        $fontSize="12px"
-        $iconWidth="20px"
-        $iconHeight="20px"
         value={searchPhraseInput}
         onChange={searchPhraseChangeHandler}
         placeholder="Chain name, Currency, ID"
-        $pl={7}
-        $p={1.5}
         className="mb-0"
-        $backgroundColor="black1"
       ></Input>
       <Icon
         iconSrc="/assets/images/claim/slash-icon.svg"
