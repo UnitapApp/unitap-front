@@ -3,7 +3,6 @@ import { config } from "@/utils/wallet/wagmi";
 import { Noto_Sans } from "next/font/google";
 import UnitapProvider from "@/context";
 import Progressbar from "@/components/progress";
-import Footer from "@/components/layout/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   ConnectBrightIdModal,
@@ -20,8 +19,6 @@ import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { Providers } from "./providers";
 import AxiosApiManager from "@/components/axios-api-manager";
-import { ChakraUIProviders } from "@/components/ChakraProvider";
-import { HeaderSelection } from "@/components/HeaderSelection";
 import { ProviderSelection } from "@/components/ProviderSelection";
 
 const notoSansFont = Noto_Sans({
@@ -55,7 +52,7 @@ export default async function RootLayout({
         <Providers initialState={initialState}>
           <UnitapProvider>
             <StyledJsxRegistry>
-              <ProviderSelection>{children}</ProviderSelection>
+              {children}
               <ConnectBrightIdModal />
               <BrightConnectionModal />
               <CreateBrightIdAccountModal />

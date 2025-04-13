@@ -4,6 +4,22 @@ import { twMerge } from "tailwind-merge";
 export const EmptyCallback = () => {};
 export const NullCallback = () => null;
 
+export function kebabToTitle(kebabString: string) {
+  if (!kebabString) return "";
+
+  return kebabString
+    .split("-")
+    .filter((word) => word.length > 0) // Remove empty strings from multiple hyphens
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+export function toTitle(input: string): string {
+  return input
+    .replace(/-/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
 export const shortenAddress = (address: string | null | undefined) => {
   if (!address) return "";
 

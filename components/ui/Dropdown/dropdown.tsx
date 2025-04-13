@@ -1,7 +1,7 @@
 "use client";
 
 import Icon from "../Icon";
-import Label from "../label";
+import { Label } from "../label";
 import { DropdownWrapper } from "./dropdownWrapper";
 
 interface DropdownProps {

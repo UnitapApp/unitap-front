@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProviderFormPaginationProp } from "@/types";
 import SelectChainDropDown from "./components/SelectChainDropDown";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import SelectTokenOrNft from "./components/SelectTokenOrNft";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import {

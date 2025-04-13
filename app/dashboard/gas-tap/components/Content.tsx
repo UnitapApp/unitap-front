@@ -4,7 +4,7 @@ import {
   ProviderDashboardButton,
   ProviderDashboardButtonRejected,
   ProviderDashboardButtonSuccess,
-} from "../../components/Buttons";
+} from "../../_components/Buttons";
 import Icon from "@/components/ui/Icon";
 import SearchInput from "../../prize-tap/components/SearchInput";
 import Link from "next/link";

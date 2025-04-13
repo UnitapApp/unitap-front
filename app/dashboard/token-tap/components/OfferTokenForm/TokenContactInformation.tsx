@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ContactField, ProviderFormPaginationProp } from "@/types";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Icon from "@/components/ui/Icon";
 import { useWalletAccount } from "@/utils/wallet";

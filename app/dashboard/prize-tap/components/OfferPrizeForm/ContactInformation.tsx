@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ProviderFormPaginationProp, ContactField } from "@/types";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import DisplaySteps from "../../../components/DisplaySteps";
+import DisplaySteps from "../../../_components/DisplaySteps";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import { useEffect, useState } from "react";

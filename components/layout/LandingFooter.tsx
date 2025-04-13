@@ -1,4 +1,4 @@
-import { Container } from "@/app/new-landing/components/Container";
+import { Container } from "@/app/(landing)/components/Container";
 import { footerLinks, socialMedias } from "@/constants/footer";
 import {
   Center,

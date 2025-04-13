@@ -1,22 +1,26 @@
 "use client"
 
-import { ReactNode } from "react"
-import styled from "styled-components"
-import { DV } from "./designVariables"
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { cva, type VariantProps } from "class-variance-authority"
 
-interface props {
-  children: ReactNode
-}
+import { cn } from "@/lib/utils"
 
-const LabelWrapper = styled.p`
-  font-size: 12px;
-  color: #4c4c64;
-  margin: ${DV.sizes.baseMargin * 3}px ${DV.sizes.baseMargin}px
-    ${DV.sizes.baseMargin}px;
-`
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+)
 
-const Label = ({ children }: props) => {
-  return <LabelWrapper>{children}</LabelWrapper>
-}
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+))
+Label.displayName = LabelPrimitive.Root.displayName
 
-export default Label
+export { Label }

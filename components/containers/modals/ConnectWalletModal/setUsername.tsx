@@ -1,7 +1,7 @@
 "use client";
 
 import { ClaimButton } from "@/components/ui/Button/button";
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { ConnectionProvider, WalletState } from ".";
@@ -79,14 +79,9 @@ const SetUsernameBody: FC<{
           className={`!m-0 rounded-2xl border-2 border-gray70 !bg-gray60 text-gray100 placeholder:text-gray90 ${
             error ? "border-error" : "border-gray70"
           }`}
-          $width="100%"
-          $fontSize="14px"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          $pl={2}
-          $p={2}
-          $mb={0}
         ></Input>
         <span className="icon-right absolute right-4 top-1/2 z-10 -translate-y-1/2 text-gray90">
           @

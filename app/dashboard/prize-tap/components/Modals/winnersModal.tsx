@@ -2,7 +2,7 @@
 
 import Icon from "@/components/ui/Icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WalletWinner } from "@/app/prizetap/components/Linea/LineaWinnersModal";
+import { WalletWinner } from "@/app/(app)/prizetap/components/Linea/LineaWinnersModal";
 import Modal from "@/components/ui/Modal/modal";
 import { prizeTap721Abi, prizeTapAbi } from "@/types/abis/contracts";
 import { CSVLink } from "react-csv";

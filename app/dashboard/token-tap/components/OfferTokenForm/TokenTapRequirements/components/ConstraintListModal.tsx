@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ConstraintDetailsModal from "@/app/dashboard/components/ConstraintDetailsModal";
+import ConstraintDetailsModal from "@/app/dashboard/_components/ConstraintDetailsModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
-import ConstraintAppDetailModal from "@/app/dashboard/components/constraintAppDetailModal";
+import ConstraintAppDetailModal from "@/app/dashboard/_components/constraintAppDetailModal";
 import { SelectCoreIntegrations } from "@/app/dashboard/prize-tap/components/OfferPrizeForm/Requirements/components/ConstraintListModal";
-import Input from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { appInfos } from "@/app/dashboard/constants/integrations";
 
 const RequirementModalBody = () => {
@@ -76,15 +76,9 @@ const InitialBody = () => {
       <div className="mt-2 gap-2">
         <Input
           data-testid="search-box"
-          $icon="/assets/images/modal/search-icon.svg"
-          $width="100%"
-          $fontSize="12px"
-          $iconWidth="20px"
-          $iconHeight="20px"
           value={searchBar}
           onChange={(e) => setSearchBar(e.target.value)}
           placeholder="Search Integration"
-          $pl={7}
           className="mb-0 !rounded-xl border border-gray50 bg-gray40 !py-4 placeholder:text-gray80"
         ></Input>
         <div className="w-full text-center">

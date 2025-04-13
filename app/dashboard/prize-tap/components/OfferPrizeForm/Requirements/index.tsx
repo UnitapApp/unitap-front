@@ -1,6 +1,6 @@
 import { ProviderFormPaginationProp } from "@/types";
 import NewAddedConstraint from "../NewAddedConstraint";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Icon from "@/components/ui/Icon";
 import ConstraintListModal from "./components/ConstraintListModal";

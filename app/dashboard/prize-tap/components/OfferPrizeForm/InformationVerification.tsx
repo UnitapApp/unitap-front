@@ -2,7 +2,7 @@
 
 import Icon from "@/components/ui/Icon";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
-import { ProviderDashboardGoToDashBoard } from "@/app/dashboard/components/Buttons";
+import { ProviderDashboardGoToDashBoard } from "@/app/dashboard/_components/Buttons";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
 

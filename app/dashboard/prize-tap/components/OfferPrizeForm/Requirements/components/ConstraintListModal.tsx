@@ -1,12 +1,12 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import ConstraintDetailsModal from "../../../../../components/ConstraintDetailsModal";
+import ConstraintDetailsModal from "../../../../../_components/ConstraintDetailsModal";
 import { usePrizeOfferFormContext } from "@/context/providerDashboardContext";
 import Modal from "@/components/ui/Modal/modal";
 import Icon from "@/components/ui/Icon";
-import Input from "@/components/ui/input";
-import ConstraintAppDetailModal from "@/app/dashboard/components/constraintAppDetailModal";
+import { Input } from "@/components/ui/input";
+import ConstraintAppDetailModal from "@/app/dashboard/_components/constraintAppDetailModal";
 import { appInfos } from "@/app/dashboard/constants/integrations";
 import { ConstraintProps } from "@/types";
 
@@ -106,15 +106,9 @@ export const ConstraintInitialBody = () => {
       <div className="mt-2 gap-2">
         <Input
           data-testid="search-box"
-          $icon="/assets/images/modal/search-icon.svg"
-          $width="100%"
-          $fontSize="12px"
-          $iconWidth="20px"
-          $iconHeight="20px"
           value={searchBar}
           onChange={(e) => setSearchBar(e.target.value)}
           placeholder="Search Integration"
-          $pl={7}
           className="mb-0 !rounded-xl border border-gray50 bg-gray40 !py-4 placeholder:text-gray80"
         ></Input>
         <div className="w-full text-center">

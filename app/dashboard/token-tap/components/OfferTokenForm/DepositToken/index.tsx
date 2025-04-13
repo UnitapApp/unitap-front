@@ -3,11 +3,11 @@
 import { ProviderFormPaginationProp } from "@/types";
 import DepositContent from "./components/DepositContent";
 import DisplaySelectedTokenOrNft from "./components/DisplaySelectedTokenOrNft";
-import Pagination from "@/app/dashboard/components/pagination";
+import Pagination from "@/app/dashboard/_components/pagination";
 import { useCallback, useEffect, useMemo } from "react";
 import ShowPreviewModal from "./components/ShowPreviewModal";
 import { useTokenTapFromContext } from "@/context/providerDashboardTokenTapContext";
-import { ProviderDashboardButtonSubmit } from "@/app/dashboard/components/Buttons";
+import { ProviderDashboardButtonSubmit } from "@/app/dashboard/_components/Buttons";
 import {
   useNetworkSwitcher,
   useWalletAccount,
