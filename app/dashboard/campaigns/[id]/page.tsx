@@ -5,12 +5,27 @@ import { useAppSelector } from "@/store";
 import { selectFocusedProjectCampaigns } from "@/store/projects/selectors";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useMemo } from "react";
-import { FaChevronLeft } from "react-icons/fa";
+import { FC, useMemo } from "react";
+import { FaChevronLeft, FaPencilAlt } from "react-icons/fa";
 import ProjectImage from "../../_components/ui/project-image";
 import AddRuleButton from "../../_components/add-rule-button";
+import { Campaign } from "@/types/dashboard/campaign";
+import { IoMdMore } from "react-icons/io";
 
 export default function CmapaignDetailsPage() {
+  const params = useParams();
+
+  const id = params["id"]! as string;
+
+  const campaigns = useAppSelector(selectFocusedProjectCampaigns);
+
+  const campaign = useMemo(
+    () => campaigns?.find((item) => item.id === Number(id)),
+    [campaigns, id],
+  );
+
+  if (!campaign) return null;
+
   return (
     <div className="mt-5">
       <div className="flex items-center gap-4">
@@ -25,27 +40,16 @@ export default function CmapaignDetailsPage() {
       </div>
 
       <div className="my-8">
-        <CampaignDetailsCard />
+        <CampaignDetailsCard campaign={campaign} />
       </div>
       <AddRuleButton />
+
+      <CampaignRulesSection campagin={campaign} />
     </div>
   );
 }
 
-const CampaignDetailsCard = () => {
-  const params = useParams();
-
-  const id = params["id"]! as string;
-
-  const campaigns = useAppSelector(selectFocusedProjectCampaigns);
-
-  const campaign = useMemo(
-    () => campaigns?.find((item) => item.id === Number(id)),
-    [campaigns, id],
-  );
-
-  if (!campaign) return null;
-
+const CampaignDetailsCard: FC<{ campaign: Campaign }> = ({ campaign }) => {
   return (
     <Card className="p-4">
       <div className="flex flex-row items-center gap-2 p-4">
@@ -91,3 +95,29 @@ const CampaignDetailsCard = () => {
     </Card>
   );
 };
+
+const CampaignRulesSection: FC<{ campagin: Campaign }> = ({ campagin }) => {
+  return (
+    <div className="flex flex-col gap-4">
+      {campagin.rules.map((rule, key) => (
+        <div key={key} className="overflow-hidden rounded-xl shadow-sm">
+          <div className="flex items-center bg-primary-dashboard p-3 text-white">
+            <span>{rule.name}</span>
+            <span className="ml-auto rounded-sm bg-white px-3 py-1 text-xs text-black">
+              {rule.isEventRule ? "Event Rule" : "Time Based Rule"}
+            </span>
+
+            <FaPencilAlt />
+            <IoMdMore />
+          </div>
+        </div>
+      ))}
+
+      <div className="grid grid-cols-2 bg-white p-5 text-black"></div>
+    </div>
+  );
+};
+
+const ConditionsSection = () => {};
+
+const EffectsSection = () => {};
