@@ -6,16 +6,28 @@ import TextField from "@/app/dashboard/_components/ui/text-field";
 import ToggleButtonField from "@/app/dashboard/_components/ui/toggle-button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { ConditionType } from "@/types/dashboard/condition";
+import Icon from "@/components/ui/Icon";
+import { ConditionType, ConditionTypeApps } from "@/types/dashboard/condition";
 import { EffectType } from "@/types/dashboard/effect";
 import { RuleType } from "@/types/dashboard/rule";
+import { toTitle } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { Control, useForm, UseFormWatch } from "react-hook-form";
-import { FaChevronLeft, FaPlusCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaChevronLeft,
+  FaClipboard,
+  FaClipboardList,
+  FaDownload,
+  FaLink,
+  FaPlusCircle,
+  FaStar,
+} from "react-icons/fa";
 import { z } from "zod";
+import { AiOutlineGlobal } from "react-icons/ai";
 
 const addEventRuleValidation = z.object({
   name: z.string(),
@@ -33,7 +45,9 @@ const addEventRuleValidation = z.object({
         ConditionType.Verification,
         ConditionType.WhiteList,
       ]),
-      thirdPartyApp: z.string(),
+      logo: z.string().optional(),
+      thirdpartyapp: z.string(),
+      constraintName: z.string(),
       params: z.object({}),
     }),
   ),
@@ -158,6 +172,11 @@ const ConditionsSection: FC<{
   watch: UseFormWatch<AddEventRuleType>;
 }> = ({ control, watch }) => {
   const [open, onOpenChange] = useState(false);
+
+  const conditionsList = watch("conditions");
+
+  console.log(conditionsList);
+
   return (
     <div className="col-span-3">
       <div className="rounded-3xl bg-primary-dashboard px-4 py-4 text-center text-white">
@@ -165,7 +184,7 @@ const ConditionsSection: FC<{
       </div>
 
       <Card className="mt-4 rounded-2xl p-5">
-        <Dialog>
+        <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogTrigger asChild>
             <button className="flex w-full items-center justify-center gap-4 rounded-xl border-2 border-dashed p-5 transition-colors hover:bg-stone-100">
               <FaPlusCircle /> Add Condition
@@ -178,7 +197,50 @@ const ConditionsSection: FC<{
             watch={watch}
           />
         </Dialog>
+
+        <div className="mt-5 flex flex-col gap-4">
+          {conditionsList.map((condition, key) => (
+            <div
+              key={key}
+              className="overflow-hidden rounded-xl border border-stone-200"
+            >
+              <div className="flex items-center gap-2 bg-gray100/50 p-3 text-black">
+                {conditionTypeLogos[condition.type]}
+                {toTitle(condition.type)}
+
+                <div className="ml-auto flex gap-1 rounded bg-gray100/60 p-1 text-xs">
+                  <div className="">{condition.thirdpartyapp}</div>
+
+                  {!!condition.logo && (
+                    <Icon
+                      width="16px"
+                      height="16px"
+                      iconSrc={condition.logo}
+                      alt={condition.type}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white p-5">
+                <span className="rounded-md bg-primary-dashboard/30 p-1 px-2 text-sm text-primary-dashboard">
+                  {condition.constraintName}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </Card>
     </div>
   );
+};
+
+const conditionTypeLogos: Record<ConditionType, ReactNode> = {
+  [ConditionType.Verification]: <FaCheckCircle />,
+  [ConditionType.OnChain]: <FaLink />,
+  [ConditionType.SocialMedia]: <AiOutlineGlobal />,
+  [ConditionType.OffChain]: <FaClipboardList />,
+  [ConditionType.WhiteList]: <FaDownload />,
+  [ConditionType.Unitap]: <FaStar />,
+  // [ConditionType.]
 };

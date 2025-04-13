@@ -14,6 +14,12 @@ export function kebabToTitle(kebabString: string) {
     .join(" ");
 }
 
+export function toTitle(input: string): string {
+  return input
+    .replace(/-/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
 export const shortenAddress = (address: string | null | undefined) => {
   if (!address) return "";
 

@@ -6,7 +6,7 @@ import useAddRequirement from "@/components/containers/provider-dashboard/hooks/
 import Icon from "@/components/ui/Icon";
 import { CreateParams } from "./ConstraintDetailsModal";
 
-import Select from "@/components/ui/Select";
+import Select from "@/components/ui/SelectField";
 import { ShouldNotSatisfy, ShouldSatisfy } from "./ShouldSatisfy";
 
 type DetailsModal = {

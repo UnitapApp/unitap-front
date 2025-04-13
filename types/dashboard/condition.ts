@@ -11,7 +11,8 @@ export interface Condition {
   type: ConditionType;
   thirdpartyapp: string;
   constraintName: string;
-  params: never;
+  params: unknown;
+  logo?: string;
 }
 
 export interface ConditionFormBuilder {
@@ -52,7 +53,7 @@ export const ConditionTypeApps: Record<ConditionType, AppCondition[]> = {
     },
     {
       label: "Captcha",
-      logo: "",
+      logo: "/assets/images/thirdparties/captcha.svg",
       children: [
         {
           name: "cloudflareCaptcha",
@@ -417,7 +418,7 @@ export const ConditionTypeApps: Record<ConditionType, AppCondition[]> = {
     },
     {
       label: "Own Assets",
-      logo: "/assets/images/thirdparties/own-assets.svg",
+      logo: "/assets/images/thirdparties/owns-assets.svg",
       children: [
         {
           name: "nft",
@@ -490,7 +491,7 @@ export const ConditionTypeApps: Record<ConditionType, AppCondition[]> = {
   [ConditionType.Unitap]: [
     {
       label: "Point",
-      logo: "/assets/images/landing/unitap-logo.svg",
+      logo: "/assets/images/thirdparties/point.svg",
       children: [
         {
           name: "amount",
@@ -518,7 +519,7 @@ export const ConditionTypeApps: Record<ConditionType, AppCondition[]> = {
     },
     {
       label: "Badge",
-      logo: "",
+      logo: "/assets/images/thirdparties/badge.svg",
       children: [
         {
           name: "toHave",
