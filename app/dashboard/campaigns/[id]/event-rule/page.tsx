@@ -1,4 +1,5 @@
 "use client";
+import { GoPlusCircle } from "react-icons/go";
 
 import AddConditionModal from "@/app/dashboard/_components/modals/add-condition-modal";
 import { DateField } from "@/app/dashboard/_components/ui/date-field";
@@ -7,7 +8,7 @@ import ToggleButtonField from "@/app/dashboard/_components/ui/toggle-button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Icon from "@/components/ui/Icon";
-import { ConditionType, ConditionTypeApps } from "@/types/dashboard/condition";
+import { ConditionType } from "@/types/dashboard/condition";
 import { EffectType } from "@/types/dashboard/effect";
 import { RuleType } from "@/types/dashboard/rule";
 import { toTitle } from "@/utils";
@@ -19,15 +20,20 @@ import { Control, useForm, UseFormWatch } from "react-hook-form";
 import {
   FaCheckCircle,
   FaChevronLeft,
-  FaClipboard,
   FaClipboardList,
+  FaDiscord,
   FaDownload,
+  FaGift,
   FaLink,
-  FaPlusCircle,
+  FaPiedPiper,
+  FaRegIdBadge,
   FaStar,
+  FaStarAndCrescent,
+  FaTicketAlt,
 } from "react-icons/fa";
 import { z } from "zod";
 import { AiOutlineGlobal } from "react-icons/ai";
+import AddEffectModal from "@/app/dashboard/_components/modals/add-effect-modal";
 
 const addEventRuleValidation = z.object({
   name: z.string(),
@@ -64,6 +70,8 @@ const addEventRuleValidation = z.object({
       ]),
       params: z.object({}),
       effectName: z.string(),
+      logo: z.string().optional(),
+      thirdpartyapp: z.string(),
     }),
   ),
 });
@@ -108,6 +116,7 @@ export default function NewEventRule() {
       <div className="mt-5 grid grid-cols-8 gap-4">
         <RuleInfo control={form.control} />
         <ConditionsSection watch={form.watch} control={form.control} />
+        <EffectsSection watch={form.watch} control={form.control} />
       </div>
     </div>
   );
@@ -175,8 +184,6 @@ const ConditionsSection: FC<{
 
   const conditionsList = watch("conditions");
 
-  console.log(conditionsList);
-
   return (
     <div className="col-span-3">
       <div className="rounded-3xl bg-primary-dashboard px-4 py-4 text-center text-white">
@@ -187,7 +194,8 @@ const ConditionsSection: FC<{
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogTrigger asChild>
             <button className="flex w-full items-center justify-center gap-4 rounded-xl border-2 border-dashed p-5 transition-colors hover:bg-stone-100">
-              <FaPlusCircle /> Add Condition
+              <GoPlusCircle />
+              Add Condition
             </button>
           </DialogTrigger>
           <AddConditionModal
@@ -209,8 +217,6 @@ const ConditionsSection: FC<{
                 {toTitle(condition.type)}
 
                 <div className="ml-auto flex gap-1 rounded bg-gray100/60 p-1 text-xs">
-                  <div className="">{condition.thirdpartyapp}</div>
-
                   {!!condition.logo && (
                     <Icon
                       width="16px"
@@ -219,12 +225,79 @@ const ConditionsSection: FC<{
                       alt={condition.type}
                     />
                   )}
+                  <div className="">{condition.thirdpartyapp}</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 bg-white p-5">
                 <span className="rounded-md bg-primary-dashboard/30 p-1 px-2 text-sm text-primary-dashboard">
-                  {condition.constraintName}
+                  {toTitle(condition.constraintName)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+const EffectsSection: FC<{
+  control: Control<AddEventRuleType>;
+  watch: UseFormWatch<AddEventRuleType>;
+}> = ({ control, watch }) => {
+  const [open, onOpenChange] = useState(false);
+
+  const effectsList = watch("effects");
+
+  return (
+    <div className="col-span-3">
+      <div className="rounded-3xl bg-primary-dashboard px-4 py-4 text-center text-white">
+        Effect
+      </div>
+
+      <Card className="mt-4 rounded-2xl p-5">
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogTrigger asChild>
+            <button className="flex w-full items-center justify-center gap-4 rounded-xl border-2 border-dashed p-5 transition-colors hover:bg-stone-100">
+              <GoPlusCircle />
+              Add Section
+            </button>
+          </DialogTrigger>
+          <AddEffectModal
+            control={control}
+            onOpenChange={onOpenChange}
+            open={open}
+            watch={watch}
+          />
+        </Dialog>
+
+        <div className="mt-5 flex flex-col gap-4">
+          {effectsList.map((effect, key) => (
+            <div
+              key={key}
+              className="overflow-hidden rounded-xl border border-stone-200"
+            >
+              <div className="flex items-center gap-2 bg-gray100/50 p-3 text-black">
+                {effectTypeLogos[effect.type]}
+                {toTitle(effect.type)}
+
+                <div className="ml-auto flex gap-1 rounded bg-gray100/60 p-1 text-xs">
+                  {!!effect.logo && (
+                    <Icon
+                      width="16px"
+                      height="16px"
+                      iconSrc={effect.logo}
+                      alt={effect.type}
+                    />
+                  )}
+                  <div className="">{effect.thirdpartyapp}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white p-5">
+                <span className="rounded-md bg-primary-dashboard/30 p-1 px-2 text-sm text-primary-dashboard">
+                  {toTitle(effect.effectName)}
                 </span>
               </div>
             </div>
@@ -242,5 +315,17 @@ const conditionTypeLogos: Record<ConditionType, ReactNode> = {
   [ConditionType.OffChain]: <FaClipboardList />,
   [ConditionType.WhiteList]: <FaDownload />,
   [ConditionType.Unitap]: <FaStar />,
+  // [ConditionType.]
+};
+
+const effectTypeLogos: Record<EffectType, ReactNode> = {
+  [EffectType.Badge]: <FaRegIdBadge />,
+  [EffectType.DiscordRole]: <FaDiscord />,
+  [EffectType.FCFS]: <FaPiedPiper />,
+  [EffectType.FortuneWheel]: <FaClipboardList />,
+  [EffectType.Point]: <FaStar />,
+  [EffectType.PointMultiplier]: <FaStarAndCrescent />,
+  [EffectType.Raffle]: <FaTicketAlt />,
+  [EffectType.Jackpot]: <FaGift />,
   // [ConditionType.]
 };
