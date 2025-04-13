@@ -123,8 +123,8 @@ export default function NewEventRule() {
 
         <h4 className="flex items-center gap-4">
           New Rule
-          <span className="rounded bg-primary-dashboard/20 p-1 px-2 text-xs text-primary-dashboard">
-            Event Rule
+          <span className="rounded bg-error/20 p-1 px-2 text-xs text-error">
+            Timed Based rule
           </span>
         </h4>
 
