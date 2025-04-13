@@ -2,7 +2,7 @@
 
 import { VStack } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { Container } from "../new-landing/components/Container";
+import { Container } from "../components/Container";
 
 const Insight = dynamic(
   () => import("./_components/Insight").then((modules) => modules.Insight),
