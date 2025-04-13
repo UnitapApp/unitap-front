@@ -10,8 +10,8 @@ export interface Rule {
   name: string;
   isEventRule: boolean;
   type: RuleType;
-  startAt: Date;
-  endAt: Date;
+  startTime: Date;
+  expireTime: Date;
   limitOfUsage: number;
   conditions: Condition[];
   effects: Effect[];

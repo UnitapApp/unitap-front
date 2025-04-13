@@ -10,11 +10,11 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Icon from "@/components/ui/Icon";
 import { ConditionType } from "@/types/dashboard/condition";
 import { EffectType } from "@/types/dashboard/effect";
-import { RuleType } from "@/types/dashboard/rule";
+import { Rule, RuleType } from "@/types/dashboard/rule";
 import { toTitle } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FC, ReactNode, useState } from "react";
 import { Control, useForm, UseFormWatch } from "react-hook-form";
 import {
@@ -34,11 +34,15 @@ import {
 import { z } from "zod";
 import { AiOutlineGlobal } from "react-icons/ai";
 import AddEffectModal from "@/app/dashboard/_components/modals/add-effect-modal";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { selectFocusedProjectCampaigns } from "@/store/projects/selectors";
+import { editCampagin } from "@/store/projects/slice";
 
 const addEventRuleValidation = z.object({
   name: z.string(),
   type: z.enum([RuleType.OneTime, RuleType.Periodic]),
   startTime: z.date(),
+  isEventRule: z.boolean().default(false),
   expireTime: z.date(),
   focusedConditionTab: z.string().nullable().optional(),
   limitOfUsage: z.coerce.number(),
@@ -91,6 +95,22 @@ export default function NewEventRule() {
     resolver: zodResolver(addEventRuleValidation),
   });
 
+  const dispatch = useAppDispatch();
+  const campaigns = useAppSelector(selectFocusedProjectCampaigns);
+  const router = useRouter();
+
+  const campaign = campaigns?.find((item) => item.id === Number(params["id"]));
+
+  if (!campaign) return <div className="p-5 text-center">Not found</div>;
+
+  const onSave = (data: AddEventRuleType) => {
+    campaign.rules.push(data as Rule);
+
+    dispatch(editCampagin(campaign));
+
+    router.push(`/dashboard/campaigns/${campaign.id}`);
+  };
+
   return (
     <div className="mt-5">
       <header className="flex items-center gap-3">
@@ -107,6 +127,7 @@ export default function NewEventRule() {
           <button
             type="submit"
             className="flex-1 rounded-lg border border-black bg-brand-primary px-5 py-3 hover:bg-green-300"
+            onClick={form.handleSubmit(onSave)}
           >
             Save Rule
           </button>

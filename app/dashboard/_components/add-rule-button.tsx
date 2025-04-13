@@ -9,13 +9,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MouseIcon, SquareMousePointerIcon, TimerIcon } from "lucide-react";
+import { SquareMousePointerIcon, TimerIcon } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 
 export default function AddRuleButton() {
   const [open, onOpenChange] = useState(false);
+  const params = useParams();
 
   return (
     <>
@@ -35,7 +37,7 @@ export default function AddRuleButton() {
             <div className="grid grid-cols-2 gap-3">
               <Link
                 onClick={() => onOpenChange(false)}
-                href={`/dashboard/campaigns/${1}/event-rule`}
+                href={`/dashboard/campaigns/${params["id"]}/event-rule`}
               >
                 <Card className="flex h-36 flex-col items-center justify-center gap-3 border-2 border-dashed shadow-none transition-all hover:border-primary-dashboard hover:bg-primary-dashboard/10 hover:text-primary-dashboard">
                   <SquareMousePointerIcon />
@@ -44,7 +46,7 @@ export default function AddRuleButton() {
               </Link>
               <Link
                 onClick={() => onOpenChange(false)}
-                href={`/dashboard/campaigns/${1}/timed-base-rule`}
+                href={`/dashboard/campaigns/${params["id"]}/timed-base-rule`}
               >
                 <Card className="flex h-36 flex-col items-center justify-center gap-3 border-2 border-dashed shadow-none transition-all hover:border-primary-dashboard hover:bg-primary-dashboard/10 hover:text-primary-dashboard">
                   <TimerIcon />

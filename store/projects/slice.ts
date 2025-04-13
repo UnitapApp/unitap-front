@@ -1,6 +1,7 @@
 import { Campaign } from "@/types/dashboard/campaign";
 import { Project } from "@/types/dashboard/project";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { cloneDeep } from "lodash";
 
 const initialProjecsState = {
   projects: [] as Project[],
@@ -36,6 +37,25 @@ export const projectsSlice = createSlice({
         .find((item) => item.id === project.id)
         ?.campaigns.push(action.payload);
       project.campaigns.push(action.payload);
+    },
+    editCampagin(state, action: PayloadAction<Campaign>) {
+      const projectIndex = state.projects.findIndex(
+        (p) => p.id === state.selectedProject?.id,
+      );
+      if (projectIndex === -1) return;
+
+      const campaignIndex = state.projects[projectIndex].campaigns.findIndex(
+        (c) => c.id === action.payload.id,
+      );
+      if (campaignIndex === -1) return;
+
+      state.projects[projectIndex].campaigns[campaignIndex] = cloneDeep(
+        action.payload,
+      );
+
+      if (state.selectedProject?.id === state.projects[projectIndex].id) {
+        state.selectedProject = cloneDeep(state.projects[projectIndex]);
+      }
     },
     changeAddCampaginModal(state, action: PayloadAction<boolean>) {
       state.isAddCampaginOpen = action.payload;
@@ -73,4 +93,5 @@ export const {
   createCampagin,
   changeAddCampaginModal,
   removeCampaign,
+  editCampagin,
 } = projectsSlice.actions;

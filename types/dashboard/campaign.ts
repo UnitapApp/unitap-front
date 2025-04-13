@@ -1,7 +1,9 @@
+import { Rule } from "./rule";
+
 export interface Campaign {
   id: number;
   name: string;
-  rules: [];
+  rules: Rule[];
   startAt?: Date;
   endAt?: Date;
   image?: string;
