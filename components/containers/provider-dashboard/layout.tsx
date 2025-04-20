@@ -8,22 +8,22 @@ import { BackToHomeButton } from "@/app/dashboard/_components/Buttons";
 
 const ProviderDashboardLayout: FC<PropsWithChildren> = ({ children }) => {
   const { userToken } = useUserProfileContext();
-  const { openBrightIdModal, setIsWalletPromptOpen } = useGlobalContext();
+  const { setIsWalletPromptOpen } = useGlobalContext();
 
   if (userToken) return children;
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl bg-gray20 py-10">
+    <div className="mt-5 flex flex-col items-center justify-center rounded-xl bg-white py-10">
       <div className="mb-10">
         <Icon iconSrc="/assets/images/provider-dashboard/dashboard-login.svg" />
       </div>
       <p
-        className="cursor-pointer text-sm font-semibold text-white"
-        onClick={openBrightIdModal}
+        className="cursor-pointer text-sm font-semibold"
+        onClick={setIsWalletPromptOpen.bind(null, true)}
       >
         Sign up first!
       </p>
-      <p className="text-gray100">
+      <p className="text-black">
         If you have account log in to have access to Incentive Center!
       </p>
 

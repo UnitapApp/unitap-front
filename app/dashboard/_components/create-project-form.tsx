@@ -28,7 +28,9 @@ type CreateProjectType = z.infer<typeof createProjectValidation>;
 export default function CreateProjectForm() {
   const { control, register, setValue, resetField, handleSubmit } =
     useForm<CreateProjectType>({
-      defaultValues: {},
+      defaultValues: {
+        socialMedias: {},
+      },
       resolver: zodResolver(createProjectValidation),
     });
 

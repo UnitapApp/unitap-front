@@ -95,8 +95,8 @@
     "swiper": "^11.2.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "viem": "^2.7.16",
-    "wagmi": "^2.5.7",
+    "viem": "^2.27.2",
+    "wagmi": "^2.14.16",
     "zod": "^3.24.2"
   },
   "devDependencies": {

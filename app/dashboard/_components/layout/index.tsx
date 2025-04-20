@@ -11,13 +11,15 @@ import {
   selectProjects,
 } from "@/store/projects/selectors";
 import CreateProjectForm from "../create-project-form";
+import { useUserProfileContext } from "@/context/userProfile";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
   const isOpen = useAppSelector(selectIsAddCampaginOpen);
   const projects = useAppSelector(selectProjects);
   const dispatch = useAppDispatch();
+  const { userToken } = useUserProfileContext();
 
-  if (!projects.length)
+  if (!projects.length && userToken)
     return (
       <div className="flex h-screen items-center justify-center bg-blue-50">
         <CreateProjectForm />

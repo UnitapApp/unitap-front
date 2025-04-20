@@ -73,7 +73,7 @@ const WalletConnecting: FC<{
             ],
           },
           onSuccess,
-        })
+        }),
       );
 
       onWalletLogin(res.token, res);
@@ -82,8 +82,8 @@ const WalletConnecting: FC<{
         previousWalletState === WalletState.AddNewWallet
           ? WalletState.AddWalletSuccess
           : isNewUser
-          ? WalletState.SetUsername
-          : WalletState.LoggedIn
+            ? WalletState.SetUsername
+            : WalletState.LoggedIn,
       );
     },
     [
@@ -94,10 +94,10 @@ const WalletConnecting: FC<{
       onWalletLogin,
       previousWalletState,
       setWalletState,
-    ]
+    ],
   );
 
-  const { isError, signTypedDataAsync } = useSignTypedData({});
+  const { isError, signTypedDataAsync, status } = useSignTypedData({});
 
   useEffect(() => {
     if (isMounted.current) return;
@@ -144,13 +144,13 @@ const WalletConnecting: FC<{
     return (
       <div className="w-full">
         <div className="text-center">
-          <div className="h-32 w-32 mx-auto bg-[#4C4C5C] rounded-full flex items-center justify-center">
+          <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-[#4C4C5C]">
             <Icon iconSrc={imageUrl} alt={label} width="60px" height="60px" />
           </div>
 
-          <p className="font-semibold text-warn mt-8">Sign message Failed</p>
+          <p className="mt-8 font-semibold text-warn">Sign message Failed</p>
 
-          <p className="mt-2 text-gray100 text-xs">{error}</p>
+          <p className="mt-2 text-xs text-gray100">{error}</p>
 
           <ClaimButton
             onClick={() => {
@@ -158,7 +158,7 @@ const WalletConnecting: FC<{
               isMounted.current = false;
               setError("");
             }}
-            className="mx-auto !w-full mt-7"
+            className="mx-auto mt-7 !w-full"
           >
             <p>Try Again</p>
           </ClaimButton>
@@ -168,19 +168,19 @@ const WalletConnecting: FC<{
 
   return (
     <div className="text-center">
-      <div className="h-32 w-32 mx-auto bg-[#4C4C5C] rounded-full flex items-center justify-center">
+      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-[#4C4C5C]">
         <Icon
           alt="loading"
           iconSrc={loadingImage}
           width="128px"
           height="128px"
-          className="animate-spin absolute"
+          className="absolute animate-spin"
         />
         <Icon iconSrc={imageUrl} alt={label} width="60px" height="60px" />
       </div>
-      <p className="font-bold mt-8">Waiting...</p>
+      <p className="mt-8 font-bold">Waiting...</p>
 
-      <p className="text-gray100 text-xs mt-6 mb-12">
+      <p className="mb-12 mt-6 text-xs text-gray100">
         Please sign the message in your wallet to complete the authentication
         process.
       </p>
