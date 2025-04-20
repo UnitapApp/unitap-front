@@ -142,6 +142,24 @@ const ConditionFormBuilder: FC<{
   );
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [isValid, setIsValid] = useState(false);
+  const [customPoint, setCustomPoint] = useState<string>("");
+  const [pointOptions, setPointOptions] = useState<string[]>(["Unitap Point"]);
+  const [isAddingPointer, setIsAddingPointer] = useState(false);
+
+  const handleCustomPointChange = (value: string) => {
+    setCustomPoint(value);
+    if (value && !pointOptions.includes(value)) {
+      setPointOptions((prev) => [...prev, value]);
+      localStorage.setItem("customPoint", value); // Store custom point in localStorage
+    }
+  };
+
+  useEffect(() => {
+    const storedPoint = localStorage.getItem("customPoint");
+    if (storedPoint && !pointOptions.includes(storedPoint)) {
+      setPointOptions((prev) => [...prev, storedPoint]);
+    }
+  }, []);
 
   const handleInputChange = (key: string, value: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -166,6 +184,20 @@ const ConditionFormBuilder: FC<{
     setIsValid(valid);
   }, [formData, selectedMethod]);
 
+  const handleAddPointer = (newPoint: string) => {
+    setPointOptions((prev) => [...prev, newPoint]);
+    setIsAddingPointer(false);
+    setCustomPoint(newPoint);
+  };
+
+  const handleAddPointerClick = () => {
+    setIsAddingPointer(true);
+  };
+
+  const handleCancelAddingPointer = () => {
+    setIsAddingPointer(false);
+  };
+
   return (
     <Card className="space-y-6">
       <header className="flex items-center gap-4">
@@ -177,70 +209,154 @@ const ConditionFormBuilder: FC<{
         />
         <h2 className="text-lg font-medium">{condition.label}</h2>
       </header>
+      {isAddingPointer ? (
+        // Show the NewPointerForm when adding a new pointer
+        <NewPointerForm
+          onAddPointer={handleAddPointer}
+          onCancel={handleCancelAddingPointer}
+        />
+      ) : (
+        <>
+          <Select
+            onValueChange={(val: string) => {
+              const method = condition.children.find((m) => m.name === val);
+              setSelectedMethod(method || null);
+              setFormData({});
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select method..." />
+            </SelectTrigger>
+            <SelectContent>
+              {condition.children.map((method) => (
+                <SelectItem key={method.name} value={method.name}>
+                  {method.label || method.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      <Select
-        onValueChange={(val: string) => {
-          const method = condition.children.find((m) => m.name === val);
-          setSelectedMethod(method || null);
-          setFormData({});
-        }}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Select method..." />
-        </SelectTrigger>
-        <SelectContent>
-          {condition.children.map((method) => (
-            <SelectItem key={method.name} value={method.name}>
-              {method.label || method.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {selectedMethod && (
-        <div className="space-y-4">
-          {Object.entries(selectedMethod.params).map(([key, config]) => (
-            <div key={key} className="space-y-1">
-              <Label htmlFor={key}>
-                {config.label || key} {config.required && "*"}
-              </Label>
-              {config.type === "file" ? (
-                <Input
-                  id={key}
-                  type="file"
-                  onChange={(e) => handleInputChange(key, e.target.files?.[0])}
-                  required={config.required}
-                />
-              ) : (
-                <Input
-                  id={key}
-                  type={config.type}
-                  value={formData[key] || ""}
-                  onChange={(e) => handleInputChange(key, e.target.value)}
-                  required={config.required}
-                />
-              )}
+          {selectedMethod && (
+            <div className="space-y-4">
+              {Object.entries(selectedMethod.params).map(([key, config]) => (
+                <div key={key} className="space-y-1">
+                  <Label htmlFor={key}>
+                    {config.label || key} {config.required && "*"}
+                  </Label>
+                  {config.type === "file" ? (
+                    <Input
+                      id={key}
+                      type="file"
+                      onChange={(e) =>
+                        handleInputChange(key, e.target.files?.[0])
+                      }
+                      required={config.required}
+                    />
+                  ) : (
+                    <Input
+                      id={key}
+                      type={config.type}
+                      value={formData[key] || ""}
+                      onChange={(e) => handleInputChange(key, e.target.value)}
+                      required={config.required}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )}
 
-      <div className="mt-5 text-right">
+          {condition.label === "Point" && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="pointSelection">Select Point</Label>
+                <Select
+                  onValueChange={(val) =>
+                    handleInputChange("selectedPoint", val)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a point..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {pointOptions.map((point) => (
+                      <SelectItem key={point} value={point}>
+                        {point}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <button
+                  className="mt-5 block rounded-xl px-3 py-1"
+                  onClick={handleAddPointerClick} // Button to add new pointer
+                >
+                  Add New Pointer
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-5 text-right">
+            <button
+              className="rounded-xl border border-black bg-primary-dashboard px-5 py-2 text-white hover:bg-primary-dashboard/90 disabled:opacity-50"
+              disabled={!isValid}
+              onClick={() => {
+                onEffectAdd({
+                  effectName: selectedMethod!.name,
+                  params: formData,
+                  thirdpartyapp: condition.label,
+                  logo: condition.logo,
+                });
+              }}
+            >
+              Add
+            </button>
+          </div>
+        </>
+      )}
+    </Card>
+  );
+};
+
+const NewPointerForm: FC<{
+  onAddPointer: (point: string) => void;
+  onCancel: () => void;
+}> = ({ onAddPointer, onCancel }) => {
+  const [newPointer, setNewPointer] = useState("");
+
+  const handleAddClick = () => {
+    if (newPointer) {
+      onAddPointer(newPointer);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="newPointer">Enter New Pointer</Label>
+        <Input
+          id="newPointer"
+          type="text"
+          value={newPointer}
+          onChange={(e) => setNewPointer(e.target.value)}
+          placeholder="Enter new pointer"
+        />
+      </div>
+
+      <div className="flex flex-row-reverse justify-start gap-4">
         <button
-          className="rounded-xl border border-black bg-primary-dashboard px-5 py-2 text-white hover:bg-primary-dashboard/90 disabled:opacity-50"
-          disabled={!isValid}
-          onClick={() => {
-            onEffectAdd({
-              effectName: selectedMethod!.name,
-              params: formData,
-              thirdpartyapp: condition.label,
-              logo: condition.logo,
-            });
-          }}
+          className="rounded-xl border border-black bg-primary-dashboard px-5 py-2 text-white hover:bg-primary-dashboard/90"
+          onClick={handleAddClick}
         >
           Add
         </button>
+        <button
+          className="bg-gray-300 rounded-xl border border-black px-5 py-2"
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
       </div>
-    </Card>
+    </div>
   );
 };

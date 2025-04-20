@@ -44,7 +44,9 @@ export default function CmapaignDetailsPage() {
       </div>
       <AddRuleButton />
 
-      <CampaignRulesSection campagin={campaign} />
+      <div className="mt-10">
+        <CampaignRulesSection campagin={campaign} />
+      </div>
     </div>
   );
 }
@@ -97,6 +99,8 @@ const CampaignDetailsCard: FC<{ campaign: Campaign }> = ({ campaign }) => {
 };
 
 const CampaignRulesSection: FC<{ campagin: Campaign }> = ({ campagin }) => {
+  if (!campagin.rules.length) return null;
+
   return (
     <div className="flex flex-col gap-4">
       {campagin.rules.map((rule, key) => (
