@@ -148,6 +148,7 @@ const AddConditionAppBody: FC<{
             iconSrc={selectedApp[0].logo}
             alt={selectedApp[0].label}
             width="20"
+            className="h-5 w-5"
             height="20"
           />{" "}
           {selectedApp[0].label}
@@ -180,6 +181,7 @@ const AddConditionAppBody: FC<{
         >
           <Icon
             iconSrc={method.logo}
+            className="h-6 w-6"
             alt={method.label}
             width="20"
             height="20"

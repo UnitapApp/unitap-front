@@ -93,6 +93,50 @@ export const ConditionTypeApps: Record<ConditionType, AppCondition[]> = {
         },
       ],
     },
+    {
+      label: "ENS",
+      logo: "/assets/images/ens.svg",
+      children: [
+        {
+          name: "hasENS",
+          params: {},
+          label: "Has ENS",
+        },
+      ],
+    },
+    {
+      label: "Lens",
+      logo: "/assets/images/thirdparties/lens.svg",
+      children: [
+        {
+          name: "hasLens",
+          params: {},
+          label: "Has Lens",
+        },
+      ],
+    },
+    {
+      label: "Google Account",
+      logo: "/assets/images/google.svg",
+      children: [
+        {
+          name: "hasGoogleAccount",
+          params: {},
+          label: "Has Google Account",
+        },
+      ],
+    },
+    {
+      label: "Apple ID",
+      logo: "/assets/images/apple.svg",
+      children: [
+        {
+          name: "hasAppleID",
+          params: {},
+          label: "Has Apple ID Account",
+        },
+      ],
+    },
   ],
   [ConditionType.SocialMedia]: [
     {
