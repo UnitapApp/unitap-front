@@ -1,12 +1,12 @@
 import TokenTapProvider from "@/context/tokenTapProvider";
 import { Token } from "@/types";
-import { serverFetch } from "@/utils/api";
+import { apiData } from "@/utils/api";
 import { FC, PropsWithChildren } from "react";
 
 const TokenTapLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const tokens: Token[] = await serverFetch(
+  const tokens = apiData[
     "/api/tokentap/token-distribution-list/"
-  );
+  ] as unknown as Token[];
 
   return (
     <TokenTapProvider

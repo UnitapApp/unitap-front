@@ -3,7 +3,7 @@ import Widget from "../widget";
 import Link from "next/link";
 import RoutePath from "@/utils/routes";
 import { RaffleCardTimerLandingPage } from "./raffleTimer";
-import { serverFetch } from "@/utils/api";
+import { apiData, serverFetch } from "@/utils/api";
 import { Prize } from "@/types";
 
 // const nftImage = (tokenUri: string | undefined | null) => {
@@ -17,7 +17,7 @@ import { Prize } from "@/types";
 
 const PrizeTapLanding: FC = async () => {
   const rafflesList: Prize[] = (
-    await serverFetch("/api/prizetap/raffle-list/")
+    apiData["/api/prizetap/raffle-list/"] as unknown as Prize[]
   ).filter(
     (raffle: Prize) =>
       raffle.status !== "PENDING" && raffle.status !== "REJECTED",
@@ -70,7 +70,7 @@ const PrizeTapLanding: FC = async () => {
                   <div className="w-full">
                     <div className="flex gap-4 px-2 py-2">
                       <div className="raffle-logo-container relative z-100 h-[63px] w-[64px] overflow-hidden">
-                        <span className=" absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40 p-1">
+                        <span className="absolute left-[1px] h-[62px] w-[62px] overflow-hidden rounded-[13px] bg-gray40 p-1">
                           <img
                             className="object-contain"
                             width="62px"
@@ -80,7 +80,7 @@ const PrizeTapLanding: FC = async () => {
                           />
                         </span>
                       </div>
-                      <div className=" flex-1">
+                      <div className="flex-1">
                         <div className="flex h-6 items-center justify-between">
                           <p className="text-ellipsis whitespace-nowrap">
                             {raffle.name}

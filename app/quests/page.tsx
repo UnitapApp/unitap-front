@@ -2,11 +2,9 @@ import RoutePath from "@/utils/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { CiSearch } from "react-icons/ci";
-import { Token } from "@/types";
-import { serverFetch } from "@/utils/api";
-import { getRafflesServerSideListAPI } from "@/utils/serverApis/prizetap";
-import { TaskProvider, useTasks } from "@/context/TaskProvider";
+import { Prize, Token } from "@/types";
+import { apiData } from "@/utils/api";
+import { TaskProvider } from "@/context/TaskProvider";
 import TasksList from "@/components/containers/tasks/tasks-list";
 import { Searchbar } from "../_components/searchbar";
 import EnrollModal from "../prizetap/components/Modals/enroll-modal";
@@ -15,10 +13,11 @@ import LineaCheckWalletsModal from "../prizetap/components/Linea/LineaCheckWalle
 import EnrolledPreEnrollmentWallets from "../prizetap/components/Modals/enrolled-wallets-modal";
 
 export default async function Home() {
-  const tokens: Token[] = await serverFetch(
-    "/api/tokentap/token-distribution-list/",
-  );
-  const raffles = await getRafflesServerSideListAPI();
+  const tokens: Token[] = apiData[
+    "/api/tokentap/token-distribution-list/"
+  ] as unknown as Token[];
+
+  const raffles = apiData["/api/prizetap/raffle-list/"] as unknown as Prize[];
 
   return (
     <TaskProvider raffles={raffles} tokens={tokens}>

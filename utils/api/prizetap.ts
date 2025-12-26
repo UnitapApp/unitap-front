@@ -1,25 +1,17 @@
 import axios from "axios";
 import { axiosInstance } from "./base";
 import { EnrollmentRaffleApi, EnrollmentSignature, Prize } from "@/types";
+import { apiData } from ".";
 
 export async function getRafflesListAPI(token: string | undefined) {
+  const response = apiData["/api/prizetap/raffle-list/"] as unknown as Prize[];
   if (token) {
-    const response = await axiosInstance.get<Prize[]>(
-      "/api/prizetap/raffle-list/",
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      },
-    );
-    return response.data.filter(
+    return response.filter(
       (raffle) => raffle.status !== "PENDING" && raffle.status !== "REJECTED",
     );
   }
-  const response = await axiosInstance.get<Prize[]>(
-    "/api/prizetap/raffle-list/",
-  );
-  return response.data.filter(
+
+  return response.filter(
     (raffle) => raffle.status !== "PENDING" && raffle.status !== "REJECTED",
   );
 }

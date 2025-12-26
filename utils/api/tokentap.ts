@@ -5,24 +5,25 @@ import {
   Token,
 } from "@/types/tokentap";
 import { axiosInstance } from "./base";
+import { apiData } from ".";
 
 export async function getTokensListAPI() {
-  const response = await axiosInstance.get<Token[]>(
+  const response = apiData[
     "/api/tokentap/token-distribution-list/"
-  );
+  ] as unknown as Token[];
 
-  return response.data.filter((item) => item.status === "VERIFIED");
+  return response.filter((item) => item.status === "VERIFIED");
 }
 
 export async function tokenClaimSignatureApi(
   claimId: number,
   distributionId: number,
-  contractAddress: string
+  contractAddress: string,
 ) {
   const res = await axiosInstance.get<ShieldSignatureResponse>(
     `https://shield.unitap.app/v1/?app=${
       process.env.NEXT_PUBLIC_IS_STAGE === "1" ? "stage_unitap" : "unitap"
-    }&method=claim-token&params[claimId]=${claimId}&distributionId=${distributionId}&contract=${contractAddress}`
+    }&method=claim-token&params[claimId]=${claimId}&distributionId=${distributionId}&contract=${contractAddress}`,
   );
 
   return res.data;
@@ -35,7 +36,7 @@ export async function getClaimedTokensListAPI(token: string) {
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
   return response.data;
 }
@@ -44,7 +45,7 @@ export async function claimTokenAPI(
   token: string,
   tokenId: number,
   address: string,
-  body?: any
+  body?: any,
 ) {
   const response = await axiosInstance.post<ClaimTokenResponse>(
     `/api/tokentap/token-distribution/${tokenId}/claim/`,
@@ -55,7 +56,7 @@ export async function claimTokenAPI(
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
   return response.data.signature;
 }
@@ -63,7 +64,7 @@ export async function claimTokenAPI(
 export async function updateClaimFinished(
   token: string,
   claimId: number,
-  txHash: string
+  txHash: string,
 ) {
   const response = await axiosInstance.post<any>(
     `/api/tokentap/claims-list/${claimId}/update/`,
@@ -72,14 +73,14 @@ export async function updateClaimFinished(
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
   return response.data;
 }
 
 export async function getTokenConstraintsVerifications(
   tokenPk: number,
-  token: string
+  token: string,
 ) {
   const response = await axiosInstance.get(
     "/api/tokentap/get-token-constraints/" + tokenPk + "/",
@@ -87,7 +88,7 @@ export async function getTokenConstraintsVerifications(
       headers: {
         Authorization: `Token ${token}`,
       },
-    }
+    },
   );
 
   return response.data;

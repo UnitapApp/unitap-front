@@ -2,12 +2,12 @@ import { numberWithCommas } from "@/utils";
 import RoutePath from "@/utils/routes";
 import Link from "next/link";
 import Widget from "../widget";
-import { serverFetch } from "@/utils/api";
+import { apiData, serverFetch } from "@/utils/api";
 import { Token } from "@/types";
 
 const TokenTapLanding = async () => {
   const tokensList: Token[] = (
-    await serverFetch("/api/tokentap/token-distribution-list/")
+    apiData["/api/tokentap/token-distribution-list/"] as unknown as Token[]
   ).filter((item: Token) => item.status === "VERIFIED");
 
   return (
@@ -19,7 +19,7 @@ const TokenTapLanding = async () => {
           icon={"tokentap-icon.svg"}
           iconSize={"w-8"}
           className={
-            "relative z-20 h-full flex-1 cursor-pointer after:bg-tokentap-texture hover:bg-gray00 "
+            "relative z-20 h-full flex-1 cursor-pointer after:bg-tokentap-texture hover:bg-gray00"
           }
           title={"Token Tap"}
           buttonTitle={"Go to Tap"}
