@@ -36,6 +36,7 @@ export const UserAuthStatus = () => {
       <div className={`ml-5 mr-3 rounded-lg p-[1px]`} id="profile-dropdown">
         <div className="flex h-9 cursor-pointer items-center justify-between rounded-lg">
           <LandingButton
+            disabled
             onClick={() => {
               if (!userProfile) return;
               setDropDownActive(!dropDownActive);

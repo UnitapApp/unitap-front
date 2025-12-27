@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import LandingButton from "../containers/landing/button";
 // import { Kodchasan } from "next/font/google";
 
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 // import LandingButton from "../containers/landing/button";
 
-// const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
+const UserAuthStatus = dynamic(() => import("./auth"), { ssr: false });
 
 // const nunitoFont = Kodchasan({
 //   weight: ["600"],
@@ -30,12 +31,15 @@ const Header = () => {
 
       <div className="hidden flex-1 md:flex"></div>
 
-      {/* <Link href={"/dashboard"}>
-        <LandingButton className="relative z-20 flex bg-landing-secondary px-5 py-3 text-base uppercase">
+      <Link href={"#"}>
+        <LandingButton
+          disabled
+          className="relative z-20 flex bg-landing-secondary px-5 py-3 text-base uppercase"
+        >
           Incentive center
         </LandingButton>
       </Link>
-      <UserAuthStatus /> */}
+      <UserAuthStatus />
     </header>
   );
 };
