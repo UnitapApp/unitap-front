@@ -2,16 +2,16 @@ import { FC, PropsWithChildren } from "react";
 import { ErrorsProvider } from "./errorsProvider";
 import { GlobalContextProvider } from "./globalProvider";
 import { UserContextProvider } from "./userProfile";
-import { Settings, UserProfile } from "@/types";
+import { UserProfile } from "@/types";
 import WalletProvider from "./walletProvider";
-import { parseFieldSetting, serverFetch, snakeToCamel } from "@/utils/api";
+// import { parseFieldSetting, serverFetch, snakeToCamel } from "@/utils/api";
 // import { cookies } from "next/headers";
 
 export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
-  const settingsRes: { index: string; value: string }[] = await fetch(
-    process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/settings/",
-    { next: { revalidate: 10 } },
-  ).then((res) => res.json());
+  // const settingsRes: { index: string; value: string }[] = await fetch(
+  //   process.env.NEXT_PUBLIC_API_URL! + "/api/gastap/settings/",
+  //   { next: { revalidate: 10 } },
+  // ).then((res) => res.json());
 
   let authProfile: UserProfile | null = null;
 
@@ -27,15 +27,18 @@ export const UnitapProvider: FC<PropsWithChildren> = async ({ children }) => {
   //     });
   // } catch {}
 
-  const settings: Settings = settingsRes.reduce((prev, curr) => {
-    (prev as any)[snakeToCamel(curr.index)] = parseFieldSetting(curr.value);
-    return prev;
-  }, {} as Settings);
-
   return (
     <ErrorsProvider>
       <GlobalContextProvider>
-        <UserContextProvider initial={authProfile} settings={settings}>
+        <UserContextProvider
+          initial={authProfile}
+          settings={{
+            isGasTapAvailable: false,
+            gastapRoundClaimLimit: 0,
+            prizetapRoundClaimLimit: 0,
+            tokentapRoundClaimLimit: 0,
+          }}
+        >
           <WalletProvider>{children}</WalletProvider>
         </UserContextProvider>
       </GlobalContextProvider>
