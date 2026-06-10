@@ -34,9 +34,9 @@ export const apiData = {
         explorerUrl: "https://polygonscan.com/",
         rpcUrl: "https://polygon-rpc.com",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1f9a04e7-bf43-476d-4705-506297e2de00/public",
+          "/assets/images/tasks/1f9a04e7-bf43-476d-4705-506297e2de00.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000/public",
+          "/assets/images/tasks/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -91,7 +91,7 @@ export const apiData = {
       telegramUrl: null,
       image: null,
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/d6f0c249-b63a-4200-2238-a214d5672e00/public",
+        "/assets/images/tasks/d6f0c249-b63a-4200-2238-a214d5672e00.png",
       token: "USDGLO",
       tokenAddress: "0x4F604735c1cF31399C6E711D5962b2B3E0225AD3",
       decimals: 18,
@@ -107,9 +107,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -166,7 +166,7 @@ export const apiData = {
       telegramUrl: null,
       image: null,
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/8d42a11b-ceb3-4f83-2a04-218d334a8700/public",
+        "/assets/images/tasks/8d42a11b-ceb3-4f83-2a04-218d334a8700.png",
       token: "USDC",
       tokenAddress: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
       decimals: 6,
@@ -182,9 +182,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -255,7 +255,7 @@ export const apiData = {
       telegramUrl: null,
       image: null,
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/12540e6f-b7a5-497d-03e1-b36b7f838400/public",
+        "/assets/images/tasks/12540e6f-b7a5-497d-03e1-b36b7f838400.png",
       token: "USDC",
       tokenAddress: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
       decimals: 6,
@@ -271,9 +271,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -329,7 +329,7 @@ export const apiData = {
       telegramUrl: null,
       image: null,
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1c48073e-80a2-4800-81ba-24223c68de00/public",
+        "/assets/images/tasks/1c48073e-80a2-4800-81ba-24223c68de00.png",
       token: "USDC",
       tokenAddress: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       decimals: 6,
@@ -345,9 +345,9 @@ export const apiData = {
         explorerUrl: "https://arbiscan.io/",
         rpcUrl: "https://arb1.arbitrum.io/rpc",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/03ad6a53-03e3-4aae-7746-8d24b9b5e600/public",
+          "/assets/images/tasks/03ad6a53-03e3-4aae-7746-8d24b9b5e600.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -419,9 +419,9 @@ export const apiData = {
         explorerUrl: "https://polygonscan.com/",
         rpcUrl: "https://polygon-rpc.com",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1f9a04e7-bf43-476d-4705-506297e2de00/public",
+          "/assets/images/tasks/1f9a04e7-bf43-476d-4705-506297e2de00.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000/public",
+          "/assets/images/tasks/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -492,9 +492,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -566,9 +566,9 @@ export const apiData = {
         explorerUrl: "https://arbiscan.io/",
         rpcUrl: "https://arb1.arbitrum.io/rpc",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/03ad6a53-03e3-4aae-7746-8d24b9b5e600/public",
+          "/assets/images/tasks/03ad6a53-03e3-4aae-7746-8d24b9b5e600.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -623,7 +623,7 @@ export const apiData = {
       telegramUrl: null,
       image: null,
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+        "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
       token: "OP",
       tokenAddress: "0x4200000000000000000000000000000000000042",
       decimals: null,
@@ -639,9 +639,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -722,9 +722,9 @@ export const apiData = {
       emailUrl: "mohamadbastin@gmail.com",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/https://songaday.world/assets/song-a-day.svg/public",
+        "/assets/images/tasks/song-a-day.svg",
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/664d55cc-6b46-47f2-8d2d-037282319f00/public",
+        "/assets/images/tasks/664d55cc-6b46-47f2-8d2d-037282319f00.svg",
       token: "SONG",
       tokenAddress: "0x6E05260F22E4736505b36cDAe3B0a783A97c7AA6",
       decimals: null,
@@ -740,9 +740,9 @@ export const apiData = {
         explorerUrl: "https://explorer.idchain.one/",
         rpcUrl: "https://idchain.one/rpc/",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/b9c59c62-6153-437d-8a60-dcfc839de500/public",
+          "/assets/images/tasks/b9c59c62-6153-437d-8a60-dcfc839de500.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/46e00c18-d2b7-4b62-c985-e0dfd003f500/public",
+          "/assets/images/tasks/46e00c18-d2b7-4b62-c985-e0dfd003f500.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -809,9 +809,9 @@ export const apiData = {
       emailUrl: "mohamadbastin@gmail.com",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/d6bc0032-812a-4289-ff2b-6cdb93482f00/public",
+        "/assets/images/tasks/d6bc0032-812a-4289-ff2b-6cdb93482f00.svg",
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6734276c-637a-4abf-98b7-4a9790ae6300/public",
+        "/assets/images/tasks/6734276c-637a-4abf-98b7-4a9790ae6300.svg",
       token: "Sats",
       tokenAddress: "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8f",
       decimals: null,
@@ -827,9 +827,9 @@ export const apiData = {
         explorerUrl: "https://explorer.lbtc.io/",
         rpcUrl: null,
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/21b9acd8-f361-453e-30e0-a52a71e8d900/public",
+          "/assets/images/tasks/21b9acd8-f361-453e-30e0-a52a71e8d900.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/21b9acd8-f361-453e-30e0-a52a71e8d900/public",
+          "/assets/images/tasks/21b9acd8-f361-453e-30e0-a52a71e8d900.svg",
         isTestnet: false,
         chainType: "Lightning",
       },
@@ -896,9 +896,9 @@ export const apiData = {
       emailUrl: "mohamadbastin@gmail.com",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/d409ba41-6266-4cb1-fffb-94d8c8a1cc00/public",
+        "/assets/images/tasks/d409ba41-6266-4cb1-fffb-94d8c8a1cc00.svg",
       tokenImage:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/86e60f9b-01e3-40d8-4deb-bb5710b49300/public",
+        "/assets/images/tasks/86e60f9b-01e3-40d8-4deb-bb5710b49300.svg",
       token: "Bright",
       tokenAddress: "0x83ff60e2f93f8edd0637ef669c69d5fb4f64ca8e",
       decimals: null,
@@ -914,9 +914,9 @@ export const apiData = {
         explorerUrl: "https://gnosisscan.io/",
         rpcUrl: "https://rpc.gnosischain.com",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/bf14d373-0af3-4e79-7efb-17edf4270400/public",
+          "/assets/images/tasks/bf14d373-0af3-4e79-7efb-17edf4270400.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/0cf1fc96-d013-41cb-f203-e7384840f500/public",
+          "/assets/images/tasks/0cf1fc96-d013-41cb-f203-e7384840f500.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -1020,9 +1020,9 @@ export const apiData = {
         explorerUrl: "https://basescan.org/",
         rpcUrl: "https://rpc.ankr.com/base",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1381fa39-d5bd-4cb4-f6f9-56fa93165b00/public",
+          "/assets/images/tasks/1381fa39-d5bd-4cb4-f6f9-56fa93165b00.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1381fa39-d5bd-4cb4-f6f9-56fa93165b00/public",
+          "/assets/images/tasks/1381fa39-d5bd-4cb4-f6f9-56fa93165b00.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -1105,7 +1105,7 @@ export const apiData = {
       emailUrl: "support@unitap.app",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6714d01e-0fe7-44fe-f83d-dc321fd01c00/public",
+        "/assets/images/tasks/6714d01e-0fe7-44fe-f83d-dc321fd01c00.png",
       prizeAmount: 200000000000000000000,
       prizeAsset: "0x4200000000000000000000000000000000000042",
       prizeName: "200 OP",
@@ -1124,9 +1124,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -1324,7 +1324,7 @@ export const apiData = {
       emailUrl: "support@unitap.app",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/951da921-afa3-47e7-056d-cfc08b5a4200/public",
+        "/assets/images/tasks/951da921-afa3-47e7-056d-cfc08b5a4200.png",
       prizeAmount: 500000000,
       prizeAsset: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       prizeName: "500 USDC",
@@ -1343,9 +1343,9 @@ export const apiData = {
         explorerUrl: "https://arbiscan.io/",
         rpcUrl: "https://arb1.arbitrum.io/rpc",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/03ad6a53-03e3-4aae-7746-8d24b9b5e600/public",
+          "/assets/images/tasks/03ad6a53-03e3-4aae-7746-8d24b9b5e600.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -1552,7 +1552,7 @@ export const apiData = {
       emailUrl: "team@unitap.app",
       telegramUrl: null,
       image:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/465d5972-e5cf-4aea-157e-87f03f4b7a00/public",
+        "/assets/images/tasks/465d5972-e5cf-4aea-157e-87f03f4b7a00.png",
       prizeAmount: 1000000000,
       prizeAsset: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
       prizeName: "1000 USDC",
@@ -1571,9 +1571,9 @@ export const apiData = {
         explorerUrl: "https://polygonscan.com/",
         rpcUrl: "https://polygon-rpc.com",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1f9a04e7-bf43-476d-4705-506297e2de00/public",
+          "/assets/images/tasks/1f9a04e7-bf43-476d-4705-506297e2de00.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000/public",
+          "/assets/images/tasks/7e9bb2ee-ec65-4b73-1f79-fb9274cb8000.svg",
         isTestnet: false,
         chainType: "EVM",
       },
@@ -1766,9 +1766,9 @@ export const apiData = {
         explorerUrl: "https://optimistic.etherscan.io/",
         rpcUrl: "https://mainnet.optimism.io",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cef210ce-85ba-4482-f3bb-bbc5f6ecb200/public",
+          "/assets/images/tasks/cef210ce-85ba-4482-f3bb-bbc5f6ecb200.svg",
         modalUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/6d74b0fa-2880-422c-f494-ec6bb7cba100/public",
+          "/assets/images/tasks/6d74b0fa-2880-422c-f494-ec6bb7cba100.svg",
         isTestnet: false,
         chainType: "EVM",
       },

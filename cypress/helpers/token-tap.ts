@@ -85,11 +85,11 @@ export const tokenTestData = [
       explorerUrl: "https://explorer.idchain.one/",
       rpcUrl: "https://idchain.one/rpc/",
       logoUrl:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/b9c59c62-6153-437d-8a60-dcfc839de500/public",
+        "/assets/images/tasks/b9c59c62-6153-437d-8a60-dcfc839de500.svg",
       modalUrl:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/46e00c18-d2b7-4b62-c985-e0dfd003f500/public",
+        "/assets/images/tasks/46e00c18-d2b7-4b62-c985-e0dfd003f500.svg",
       gasImageUrl:
-        "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/46e00c18-d2b7-4b62-c985-e0dfd003f500/public",
+        "/assets/images/tasks/46e00c18-d2b7-4b62-c985-e0dfd003f500.svg",
       maxClaimAmount: 1e16,
       isTestnet: false,
       tokentapContractAddress: "0x3d1b1D14333D56472f7ADf044598d1605C67609f",

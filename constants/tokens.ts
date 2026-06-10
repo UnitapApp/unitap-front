@@ -173,7 +173,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenName: "ETH",
         tokenSymbol: "ETH",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
       },
       {
         tokenAddress: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
@@ -884,7 +884,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenSymbol: "Linea",
         tokenName: "linea",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/95e9b536-b0d5-432e-6736-a11c16070e00/public",
+          "/assets/images/tasks/95e9b536-b0d5-432e-6736-a11c16070e00.svg",
       },
       {
         tokenAddress: "0xaCb54d07cA167934F57F829BeE2cC665e1A5ebEF",
@@ -962,7 +962,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenSymbol: "ETH",
         tokenName: "ETH",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
       },
       {
         tokenAddress: "0x4200000000000000000000000000000000000006",
@@ -1237,7 +1237,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenSymbol: "MATIC",
         tokenName: "matic",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/1f9a04e7-bf43-476d-4705-506297e2de00/public",
+          "/assets/images/tasks/1f9a04e7-bf43-476d-4705-506297e2de00.svg",
       },
       {
         tokenAddress: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -1763,7 +1763,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenName: "bnb",
         tokenSymbol: "BNB",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
       },
 
       {
@@ -1772,7 +1772,7 @@ export const tokensInformation: TokenInformation[] = [
         tokenName: "MTK",
         tokenSymbol: "MTK",
         logoUrl:
-          "https://imagedelivery.net/XQ6LDks1pWNDtTDAw7o9nA/cf2db6ea-299f-4934-360a-a928aa231700/public",
+          "/assets/images/tasks/cf2db6ea-299f-4934-360a-a928aa231700.svg",
       },
     ],
   },
